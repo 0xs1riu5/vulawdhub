@@ -19,7 +19,8 @@
 -- Table structure for table `wiki_activation`
 --
 
-CREATE DATABASE `wiki` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+Create DATABASE If Not Exists `wiki` Character Set UTF8 COLLATE utf8_general_ci;
+
 use wiki;
 
 
