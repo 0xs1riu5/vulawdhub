@@ -1,0 +1,104 @@
+{template admin_header}
+<script type="text/javascript" src="js/popWindow.js"></script>
+<script type="text/javascript">
+	var all = [,'{$catsum}','{$usersum}','{$docsum}','{$clinksum}'];
+	var message=['全部导入完成！','正在导入分类。','正在导入用户。','正在导入词条。','正在导入分类关联表。'];
+ 
+	function doimport(){
+		$.ajax({
+			url: "index.php?plugin-mwimport-admin_mwimport-import",
+			cache: false,
+			dataType: "xml",
+			type:"post",
+			async:true, 
+			data: {cid: $('#cid').val() },
+			error: function(){
+			   setTimeout(doimport,3000);
+			},
+			timeout:10000,
+			success: function(xml){
+				var str = xml.lastChild.firstChild.nodeValue.split("|");
+				var flag = str[0];
+				var finish = str[1];
+				if(flag>0 && flag<5){
+					$('#importTip').html('('+finish+'/'+all[flag]+')  '+message[flag]);
+					setTimeout(doimport,500);
+				}else{
+					$('#importTip').html(message[0]);
+				}
+			}
+		});
+	}
+ 
+</script>
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">管理：
+    <a href="index.php?admin_plugin-manage-{$pluginid}" class="on"><span>插件管理</span></a>
+    <a href="index.php?admin_plugin-setvar-{$pluginid}" ><span>插件设置</span></a>
+    <a href="index.php?admin_plugin-hook-{$pluginid}"> <span>插件钩子</span> </a>
+</p>
+
+<br/>
+<div class="zhuyi">
+	<strong>提示信息：</strong>
+	<br/><br/>
+    <ul>
+        <li>本程序适合于HDwiki没有任何数据的情况下，导入MediaWiki的数据。</li>
+        <li>如果您的HDwiki已经有了数据，本导入将会<font color="#FF0000">覆盖掉您的数据。</font></li>
+        <li><font color="#FF0000">操作前请先备份HDwiki数据库。如果数据量大，运行可能有点慢，请耐心。</font></li>
+    </ul>
+</div>
+<!--{if !isset($usersum)}-->
+
+<form method="post" action="index.php?plugin-mwimport-admin_mwimport">
+<table class="table w-img">
+<tbody>
+
+<tr>
+    <td width="14%" >MySQL 数据库服务器</td>
+    <td width="18%" ><input type="text" class="inp_txt m-r10" size="30" name="dbhost" value="localhost"></td>
+    <td width="68%" >一般为 localhost，也可填写 IP 地址，如果端口非3306，请加上端口号，如：localhost:3307</td>
+</tr>
+<tr>
+    <td width="14%" >数据库用户名</td>
+    <td ><input type="text" class="inp_txt m-r10" size="30" name="dbuser" value="root"></td>
+    <td >数据库账号用户名</td>
+</tr>
+<tr>
+    <td width="14%" >数据库密码</td>
+    <td ><input type="password" class="inp_txt m-r10" size="30" name="dbpw" value=""></td>
+    <td >数据库账号密码</td>
+</tr>
+<tr>
+	<td width="14%" >数据库名</td>
+    <td ><input type="text" class="inp_txt m-r10" size="30" name="dbname" value=""></td>
+    <td >数据库名称</td>
+</tr>
+<tr>
+    <td width="14%" >数据库表前缀</td>
+    <td ><input type="text" class="inp_txt m-r10" size="30" name="tablepre" value=""></td>
+    <td >数据库表名前缀</td>
+</tr>
+<tr>
+    <td width="14%" ></td>
+    <td ><input type="submit" class="inp_btn2" name="submit" value="确定" onclick=""></td>
+    <td ></td>
+</tr>
+</tbody></table></form>
+
+<!--{else}-->
+<table width="493" border="0" cellpadding="0" cellspacing="0" class="table w-img">
+    <tr>
+      <td width="57" >共存在</td>
+      <td width="436">分类数：{$catsum}<br />用户数：{$usersum}<br />词条数：{$docsum}<br />分类链接：{$clinksum}</td>
+      <td><div id="importTip"></div></td>
+    </tr>
+    <tr>
+      <td ></td><td><input type="button" class="inp_btn2" value="开始导入" onclick="doimport()"></td><td></td>
+    </tr>
+</table>
+<!--{/if}-->
+
+
+
+{template admin_footer}

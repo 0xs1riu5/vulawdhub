@@ -1,0 +1,428 @@
+{template admin_header}
+<style>
+.tip {color:#666666;}
+</style>
+<p class="map">百科联盟：分享到新知社</p>
+<p class="sec_nav">分享到新知社：
+<a href="index.php?admin_share-set"><span>分享设置</span></a>
+<a href="index.php?admin_share"  class="on"><span>手动分享</span></a>
+</p>
+
+
+<script type="text/javascript">
+var action='update', wikiurl, sitedomain=location.host;
+
+if (location.href.indexOf('index.php?') >-1){
+	wikiurl = location.href.split('index.php?')[0];
+}
+
+function selectAll(obj){
+	$("input[name='chkdid[]']:enabled").attr('checked',obj.checked);
+}
+
+var Share = {
+	isOk:1,//是否可用
+	titles: [],
+	dids:[],
+	
+	getTitles : function(){
+		var checkedbox = $("input[name='chkdid[]']:checked");
+		var list = [], dids=[];
+		checkedbox.each(function(i){
+			list.push(this.title);
+			dids.push(this.value);
+		});
+		
+		this.dids=dids;
+		return list;
+	},
+	
+	box : function(){
+		var self=this, titles = this.getTitles(), id;
+		if (!titles.length){
+			//return alert('没有选择任何词条！');
+			return self.tip("请选择需要分享的词条。", 2000);
+		}else if(titles.length == 1){
+			id='1';
+		}else{
+			id='2';
+		}
+		this.titles = titles;
+		if(id == '1'){
+			$.dialog({
+				id:'share'+id,
+				width:340,
+				title:'分享到新知社',
+				type:'selector',
+				content:"#box-share-"+id,
+				styleOverlay:{backgroundColor:'#FFFFFF'},
+				onOk:function(){
+					if(self.check(id)){
+						self.close(id);
+						self.send(id);
+					}
+				},
+				onCancel:function(){
+					self.close(id);
+				}
+			});
+		}else{
+			self.sendlist();
+		}
+	},
+	
+	tip:function(content,autoClose){
+		autoClose = autoClose || 30000;
+		$.dialog({
+			id:'tip',
+			width:300,
+			height:200,
+			title:'提示',
+			valign:'center',
+			content:content,
+			styleOverlay:{backgroundColor:'#FFFFFF'},
+			autoClose:autoClose
+		});
+	},
+	
+	check: function(id){
+		var self=this, dialog, content;
+		dialog = $.dialog.get('share'+id),
+		content = $.trim(dialog.find('textarea').val());
+		if(content.length > 140){
+			$.dialog.get("share1").find("div.tip").css({color:'red'});
+			$.dialog.get("share1").find("div span").text("，超出个"+(content.length - 140)+"字");
+			return false;
+		}
+		return true;
+	},
+	
+	send: function(id){
+		var self=this,
+			url = "index.php?admin_hdapi-tosns-"+Math.random(),
+			title=this.titles.shift(),
+			did=this.dids.shift(),
+			dialog,
+			content;
+		
+		if(this.titles.length > 1){
+			content='';
+		}else{
+			dialog = $.dialog.get('share1'),
+			content = $.trim(dialog.find('textarea').val());
+		}
+		
+		if(!content){
+			content='';
+		}
+		
+		if(!title){
+			$("input[name*=chkdid]:checked").attr('checked', false);
+			return self.tip("分享完毕", 3000);
+		}
+		
+		self.tip("正在分享 <b>"+title+"</b>");
+		
+		$.ajax({
+			url:url,
+			dataType:'html',
+			data:{ajax:1, op:'false', did:did, content:content},//op=false（手动分享模式）op=true(自动分享模式)
+			timeout: 25000,
+			type: 'POST',
+			success:function(data){
+				data = $.trim(data);
+				if('OK' == data){
+					self.tip("<b>" +title+"</b> 分享成功");
+				}else{
+					self.tip("<b>" +title+"</b> 分享失败，原因："+data);
+				}
+			},
+			complete:function(xmlhttp, status){
+				if(status!= 'success'){
+					self.tip("<b>" +title+"</b> 分享失败，原因：网络链接失败");
+				}
+				
+				setTimeout(function(){
+					self.send(id);
+				}, 1000);
+			}
+		});
+		return false;
+	},
+	
+	sendlist: function(){
+		var self=this,
+			url = "index.php?admin_hdapi-tosns-"+Math.random(),
+			title=this.titles.shift(),
+			did=this.dids.shift(),
+			dialog,
+			content='';
+		
+		if(!title){
+			$("#share-cancel").hide();
+			setTimeout(function(){
+				$("#share-tip").html("");
+			}, 3000);
+			return $("#share-tip").html("批量分享完毕");
+		}
+		$("#share-cancel").show();
+		$("#share-tip").html("正在分享 <b>"+title+"</b>");
+		
+		$.ajax({
+			url:url,
+			dataType:'html',
+			data:{ajax:1, op:'false', did:did, content:content},
+			timeout: 25000,
+			type: 'POST',
+			success:function(data){
+				data = $.trim(data);
+				if('OK' == data){
+					$("#share-tip").html("<b>" +title+"</b> 分享成功");
+				}else{
+					$("#share-tip").html("<b>" +title+"</b> 分享失败，原因："+data);
+				}
+			},
+			complete:function(xmlhttp, status){
+				if(status!= 'success'){
+					$("#share-tip").html("<b>" +title+"</b> 分享失败，原因：网络链接失败");
+				}
+				
+				$(":checkbox[value="+did+"]:checked").attr('checked', false);
+				setTimeout(function(){
+					self.sendlist();
+				}, 1000);
+			}
+		});
+		return false;
+	},
+	
+	cancel: function(){
+		$("#share-cancel").hide();
+		this.titles=[];
+	},
+	
+	close: function(id){
+		$.dialog.close('share'+id);
+	},
+	
+	onkeyup:function(){
+		var dialog = $.dialog.get('share');
+		//dialog.find('textarea').val('');
+	},
+	
+	checkApi: function(){
+		var self=this, url="index.php?admin_hdapi-checkapi-"+Math.random();
+		
+		$.ajax({
+			url:url,
+			dataType:'html',
+			timeout: 25000,
+			type: 'GET',
+			
+			success:function(data){
+				data=$.trim(data);
+				if(data.indexOf('isManual') == -1){
+					$("#apiopen").hide();
+					if('err' == data){
+						$("#apierror").show();
+					}else{
+						$("#apiclose").show();
+					}
+				}
+			},
+			complete:function(xmlhttp, status){
+				if(status!= 'success'){
+					$("#apiopen").hide();
+					$("#apierror").show();
+				}
+			}
+		});
+	},
+	
+	//读取站长信息
+	read_info: function(){
+		var params = {};
+		params.action = 'readinfo';
+		$.ajax({
+			url:'index.php?admin_hdapi-siteuserinfo',
+			type:'POST',
+			data:params,
+			timeout:25000,
+			dataType:'json',
+			success : function(data, state){
+				if(data && typeof data == 'object' && data['success']){
+					if(wikiurl != data.wiki_url && wikiurl != data.wiki_url+'/'){
+						alert('百科联盟记录的网址('+data.wiki_url+')和当前网址不一致，请到[修改联盟资料]页面重新提交站长信息！');
+						window.location='index.php?admin_hdapi-info';
+					}
+					
+					if(data.siteremark == '百科联盟'){
+						alert('站长信息不完整，请到[修改联盟资料]页面完善站长信息！');
+						window.location='index.php?admin_hdapi-info';
+					}
+				}
+			},
+			complete :function(response, state){
+				
+			}
+		});
+	}
+	
+}
+</script>
+
+<h3 class="col-h3">手动分享</h3>
+<!--{if !$is_login}-->
+<dl class="col-dl">
+	<dt>提示：</dt>
+	<dd>您的的联盟尚未登录，请到联盟首页登录。</dd>
+</dl>
+
+<!--{elseif !$is_open}-->
+<dl class="col-dl">
+	<dt>提示：</dt>
+	<dd>分享到新知社的功能尚未开通，请到分享设置页面设置为开启。</dd>
+</dl>
+
+<!--{else}-->
+
+<script>
+$(document).ready(function(){
+	Share.checkApi();
+	if(wikiurl){
+		Share.read_info();
+	}
+});
+</script>
+<div id="apiopen">
+	<dl class="col-dl">
+		<dt>提示</dt>
+		<dd>1. 百科联盟的用户都是互动百科<a href="http://i.baike.com/home.do" target="_blank">新知社</a>的成员，
+		站长用户可以通过手动将本站的词条链接发布到<a href="http://i.baike.com/home.do" target="_blank">新知社</a>。
+		站长用户发布的词条链接使用发布网站的链接地址。</dd>
+		
+		<dd  class="red">2. 您现在使用的是手动分享，还可以申请开通自动分享。<a href="http://kaiyuan.hudong.com/bbs" target="_blank">点击了解详情</a></dd>
+	</dl>
+		<form name="list" method="POST" action="index.php?admin_share-search">
+			<ul class="col-ul ul_li_sp m-t10">
+				<li><span>{lang commonChoiceCat}: </span>
+					<select name="qcattype">
+						<option value="0" >{lang commonAllCat}</option>
+						{$catstr}
+					</select>
+				</li>
+				<li><span>{lang typesearch}:</span>
+					<select name="typename">
+						<option value="" >{lang alltype}</option>
+						<option value="1" >{lang focusmanage}</option>
+						<option value="2" >{lang hotdoc}</option>
+						<option value="3" >{lang wonderdoc}</option>
+						<option value="4" >{lang commonLock}</option>
+						<option value="5" >{lang commonPassed}</option>
+						<option value="6" >{lang commonUnpass}</option>
+					</select>
+				</li>
+				<li><span>{lang commonTitleKey}:</span>
+					<input name="qtitle" type="text" class="inp_txt" size="30" value="{$qtitle}" />
+				</li>
+				<li><span>{lang commonAuthor}:</span>
+					<input name="qauthor" type="text" class="inp_txt" size="30" value="{$qauthor}" />
+				</li>
+				<li><span>{lang commonCreateTime}:</span>
+					<input name="qstarttime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly" value="{$qstarttime}" />
+					—
+					<input name="qendtime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly"  value="{$qendtime}"/>
+				</li>
+				<li>
+					<input name="Submit1" type="submit" value="{lang commonSearch}"   class="inp_btn"/>
+				</li>
+			</ul>
+		</form>
+	<form method="POST" name="formdoclist">
+	<table class="table">
+	<thead>
+		<tr>
+			<td style="width:60px;">{lang commonSelect}</td>
+			<td style="width:80px;">{lang commonTitle}</td>
+			<td style="width:100px;">{lang commonAuthor}</td>
+			<td style="width:80px;">{lang doctype}</td>
+			<td>{lang commonCreateTime}</td>
+		</tr>
+	</thead>	
+				<!-- {if $doclist} -->
+				<!--{loop $doclist $doc}-->
+				<tr>
+					<td><input type="checkbox" name="chkdid[]" title="{$doc['title']}" value="{$doc['did']}"/></td>
+					<td><a target="_blank" class="e" href="index.php?doc-view-{$doc['did']}" title="{$doc['title']}">{$doc['title']}</a>
+					<td><a target="_blank" class="e" href="index.php?user-space-{$doc['authorid']}"  title="{$doc['author']}">{$doc['author']}</a></td>
+					<td>{if $doc['doctype'] == 1}<font color="Red">{lang focusmanage}</font>{elseif $doc['doctype'] == 2}<font color="blue">{lang hotdoc}</font>{elseif $doc['doctype'] == 3}<font color="green">{lang wonderdoc}</font>{else}{lang focusmanageNone}{/if}</td>
+					<td>{$doc['time']}</td>
+				</tr>
+				<!--{/loop}-->
+				<!-- {else} -->
+				<tr>
+					<td colspan="9">{lang docmanageSearchMsg}</td>
+				</tr>
+				<!-- {/if} -->
+
+		<tr>
+			<td><label><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll(this);">&nbsp;&nbsp;{lang commonAllSelect}</label></td>
+			<td colspan="4">
+			<input type="button" value="分 享"  class="inp_btn2"  onclick="Share.box();"/>
+			<input id="share-cancel" type="button" value="取 消"  class="inp_btn2"  onclick="Share.cancel();" style="display:none;"/>
+			&nbsp;<a id="share-tip" class="red"></a>
+			</td>
+		</tr>
+		
+		<!-- {if $departstr} -->
+		<tr>
+			<td colspan="5"><p class="fenye a-r"> {$departstr} </p></td>
+		</tr>
+		<!-- {/if} -->
+	</table>
+
+	</form>
+</div>
+
+<div id="apiclose" style="display:none">
+<dl class="col-dl">
+	<dt>提示：</dt>
+	<dd class="red">此站点分享到新知社的功能，由于已经被互动百科关闭，目前不可用。<a href="http://kaiyuan.hudong.com/bbs" target="_blank">点击了解详情</a></dd>
+</dl>
+</div>
+
+<div id="apierror" style="display:none">
+<dl class="col-dl">
+	<dt>提示：</dt>
+	<dd class="red">分享到新知社的功能，由于和互动服务器连接失败，目前不可用，请稍候再试。</dd>
+</dl>
+</div>
+<!--{/if}-->
+
+<div id="box-share-1" style="display:none">
+	<table align="center" style="margin:0 10px;">
+		<tr>
+			<td height="25" align="left" class="tip">
+			分享理由[选填]:
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+			<div></div>
+			<textarea name="pms" type="textarea" class="inp_txt" style="width:295px;height:80px;"></textarea>
+			<div class="tip">最多输入140个字<span></span></div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="box-share-2" style="display:none">
+	<table align="center" style="margin:0 10px;" height="100%" width="100%" >
+		<tr>
+			<td class="tip">
+			批量分享将使用默认的分享理由“分享词条”。
+			</td>
+		</tr>
+	</table>
+</div>
+{template admin_footer} 

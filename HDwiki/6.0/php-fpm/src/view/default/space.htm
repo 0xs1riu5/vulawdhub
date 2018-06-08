@@ -1,0 +1,61 @@
+{template header}
+
+<div class="wrap hd_map">
+	<a href="{WIKI_URL}">{$setting['site_name']}</a> &gt;&gt;{$spaceuser['username']}
+	<!--{if $type==1 }-->{lang myeditDoc}
+	<!--{elseif $type==2}-->{lang collectDocs}
+	<!--{else}-->{lang mycreateDoc}<!--{/if}--> 
+</div>
+<section class="wrap clearfix">
+<div class="r group1 bor-ccc qh gr">
+	<div class="resoult_total f18">
+		<a class="<!--{if !$type}-->hover<!--{/if}-->" href="{url user-space-$spaceuser['uid']-0}">{lang mycreateDoc}</a>
+		<a class="<!--{if $type==1}-->hover<!--{/if}-->" href="{url user-space-$spaceuser['uid']-1}">{lang myeditDoc}</a>
+		<a class="<!--{if $type==2}-->hover<!--{/if}-->" href="{url user-space-$spaceuser['uid']-2}">{lang collectDocs}</a>
+	</div>
+
+	<!--{if $doclist}-->
+	<!--{loop $doclist $doc}-->
+	<dl class="col-dl">
+		<dt><a href="{url doc-view-$doc['did']}" class="clink f20" >{$doc[title]}</a></dt>
+		<dd class="gray9">
+			<span class="r">{lang edit}:<label>{$doc[edits]}{lang times}</label> | {lang view}:<label>{$doc[views]}{lang times}</label>
+		<!--{if (2 == $type && $uid == $doc['fuid'])}--><a class="clink" href="{url user-removefavorite-$doc['fid']}" >[{lang delCollectDoc}]</a><!--{/if}--></span>
+			{lang creator}:<a class="clink" href="{url user-space-$doc['authorid']}">{$doc['author']}</a> &nbsp; &nbsp; {lang createTime}:<label>{$doc['time']}</label></dd>
+		<dd class="gray">{lang tag}: 
+		<!--{if $doc[tag]}-->
+			<!--{loop $doc[tag] $tag}-->
+			<a href="{url search-tag-$tag}" class="clink" >{$tag}</a>
+			<!--{/loop}-->
+		<!--{/if}-->
+		</dd>
+		<dd class="gray"><p>{lang summary}: {$doc[summary]}<a href="{url doc-view-$doc['did']}" class="clink" >[{lang readFullText}]</a></p></dd>
+	</dl>
+	<!--{/loop}-->
+	<!--{else}-->
+	<p class="m-t20 a-c"><i class="ico-warnn"></i><!--{if $type==1}-->{lang spaceTip1}<!--{elseif $type==2}-->{lang noCollectDocs}<!--{else}-->{lang spaceTip2}<!--{/if}--></p>
+	<!--{/if}-->
+ 	<div id="fenye" class="a-c">{$departstr}</div>
+</div>
+
+<aside class="l group2">
+	<div class="bor-ccc gr_info">
+		<dl class="col-dl">
+		<dd class="l"><a href="{url user-space-$spaceuser['uid']}" class="a-img2"><img src="<!--{if $spaceuser[image]}-->$spaceuser[image]<!--{else}-->style/default/user.jpg<!--{/if}-->"/></a></dd>
+		<dd class="f20">{$spaceuser[username]}</dd>
+		<dd class="gray9"><span class="r"><img alt="{lang gold}" src="style/default/jb.gif" class="sign"/>{$spaceuser[credit1]}</span>
+		<font color="{$spaceuser['color']}">{$spaceuser[grouptitle]}</font></dd>
+		<dd><a onclick="return Message.box('{$spaceuser['username']}')" href="#" class="s-msg clink r">{lang sendmessage}</a>
+		<!--{for $i=0; $i<$spaceuser['editorstar'][3]; $i++}--><img src="style/default/star_level3.gif"/><!--{/for}--><!--{for $i=0; $i<$spaceuser['editorstar'][2]; $i++}--><img src="style/default/star_level2.gif"/><!--{/for}--><!--{for $i=0; $i<$spaceuser['editorstar'][1]; $i++}--><img src="style/default/star_level1.gif"/><!--{/for}-->
+		</dd>
+		<dd class="row2 gray9 f12">{lang usercredit}:{$spaceuser[credit2]}</dd>	
+		<dd class="row2 gray9 f12">{lang popularity}:{$spaceuser[views]}</dd>
+		<dd class="row2 gray9 f12">{lang createDoc}:{$spaceuser[creates]}</dd>
+		<dd class="row2 gray9 f12">{lang editDoc}:{$spaceuser[edits]}</dd>
+		<dd class="gray9 f12">{lang regTime}:{$spaceuser[regtime]}</dd>
+		<dd class="gray9 f12">{lang signature}:{$spaceuser[signature]}</dd>
+		</dl>
+	</div>
+</aside>
+</section>
+{template footer}

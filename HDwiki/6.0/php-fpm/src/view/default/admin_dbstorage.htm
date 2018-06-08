@@ -1,0 +1,38 @@
+{template admin_header}
+<script language="JavaScript" >
+function docheck(){
+	if(!$("#txt").attr("checked") && !$("#mysql").attr("checked")){
+		alert("请先选择存储方式");
+		return false;
+	}
+	return true
+}
+</script>
+<p class="map">数据库管理：数据存储设置</p>
+<p class="sec_nav">数据库管理：
+	<a href="index.php?admin_db-storage" class="on"><span>数据存储设置</span></a>
+	<a href="index.php?admin_db-convert"><span>数据转换</span></a>
+</p>
+<h3 class="col-h4 m-t10">数据库储设置</h3>
+
+<form action="index.php?admin_db-storage" method="post" onsubmit="return docheck();">
+<table class="table">
+	<tr width="300px">
+		<td><span>词条历史版本存储格式</span>选择文本格式,可以节省数据库空间</td>
+		<td>
+		<label>
+			<input type="radio"  name="db_storage" value="txt" id="txt"
+		<!--{if isset($setting['db_storage'])}-->{if $setting['db_storage']=='txt'}checked{/if}<!--{/if}-->/> 文本</label>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label><input type="radio"  name="db_storage" value="mysql" id="mysql"
+		<!--{if isset($setting['db_storage'])}-->{if $setting['db_storage']=='mysql'}checked{/if}<!--{/if}-->/> Mysql</label>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<input class="inp_btn" name="dbstoragesubmit" type="submit" value="{lang commonSave}" />
+		</td>
+	</tr>
+</table>
+</form>
+{template admin_footer}

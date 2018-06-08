@@ -1,0 +1,134 @@
+{template admin_header}
+<script type="text/javascript">
+	var selectALL = function (obj){
+		$(".box").attr("checked",obj.checked);
+	}
+	var edit_available = function (advid){
+		$.ajax({
+			url: "index.php?admin_adv-edit",cache: false,dataType: "xml",type:"post",data: { advid: advid },
+			success: function(xml){
+				var	message=xml.lastChild.firstChild.nodeValue;
+				if(message=='ok'){
+					var available = $('#available_'+advid);
+					if('{lang adv_enable}'==$.trim(available.html())){
+						available.html('{lang adv_disable}');
+					}else{
+						available.html('{lang adv_enable}');
+					}
+				}
+			}
+		});
+	}
+	var deleteadv = function (){
+		if(confirm('{lang advConfirmRemove}')){
+			if($(".box:checked").length==0){
+				alert('{lang docRemoveAdvNull}');
+				return false;
+			}
+			$('#formadvlist').attr("action","index.php?admin_adv-remove");
+			$('#formadvlist').submit();
+		}else{
+			return false;
+		}
+	}
+	$(function(){
+		$("#time").attr("value",'{$time}')
+		$("#type").attr("value",'{$type}')
+		$("#orderby").attr("value",'{$orderby}')
+	}); 
+</script>
+<p class="map">内容管理：广告管理</p>
+<p class="sec_nav">广告管理：<a href="index.php?admin_adv-default" class="on"><span>管理广告</span></a>
+<a href="index.php?admin_adv-config"><span>设置广告</span></a>
+<a href="index.php?admin_adv-add"><span>添加广告</span></a>
+<a href="index.php?admin_adv-union"><span>加入广告联盟</span></a>
+</p>
+<h3 class="col-h3">管理广告</h3>
+
+<form name="seachadv" method="POST" action="index.php?admin_adv-search" >
+	<ul class="col-ul ul_li_sp m-t10">
+		<li><span>广告标题: </span><input name="title" type="text" class="inp_txt m-r10" size="30" value="<!--{if isset($title)}-->{$title}<!--{/if}-->" /></li>
+		<li><span>起始时间: </span>
+			<select name="time" id="time" >
+				<option value="">全部起始时间</option>
+				<option value="86400"> {lang adv_oneday}</option>
+				<option value="604800"> {lang adv_oneweek}</option>
+				<option value="2592000"> {lang adv_onemonth}</option>
+				<option value="7776000"> {lang adv_threemonths}</option>
+				<option value="15552000"> {lang adv_sixmonths}</option>
+				<option value="31536000"> {lang adv_oneyear}</option>
+			</select>
+		</li>
+		<li><span>广告类型: </span>
+			<select name="type" id="type" >
+				<option value=""> 全部广告类型</option>
+				<option value="0">页头通栏广告</option>
+				<option value="1">页尾通栏广告</option>
+				<option value="2">首页栏目广告</option>
+				<option value="3">词条正文广告</option>
+				<option value="4">词条右侧广告</option>
+				<option value="5">对联广告</option>
+				<option value="6">漂浮广告</option>
+			</select>
+		</li>
+		<li><span>排序方式: </span>
+			<select name="orderby" id="orderby" >
+				<option value="type"> 广告类型排序</option>
+				<option value="starttime"> 起始时间排序</option>
+			</select>
+		</li>
+		<li><input name="searchsubmit" type="submit" value="搜 索" onclick="if(this.form.title.value=='{lang adv_input_title}'){this.form.title.value=''}window.loacation='admincp.php?action=adv&amp;title='+this.form.title.value+'&amp;starttime='+this.form.time.value+'&amp;type='+this.form.type.value+'&amp;orderby='+this.form.orderby.value;" class="inp_btn"/></li>
+	</ul>
+</form>
+<h3 class="tol_table">[ 共 <b>{$advsum}</b> 个广告 ]</h3>
+<form name="formadvlist" id="formadvlist"  method="POST">
+	<table class="table w-img">
+		<thead>
+			<tr>
+				<td style="width:50px;">{lang commonSelect}</td>
+				<td style="width:100px;">{lang adv_available}</td>
+				<td style="width:60px;">{lang adv_title}</td>
+				<td style="width:70px;">{lang adv_type}</td>
+				<td style="width:60px;">{lang adv_style}</td>
+				<td style="width:100px;">{lang adv_starttime}</td>
+				<td style="width:100px;">{lang adv_endtime}</td>
+				<td style="width:100px;">{lang adv_targets}</td>
+				<td>{lang adv_targets}</td>
+			</tr>
+		</thead>
+		<!-- {if $advsum} -->
+		<!--{loop $advlist $adv}-->
+		<tr>
+			<td><input type="checkbox" class="box" name="advid[]" value="{$adv['advid']}" /></td>
+			<td>
+				<a href="javascript:void(0)" onclick="edit_available({$adv['advid']});">
+				<!-- {if $adv['available']} -->
+				<span id="available_{$adv['advid']}">{lang adv_enable}</span>
+				<!-- {else} -->
+				<span id="available_{$adv['advid']}">{lang adv_disable}</span>
+				<!-- {/if} -->
+				</a>
+			</td>
+			<td>{$adv['title']}</td>
+			<td>{$adv['type']}</td>
+			<td>{$adv['parameters']['style']}</td>
+			<td>{$adv['starttime']}</td>
+			<td>{$adv['endtime']}</td>
+			<td><!-- {if $adv['targets']!==''} -->{$adv['targets']}<!-- {else} -->{lang adv_default_targets}<!-- {/if} --></td>
+			<td><a href="index.php?admin_adv-edit-{$adv['advid']}" ><font color="#FF0000">{lang adv_detailedit}</font></a></td>
+		</tr>
+		<!--{/loop}-->
+		<!-- {else} -->
+		<tr>
+			<td colspan="5">没有任何广告！</td>
+		</tr>
+		<!-- {/if} -->
+		
+		<tr>
+			<td><input name="checkbox"  type="checkbox" id="chkall" onclick="selectALL(this);"><label id="tip">全选</label></td>
+			<td colspan="7"><input type="button" name="casemanage" onClick="deleteadv();" value="{lang commonDel}" class="inp_btn2 m-r10"/></td>
+		</tr>
+		<tr><td colspan="8"><p class="fenye a-r">{$departstr}</p></td></tr>
+	</table>
+</form>
+{template admin_footer}

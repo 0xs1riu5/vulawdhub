@@ -1,0 +1,85 @@
+{template admin_header}
+<script type="text/javascript">
+
+function install_start() {
+	window.onbeforeunload = function() { return '安装尚未完成，如果现在退出，将产生不可预知的后果。'; };
+	set_next({disabled:true});
+}
+
+function install_finish() {
+	window.onbeforeunload = function(){};
+	set_next({disabled:false, btn_html:'完成', action:'index.php?admin_upgrade-initpage'});
+}
+function install_retry() {
+	window.onbeforeunload = function(){};
+	set_next({disabled:false, btn_html:'重试'});
+}
+
+function set_next(options) {
+	var installForm = $('#install_form');
+	var nextButton = $('#next_button');
+	var interval;
+	var settings = {
+		action: installForm.attr('action'),
+		target: installForm.attr('target'),
+		disabled: nextButton.attr('disabled'),
+		btn_html: nextButton.html(),
+		timer: false
+	};
+	$.extend(settings, options);
+	
+	installForm.attr({action:settings.action, target:settings.target});
+	nextButton.attr({disabled: settings.disabled});
+	nextButton.html(settings.btn_html);
+	if(settings.timer.constructor==Number) {
+		var btn_content = nextButton.html();
+		nextButton.html(btn_content+"("+settings.timer+")");
+		nextButton.click(function(){clearInterval(interval);});
+		interval = setInterval(function(){ 
+			nextButton.html(btn_content+"("+(--settings.timer)+")");
+			if(settings.timer <= 0) {
+				nextButton.click();
+			}
+		}, 1000);
+	}
+}
+</script>
+<p class="map">全局：自动升级</p>
+
+
+<br /><br />
+<style type="text/css">
+fieldset { border: 1px solid #CCC; padding: 12px; margin-bottom: 10px; }
+fieldset span { color: #333; }
+fieldset legend { font-size: 14px; color: #0068B6; }
+button { line-height: 24px; height: 28px; padding: 0 8px; }
+</style>
+<!--[if IE]>
+<style type="text/css"> button { padding: 0 0; } </style>
+<![endif]-->
+<table align="left" cellpadding="10" cellspacing="0" width="624" class="list"> 
+  <tr> 
+	<td valign="top">
+	
+	<fieldset style="width: 600px;">
+	<legend>自动升级:</legend>
+	<iframe src="index.php?admin_upgrade-initpage" id="install_frame" name="install_frame" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" width="600" height="350" style="border: none">
+	  <p>Your browser does not support iframes.</p>
+	</iframe>
+		
+	</fieldset>
+	</td>
+	</tr>
+	<tr>
+	<td align="right">
+	<form method="post" action="index.php?admin_upgrade-initpage" id="install_form" target="install_frame">
+		<button name="submit" type="submit" disabled="disabled" id="next_button" />开始安装</button>
+	</form>
+	</td>
+	
+	</tr>
+</table>
+	 
+
+
+{template admin_footer}

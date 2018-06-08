@@ -1,0 +1,174 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	if($("input[name='id[]']:checked").length==0){
+		$.dialog.box('immageshow', '注意', '{lang docmanageSelectDoc}');
+		return false;
+	}else if(confirm('{lang commonConfirmRemove}')){
+		$('#regularform').submit();
+	}else{
+		return false;
+	}
+}
+function selectALL(obj){
+	$(".box").attr('checked',obj.checked);
+
+}
+
+function editregular(obj){
+	var node=obj.parentNode;
+	node=node.parentNode;
+	var  id=node.cells[1].innerHTML;
+	var  name=node.cells[2].innerHTML;
+	var  regular=node.cells[3].innerHTML;
+	var groupid = $(obj).parent('td').attr('groupid');
+	var  editlink=node.cells[5].innerHTML;
+    node.cells[2].innerHTML='<input type="text" id="regularname'+id+'" name="regularname" value="'+name+'">';
+    node.cells[3].innerHTML='<input type="text" id="regularexpr'+id+'" name="regularexpr" value="'+regular+'" >';
+	node.cells[4].innerHTML= Regular.makeselect(groupid);
+    node.cells[5].innerHTML='<input type="button" onclick="saveregular(this,'+id+');" value="{lang commonSave}" > <input type="button" onclick="cancelregular(this,'+id+');" value="{lang commonCancel}" >';
+}
+
+function saveregular(node, id){
+	var regularname = $.trim($('#regularname'+id).val());
+	var regularexpr = $.trim($('#regularexpr'+id).val());
+	var regulargroupid = $.trim($('#_regulargroupid').val());
+	$(node).parent('td').attr('groupid', regulargroupid);
+	
+	if(regularname ==''){
+	  alert('{lang regularNameNoNull}');
+	  $('#regularname'+id).focus();
+	  return false;
+	}
+	if(regularexpr ==''){
+	  alert('{lang regularExprNoNull}');
+	  $('#regularexpr'+id).focus();
+	  return false;
+	}
+	
+	$.post("index.php?admin_regular-edit",
+		{id:id, regularname:regularname, regularexpr:regularexpr, regulargroupid:regulargroupid},
+		function(){
+			cancelregular(node,id);
+		}
+	);
+}
+
+function cancelregular(node,id){
+	var groupid = $(node).parent('td').attr('groupid');
+	node=node.parentNode;
+	node=node.parentNode;
+	node.cells[2].innerHTML=$('#regularname'+id).val();
+	node.cells[3].innerHTML=$('#regularexpr'+id).val();
+	node.cells[4].innerHTML=Regular.data[groupid];
+	node.cells[5].innerHTML='<a href="javascript:void(0);" onclick="editregular(this);"  >{lang commonEdit}</a>';
+}
+
+function docheckadd(){
+	if($.trim($('#regularname').val()) == ''){
+	  alert('{lang regularNameNoNull}');
+	  $('#regularname').focus();
+	  return false;
+	}
+	if($.trim($('#regularexpr').val()) == ''){
+	  alert('{lang regularExprNoNull}');
+	  $('#regularexpr').focus();
+	  return false;
+	}
+	
+	if($('#regulargroupid').val() == '0'){
+	  alert('{lang regularGroupNoNull}');
+	  return false;
+	}
+	
+	return true;
+}
+
+var Regular = {
+	id: 0,
+	groupidlist:[],
+	data : {
+	'0':'{lang regularGroupSelect}'
+	<!--{loop $regulargrouplist $regulargroup}-->
+	,'$regulargroup[id]':'$regulargroup[title]'
+	<!--{/loop}-->
+	},
+	
+	makeselect : function(id){
+		var html ='';			 
+		html = '<select id="_regulargroupid" >';
+		this.groupidlist = [];
+		for(i in this.data) {
+			this.groupidlist.push(i);
+			html += '<option value="'+i+'"';
+			if (id == i){
+				html += ' selected ';
+			}
+			html += '>'+this.data[i]+'</option>';
+		}
+		
+		html += '</select>';
+		return html;
+	}
+}
+</script>
+<p class="map">用户管理：权限列表</p>
+<p class="sec_nav">管理权限： 
+	<a href="index.php?admin_regular-groupset-{$groupid}"> <span>{lang regularMng}</span></a> 
+	<a href="index.php?admin_regular" class="on" ><span>{lang regularList}</span></a> 
+</p>
+<h3 class="col-h3">{lang regularList}</h3>
+     <form name="regularadd"  action="index.php?admin_regular-add"  method="post" onsubmit="return docheckadd()">
+	 <table class="table">
+        <tr>
+          <td style="width:60px;">{lang regularName}:</td>
+          <td style="width:160px;"><input type="text" class="inp_txt w-140" id="regularname" name="regularname" value="" maxlength="20" ></td>
+          <td style="width:60px;">{lang regularExpr}:</td>
+          <td style="width:210px;"><input type="text" class="inp_txt2" id="regularexpr"  name="regularexpr" value="" maxlength="200" style="width:200px"></td>
+
+		  <td style="width:180px;">{lang regularGroup}:
+		  <select name="regulargroupid" id="regulargroupid">
+		  <option value="0">{lang regularSelectGroup}</option>
+		  <!--{loop $regulargrouplist $regulargroup}-->
+		  <option value="$regulargroup[id]">$regulargroup[title]</option>
+		  <!--{/loop}-->
+		  </select>
+		  </td>
+		  <td><input type="submit" class="inp_btn" name="submit" value="{lang commonAdd}"></td>
+        </tr>
+      </table>
+    </form>
+	</td>
+  </tr>
+  <tr>
+    <td valign="top">
+	<form name="regularform" id="regularform" action="index.php?admin_regular-remove"  method="post" onsubmit="return docheck();">
+	  <table class="table">
+        <tr>
+          <td style="width:30px;">{lang commonSelect}</td>
+          <td style="width:60px;">{lang regularNO}</td>
+          <td style="width:240px;">{lang regularName}</td>
+          <td style="width:360px;">{lang regularExpr}</td>
+		  <td style="width:80px;">{lang regularGroup}</td>
+	  	  <td>{lang commonEdit}</td>
+        </tr>
+  		<!--{loop $regularlist $regular}-->
+       	 <tr>
+          <td><input type="checkbox" class="box" <!--{if $regular[type]<2 }-->disabled="disabled"<!--{/if}-->  name="id[]" value="{$regular[id]}" /></td>
+ 	      <td >$regular[id]</td>
+ 	      <td >$regular[name]</td>
+          <td >$regular[regular]</td>
+          <td >$regular[groupname]</td>
+          <td groupid="$regular[regulargroupid]">
+		  <!--{if $regular[type]>1 }--><a href="javascript:void(0);" onclick="editregular(this);" >{lang commonEdit}</a><!--{else}-->X<!--{/if}--></td>
+        </tr>
+        <!--{/loop}-->
+		<tr>
+				<td colspan="6">
+					<label class="m-r10"><input name="chkall" type="checkbox" id="chkall" onclick="selectALL(this);">&nbsp;&nbsp;{lang commonAllSelect}</label>
+					<input type="submit" class="inp_btn" value="{lang commonDel}"/>
+				</td>
+		</tr>
+      </table>
+      </form>
+{template admin_footer}

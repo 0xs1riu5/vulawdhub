@@ -1,0 +1,95 @@
+{template admin_header}
+<script type="text/javascript">
+function check(){
+	if($.trim($("#author").val())==""){
+		alert("{lang styleAuthorNotNull}");
+		$('#author').focus();
+		return false;
+	}else if($.trim($("#authorurl").val())==""){
+		alert("{lang styleAuthorUrl}");
+		$('#authorurl').focus();
+		return false;
+	}else if($.trim($("#name").val())==""){
+		alert("{lang styleStyleNameNotNull}");
+		$('#name').focus();
+		return false;
+	}else if($.trim($("#tag").val())==""){
+		alert("{lang styleStyleTagNotNull}");
+		$('#tag').focus();
+		return false;
+	}else if($.trim($("#weburl").val())==""){
+		alert("{lang styleWebUrlNotNull}");
+		$('#weburl').focus();
+		return false;
+	}else if($.trim($("#version").val())==""){
+		alert("{lang styleVersionNotNull}");
+		$('#version').focus();
+		return false;
+	}else if($.trim($("#copyright").val())==""){
+		alert("{lang styleCrNotNull}");
+		$('#copyright').focus();
+		return false;
+	}else if($.trim($("#description").val())==""){
+		alert("{lang styleStyleDesNotNull}");
+		$('#description').focus();
+		return false;
+	}
+	return true;
+}
+</script>
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">分享：
+    <a href="#"  class="on"><span>{lang pluginSharePlugin}</span></a>
+</p>
+
+		<form  enctype="multipart/form-data" action="index.php?admin_plugin-share-{$plugin[pluginid]}" method="POST" onsubmit="return check();">
+			<table width="100%"  cellpadding="0" cellspacing="0" class="table">
+				<tr>
+					<td width="15%">&nbsp;&nbsp;<strong>{lang pluginScreenShot}:</strong></td>
+					<td ><input   name="pluginimg" id="pluginimg" type="file" /> <font color="red">{lang styleScreenTip}</font></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;<strong>{lang pluginWriter}:</strong></td>
+					<td ><input id="author" name="author" type="text" value="{$plugin[author]}" style="width:300px"/></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;<strong>{lang styleAuthorHttp}:</strong></td>
+					<td ><input   id="authorurl" name="authorurl" type="text" value="{$plugin[authorurl]}" style="width:300px"/></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;<strong>{lang pluginInName}:</strong></td>
+					<td ><input   name="name" id="name" type="text" value="{$plugin[name]}" style="width:300px"/></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;<strong>{lang pluginInTag}:</strong></td>
+					<td ><input   name="tag" id="tag" type="text" value="{$plugin[tag]}" style="width:300px" /><font color="red">({lang styleTagCom})</font></td>
+				</tr>			
+				<tr>
+					<td >&nbsp;&nbsp;<strong>{lang styleWebUrl}:</strong></td>
+					<td ><input   name="weburl" id="weburl" type="text" value="{$plugin[weburl]}" style="width:300px" /></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;<strong>{lang pluginVersion}:</strong></td>
+					<td ><input   name="version" id="version" type="text" value="{$plugin[version]}"  style="width:300px" /></td>
+				</tr>				
+				<tr>
+					<td >&nbsp;&nbsp;<strong>{lang styleCopyright}:</strong></td>
+					<td ><input   name="copyright" id="copyright" type="text" value="{$plugin[copyright]}" style="width:300px" /></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;<strong>{lang pluginDescript}:</strong></td>
+					<td ><textarea name="description" id="description"  rows="10" cols="50">{$plugin[description]}</textarea></td>
+				</tr>
+				<tr>
+					<td height="40" colspan="2">&nbsp;&nbsp;<font color="red">{lang pluginTip}</font></td>
+				</tr>
+				<tr>
+				  <td height="40" colspan="2" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				    <input  name="identifier" type="hidden" value="{$plugin[identifier]}"  />
+				    <input class="btn" type="submit" value="{lang commonOK}" name="submit"   />
+				 	 &nbsp;&nbsp;&nbsp;&nbsp;<input class="btn" type="button" value="{lang commonCancel}" name="cancel" onclick="javascript:history.go(-1);"   />
+				 </td>
+				</tr>
+			</table>
+		</form>
+{template admin_footer}

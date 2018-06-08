@@ -1,0 +1,104 @@
+{template admin_header}
+
+<p class="map">百科联盟：云搜索</p>
+<script type="text/javascript">
+var hdapi_sharetosns=0;
+function dosubmit(FormElement){
+	var params = {'cloud_search': $(":radio[name=cloud_search]:checked").val()};
+
+	params['cloud_search_cache']=$(":text[name=cloud_search_cache]").val();
+	params['cloud_search_timeout']=$(":text[name=cloud_search_timeout]").val();
+	params['cloud_search_close_time']=$(":text[name=cloud_search_close_time]").val();
+	
+	params['cloud_search_cache']=$.trim(params['cloud_search_cache'])||300;
+	params['cloud_search_timeout']=$.trim(params['cloud_search_timeout'])||5;
+	params['cloud_search_close_time']=$.trim(params['cloud_search_close_time'])||30;
+	
+	
+	if(!/^\d+$/.test(params['cloud_search_cache'])){
+		alert("云搜缓存时间请输入一个正整数。");
+		$(":text[name=cloud_search_cache]").focus()
+		return false;
+	}
+	
+	if(!/^\d+$/.test(params['cloud_search_timeout'])){
+		alert("云搜索超时时间请输入一个正整数。");
+		$(":text[name=cloud_search_timeout]").focus()
+		return false;
+	}
+	
+	if(!/^\d+$/.test(params['cloud_search_close_time'])){
+		alert("云搜索暂停时间请输入一个正整数。");
+		$(":text[name=cloud_search_close_time]").focus()
+		return false;
+	}
+	
+	$.ajax({
+		url:'index.php?admin_hdapi-set',
+		type:'POST',
+		data:params,
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+			$(FormElement).find(":submit").attr('disabled', true);
+			$("#errorinfo").text('正在提交...');
+		},
+		success :function(data, state){
+			if($.trim(data) == 'OK'){
+				$('#errorinfo').html('提交成功！');
+			}else{
+				$('#errorinfo').html('服务端错误，提交失败！');
+			}
+		},
+		complete:function(response, state){
+			if (state != 'success'){
+				$('#errorinfo').html('网络连接错误，请稍候提交。');
+			}
+			$(FormElement).find(":submit").attr('disabled', false);
+		}
+	});
+	
+	return false;
+}
+
+</script>
+<form id="form-set" action="#" method="post" target="_self" onsubmit="dosubmit(this);return false;">
+<table class="table">
+
+	<tr>
+		<td>
+		<span>云搜索</span>
+		<label><input name="cloud_search" type="radio" class="m-r10" value="1" {if $settings['cloud_search']=='1'}checked{/if}/>开启</label>
+		<label><input name="cloud_search" type="radio" class="m-lr10" value="0" {if $settings['cloud_search']!='1'}checked{/if}/>关闭</label>
+		</td>
+		<td class="v-b">云搜索，彻底解决由搜索带来的服务器压力，整体优化网站性能。<br />云搜索初始化时间为24-48小时，在此期间，默认启用本地搜索。<br />更多信息请<a href="http://kaiyuan.hudong.com/bbs" target="_blank">点这里</a>。</td>
+	</tr>
+	<tr>
+		<td>
+		<span>云搜索缓存时间</span>
+		<input name="cloud_search_cache" type="text" class="inp_txt m-r10" value="{$settings['cloud_search_cache']}"/> 秒
+		</td>
+		<td class="v-b">云搜缓存时间  默认 300 秒</td>
+	</tr>
+	<tr>
+		<td>
+		<span>云搜索超时时间</span>
+		<input name="cloud_search_timeout" type="text" class="inp_txt m-r10" value="{$settings['cloud_search_timeout']}"/> 秒
+		</td>
+		<td class="v-b">云搜索通讯超时时间  默认 5 秒</td>
+	</tr>
+	<tr>
+		<td>
+		<span>云搜索暂停时间</span>
+		<input name="cloud_search_close_time" type="text" class="inp_txt m-r10" value="{$settings['cloud_search_close_time']}"/> 秒
+		</td>
+		<td class="v-b">云搜索暂停时间   默认 30 秒</td>
+	</tr>
+</table>
+
+<p class="submit">
+<input type="submit" value="提 交"  class="inp_btn"/>
+<span class="red" id="errorinfo"></span>
+</p>
+</form>
+{template admin_footer} 

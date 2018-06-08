@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html id="html">
+
+<head>
+    <meta charset="{WIKI_CHARSET}" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <title>{$navtitle} {$setting['site_name']} {$setting['seo_title']} - Powered by HDWiki!</title>
+    {$setting['seo_headers']}
+
+    <meta name="keywords" content="{$setting['seo_keywords']}" />
+    <meta name="description" content="{$setting['seo_description']}" />
+    <meta name="generator" content="HDWiki {HDWIKI_VERSION}" />
+    <meta name="author" content="HDWiki Team" />
+    <meta name="csrf-token" content="{eval echo csrf_token()}">
+    <meta name="copyright" content="2005-2017 baike.com" />
+    <!--{if !empty($docrewrite) && $docrewrite=='1'}-->
+    <base href="{WIKI_URL}/" />
+    <!--{/if}-->
+<!--[if IE]>
+<script src="js/html5.js" type="text/javascript"></script>
+<![endif]-->
+
+    <link href="style/{$theme}/hdwiki.css?20170207" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="lang/{$setting['lang_name']}/front.js"></script>
+    <script type="text/javascript" src="js/jquery.dialog-2.8.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript">
+        $.dialog.setConfig('base', '{WIKI_URL}/style/default');
+        var g_isLogin, g_isUcenter = false,
+            g_forward = '',
+            g_api_url = '',
+            g_regulars = '',
+            g_uname_minlength, g_uname_maxlength;
+        <!--{if $user['groupid']=='1'}-->
+        g_regulars = "{$header_regulars}";
+        g_isLogin = false;
+        <!--{else}-->
+        g_isLogin = true;
+        <!--{/if}-->
+        <!--{if isset($pp_api)}-->
+        g_api_url = '{$pp_api}';
+        <!--{/if}-->
+        <!--{if !empty($isUcenter)}-->
+        g_isUcenter = true;
+        <!--{/if}-->
+        g_seo_prefix = "{$setting['seo_prefix']}";
+        g_seo_suffix = "{$setting['seo_suffix']}";
+        g_uname_minlength = "{$setting[name_min_length]}" || 3;
+        g_uname_maxlength = "{$setting[name_max_length]}" || 15; 
+        
+    {if $newpms[0]}
+        var titlestate = 0, clock, flashingtime = 20;
+        var oldtitle = "{$navtitle} {$setting['site_name']} {$setting['seo_title']} - Powered by HDWiki!";
+        function changeTitle(){
+            if(titlestate%2 == 0){
+                document.title='【新消息】'+oldtitle;
+            }else{
+                document.title='【　　　】'+oldtitle;
+            }
+            titlestate++;
+            if(titlestate == flashingtime){
+                clearInterval(clock);
+                document.title = oldtitle;
+            }
+        }
+        clock = setInterval("changeTitle()", 1000);
+
+    {/if}
+    
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+    </script>
+</head>
+
+<body>
+    <!--编辑异常中断，下次登录提示-->
+    <!--{if $unpubdoc}-->
+    <div class="edit_tips a-r" id="unpubdoc">
+        <span class="bold l">你上次编辑的词条“<label class="red">{$unpubdoc['title']}</label>”还未发布，赶快去处理吧！
+	<input name="Button1" type="button" value="继续编辑" onclick="location.href='index.php?doc-edit-{$unpubdoc['did']}'"/></span>
+        <span class="close r" onclick='$("#unpubdoc").hide()'>×</span>
+    </div>
+    <!--{/if}-->
+
+    <div class="wrap topbar">
+        <!--{if !empty($channellist[1])}-->
+        <ul class="topnav">
+            <!--{loop $channellist[1] $channel}-->
+            <li><a href="{$channel['url']}" target="_blank">{$channel['name']}</a></li>
+            <!--{/loop}-->
+        </ul>
+        <!--{/if}-->
+        <ul class="loginbar" id="login">
+            <!--{if $user['groupid']=='1'}-->
+            <li name="login"><a href="index.php?user-login">{lang login}</a></li>
+            <li name="register" class="bor_no"><a href="index.php?user-register">{lang register}</a></li>
+            <!--{else}-->
+            <li class="hover-menu" title="{lang headerTip}"><a href="{url user-space-$user['uid']}">{$user['username']}</a>
+                <!--{if $user['password']!=''}-->
+                <p>
+                    <a href="{url user-profile}">{lang selfManage}</a>
+                    <!--{if $adminlogin }--><a href="index.php?admin_main">{lang sysConfig}</a>
+                    <!--{/if}-->
+                    <a href="index.php?user-logout{$referer}">{lang logout}</a>
+                </p>
+                <!--{/if}-->
+            </li>
+            <!--{if $user['password']!=''}-->
+            <li><a href="{if $newpms[3]}
+{url pms-box-inbox-system}
+{else}
+{url pms}
+{/if}" id="header-pms" class="h-msg">
+	{if $newpms[0]}
+		<i>$newpms[0]</i>
+	{/if}
+	消息</a></li>
+            <!--{else}-->
+            <li><a href="index.php?user-login">{lang active}</a></li>
+            <li class="bor_no"><a href="index.php?user-logout{$referer}">{lang logout}</a></li>
+            <!--{/if}-->
+            <!--{/if}-->
+            <li class="bor_no help"><a href="index.php?doc-innerlink-{eval echo urlencode('{lang help}')}">{lang help}</a></li>
+        </ul>
+    </div>
+    <header class="searchbar">
+        <div class="wrap">
+            <a href="{WIKI_URL}" id="logo" class="header-logo"><img alt="HDWiki" width="{$setting[logowidth]}" src="style/default/logo.gif" /></a>
+            <!--{if !empty($isimage) }-->
+            <form name="searchform" method="post" action="{url pic-search}">
+                <p class="searchform" id="search">
+                    <input name="searchtext" type="text" class="btn_txt" maxlength="80" size="42" value="<!--{if isset($searchtext)}-->{$searchtext}<!--{/if}-->" />
+                    <input name="searchfull" type="submit" value="{lang pic_search}" class="btn_inp img_sea_inp" />
+                </p>
+            </form>
+            <!--{else}-->
+            <form name="searchform" method="post" action="{url search-kw}">
+                <p class="searchform" id="search">
+                    <!--{if $cloudsearchhead}-->
+                    <input name="searchtext" class="btn_txt" maxlength="80" size="42" value="<!--{if isset($searchtext)}-->{$searchtext}<!--{/if}-->" type="text" />
+                    <input name="search" value="{lang search}" tabindex="1" class="btn_inp sea_doc" type="submit" />
+                    <!--{else}-->
+                    <input name="searchtext" class="btn_txt" maxlength="80" size="42" value="<!--{if isset($searchtext)}-->{$searchtext}<!--{/if}-->" type="text" />
+                    <input name="default" value="{lang goin}" tabindex="2" class="btn_inp enter_doc" type="button" />
+                    <input name="full" value="1" tabindex="1" type="hidden" />
+                    <input name="search" value="{lang search}" tabindex="1" class="btn_inp sea_doc" type="submit" />
+                    <a href="index.php?search-fulltext" class="sea_advanced clink">{lang searchAdvance}</a>
+                    <!--{/if}-->
+
+                </p>
+            </form>
+            <!--{/if}-->
+            <script>
+                $('input[name=default]').click(function(){
+                    var obj = $('input[name=searchtext]');
+                    var flag = check_access(obj);
+                    if(flag){
+                        $('form[name=searchform]').attr('action','index.php?search-default');
+                        $('form[name=searchform]').submit();
+                    }else{
+                        alert('请输入正常格式的词条名称！');
+                        return false;
+                    }
+                })
+                $('input[name=search]').click(function(){
+                    var obj = $('input[name=searchtext]');
+                    var flag = check_access(obj);
+                    if(flag){
+                        $('form[name=searchform]').submit();
+                    }else{
+                        alert('请输入正常格式的词条名称！');
+                        return false;
+                    }
+                })
+                function check_access(obj){
+                    var min_array = ['cast', 'exec','show ','show/*','alter ','alter/*','create ','create/*','insert ','insert/*', 'select ','select/*','delete ','delete/*','update ', 'update/*','drop ','drop/*','truncate ','truncate/*','replace ','replace/*','union ','union/*','execute', 'from', 'declare', 'varchar', 'script', 'iframe', ';', '0x', '<', '>', '\\', '%27', '%22', '(', ')'];
+                    var coun = min_array.length;
+                    var input_value = obj.val();
+                    for(var i = 0;i<coun;i++) {
+                        if (input_value.indexOf(min_array[i]) > -1) {
+                            obj.val('');
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            </script>
+        </div>
+    </header>
+    <nav class="sitenav">
+        <div id="nav" class="wrap">
+            <ul>
+                <!--{if !empty($channellist[2])}-->
+                <!--{loop $channellist[2] $channel}-->
+                <li><a href="{$channel['url']}">{$channel['name']}</a></li>
+                <!--{/loop}-->
+                <!--{/if}-->
+
+                <!--{loop $pluginlist $plugin}-->
+                <!--{if $plugin[type]}-->
+                <li><a href="{url plugin-$plugin[identifier]}">{$plugin[name]}</a></li>
+                <!--{/if}-->
+                <!--{/loop}-->
+            </ul>
+            <div class="box"><a href="{url doc-create}" class="ico-edit">{lang createDoc}</a><a href="{url doc-sandbox}" class="ico-create">{lang sandbox}</a></div>
+        </div>
+    </nav>
+    <!--ad start -->
+    <!--{if isset($advlist[0]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+    <div class="wrap ad" id="advlist_0">
+        {$advlist[0]['code']}
+    </div>
+    <!--{elseif isset($advlist[0]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+    <div class="wrap ad" id="advlist_0">
+    </div>
+    <!--{/if}-->
+
+    <!--ad end -->

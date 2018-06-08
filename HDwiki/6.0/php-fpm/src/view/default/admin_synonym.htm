@@ -1,0 +1,198 @@
+{template admin_header}
+<script type="text/javascript" src="js/function.js"></script>
+<script type="text/javascript">
+function deletesynonym(){
+	if($("input[name='id[]']:checked").length==0){
+		$.dialog.box('immageshow', '注意', '{lang docmanageSelectDoc}');
+		return false;
+	}else if(confirm('{lang commonConfirmRemove}')){
+		$('#formsynonymlist').attr("action","index.php?admin_synonym-delete");
+		$('#formsynonymlist').submit();
+	}else{
+		return false;
+	}
+}
+function addsynonyms(){
+	var synonym=$.trim($('#srctitle').val());
+	var desttitle=$.trim($('#desttitle').val());
+	if(synonym==""){
+		$.dialog.box('message', '注意', '{lang synonymCannone}');
+		return false;
+	}
+	if(desttitle==""){
+		$.dialog.box('message', '注意', '{lang synonymdocnull}');
+		return false;
+	}
+	synonyms=synonym.split(/\s+/);
+	num=synonyms.length;
+	for(i=0;i<num;i++){
+		if(bytes(synonyms[i])>80){
+			$.dialog.box('message', '注意', '{lang synonymLongSize}');
+			return false;
+		}
+	}
+	$.post(
+		"{$setting['seo_prefix']}admin_synonym-save",
+		{synonym:synonym,desttitle:desttitle},
+		function(xml){message(xml,synonym,'');}
+	);
+	$('#srctitle').val("");
+	$('#desttitle').val("");
+}
+function selectAll(obj){
+	$("input[name='id[]']").attr('checked',obj.checked);
+}
+
+function edit_synonym(id){
+	var synonym=$('#s_'+id).html();
+	var msg="<textarea id='editsynonym' name='editsynonym' cols='38' rows='5'>"+synonym+"</textarea><br/>"+
+	"<input name='editsubmit' type='button' onclick='saveedit("+id+");$.dialog.close(\"edit_synonym\")' value='{lang commonOK}'>"+
+	"&nbsp;&nbsp;&nbsp;<input name='cancel' type='button' onclick='$.dialog.close(\"edit_synonym\")' value='{lang commonCancel}'>";
+	$.dialog.box('edit_synonym', '编辑同义词', msg);
+}
+function saveedit(id){
+	var synonym=$.trim($('#editsynonym').val());
+	if(synonym==""){
+		$.dialog.box('message', '注意', '{lang synonymCannone}');
+		return false;
+	}
+	synonyms=synonym.split(",");
+	num=synonyms.length;
+	for(i=0;i<num;i++){
+		if(bytes(synonyms[i])>80){
+			$.dialog.box('message', '注意', '{lang synonymLongSize}');
+			return false;
+		}
+	}
+	$.post(
+		"{$setting['seo_prefix']}admin_synonym-save",
+		{synonym:synonym,destdid:id},
+		function(xml){message(xml,synonym,id);}
+	);
+}
+function message(xml,synonym,id){
+	var message=xml.lastChild.firstChild.nodeValue;
+	message=message.split(";");
+	if(message[0]>0){
+		Msg = '{lang synonymEditSucc}';
+		if(id!=''){
+			$('#s_'+id).html(message[1]);
+		}else{
+			Msg = '同义词创建成功';
+		  $("#lastone").before("<tr><td><input type='checkbox' name='id[]' value='"+message[4]+"' /></td><td><a href='javascript:void(0)' id='s_"+message[4]+"'  onclick='edit_synonym("+message[4]+");'>"+message[5]+"</a></td><td><a target='_blank'  href='index.php?doc-view-"+message[4]+"' title='"+message[1]+"'>"+message[1]+"</a><a href='javascript:void(0)' onclick='edit_synonym("+message[4]+");'>[编辑]</a></td><td><a target='_blank'  href='index.php?user-space-"+message[2]+"'  title='"+message[2]+"'>"+message[2]+"</a></td><td>"+message[3]+"</td></tr>");
+		}
+	}else if(message[0]==-1){
+		Msg = '{lang synonymWrong}';
+	}else if(message[0]==-2){
+		Msg = message[1]+'{lang synonymWrong2}';
+	}else if(message[0]==-3){
+		Msg = message[1]+'{lang synonymWrong3}';
+	}else if(message[0]==-4){
+		Msg = message[1]+'{lang synonymWrong6}';
+	}else if(message[0]==-5){
+		Msg = message[1]+'{lang synonymWrong5}'+message[2];
+	}else if(message[0]==-6){
+		Msg = message[1]+'{lang synonymWrong6}';
+	}else if(message[0]==-8){
+		Msg = message[1]+'{lang synonymWrong8}';
+	}else{
+		Msg = message[1]+'{lang synonymWrong7}';
+	}
+	
+	$.dialog.box('message', '注意', Msg);
+	//dialogalert('注意', Msg);
+}
+
+</script>
+<p class="map">内容管理：词条管理</p>
+<p class="sec_nav">词条管理：
+<a href="index.php?admin_doc" > <span>管理词条</span></a>
+<a href="index.php?admin_focus-focuslist" ><span>推荐词条</span></a>
+<a href="index.php?admin_synonym" class="on"  ><span>管理同义词</span></a>
+<a href="index.php?admin_relation" ><span>相关词条</span></a>
+<a href="index.php?admin_edition"   ><span>版本评审</span></a>
+<a href="index.php?admin_cooperate"   ><span>待完善词条</span></a> 
+<a href="index.php?admin_nav" class="new"><span>导航模块<label class="red">new</label></span></a>
+</p>
+<h3 class="col-h3">{lang synonymmanage}</h3>
+<div class="synonym">
+	<form name="list" method="POST" action="index.php?admin_synonym-search" >
+		<ul class="col-ul ul_li_sp m-t10">
+			<li><span>{lang synonymDocCategory}: </span>
+				<select name="qcattype">
+					<option value="0" >{lang commonAllCat}</option>
+					{$catstr}
+				</select>
+			</li>
+			<li><span>{lang synonymDocTitle}:</span>
+				<input name="qtitle" type="text" class="inp_txt m-r10" value="{$qtitle}" />
+			</li>
+			<li><span>{lang synonymDocAuthor}:</span>
+				<input name="qauthor" type="text" class="inp_txt m-r10" value="{$qauthor}" />
+			</li>
+			<li><span>{lang synonymDocTime}:</span>
+				<input name="qstarttime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly"  value="{$qstarttime}"/>
+				—
+				<input name="qendtime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly" value="{$qendtime}"  />
+			</li>
+			<li>
+				<input name="submit" type="submit" value="{lang commonSearch}"  class="inp_btn"/>
+			</li>
+		</ul>
+	</form>
+	<h3 class="tol_table">[ 共 <b>{$synonymsum}</b> 条同义词 ]</h3>
+	<form name="formsynonymlist" id="formsynonymlist"  method="POST">
+		<table class="table">
+			<thead>
+				<tr>
+					<td style="width:60px;">{lang commonSelect}</td>
+					<td style="width:240px;">{lang synonymCom}</td>
+					<td style="width:240px;">{lang commonTitle}</td>
+					<td style="width:100px;">{lang synonymDocauthor}</td>
+					<td>{lang synonymTime}</td>
+				</tr>
+			</thead>
+			<!-- {if $synonymsum} -->
+			<!--{loop $synonymlist $synonym}-->
+			<tr>
+				<td><input type="checkbox" name="id[]" value="{$synonym['destdid']}" /></td>
+				<td><a href="javascript:void(0)" id="s_{$synonym['destdid']}"  onclick="edit_synonym({$synonym['destdid']});">{$synonym['srctitle']}</a></td>
+				<td><a target="_blank"  href="index.php?doc-view-{$synonym['destdid']}" title="{$synonym['title']}">{$synonym['title']}</a> <a href="javascript:void(0)" onclick="edit_synonym({$synonym['destdid']});">[编辑]</a></td>
+				<td><a target="_blank"  href="index.php?user-space-{$synonym['authorid']}"  title="{$synonym['author']}">{$synonym['author']}</td>
+				<td>{$synonym['time']}</td>
+			</tr>
+			<!--{/loop}-->
+			<!-- {else} -->
+			<tr>
+				<td colspan="5">{$message}{lang synonymHaveNone}</td>
+			</tr>
+			<!-- {/if} -->
+			<tr id="lastone">
+				 <td colspan="5">
+				 	<input name="checkbox"  type="checkbox" id="chkall" onclick="selectAll(this);">
+					<label id="tip">&nbsp;&nbsp;{lang commonAllSelect}</label>
+					<input type="button" class="inp_btn2" name="casemanage" onClick="deletesynonym();" value="{lang commonDel}" />						
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5"><p class="fenye a-r"> {$departstr}</p></td>
+			</tr>
+		</table>
+		<h3 class="col-h4">添加加同义词</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<td style="width:80px;">词条名</td>
+					<td style="width:160px;">同义词</td>
+					<td style="width:100px;">操作</td>
+				</tr>
+			</thead>
+			<tr>
+				<td><input id="desttitle" name="desttitle" type="text" class="inp_txt"/></td>
+				<td><textarea id="srctitle" name="srctitle" cols="30" rows="3" class="textarea" onblur="if(this.value=='') this.value='多个同义词用“,”分开';" onfocus="if(this.value=='多个同义词用“,”分开') this.value='';">多个同义词用“,”分开</textarea></td>
+				<td><input  type="button" name="addsynonym" onClick="addsynonyms();" value="{lang commonAdd}"  class="inp_btn2" /></td>
+			</tr>
+		</table>
+	</form>
+</div>
+{template admin_footer} 

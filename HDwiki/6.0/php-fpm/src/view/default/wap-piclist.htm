@@ -1,0 +1,47 @@
+{template wapheader}
+{template wapbody}
+    <section class="column pic-list">
+        <ul class="ul-row2 clearfix">
+            <!--{if $piclist}-->
+            <!--{loop $piclist $key $data}-->
+            <li>
+                <a href="{url pic-view-{$data['id']}-{$data['did']}}">
+                    <span class="aimg"><img src="{$data['attachment']}" alt="{$data['description']}"></span>
+                    <strong>{$data['subdescription']}</strong>
+                </a>
+            </li>
+            <!--{/loop}-->
+            <!--{else}-->
+            no pictures
+            <!--{/if}-->
+
+            <!--
+                        <li><a href=""><span class="aimg"><img src="../../uploads/userface/1/1_src.jpg" alt=""></span><strong>最机关报协硒鼓</strong></a></li>
+            -->
+        </ul>
+    </section>
+    <p class="loading gray9">正在加载更多数据...</p>
+<script>
+    // 初始化一些数据
+    var type ='{eval echo $type;}';
+    var url = 'index.php?pic-piclist-'+type;
+    window.WapLoadData.init_data({
+        'bind_element'  : $('.wrap'),
+        'touch_element' : $('.loading'),
+        'load_url'      : url
+    });
+
+    function return_wap_str(data){
+        var return_str = '';
+        for(var i =0;i< data.length;i++){
+            return_str+='<li>';
+            return_str+='<a href="index.php?pic-view-'+data[i]['id']+'-'+data[i]['did']+'">';
+            return_str+='<span class="aimg"><img src="'+data[i]['attachment']+'" alt="'+data[i]['description']+'"></span>';
+            return_str+='<strong>'+data[i]['subdescription']+'</strong>';
+            return_str+=' </a></li>';
+        }
+        console.log(return_str);
+        return return_str;
+    }
+</script>
+    {template wapfooter}

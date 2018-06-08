@@ -1,0 +1,148 @@
+{template admin_header}
+<p class="map">木马扫描：扫描木马</p>
+<p class="sec_nav">木马扫描：<a href="index.php?admin_safe" class="on"><span>扫描木马</span></a>
+<a href="index.php?admin_filecheck-create"><span> 创建文件校验镜像</span></a>
+<a href="index.php?admin_safe-list"><span> 上次扫描结果</span></a>
+</p>
+
+<h3 class="col-h3">扫描木马</h3>
+
+<table class="table safe">
+		<tr>
+			<td class="bold a-r" style="width:100px; vertical-align:top;">扫描范围</td>
+			<td>
+			<input type="checkbox" name="dirs[]" value="" checked /> <img src="style/default/folder.gif"> ./<br>
+		<!-- {if $dirs} -->
+			<!--{loop $dirs $dir}-->
+			<input type="checkbox" name="dirs[]" value="{$dir}" <!--{if in_array($dir, $safe['dir'])}checked{/if}-->/>  <img src="style/default/folder.gif"> ./{$dir}<br>
+			<!--{/loop}-->
+		<!-- {/if} -->
+			</td>
+		</tr>
+		<tr>
+			<td class="bold a-r" >文件类型</td>
+			<td><input type="text" id="file_type" name="file_type" value="{$safe['file_type']}">多个请用‘|’进行分隔</td>
+		</tr>
+		<tr>
+			<td class="bold a-r" >特殊函数</td>
+			<td><input type="text" id="func" name="func" value="{$safe['func']}">多个请用‘|’进行分隔</td>
+		</tr>
+		<tr>
+			<td class="bold a-r" >特殊代码</td>
+			<td><input type="text" id="code" name="code" value="{$safe['code']}">多个请用‘|’进行分隔</td>
+		</tr>
+		<tr>
+			<td class="bold a-r" >MD5校验镜像</td>
+			<td>
+			<select name="md5_file" id="md5_file">
+			<!-- {if $md5_files} -->
+				<!--{loop $md5_files $md5_file}-->
+					<option value="{$md5_file}">{$md5_file}</option>
+				<!--{/loop}-->
+			<!-- {/if} -->
+			</select>
+			</td>
+</td>
+</tr>
+<tr>
+	<td></td>
+	<td>
+		<input id ="starting" type="button" name="starting" value="开始校验" class="inp_btn2 m-r10" onclick="starting();"/>
+		<span id="box-show" align="left" style="color:red"></span>
+	</td>
+</tr>
+</table>
+<script type="text/javascript">
+function starting()
+{
+	if(!$('#md5_file').val()){
+		showmsgs('请先创建文件校验镜像');
+		return false;
+	}
+	$("#starting").attr('disabled','disabled');
+	$("#starting").attr('value','正在校验');
+	setInterval( "divDance('box-show')",1000); 
+	var dirs = '';
+	var dir = $("input[name='dirs[]']:checked").each(function(i){
+					dirs = dirs+$(this).val()+'|';
+				 });
+	dirs = dirs.substr(0,dirs.length-1);
+	showmsgs('正在写入配置信息.');
+	$.post('index.php?admin_safe-setting',{file_type:$('#file_type').val(),func:$('#func').val(),code:$('#code').val(),md5_file:$('#md5_file').val(),dirs:dirs},function(data){
+		if(data == 'ok'){
+			showmsgs('写入配置信息完成。');
+			scan_file_type();
+		}
+	})
+	return false;
+}
+function scan_file_type()
+{
+	showmsgs('正在进行文件类型筛选...');
+	$.get('index.php?admin_safe-scanfile',function(data){
+		if(data == 'ok'){
+		showmsgs('文件类型筛选完成。');
+		scan_file_md5();
+		}
+	})
+}
+
+function scan_file_md5()
+{
+	showmsgs('正在进行文件修改历史对比...');
+	$.get('index.php?admin_safe-validate',function(data){
+		if(data == 'ok'){
+		showmsgs('文件修改历史对比完成。');
+		scan_backdoor();
+		}
+	})
+}
+
+function scan_backdoor()
+{
+	showmsgs('正在进行特征函数扫描...');
+	$.get('index.php?admin_safe-scanfuns',function(data){
+		if(data == 'ok'){
+		showmsgs('特征函数扫描完成。');
+		scan_code();
+		}
+	})
+}
+
+function scan_code()
+{
+	showmsgs('正在进行特征代码扫描...');
+	$.get('index.php?admin_safe-scancodes',function(data){
+		if(data == 'ok'){
+		showmsgs('特征代码扫描完成。');
+		scan_table();
+		}
+	})
+}
+
+function scan_table()
+{
+	showmsgs('正在为您准备扫描报表...');
+	setTimeout('location.href="index.php?admin_safe-list"',3000);
+}
+
+function showmsgs(obj){
+		setTip('box-show',obj);
+}
+function divDance(id){
+	$("#"+id).fadeOut(100).fadeIn(100);
+}
+
+function getE(id){
+	var E = document.getElementById(id);
+	if (E) return E;
+	else alert('没有找到对象id='+id+'。');
+}
+
+function setTip(id, str){
+	getE(id).innerHTML = '　'+str;
+	//divDance(id);
+}
+</script>
+
+{template admin_footer}

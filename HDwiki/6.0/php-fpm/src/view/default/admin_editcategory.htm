@@ -1,0 +1,56 @@
+{template admin_header}
+<script type="text/javascript">
+	function docheck(){
+		var catname=$("#catname");
+		if($.trim(catname.val()).length==0){
+			$.dialog.box('immageshow', '注意', "{lang msgJsNullCatName}");
+			catname.focus();
+			return false;
+		}
+	}
+	
+	function changepid(){
+		var d = document.getElementById('pcid');
+		var v = parseInt('{$pid}');
+		for(i=0;i<d.options.length;i++){
+			if(parseInt(d.options[i].value) == v){
+				d.options[i].selected = true;
+				break;
+			}
+		}
+	}
+</script>
+
+<p class="map">内容管理：分类管理</p>
+<p class="sec_nav">分类管理： <a href="index.php?admin_category-list"  > <span>{lang magManageCat}</span></a> <a href="index.php?admin_category-add"  ><span>{lang magAddCat}</span></a> <a href="index.php?admin_category-merge"  ><span>{lang magUniteCat}</span></a> <a href="javascript:void(0)" class="on"  ><span>移动分类</span></a></p>
+<h3 class="col-h3">{lang magCatEdit}</h3>
+
+<form action="index.php?admin_category-edit" onsubmit="return docheck();" method="POST">
+<table class="table">
+	<tr>
+		<td style="width:120px;"><span>{lang magCatName}</span></td>
+		<td><input type="hidden" name="catid" value="{$cat[cid]}"><input id="catname" name="catname" class="inp_txt" type="hidden" maxlength="40"  value="{$cat[name]}"/>{$cat[name]}</td>
+	</tr>
+	<tr>
+		<td><span>{lang magParentCat}</span></td>
+		<td>
+			<select class="box" name='pcid' id='pcid'>
+			<option value="0">&nbsp;&nbsp;&gt; {lang magTopLevelCat}</option>
+			{$cats}
+			</select>
+		</td>
+	</tr>
+
+	
+	<tr><td></td>
+		<td colspan="2" align="left">
+		<input name="submit" class="inp_btn w-r10" type="submit" value="{lang commonEdit}" />
+		<input name="reset" class="btn inp_btn" type="reset" value="{lang commonReset}" />
+		</td>
+	</tr>
+</table>
+</form>
+<script type="text/javascript">
+	changepid();
+</script>
+{template admin_footer}

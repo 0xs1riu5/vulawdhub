@@ -1,0 +1,45 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(url){
+ 	if(confirm('{lang commonOK}')){
+		window.location=url;
+	}
+}
+</script>
+
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">插件：
+	<a href="index.php?admin_plugin" ><span>{lang pluginMange}</span></a>
+    <a href="index.php?admin_plugin-will" ><span>全部推荐插件</span></a>
+    <a href="index.php?admin_plugin-find" class="on"><span>本地已有插件</span></a>
+</p>
+
+<h3 class="col-h3">本地已有插件</h3>
+ <div class="model">	
+<!--{loop $findplugins $i $plugin}-->
+    <div class="model-cell"> 
+        <dl>
+            <dt>
+            {if file_exists('plugins/'.$plugin['identifier'].'/screenshot.jpg')}
+                <img src="plugins/{$plugin[identifier]}/screenshot.jpg" class="plugin_img"/>
+            {else}
+                <img src="style/default/plugin.jpg" class="plugin_img"/>
+            {/if}
+            </dt>
+            <dd class="link_orange bold"><!--{if !empty($plugin[name])}-->{$plugin[name]}<!--{/if}--><!--{if !empty($plugin[version])}-->{$plugin[version]}<!--{/if}--></dd>
+            <dd>{lang pluginWriter}:<!--{if !empty($plugin[copyright])}-->{$plugin[copyright]}<!--{/if}--> </dd>
+            <dd>{lang suit_edition}:HDWiki<!--{if !empty($plugin[suit])}-->{$plugin[suit]}<!--{/if}--> </dd>
+            <dd>{lang pluginInstalls}:<!--{if !empty($plugin[install])}-->{$plugin[install]}<!--{/if}--> &nbsp;&nbsp;&nbsp;&nbsp;<a href="{$plugin[sites]}" target="_blank">{lang pluginInstallSites}</a></dd>
+            <dd>{lang pluginDescript}:<!--{if !empty($plugin[description])}-->{$plugin[description]}<!--{/if}--></dd>
+        </dl>
+        <a  class="install" href="javascript:docheck('index.php?admin_plugin-install-{$plugin[identifier]}')"><b class="block">{lang pluginInstall}</b></a>
+        <b class="angle_t_l"></b>
+        <b class="angle_t_r"></b>
+        <b class="angle_b_l"></b>
+        <b class="angle_b_r"></b>
+    </div>
+
+<!--{/loop}-->
+</div>
+
+{template admin_footer}

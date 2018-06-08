@@ -1,0 +1,48 @@
+{template admin_header}
+<script type="text/javascript">
+function selectall(obj) {
+	obj.focus();
+	obj.select();
+}
+
+</script>
+<div>
+	<p class="map">内容管理：数据调用</p>
+	<p class="sec_nav">数据调用： <a href="index.php?admin_datacall"> <span>调用列表</span></a> <a href="index.php?admin_datacall-addsql"  ><span>SQL调用</span></a> <a href="javascript:void(0)" class="on"><span>代码调用</span></a> </p>
+	<h3 class="col-h3">代码调用</h3>
+	<!--{if isset($datacallinfo) && !empty($datacallinfo)}-->
+	<div>
+		<table border="0" cellspacing="0" cellpadding="0" class="table">
+			<tr>
+				<td valign="top" width="25%"><strong>本地调用:</strong>即在 HDWiKi 系统内调用数据，利用模板解析实现数据调用和显示，仅限于 HDWiKi 系统内使用。<br />
+					调用时，将文本框中内容直接拷贝入相应的HTML文件中需要显示数据的位置即可。</td>
+				<td width="*"><div>
+						<input type="input" class="inp_txt"  onmouseover="selectall(this);" value="&#60;!--&#123;datacall:{$datacallinfo["id"]} /&#125;--&#62;" />
+					</div>
+					或
+					<div>
+						<input type="input" class="inp_txt" onmouseover="selectall(this);" value="&#60;!--&#123;datacall:{$datacallinfo["name"]} /&#125;--&#62;" />
+					</div></td>
+			</tr>
+			<tr>
+				<td valign="top"><strong>JS调用</strong>以 Javascript 方式调用数据，一般用于跨站或其他系统整合时。</td>
+				<td><div>
+						<textarea style="width:98%;height:30px;font:12px Courier New;" onmouseover="selectall(this);"><script type="text/javascript" src="{$url}?datacall-js-{$datacallinfo['id']}"></script>
+</textarea>
+					</div>
+					或
+					<div>
+						<textarea style="width:98%;height:30px;font:12px Courier New;" onmouseover="selectall(this);"><script type="text/javascript" src="{$url}?datacall-js-{$datacallinfo['name']}"></script>
+</textarea>
+					</div></td>
+			</tr>
+		</table>
+		<center>
+			<input class="inp_btn2" type="button" onclick="history.go(-1);" value="返回上一页"  />
+		</center>
+	</div>
+	<!--{else}-->
+	<div>无调用信息！</div>
+	<!--{/if}-->
+</div>
+{template admin_footer}

@@ -1,0 +1,90 @@
+{template admin_header}
+<script type="text/javascript">
+function randomAuthKey(){
+	var pwchars = "abcdefhjmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWYXZ";
+	var passwordlength = 20;    // do we want that to be dynamic?  no, keep it simple :)
+	var passwd='';
+	for ( i = 0; i < passwordlength; i++ ){
+		passwd += pwchars.charAt( Math.floor( Math.random() * pwchars.length ) )
+	}
+	document.getElementById('authKey').value = passwd;
+	return passwd;
+}
+
+</script>
+<p class="map">全局：扩展设置</p>
+<p class="sec_nav">扩展设置：
+    <a href="index.php?admin_setting-sec" > <span>防灌水设置</span></a>
+    <a href="index.php?admin_setting-anticopy"><span>防采集设置</span></a>
+    <a href="index.php?admin_setting-mail"><span>{lang mailConfig}</span></a>
+    <a href="index.php?admin_setting-noticemail"><span>{lang noticeMailConfig}</span></a>
+    <a href="index.php?admin_banned" ><span>IP禁止</span></a>
+    <a href="index.php?admin_setting-passport"  class="on"><span>通行证设置</span></a>
+    <a href="index.php?admin_setting-ucenter"><span>UCenter设置</span></a>
+    <a href="index.php?admin_setting-ldap"><span>LDAP设置</span></a>
+</p><h3 class="col-h3">通行证设置</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示：</li>
+	<li>{lang pp_tip}</li>
+</ul>
+<form action="index.php?admin_setting-passport" method="post">
+	<table class="table">
+	<tr>
+		<td width="100px"><span>{lang pp_open}</span></td>
+		<td>
+		<input name="ppopen" type="radio" value="1" <!--{if !empty($pp_open) &&  $pp_open == "1"}-->checked="checked"<!--{/if}-->/>
+		{lang adv_enable}   <input name="ppopen" type="radio" value="0" <!--{if !empty($pp_open) &&  $pp_open != "1"}-->checked="checked"<!--{/if}-->/> {lang adv_disable}</td>
+	</tr>
+	<tr>
+		<td ><span>{lang pp_type}</span></td>
+		<td>
+			<input name="ppname" type="radio" value="PHPCMS" <!--{if !empty($pp_name) &&  $pp_name == "PHPCMS"}-->checked="checked"<!--{/if}-->/>PHPCMS
+			<input name="ppname" type="radio" value="DEDECMS" <!--{if !empty($pp_name) &&  $pp_name == "DEDECMS"}-->checked="checked"<!--{/if}-->/> DEDECMS
+			<input name="ppname" type="radio" value="PHPWIND" <!--{if !empty($pp_name) &&  $pp_name == "PHPWIND"}-->checked="checked"<!--{/if}-->/> PHPWIND
+		</td>
+	</tr>
+	<tr>
+		<td ><span>{lang pp_way}</span></td>
+		<td>
+		<select name="pptype" onChange="if(this.value=='client'){document.getElementById('ppclient').style.display = '';}else{document.getElementById('ppclient').style.display = 'none';}">
+			<option value="server" <!--{if  isset($pp_type) &&  $pp_type != "client"}-->selected="selected"<!--{/if}-->> {lang pp_server}</option>
+			<option value="client" <!--{if !empty($pp_type) && $pp_type == "client"}-->selected="selected"<!--{/if}-->> {lang pp_client}</option>
+		</select></td>
+	</tr>
+	<tr>
+		<td ><span>{lang pp_key}</span></td>
+		<td><input id="authKey" type="text" class="inp_txt" name="ppkey" value="<!--{if !empty($pp_key)}-->{$pp_key}<!--{/if}-->" />  <a href="#" onClick="javascript:randomAuthKey();" class="sgbtn"><font color="#FF0000">{lang pp_givekey}</font></a></td>
+	</tr>
+	<tr>
+		<td ><span>{lang pp_connect_site}</span></td>
+		<td><input type="text" class="inp_txt" name="ppapi" value="<!--{if !empty($pp_api)}-->{$pp_api}<!--{/if}-->" />
+			{lang pp_dis1}</td>
+	</tr>
+	</table>
+	<table class="table" id="ppclient" <!--{if !empty($pp_type) && $pp_type != "client"}-->style="display:none;"<!--{/if}-->>
+		<tr>
+			<td width="100px"><span>{lang pp_regsite}</span></td>
+			<td>
+			<input type="text" class="txt" name="ppreg" value="<!--{if !empty($pp_reg)}-->{$pp_reg}<!--{/if}-->" />
+			{lang pp_dis2}</td>
+		</tr>
+		<tr>
+			<td ><span>{lang pp_loginsite}</span></td>
+			<td>
+			<input type="text" class="txt" name="pplogin" value="<!--{if !empty($pp_login)}-->{$pp_login}<!--{/if}-->" />
+			{lang pp_dis3}</td>
+		</tr>
+		<tr>
+			<td ><span>{lang pp_logoutsite}</span></td>
+			<td>
+			<input type="text" class="txt" name="pplogout" value="<!--{if !empty($pp_logout)}-->{$pp_logout}<!--{/if}-->" />
+			{lang pp_dis4}</td>
+		</tr>
+	</table>
+	<table class="table">
+		<tr>
+			<td colspan="2"><input type="submit" name="passport" value=" 提 交 " class="inp_btn" tabindex="3" /></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

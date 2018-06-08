@@ -1,0 +1,22 @@
+{template admin_header}<br><br>
+<table cellpadding="0" cellspacing="1" class="table_list">
+<tr>
+  <td height=25><b>☞文件管理-重命名</b>&nbsp;&nbsp;
+	<a href="index.php?admin_fileftpmanage-default-/">☞返回主目录</a></td>
+</tr>
+<form method="post" name="myform" action="index.php?admin_fileftpmanage-rename">
+<tr>
+  <td>更名为：
+    <input name="newname" type="text" size="20" value="<!--{eval echo basename($fname);}-->">&nbsp;&nbsp;
+	<input name="fname" type="hidden" value="{$fname}">
+	<input name="rootpath" type="hidden" value="{$rootpath}">
+	<input name="isdir" type="hidden" value="{$isdir}">
+  <input type="submit" name="dosubmit" value="提交" />
+  </td>
+</tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+</form>
+</table>
+{template admin_footer}

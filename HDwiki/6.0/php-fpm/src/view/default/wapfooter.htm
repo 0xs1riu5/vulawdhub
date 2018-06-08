@@ -1,0 +1,85 @@
+    <nav class="column bot-navi" id="footer1">
+        <p class="body">
+            <!--{if !empty($channellist[1])}-->
+                <!--{loop $channellist[1] $channel}-->
+                    <a href="{$channel['url']}">{$channel['name']}</a>
+                <!--{/loop}-->
+            <!--{/if}-->
+            <!--{if !empty($channellist[3])}-->
+                <!--{loop $channellist[3] $channel}-->
+                    <a href="{$channel['url']}">{$channel['name']}</a>
+                <!--{/loop}-->
+            <!--{/if}-->
+
+            <!--{loop $pluginlist $plugin}-->
+                <!--{if $plugin[type]}-->
+                    <a href="{url plugin-$plugin[identifier]}">{$plugin[name]}</a>
+                <!--{/if}-->
+            <!--{/loop}-->
+        </p>
+    </nav>
+    <footer class="footer"  id="footer2">
+        <p>Powered by HDwiki6.0 &copy; 2017 HDwiki Licensed</p>
+    </footer>
+</div>
+<div class="pop-search" style="display:none;">
+    <form class="search-form" method="post" action="{url search-kw}" id="search-form">
+        <label><i class="btn-sear" id="sear_search"></i><input name="searchtext" id="keyword_search" type="text" value="<!--{if isset($searchtext)}-->{$searchtext}<!--{/if}-->"><i class="cleartxt"></i></label>
+        <button onclick="document.querySelector('.pop-search').style.display='none';return false;">取消</button>
+    </form>
+    <!--{if isset($indexcache['hotdocs'])}-->
+   <!-- <div class="column">
+        <div class="body">
+            <h3>热门搜索：</h3>
+            <p class="doc-list">
+                &lt;!&ndash;{loop $indexcache['hotdocs'] $key $hotdoc}&ndash;&gt;
+                &lt;!&ndash;{if $key < 4}&ndash;&gt;
+                <a class="gray6" href="{url doc-view-$hotdoc['did']}">{$hotdoc['title']}</a>
+                &lt;!&ndash;{/if}&ndash;&gt;
+                &lt;!&ndash;{/loop}&ndash;&gt;
+            </p>
+        </div>
+    </div>-->
+    <!--{/if}-->
+</div>
+
+<script>
+    $('#sear_search').click(function(){
+        var obj = $('input[name=searchtext]');
+        var flag = check_access(obj);
+        if(flag){
+            $('#search-form').submit();
+        }else{
+            alert('请输入正常格式的词条名称！');
+            return false;
+        }
+    })
+    function check_access(obj){
+        var min_array = ['cast', 'exec','show ','show/*','alter ','alter/*','create ','create/*','insert ','insert/*', 'select ','select/*','delete ','delete/*','update ', 'update/*','drop ','drop/*','truncate ','truncate/*','replace ','replace/*','union ','union/*','execute', 'from', 'declare', 'varchar', 'script', 'iframe', ';', '0x', '<', '>', '\\', '%27', '%22', '(', ')'];
+        var coun = min_array.length;
+        var input_value = obj.val();
+        if(input_value){
+            for(var i = 0;i<coun;i++) {
+                if (input_value.indexOf(min_array[i]) > -1) {
+                    obj.val('');
+                    return false;
+                }
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+    $('.cleartxt').click(function(){
+        var obj = $('.cleartxt').prev();
+        $(obj).val('');
+    })
+    $("#keyword_search").keydown(function(evt){
+        var evt = window.event?window.event:evt;
+        if(evt.keyCode ==13){
+            $("#sear_search").trigger("click");
+        }
+    });
+</script>
+</body>
+</html>

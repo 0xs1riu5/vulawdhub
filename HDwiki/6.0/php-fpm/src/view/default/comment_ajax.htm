@@ -1,0 +1,64 @@
+{eval ob_end_clean();}
+{eval ob_start();}
+{eval @header("Expires: -1");}
+{eval @header("Cache-Control: no-store, private, post-check=0, pre-check=0, max-age=0", FALSE);}
+{eval @header("Pragma: no-cache");}
+{eval @header("Content-type: application/xml; charset=".WIKI_CHARSET);}
+{eval echo '<?xml version="1.0" encoding="'.WIKI_CHARSET.'"?>';}
+<root><![CDATA[
+<!--{if $type<=2}-->
+<span id="page" style="display:none">{$page}</span>
+
+	<!--{loop $comments $key $comment}-->
+	<!--{if $comment!==''}-->
+	<div class="comment-item" id="li_{$key}">
+		<span class="f16" id="u_{$comment['id']}">
+		{lang commentUser}<!--{if $comment['authorid']==0 }-->{$comment['author']}<!--{else}--><a href="{url user-space-$comment['authorid']}" >{$comment['author']}</a><!--{/if}-->
+		</span>
+		<span class="m-lr8 gray9">{$comment['time']}</span>
+		<div class="com_content">
+		{$comment[reply]}
+		<p class="m-t10" id="c_{$comment['id']}">{$comment[comment]}</p>
+		<p class="a-r grayc">
+			<a href="javascript:void(0)" class="clink ico-digg" id="ae_{$comment['id']}" onclick="aegis_comment({$comment['id']});" >{lang commentAegis}(<i id="a_{$comment['id']}">{$comment['aegis']}</i>)</a>
+			<a href="javascript:void(0)" class="clink ico-sink m-lr8" id="op_{$comment['id']}" onclick="oppose_comment({$comment['id']});">{lang commentOppose}(<i id="o_{$comment['id']}">{$comment['oppose']}</i>)</a>
+			<a href="javascript:void(0)" class="clink" onclick="reply_comment({$comment['id']});">{lang commentReply}</a> | 
+			<!--{if $commentEdit}-->
+			<a href="javascript:void(0)" class="clink" onclick="edit_comment({$comment['id']});">{lang commentEdit}</a></span> | 
+			<a href="javascript:void(0)" class="clink ico-del" onclick="del_comment({$comment['id']});">{lang commentDel}</a>
+			<!--{/if}-->
+			<a href="javascript:void(0)" class="gray ico-warn" onclick="report_comment({$comment['id']});">{lang commentReport}</a>
+		  
+		</p>
+		</div>
+	</div>
+	<!--{else}-->
+	<div class="columns" id="li_{$key}" style="display:none"></div>
+	<!--{/if}-->
+	<!--{/loop}-->
+	
+	<!--{if $departstr}-->
+	<div id="fenye" class="a-r m-t10"> 
+	{$departstr}
+	</div>
+	<!--{/if}-->
+	
+<!--{elseif $type==3}-->
+		<span class="f16"><!--{if $comments['authorid']==0 }-->{$comments['author']}<!--{else}--><a href="{url user-space-$comments['authorid']}" >{$comments['author']}</a><!--{/if}--></span>
+		<span class="m-lr8 gray9">{$time}</span>
+		<div class="com_content">
+		{$reply}
+		<p class="m-t10" id="c_{$id}">{$comment}</p>
+		<p class="a-r grayc">
+			<a href="javascript:void(0)" id="ae_{$id}" class="clink ico-digg" onclick="aegis_comment({$id});" >{lang commentAegis}(<i id="a_{$id}">{$comments['aegis']}</i>)</a>
+			<a href="javascript:void(0)" class="clink ico-sink m-lr8" onclick="oppose_comment({$id});">{lang commentOppose}(<i id="o_{$id}">{$comments['oppose']}</i>)</a>
+			<a href="javascript:void(0)" class="clink" onclick="reply_comment({$id});">{lang commentReply}</a> | 
+			<!--{if $commentEdit}-->
+			<a href="javascript:void(0)" class="clink" onclick="edit_comment({$id});">{lang commentEdit}</a> | 
+			<a href="javascript:void(0)" class="clink ico-del" onclick="del_comment({$id});">{lang commentDel}</a>
+			<!--{/if}-->
+			<a href="javascript:void(0)" class="gray ico-warn" onclick="report_comment({$id});">{lang commentReport}</a>
+		</p>
+		</div>
+<!--{/if}-->
+]]></root>

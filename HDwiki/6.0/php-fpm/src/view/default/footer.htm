@@ -1,0 +1,50 @@
+<!--ad start -->
+
+<!--{if isset($advlist[1])&& isset($setting[advmode]) && '1'==$setting[advmode]}-->
+<div class="ad w-950 clearfix" id="advlist_1">
+    {$advlist[1]['code']}
+</div>
+<!--{elseif isset($advlist[1]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+<div class="ad w-950 clearfix" id="advlist_1">
+</div>
+<!--{/if}-->
+
+<!--ad end -->
+<footer id="footer" class="footer">
+    <div class="wrap clearfix">
+        <p id="footer-p" class="copyright"> Copyright @ <a href="http://kaiyuan.hudong.com?hf=hdwiki_copyright_kaiyuan" target="_blank">HDWiKi</a> V {HDWIKI_VERSION} &copy;2005-2017 <a href="http://www.baike.com/?hf=hdwiki_copyright_www" target="_blank" class="link_black">baike</a> |
+            <a
+                href="http://kaiyuan.hudong.com/sq/site_authorize.php?siteurl={WIKI_URL}">HDwiki Licensed</a> <br/>
+                <label>Processed in {$runtime} second(s), {$querynum} queries.</label>
+                <!--{if !empty($setting['statcode'])}-->
+                <label>
+{$setting['statcode']}
+</label>
+                <!--{/if}-->
+        </p>
+        <p class="currentinfo"> {lang footerTip1}
+            <!--{if ($setting[time_offset]>0)}-->+
+            <!--{/if}-->{$setting[time_offset]} {lang footerTip2} {$timenow} <a href="http://www.miibeian.gov.cn/" target="_blank" class="link_black">{$setting[site_icp]} </a></p>
+
+        <ul class="r footernav" id="nav_bot">
+            <!--{if !empty($channellist[3])}-->
+            <!--{loop $channellist[3] $channel}-->
+            <li><a href="{$channel['url']}">{$channel['name']}</a></li>
+            <!--{/loop}-->
+            <!--{/if}-->
+
+            <li><a href="{url user-clearcookies}">{lang clearCookies}</a></li>
+            <li><a href="index.php?doc-innerlink-{eval echo urlencode('{lang contactus}')}">{lang contactus}</a></li>
+        </ul>
+    </div>
+</footer>
+{template adv}
+<!--{if $adminlogin}-->
+<script type="text/javascript" src="js/api.js"></script>
+<!--{/if}-->
+<!--{if $wk_count}-->
+<script src="http://kaiyuan.hudong.com/count2/count.php?m=count&a=count&key={$wk_count[key]}&domain={$wk_count[domain]}" language="JavaScript"></script>
+<!--{/if}-->
+</body>
+
+</html>

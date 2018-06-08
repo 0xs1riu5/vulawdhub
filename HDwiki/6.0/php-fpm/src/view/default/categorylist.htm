@@ -1,0 +1,32 @@
+{template header}
+<div class="wrap hd_map">
+	<a href="{WIKI_URL}">{$setting[site_name]}</a> &gt;&gt;{lang wikiCategory}
+</div>
+<section class="wrap clearfix">
+<div id="category" class="l group1 bor-ccc category">
+	<!--{if !empty($subcategory)}-->
+	<!--{loop $subcategory  $category}-->
+	<dl class="f14">
+	  <dt><a class="clink f18" href="{url category-view-$category['parent']['cid']}" >{$category['parent']['name']}</a></dt>
+	  <!--{if !empty($category['child'])}-->
+	  <!--{loop $category['child']  $child}--><dd><a class="clink" href="{url category-view-$child['cid']}">{$child['name']}</a></dd><!--{/loop}-->
+	 <!--{/if}-->
+	</dl>
+	<!--{/loop}-->
+	<!--{/if}-->
+</div>
+<aside class="r group2">
+    <div id="block_right">{block:right/}</div>
+	<!--ad start -->
+	<!--{if isset($advlist[7]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+	<div class="ad" id="advlist_7">
+	{$advlist[7][code]}
+	</div>
+	<!--{/if}-->
+	<!--ad end -->	
+</aside>
+<script>
+$('#block_right .columns').eq(0).css('margin-top', 0)
+</script>
+</section>
+{template footer}

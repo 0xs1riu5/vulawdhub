@@ -1,0 +1,87 @@
+{template header}
+<script type="text/javascript" src="js/popWindow.js"></script>
+<script type="text/javascript">
+function updateverifycode() {
+	var img = 'index.php?user-code-'+Math.random();
+	$('#verifycode').attr("src",img); 
+}
+function check_code(){
+	var result=false;
+	
+	$.ajax({
+		async:false,
+		url:"index.php?user-checkcode",
+		type:'POST',
+		data:{ code:$.trim($('#code').val())},
+		dataType : 'xml',
+		success :function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			if(message=='OK'){
+				$('#checkcode').html('OK!');
+				result=true;
+			}else{
+				$('#checkcode').html('{lang loginTip4}');
+				divDance('divcode');
+			}
+		}
+	});
+	return result;
+}
+
+function checkemail(){
+	var ele=$('#emailinfo');
+	var email=$.trim($('#email').val());
+	if(email==""){
+		ele.html("{lang getPassTip1}");
+		divDance('divemail');
+		return false;
+	}else if (email!="" && !email.match(/^[\w\.\-]+@([\w\-]+\.)+[a-z]{2,4}$/ig)){
+		ele.html("{lang getPassTip2}");
+		divDance('divemail');
+		return false;
+	}else{
+		ele.html('OK!');
+	 	return true;
+	}
+}
+
+function docheck(){
+	if( checkemail()){
+		<!--{if $checkcode != "3"}-->
+		if(check_code()){
+			return true;
+		}else{
+			return false;
+		}
+		<!--{/if}-->
+		return true;
+	}else{
+		return false;
+	}
+}
+</script>
+<section class="wrap clearfix bor-ccc m-t20">
+<div class="hd_map">
+	<a href="{WIKI_URL}">{$setting['site_name']}</a> &gt; {lang getPass}</div>
+<form name="form" action="{url user-getpass}" method="post" onsubmit="return docheck();">
+<ul class="login-static col-ul reg-bd">
+	<li><span>E-mail：</span>
+	<input name="email" maxlength="50" id="email" type="text"  class="inp_txt" onblur="checkemail()"/><label id="emailinfo" class="m-lr8"></label></li>
+	<!--{if $checkcode != "3"}-->
+	<li class="yzm">
+		<span>{lang verifyCode}：</span>
+		<input name="code" id="code"  tabindex="5"  type="text" onblur="check_code()" maxlength="4" class="inp_txt" />
+			<label class="yzm-img">
+				<img id="verifycode" src="{url user-code}" onclick="updateverifycode();" />
+			</label>&nbsp;
+			<a href="javascript:updateverifycode();" class="clink">{lang codeNotClear}</a>
+			<label id="checkcode"></label>
+	</li>
+	<!--{/if}-->
+	<li class="a-r">{lang getPassTip3} <a href="{url user-register}" class="clink" target="_self"> {lang register}</a></li>
+	<li><input name="submit" type="submit" value="{lang getPass}"   class="btn_inp blue"/></li>
+</ul>
+</form>
+</section>
+{template footer}
+

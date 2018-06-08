@@ -1,0 +1,209 @@
+{template header}
+<script type="text/javascript" src="js/popWindow.js"></script>
+<script type="text/javascript">
+	function verifydoc(){
+		title=$.trim($('#title').val());
+		if(title==""){
+			$('#response').html('<label style="color:#FF0000">{lang createDocTip1}</label>');
+		}else if(title.length>80){
+			$('#response').html('<label style="color:#FF0000">{lang createDocTip2}</label>');
+		}else{
+			$.ajax({
+				url: "index.php?doc-verify",
+				cache: false,
+				dataType: "xml",
+				type:"post",
+				//async:false, 
+				data: {title:title},
+				success: function(xml){
+				   var message=xml.lastChild.firstChild.nodeValue;
+					if(message=='1'){
+						$('#response').html('<label>{lang doc} "'+title+'" {lang createDocTip3}</label>');
+					}else if(message=='-1'){
+						$('#response').html('<label style="color:#FF0000">{lang doc} "'+title+'" {lang createDocTip4}</label>');
+					}else if(message=='-2'){
+						$('#response').html('<label style="color:#FF0000">{lang doc} {lang createDocTip15}</label>');
+					}else if(message.length>'3'){
+						var message=$.trim(message).split(/ +/);
+						$('#response').html('<label style="color:#FF0000">{lang doc}"'+title+'"{lang synonymis}<a href="{$setting["seo_prefix"]}doc-view-'+message[0]+'">"'+message[1]+'"</a>{lang synonymTitle}</label>');
+					}else{
+						$('#response').html('<label style="color:#FF0000">{lang doc} "'+title+'" {lang createDocTip5}</label>');
+					}
+				}
+			});
+		}
+	}
+
+	function docheck(){
+		title=$.trim($('#title').val());
+		if(title==""){
+			$('#response').html('<label style="color:#FF0000">{lang createDocTip1}</label>');
+			return false;
+		}
+		return true;
+	}
+	var catevalue = {
+		input:null,
+		scids:new Array(),
+		scnames:new Array(),
+		ajax:function(cateid, E){
+			if(!cateid)cateid=0
+			$.ajax({
+				url: 'index.php?category-ajax-'+cateid,
+				cache: false,
+				dataType: "xml",
+				type:"get",
+				success: function(xml){
+					var message=xml.lastChild.firstChild.nodeValue;
+					if($('#dialog_category:visible').size()){
+						$.dialog.content('category', '<div id="flsx" class="chose_cate">'+message+'</div>');
+						catevalue.selectCategory();
+					}else{
+						$.dialog({
+							id:'category',
+							title:'{lang docCategory}',
+							content: '<div id="flsx" class="chose_cate">'+message+'</div>',
+							height:450,
+							width:680,
+							position:'c',
+							resizable:0,
+							resetTime:0,
+							onOk:function(){
+								$.dialog.close('category');
+								catevalue.ok();
+							},
+							callback:function(){
+								catevalue.selectCategory();
+							},
+							styleContent:{'text-align':'left', 'overflow-y':'scroll', 'padding-right':'0', height:'380px'}
+						});
+					}
+				}
+			});
+		},
+		
+		cateOk:function(id,title,handle){
+			var point;
+			if(handle){
+				this.scids.push(id);
+				this.scnames.push(title);				
+			}else{
+				for(i=0;i<this.scids.length;i++){
+					if(this.scids[i]==id){
+						point=i;
+					}
+				}
+				this.scids.splice(point,1);
+				this.scnames.splice(point,1);
+			}
+			catevalue.pushCategory()
+		},
+		
+		pushCategory:function(){
+			$('#category').val(this.scids.toString());
+			$('#scnames').text(this.scnames.toString());
+			$('#columntitle').html(catevalue.getCatUrl());
+		},
+		
+		getCatUrl:function(){
+			var catstring='';
+			for(i=0;i<this.scids.length;i++){
+				catstring=catstring+'<a target="_blank" class="btn_inp gray" href="{$setting['seo_prefix']}category-view-'+this.scids[i]+'">'+this.scnames[i]+'</a>';
+			}
+			catstring=catstring.substring(0, catstring.length-1);
+			return catstring;
+		},
+		
+		selectCategory:function(){
+			var cb=$(":checkbox");
+			catevalue.pushCategory();
+			for(i=0;i<cb.length;i++){
+				if(catevalue.inArray(cb[i].id, this.scids)){
+					cb[i].checked = true; 
+				}
+			}		
+		},
+		
+		inArray:function(stringToSearch, arrayToSearch) {
+			for (s = 0; s <arrayToSearch.length; s++) {
+				if (stringToSearch == arrayToSearch[s]) {			 
+					 return true;
+				}
+			}
+			return false;
+		},
+		
+		removeCateTree:function(){
+			$('#flsx').hide();
+		},
+		
+		ok:function(){
+			$('#flsx').hide();
+		},		
+		
+		init:function(){
+			if('{if !empty($category[cid])}{$category[cid]}{/if}'){
+				this.scids.push('{if !empty($category[cid])}{$category[cid]}{/if}');
+				this.scnames.push('{if !empty($category[name])}{$category[name]}{/if}');
+			}
+		}
+	}
+	function openclose(obj){
+		var patrn=/close.gif$/;
+		var s=obj.src;
+		var id=obj.id;
+		if(patrn.test(s)){
+			obj.src='style/default/open.gif';
+			var t=$('#'+id).find("dd");
+			t.show();
+		}else{
+			obj.src='style/default/close.gif';
+			var t=$('#'+id).find("dd");
+			t.hide();
+		}
+	}
+	catevalue.init();
+</script>
+<div class="wrap azmsx columns"><h2 class="col-h2">{lang letterOrderView}:</h2>
+	<ul class="col-ul clearfix"><li><a href="{url list-letter-A}" >A</a></li><li><a href="{url list-letter-B}" >B</a></li><li><a href="{url list-letter-C}" >C</a></li><li><a href="{url list-letter-D}" >D</a></li><li><a href="{url list-letter-E}" >E</a></li><li><a href="{url list-letter-F}" >F</a></li><li><a href="{url list-letter-G}" >G</a></li><li><a href="{url list-letter-H}" >H</a></li><li><a href="{url list-letter-I}" >I</a></li><li><a href="{url list-letter-J}" >J</a></li><li><a href="{url list-letter-K}" >K</a></li><li><a href="{url list-letter-L}" >L</a></li><li><a href="{url list-letter-M}" >M</a></li><li><a href="{url list-letter-N}" >N</a></li><li><a href="{url list-letter-O}" >O</a></li><li><a href="{url list-letter-P}" >P</a></li><li><a href="{url list-letter-Q}" >Q</a></li><li><a href="{url list-letter-R}" >R</a></li><li><a href="{url list-letter-S}" >S</a></li><li><a href="{url list-letter-T}" >T</a></li><li><a href="{url list-letter-U}" >U</a></li><li><a href="{url list-letter-V}" >V</a></li><li><a href="{url list-letter-W}" >W</a></li><li><a href="{url list-letter-X}" >X</a></li><li><a href="{url list-letter-Y}" >Y</a></li><li><a href="{url list-letter-Z}" >Z</a></li></ul>
+</div>
+<div id="map" class="wrap hd_map"><a href="{WIKI_URL}">{$setting[site_name]}</a> &gt;&gt; {lang createDoc}</div>
+<section class="wrap clearfix">
+<div class="l group1">
+<form id="form1" name="form1" action="{url doc-create}" method="post" onsubmit="return docheck();">
+  <?php echo csrf_field(); ?>
+  <div class="bor-ccc cre_main">
+    <h2 class="col-h2">{lang createDoc}</h2>
+      <ul class="ul_l_s" >
+        <li><span>{lang docTitle}:</span>
+          <input id="title" name="title" value="<!--{if isset($title)}-->{$title}<!--{/if}-->" type="text" class="inp_txt" onblur="verifydoc();" maxlength="80"/>
+          <label id="response" class="gray9 f12"></label><input type="hidden" id="category" name="category" value="{$category[cid]}" /></li>
+        <li><span>{lang categoryChose}</span>
+          <input name="Button2" type="button" value="{lang categoryChooseModify}" class="btn_sys ico-edit" onclick="javascript:catevalue.ajax(0,this);" />
+          <label class="gray9 f12">{lang categoryChoseNotice}</label></li>
+        <li><span>{lang categoryHaveCategory}</span><p id="columntitle" name="columntitle">&nbsp;<a class="btn_inp gray" href="{url category-view-{$category[cid]}}" ><!--{if !empty($category['name'])}--> {$category['name']}<!--{/if}--></a></p></li>	
+        <li>
+		  <input name="hdwiki" type='text' style="display:none"><input name="create_submit" type="submit" value="{lang createDoc}" class="btn_inp blue"/>
+        </li>
+      </ul>
+  </div>
+  <div id="block_left">{block:left/}</div>
+</form>
+</div>
+<div class="r group2">
+  <div class="bor-ccc cre_r">
+    <h2 class="col-h2">{lang createDocTip7}</h2>
+    <ul class="col-ul">
+      <li class="disc">{lang createDocTip8}</li>
+      <li class="disc">{lang createDocTip9}</li>
+      <li class="disc">{lang createDocTip10}</li>
+      <li class="disc">{lang createDocTip11}</li>
+      <li class="disc">{lang createDocTip12}</li>
+      <li class="disc">{lang createDocTip13}</li>
+      <li class="disc">{lang createDocTip14}</li>
+    </ul>
+  </div>
+  <div id="block_right">{block:right/}</div>
+</div>
+</section>
+{template footer}

@@ -1,0 +1,64 @@
+{template admin_header}
+<script type="text/javascript">
+	var addInput = function(){
+		$('#priceblock').append("<li><input name=\"minprice[]\" type=\"text\" class=\"inp_txt m-r10\" />到<input name=\"maxprice[]\" type=\"text\" class=\"inp_txt m-lr10\" maxlength=8/><a href=\"javascript:void(0)\" onclick=\"javascript:delInput(this)\" maxlength=8>删除</a></li>");
+	}
+
+	var delInput = function (obj){
+		$(obj).parents('li').remove();
+	}
+	
+	var docheck = function (){
+		var status=true;
+		var num=0;
+		$("input[name='minprice[]']").each(function(i){
+			if($(this).val()!='' && isNaN($(this).val())){
+				alert('输入的值应该是数字!');
+				status=false;
+			}
+			if($(this).val().length>8){
+				num=1;
+				status=false;
+			}
+		})
+		$("input[name='maxprice[]']").each(function(i){
+			if(status==true && $(this).val()!='' && isNaN($(this).val())){
+				alert('输入的值应该是数字!');
+				status=false;
+			}
+			if($(this).val().length>8){
+				num=1;
+				status=false;
+			}
+		})
+		if(num==1)
+				alert('价格数字最多不能超过8位');
+		return status;
+	}
+</script>
+
+<p class="map">内容管理：礼品商店</p>
+<p class="sec_nav">礼品商店：<a href="index.php?admin_gift"><span>礼品管理</span></a>
+<a href="index.php?admin_gift-add"><span> 添加礼品</span></a>
+<a href="index.php?admin_gift-price"  class="on"><span>礼品价格区间</span></a>
+<a href="index.php?admin_gift-notice"><span>礼品公告</span></a>
+<a href="index.php?admin_gift-log"><span>礼品兑换日志</span></a>
+</p>
+
+<h3 class="col-h3">礼品价格区间</h3>    
+<form action="#" method="post" name="priceform"  onsubmit="return docheck();">	
+	<ul class="col-ul m-t10 jgqj" id="priceblock">
+		<!--{loop $minprice $index $price}-->
+		<li><input name="minprice[]" value="{eval echo (int)$price;}" type="text" class="inp_txt m-r10" maxlength=8/>到<input name="maxprice[]" value="{eval echo (int)$maxprice[$index];}" type="text" class="inp_txt m-lr10" maxlength=8/></li>
+		<!--{/loop}-->
+		<li><input name="minprice[]" type="text" class="inp_txt m-r10" maxlength=8/>到<input name="maxprice[]" type="text" class="inp_txt m-lr10" maxlength=8/></li>
+		<li><input name="minprice[]" type="text" class="inp_txt m-r10" maxlength=8/>到<input name="maxprice[]" type="text" class="inp_txt m-lr10" maxlength=8/></li>
+		<li><input name="minprice[]" type="text" class="inp_txt m-r10" maxlength=8/>到<input name="maxprice[]" type="text" class="inp_txt m-lr10" maxlength=8/></li>
+		<li><input name="minprice[]" type="text" class="inp_txt m-r10" maxlength=8/>到<input name="maxprice[]" type="text" class="inp_txt m-lr10" maxlength=8/><a href="javascript:void(0)" onclick="javascript:addInput()">添加</a></li>
+	</ul>
+	
+	<ul class="col-ul m-t10 jgqj">
+		<li><input name="submit" type="submit" value="确 定"  class="inp_btn"/></li>
+	</ul>
+</form>
+{template admin_footer}

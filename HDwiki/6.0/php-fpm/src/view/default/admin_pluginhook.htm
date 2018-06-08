@@ -1,0 +1,26 @@
+{template admin_header}
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">管理：
+	<a href="index.php?admin_plugin-manage-{$pluginid}" ><span>插件管理</span></a>
+	<a href="index.php?admin_plugin-setvar-{$pluginid}" ><span>插件设置</span></a>
+	<a href="index.php?admin_plugin-hook-{$pluginid}" class="on"> <span>插件钩子</span> </a>
+</p>
+<!--{if !empty($pluginhooks) }-->
+	<table class="table">
+		<tr>
+			<td width="100px;"><span>{lang pluginHookName}</span></td>
+			<td width="300px;"><span>{lang pluginHookCode}</span></td>
+			<td><span>{lang pluginHookSum}</span></td>
+		</tr>
+	<!--{loop $pluginhooks $pluginhook}-->
+		<tr>
+			<td>{$pluginhook[title]}</td>
+			<td><input type="text" value="{$pluginhook[code]}" class="inp_txt" /></td>
+			<td>{$pluginhook[description]}</td>
+		</tr>
+	<!--{/loop}-->
+	</table>
+<!--{else}-->
+	{lang pluginNoHook}
+<!--{/if}-->
+{template admin_footer}

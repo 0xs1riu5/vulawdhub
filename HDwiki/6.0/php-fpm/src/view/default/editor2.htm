@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={WIKI_CHARSET}"/>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+<title>{$navtitle} {$setting[site_name]} {$setting[seo_title]} - Powered by HDWiki!</title>
+<link href="{WIKI_URL}/js/hdeditor/skins/editor.css" rel="stylesheet" type="text/css" media="all" />
+<style>
+#tags input{width:50%;margin-bottom:2px;}
+#tags ,#doc_verification_code{padding-bottom:10px;}
+#tags div ,#doc_verification_code div{text-align:left;padding-left:10px;width:95%;}
+</style>
+</head>
+<body>
+<div id="onloading" style="position:absolute;left:0;top:0;width:100%;height:100%;background-color:#FFFFFF;z-index:999999999;padding:10px"></div>
+<div id="nav-top">
+	<ul class="l">
+		<li><a href="{WIKI_URL}" target="_blank">{lang index}</a></li>
+		<!--{if count($channellist)!=0}-->
+		<!--{loop $channellist $channel}-->
+		<li><a href="{$channel['url']}" target="_blank">{$channel['name']}</a></li>
+		<!--{/loop}-->
+		<!--{/if}-->		
+		<li><a href="{url category}" target="_blank">{lang wikiCategory}</a></li>
+		<li><a href="{url list}" target="_blank">{lang list}</a></li>
+		
+	</ul>
+	<ul class="r a-r" id="top_usernav">
+		<li><a href="index.php?doc-innerlink-{eval echo urlencode('{lang help}')}">{lang help}</a></li>
+		<!--{if $user['groupid']!='1'}-->
+		<li><a href="{url user-logout$referer}" >{lang logout}</a></li>
+		<!--{if $adminlogin }--><li><a href="{url admin_main}">{lang sysConfig}</a></li><!--{/if}-->
+		<li><a  href="{url user-profile}">{lang selfManage}</a></li>
+		<li><a href="{url pms}" id="header-pms">{lang mypms}&nbsp;(<span {if $newpms[0]} style="color:#FF0000" {/if}>$newpms[0]</span>/$newpms[1])</a></li>
+		<li>{lang headerTip}<a href="{url user-space-$user['uid']}">{$user['username']}</a></li>
+		<!--{else}-->
+		<li><a href="{url user-register}" >{lang register}</a></li>
+		<li><a href="{url user-login}" >{lang login}</a></li>
+		<!--{/if}-->
+	</ul>
+</div>
+
+<form method="post" enctype="multipart/form-data" action="<!--{if $page_action == 'create'}-->{url doc-create}<!--{elseif $page_action == 'edit'}-->{url doc-edit}<!--{else}-->{url doc-editsection}<!--{/if}-->" name='editor' onsubmit="return check();">
+<div class="instrument">
+	<div id="hd_container">
+		<div id="position_toolbar"></div>
+		<div class="pushbutton">
+			<input type="hidden" name='did' id='did' value="{$doc['did']}" />
+			<input type="hidden" name='section_id' value="{$doc['section_id']}" />
+			<input type="hidden" name='create_submit' value="1" />
+			<input type="hidden" name='title' id='title' value="{$doc['title']}" />
+			<input type="hidden" name="category" value="{$doc['cid']}"/>
+			<input class="r" type="button" value="{lang logout}" onclick="abort();"/>
+			<input class="r conserve" name="publishsubmit" type="submit" value="{lang publish}" />
+		</div>
+	</div>
+</div>
+<div id="editoring" class="hd-box editor_left size">
+<strong>{lang editoring}</strong><a href="{url doc-view-$doc['did']}" target="_blank">{$doc['title']}</a>
+</div>
+<div id="text" class="hd-box editor_left">
+	<h2>{lang editTip5}</h2>
+	<textarea id="content" name="content" style="width:98%;height:400px;visibility:hidden;display:none;">
+	{$doc['content']}
+	</textarea>
+	<div id="hd_content"></div>
+</div>
+
+<div id="summary" class="hd-box editor_left">
+	<h2>{lang summary}</h2>
+	<div>
+		<textarea rows="3" class="size" name='summary'>{$doc['summary']}</textarea>
+	</div>
+</div>
+<div id="tags" class="hd-box editor_left">
+	<h2>{lang tag}</h2>
+	<div>
+	<input type="text" class="inp_txt" name='tags' value="{$doc['tag']}" /> <br /><span class="gray">[{lang editorTip8}]</span>
+	</div>
+</div>
+<!--{if $setting[base_isreferences] !== '0' }-->
+<div id="reference" class="hd-box editor_left">
+	<h2>{lang references}</h2>
+	<dl class="f8" id="0" style="display:none;">
+		<dt><strong name="order">[0]</strong><span></span></dt>
+		<dd name="url"></dd>
+		<dd name="edit">
+			<a href="javascript:;" onclick="docReference.edit(this);return false;">{lang edit}</a> 
+			| <a name="remove" href="javascript:;" onclick="docReference.remove(this);return false;">{lang remove}</a>
+		</dd>
+	</dl>
+	<!--{loop $referencelist $i $ref}-->
+	<dl class="f8" id="{$ref[id]}">
+		<dt><strong name="order">[{eval echo ($i+1)}]</strong><span>{$ref[name]}</span></dt>
+		<dd name="url">{$ref[url]}</dd>
+		<dd name="edit">
+			<a href="javascript:;" onclick="docReference.edit(this);return false;">{lang edit}</a> 
+			| <a name="remove" href="javascript:;" onclick="docReference.remove(this);return false;">{lang remove}</a>
+		</dd>
+	</dl>
+	<!--{/loop}-->
+	
+	<dl id="edit_reference" style="display:none">
+		<dt class="mar-bottom-10"><strong>{lang name}:</strong>
+			<input id="editrefrencename" type="text" class="inp_txt" size="60"/>
+			<span class="red" id="refrencenamespan"></span>
+		</dt>
+		<dd class="size black mar-bottom-10"><strong>{lang url}:</strong>
+			<input id="editrefrenceurl" type="text" class="inp_txt" size="60"/>
+			<span class="red" id="refrenceurlspan"></span>
+		</dd>
+		
+		<dd name="verifycode" class="size black mar-bottom-10" style="display:none"><strong>{lang verifyCode}:</strong>
+			<input name="code" id="editrefrencecode" type="text" class="inp_txt" size="10" maxlength="4"/>
+			<span name="img" style="display:none"><img id="verifycode2" src="./js/hdeditor/skins/spacer.gif"/> <a href="javascript:docReference.updateVerifyCode();">{lang codeNotClear}</a></span>
+			<span name="tip"></span>
+			<span class="red" id="refrencecodespan"></span>
+		</dd>
+		
+		<dd>
+			<a id="save_1" href="javascript:;" onclick="docReference.save();return false;">{lang save}</a>
+			<span id="save_0" style="display:none">{lang save}</span>
+			<a href="javascript:;" onclick="docReference.reset();return false;">{lang reset}</a>
+		</dd>
+	</dl>
+</div>
+<!--{/if}-->
+<!--{if $page_action != 'create'}-->
+<div id="reason" class="hd-box editor_left">
+	<h2>{lang reason}<span class="red">[{lang mustBeCompleted}]</span></h2>
+	<div>
+	<label><input type="checkbox" value="{lang editTip44}" name="editreason[]"/>{lang editTip44}</label>
+	<label><input type="checkbox" value="{lang editTip45}" name="editreason[]"/>{lang editTip45}</label>
+	<label><input type="checkbox" value="{lang editTip46}" name="editreason[]"/>{lang editTip46}</label>
+	<label><input type="checkbox" value="{lang editTip47}" name="editreason[]"/>{lang editTip47}</label>
+	<label><input type="checkbox" value="{lang editTip48}" name="editreason[]"/>{lang editTip48}</label>
+	<label><input type="checkbox" value="{lang editTip49}" name="editreason[]"/>{lang editTip49}</label>
+	<label><input type="checkbox" value="{lang editTip50}" name="editreason[]"/>{lang editTip50}</label>
+	<br /><br />{lang editTip51}<br />
+	<textarea rows="2" name="editreason[]" id="editreason" class="inp_txt"></textarea>
+	</div>
+</div>
+<!--{/if}-->
+
+<!--{if ($doc_verification_edit_code && ($page_action == 'edit'||$page_action == 'editsection' )) || ($doc_verification_create_code && $page_action == 'create')}-->
+<div id="doc_verification_code" class="hd-box editor_left">
+	<h2>{lang verifyCode}<span class="red">[{lang mustBeCompleted}]</span></h2>
+	<div>
+	<input name="code" type="text" class="inp_txt" size="10" maxlength="4"/>
+	<span name="img" style="display:none"><img id="verifycode" src="./js/hdeditor/skins/spacer.gif"/> <a href="javascript:updateverifycode();">{lang codeNotClear}</a></span>
+	<span name="tip"></span>
+	</div>
+</div>
+<!--{/if}-->
+
+<div class="pushbutton">
+	<input name="publishsubmit" class="conserve" type="submit" value="{lang publish}" />
+	<input type="button" value="{lang logout}" onclick="abort();"/>
+</div>
+</form>
+
+<div id="editor_right" class="hd-box">
+<ul>
+<!--{if $page_action != 'editsection'}-->
+<li><input name="autosave" type="checkbox" id="autosave" onclick="isAutoSave()" checked="checked"/>{lang auto}{lang save}</li>
+<!--{/if}-->
+<li id='AutoSaveStatus'></li>
+<li id="editor_tip"></li>
+<li class="help"><a href="http://service.baike.com/article-940349.html" target="_blank">{lang editorTip0}</a></li>
+</ul>
+<p><a href="{WIKI_URL}" target="_blank"><img src="style/default/logo.gif" width='168px' height='54px'/></a></p>
+</div>
+
+<div style="display:none">
+<form method="post" id="previewdocform" target="_blank" action="index.php?doc-edit-$doc['did']">
+<textarea name="content"></textarea>
+<input name="predoctitle" type="hidden" value="{$doc['title']}"/>
+</form>
+</div>
+<script type="text/javascript">
+<!--{if $filter_external }-->
+var g_filterExternal = 1;
+<!--{else}-->
+var g_filterExternal = 0;
+<!--{/if}-->
+<!--{if ($doc_verification_edit_code && ($page_action == 'edit'||$page_action == 'editsection' )) || ($doc_verification_create_code && $page_action == 'create')}-->
+var g_check_code = "1";
+<!--{else}-->
+var g_check_code = "0";
+<!--{/if}-->
+var g_page_action = "$page_action";
+var g_logout_editor = "{url doc-unseteditlock-$doc['did']-$page_action}";
+var g_docid = "$doc['did']";
+var savetime={$savetime};
+var g_content_md5='';
+
+var g_img_big="$g_img_big";
+var g_img_small="$g_img_small";
+</script>
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/hdeditor/hdeditor.min.js"></script>
+<script type="text/javascript" src="./js/hdeditor/hdwiki.js"></script>
+<script type="text/javascript">
+isAutoSave();
+</script>
+</body>
+</html>

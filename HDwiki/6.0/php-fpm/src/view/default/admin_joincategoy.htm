@@ -1,0 +1,47 @@
+{template admin_header}
+<script type="text/javascript">
+	function doSubmit(){
+		var sourcename=document.getElementById("source");
+		var objectname=document.getElementById("object");
+		if(sourcename.value.length==0){
+			alert("{lang msgJsNullCatSource}");
+			return false;
+		}
+		if(objectname.value.length==0){
+			alert("{lang msgJsNullCatTarget}");
+			return false;
+		}
+		if(confirm("{lang msgJsNullCatJoin}")==false)
+		return false;
+	}
+</script>
+<p class="map">内容管理：分类管理</p>
+<p class="sec_nav">分类管理： <a href="index.php?admin_category-list"> <span>{lang magManageCat}</span></a> <a href="index.php?admin_category-add"><span>{lang magAddCat}</span></a> <a href="index.php?admin_category-merge" class="on"><span>{lang magUniteCat}</span></a> </p>
+<h3 class="col-h3">{lang magUniteCat}</h3>
+<form action="index.php?admin_category-merge" onsubmit="return doSubmit();" method="POST">
+	<table cellspacing="0" cellpadding="5" class="table">
+		<tr >
+			<td style="width:150px"><span>{lang magSourceCat}</span></td>
+			<td><select  name='object' id='object' style="width:120px">
+					{$cats}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:150px"><span>{lang magTargetCat}</span></td>
+			<td><select  name='source' id='source' style="width:120px">
+					{$cats}	
+				</select>
+			</td>
+		</tr>
+		<tr class="b">
+			<td colspan="2" align="left">
+				<input name="submit" class="inp_btn m-r10" type=submit value="{lang commonOK}" />
+				<input name="reset" class="inp_btn m-r10" type=reset value="{lang commonReset}" />
+			</td>
+		</tr>
+	</table>
+	<center>
+	</center>
+</form>
+{template admin_footer}

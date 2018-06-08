@@ -1,0 +1,97 @@
+{template admin_header}
+<script type="text/javascript">
+window.onload = function(){
+	readfile('{$currpage}',0);
+}
+function readfile(filename,isbak){
+	var str = filename; 
+	var name=str.replace("*", ".");
+	$.ajax({
+		url: "index.php?admin_theme-readfile",
+		cache: false,
+		dataType: "html",
+		type:"post",
+	//	async:false, 
+		data: {id:filename,style_path:"{$currtheme}",bak:isbak},
+		success: function(xml){
+			$('#html_con').val(xml);
+			if(!isbak){
+				$('#html_con_bak').val(xml);
+			}else{
+				alert('模板还原成功!');
+			}
+		}
+	});
+}
+
+function checknull(){
+	if($.trim($("#html_con").val())==""){
+		alert("文件内容不能为空!");
+		$('#codehtml').focus();
+		return false;
+	}
+}
+
+function delfile(filename,obj){
+	$.ajax({
+		url: "index.php?admin_theme-delbak",
+		cache: false,
+		dataType: "html",
+		type:"post",
+	//	async:false, 
+		data: {id:filename,style_path:"{$currtheme}"},
+		success: function(xml){
+			if(xml){
+				if(xml!=0){
+					$(obj).parent().remove();
+				}
+			}
+		}
+	});
+}
+</script>
+
+<p class="map">插件/模板：模板</p>
+<p class="sec_nav">模板： <a href="index.php?admin_theme"><span>设置默认风格</span></a> <a href="index.php?admin_theme-create"><span>创建风格</span></a> <a href="index.php?admin_theme-list"><span>在线安装</span></a> <a href="index.php?admin_theme-edit" class="on"><span>模板编辑</span></a> </p>
+<h3 class="col-h3">模板编辑</h3>
+<form method="post" action="index.php?admin_theme-savefile-{$currtheme}" onsubmit="return checknull();">
+<table class="table m_edit">
+	<tr>
+		<td  class="bold">选择要编辑的主题：
+			<select name="theme" disabled="disabled">
+				<!--{loop $themelist $theme}-->
+				<option <!--{if $currtheme==$theme}-->selected="selected"
+				<!--{/if}-->>{$theme}</option>
+				<!--{/loop}-->
+			</select>
+			<a href="index.php?admin_theme-baseedit-{$currtheme}" id="baseedit" class="m-lr10">初级编辑</a></td>
+	</tr>
+	<tr class="bold">
+		<td>{$currpage}</td>
+	</tr>
+	<tr>
+		<td><textarea name="html_con" id="html_con" class=" textarea" style="width:98%; height:260px;"></textarea>
+			<textarea name="html_con_bak" id="html_con_bak" style="visibility:hidden;"></textarea>
+			<p class="block">
+				<input name="isbackup" type="checkbox" checked="checked" />
+				保留备份</p></td>
+	</tr>
+	<tr>
+		<td><dl class="col-ul">
+				<!--{if !empty($baklist)}-->
+				<dt class="bold">文件修改历史：</dt>
+				<!--{/if}-->
+				<!--{loop $baklist $bak}-->
+				<dd>{$bak[name]}
+					<label class="m-lr10">{$bak[time]}</label>
+					<input name="resume" type="button" value="还 原" class="inp_btn" onclick="readfile('{$bak[name]}','bak')"/><input name="del" type="button" value="删 除" class="inp_btn" onclick="delfile('{$bak[name]}',this)"/></dd>			
+				<!--{/loop}-->
+			</dl></td>
+	</tr>
+	<tr>
+		<td><input name="Submit1" type="submit" value="提 交" class="inp_btn"/></td>
+	</tr>
+</table>
+<input id="filename" name="filename" type="hidden" value="{$currpage}"/>
+</form>
+{template admin_footer}

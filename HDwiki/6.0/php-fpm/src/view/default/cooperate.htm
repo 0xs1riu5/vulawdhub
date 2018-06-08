@@ -1,0 +1,23 @@
+{template header}
+<div class="hd_map wrap">
+		<a href="{WIKI_URL}">{$setting['site_name']}</a> &gt;&gt; <a href="{url doc-cooperate}">{lang cooperatedoc}</a></div>
+<section class="wrap clearfix">
+<div class="l group1 bor-ccc dwsct">	
+	<ul class="col-ul clearfix">
+	<!--{loop $coopdoc $cooperatedoc}-->
+	<li><a href="{url doc-innerlink-{eval echo rawurlencode(string::hiconv({$cooperatedoc['title']}, 'utf-8'))}}" target="_blank" title="{$cooperatedoc['title']}">{$cooperatedoc['title']}</a></li>
+	<!--{/loop}-->
+	</ul>
+</div>
+<div class="r group2">
+<div class="bor-ccc">
+<h2 class="col-h2">待完善词条</h2>
+<p class="col-p">{lang cooperatedocTip1}</p>
+<p class="col-p">{lang cooperatedocTip2}</p>
+<p class="col-p">{lang cooperatedocTip3}</p>
+</div>
+<div id="block_right">{block:right/}</div>
+</div>
+</section>
+{template footer}
+

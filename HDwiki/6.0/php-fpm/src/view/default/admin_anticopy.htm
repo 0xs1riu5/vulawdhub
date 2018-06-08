@@ -1,0 +1,103 @@
+{template admin_header}
+<script type="text/JavaScript">
+function showPanel(panelId, show) {
+	if(show == '1') {
+		$("#"+panelId).show();
+	} else {
+		$("#"+panelId).hide();
+	}
+}
+
+function checkform(){
+	var dv = $("input[name*='duration']").val();
+	var bv = $("input[name*='ban_time']").val();
+	var pv = $("input[name*='pages']").val();
+	if ( isNaN(dv) || isNaN(bv) || isNaN(pv) || dv < 1 || bv < 1 || pv < 1){
+		$.dialog.box('immageshow', '注意', '{lang vrErrorTip}');
+		return false;
+	}
+}
+
+</script> 
+<p class="map">全局：扩展设置</p>
+<p class="sec_nav">扩展设置：
+    <a href="index.php?admin_setting-sec" > <span>防灌水设置</span></a>
+    <a href="index.php?admin_setting-anticopy" class="on"><span>防采集设置</span></a>
+    <a href="index.php?admin_setting-mail"><span>{lang mailConfig}</span></a>
+    <a href="index.php?admin_setting-noticemail"><span>{lang noticeMailConfig}</span></a>
+    <a href="index.php?admin_banned" ><span>IP禁止</span></a>
+    <a href="index.php?admin_setting-passport" ><span>通行证设置</span></a>
+    <a href="index.php?admin_setting-ucenter"><span>UCenter设置</span></a>
+    <a href="index.php?admin_setting-ldap"><span>LDAP设置</span></a>
+</p>
+<h3 class="col-h3">防采集设置</h3>
+<form id="waterform" method="POST" action="index.php?admin_setting-anticopy" onsubmit="return checkform();">
+	<table class="table">
+		<tr>
+			<td width="300px"><span>{lang randomstr_open}</span>{lang randomstr_notice2}</td>
+			<td>
+			<label><input {if $config['random_open'] }checked{/if} type="radio" name="random_open" value="1" onclick="showPanel('randomStrPanel', this.value);" />{lang commonYes}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label><input {if !$config['random_open'] }checked{/if} type="radio" name="random_open" value="0"  onclick="showPanel('randomStrPanel', this.value);" />{lang commonNo}</label></td>
+		</tr>
+		<tbody id="randomStrPanel" {if !$config['random_open'] }style="display:none"{/if}>
+		<tr>
+			<td><span>{lang randomstr_text}</span>{lang randomstr_notice3}</td>
+			<td ><textarea class="textarea" name="random_text" cols="50" rows="7">{$config['random_text']}</textarea></td>
+		</tr>
+		</tbody>
+		<tr>
+			<td width="300px"><span>{lang checkUseragent}</span></td>
+			<td>
+			<label><input {if $config['check_useragent'] }checked="checked"{/if} type="radio" name="check_useragent" value="1" onclick="showPanel('UAPanel', this.value);" />{lang commonYes}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label><input {if !$config['check_useragent'] }checked="checked"{/if} type="radio" name="check_useragent" value="0" onclick="showPanel('UAPanel', this.value);" />{lang commonNo}</label></td>
+		</tr>
+		<tbody id="UAPanel" {if !$config['check_useragent'] }style="display:none"{/if}>
+		<tr>
+			<td><span>{lang uaRule}</span></td>
+			<td><label><input type="radio" name="ua_allow_first" value="1" {if $config['ua_allow_first'] }checked="checked"{/if} /> {lang uaAllowFirst}</label><br />
+				<label><input type="radio" name="ua_allow_first" value="0" {if !$config['ua_allow_first'] }checked="checked"{/if} /> {lang uaDenyFirst}</label><br />
+				{lang uaBoth}
+					<label><input type="radio" name="allow_ua_both" value="1" {if $config['allow_ua_both'] }checked="checked"{/if} />{lang uaAllow} </label>&nbsp;&nbsp;
+					<label><input type="radio" name="allow_ua_both"  value="0" {if !$config['allow_ua_both'] }checked="checked"{/if} />{lang uaDeny}  </label>
+			</td>
+		</tr>
+		<tr>
+			<td><span>{lang uaList}</span>{lang uaListTip}</td>
+			<td ><table><tr><td style="border: 0; padding: 0 10px 0 0; margin:0;">
+				{lang uaBlackList}<br />
+				<textarea class="textarea" name="ua_blacklist" cols="50" rows="7">
+{$config['ua_blacklist']}
+</textarea>
+			</td><td style="border: 0; padding: 0 10px 0 0; margin:0;">
+				{lang uaWhiteList}<br />
+				<textarea class="textarea" name="ua_whitelist" cols="50" rows="7">
+{$config['ua_whitelist']}
+</textarea>
+			</td></tr></table></td>
+		</tr>
+		</tbody>
+		
+		<tr>
+			<td><span>{lang checkVisitrate}</span></td>
+			<td>
+			<label><input {if $config['check_visitrate'] }checked{/if} type="radio" name="check_visitrate" value="1" onclick="showPanel('VisitRatePanel', this.value);" />{lang commonYes}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label><input {if !$config['check_visitrate'] }checked{/if} type="radio" name="check_visitrate" value="0" onclick="showPanel('VisitRatePanel', this.value);" />{lang commonNo}</label></td>
+		</tr>
+		<tbody id="VisitRatePanel" {if !$config['check_visitrate'] }style="display:none"{/if}>
+		<tr>
+			<td><span>{lang vrRule}</span>{lang vrRuleTip}</td>
+			<td>{lang vrRule1} <input type="text" class="ipt_txt" style="width: 40px" name="visitrate[duration]" value="{$config['visitrate']['duration']}" /> {lang vrRule2}
+				<input type="text" class="ipt_txt" style="width: 40px" name="visitrate[pages]" value="{$config['visitrate']['pages']}" /> {lang vrRule3}
+				<input type="text" class="ipt_txt" style="width: 40px" name="visitrate[ban_time]" value="{$config['visitrate']['ban_time']}" /> {lang vrRule4}
+				<br />
+			{lang vrRule5}<br />
+			<textarea class="textarea" name="visitrate_ip_exception" cols="50" rows="7">{$config['visitrate_ip_exception']}</textarea>
+			</td>
+		</tr>
+		</tbody>
+		<tr>
+			<td colspan="2"><input class="inp_btn" name="settingsubmit" value="{lang submit}" type="submit"></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

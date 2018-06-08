@@ -1,0 +1,56 @@
+{template admin_header}
+<p class="map">站内统计：{lang edit_toplist}</p>
+<h3 class="col-h4 m-t10">{lang edit_toplist}</h3>
+<table class="table">
+  <tr>
+    <td style="width:150px;">{lang user_create_toplist}</td> 
+    <td style="width:150px;">{lang user_edit_toplist}</td>
+    <td style="width:150px;">{lang user_month_toplist}</td>
+    <td>{lang user_day_toplist}</td>
+  </tr>  
+  <tr>
+    <td valign="top">
+    <!--{if !(bool)$edit_toplist[user_create_toplist]}-->
+    {lang no_user}
+    <!--{else}-->
+    <!--{loop $edit_toplist[user_create_toplist] $key $user}-->
+   <a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a> ({$user[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$edit_toplist[user_edit_toplist]}-->
+    {lang no_user}
+    <!--{else}-->
+    <!--{loop $edit_toplist[user_edit_toplist] $key $user}-->
+    <a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a> ({$user[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$edit_toplist[user_month_toplist]}-->
+    {lang no_user}
+    <!--{else}-->
+    <!--{loop $edit_toplist[user_month_toplist] $key $user}-->
+    <a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a> ({$user[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$edit_toplist[user_day_toplist]}-->
+    {lang no_user}
+    <!--{else}-->
+    <!--{loop $edit_toplist[user_day_toplist] $key $user}-->
+ 	<a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a> ({$user[num]})
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+  </tr>
+  
+</table>
+<table class="table">
+  <tr>
+    <td>{lang statistics_message1} {$edit_toplist[last_cache_time]} {lang statistics_message2} {$edit_toplist[cache_time]} {lang statistics_message3}</td>
+  </tr>
+</table>
+{template admin_footer}

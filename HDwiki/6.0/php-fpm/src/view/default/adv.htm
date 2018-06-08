@@ -1,0 +1,32 @@
+<!--{if isset($advlist) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+    <!--{loop $advlist $key $adv}-->
+        <!--{if $key!==5 && $key!==6}-->
+            <!--{if isset($adv[title])}-->
+                <div style="display:none;" id="hide_{$key}">{$adv[code]}</div>
+                <script type="text/javascript">
+                $("#advlist_{$key}")[0].innerHTML = $("#hide_{$key}")[0].innerHTML;
+				$("#hide_{$key}").remove();
+               </script>
+            <!--{else}--> 
+                <!--{loop $adv $post}-->
+                    <div style="display:none;" id="hide_{$key}_{$post[position]}">{$post[code]}</div>
+                    <script type="text/javascript">
+                    $("#advlist_{$key}_{$post[position]}")[0].innerHTML = $("#hide_{$key}_{$post[position]}")[0].innerHTML;
+					$("#hide_{$key}_{$post[position]}").remove(); 
+                    </script>
+                <!--{/loop}-->
+            <!--{/if}-->
+        <!--{/if}-->
+    <!--{/loop}-->
+<!--{/if}-->
+
+<!--{if !empty($advlist[5]) || !empty($advlist[6])}-->
+	<div style=" width:100%; clear: both;">
+    <script src="js/floatadv.js"></script>
+	<script type="text/javascript">
+		{$advlist[5][code]}
+		{$advlist[6][code]}
+		theFloaters.play();
+	</script>
+	</div>
+<!--{/if}-->

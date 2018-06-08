@@ -1,0 +1,31 @@
+{template admin_header}
+<p class="map">站内统计：{lang admin_team}</p>
+<h3 class="col-h4 m-t10">{lang admin_team}</h3>
+<table class="table">
+  <tr>
+    <td style="width:80px;">{lang usermanageUserNick}</td> 
+    <td style="width:80px;">{lang admin_title}</td>
+    <td style="width:100px;">{lang admin_last_login}</td>
+    <td style="width:50px;">{lang admin_leave_day}</td>
+    <td style="width:50px;">{lang admin_credit}</td>
+    <td style="width:50px;">金币数</td>
+    <td>{lang admin_provide_doc}</td>
+  </tr>
+    <!--{loop $admin_team  $user}-->
+      <tr>
+        <td valign="top" ><a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a></td>
+        <td valign="top" >{$user[groupid]}</td>
+        <td valign="top" >{$user[lasttime]}</td>
+        <td valign="top" >{$user[leave_day]}</td>
+        <td valign="top" >{$user[credit2]}</td>
+        <td valign="top" >{$user[credit1]}</td>
+        <td valign="top" >{$user[num]}</td>
+  </tr>
+  <!--{/loop}-->
+  <!-- {if $departstr != null} -->
+  <tr>
+    <td colspan="7" align="right">{$departstr}</td>
+  </tr>
+  <!-- {/if} -->
+</table>
+{template admin_footer}

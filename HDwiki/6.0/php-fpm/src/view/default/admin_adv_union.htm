@@ -1,0 +1,72 @@
+{template admin_header}
+<script type="text/javascript">
+	var selectALL = function (obj){
+		$(".box").attr("checked",obj.checked);
+	}
+	var edit_available = function (advid){
+		$.ajax({
+			url: "index.php?admin_adv-edit",cache: false,dataType: "xml",type:"post",data: { advid: advid },
+			success: function(xml){
+				var	message=xml.lastChild.firstChild.nodeValue;
+				if(message=='ok'){
+					var available = $('#available_'+advid);
+					if('{lang adv_enable}'==$.trim(available.html())){
+						available.html('{lang adv_disable}');
+					}else{
+						available.html('{lang adv_enable}');
+					}
+				}
+			}
+		});
+	}
+	var deleteadv = function (){
+		if(confirm('{lang advConfirmRemove}')){
+			if($(".box:checked").length==0){
+				alert('{lang docRemoveAdvNull}');
+				return false;
+			}
+			$('#formadvlist').attr("action","index.php?admin_adv-remove");
+			$('#formadvlist').submit();
+		}else{
+			return false;
+		}
+	}
+	$(function(){
+		$("#time").attr("value",'{$time}')
+		$("#type").attr("value",'{$type}')
+		$("#orderby").attr("value",'{$orderby}')
+	}); 
+</script>
+<p class="map">内容管理：广告管理</p>
+<p class="sec_nav">广告管理：<a href="index.php?admin_adv-default"><span>管理广告</span></a>
+<a href="index.php?admin_adv-config"><span>设置广告</span></a>
+<a href="index.php?admin_adv-add"><span>添加广告</span></a>
+<a href="index.php?admin_adv-union" class="on"><span>加入广告联盟</span></a>
+</p>
+<h3 class="col-h3">加入广告联盟</h3>
+<p class="m-t10"><img src="style/default/admin/hdwiki.jpg" class=" a-img3 block"/>
+<!--p class="col-p f-14 ad_union">如果您还没有在 百科联盟注册，请选择“<a href="http://www.hdwiki.cn?action=register" target="_blank" class="inp_btn">注&nbsp;册</a>”；</p>
+<p class="col-p f-14 ad_union">如果您已经注册过百科联盟，请选择“<a href="http://www.hdwiki.cn/?action=login" target="_blank"  class="inp_btn">登&nbsp;录</a>”，查看你的广告收入状况。<br/></p-->
+<p class="col-p"><span class="bold m-t10 block">百科广告联盟简介：</span>
+百科联盟是互动在线（Baike.com）面向社区经营者（站长）推出的一项社区营销服务。<br/>
+它是互联网社区领域内全新的营销模式，为广大使用 HDwiki 软件的站长提供多种符合社区特性、<br/>
+且与社区论坛内容高度匹配的广告，帮助站长创造更稳定的收益。<br/>
+百科联盟利用丰富的管理经验，诚心和广大站长合作,不断提高联盟网站的收入。同时，以真心、<br/>
+诚心、用心的服务理念为广大的站长们提供更贴切的服务。不定期地为大家提供更多、更好的广告代码，<br/>
+以切合各站长的需求，也欢迎大家随时给我们提出合理化的建议。</p>
+<p class="col-p">
+<span class="bold">形式：</span><br/>
+CPC广告——（Cost Per Click；Cost Per Thousand Click-Through） 每点击成本，<br/>
+网络广告每次点击的费用。是做为网络广告投放效果的重要参考数据。<br/>
+CPS广告——（Cost Per Sales）即按销售付费。以实际销售产品数量来计算广告费用，是最直接的效果营销广告。</p>
+ <p class="col-p">
+<span class="bold">流程：</span><br/>
+当开展以上几种广告活动时，需要审核成功后的百科联盟会员，到后台取出代码通过HDwiki广告系统置入到不同的页面。</p>
+ <p class="col-p">
+<span class="bold">价格：</span><br/>
+参考百科联盟后台投放时给出的价格。</p>
+<form name="seachadv" method="POST" action="index.php?admin_adv-search" >
+
+</form>
+
+{template admin_footer}

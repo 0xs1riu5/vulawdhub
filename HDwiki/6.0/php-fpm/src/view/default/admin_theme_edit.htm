@@ -1,0 +1,64 @@
+{template admin_header}
+<script>
+	function changetheme(name){
+		name = name.substring(name.indexOf('(')+1,name.indexOf(')'));
+		window.location='index.php?admin_theme-edit-'+name;
+	}
+	function pop(url){
+		window.open(url,"","toolbar=no,scrollbars=no,menubar=no,status=no,resizable=yes");
+	}
+</script>
+<p class="map">插件/模板：模板</p>
+<p class="sec_nav">模板：
+<a href="index.php?admin_theme"><span>设置默认风格</span></a>
+<a href="index.php?admin_theme-create"><span>创建风格</span></a>
+<a href="index.php?admin_theme-list"><span>在线安装</span></a>
+<a href="index.php?admin_theme-edit" class="on"><span>模板编辑</span></a>
+</p>
+<h3 class="col-h3">模板编辑</h3>
+<table class="table m_edit">
+<colgroup>
+	<col style="width:300px;"></col>
+	<col style="width:160px;"></col>
+	<col></col>	
+</colgroup>
+<tr>
+<td colspan="3" class="bold"><form method="post">	选择要编辑的主题：<select name="theme" onchange="changetheme($(this).val())">
+    <!--{loop $themelist $theme}-->
+    	<option
+		<!--{if $currtheme==$theme['path']}-->
+			selected="selected"
+		<!--{/if}-->>
+	{$theme['name']}({$theme['path']})</option>
+    <!--{/loop}-->
+	</select><a href="index.php?admin_theme-baseedit-{$currtheme}" id="baseedit" class="m-lr10">初级编辑</a>
+</form>
+	
+	</td>
+</tr>
+	<tr class="bold">
+		<td>模板</td>
+		<td>可视化编辑</td>
+		<td>源码编辑</td>
+	</tr>
+	<!--{loop $viewlist $view_key $view_list}-->
+	<tr>
+		<td>{eval echo $stylelang[$view_key]}({$view_key}.htm)</td>
+		<td><span>
+		<!--{if $view_list}-->
+			<a href="javascript:void(0)" onclick="pop('index.php?admin_theme-preview-$currtheme-$view_key')"><img src="style/default/admin/ksh.gif" /></a>
+		<!--{/if}-->
+		</td>
+		<td><span><a href="index.php?admin_theme-codeedit-{$currtheme}-{$view_key}-htm"><img src="style/default/admin/yuanma.jpg"/></a></span></td>
+	</tr>
+	<!--{/loop}-->
+	<!--{loop $stylelist $style_key $style_list}-->
+	<tr>
+		<td>{eval echo $stylelang[$style_key]}({$style_key}.{$style_list})</td>
+		<td><span>
+		</td>
+		<td><span><a href="index.php?admin_theme-codeedit-{$currtheme}-{$style_key}-{$style_list}"><img src="style/default/admin/yuanma.jpg"/></a></span></td>
+	</tr>
+	<!--{/loop}-->
+</table>
+{template admin_footer}

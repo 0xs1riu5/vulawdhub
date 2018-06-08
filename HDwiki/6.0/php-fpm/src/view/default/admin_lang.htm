@@ -1,0 +1,137 @@
+{template admin_header}
+
+<script type="text/javascript">
+function updatelang(){
+	var flag = 0;
+	var styleids = document.getElementsByName('all_lang_id[]');
+	for(var i=0;i<styleids.length;i++){
+		var check=document.getElementsByName('lang_state_'+styleids[i].value)[0];
+	   	if(check.checked==true){
+	   		flag = 1;
+	   		break;
+	   	}
+	}
+	if(flag == 0){
+		alert('{lang langonlyone}');
+		return false;
+	}
+	if(confirm('{lang langUpdate}?')==false){
+		return false;
+	}else{
+		document.lang.action='index.php?admin_language-updatelanguage';
+		document.lang.submit();
+	}
+}
+function checkdel(){
+	if(CheckboxNum('lang_id[]')!=false){
+	  		if(confirm('{lang langDel}?')==false){
+			return false;
+		}else{
+			document.lang.action='index.php?admin_language-removelanguage';
+			document.lang.submit();
+		}
+	}
+}
+
+function addlang(){
+	if(confirm('{lang langAdd}?')==false){
+		return false;
+	}else{
+		document.lang.action='index.php?admin_language-addlanguage';
+		document.lang.submit();
+	}
+}
+function setdefault(){
+	if (CheckboxNum('lang_id[]') != 1 ){
+		alert('{lang stylePleaseChooseOne}');
+		return false;
+	}
+	if(confirm('{lang langSelectDefault}?')==false){
+		return false;
+	}else{
+		document.lang.action='index.php?admin_language-setdefaultlanguage';
+		document.lang.submit();
+	}
+}
+function CheckboxNum(eleName)
+{
+  var num=0;
+  var checks=document.getElementsByName(eleName);
+   for(i=0; i<checks.length; i++){
+     if(checks[i].checked==true){
+     	num=num+1;
+     }
+  }
+  return num;
+}
+function checkAll(name){
+	var checkboxs = document.getElementsByName(name);
+	for(var i=0;i<checkboxs.length;i++){
+		if(checkboxs[i].checked==true){
+			checkboxs[i].checked=false;
+		}else{
+			checkboxs[i].checked=true;
+		}
+	}
+}
+</script>
+
+<form name="lang" method="POST">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_language" id="current">{lang langmanage}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+	</table>
+  	<p>
+  		<strong>{lang commonInfo}:</strong>
+		<li>{lang langmanageDesc}</li>
+		<li>{lang langDelDesc}</li>
+	</p>
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+		<tr align=center class="list_title" >
+			<td width="140" align=center ><input name="chkall" onclick="checkAll('lang_id[]')" type="checkbox" />{lang commonSelect}</td>
+  			<td width="100" align=center >{lang langName}</td>
+  			<td width="100" align=center ></td>
+			<td width="100" align=center >{lang langFileName}</td>
+			<td width="120" align=center >{lang styleCopyright}</td>
+  			<td width="100" align=center >{lang styleUseOrNot}</td>
+  		</tr>
+  		<!-- {if $languagelist != null} -->
+		<!--{loop $languagelist $language}-->
+		<tr >
+			<input type="hidden" name="all_lang_id[]" value = "{$language[id]}" />
+		  	<td align='center' ><input type="checkbox" name="lang_id[]" value="{$language[id]}" /></td>
+			<td align='center' ><input type=text class="box" name="lang_name_{$language[id]}" maxlength="20" value="{$language[name]}" size=20 /></td>
+			<td align='center' ><!--{if $language[path] == $lang_name}-->{lang langDefaultSet}<!--{/if}--></td>
+			<td align='center' ><input type=text class="box" name="lang_path_{$language[id]}" maxlength="20" value="{$language[path]}" size=20 /></td>
+			<td align='center' >{$language[copyright]}</td>
+			<td align='center' ><input type="checkbox" name="lang_state_{$language[id]}" value="1" <!--{if $language[available] == '1'}-->checked<!--{/if}--> /></td>
+		</tr>
+		<!--{/loop}-->
+		<!-- {/if} -->
+		<tr >
+			<td align='center' >{lang magCatAdd}</td>
+			<td align='center' ><input type=text class="box" name="addlangname" value="" maxlength="20" size=20 /></td>
+			<td align='center' ></td>
+			<td align='center' ><input type=text class="box" name="addlangpath" value="" maxlength="20" size=20 /></td>
+			<td align='center' ><input type=text class="box" name="addlangcopyright" maxlength="20" value="" size=20 /></td>
+			<td align='center' ><input type="button" class="btn" name="addlangbtn" value="{lang magCatAdd}" onclick="addlang();"/></td>
+		</tr>
+	</table>
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+		<tr>
+			<td><input type="button" class="btn" name="delsel" value="{lang langDel}" onclick="checkdel()"/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" class="btn" name="updatetitlebtn" value="{lang langUpdate}" onclick="updatelang();"/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" class="btn" name="updatetitlebtn" value="{lang langSelectDefault}" onclick="setdefault();"/></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

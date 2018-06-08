@@ -1,0 +1,101 @@
+{template admin_header}
+<p class="map">全局：扩展设置</p>
+<p class="sec_nav">扩展设置：
+<a href="index.php?admin_setting-sec" > <span>防灌水设置</span></a>
+<a href="index.php?admin_setting-anticopy" ><span>防采集设置</span></a>
+<a href="index.php?admin_setting-mail"><span>{lang mailConfig}</span></a>
+<a href="index.php?admin_setting-noticemail"><span>{lang noticeMailConfig}</span></a>
+<a href="index.php?admin_banned"><span>IP禁止</span></a>
+<a href="index.php?admin_setting-passport"><span>通行证设置</span></a>
+<a href="index.php?admin_setting-ucenter"><span>UCenter设置</span></a>
+<a href="index.php?admin_setting-ldap" class="on"><span>LDAP设置</span></a>
+</p>
+<!--{if 1 == $ldap_available}-->
+<h3 class="col-h3">LDAP设置</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示:</li>
+	<li>开启LDAP后，登录将通过LDAP服务器验证</li>
+	<li>开启LDAP后，系统将自动添加LDAP用户到HDWIKI</li>
+	<li>开启LDAP后，本地用户密码将被LDAP同名用户密码覆盖，即便关闭LDAP服务，密码不会自动还原</li>
+    <li>开启LDAP后，如果服务有问题不能登录，请到 data\ldap.inc.php 手动修改或者删除此文件 </li>
+</ul>
+
+<form method="post" action="index.php?admin_setting-ldap">
+<table  class="table">
+    <tbody>
+    <tr height="26">
+       <td width="180"><strong>开启LDAP</strong></td>
+       <td width="250"><input name="ldap_open" type="radio" value="1" <!--{if !empty($ldap_open) &&  $ldap_open == "1"}-->checked="checked"<!--{/if}-->/>
+		{lang adv_enable}   <input name="ldap_open" type="radio" value="0" <!--{if !empty($ldap_open) && $ldap_open != "1"}-->checked="checked"<!--{/if}-->/> {lang adv_disable}</td>
+      <td>选择开启或者关闭LDAP支持</td>
+    </tr>
+    <tr height="26">
+      <td width="180"><strong>LDAP服务器地址：</strong></td>
+      <td width="250"><input maxlength="120" style="width: 200px;" class="inp_txt" name="ldap_server" value="<!--{if !empty($ldap_server)}-->{$ldap_server}<!--{/if}-->" type="text"></td>
+      <td>填写LDAP服务器地址,例如 ldap.example.com。</td>
+    </tr>
+    <tr height="26">
+      <td><strong>LDAP RDN字符串：</strong></td>
+      <td><input style="width: 200px;" class="inp_txt" name="ldap_user" type="inp_txt" value="<!--{if !empty($ldap_user)}-->{$ldap_user}<!--{/if}-->"></td>
+      <td>例如：uid=LDAP_USER_NAME,ou=People,dc=auth,dc=baike,dc=com   ;LDAP_USER_NAME 将会替换为登录时用户名 </td>
+    </tr>
+    <tr height="26">
+      <td><strong>邮箱后缀</strong></td>
+      <td><input style="width: 200px;" class="inp_txt" name="ldap_email" type="inp_txt" value="<!--{if !empty($ldap_email)}-->{$ldap_email}<!--{/if}-->"></td>
+      <td>不需要‘@’例如：baike.com  </td>
+    </tr>
+    <tr>
+      <td height="40">
+        <input class="inp_btn" name="ldapsubmit" value="确 定" type="submit">&nbsp;&nbsp;
+        <input class="inp_btn" value="重 置" type="reset">
+        </td>
+      <td></td>
+      <td></td>
+    </tr>
+    </tbody>
+</table>
+</form>
+<br />
+<br />
+<h3 class="col-h3">LDAP通讯测试</h3>
+<form method="post" action="index.php?admin_setting-ldap">
+<table  class="table">
+<tbody>
+     <tr height="26">
+      <td width="180"><strong>LDAP 服务器连接状态</strong></td>
+      <td width="250"><strong><font color="#FF0000"><!--{$ldap_error}--></font></strong></td>
+      <td></td>
+    </tr>
+     <tr height="26">
+      <td width="180"><strong><span id="ldap_con_info">LDAP 测试登录名</span></strong></td>
+      <td width="250"><input style="width: 200px;" class="inp_txt" name="test_user" type="inp_txt" value=""></td>
+      <td>只要登录名  例如 admin </td>
+    </tr>
+    <tr height="26">
+      <td><strong>LDAP 测试登录密码</strong></td>
+      <td><input style="width: 200px;" class="inp_txt" name="test_password" type="inp_txt" value=""></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td height="40">
+        <input class="inp_btn" name="ldaptestsubmit" value="验证登录" type="submit">&nbsp;&nbsp;
+        <input class="inp_btn" value="重 置" type="reset">
+        </td>
+      <td></td>
+      <td></td>
+    </tr>
+    </tbody>
+</table>
+</form>
+<!--{else}-->
+<table  class="table">
+    <tr>
+        <td>
+        <strong>
+        <font color="#FF0000">当前PHP环境未开启LDAP支持！</font><br/>
+        </strong>
+        </td>
+    </tr>
+</table>
+<!--{/if}-->
+{template admin_footer}

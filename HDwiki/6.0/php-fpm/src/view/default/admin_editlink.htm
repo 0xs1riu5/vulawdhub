@@ -1,0 +1,55 @@
+{template admin_header}
+<script type="text/javascript">
+function checknull(){
+	if($.trim($("#website").val())==""){
+		alert("{lang msgJsNullWebName}");
+		$('#website').focus();
+		return false;
+	}else if($.trim($("#siteurl").val())=="http://" || $.trim($("#siteurl").val())==""){
+		alert("{lang msgJsNullWebUrl}");
+		$('#siteurl').focus();
+		return false;
+	}
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_friendlink-edit-{$link['id']}" id="current">{lang magEditLink}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name=linkedit id=linkedit method="post" action="index.php?admin_friendlink-edit" onsubmit="return checknull();">
+		<table width=100% align=center cellspacing=0 cellpadding=5 class=table_area>
+			<input type = 'hidden' name='id' id='id' value="{$link['id']}" />
+			<tr class=b align=left>
+				<td width=80>{lang magLinkWebName}</td>
+				<td><input type='text' class="box" name='website' id="website" value="{$link['name']}" size='50'>*</td>
+			</tr>
+			<tr class=b align=left>
+				<td>{lang magLinkWebUrl}</td>
+				<td><input type='text' class="box" name='siteurl' id="siteurl" value="{$link['url']}" size='50'>*</td>
+			</tr>
+			<tr class=b align=left>
+				<td>{lang magLinkWebIntro}</td>
+				<td><input type='text' class="box" name='description' id="description" value="{$link['description']}" size='50'></td>
+			</tr>
+			<tr class=b align=left>
+				<td colspan="2"  align='center'>
+					<input name="linksubmit" class="btn" type="submit" value="{lang commonOK}"  />
+		      		<input name="reset" class="btn" type=reset value="{lang commonReset}" />
+		        </td>
+		  	</tr>
+		</table>
+	</form>
+	</td>
+  </tr>
+</table>
+{template admin_footer}

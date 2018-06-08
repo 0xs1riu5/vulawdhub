@@ -1,0 +1,35 @@
+{template header}
+<style type="text/css">.s_result{padding:25px 0 0 20px;*width:260px;}</style>
+<section class="wrap m-t20 clearfix">
+<div class="columns clearfix">
+	<p class="a-r resoult_total gray9">
+	{lang searchImgTip} 
+	</p>
+	<aside class="l a-c group2 s_result">
+		<span class="j-zhong theme_img">
+		<a href="{url pic-view-{$leftpic['id']}-{$leftpic['did']}}" target="_blank" class="a-img1" ><img src="{$leftpic['attachment']}" alt="{$leftpic['description']}" /></a> </span>
+		<h1 class="f16 a-c"><a href="{url doc-view-$leftpic['did']}" target="_blank">{$leftpic['description']}</a></h1>
+		<p class="gray9 a-l">{$leftpic['summary']} ……</p>
+	</aside>
+	<div class="r group1">
+		<ul class="tpbk_img_list j-zhong gray9 clearfix">
+		<!--{if $piclist}-->
+		<!--{loop $piclist $key $data}-->
+			<li>
+			<label><a class="a-img1" href="{url pic-view-{$data['id']}-{$data['did']}}" target="_blank"><img src="{$data['attachment']}" alt="{$data['description']}" /></a></label>
+			<a href="{url doc-view-$data['did']}" target="_blank" class="a-c">{$data['description']}</a><p class="a-c m-lr8">{$data['sizeinfo']}</p>
+			</li>
+		<!--{/loop}-->
+	<!--{else}-->
+	no pictures
+	<!--{/if}-->
+		</ul>
+		<div class="c-b"></div>
+		<div id="fenye" class="m-t10 m-r8 a-r"> 
+		{$departstr}
+		</div>
+		
+	</div>
+</div>
+</section>
+{template footer}

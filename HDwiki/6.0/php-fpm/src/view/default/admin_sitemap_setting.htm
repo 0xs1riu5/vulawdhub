@@ -1,0 +1,90 @@
+{template admin_header}
+<script type="text/javascript">
+function checkForm() {
+	if(isNaN(document.getElementById('updateperi').value)) {
+		alert('{lang periMastBaN}'); return false;
+	} else {
+		return true;
+	}
+}
+</script>
+
+<p class="map">全局：Sitemap</p>
+<p class="sec_nav">Sitemap： <a href="index.php?admin_sitemap-default"><span>{lang sitemapOpt}</span></a> <a href="index.php?admin_sitemap-setting" class="on"><span>{lang sitemapSetting}</span></a></p>
+<h3 class="col-h3">{lang sitemapSetting}</h3>
+
+
+<form method="POST" action="index.php?admin_sitemap-setting" onsubmit="return checkForm();">
+	<table class="table">
+		<tr>
+			<td width="300px"><span>{lang commonParameterName}</span></td>
+			<td><span>{lang commonParameterValue}</span></td>
+		</tr>
+		<tr>
+			<td><span>{lang sitemapGzip}</span>
+			{lang sitemapGzipTip}
+			</td>
+			<td>
+				<label><input type="radio" class="radio" name="sitemap_conf[use_gzip]" {if $config['use_gzip'] == 1} checked="checked"{/if} value="1" /> {lang commonYes}</label>&nbsp;&nbsp;
+				<label><input type="radio" class="radio" name="sitemap_conf[use_gzip]" {if $config['use_gzip'] == 0} checked="checked"{/if} value="0" /> {lang commonNo}</label>
+			</td>
+		</tr>
+		<tr>
+			<td><span>{lang sitemapIdxFreq}</span></td>
+			<td>
+				<select name="sitemap_conf[idx_changefreq]"> 
+					<option value="always" {if $config['idx_changefreq'] == 'always'}selected="selected"{/if}>{lang sitemapAlways}</option> 
+					<option value="hourly" {if $config['idx_changefreq'] == 'hourly'}selected="selected"{/if}>{lang sitemapHourly}</option> 
+					<option value="daily" {if $config['idx_changefreq'] == 'daily'}selected="selected"{/if}>{lang sitemapDaily}</option> 
+					<option value="weekly" {if $config['idx_changefreq'] == 'weekly'}selected="selected"{/if}>{lang sitemapWeekly}</option> 
+					<option value="monthly" {if $config['idx_changefreq'] == 'monthly'}selected="selected"{/if}>{lang sitemapMonthly}</option> 
+					<option value="yearly" {if $config['idx_changefreq'] == 'yearly'}selected="selected"{/if}>{lang sitemapYearly}</option> 
+					<option value="never" {if $config['idx_changefreq'] == 'never'}selected="selected"{/if}>{lang sitemapNever}</option> 
+				</select> 				 
+			</td>
+		</tr>
+		<tr>
+			<td><span>{lang sitemapDocFreq}</span></td>
+			<td>
+				<select name="sitemap_conf[doc_changefreq]"> 
+					<option value="always" {if $config['doc_changefreq'] == 'always'}selected="selected"{/if}>{lang sitemapAlways}</option> 
+					<option value="hourly" {if $config['doc_changefreq'] == 'hourly'}selected="selected"{/if}>{lang sitemapHourly}</option> 
+					<option value="daily" {if $config['doc_changefreq'] == 'daily'}selected="selected"{/if}>{lang sitemapDaily}</option> 
+					<option value="weekly" {if $config['doc_changefreq'] == 'weekly'}selected="selected"{/if}>{lang sitemapWeekly}</option> 
+					<option value="monthly" {if $config['doc_changefreq'] == 'monthly'}selected="selected"{/if}>{lang sitemapMonthly}</option> 
+					<option value="yearly" {if $config['doc_changefreq'] == 'yearly'}selected="selected"{/if}>{lang sitemapYearly}</option> 
+					<option value="never" {if $config['doc_changefreq'] == 'never'}selected="selected"{/if}>{lang sitemapNever}</option> 
+				</select> 
+			</td>
+		</tr>
+		<tr>
+			<td><span>{lang baiduXmlText}</span>{lang baiduXmlTextTip}</td>
+			<td>
+				<select name="sitemap_conf[textcolumn]"> 
+					<option value="summary" {if $config['textcolumn'] == 'summary'}selected="selected"{/if}>{lang baiduXmlSummary}</option> 
+					<option value="content" {if $config['textcolumn'] == 'content'}selected="selected"{/if}>{lang baiduXmlContent}</option> 
+					<option value="none" {if $config['textcolumn'] == 'none'}selected="selected"{/if}>{lang baiduXmlNone}</option> 
+				</select> 			 
+			</td>
+		</tr>		
+		<tr>
+			<td><span>{lang baiduXmlFreq}</span>{lang baiduXmlFreqTip}</td>
+			<td>
+				<input maxlength="5" class="inp_txt" id="updateperi" name="sitemap_conf[updateperi]" type="text" value="{$config['updateperi']}" />
+			</td>
+		</tr>		
+		<tr>
+			<td><span>{lang baiduXmlAuto}</span>{lang baiduXmlAutoTip}</td>
+			<td>
+				<label><input type="radio" class="radio" name="auto_baiduxml" {if $config['auto_baiduxml'] == 1} checked="checked"{/if} value="1" /> {lang commonYes}</label>&nbsp;&nbsp;
+				<label><input type="radio" class="radio" name="auto_baiduxml" {if $config['auto_baiduxml'] == 0} checked="checked"{/if} value="0" /> {lang commonNo}</label>
+			</td>
+		</tr>		
+		
+		<tr>
+			<td colspan="2"><input class="inp_btn" type="submit" value="{lang commonSave}" name="submit" /></td>
+		</tr>
+	</table>
+</form>
+
+{template admin_footer}

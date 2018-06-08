@@ -1,0 +1,65 @@
+{template admin_header}
+<style type="text/css">
+dd{margin:0px;padding:0px;}
+</style>
+ <p class="map">内容管理：热门搜索</p>
+<ul class="col-ul tips">
+	<li class="bold">提示: 	</li>
+	<li>热门搜索名称为必填，url为选填！前台按添加顺序显示。</li>
+</ul>
+<form action="index.php?admin_hotsearch"  method="POST">
+<table  class="table">
+<tr>
+	<td style="width:280px;"><span>{lang hot_searchname}</span></td>
+	<td><span>{lang hot_searchurl}</span></td>
+</tr>
+<tr>
+	<td ><input name="hotname[0][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[0][name])}-->{$hotsearch[0][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[0][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[0][url])}-->{$hotsearch[0][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[1][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[1][name])}-->{$hotsearch[1][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[1][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[1][url])}-->{$hotsearch[1][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[2][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[2][name])}-->{$hotsearch[2][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[2][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[2][url])}-->{$hotsearch[2][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[3][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[3][name])}-->{$hotsearch[3][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[3][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[3][url])}-->{$hotsearch[3][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[4][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[4][name])}-->{$hotsearch[4][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[4][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[4][url])}-->{$hotsearch[4][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[5][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[5][name])}-->{$hotsearch[5][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[5][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[5][url])}-->{$hotsearch[5][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[6][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[6][name])}-->{$hotsearch[6][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[6][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[6][url])}-->{$hotsearch[6][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[7][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[7][name])}-->{$hotsearch[7][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[7][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[7][url])}-->{$hotsearch[7][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[8][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[8][name])}-->{$hotsearch[8][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[8][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[8][url])}-->{$hotsearch[8][url]}<!--{/if}-->"/></td>
+</tr>
+<tr>
+	<td ><input name="hotname[9][name]" class="inp_txt" type="text" size="22" maxlength="40" value="<!--{if !empty($hotsearch[9][name])}-->{$hotsearch[9][name]}<!--{/if}-->"/></td>
+	<td><input name="hotname[9][url]" class="inp_txt" type="text" size="30" value="<!--{if !empty($hotsearch[9][url])}-->{$hotsearch[9][url]}<!--{/if}-->"/></td>
+</tr>
+
+<tr>
+	<td colspan="2" >
+		<input name="submit" class="inp_btn m-r10" type="submit" value="{lang commonOK}" />
+		<input name="reset" class="inp_btn m-r10" type="reset" value="{lang commonReset}" />
+	</td>
+</tr>
+</table>
+</form>
+{template admin_footer}

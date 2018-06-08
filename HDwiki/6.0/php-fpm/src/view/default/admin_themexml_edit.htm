@@ -1,0 +1,182 @@
+{template admin_header}
+<style type="text/css">
+.select{ border:1px #ccc solid; color:blank;}
+.black{background-color:#333; color:white;}
+.white{ background-color:white;}
+.pink{ background-color:pink;}
+.blue{ background-color:blue; color:white;}
+.green{ background-color:green; color:white;}
+.red{ background-color:red;color:white;}
+.brown{ background-color:brown; color:white;}
+.orange{ background-color:orange; }
+.gray{ background-color:gray; color:white;}
+.purple{ background-color:purple; color:white;}
+</style>
+<script language="JavaScript" type="text/javascript">
+function changepic(picurl){
+	$("#sitelogo").attr('src',picurl);
+}
+function IsURL(str_url){
+	return(/(?:https?:\/\/)?\w+\.\w+/.test(str_url));
+}
+function checknull(){
+	if("{$style[img]}"!='1'){
+		if($.trim($("#styleimg").val())==""){
+			alert("{lang styleOnloadImg}");
+			return false;
+		}	
+	}
+	if($.trim($("#name").val())==""){
+		alert("{lang styleStyleNameNotNull}");
+		$('#name').focus();
+		return false;
+	}else if($.trim($("#tag").val())==""){
+		alert("{lang styleStyleTagNotNull}");
+		$('#tag').focus();
+		return false;
+	}else if($.trim($("#author").val())==""){
+		alert("{lang styleAuthorNotNull}");
+		$('#author').focus();
+		return false;
+	}else if(IsURL($.trim($('#authorurl').val()))==false){
+		alert("{lang styleAuthorUrl}");
+		$('#authorurl').focus();
+		return false;
+	}else if($.trim($("#desc").val())==""){
+		alert("{lang styleStyleDesNotNull}");
+		$('#desc').focus();
+		return false;
+	}else if($.trim($("#sitename").val())==""){
+		alert("{lang styleSiteNameNotNull}");
+		$('#sitename').focus();
+		return false;
+	}else if(IsURL($.trim($('#weburl').val()))==false){
+		alert("{lang styleWebUrlNotNull}");
+		$('#weburl').focus();
+		return false;
+	}else if($.trim($("#version").val())==""){
+		alert("{lang styleVersionNotNull}");
+		$('#version').focus();
+		return false;
+	}else if($.trim($("#copyright").val())==""){
+		alert("{lang styleCrNotNull}");
+		$('#copyright').focus();
+		return false;
+	}
+}
+function selectcolor(){
+	$("#tag").val($("#tag").val()+' '+$.trim($("#stylecolor").val()));
+}
+function selectlayout(){
+	$("#tag").val($("#tag").val()+' '+$.trim($("#stylelayout").val()));
+}
+</script>
+<p class="map">插件/模板：编辑模版</p>
+<p class="sec_nav">模板：
+    <a href="index.php?admin_theme" class="on"><span>设置默认风格</span></a>
+    <a href="index.php?admin_theme-create" ><span>创建风格</span></a>
+    <a href="index.php?admin_theme-list" ><span>在线安装</span></a>
+    <a href="index.php?admin_theme-edit" ><span>模板编辑</span></a>
+</p>
+<table align="center" cellpadding="10" cellspacing="0" width="100%" class="mix_eidt">
+  <tr>
+    <td valign="top">
+		<form name="_modifyico" enctype="multipart/form-data" action="index.php?admin_theme-editxml-{$stylename}" method="POST" onsubmit="return checknull();">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+				<tr>
+					<td height="24"  colspan="2">&nbsp;&nbsp;<strong>{lang styleChooseScreen}</strong></td>
+				</tr>
+				<tr>
+					<td height="80" colspan="2">&nbsp;&nbsp;
+					<!--{if $style[img]!='1'}-->
+						<img id="sitelogo" src="style/default/screenshot.jpg"/>
+					<!--{else}-->
+						<img id="sitelogo" src="style/{$style[path]}/screenshot.jpg"/>
+					<!--{/if}-->
+					</td>
+				</tr>
+				<tr>
+					<td height="30" colspan="2">&nbsp;&nbsp;<input style="width:200px;" class="inp_file" name="styleimg" id="styleimg" type="file" onchange="changepic(this.value);"/></td>
+				</tr>
+				<tr>
+					<td height="40" colspan="2">&nbsp;&nbsp;<font color="red">{lang styleScreenTip}</font></td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang styleStyleName}:</strong></td>
+					<td height="24"><input style="width:200px;" class="inp_txt" name="style[name]" id="name" type="text" value="{$style[name]}" /></td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang focusmanageTag}:</strong></td>
+					<td height="24">
+					<select name="stylecolor" id="stylecolor" class="select" onchange="selectcolor();">
+						<option value="" selected="selected">{lang styleColorSelect}</option>
+						<option class="black" value="{lang styleColorBlack}">{lang styleColorBlack}</option>
+						<option class="white" value="{lang styleColorWhite}">{lang styleColorWhite}</option>
+						<option class="pink" value="{lang styleColorPink}">{lang styleColorPink}</option>
+						<option class="blue" value="{lang styleColorBlue}">{lang styleColorBlue}</option>
+						<option class="green" value="{lang styleColorGreen}">{lang styleColorGreen}</option>
+						<option class="red" value="{lang styleColorRed}">{lang styleColorRed}</option>
+						<option class="brown" value="{lang styleColorBrown}">{lang styleColorBrown}</option>
+						<option class="gray" value="{lang styleColorGray}">{lang styleColorGray}</option>
+						<option class="orange" value="{lang styleColorOrange}">{lang styleColorOrange}</option>
+						<option class="purple" value="{lang styleColorPurple}">{lang styleColorPurple}</option>
+						<option class="white" value="{lang styleColorOther}">{lang styleColorOther}</option>
+					</select>
+					<select name="stylelayout" id="stylelayout" onchange="selectlayout();">
+						<option value="" selected="selected">{lang styleSelectLayout}</option>
+						<option value="{lang styleOneLayout}">{lang styleOneLayout}</option>
+						<option value="{lang styleTwoLayout}">{lang styleTwoLayout}</option>
+						<option value="{lang styleThreeLayout}">{lang styleThreeLayout}</option>
+						<option value="{lang styleFourLayout}">{lang styleFourLayout}</option>
+					</select>    
+					<input style="width:300px;" class="inp_txt" name="style[tag]" id="tag" type="text" value="{$style[tag]}" />
+					<font color="red">({lang styleTagCom})</font></td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang pluginWriter}:</strong></td>
+					<td height="24"><input style="width:200px;" class="inp_txt" id="author" name="style[author]" type="text" value="{$style[author]}" /></td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang styleAuthorHttp}:</strong></td>
+					<td height="24"><input style="width:200px;" class="inp_txt" id="authorurl" name="style[authorurl]" type="text" <!--{if $style[authorurl]==''}--> value="http://" <!--{else}--> value="{$style[authorurl]}" <!--{/if}--> /><font color="red">({lang styleauthorurltip})</font></td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang pluginDescript}:</strong></td>
+					<td height="24"><textarea name="style[desc]" id="desc" style="width:300px;" rows="4" cols="47">{$style[desc]}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang styleSiteName}:</strong></td>
+					<td height="24"><input style="width:200px;" class="inp_txt" name="style[sitename]" id="sitename" type="text" value="{$style[sitename]}" /></td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang styleWebUrl}:</strong></td>
+					<td height="24"><input style="width:200px;" class="inp_txt" name="style[weburl]" id="weburl" type="text" <!--{if $style[weburl]==''}--> value="http://" <!--{else}--> value="{$style[weburl]}" <!--{/if}--> /></td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang styleVersion}:</strong></td>
+					<td height="24"><input style="width:200px;" class="inp_txt" name="style[version]" id="version" type="text" value="{$style[version]}" /></td>
+				</tr>				
+				<tr>
+					<td height="24">&nbsp;&nbsp;<strong>{lang styleCopyRight}:</strong></td>
+					<td height="24"><input style="width:200px;" class="inp_txt" name="style[copyright]" id="copyright" type="text" value="{$style[copyright]}" /></td>
+				</tr>
+				<tr>
+					<td height="40" colspan="2">&nbsp;&nbsp;<font color="red">{lang styleStyleTip}</font></td>
+				</tr>
+				<tr>
+				<!--{if $share=='share'}-->
+					<td height="40" colspan="2">&nbsp;&nbsp;<input class="inp_btn" type="submit" value="{lang commonSave}" name="stylesave" id="stylesave" />&nbsp;&nbsp;<input class="inp_btn" type="submit" value="{lang pluginShare}" name="styleshare" id="styleshare" /></td>
+				<!--{else}-->
+					<td height="40" colspan="2">&nbsp;&nbsp;<input class="inp_btn" type="submit" value="{lang commonOK}" name="stylesubmit" id="stylesubmit" /></td>
+				<!--{/if}-->
+				</tr>
+			</table>
+		</form>
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">
+document.getElementById('sitelogo').src=document.getElementById('sitelogo').src+'?'+Math.random();
+</script>
+{template admin_footer}

@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={$encode}">
+<title>{$title}</title>
+</head>
+<body>
+<!--{if $doc_exists==1}-->
+<div style="float:left; padding:0px; width:270px;font-size:12px; background-color:#fff;">
+	<!--{if $doc['image'] != ''}--><img src='{$doc[image]}' width="98" height="74" border="0" style="float:left; margin:0 10px 5px 0;" /><!--{/if}-->
+	<h1 style="font-size:12px; margin:0; padding:0;"><a href='{$doc[url]}' target="_blank" style="color:#0033CC; text-decoration:none">{$title}</a></h1>
+	<p style="padding:0; margin:0;">{$doc['summary']}<a href='{$doc[url]}' target="_blank" style="color:#0033CC;"> {lang readFullText}&gt;&gt;</a></p>
+</div>
+<!--{else}-->
+<div style="float:left; padding:10px; width:270px; background-color:#fff; text-align:center;">
+		<p style="font-size:12px;margin:0; padding:10px 0;text-align:left">&nbsp;&nbsp;&nbsp;&nbsp;{lang momoTip}<a href="{url doc-innerlink-{eval echo urlencode($title)}}" target="_blank">{$title}</a></p>
+		<form action="{url search-fulltext}" method="post"  target="_blank" style="padding:10px 10px 0;  margin:0; padding:10px 0; border-top:1px dashed #9b9b9b">
+			<input name="searchtext" type="text" value="{$title}" size="20" style="color:#999; line-height:20px" />
+			<input name="hdwiki" type='text' style="display:none">
+			<button type="submit" style="border:1px solid #3e88a1; line-height:20px; height:22px; background:#ddd; margin-left:5px">{lang search}</button>
+		</form>
+</div>
+<!--{/if}-->
+</body>
+</html>

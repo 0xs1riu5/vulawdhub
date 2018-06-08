@@ -1,0 +1,63 @@
+{template wapheader}
+{template wapbody}
+    <section class="column gift-list">
+        <ul class="ul-row2 clearfix">
+            <!--{loop $giftlist $gift}-->
+            <li>
+                <a href="javascirpt:void(0);">
+                    <span class="aimg"><img src="$gift['image']" alt="$gift['title']"></span>
+                    <strong>{$gift['shorttitle']}</strong><em>$gift['credit']</em>
+                </a>
+            </li>
+            <!--{/loop}-->
+
+          <!-- <li><a href="javascript:void(0);"><span class="aimg"><img src="../../uploads/userface/1/1_src.jpg" alt=""></span><strong>最机关报协硒鼓</strong><em>1010</em></a></li>
+            <li><a href="javascript:void(0);"><span class="aimg"><img src="../../uploads/201007/1280484381eiJRbLHZ_140.gif" alt=""></span><strong>最机关报协硒鼓</strong><em>1010</em></a></li>
+           -->
+        </ul>
+    </section>
+    <p class="loading gray9">没有更多数据...</p>
+
+    <div class="pop-gift" style="display:none;">
+        <div class="body">
+            <span class="aimg"><img src="uploads/userface/1/1_src.jpg" alt=""></span>
+            <strong></strong>
+            <em></em>
+            <span>请登录电脑进行兑换</span>
+        </div><i class="iclose"></i>
+    </div>
+    <script>
+        $(document).delegate('.ul-row2 a','click',function(){
+            var img_src = $(this).find('img').attr('src');
+            var strong_value = $(this).find('strong').html();
+            var em_value = $(this).find('em').html();
+            $('.pop-gift').find('img').attr('src',img_src);
+            $('.pop-gift').find('strong').html(strong_value);
+            $('.pop-gift').find('em').html(em_value);
+            $('.pop-gift').show();
+        });
+        document.querySelector('.iclose').onclick= function(){document.querySelector('.pop-gift').style.display='none';}
+
+        // 初始化一些数据
+        var beginprice ='{eval echo $beginprice;}';
+        var url = 'index.php?gift-default-'+beginprice;
+        window.WapLoadData.init_data({
+            'bind_element'  : $('.wrap'),
+            'touch_element' : $('.loading'),
+            'load_url'      : url
+        });
+
+        function return_wap_str(data){
+            var return_str = '';
+            for(var i =0;i< data.length;i++){
+                return_str+='<li>';
+                return_str+='<a href="javascript:void(0);">';
+                return_str+='<span class="aimg"><img src="'+data[i]['image']+'" alt="'+data[i]['title']+'"></span>';
+                return_str+='<strong>'+data[i]['shorttitle']+'</strong>';
+                return_str+='<em>'+data[i]['credit']+'</em>';
+                return_str+=' </a></li>';
+            }
+            return return_str;
+        }
+    </script>
+    {template wapfooter}

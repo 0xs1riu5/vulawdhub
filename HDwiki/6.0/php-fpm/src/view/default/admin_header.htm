@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset={WIKI_CHARSET}">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>hdwiki 后台管理中心</title>
+
+
+<link href="style/default/admin/admin.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+</head>
+<body>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+<script type="text/javascript" src="js/jquery.dialog-0.8.min.js"></script>
+<script type="text/javascript">
+	$.dialog.setConfig('base', './style/default');
+</script>
+<div class="right">
+

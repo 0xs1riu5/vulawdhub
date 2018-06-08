@@ -1,0 +1,29 @@
+{template admin_header}
+<table cellpadding="0" cellspacing="1" class="table_list">
+<tr>
+  <td height=25><b>☞文件管理-更改<!--{if $isdir}-->目录<!--{else}-->文件<!--{/if}--> 属性</b></td>
+</tr>
+<tr>
+<th height=25>
+	当前<!--{if $isdir}-->目录<!--{else}-->文件<!--{/if}--> :{$fname}
+	&nbsp;&nbsp;<a href="index.php?admin_filemanager-default-<!--{eval echo str_replace('.','*',$dir.'../');}-->">返回上级目录</a>
+	&nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?admin_filemanager-default"> 返回主目录</a>
+</th>
+</tr>
+<form method="post" name="myform" action="index.php?admin_filemanager-chmod">
+<tr>
+	<td colspan="2">
+		<!--{if $isdir}-->文件夹<!--{else}-->文件<!--{/if}--><!--{eval echo basename($fname);}-->当前属性：{$currentperm} &nbsp;&nbsp;更改属性为：
+		<input name="chmodstr" type="text" size="10">&nbsp;&nbsp;
+		<input name="fname" type="hidden" value="{$fname}">
+		<input name="isdir" type="hidden" value="{$isdir}">
+		<input name="dir" type="hidden" value="{$dir}">
+		<input type="submit" name="dosubmit" value="提交">
+	</td>
+</tr>
+<tr align="center">
+	<td colspan="2">&nbsp;</td>
+</tr>
+</form>
+</table>
+{template admin_footer}

@@ -1,0 +1,46 @@
+{template admin_header}
+<p class="map">站内统计：{lang doc_toplist}</p>
+<h3 class="col-h4 m-t10">{lang doc_toplist}</h3>
+<table class="table">
+  <tr>
+    <td style="width:200px;">{lang doc_view_toplist}</td> 
+    <td style="width:200px;">{lang doc_edit_toplist}</td>
+    <td>{lang doc_comment_toplist}</td>
+  </tr>
+  
+  <tr>
+    <td valign="top">
+    <!--{if !(bool)$doc_toplist[doc_view_toplist]}-->
+    {lang no_doc}
+    <!--{else}-->
+    <!--{loop $doc_toplist[doc_view_toplist] $key $doc}-->
+    <a href="{$setting['seo_prefix']}doc-view-{$doc[did]}{$setting['seo_suffix']}" target="_blank" >{$doc[title]}</a> ({$doc[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->
+     </td>
+    <td valign="top">
+    <!--{if !(bool)$doc_toplist[doc_edit_toplist]}-->
+    {lang no_doc}
+    <!--{else}-->
+    <!--{loop $doc_toplist[doc_edit_toplist] $key $doc}-->
+    <a href="{$setting['seo_prefix']}doc-view-{$doc[did]}{$setting['seo_suffix']}" target="_blank" >{$doc[title]}</a> ({$doc[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top">
+    <!--{if !(bool)$doc_toplist[doc_comment_toplist]}-->
+    {lang no_doc}
+    <!--{else}-->
+    <!--{loop $doc_toplist[doc_comment_toplist] $key $doc}-->
+    <a href="{$setting['seo_prefix']}doc-view-{$doc[did]}{$setting['seo_suffix']}" target="_blank" >{$doc[title]}</a> ({$doc[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->   
+    </td>
+  </tr>
+</table>
+<table class="table">
+  <tr>
+    <td>{lang statistics_message1} {$doc_toplist[last_cache_time]} {lang statistics_message2} {$doc_toplist[cache_time]} {lang statistics_message3}</td>
+  </tr>
+</table>
+{template admin_footer}

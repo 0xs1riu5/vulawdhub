@@ -1,0 +1,238 @@
+{template admin_header}
+
+<p class="map">百科联盟：下载词条</p>
+<p class="sec_nav">下载词条：
+<a href="index.php?admin_hdapi-down" class="on"><span>下载词条</span></a>
+<a href="index.php?admin_hdapi-nosynset"><span>不同步列表</span></a>
+</p>
+
+<h3 class="col-h3">下载词条</h3>
+<!--{if !$is_login}-->
+<dl class="col-dl">
+	<dt>提示：</dt>
+	<dd>您的的联盟尚未登录，请到联盟首页登录。</dd>
+</dl>
+
+<!--{elseif !$is_open}-->
+<dl class="col-dl">
+	<dt>提示：</dt>
+	<dd>您的联盟资料共享功能尚未开通，请到分享设置页面设置为开启。</dd>
+</dl>
+
+<!--{else}-->
+<script type="text/javascript">
+ var titles=[];
+ var finish=0;
+ var all=0;
+ var message=['已经存在，忽略！','导入成功！','获取失败'];
+ var err_times = 0;
+ var clock;
+ var is_break=true;
+ var is_stop = false;
+ var is_get_titles=0;
+ function dotitles(){
+	if(is_get_titles){
+		return;
+	}
+	is_get_titles=1;
+	$.ajax({
+		url:'index.php?admin_hdapi-titles',
+		type:'POST',
+		data:{ tag: $.trim($('#tag').val()) },
+		timeout:22000,
+		dataType:'xml',
+		beforeSend:function(){
+			$('#titles').val('正在请求中...请稍候!');
+		},
+		success :function(data, state){
+			$('#titles').val(data.lastChild.firstChild.nodeValue);
+		},
+		complete :function(response, state){
+			if (state != 'success'){
+				$('#titles').val('网络连接失败，请稍候再试!');
+			}
+			is_get_titles=0;
+		}
+	});
+ }
+ 
+ function resetTitles(){
+	titles = $.trim($('#titles').val());
+	if (titles == ''){
+		titles = [];
+		all=0;
+		finish=0;
+		$('#startImport').val('导入词条');
+		return $('#importTip').html('没有待导入的词条！');
+	}else{
+		titles = titles.split("；");
+		all=titles.length;
+		finish=0;
+	}
+ }
+ 
+ function stopImport(){
+	is_break = true;
+	is_stop = true;
+	titles = [];
+	$('#titles').val('');
+	$('#startImport').val('导入词条');
+ }
+ 
+ function startImport(){
+	if ($.trim($('#titles').val()) == ''){
+		return false;
+	}
+	is_stop = false;
+	is_break = !is_break;
+	if (is_break){
+		return $('#startImport').val('已经暂停，点击可继续导入');
+	}else{
+		$('#startImport').val(' 正在导入，点击可暂停 ');
+	}
+	
+	
+	if(titles.length == 0){
+		titles = $.trim($('#titles').val());
+		if (titles == ''){
+			return $('#importTip').html('没有待导入的词条！');
+		}
+		titles = titles.split("；");
+	 	finish=0;
+	 	all=titles.length;
+		if (titles.length > 0 && titles[titles.length-1] == '') {
+			all--;
+			doimport();
+		}
+	}else{
+		doimport();
+	}
+ }
+ 
+ function doimport(){
+ 	if (is_stop){
+		return;
+	}
+	if (is_break){
+		return $('#importTip').html('暂停中，可继续...');
+	}
+    if(titles.length == 0){
+		is_break=true;
+		$('#startImport').val('导入词条');
+    	$('#importTip').html('恭喜，全部导入完成！');
+		$('#titles').val('');
+    	return;
+	}
+	title=$.trim(titles.shift());
+	
+	if (title == '') return doimport();
+	
+	finish++;
+	$('#startImport').val(' 正在导入，点击可暂停 ');
+	$('#importTip').html('正在导入词条 ('+finish+'/'+all+') “'+title+'”...');
+	$('#importTip').fadeOut(100).fadeIn(100);
+	
+	$.ajax({
+		url:'index.php?admin_hdapi-import',
+		type:'POST',
+		data:{ title:title , cid: $('#cid').val() },
+		timeout:22000,
+		dataType:'xml',
+		beforeSend:function(){
+			
+		},
+		complete :function(response, state){
+			if (state == 'success'){
+				var flag=response.responseXML.lastChild.firstChild.nodeValue;
+				if(flag.length == 1){
+					$('#importTip').html('('+finish+'/'+all+') “'+title+'”  '+message[flag]);
+					$('#titles').val(titles.join("；"));
+					setTimeout("doimport()",500);
+					err_times = 0;
+				}else if (flag.substr(1,1) == '_'){
+					var info = flag.substr(2);
+					if (flag.substr(0,1) == '0'){
+						$('#importTip').html('('+finish+'/'+all+') “'+title+'”  '+ info);
+						$('#titles').val(titles.join("；"));
+						setTimeout("doimport()",1000);
+						err_times = 0;
+					}else if (flag.substr(0,1) == '1'){
+						is_break=true;
+						$('#startImport').val('导入词条');
+				    	$('#importTip').html(info);
+						$('#titles').val('');
+				    	return;
+					}
+				}else if (flag.substr(0,1) == '_'){
+					var info = flag.substr(1);
+					$('#importTip').html('('+finish+'/'+all+') “'+title+'”  '+ info);
+					$('#titles').val(titles.join("；"));
+					if(info.length < 20){
+						setTimeout("doimport()",1000);
+						err_times = 0;
+					}else{
+						$('#titles').val('');
+					}
+				}
+			}else{
+				err_times++;
+				$('#importTip').html('('+finish+'/'+all+') “'+title+'”  '+message[2]);
+				$('#titles').val(titles.join("；") +'；'+ title);
+				if (err_times<6){
+					setTimeout("doimport()", 2000);
+				}else if (err_times<12){
+					setTimeout("setClock(31)", 1000);
+				}else{
+					$('#importTip').html('由于网络原因导致多次连接中断，请其他时段再尝试导入操作。');
+					err_times = 0;
+				}
+			}
+		   
+		}
+	});
+ }
+ 
+ function setClock(x){
+	 if (x>0){
+		if(is_stop){
+			$('#importTip').html('');
+		}else{
+			$('#importTip').html('由于网络原因导致连接暂时中断，'+x+' 秒之后会自动继续导入操作...');
+			x--;
+			setTimeout("setClock("+x+")", 1000);
+		}
+	}else{
+		doimport();
+	}
+ }
+
+</script>
+
+
+<dl class="col-dl">
+	<dt>提示：</dt>
+	<dd>1.在获取过程当中，可能会出现网络连接超时等情况而不能正确返回内容，请等待30秒钟之后再进行尝试。</dd>
+	<dd>2.当正在执行导入操作时，如果点击其他菜单将自动停止导入。</dd>
+</dl>
+<p class="col-p bold">按分类批量导入互动百科的词条到本站</p>	
+
+
+<ul class="col-ul bklmfx">
+	<li>1、输入一个分类名称 [提示：点此查看 <a href="http://kaiyuan.hudong.com/bbs" target="_blank">互动百科分类名称</a> 或 <a href="http://www.baike.com/category/treeManage.jsp" target="_blank">互动百科分类树</a></li>
+	<li><form method="post" onsubmit="dotitles();return false;">
+	<input id="tag" name="tag" type="text" class="inp_txt m-r10" />
+	<input type="submit" value="获 取" class="inp_btn2"/></form>
+	</li>
+	<li>2、确认你要导入的词条：</li>
+	<li>提示：可以手动增删词条，只导入你想要的词条，词条间要用中文 “；”号隔开</li>
+	<li><textarea id="titles" name="titles" cols="70" rows="7" onblur="resetTitles()"></textarea></li>
+	<li>第二步：选择本站分类 <select name='cid' id='cid'>{$cats}</select></li>
+	<li class='red' id="importTip"></li>
+	<li>
+		<input class="inp_btn2 m-r10" id="startImport" value="导入词条" type="button"  onclick="startImport()" />
+		<input class="inp_btn2" id="stopImport" value="终止导入" type="button"  onclick="stopImport()" />
+	</li>
+</ul>
+
+<!--{/if}-->
+{template admin_footer}

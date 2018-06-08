@@ -1,0 +1,141 @@
+{template admin_header}
+<script type="text/javascript">
+var searchdata = "{$searchdata}".replace(/-/g, ",");
+$(document).ready(function() {
+	$(".dialog_show").click(function(){
+		var src = $(this).attr("src");
+		var img_str = '<img src="'+src+'">';
+		var title = $(this).attr("title");
+		$.dialog.box('dialog_show', title, img_str);
+	});
+	$(".eidt_show").click(function(){
+		var src = $(this).attr("src");
+		var title = $(this).attr("title");
+		$.dialog({
+			id:'eidt_show',
+			position:'center',
+			width:500,
+			height:450,
+			title:title,
+			type:'iframe',
+			url:src,
+			styleOverlay:{backgroundColor:'#ffffff'}
+	  	});
+	});	
+	
+	$(".dialog_update").click(function(){
+		var did = $(this).attr('did');
+		window.location.href="index.php?admin_focus-updateimg-"+did+'-'+searchdata;
+	})
+});	
+
+	function updateimg(){
+		if($("input[name='did[]']:checked").length==0){
+			$.dialog.box('immageshow', '注意', '{lang docmanageSelectDoc}');
+			return false;
+		} else if(confirm('确定要更新图片地址么？')){
+			$("form[name='focusdoc']").attr('action',"index.php?admin_focus-updateimg-"+searchdata);
+			$("form[name='focusdoc']").submit();
+		}else{
+			return false;
+		}
+	}
+	
+	function selectALL(obj){
+		$(".box").attr("checked",obj.checked);
+	}
+	function checkdel(){
+		if($("input[name='did[]']:checked").length==0){
+		$.dialog.box('immageshow', '注意', '{lang docmanageSelectDoc}');
+		return false;
+		}else if(confirm('{lang commonConfirmRemove}')){
+			$("form[name='focusdoc']").attr('action','index.php?admin_focus-remove');
+			$("form[name='focusdoc']").submit();
+		}else{
+			return false;
+		}
+	}
+	function updateorder(){
+		if($("input[name='did[]']:checked").length==0){
+		$.dialog.box('immageshow', '注意', '{lang docmanageSelectDoc}');
+		return false;
+		}else if(confirm('{lang focusmanageUpdateOrder}')){
+			$("form[name='focusdoc']").attr('action','index.php?admin_focus-reorder');
+			$("form[name='focusdoc']").submit();
+		}else{
+			return false;
+		}
+	}
+	function checklen(obj){
+		num=obj.value;
+		if(num!=''){
+			if(num>127){
+				alert('{lang focusmanageMaxNum}');
+				obj.value=127;
+			}
+			if(isNaN(num)==true){
+				alert("{lang focusmanagePutNum}");
+				obj.value=0;
+			}
+		}else {
+			obj.value=0;
+		}	
+	}
+</script>
+<p class="map">内容管理：词条管理</p>
+<p class="sec_nav">词条管理：
+<a href="index.php?admin_doc" > <span>管理词条</span></a>
+<a href="index.php?admin_focus-focuslist" class="on"  ><span>推荐词条</span></a>
+<a href="index.php?admin_synonym" ><span>管理同义词</span></a>
+<a href="index.php?admin_relation" ><span>相关词条</span></a>
+<a href="index.php?admin_edition" ><span>版本评审</span></a>
+<a href="index.php?admin_cooperate" ><span>待完善词条</span></a> 
+<a href="index.php?admin_nav" class="new"><span>导航模块<label class="red">new</label></span></a> 
+</p>
+<h3 class="col-h3">{lang message_commend}</h3>
+<h3 class="tol_table">[ 共 <b>{$docsum}</b> 条词条 ]</h3>
+<div class="synonym">
+	<form name="focusdoc" id="focusdoc"  method="POST">
+		<table class="table">
+			<thead>
+				<tr>
+					<td style="width:50px;">{lang commonSelect}</td>
+					<td style="width:80px;">{lang magLinkSeq}</td>
+					<td style="width:240px;">{lang focusmanageTitle}</td>
+					<td style="width:80px;">{lang doctype}</td>
+					<td style="width:180px;">{lang focusmanageSeeImg}</td>
+					<td>{lang commonEdit}</td>
+				</tr>
+			</thead>
+			<!--{loop $lists $list}-->
+			<tr>
+				<td><input type="hidden" name="all_focus_did[]" value = "{$list['did']}" />
+					<input type="checkbox" class="box" name="did[]" value="{$list['did']}" /></td>
+				<td><input type="text" name="order{$list['did']}" value="<!--{$list['displayorder']}-->" size="2" maxlength="3" onblur="checklen(this)"  /></td>
+				<td><a href='index.php?doc-view-{$list['did']}' target='_blank'>{$list['title']}</a></td>
+				<td> {if $list['type'] == 1}<font color="Red">{lang focusmanage}</font>{elseif $list['type'] == 2}<font color="blue">{lang hotdoc}</font>{elseif $list['type'] == 3}<font color="green">{lang wonderdoc}</font>{else}{lang focusmanageNone}{/if} </td>
+				<td><!--{if $list['image']==''}-->
+					{lang focusmanageNone}
+					<!--{else}-->
+					<a href="javascript:void(0)" src="{$list['image']}" class="dialog_show" title='查看图片'>{lang focusmanageClick}</a>
+					<!--{/if}--></td>
+				<td><a href="javascript:void(0)" class="eidt_show" src="index.php?admin_focus-edit-{$list['did']}" class="dialog_show">{lang commonEdit}</a></td>
+			</tr>
+			<!--{/loop}-->
+			<tr>
+				<td colspan="6">
+					<label>
+						<input name="chkall" class="box" onclick="selectALL(this);"  type="checkbox" />&nbsp;&nbsp;{lang commonAllSelect}
+					</label>
+					<input type="button" class="inp_btn2 m-r10"  value="{lang focusmanageDelete}" onclick="checkdel();"/>
+					<input type="button" class="inp_btn2 m-r10"  value="{lang focusmanageEditOrder}" onclick="updateorder();"/>
+					<input type="button" class="inp_btn2" value="更新选中词条图片地址" onclick="updateimg()"  />
+				 </td>
+			</tr>
+			<tr>
+				<td colspan="6"><p class="fenye a-r"> {$departstr} </p></td>
+			</tr>
+		</table>
+	</form>
+</div>
+{template admin_footer} 

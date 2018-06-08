@@ -1,0 +1,76 @@
+{template admin_header}
+<script type="text/javascript">
+function checkAll(id,bool)
+{
+	$("input[name='"+id+"']").attr('checked',bool);	
+}
+</script>
+
+<form name="taskinfo" method="POST">
+<table width="100%" align=center cellspacing=0 cellpadding=0 >
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+			<li><a href="index.php?admin_task" id="current">{lang siteConfigTask}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+  <div class="gnaj">
+  <div class="zhuyi">
+  	<p>
+  		<li>{lang taskTip1}</li>
+		<li>{lang taskTip2}</li>
+		<li>{lang taskTip3}</li>
+	</p>
+  </div>
+    <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+           	<td height="23"   align="left" ><input type="checkbox" name="selectAll" value="checkbox" onclick="checkAll('task_id[]',this.checked)" /><strong>{lang commonTitleDelete}</strong></td>
+		    <td width="20%"  align="center" ><strong>{lang commonName}</strong></td>
+		    <td width="5%"  align="center" ><strong>{lang commonMinute}</strong></td>
+		    <td width="5%"  align="center" ><strong>{lang commonHour}</strong></td>
+		    <td width="5%"  align="center" ><strong>{lang commonSunday}</strong></td>
+		    <td width="5%"  align="center" ><strong>{lang commonWeek}</strong></td>
+		    <td width="15%"  align="right" ><strong>{lang taskPrevExecTime}</strong></td>
+		    <td width="15%"  align="right" ><strong>{lang taskNextExecTime}</strong></td>
+		    <td align="center" ><strong>{lang commonOperate}</strong></td>
+		</tr>
+		{if is_array($tasks)}
+		{loop $tasks $id $task}
+		 <tr>
+	   	  	 <td height="23"  align="left"><input type="checkbox" name="task_id[]" value="{$task[id]}" /></td>
+			 <td align="center">{$task[name]}</td>
+			 <td align="center">{$task[minute]}</td>
+			 <td align="center">{$task[hour]}</td>
+			 <td align="center">{$task[day]}</td>
+			 <td align="center">{$task[weekday]}</td>
+			 <td align="center">{$task[lastrun]}</td>
+			 <td align="center">{$task[nextrun]}</td>
+			 <td align="center">
+			 		{if $task['status']}<a href="index.php?admin_task-taskstatus-{$task[id]}">[{lang commonEnable}]</a>
+			 		{else}<a href="index.php?admin_task-taskstatus-{$task[id]}">[{lang commonDisable}]</a>{/if}
+					<a href="index.php?admin_task-edittask-{$task[id]}">[{lang commonEdit}]</a>
+					<a href="{$task[url]}">[{lang taskExecImmediately}]</a></td>
+	     </tr>
+	     {/loop}
+	     {else}
+			<tr>
+				<td colspan="5" align="center">{lang taskNull}</td>
+			</tr>
+	     {/if}
+
+	 <tr>
+  		<td colspan="5"></td>
+	</tr>
+	<tr>
+		<td height="23">&nbsp;{lang commonAddNew}:</td><td><input class="box" type="text" name="taskname" size="12" maxlength="12" /><td>
+	</tr>
+	<tr>
+		<td height="40" colspan="9" align="center"><input class="btn" name="submit" value="{lang commonOK}" type="submit"></td>
+	</tr>
+     </table>
+</form>
+{template admin_footer}

@@ -1,0 +1,44 @@
+{template header}
+<section class="wrap clearfix">
+<div class="l group1 resoult_list">
+	<div class="columns cre_search">
+	<form name="createform" method="post" action="{url doc-create}">
+	<?php echo csrf_field(); ?>
+	<dl class="ul_l_s">
+		<dd class="create">
+			<p class="f20"><i class="ico-warnn"></i>{lang notExistTipLeft}<a href="{url doc-create}" class="clink" >{$title}</a>{lang notExistTip}</p>
+		<!--{if $search_tip_switch=='1' }-->{lang searchConsultHudong}
+		<a href="http://www.baike.com/wiki/{$title}" target="_blank" class="clink">{$title}</a>
+		<!--{/if}-->
+		<p>
+		<input name="title" type="hidden" value="{$title}"/>
+		<input name="create" type="submit" value="{lang createDoc}" class="btn_inp blue"/></p>
+		</dd>
+	</dl>
+	</form>
+	</div> 
+
+	<!--{if !empty($list)}-->
+	<p class="resoult_total f18">{lang searchCorrelative}</p>
+	<!--{loop $list $key $doc}-->
+	<dl class="col-dl">
+	<dt><a href="{url doc-view-$doc['did']}" class="clink f20">{$doc['title']}</a></dt>
+	<dd class="gray9"><p><span>{lang summary}:</span>{$doc['summary']}<a class="clink" href="{url doc-view-$doc['did']}" class="block">[{lang readFullText}]</a></p></dd>
+	</dl>
+	<!--{/loop}-->
+	<dl class="col-dl">
+		<dd><a class="clink" href="{url search-fulltext-title-{eval echo urlencode($title)}--all-0--time-desc-1-1}">{lang searchMore}</a></dd>
+	</dl>
+	<!--{/if}-->
+</div>
+
+<aside class="r group2">
+	<div class="bor-ccc ad">
+	<p class="a-c m-t10 col-p" >
+	{lang moreDetail}<a href="http://www.baike.com/wiki/{eval echo urlencode({$searchtext})}" target="_blank">{lang hudong}</a><br/>
+	{lang moreDetail}<a href="http://www.google.com.hk/search?hl=zh-CN&newwindow=1&q={eval echo urlencode({$searchtext})}&aq=f" target="_blank">{lang google}</a>
+	</p>
+	</div>
+</aside>
+</section>
+{template footer}

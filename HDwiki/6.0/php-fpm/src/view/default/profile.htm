@@ -1,0 +1,89 @@
+{template header}
+<script type="text/javascript">
+	function expand(id){
+		if(id=='usermanage'){
+			$("ul#usermanage").toggle(); 
+		}else{
+			$('ul#userpms').toggle();
+		}
+	}
+</script>
+<div class="wrap hd_map">
+	<a href="{WIKI_URL}">{$setting['site_name']}</a> &gt; <a href="{url user-profile}">{lang selfManage}</a> &gt; {lang profile}</div>
+<section class="wrap clearfix">
+<div class="r group1 gl_manage_main bor-ccc">
+	<h2 class="col-h2">{lang profile}</h2>
+	<dl class="col-dl gr_info">
+	<dd><a href="#" target="_blank" class="a-img2 l"><img id="userimage" alt="" src="<!--{if $user[image] == ''}-->style/default/user.jpg<!--{else}-->{$user[image]}<!--{/if}-->"/></a></dd>
+	<dd><span class="tl gray9">{lang userName}:</span><!--{$user[username]}--> (<!--{if $user[gender]==1}-->{lang male}<!--{else}-->{lang female}<!--{/if}-->)</dd>
+	<dd><span class="tl gray9">{lang popularity}:</span><!--{$user[views]}--></dd>
+	<dd><span class="tl gray9">{lang creditTotal}:</span>$user[credits]
+	<!--{if isset($iscredit)}--> <a href="{url user-exchange}">UC{lang checkcredits}</a><!--{/if}-->
+	</dd>
+	<dd><span class="tl gray9">{lang userTitle}: </span><font color="{$user['color']}">{$user['grouptitle']}</font>
+	<!--{for $i=0; $i<$user['editorstar'][3]; $i++}--><img src="style/default/star_level3.gif"/><!--{/for}-->
+	<!--{for $i=0; $i<$user['editorstar'][2]; $i++}--><img src="style/default/star_level2.gif"/><!--{/for}-->
+	<!--{for $i=0; $i<$user['editorstar'][1]; $i++}--><img src="style/default/star_level1.gif"/><!--{/for}--></dd>
+	<dd><span class="tl gray9">{lang location}: </span><!--{$user[location]}--></dd>
+	<dd><span class="tl gray9">{lang birthday}: </span><!--{$user[birthday]}--></dd>
+	<dd><span class="tl gray9">{lang regTime}: </span>{$user[regtime]}</dd>
+	<dd><span class="tl gray9">{lang signature}:</span> {$user[signature]}</dd>
+	</dl>
+<div class="info_other">
+	<h3 class="col-h2" >{lang creditdetail}</h3>
+	<table class="table" width="830">
+	<thead>
+	<tr>
+		<td>{lang creditTotal}</td>
+		<td>{lang credit}</td>
+		<td>{lang gold}</td>
+		<td>{lang dailyOperate}</td>
+		<td>{lang createDoc}</td>
+		<td>{lang editDoc}</td>
+		<td>{lang removedDoc}</td>
+		<td>{lang promotion}</td>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td>{$creditDetail['creditTotal']} </td>
+		<td>{$user['credit2']} </td>
+		<td>{$user['credit1']} </td>
+		<td>{$creditDetail['dailyOperate']} </td>
+		<td>{$creditDetail['createDoc']}</td>
+		<td>{$creditDetail['editDoc']}</td>
+		<td>{$creditDetail['removedDoc']}</td>
+		<td>{eval echo $creditDetail['promotion-visit']+$creditDetail['promotion-register']}</td>
+	</tr>
+	</tbody>
+	</table>
+</div>
+</div>
+<aside class="l group2">
+<div class="sidebar bor-ccc gl_manage">
+	<h2 class="col-h2 cblue"><span onclick="expand('usermanage');">{lang profile}</span></h2>	
+	<ul id="usermanage">
+		<li class="on"><a href="{url user-profile}" target="_self">{lang profile}</a></li>
+		<li><a href="{url user-editprofile}" target="_self" >{lang editProfile}</a></li>
+		<li><a href="{url user-editpass}" target="_self">{lang editPass}</a></li>
+		<li><a href="{url user-editimage}" target="_self">{lang editImage}</a></li>
+		<li><a href="{url doc-managesave}" target="_self">{lang manageSave}</a></li>
+		<li><a href="{url user-invite}" target="_self">{lang regInvite}</a></li>
+	</ul>
+</div><div class="sidebar columns gl_manage">
+	<h2 class="col-h2 cblue"><span onclick="expand('userpms');">{lang shortmessage}</span></h2>		
+	<ul id="userpms">
+		<li><a href="{url pms-box-inbox}" target="_self">{lang inbox}</a></li>
+		<li><a href="{url pms-box-outbox}" target="_self" >{lang outbox}</a></li>
+		<li><a href="{url pms-sendmessage}" target="_self" >{lang sendmessage}</a></li>
+		<li><a href="{url pms-box-drafts}" target="_self">{lang draft}</a></li>
+		<li><a href="{url pms-blacklist}" target="_self">{lang blacklist}</a></li>
+	</ul>
+</div>
+<div id="block_left">{block:left/}</div>
+</aside>
+</section>
+<script type="text/javascript">
+	$('#userimage').attr('src',$('#userimage').attr('src')+'?'+Math.random());
+</script>
+{template footer}

@@ -1,0 +1,88 @@
+{template admin_header}
+<p class="map">全局：扩展设置</p>
+<p class="sec_nav">扩展设置：
+<a href="index.php?admin_setting-sec" > <span>防灌水设置</span></a>
+<a href="index.php?admin_setting-anticopy" ><span>防采集设置</span></a>
+<a href="index.php?admin_setting-mail"><span>{lang mailConfig}</span></a>
+<a href="index.php?admin_setting-noticemail"><span>{lang noticeMailConfig}</span></a>
+<a href="index.php?admin_banned" ><span>IP禁止</span></a>
+<a href="index.php?admin_setting-passport" ><span>通行证设置</span></a>
+<a href="index.php?admin_setting-ucenter" class="on"><span>UCenter设置</span></a>
+<a href="index.php?admin_setting-ldap"><span>LDAP设置</span></a>
+</p>
+
+<h3 class="col-h3">UCenter设置</h3>
+<form method="post" action="index.php?admin_setting-ucenter">
+<table  class="table">
+    <tr>
+      <td width="180px" height="26"><strong>开启UCenter</strong></td>
+		<td>
+		<input name="ucopen" type="radio" value="1" <!--{if $ucopen == "1"}-->checked="checked"<!--{/if}-->/> 
+		{lang adv_enable}   <input name="ucopen" type="radio" value="0" <!--{if $ucopen != "1"}-->checked="checked"<!--{/if}-->/> {lang adv_disable}</td>
+    </tr>
+    <tr height="26">
+      <td width="180px"><strong>哪些行为加入到事件？</strong></td>
+      <td>
+      <input name="feed[]" type="checkbox"  value="create" <!--{if $create}-->checked='checked'<!--{/if}--> /> 创建词条 
+      <input name="feed[]" type="checkbox"  value="edit" <!--{if $edit}-->checked='checked'<!--{/if}--> /> 编辑词条 </td>
+    </tr>
+    <tr>
+      <td width="180" >
+      <input class="inp_btn" type="submit" name="submit" value="确 定" />
+      </td>
+      <td></td>
+    </tr>
+</table>
+</form>
+<br />
+<form method="post" action="index.php?admin_setting-ucenter">
+<ul class="col-ul">
+	<li>如果开启了 UCenter 请在填写下面的设置。</li>
+</ul>
+<table  class="table">
+    <tbody>
+    <tr height="26">
+      <td width="180"><strong>UCenter URL：</strong></td>
+      <td width="250"><input maxlength="120" style="width: 200px;" class="inp_txt" name="ucapi" value="<!--{if !empty($uc_api)}-->{$uc_api}<!--{/if}-->" type="text"></td>
+      <td>填写UCenter的路径,例如: http://www.site.com/uc_server (最后不要加'/')。</td>
+    </tr>
+    <tr height="26">
+      <td><strong>UCenter 密码：</strong></td>
+      <td><input style="width: 200px;" class="inp_txt" name="ucpassword" value="" type="password"></td>
+      <td>UCenter 的创始人密码。</td>
+    </tr>
+    <tr height="26">
+      <td><strong>UCenter IP地址：</strong></td>
+      <td><input maxlength="120" style="width: 200px;" class="inp_txt" name="ucip" value="" type="text"></td>
+      <td>UCenter的IP地址（注意：一般不用填写，只在通信失败后填写。）</td>
+    </tr>
+    <tr>
+      <td height="40">
+      	<input name="pluginid" value="1" type="hidden">
+        <input class="inp_btn" name="ucsubmit" value="确 定" type="submit">&nbsp;&nbsp;
+        <input class="inp_btn" value="重 置" type="reset">
+        </td>
+      <td></td>
+      <td></td>
+    </tr>
+    </tbody>
+</table>
+</form>
+<br />
+<br />
+<h3 class="col-h3">用户导入</h3>
+<form method="post" action="index.php?admin_setting-ucenter">
+<table  class="table">
+    <tr>
+        <td>
+        <strong>
+        <!--{if !empty($iscon)}--><font color="#FF0000">您还没有配置UCenter！</font><br/>
+        <!--{elseif !empty($isopen)}--><font color="#FF0000">您还没有开通UCenter！</font><br/>
+        <!--{elseif !empty($islock)}--><font color="#FF0000">您已经导入过用户!</font><br/><!--{/if}-->
+        </strong>
+        <input class="inp_btn2" name="import" type="submit" value="将hdwiki用户导入ucenter" /><br />说明:只有当您的HDwiki用户在UCenter服务端没有注册导致不能登录时，可以执行此操作。操作前务必备份好HDwiki数据库!
+        </td>
+    </tr>
+</table>
+</form>
+{template admin_footer}

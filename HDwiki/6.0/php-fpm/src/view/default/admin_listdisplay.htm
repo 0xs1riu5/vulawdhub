@@ -1,0 +1,82 @@
+{template admin_header}
+<p class="map">全局：内容设置</p>
+<p class="sec_nav">内容设置： <a href="index.php?admin_setting-index"> <span>首页设置</span></a> <a href="index.php?admin_setting-listdisplay" class="on"><span>列表设置</span></a> <a href="index.php?admin_setting-watermark" ><span>图片设置</span></a> <a href="index.php?admin_setting-docset" ><span>词条设置</span></a> <a href="index.php?admin_setting-search" ><span>搜索设置</span></a> <a href="index.php?admin_setting-attachment" ><span>附件设置</span></a></p>
+<h3 class="col-h3">默认列表设置</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示：</li>
+	<li>此列表设置的参数，为系统初始值。</li>
+	<li>若在编辑模版处修改了参数，则此处参数值无效。</li>
+	<li>若想此处设置的参数有效，则在编辑模版处，将参数留空。</li>
+</ul>
+<form method="post" action="index.php?admin_setting-listdisplay" >
+	<table class="table">
+		<tr>
+			<td width="200px;"><span>{lang commonParameterName}</span></td>
+			<td><span>{lang commonParameterValue}</span></td>
+		</tr>
+		<tr>
+			<td>{lang indexCommend}</td>
+			<td><input class="inp_txt2" size="10" name="listplay[index_commend]"  maxlength="10" value="{$listdisplay['index_commend']}"></td>
+		</tr>
+		<tr>
+			<td>{lang indexHotdoc}</td>
+			<td><input class="inp_txt2" size="10" name="listplay[index_hotdoc]"  maxlength="10" value="{$listdisplay['index_hotdoc']}"></td>
+		</tr>
+		<tr>
+			<td >{lang indexWonderdoc}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[index_wonderdoc]"  maxlength="10" value="{$listdisplay['index_wonderdoc']}"></td>
+		</tr>
+		<tr>
+			<td >{lang indexRecentUpdate}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[index_recentupdate]"  maxlength="10" value="{$listdisplay['index_recentupdate']}"></td>
+		</tr>
+		<tr>
+			<td >{lang indexpicture}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[index_picture]"  maxlength="10" value="{$listdisplay['index_picture']}"></td>
+		</tr>
+		<tr>
+			<td >{lang indexRecentComment}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[index_recentcomment]"  maxlength="10" value="{$listdisplay['index_recentcomment']}" /></td>
+		</tr>
+		<tr>
+			<td >首页待完善词条显示数</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[index_cooperate]"  maxlength="10" value="{$listdisplay['index_cooperate']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang listFocus}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[list_focus]"  maxlength="10" value="{$listdisplay['list_focus']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang listRecentUpdate}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[list_recentupdate]"  maxlength="10" value="{$listdisplay['list_recentupdate']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang listWeekuser}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[list_weekuser]"  maxlength="10" value="{$listdisplay['list_weekuser']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang listAllcredit}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[list_allcredit]"  maxlength="10" value="{$listdisplay['list_allcredit']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang listPopularity}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[list_popularity]"  maxlength="10" value="{$listdisplay['list_popularity']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang listLetter}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[list_letter]"  maxlength="10" value="{$listdisplay['list_letter']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang categoryView}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[category_view]"  maxlength="10" value="{$listdisplay['category_view']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang categoryLetter}</td>
+			<td ><input class="inp_txt2" size="10" name="listplay[category_letter]"  maxlength="10" value="{$listdisplay['category_letter']}" /></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input class="inp_btn" type="submit" value="{lang commonSave}" name="submit" /></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

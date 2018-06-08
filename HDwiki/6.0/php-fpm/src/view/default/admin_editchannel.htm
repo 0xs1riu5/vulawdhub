@@ -1,0 +1,59 @@
+{template admin_header}
+<script type="text/javascript">
+function checknull(){
+	if($.trim($('#name').val())==""){
+		alert("{lang channel_nameNotNull}");
+		$('#name').focus();
+		return false;
+	}
+	if($.trim($('#url').val())==""){
+		alert("{lang channel_urlNotNull}");
+		$('#url').focus();
+		return false;
+	}else if(IsURL($.trim($('#url').val()))==false){
+		alert("{lang msgUrlWrong}");
+		$('#siteurl').focus();
+		return false;
+	}
+}
+function IsURL(str_url){
+	return(/(?:https?:\/\/)?\w+\.\w+/.test(str_url));
+}
+</script>
+<p class="map">全局：基本设置</p>
+<p class="sec_nav">基本设置：<a href="index.php?admin_channel" class="on"> <span>频道管理</span></a> <a href="index.php?admin_setting-cache"> <span>缓存设置</span></a> <a href="index.php?admin_setting-seo"><span>SEO设置</span></a> <a href="index.php?admin_setting-code"><span>验证码</span></a> <a href="index.php?admin_setting-time"><span>时间设置</span></a> <a href="index.php?admin_setting-cookie"><span>COOKIE设置</span></a> <a href="index.php?admin_setting-credit" ><span>经验金币设置</span></a> <a href="index.php?admin_setting-logo" ><span>LOGO设置</span></a></p>
+<h3 class="col-h3">编辑频道</h3>
+<form name="channeledit" id="channeledit" method="post" action="index.php?admin_channel-edit" onsubmit="return checknull();">
+	<table class="table">
+		<tr>
+			<td width='80'>频道名称</td>
+			<td><input type='text' class="inp_txt" name='name' id="name" value="{$channel['name']}" size='50'> <b class="red">*</b><input type = 'hidden' name='id' id='id' value="{$channel['id']}" /></td>
+		</tr>
+		<tr>
+			<td>频道URL</td>
+			<td><input type='text' class="inp_txt" name='url' id="url" value="{$channel['url']}" size='50'> <b class="red">*</b></td>
+		</tr>
+		<tr>
+			<td>频道状态</td>
+			<td>
+				<input type="radio" name="available" value="1" <!--{if $channel['available']==1}-->checked="checked"<!--{/if}--> />显示
+				<input type="radio" name="available" value="0" <!--{if $channel['available']==0}-->checked="checked"<!--{/if}--> />隐藏
+			</td>
+		</tr>
+		<tr>
+			<td>频道状态</td>
+			<td>
+				<input type="radio" name="position" value="1" <!--{if $channel['position']==1}-->checked="checked"<!--{/if}--> />顶部
+				<input type="radio" name="position" value="2" <!--{if $channel['position']==2}-->checked="checked"<!--{/if}--> />头部导航
+				<input type="radio" name="position" value="3" <!--{if $channel['position']==3}-->checked="checked"<!--{/if}--> />底部
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<input name="channelsubmit" class="inp_btn" type="submit" value="{lang commonOK}"  />
+			<input name="reset" class="inp_btn" type='reset' value="{lang commonReset}" />
+			</td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

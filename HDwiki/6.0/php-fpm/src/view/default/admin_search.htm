@@ -1,0 +1,51 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	if(isNaN($('#search_time').val())==true){
+		alert('{lang search_time_error}');
+		$('#search_time').focus();
+		return false;
+	}
+}
+</script>
+<p class="map">全局：内容设置</p>
+<p class="sec_nav">内容设置： <a href="index.php?admin_setting-index"> <span>首页设置</span></a> <a href="index.php?admin_setting-listdisplay" ><span>列表设置</span></a> <a href="index.php?admin_setting-watermark" ><span>图片设置</span></a> <a href="index.php?admin_setting-docset"><span>词条设置</span></a> <a href="index.php?admin_setting-search" class="on"><span>搜索设置</span></a> <a href="index.php?admin_setting-attachment" ><span>附件设置</span></a></p>
+<h3 class="col-h3">搜索设置</h3>
+<form method="POST" action="index.php?admin_setting-search" onsubmit="return doSubmit();">
+<table class="table">
+	<tr>
+		<td width="500px"><span>{lang commonParameterName}</span></td>
+		<td><span>{lang commonParameterValue}</span></td>
+	</tr>
+	<!--
+	<tr>
+		<td><span>云搜索</span>是否开启云搜索</td>
+		<td>
+			<label><input type="radio"  name="setting[cloud_search]" value="1" {if $basecfginfo['cloud_search']=='1' || '' === $basecfginfo['cloud_search']  }checked{/if}/>{lang commonYes}</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[cloud_search]" value="0" {if $basecfginfo['cloud_search']=='0'}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	-->
+	<tr>
+		
+		<td><span>{lang searchConsultSwitch}</span>{lang searchConsultHudong}</td>
+		<td>
+			<label><input type="radio"  name="setting[search_tip_switch]" value="1" {if $basecfginfo['search_tip_switch']=='1'}checked{/if}/>{lang commonYes}</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[search_tip_switch]" value="0" {if $basecfginfo['search_tip_switch']=='0'}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr>
+		
+		<td><span>{lang search_time}</span>{lang search_time_desc}</td>
+		<td>
+		<input type="input" class="inp_txt" name="setting[search_time]" id="search_time"  {if isset($basecfginfo['search_time'])}value="$basecfginfo['search_time']"{else}value="30"{/if}/>
+			</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input class="inp_btn" name="searchsubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+		</td>
+	</tr>
+</table>
+</from>
+{template admin_footer}

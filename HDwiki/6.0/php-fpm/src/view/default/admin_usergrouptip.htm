@@ -1,0 +1,42 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	$.post(
+		"index.php?admin_usergroup-remove",
+		{destgroupid: $('#destgroupid').val() , groupid:'$groupid',submit:'true'},
+		function(){
+			parent.parent.location="index.php?admin_usergroup";
+			parent.parent.GB_hide();
+		}
+	);
+}
+</script>
+ <form name="usergroupform">
+<table width="100%" align="center" cellspacing="1" cellpadding="3" class="table_area" height="100%">
+<tr class="b" align="left">
+<td colspan="2">
+  <font color="red"><b>{lang usergroupDelTip}</b></font><p /><p />
+</td>
+</tr>
+<tr class="b">
+<td  align="center">{lang usermanageUserGroup}</td>
+<td>
+ <select class="box" name="destgroupid" id="destgroupid">
+	<!--{loop $usergrouplist $usergroup}-->
+		<!--{if $usergroup[groupid]!=$groupid }-->
+	 	<option value="{$usergroup[groupid]}">{$usergroup[grouptitle]}</option>
+	 	<!--{/if}-->
+	<!--{/loop}-->
+  </select>
+</td>
+</tr>
+<tr class="b">
+<td colspan="2" align="center">
+<p /><p />
+    <input name="yes" class="btn" type="button" value="{lang commonOK}" onclick="docheck();"   />&nbsp;&nbsp;&nbsp;
+    <input name="cancel" class="btn" type="button" value="{lang commonCancel}" onclick="javascript:parent.parent.GB_hide();" />
+</td>
+</tr>
+</table>
+</form>
+{template admin_footer}

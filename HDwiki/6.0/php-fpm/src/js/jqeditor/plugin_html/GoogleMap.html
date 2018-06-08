@@ -1,0 +1,154 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Google地图</title>
+<style>
+html {height:100%; }
+body {height:100%; margin:0; padding:0; background-color:#FFF;}
+#map_canvas {width:99%; height:310px;border:1px solid #ccc;}
+</style>
+</head>
+<body>
+<table>
+    <tbody>
+	<tr>
+        <td><input id="map-address" value="北京市" type="text" style="width:200px;"></td>
+        <td>
+		<input id="map-search" type="button" value="搜 索"/></td>
+    </tr>
+	</tbody>
+</table>
+<div id="map_canvas"><br />&nbsp;&nbsp;正在加载地图...</div>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=zh_CN"></script>
+<script>
+try{
+var jQEditor, 
+	Main = {
+	address: '北京市',
+	defaultAddress: [39.9361317454621,116.38338266708979],
+	map: null,
+	geocoder: null,
+	marker: null,
+	
+	init: function () {
+		var self = this,
+			pos = self.defaultAddress,
+			latlng = new google.maps.LatLng(pos[0], pos[1]),
+			options = {
+				zoom: 11,
+				center: latlng,
+				disableDefaultUI: true,
+				panControl: true,
+				zoomControl: true,
+				mapTypeControl: true,
+				scaleControl: true,
+				streetViewControl: false,
+				overviewMapControl: true,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			
+		self.map = new google.maps.Map(document.getElementById("map_canvas"), options);
+		self.geocoder = new google.maps.Geocoder();
+		self.geocoder.geocode({latLng: latlng}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				if (results[3]) {
+					var address = results[3].formatted_address;
+					document.getElementById("map-address").value = address;
+					self.address = address;
+				}
+			}
+		});
+		self.marker = new google.maps.Marker({
+			map: self.map,
+			draggable:true
+		});
+		self.load();
+	},
+	
+	callback: function( ){
+		var self = this, map = self.map, geocoder = self.geocoder, marker = self.marker;
+		if ( !map ) {
+			return;
+		}
+		
+		var img, url, els = jQEditor.mod('Event').getElement();
+		if( els && els.img 
+			&& els.img.src.indexOf("http://maps.google.com/maps/api/staticmap") > -1
+		){
+			img = els.img;
+			url = img.getAttribute("src");
+			
+			var map = self.map,
+				marker = self.marker,
+				centers = self.getValueFromUrl(url,"center").split(","),
+				point = new google.maps.LatLng(Number(centers[0]),Number(centers[1]));
+			map.setCenter(point);
+			map.setZoom(Number(self.getValueFromUrl(url,"zoom")));
+			centers = self.getValueFromUrl(url,"markers").split(",");
+			marker.setPosition(new google.maps.LatLng(Number(centers[0]),Number(centers[1])));
+		}
+
+	},
+	
+	search: function ( address ) {
+		var self = this, map = self.map, geocoder = self.geocoder, marker = self.marker;
+		var address = document.getElementById('map-address').value;
+		if (!map || !address ) {
+			return;
+		}
+		geocoder.geocode({address : address}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				self.address = address;
+				
+				map.setZoom(16);
+				map.setCenter(results[0].geometry.location);
+				
+                var bounds = results[0].geometry.viewport;
+                map.fitBounds(bounds);
+                marker.setPosition(results[0].geometry.location);
+                marker.setTitle(address);
+			} else{
+				alert('无法定位到地址："' + address+'"');
+			}
+		});
+	},
+	
+	load: function( ){
+		var self = this;
+		if( parent.jQEditor ){
+			jQEditor = parent.jQEditor;
+			var Plugin = jQEditor.plugin('GoogleMap');
+			
+			Plugin.iframeLoad( {win: window} );
+		}
+		
+		document.getElementById("map-search").onclick = function(){
+			self.search();
+		}
+		
+		document.getElementById('map-address').onkeydown = function (e){
+			e = e || event;
+			var keyCode = e.keyCode || e.which || e.charCode;
+			if ( keyCode === 13 ){
+				self.search();
+			}
+		};
+		
+		self.callback();
+	},
+	
+    getValueFromUrl: function(url, name){
+        var reg = new RegExp(name+"=((\\d+|[.,])*)","g"),
+			match = reg.exec(url);
+		return match ? match[1] : '';
+    }
+}
+Main.init();
+}catch(e){
+	// 禁止ie6可能的错误
+}
+</script>
+</body>
+</html>

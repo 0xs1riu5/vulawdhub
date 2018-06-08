@@ -1,0 +1,38 @@
+{template admin_header}
+<script type="text/javascript">
+	var docheck = function (){	
+		var status=true;
+		if(''==$.trim($('#gift_notice').val())){
+			$('#gift_notice').focus();
+			alert('{lang notice_msg4}');
+			status = false;
+		}
+		if($("#gift_notice").val().length>700){
+			alert('礼品公告不能超过700个字！');
+			status = false;
+		}
+		return status;
+	}
+</script>
+<p class="map">内容管理：礼品商店</p>
+<p class="sec_nav">礼品商店：<a href="index.php?admin_gift"><span>礼品管理</span></a>
+<a href="index.php?admin_gift-add"><span> 添加礼品</span></a>
+<a href="index.php?admin_gift-price" ><span>礼品价格区间</span></a>
+<a href="index.php?admin_gift-notice" class="on"><span>礼品公告</span></a>
+<a href="index.php?admin_gift-log"><span>礼品兑换日志</span></a>
+</p>
+
+<h3 class="col-h3">礼品公告</h3>    
+
+<form name="noticeform"   method="post" action="index.php?admin_gift-notice"  onsubmit="return docheck();" >
+	<ul class="col-ul ul_li_sp m-t10">
+		<li><span>礼品商店开关</span>
+			<input type="radio" name="setting[gift_close]" value="0" <!--{if isset($setting['gift_close'])}-->{if $setting['gift_close']=='0'||$setting['gift_close']=='' }checked{/if} <!--{/if}-->class="m-r10" />开启&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="radio" name="setting[gift_close]" value="1" <!--{if isset($setting['gift_close'])}-->{if $setting['gift_close']=='1'}checked{/if} <!--{/if}-->class="m-r10" />关闭
+		</li>
+		<li><span>礼品商店公告</span><textarea name="setting[gift_notice]"  id="gift_notice" rows="15" cols="80" ><!--{if isset($setting['gift_notice'])}-->{$setting[gift_notice]}<!--{/if}--></textarea></li>
+		<li class="m-t10">礼品商店首页右侧显示的公告，700字以内，支持html代码，管理员自行修改文本框中的公告内容后，点击保存按钮。</li> 
+		<li class="m-t10"><input name="submit" type="submit" value="保 存"  class="inp_btn"/></li>
+	</ul>
+</form>
+{template admin_footer}

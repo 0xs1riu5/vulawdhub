@@ -1,0 +1,50 @@
+{template header}
+<script type="text/javascript">
+var indexlogin = 0;
+var loginTip1 = '{lang loginTip1}';
+var loginTip2 = '{$loginTip2}';
+var loginTip3 = '{lang loginTip3}';
+var name_max_length = $name_max_length;
+var name_min_length = $name_min_length;
+var editPassTip1 = '{lang editPassTip1}';
+var loginTip4 = '{lang loginTip4}';
+var checkcode = '{$checkcode}';
+</script> 
+<style>
+#advlist_0 {
+	display:none;
+}
+</style>
+<section class="wrap clearfix register">
+	<div class="reg_main">
+	<h2 class="cblue">欢迎登录HDwiki账号</h2>
+	<form name="box-login" action="{url user-login}" method="post" onsubmit="return docheck();">
+	<?php echo csrf_field(); ?>
+	<ul>
+		<li class="inpt-name"><span>{lang userName}：</span>	<input name="username" id="username"  tabindex="3" type="text" class="inp_txt" onblur="check_username()" maxlength="32" placeholder="{lang userName}" /><label id="checkusername">$loginTip2</label></li>
+		<li class="inpt-pwd"><span>{lang password}：</span>	<input name="password" id="password"  tabindex="4"  type="password" class="inp_txt" onblur="check_passwd()" maxlength="32" placeholder="{lang password}" /><label id="checkpassword">*{lang editPassTip4}</label></li>
+		<!--{if $checkcode != "3"}-->
+		<li class="yzm"><span>{lang verifyCode}</span><input name="code" id="code"  tabindex="5" type="text" class="inp_txt" onblur="check_code()" maxlength="4" />
+		<label class="yzm-img"><img id="verifycode" src="{url user-code}" onclick="updateverifycode();" /></label><a class="clink" href="javascript:updateverifycode();">{lang codeNotClear}</a>
+		<label id="checkcode"></label></li>		
+		<!--{/if}-->
+		<li class="a-r cblue"><a href="{url user-getpass}" class="clink" target="_blank">{lang getPass}</a> | <a href="{url user-register}" target="_blank" class="clink">{lang register}</a></li>
+		<li><input name="submit" type="submit" value="{lang login}" class="btn_inp blue" tabindex="6" /></li>
+	</ul>
+	</form>
+	</div>
+	<figure class="regpic"><img src="style/default/hdwiki-regpic.png"></figure>
+	<dl class="col-dl">
+		<dt class="cblue f18">{lang registTip4}</dt>
+		<dd class="gray9">{lang registTip1}</dd>
+	</dl>
+	<dl class="col-dl">
+		<dt class="cblue f18">{lang registTip5}</dt>
+		<dd class="gray9">{lang registTip2}</dd>
+	</dl>
+	<dl class="col-dl">
+		<dt class="cblue f18">{lang registTip6}</dt>
+		<dd class="gray9">{lang registTip3}</dd>
+	</dl>
+</section>
+{template footer}

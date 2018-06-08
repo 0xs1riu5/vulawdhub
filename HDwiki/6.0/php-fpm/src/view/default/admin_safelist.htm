@@ -1,0 +1,111 @@
+{template admin_header}
+<p class="map">木马扫描：上次扫描结果</p>
+<p class="sec_nav">木马扫描：<a href="index.php?admin_safe"><span>扫描木马</span></a>
+<a href="index.php?admin_filecheck-create"><span> 创建文件校验镜像</span></a>
+<a href="index.php?admin_safe-list" class="on"><span> 上次扫描结果</span></a>
+</p>
+
+<h3 class="col-h3">上次扫描结果</h3>
+<!--{if isset($isedit)}-->
+<form method="post" name='form1' action="index.php?admin_safe-editcode" method="post" >
+<table class="table">
+	<tr>
+		<td class="bold a-r" style="width:100px; vertical-align:top;">特殊函数</td>
+		<td>{$func}</td>
+	<tr>
+		<td class="bold a-r" >特殊代码</td>
+		<td>{$code}</td>
+	</tr>
+	<tr>
+		<td class="bold a-r" >文件源代码</td>
+	 	<td><textarea rows="40" cols="100" id="code" name="code">{$html}</textarea></td>
+	</tr>
+	<tr>
+	<td>&nbsp;</td>
+		<td class="bold" ><input type="hidden" name="file_path" value="{$file_path}"><input name="submit" type="submit" value="修改" class="inp_btn2 m-r10"> 
+			<input type="button" onclick="location.href='index.php?admin_safe-list'" value="返回扫描列表" class="inp_btn2 m-r10">
+		</td>
+	</tr>
+</table>
+</form>
+<script type="text/javascript">
+$('#code').css('width',$('.text').width()+'px');
+var n = 0;
+function findInPage(obj, str) {
+	var txt, i, found;
+	if (str == "") {
+		return false;
+	}
+	if (document.layers) {
+		if (!obj.find(str)) {
+			while(obj.find(str, false, true)) {
+				n++;
+			}
+		} else {
+			n++;
+		}
+		if (n == 0) {
+			alert('未找到指定字串！');
+		}
+	}
+	if (document.all) {
+		txt = obj.createTextRange();
+		for (i = 0; i <= n && (found = txt.findText(str)) != false; i++) {
+			txt.moveStart('character', 1);
+			txt.moveEnd('textedit');
+		}
+		if (found) {
+			txt.moveStart('character', -1);
+			txt.findText(str);
+			txt.select();
+			txt.scrollIntoView();
+			n++;
+		} else {
+			if (n > 0) {
+				n = 0;
+				findInPage(str);
+			} else {
+				alert("未找到指定字串！");
+			}
+		}
+	}
+	return false;
+}
+</script>
+<!--{else}-->
+<table class="table">
+		<thead>
+			<tr>
+				<td style="width:200px;">文件地址</td>
+				<td style="width:100px;">特征函数次数</td>
+				<td style="width:80px;">特征函数</td>
+				<td style="width:100px;">特征代码次数</td>
+				<td style="width:100px;">特征代码</td>
+				<td style="width:160px;">Zend encodeed</td>
+				<td>操作</td>
+			</tr>
+		</thead>
+		<!--{if $lists}-->
+		<!--{loop $lists $key $list}-->
+		<tr>
+			<td>
+			{$key}
+			</td>
+			<td>{$list['funtimes']}</td>
+			<td>{$list['funstr']}</td>
+			<td>{$list['codetimes']}</td>
+			<td>{$list['codestr']}</td>
+			<td>
+			<!--{if isset($list['zend'])}-->
+				<font color='red'>Yes</font>
+			<!--{else}-->
+				No
+			<!--{/if}-->
+			</td>
+			<td><a href="index.php?admin_safe-editcode-{$list['key']}">查看</a> | <a href="index.php?admin_safe-del-{$list['key']}" onclick="return confirm('您确定要删除{$key}吗？\n删除后不可恢复哟！')">删除</a></td>
+			</tr>
+			<!--{/loop}-->
+		<!--{/if}-->
+</table>
+<!--{/if}-->
+{template admin_footer}

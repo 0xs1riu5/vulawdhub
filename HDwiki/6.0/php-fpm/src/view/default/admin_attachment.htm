@@ -1,0 +1,40 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	attachment_size=$.trim($('#attachment_size').val());
+	if(attachment_size==''||isNaN(attachment_size)==true){
+		alert('{lang attachmentSizeTrip}');
+		return false;
+	}
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<p class="map">全局：内容设置</p>
+<p class="sec_nav">内容设置： <a href="index.php?admin_setting-index"> <span>首页设置</span></a> <a href="index.php?admin_setting-listdisplay"><span>列表设置</span></a> <a href="index.php?admin_setting-watermark"><span>图片设置</span></a> <a href="index.php?admin_setting-docset" ><span>词条设置</span></a> <a href="index.php?admin_setting-search" ><span>搜索设置</span></a> <a href="index.php?admin_setting-attachment" class="on"><span>附件设置</span></a></p>
+<h3 class="col-h3">附件设置</h3>
+<form method="POST" action="index.php?admin_setting-attachment" onsubmit="return doSubmit();">
+	<table class="table">
+		<tr>
+			<td width="255px;"><span>{lang commonParameterName}</span></td>
+			<td><span>{lang commonParameterValue}</span></td>
+		</tr>
+		<tr>
+			<td >{lang attachmentOpenTag}</td>
+			<td ><input type="radio" name="attachment_open" value="1" <!--{if $setting['attachment_open']==1}-->checked<!--{/if}--> />{lang commonYes}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="attachment_open" value="0" <!--{if $setting['attachment_open']!=1}-->checked<!--{/if}--> />{lang commonNo}</td>
+		</tr>
+		<tr>
+			<td >{lang attachmentSize}<br />({lang sys_upload_limit}: {$sys_upload_limit} KB, <br/>{lang sys_upload_limit_tip})</td>
+			<td ><input class="inp_txt" name="attachment_size" id="attachment_size" value="{$setting['attachment_size']}">KB</td>
+		</tr>
+		<tr>
+			<td >{lang attachmentType}<br />{lang attachmentTypeTrip}</td>
+			<td ><textarea class="textarea" name="attachment_type" rows="10">{$setting['attachment_type']}</textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input class="inp_btn" type="submit" value="{lang commonSave}" name="attachmentsubmit" /></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

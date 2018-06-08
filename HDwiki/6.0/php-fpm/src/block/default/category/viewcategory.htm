@@ -1,0 +1,10 @@
+<div id="category" class="columns category" bid="{$bid}">
+	<!--{loop $data['subcategory'] $category}-->
+        <dl class="f14">
+          <dt><a class="f18 clink" href="{url category-view-$category['parent']['cid']}" >{$category['parent']['name']}</a></dt>
+          <!--{if isset($category['child'])}-->
+          <!--{loop $category['child']  $child}--><dd><a href="{url category-view-$child['cid']}">{$child['name']}</a></dd><!--{/loop}-->
+         <!--{/if}-->
+        </dl>
+	<!--{/loop}-->
+</div>

@@ -1,0 +1,240 @@
+{template wapheader}
+{template wapbody}
+    <section class="column list-nav" id="nav_list">
+        <h2 class="col-h2">榜单分类</h2>
+        <ul class="columnnav">
+
+            <li <!--{if $order_flag=='hot'}-->class="current"<!--{/if}-->><a href="{url list-default-hot}"><svg><use xlink:href="style/default/wap-ico.svg#hot"/></svg>热门</a></li>
+            <li <!--{if $order_flag=='wond'}-->class="current"<!--{/if}-->><a href="{url list-default-wond}"><svg><use xlink:href="style/default/wap-ico.svg#wond"/></svg>精彩</a></li>
+            <li <!--{if $order_flag=='digg'}-->class="current"<!--{/if}-->><a href="{url list-default-digg}"><svg><use xlink:href="style/default/wap-ico.svg#digg"/></svg>推荐</a></li>
+            <li <!--{if $order_flag=='new'}-->class="current"<!--{/if}-->><a href="{url list-default-new}"><svg><use xlink:href="style/default/wap-ico.svg#new"/></svg>最新</a></li>
+            <li <!--{if $order_flag=='week'}-->class="current"<!--{/if}-->><a href="{url list-default-week}"><svg><use xlink:href="style/default/wap-ico.svg#week"/></svg>周排行</a></li>
+            <li <!--{if $order_flag=='cup'}-->class="current"<!--{/if}-->><a href="{url list-default-cup}"><svg><use xlink:href="style/default/wap-ico.svg#cup"/></svg>总贡献</a></li>
+            <li <!--{if $order_flag=='eye'}-->class="current"<!--{/if}-->><a href="{url list-default-eye}"><svg><use xlink:href="style/default/wap-ico.svg#eye"/></svg>人气</a></li>
+        </ul>
+    </section>
+
+    <!--{if empty($list)}-->
+    <section class="column nobody">
+        <i class="ico-warn"></i>
+        <p class="gray9">还没有内容</p>
+    </section>
+    <!--{elseif !empty($list) && $order_flag != 'week' && $order_flag != 'cup' && $order_flag != 'eye'}-->
+    <section class="column list">
+        <ul class="ul-row1">
+                <!--{loop $list $key $data}-->
+                    <!--{if $key < 3}-->
+                        <!--{if $key == 0}-->
+                            <li class="no">
+                                <a href="{url doc-view-$data['did']}">
+                                    <span class="aimg w150">
+                                        <img src="<!--{if {$data['img']} != '' }-->{$data['img']}<!--{else}-->uploads/201008/f_2OepKa.jpg<!--{/if}-->" alt="">
+                                        <svg><use xlink:href="style/default/wap-ico.svg#first"/></svg>
+                                    </span>
+                                    <strong class="title">{$data['title']}</strong>
+                                    <span class="summary">{$data['summary']}</span>
+                                </a>
+                            </li>
+                        <!--{elseif $key == 1}-->
+
+                            <li class="no">
+                                <a href="{url doc-view-$data['did']}">
+                                    <span class="aimg w150">
+                                        <img src="<!--{if {$data['img']} != '' }-->{$data['img']}<!--{else}-->uploads/userface/1/1_src.jpg<!--{/if}-->" alt="">
+                                        <svg><use xlink:href="style/default/wap-ico.svg#second"/></svg>
+                                    </span>
+                                    <strong class="title">{$data['title']}</strong>
+                                    <span class="summary">{$data['summary']}</span>
+                                </a>
+                            </li>
+                        <!--{elseif $key ==2}-->
+                            <li class="no">
+                                <a href="{url doc-view-$data['did']}">
+                                    <span class="aimg w150">
+                                        <img src="<!--{if {$data['img']} != '' }-->{$data['img']}<!--{else}-->uploads/201007/1280484381eiJRbLHZ.gif<!--{/if}-->" alt="">
+                                        <svg><use xlink:href="style/default/wap-ico.svg#third"/></svg>
+                                    </span>
+                                    <strong class="title">{$data['title']}</strong>
+                                    <span class="summary">{$data['summary']}</span>
+                                </a>
+                            </li>
+                        <!--{/if}-->
+                    <!--{elseif $data['img'] != '' }-->
+                        <li>
+                            <a href="{url doc-view-$data['did']}">
+                                <span class="aimg w150">
+                                    <img src="{$data['img']}" alt="">
+                                </span>
+                                <strong class="title">{$data['title']}</strong>
+                                <span class="summary">{$data['summary']}</span>
+                            </a>
+                        </li>
+                    <!--{else}-->
+                        <li>
+                            <a href="{url doc-view-$data['did']}">
+                                <strong class="title">{$data['title']}</strong>
+                                <span class="summary">{$data['summary']}</span>
+                            </a>
+                        </li>
+                    <!--{/if}-->
+                <!--{/loop}-->
+        </ul>
+    </section>
+    <!--{elseif $order_flag == 'week' || $order_flag == 'cup'}-->
+    <section class="column ulist">
+        <ul class="ul-row1">
+            <!--{loop $list $key $data}-->
+                    <!--{if $key < 3}-->
+                        <!--{if $key == 0}-->
+                            <li class="no">
+                                <a href="{url user-space-$data['uid']}">
+                                    <svg><use xlink:href="style/default/wap-ico.svg#firstbg"/></svg>
+                                    <span class="aimg w50">
+                                        <img src="<!--{if {$data['image']} != '' }-->{$data['image']}<!--{else}-->style/default/user.jpg<!--{/if}-->" alt="">
+                                    </span>
+                                    <strong class="title">{$data['username']}</strong>
+                                    <em class="nb">{$data['credit']}</em>
+                                </a>
+                            </li>
+                        <!--{elseif $key ==1}-->
+                            <li class="no">
+                                <a href="{url user-space-$data['uid']}">
+                                    <svg><use xlink:href="style/default/wap-ico.svg#secondbg"/></svg>
+                                    <span class="aimg w50"><img src="<!--{if {$data['image']} != '' }-->{$data['image']}<!--{else}-->style/default/user.jpg<!--{/if}-->" alt=""></span>
+                                    <strong class="title">{$data['username']}</strong>
+                                    <em class="nb">{$data['credit']}</em>
+                                </a>
+                            </li>
+                        <!--{elseif $key ==2}-->
+                            <li class="no">
+                                <a href="{url user-space-$data['uid']}">
+                                    <svg><use xlink:href="style/default/wap-ico.svg#thirdbg"/></svg>
+                                    <span class="aimg w50">
+                                        <img src="<!--{if {$data['image']} != '' }-->{$data['image']}<!--{else}-->style/default/user.jpg<!--{/if}-->" alt="">
+                                    </span>
+                                    <strong class="title">{$data['username']}</strong>
+                                    <em class="nb">{$data['credit']}</em>
+                                </a>
+                            </li>
+                        <!--{/if}-->
+                    <!--{else}-->
+                        <li>
+                            <a href="{url user-space-$data['uid']}">
+                                <span class="aimg w50">
+                                    <img src="<!--{if {$data['image']} != '' }-->{$data['image']}<!--{else}-->style/default/user.jpg<!--{/if}-->" alt="">
+                                </span>
+                                <strong class="title">{$data['username']}</strong>
+                                <em class="nb">{$data['credit']}</em>
+                                <span class="summary">{$data['signature']}</span>
+                            </a>
+                        </li>
+                    <!--{/if}-->
+                <!--{/loop}-->
+        </ul>
+    </section>
+    <!--{elseif $order_flag == 'eye'}-->
+     <section class="column ulist">
+        <ul class="ul-row1">
+            <!--{loop $list $key $data}-->
+                    <!--{if $key < 3}-->
+                        <!--{if $key == 0}-->
+                            <li class="no">
+                                <a href="{url user-space-$data['uid']}">
+                                    <svg><use xlink:href="style/default/wap-ico.svg#firstbg"/></svg>
+                                    <span class="aimg w50">
+                                        <img src="<!--{if {$data['image']} != '' }-->{$data['image']}<!--{else}-->style/default/user.jpg<!--{/if}-->" alt="">
+                                    </span>
+                                    <strong class="title">{$data['username']}</strong>
+                                    <em class="nb">{$data['views']}</em>
+                                </a>
+                            </li>
+                        <!--{elseif $key ==1}-->
+                            <li class="no">
+                                <a href="{url user-space-$data['uid']}">
+                                    <svg><use xlink:href="style/default/wap-ico.svg#secondbg"/></svg>
+                                    <span class="aimg w50"><img src="<!--{if {$data['image']} != '' }-->{$data['image']}<!--{else}-->style/default/user.jpg<!--{/if}-->" alt=""></span>
+                                    <strong class="title">{$data['username']}</strong>
+                                    <em class="nb">{$data['views']}</em>
+                                </a>
+                            </li>
+                        <!--{elseif $key ==2}-->
+                            <li class="no">
+                                <a href="{url user-space-$data['uid']}">
+                                    <svg><use xlink:href="style/default/wap-ico.svg#thirdbg"/></svg>
+                                    <span class="aimg w50">
+                                        <img src="<!--{if {$data['image']} != '' }-->{$data['image']}<!--{else}-->style/default/user.jpg<!--{/if}-->" alt="">
+                                    </span>
+                                    <strong class="title">{$data['username']}</strong>
+                                    <em class="nb">{$data['views']}</em>
+                                </a>
+                            </li>
+                        <!--{/if}-->
+                    <!--{else}-->
+                        <li>
+                            <a href="{url user-space-$data['uid']}">
+                                <span class="aimg w50">
+                                    <img src="<!--{if {$data['image']} != '' }-->{$data['image']}<!--{else}-->style/default/user.jpg<!--{/if}-->" alt="">
+                                </span>
+                                <strong class="title">{$data['username']}</strong>
+                                <em class="nb">{$data['views']}</em>
+                                <span class="summary">{$data['signature']}</span>
+                            </a>
+                        </li>
+                    <!--{/if}-->
+                <!--{/loop}-->
+        </ul>
+    </section>
+    <!--{/if}-->
+    <p class="loading gray9"></p>
+
+<script src="js/wap_load_data.js"></script>
+<script>
+var order_flag = '{$order_flag}';
+window.WapLoadData.init_data({
+    'bind_element'  : $('.wrap'),
+    'touch_element' : $('.loading'),
+    'load_url'      : parseUrl()
+});
+
+function parseUrl() {
+    var temp_url = window.location.href.split('-');
+    var len = temp_url.length;
+    if (len > 1) {
+        if (!isNaN(parseInt(temp_url[len-1]))) {
+            temp_url.pop();
+        }
+    } else {
+        temp_url.push('default','hot');
+    }
+    return temp_url.join('-');
+}
+
+function return_wap_str(json) {
+    var str = '';
+    var con = json.length;
+    for(var i = 0; i < con; i++) {
+        if (order_flag == 'week' || order_flag == 'cup' || order_flag == 'eye') {
+            str += '<li>\
+                        <a href="{url user-space-'+ json[i]['uid'] +'}">\
+                            <span class="aimg w50">\
+                                <img src="'+ (json[i]['image'] != '' ? json[i]['image'] : 'style/default/user.jpg') +'" alt="">\
+                            </span>\
+                            <strong class="title">'+ json[i]['username'] +'</strong>\
+                            <em class="nb">'+ (  order_flag == 'eye' ? json[i]['views'] : json[i]['credit'] ) +'</em>\
+                            <span class="summary">'+ json[i]['signature'] +'</span>\
+                        </a>\
+                    </li>';
+        } else {
+	        str += '<li><a href="{url doc-view-'+ json[i]['did'] +'}">';
+	        if (json[i]['img'] != '') {
+	            str += '<span class="aimg w150"><img src="'+ json[i]['img'] +'" alt=""></span>';
+	        }
+	        str += '<strong class="title">'+ json[i]['title'] +'</strong>';
+	        str += '<span class="summary">'+ json[i]['summary'] +'</span></a></li>';
+        }
+    }
+    return str;
+}
+</script>
+
+{template wapfooter}

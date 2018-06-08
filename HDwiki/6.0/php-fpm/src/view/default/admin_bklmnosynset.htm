@@ -1,0 +1,59 @@
+{template admin_header}
+
+<p class="map">百科联盟：下载词条</p>
+<p class="sec_nav">下载词条：
+<a href="index.php?admin_hdapi-down"><span>下载词条</span></a>
+<a href="index.php?admin_hdapi-nosynset" class="on"><span>不同步列表</span></a>
+</p>
+
+<script type="text/javascript">
+var hdapi_sharetosns=0;
+function dosubmit(FormElement){
+	var data = $.trim($('#private_titles').val());
+	data = data.replace(/[,，]|\n{2,999}/g, "\n");
+	var params = {'titles': data};
+
+	$.ajax({
+		url:'index.php?admin_hdapi-nosynset',
+		type:'POST',
+		data:params,
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+			$(FormElement).find(":submit").attr('disabled', true);
+			$("#errorinfo").text('正在提交...');
+		},
+		success :function(data, state){
+			if($.trim(data) == 'OK'){
+				$('#errorinfo').html('提交成功！');
+			}else{
+				$('#errorinfo').html('服务端错误，提交失败！');
+			}
+		},
+		complete:function(response, state){
+			if (state != 'success'){
+				$('#errorinfo').html('网络连接错误，请稍候提交。');
+			}
+			$(FormElement).find(":submit").attr('disabled', false);
+		}
+	});
+	
+	return false;
+}
+</script>
+<h3 class="col-h3">不同步列表</h3>
+<form id="form-set" action="#" method="post" target="_self" onsubmit="dosubmit(this);return false;">
+<table class="table">
+</table>
+<ul class="col-dl">
+<li>1：设置不和互动百科进行内容同步的词条</li>
+<li>2：词条之间使用换行或逗号分开即可,最多可以设置200个，当前存在{$privtetitlescount}个。 </li>
+<li><textarea name="private_titles" id="private_titles" cols="70" rows="5">{$privtetitles}</textarea></li>
+</ul>
+
+<p class="submit">
+<input type="submit" value="提 交"  class="inp_btn"/>
+<span class="red" id="errorinfo"></span>
+</p>
+</form>
+{template admin_footer} 

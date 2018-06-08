@@ -1,0 +1,70 @@
+{template wapheader}
+<body ontouchstart><div class="wrap">
+    <header class="header viewdoc">
+        <a href="javascript:history.back();" class="goback">&nbsp;</a>
+        <a href="javascript:void(0);" class="btn-pagenavi"></a>
+    </header>
+    <section class="column viewdoc">
+        <h1 class="wikititl">{$doc['doctitle']}</h1>
+        <!--{if $doc['img'] != ''}-->
+            <div class="img">
+               <a class="a_del"><img src="$doc['img']"><em id="albumLength"></em>
+                </a>
+           </div>
+        <!--{/if}-->
+        <p class="summary">{$doc['summary']}</p>
+    </section>
+    <!--{if isset($doc['sectionlist'])}-->
+        <!--{loop $doc['sectionlist'] $key $section}-->
+            <!--{if $section['flag'] == 1}-->
+                <h2 class="h2_line">{$section['value']}</h2>
+            <!--{else}-->
+                <section class="column viewdoc">
+	                <div class="centent">
+	                    {$section['value']}
+	                </div>
+                </section>
+            <!--{/if}-->
+        <!--{/loop}-->
+    <!--{/if}-->
+
+    <nav class="column bot-navi">
+        <p class="body">
+            <!--<a href="">频道1</a><a href="">频道1</a><a href="">频道1</a><a href="">频道1</a><a href="">频道1</a><a href="">频道1</a>-->
+
+            <!--{if !empty($channellist[1])}-->
+            <!--{loop $channellist[1] $channel}-->
+            <a href="{$channel['url']}">{$channel['name']}</a>
+            <!--{/loop}-->
+            <!--{/if}-->
+            <!--{if !empty($channellist[3])}-->
+            <!--{loop $channellist[3] $channel}-->
+            <a href="{$channel['url']}">{$channel['name']}</a>
+            <!--{/loop}-->
+            <!--{/if}-->
+
+            <!--{loop $pluginlist $plugin}-->
+            <!--{if $plugin[type]}-->
+            <a href="{url plugin-$plugin[identifier]}">{$plugin[name]}</a>
+            <!--{/if}-->
+            <!--{/loop}-->
+        </p>
+    </nav>
+    <footer class="footer">
+        <p>Powered by HDwiki6.0 &copy; 2017 HDwiki Licensed</p>
+    </footer>
+</div>
+
+<div class="fixed_bg" id="fbg" style="display:none;"></div>
+<div class="word_menu" style="display:none;" id="catalogue">
+      <h4 class="titl">词条目录</h4><i class="iclose"></i> 
+      <div class="word_menu_ul" id="list-catalogue">
+        <ul>
+        </ul>
+      </div>
+    </div>
+<script src="js/jquery.js"></script>
+<script src="js/wap_viewdoc_category.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+{template admin_header}
+<script type="text/javascript">
+var dbcheck = {
+	make:function(){
+		var url = 'index.php?admin_dbcheck-dbmake'+'-'+Math.random();
+		$("#dbmake_result").html('<img src="style/default/loading.gif">');
+		$.get(url, function(data, state){
+			var html;
+			if (state == 'success' && data == 'OK'){
+				$("#dbmake_result").text('数据库校验文件创建成功。');
+			}else{
+				html = '操作失败！错误信息：'+data.substr(0, 2000);
+				$("#dbmake_result").text(html);
+			}
+		});
+	},
+
+	check:function(){
+		var url = 'index.php?admin_dbcheck-dbcheck'+'-'+Math.random();
+		$("#dbcheck_result").html('<img src="style/default/loading.gif">');
+		$.get(url, function(data, state){
+			var html;
+			if (state == 'success' && data.substr(0,3) == 'OK:'){
+				data = data.substr(3).split('|');
+				html = '<table class="table">'
+				+'<CAPTION>检测结果：</CAPTION>'
+				+'<thead><tr><td>总表数(张)</td><td>正常表(张)</td><td>错误表(张)</td><td>修正表(张)</td><td>忽略(张)</td><td>整理碎片(字节)</td></tr></thead>'
+				+'<tbody><tr><td>'+data[0]+'</td><td>'+data[1]+'</td><td>'+data[2]+'</td><td>'+data[3]+'</td><td>'+data[4]+'</td><td>'+data[5]+'</td></tr>'
+				+'</tbody></table>提示：内存表被检测时会被忽略，属正常情况。';
+				$("#dbcheck_result").html(html);
+			}else{
+				html = '操作失败！错误信息：'+data.substr(0, 2000);
+				$("#dbcheck_result").text(html);
+			}
+		});
+	},
+
+	dbcompare:function(){
+		var url = 'index.php?admin_dbcheck-dbcompare'+'-'+Math.random();
+		$("#dbcompare_struct").html('<img src="style/default/loading.gif">');
+		$.get(url, function(data, state){
+			var html;
+
+			if (state == 'success' && data.substr(0,3) == 'OK:'){
+				data = data.substr(3).split('|');
+				data[0] = data[0] || '无';
+				data[1] = data[1] || '无';
+				html = '<table class="table">'
+				+'<CAPTION>检测结果：</CAPTION>'
+				+'<tr><td class="bold a-r" style="width:100px;">被删除的表</td><td>'+data[0]+'</td></tr>'
+				+'<tr><td class="bold a-r">有异常的表</td><td>'+data[1]+'</td></tr>';
+
+				if(data[0] != '无' || data[1] != '无'){
+					html += '<tr><td class="bold a-r">提示信息</td><td>数据库结构不完整，需要<a onclick="dbcheck.dbrepair_struct()" href="javascript:void(0)">修复</a>。'
+					+'【修复过程：将被删除的表重新创建，将被删除或修改的字段进行还原。】<span id="dbrepair_struct"></span></td></tr>'
+				}else{
+					html += '<tr><td class="bold a-r">提示信息</td><td>数据库结构完整。</td></tr>'
+				}
+
+				html +='</table>';
+				$("#dbcompare_struct").html(html);
+			}else{
+				html = '操作失败！错误信息：'+data.substr(0, 2000);
+				$("#dbcompare_struct").text(html);
+			}
+		});
+	},
+
+	dbrepair_struct:function(){
+		var url = 'index.php?admin_dbcheck-dbrepair_struct'+'-'+Math.random();
+		$("#dbrepair_struct").html('<br>正在修复...');
+		$.get(url, function(data, state){
+			var html;
+			if (state == 'success' && data == 'OK'){
+				$("#dbrepair_struct").html('<br>修复成功！');
+			}else{
+				html = '<br>错误信息：'+data.substr(0, 2000);
+				$("#dbrepair_struct").html(html);
+			}
+		});
+	}
+}
+</script>
+
+<p class="map">数据库检测</p>
+<p class="sec_nav">检测修复数据库
+</p>
+
+<h3 class="col-h3">提示：</h3>
+
+<ul class="col-ul tips">
+		<li>MySQL服务器被意外重启时可能造成数据表字段丢失的假象，若检测提示字段丢失请先执行优化数据库。</li>
+		<li>本程序可以修复多数数据库错误，但不能保证可以修复所有错误。</li>
+		<li>对数据库操作可能会出现意外现象甚至发生破坏，所以推荐先备份好数据库！并选择访问人数尽可能少时操作。</li>
+</ul>
+<h5 class="col-h3">操作：</h5>
+<table class="table">
+<tr>
+	<td>
+			<input type="button" onclick="dbcheck.check()" value="检测并尝试优化数据库" class="inp_btn2 m-r10"> [大约需要2秒或更多]
+	</td>
+</tr>
+<tr>
+	<td>
+	<div id="dbcheck_result" class="content"></div></td>
+</tr>
+<tr>
+	<td>
+			<input type="button" onclick="dbcheck.dbcompare()" value="检测数据库结构完整性" class="inp_btn2 m-r10"> [大约需要2~5秒]
+			
+	</td>
+</tr>
+<tr>
+	<td>
+	<div id="dbcompare_struct" class="content"></div>
+</tr>
+	<tr>
+		<td>
+			<div id="filecheck_result" class="content"></div>
+		</td>
+	</tr>
+</table>
+
+{template admin_footer}

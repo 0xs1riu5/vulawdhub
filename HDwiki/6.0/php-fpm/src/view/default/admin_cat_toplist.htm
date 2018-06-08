@@ -1,0 +1,55 @@
+{template admin_header}
+<p class="map">站内统计：{lang cat_toplist}</p>
+<h3 class="col-h4 m-t10">{lang cat_toplist}</h3>
+<table class="table">
+  <tr>
+    <td style="width:200px;">{lang create_toplist}</td> 
+    <td style="width:100px;">编辑分类排行</td>
+    <td style="width:150px;">{lang last_month_toplist}</td>
+    <td>{lang last_day_toplist}</td>
+  </tr>  
+  <tr>
+    <td valign="top">
+    <!--{if !(bool)$cat_toplist[create_toplist]}-->
+    {lang no_create}
+    <!--{else}-->
+    <!--{loop $cat_toplist[create_toplist] $key $category}-->
+   <label class="block"><a href="{$setting['seo_prefix']}category-view-{$category[cid]}{$setting['seo_suffix']}" target="_blank" >{$category[name]}</a> ({$category[num]})</label>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top">
+    <!--{if !(bool)$cat_toplist[edit_toplist]}-->
+    {lang no_edit}
+    <!--{else}-->
+    <!--{loop $cat_toplist[edit_toplist] $key $category}-->
+    <label class="block"><a href="{$setting['seo_prefix']}category-view-{$category[cid]}{$setting['seo_suffix']}" target="_blank" >{$category[name]}</a> ({$category[num]})</label>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top">
+    <!--{if !(bool)$cat_toplist[last_month_toplist]}-->
+    {lang no_create}
+    <!--{else}-->
+    <!--{loop $cat_toplist[last_month_toplist] $key $category}-->
+    <label class="block"> <a href="{$setting['seo_prefix']}category-view-{$category[cid]}{$setting['seo_suffix']}" target="_blank" >{$category[name]}</a> ({$category[num]})</label>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top">
+    <!--{if !(bool)$cat_toplist[last_day_toplist]}-->
+    {lang no_create}
+    <!--{else}-->
+    <!--{loop $cat_toplist[last_day_toplist] $key $category}-->
+    <a href="{$setting['seo_prefix']}category-view-{$category[cid]}{$setting['seo_suffix']}" target="_blank" >{$category[name]}</a> ({$category[num]})
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+  </tr> 
+</table>
+<table class="table">
+  <tr>
+    <td>{lang statistics_message1} {$cat_toplist[last_cache_time]} {lang statistics_message2} {$cat_toplist[cache_time]} {lang statistics_message3}</td>
+  </tr>
+</table>
+{template admin_footer}

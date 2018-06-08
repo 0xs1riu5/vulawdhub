@@ -1,0 +1,47 @@
+<div id="login-static" class="columns login-static i-login {$data['config']['style']}" bid="{$bid}">
+	<h2 class="col-h2">{lang userLogin}</h2>
+	<!--{if $user['groupid']=='1'}-->
+		<!--{if $data['data']['passport']}-->
+		<span class="red error" style="top:80px">已开启通行证,请直接点击<a href="index.php?user-login">登录</a></span>
+		<!--{else}-->
+		<form action="" onsubmit="return docheck();">
+		<ul class="col-ul" id="nologin" style="display:block">
+			<li><span>用户名：</span><input name="username" id="username" tabindex="3" type="text" class="inp_txt" onblur="check_username()" maxlength="32" /></li>
+			<li><span>密&nbsp;&nbsp;码：</span><input name="password" id="password"  tabindex="4" type="password" class="inp_txt" onblur="check_passwd()" maxlength="32" /></li>
+			<!--{if $data['data']['checkcode'] != 3}-->
+			<li class="yzm"><span>验证码：</span><input name="code" id="code"  tabindex="5" type="text" onblur="check_code()" maxlength="4" class="inp_txt" /><label class="yzm-img"><img id="verifycode" src="{url user-code}" onclick="updateverifycode();" /></label><a href="javascript:updateverifycode();">换一个</a>
+			</li>
+			<!--{/if}-->
+			<li class="error" id="logintip"></li>
+			<li class="submit"><input name="submit" type="submit" value="登录" class="btn_inp blue" tabindex="6" /><input name="Button1" type="button" value="我要注册" class="btn_inp org" onclick="location.href='{url user-register}';" /></li>
+		</ul>
+		</form>
+		<!--{/if}-->
+	<!--{else}-->
+	<dl id="islogin" class="col-dl twhp" >
+	<dd class="block"><a href="{url user-space-$user['uid']}" class="a-img1"><img alt="点击进入用户中心" src="<!--{if $user['image']}-->$user['image']<!--{else}-->style/default/user_l.jpg<!--{/if}-->" width="50"/></a></dd>
+	<dt><a href="{url user-space-$user['uid']}" class="m-r8 bold black">{$user['username']}</a><img title="您现在拥有{$user['credit1']}金币 " src="style/default/jb.gif" class="sign"/></dt>
+	<dd class="gray9">{$user['grouptitle']}</dd>
+	<dd class="gray"><span>经验：{$user['credit2']}</span><span class="r">人气指数：{$user['views']}</span></dd>		
+	<dd class="gray"><span>创建词条：{$user['creates']}</span><span class="r">编辑词条：{$user['edits']}</span></dd>
+	<dd><a href="{url user-space-{$user['uid']}}" class="btn_inp ico-user">我的百科</a></dd>
+	</dl>
+	<!--{/if}-->
+	<p class="novice">
+	<a class="gray" href="index.php?doc-innerlink-{eval echo urlencode('初来乍到，了解一下')}" >初来乍到，了解一下</a>
+	<a class="gray" href="index.php?doc-innerlink-{eval echo urlencode('我是新手，怎样编写词条')}" >我是新手，怎样编写词条</a>
+	<a class="gray" href="index.php?doc-innerlink-{eval echo urlencode('我要成为词条达人')}" >我要成为词条达人</a>
+	</p>
+<script>
+	var indexlogin = 1;
+	var loginTip1 = '{lang loginTip1}';
+	var loginTip2 = "{$data['data']['loginTip2']}";
+	var loginTip3 = '{lang loginTip3}';
+	var logincodewrong = '{lang logincodewrong}';
+	var name_max_length = "{$data['data']['name_max_length']}";
+	var name_min_length = "{$data['data']['name_min_length']}";
+	var editPassTip1 = '{lang editPassTip1}';
+	var loginTip4 = '{lang loginTip4}';
+	var checkcode = "{$data['data']['checkcode']}";
+</script>
+</div>

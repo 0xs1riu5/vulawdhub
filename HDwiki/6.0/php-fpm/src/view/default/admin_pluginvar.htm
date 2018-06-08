@@ -1,0 +1,70 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	return true;
+}
+</script>
+
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">管理：
+	<a href="index.php?admin_plugin-manage-{$pluginid}" ><span>插件管理</span></a>
+	<a href="index.php?admin_plugin-setvar-{$pluginid}" class="on"><span>插件设置</span></a>
+	<a href="index.php?admin_plugin-hook-{$pluginid}" > <span>插件钩子</span> </a>
+</p>
+<h3 class="col-h3">插件设置</h3>
+<!--{if !empty($pluginvars) }-->
+			<form method="POST" action="index.php?admin_plugin-setvar" onsubmit="return docheck();">
+				<table class="table">
+				<tr>
+					<td width='400px'><span>{lang commonParameterName}</span></td>
+					<td><span>{lang commonParameterValue}</span></td>
+				</tr>
+	<!--{loop $pluginvars $pluginvar}-->
+		<!--{if in_array( $pluginvar[type],array('number','text','color') ) }-->
+				<tr>
+					<td><span>{$pluginvar[title]}</span>{$pluginvar[description]}</td>
+					<td><input maxlength="120" style="width:200px;" class="inp_txt" name="newvar[{$pluginvar[variable]}]" type="text" value="{$pluginvar[value]}" /></td>
+				</tr>
+		<!--{elseif ($pluginvar[type]=='radio') }-->
+				<tr>
+					<td><span>{$pluginvar[title]}</span>{$pluginvar[description]}</td>
+					<td>
+					<input type="radio" name="newvar[{$pluginvar[variable]}]" value="1" <!--{if $pluginvar[value] }-->checked<!--{/if}-->  />{lang commonYes}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="newvar[{$pluginvar[variable]}]" value="0" <!--{if !$pluginvar[value] }-->checked<!--{/if}--> />{lang commonNo}
+					 </td>
+				</tr>
+		<!--{elseif ($pluginvar[type]=='select') }-->
+				<tr>
+				<td><span>{$pluginvar[title]}</span>{$pluginvar[description]}</td>
+					<td>
+					<select name="newvar[{$pluginvar[variable]}]">
+					<!--{loop $pluginvar[extra] $key $value}-->
+						<option value="{$key}" <!--{if $pluginvar[value]==$key}-->selected="selected"<!--{/if}--> >{$value}</option>
+					<!--{/loop}-->
+					</select>
+					</td>
+				</tr>
+		<!--{elseif ($pluginvar[type]=='textarea') }--> 
+				<tr>
+					<td><span>{$pluginvar[title]}</span>{$pluginvar[description]}</td>
+					<td><textarea name="newvar[{$pluginvar[variable]}]" rows="8" cols="57" >{$pluginvar[value]}</textarea></td>
+				</tr>
+		<!--{elseif ($pluginvar[type]=='password') }--> 
+				<tr>
+					<td><span>{$pluginvar[title]}</span>{$pluginvar[description]}</td>
+					<td><input style="width:200px;" class="inp_txt" name="newvar[{$pluginvar[variable]}]" type="password" value="" /></td>
+				</tr>
+		<!--{/if}--> 
+	<!--{/loop}-->
+				<tr>
+					<td colspan="2">
+					<input type="hidden" name="pluginid" value="{$pluginid}" />
+					<input class="inp_btn" name="submit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+					<input class="inp_btn" type="reset" value="{lang commonReset}" />
+					</td>
+				</tr>
+			</table>
+<!--{else}-->
+	{lang pluginNoVar}
+<!--{/if}-->
+{template admin_footer}

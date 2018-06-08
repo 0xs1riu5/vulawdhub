@@ -1,0 +1,62 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	var forbidden_edit_time = $("#forbidden_edit_time").val();
+	if ( forbidden_edit_time=='' || !/^\d+$/.test(forbidden_edit_time) || forbidden_edit_time < 0){
+		alert('{lang secForbidEditTimeWarning}');
+		$("#forbidden_edit_time").focus();
+		return false;
+	}
+}
+</script>
+
+<p class="map">全局：Sitemap</p>
+<p class="sec_nav">Sitemap： <a href="index.php?admin_sitemap-default" class="on"><span>{lang sitemapOpt}</span></a> <a href="index.php?admin_sitemap-setting"><span>{lang sitemapSetting}</span></a></p>
+<h3 class="col-h3">{lang sitemapOpt}</h3>
+<br /><br />
+<style type="text/css">
+fieldset { border: 1px solid #CCC; padding: 12px; margin-bottom: 10px; }
+fieldset span { color: #333; }
+</style>
+<table align="center" cellpadding="10" cellspacing="0" width="98%" class="list"> 
+  <tr> 
+	<td valign="top">
+	<form action="index.php?admin_sitemap-createdoc" method="POST">
+	<fieldset>
+	<legend>{lang sitemapRebuild}:</legend>
+	<span>{lang sitemapRebuildTip}</span>&nbsp;&nbsp;
+	<input class="inp_btn2 m-r10" type="submit" value="{lang sitemapRebuild}" />
+	</fieldset>
+	</form>
+	
+	<form action="index.php?admin_sitemap-updatedoc" method="POST">
+	<fieldset>
+	<legend>{lang sitemapUpdate}:</legend>
+	<span>{lang sitemapUpdateTip}{$sitemap_update} </span>&nbsp;&nbsp;
+	<input class="inp_btn2 m-r10" type="submit" value="{lang sitemapUpdate}" />
+	</fieldset>
+	</form>
+	
+	<form action="index.php?admin_sitemap-submit" method="POST">
+	<fieldset style="border: 1px solid #CCC; padding: 12px; margin-bottom: 10px">
+	<legend>{lang sitemapSubmit}:</legend>
+	<span>{lang sitemapSubmitTip}</span>&nbsp;&nbsp;
+	<input class="inp_btn2 m-r10" type="submit" value="{lang sitemapSubmit}" />
+	</fieldset>
+	</form>
+
+	<form action="index.php?admin_sitemap-baiduxml" method="POST">
+	<fieldset style="border: 1px solid #CCC; padding: 12px; margin-bottom: 10px">
+	<legend>{lang baiduXmlUpdate}:</legend>
+	<span>{lang baiduXmlUpdateTip}{$baidu_update}</span>&nbsp;&nbsp;
+	<input class="inp_btn2 m-r10" type="submit" value="{lang baiduXmlUpdate}" />
+	</fieldset>
+	</form>
+
+	
+	</td> 
+  </tr> 
+</table> 
+
+
+{template admin_footer}

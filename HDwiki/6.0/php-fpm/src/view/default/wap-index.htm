@@ -1,0 +1,93 @@
+{template wapheader}
+{template wapbody}
+<section class="column home">
+    <h2 class="col-h2">百科图片</h2>
+    <a href="{url pic-piclist}" class="more">{lang more}</a>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <!--{if isset($indexcache['piclist'])}-->
+            {eval $count = count($indexcache['piclist'])}
+            <!--{loop $indexcache['piclist'] $key $picname}-->
+            <div class="swiper-slide picswipe">
+                <a href="{url pic-view-{$picname['id']}-{$picname['did']}}">
+                    <img src="{$picname['attachment_normal']}" alt="{$picname['description']}" title="{$picname['description']}">
+                    <figure>{$picname['description']}</figure>
+                </a>
+                <em class="no"><i>{eval echo $key+1;}</i> / {$count}</em>
+            </div>
+            <!--{/loop}-->
+            <!--{/if}-->
+        </div>
+    </div>
+    <script type="text/javascript">
+        var mySwiper = new Swiper('.swiper-container',{
+            loop: true,
+            autoplay: 5000, //自动切换开启
+            speed:2000, //表示切换速度
+            onSlideChangeEnd:function(swiper){
+               // console.log(swiper.activeIndex);
+            }
+        });
+    </script>
+</section>
+<section class="column home">
+    <h2 class="col-h2">{lang hotDoc}</h2><!--热门词条-->
+    <a href="{url list-default-hot}" class="more">{lang more}</a>
+    <ul class="ul-row2 txtList clearfix">
+        <!--{if isset($indexcache['hotdocs'])}-->
+        <!--{loop $indexcache['hotdocs'] $key $hotdoc}-->
+        <!--{if $key < 4}-->
+        <li><a href="{url doc-view-$hotdoc['did']}">{$hotdoc['title']}</a></li>
+        <!--{/if}-->
+        <!--{/loop}-->
+        <!--{/if}-->
+    </ul>
+</section>
+<section class="column home">
+    <h2 class="col-h2">{lang wonderDoc}</h2><!--精彩词条-->
+    <a href="{url list-default-wond}" class="more">{lang more}</a>
+    <ul class="ul-row1">
+        <!--{if isset($indexcache['fistwonderdoc'])}-->
+        <li><a href="{url doc-view-$indexcache['fistwonderdoc']['did']}">
+            <span class="aimg w150"><img src="{$indexcache['fistwonderdoc']['image']}" alt="{$indexcache['fistwonderdoc']['title']}"></span>
+            <strong class="title">{$indexcache['fistwonderdoc']['shorttitle']}</strong>
+            <span class="summary">{$indexcache['fistwonderdoc']['summary']}</span>
+        </a></li>
+        <!--{/if}-->
+        <!--{if isset($indexcache['wonderdocs'])}-->
+        <!--{loop $indexcache['wonderdocs'] $key $wondoc}-->
+        <!--{if $key < 4}-->
+        <li><a href="{url doc-view-$wondoc['did']}"><strong class="title">{$wondoc['title']}</strong><span class="summary">{$wondoc['summary']}</span></a></li>
+        <!--{/if}-->
+        <!--{/loop}-->
+        <!--{/if}-->
+    </ul>
+</section>
+<section class="column home">
+    <h2 class="col-h2">{lang focusDoc}</h2><!--推荐词条-->
+    <a href="{url list-default-digg}" class="more">{lang more}</a>
+<ul class="ul-row3 clearfix">
+        <!--{if $indexcache['commenddocs'] }-->
+        <!--{loop $indexcache['commenddocs'] $key $fistcomdoc}-->
+        <!--{if $key<3}-->
+        <li><a href="{url doc-view-$fistcomdoc['did']}">
+                <span class="aimg">
+                    <img src="{$fistcomdoc['image']}" alt="{$fistcomdoc['title']}">
+                </span>
+            <strong>{$fistcomdoc['shorttitle']}</strong>
+        </a></li>
+        <!--{/if}-->
+        <!--{/loop}-->
+        <!--{/if}-->
+
+    </ul>
+    <ul class="ul-row2 txtList clearfix">
+        <!--{loop $indexcache['commenddocs'] $key $fistcomdoc}-->
+        <!--{if $key>=3 &&  $key < 7}-->
+        <li><a href="{url doc-view-$fistcomdoc['did']}">{$fistcomdoc['shorttitle']}</a></li>
+        <!--{/if}-->
+        <!--{/loop}-->
+        <!--  <li><a href="">最机关报协硒鼓</a></li>-->
+    </ul>
+</section>
+{template wapfooter}

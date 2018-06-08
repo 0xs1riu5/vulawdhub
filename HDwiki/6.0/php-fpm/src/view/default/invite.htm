@@ -1,0 +1,84 @@
+{template header}
+<div id="append_parent"></div>
+<script type="text/javascript">
+var userAgent = navigator.userAgent.toLowerCase();
+var is_ie = (userAgent.indexOf('msie') != -1 && !(userAgent.indexOf('opera') != -1 && opera.version())) && userAgent.substr(userAgent.indexOf('msie') + 5, 3);
+function copyTxt(txt){
+	if(is_ie) {
+		clipboardData.setData('Text',txt);
+		alert ("{lang copyURLTip}");
+	} else {
+		prompt("{lang pleaseCopyThis}",txt); 
+	}
+}
+function autoPreview(val, id) {
+	var previewObj = document.getElementById(id);
+	if(typeof previewObj == 'object') {
+		if(val.length >= 300) 
+			return false;
+		else
+			previewObj.innerHTML = val.replace(/\n/ig, "<br />");
+	}
+}
+
+</script>
+<div class="wrap hd_map">
+	<a href="{WIKI_URL}">{$setting['site_name']}</a> &gt; <a href="{url user-profile}">{lang selfManage}</a> &gt; {lang editProfile}</div>
+<section class="wrap clearfix">
+	<div class="r group1 bor-ccc gl_manage_main">
+		<h2 class="col-h2">{lang myInviteLink}</h2>		
+		<div style="padding: 10px 25px; color: #999;">
+		{lang inviteLinkTip}<br />
+			<span style="font-size: 16px; font-weight: bold;">
+			<a onclick="javascript:copyTxt(this.href);return false;" class="clink" href="{$invite_url}"><!--{if !empty($invite_url)}-->{$invite_url}<!--{/if}--></a>
+			</span>
+		</div>
+		<br />
+		
+		<h2 class="col-h2">{lang emailInvite}</h2>
+		<div style="padding: 10px 25px; color: #999;">
+		{lang emailInviteTip}<br />
+		<form action="{url user-invite}" method="POST">
+		{lang insertYourEmail}<br />
+		<textarea name="toemails" class="inp_txt" cols="70" rows="8" /><!--{if !empty($toemails)}-->{$toemails}<!--{/if}--></textarea><br />
+		<span style="color:red"><!--{if !empty($mail_error)}-->{$mail_error}<!--{/if}--></span>&nbsp;<br />
+		{lang inviteWords}<br />
+		<textarea name="ps" cols="70" class="inp_txt" rows="3" onkeyup="autoPreview(this.value, 'PreContainer')"><!--{if !empty($ps)}-->{$ps}<!--{/if}--></textarea><br />
+		<span style="color:red"><!--{if !empty($ps_error)}-->{$ps_error}<!--{/if}--></span>&nbsp;<br />
+		<input type="submit" name="submit" class="btn_inp blue" value="{lang sendInvite}" />
+		</form>
+		<br />
+		{lang invitePreview}
+		<div style="border: 1px solid #ddd; background: #fcfcfc; padding: 10px; line-height: 14px;">
+		<!--{if !empty($preview)}-->{$preview}<!--{/if}-->
+		</div>
+		</div>
+		
+		<br />
+	
+</div>
+
+<aside class="l group2">
+<div class="sidebar bor-ccc gl_manage">
+	<h2 class="col-h2 cblue"><span onclick="expand('usermanage');">{lang profile}</span></h2>	
+	<ul id="usermanage">
+		<li><a href="{url user-profile}" target="_self">{lang profile}</a></li>
+		<li><a href="{url user-editprofile}" target="_self" >{lang editProfile}</a></li>
+		<li><a href="{url user-editpass}" target="_self">{lang editPass}</a></li>
+		<li><a href="{url user-editimage}" target="_self">{lang editImage}</a></li>
+		<li><a href="{url doc-managesave}" target="_self">{lang manageSave}</a></li>
+		<li class="on"><a href="{url user-invite}" target="_self">{lang regInvite}</a></li>
+	</ul>
+</div><div class="sidebar columns gl_manage">
+	<h2 class="col-h2 cblue"><span onclick="expand('userpms');">{lang shortmessage}</span></h2>		
+	<ul id="userpms">
+		<li><a href="{url pms-box-inbox}" target="_self">{lang inbox}</a></li>
+		<li><a href="{url pms-box-outbox}" target="_self" >{lang outbox}</a></li>
+		<li><a href="{url pms-sendmessage}" target="_self" >{lang sendmessage}</a></li>
+		<li><a href="{url pms-box-drafts}" target="_self">{lang draft}</a></li>
+		<li><a href="{url pms-blacklist}" target="_self">{lang blacklist}</a></li>
+	</ul>
+</div>
+</aside>
+</section>
+{template footer}

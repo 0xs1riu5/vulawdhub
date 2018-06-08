@@ -1,0 +1,45 @@
+<div id="first">
+    <h3>选择要添加的版块</h3>
+    <div class="myleft">
+        <ul>
+        <!--{loop $blocks $key $block}-->
+        <li onclick="block.view('{$key}',this)"><a href="javascript:void(0);" onclick="return false"><span>{$block['name']}</span></a></li>
+        <!--{/loop}-->
+        </ul>
+    </div>
+    <div class='myright'>
+    <!--{loop $blocks $key $block}-->
+        <div id="{$key}" style="display:none">
+        
+        <ul>
+        <!--{loop $block['fun'] $funkey $fun}-->
+            <li id='{$key}-{$funkey}' title="block/{$block['theme_dir']}/{$key}/{$funkey}" onclick='block.select(this);'>
+            {$funkey}<br />
+            {$fun}
+            </li> 
+        <!--{/loop}-->
+        </ul>
+        
+        </div>
+    <!--{/loop}-->  
+    </div>
+    <p class="col-p"><input  type="button" class="btn" value="下一步" onclick="block.next()" /></p>
+</div>
+
+<div id="second" style="display:none">
+    <h3>要添加到本页的区域</h3>
+    <div class="main2">
+         <select id="area">
+         </select>
+    </div>
+    <br />
+    <h3>版块参数设置</h3>
+    <form>
+    <div id="config" class="main2">
+    
+    </div>
+    </form>
+    <p class="col-p m-l140"><input  type="button" class="btn" value="完 成" onclick="block.complete()" /></p>
+</div>
+
+  

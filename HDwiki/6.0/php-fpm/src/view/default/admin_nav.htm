@@ -1,0 +1,82 @@
+{template admin_header}
+<script type="text/javascript" src="js/calendar.js"></script>
+<p class="map">内容管理：词条管理</p>
+<p class="sec_nav">词条管理： <a href="index.php?admin_doc"> <span>管理词条</span></a> <a href="index.php?admin_focus-focuslist"  ><span>推荐词条</span></a> <a href="index.php?admin_synonym" ><span>管理同义词</span></a> <a href="index.php?admin_relation" ><span>相关词条</span></a> <a href="index.php?admin_edition"  ><span>版本评审</span></a> <a href="index.php?admin_cooperate" ><span>待完善词条</span></a> <a href="index.php?admin_nav" class="new on"><span>导航模块<label class="red">new</label></span></a> </p>
+<h3 class="col-t"><span class="on"><a href="index.php?admin_nav">导航模块</a></span><span><a href="index.php?admin_navmodel">导航模块模型</a></span></h3>
+<div class="nav_model">
+	<form name="list" method="POST" action="index.php?admin_nav-search">
+			<ul class="col-ul ul_li_sp m-t10">
+			<li><span>位置:</span>
+				<select name="postion">
+					<option value="0" >请选择</option>
+					<option value="1" >上</option>
+					<option value="2" >下</option>
+					<option value="3" >左</option>
+					<option value="4" >右</option>
+				</select>
+			</li>
+			<li><span>导航模块名:</span>
+				<input name="name" type="text" class="inp_txt" size="30" value="{$name}" />
+			</li>
+			<li><span>{lang commonCreateTime}:</span>
+				<input name="qstarttime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly" value="{$qstarttime}" />
+				—
+				<input name="qendtime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly"  value="{$qendtime}"/>
+			</li>
+			<li>
+				<input name="Submit1" type="submit" value="{lang commonSearch}"   class="inp_btn"/>
+			</li>
+		</ul>
+	</form>	
+	
+	<form method="POST" name="formdoclist">
+	<table class="table">
+	<colgroup>
+		<col style="width:180px;"></col>
+		<col style="width:140px;"></col>
+		<col style="width:120px;"></col>
+		<col></col>
+	</colgroup>
+<thead>    
+	<tr>
+ 	   <td>[ 共 <b>{$navum}</b> 个导航模块 ]</td>
+		<td  align="right" colspan="3"><input type="button" class="inp_btn2 m-r10" name="casemanage" onClick="javascript:window.location='?admin_nav-add'" value="新增导航模块" /></td>
+	</tr>
+	<tr>
+		<td>导航模块名称</td>
+		<td>最后编辑者</td>
+		<td>最后编辑时间</td>
+		<td>操作</td>
+	</tr>
+</thead>	
+
+			<!-- {if $navlist != null} -->
+			<!--{loop $navlist $nav}-->
+			<tr>
+				<td><!--{eval $name = htmlspecialchars($nav['name']); echo $name;}--></td>
+				<td><a target="_blank" class="e" href="index.php?user-space-{$nav['lasteditorid']}"  title="{$nav['lasteditor']}">{$nav['lasteditor']}</a></td>
+				<td>$nav['lastedit']</td>
+				<td><a href="javascript:delnav('{$nav['id']}');" class="link_gray">删除</a>  <a href="index.php?admin_nav-editnav-{$nav['id']}" class="m-l8">编辑</a>  <a href="index.php?admin_nav-editdoc-{$nav['id']}" class="m-l8">编辑关联词条</a></td>
+			</tr>
+			<!--{/loop}-->
+			<!-- {/if} -->
+			<!-- {if $navlist == null} -->
+			<tr>
+				<td colspan="4">{lang docmanageSearchMsg}</td>
+			</tr>
+			<!-- {/if} -->
+			<tr>
+				<td colspan="4"><p class="fenye a-r"> {$departstr} </p></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+
+function delnav(navid){
+	if(confirm('确认删除？')){
+		location.href="index.php?admin_nav-del-"+navid;
+	}
+}
+</script>
+{template admin_footer} 

@@ -1,0 +1,194 @@
+{template admin_header}
+<style type="text/css">
+.select{ border:1px #ccc solid; color:blank;}
+.black{background-color:#333; color:white;}
+.white{ background-color:white;}
+.pink{ background-color:pink;}
+.blue{ background-color:blue; color:white;}
+.green{ background-color:green; color:white;}
+.red{ background-color:red;color:white;}
+.brown{ background-color:brown; color:white;}
+.orange{ background-color:orange; }
+.gray{ background-color:gray; color:white;}
+.purple{ background-color:purple; color:white;}
+</style>
+<script language="JavaScript" type="text/javascript">
+function IsURL(str_url){
+	return(/(?:https?:\/\/)?\w+\.\w+/.test(str_url));
+}
+function checknull(){
+
+	if($.trim($("#path").val()).length>20){
+		alert('目录名称不能超过20个字');
+		$('#path').focus();
+		return false;
+	}else if($.trim($("#name").val()).length>20){
+		alert('模版名称不能超过20个字');
+		$('#name').focus();
+		return false;
+	}else if($.trim($("#author").val()).length>10){
+		alert('作者不能超过10个字');
+		$('#author').focus();
+		return false;
+	}else if($.trim($("#desc").val()).length>150){
+		alert('描述不能超过150个字');
+		$('#desc').focus();
+		return false;
+	}else if($.trim($("#sitename").val()).length>30){
+		alert('支持网站名称不能超过30个字');
+		$('#sitename').focus();
+		return false;
+	}else if($.trim($("#version").val()).length>15){
+		alert('模版版本不能超过15个字');
+		$('#version').focus();
+		return false;
+	}else if($.trim($("#copyright").val()).length>50){
+		alert('版权不能超过50个字');
+		$('#copyright').focus();
+		return false;
+	}else{
+		if($.trim($("#path").val())==""){
+			alert("{lang stylePathNameNotNull}");
+			$('#path').focus();
+			return false;
+		}else if($.trim($("#name").val())==""){
+			alert("{lang styleStyleNameNotNull}");
+			$('#name').focus();
+			return false;
+		}else if($.trim($("#tag").val())==""){
+			alert("{lang styleStyleTagNotNull}");
+			$('#tag').focus();
+			return false;
+		}else if($.trim($("#author").val())==""){
+			alert("{lang styleAuthorNotNull}");
+			$('#author').focus();
+			return false;
+		}else if(IsURL($.trim($('#authorurl').val()))==false){
+			alert("{lang styleAuthorUrl}");
+			$('#authorurl').focus();
+			return false;
+		}else if($.trim($("#desc").val())==""){
+			alert("{lang styleStyleDesNotNull}");
+			$('#desc').focus();
+			return false;
+		}else if($.trim($("#sitename").val())==""){
+			alert("{lang styleSiteNameNotNull}");
+			$('#sitename').focus();
+			return false;
+		}else if(IsURL($.trim($('#weburl').val()))==false){
+			alert("{lang styleWebUrlNotNull}");
+			$('#weburl').focus();
+			return false;
+		}else if($.trim($("#version").val())==""){
+			alert("{lang styleVersionNotNull}");
+			$('#version').focus();
+			return false;
+		}else if($.trim($("#copyright").val())==""){
+			alert("{lang styleCrNotNull}");
+			$('#copyright').focus();
+			return false;
+		}
+	}
+}
+function selectcolor(){
+	$("#tag").val($("#tag").val()+' '+$.trim($("#stylecolor").val()));
+}
+function selectlayout(){
+	$("#tag").val($("#tag").val()+' '+$.trim($("#stylelayout").val()));
+}
+</script>
+        
+<p class="map">插件/模板：创建模版</p>
+<p class="sec_nav">模板：
+    <a href="index.php?admin_theme"><span>设置默认风格</span></a>
+    <a href="index.php?admin_theme-create" class="on"><span>创建风格</span></a>
+    <a href="index.php?admin_theme-list"><span>在线安装</span></a>
+    <a href="index.php?admin_theme-edit" ><span>模板编辑</span></a>
+</p>
+        
+<h3 class="col-h3">创建模板</h3><br />
+
+        
+		<form name="_modifyico" enctype="multipart/form-data" action="index.php?admin_theme-createstyle" method="POST" onsubmit="return checknull();">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mix_eidt">
+				<thead>
+				<tr>
+					<td colspan="2">
+				  		<!--{if $defaultstyle[name]!='' && $defaultstyle[img]!='1'}-->
+								<img alt="{$defaultstyle[name]}" src="style/default/screenshot.jpg"/>
+						<!--{else}-->
+								<img alt="{$defaultstyle[name]}" src="style/{$defaultstyle[path]}/screenshot.jpg"/>
+				  		<!--{/if}-->
+					</td>
+				</tr>
+				</thead>
+				<tr>
+					<td >&nbsp;&nbsp;{lang styledocpath}:</td>
+					<td ><input style="width:200px;" class="inp_txt" id="path" name="style[path]" type="text" value="" /><font color="red">({lang styledocpathtip})</font></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;{lang styleStyleName}:</td>
+					<td ><input style="width:200px;" class="inp_txt" name="style[name]" id="name" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;{lang focusmanageTag}:</td>
+					<td >
+					<select name="stylecolor" id="stylecolor" class="select" onchange="selectcolor();">
+						<option value="" selected="selected">{lang styleColorSelect}</option>
+						<option class="black" value="{lang styleColorBlack}">{lang styleColorBlack}</option>
+						<option class="white" value="{lang styleColorWhite}">{lang styleColorWhite}</option>
+						<option class="pink" value="{lang styleColorPink}">{lang styleColorPink}</option>
+						<option class="blue" value="{lang styleColorBlue}">{lang styleColorBlue}</option>
+						<option class="green" value="{lang styleColorGreen}">{lang styleColorGreen}</option>
+						<option class="red" value="{lang styleColorRed}">{lang styleColorRed}</option>
+						<option class="brown" value="{lang styleColorBrown}">{lang styleColorBrown}</option>
+						<option class="gray" value="{lang styleColorGray}">{lang styleColorGray}</option>
+						<option class="orange" value="{lang styleColorOrange}">{lang styleColorOrange}</option>
+						<option class="purple" value="{lang styleColorPurple}">{lang styleColorPurple}</option>
+						<option class="white" value="{lang styleColorOther}">{lang styleColorOther}</option>
+					</select>
+					<select name="stylelayout" id="stylelayout" onchange="selectlayout();">
+						<option value="" selected="selected">{lang styleSelectLayout}</option>
+						<option value="{lang styleOneLayout}">{lang styleOneLayout}</option>
+						<option value="{lang styleTwoLayout}">{lang styleTwoLayout}</option>
+						<option value="{lang styleThreeLayout}">{lang styleThreeLayout}</option>
+						<option value="{lang styleFourLayout}">{lang styleFourLayout}</option>
+					</select>    
+					<input style="width:300px;" class="inp_txt" name="style[tag]" id="tag" type="text" value="" />
+					<font color="red">({lang styleTagCom})</font></td>
+				</tr>
+				<tr>
+					<td style="width:180px;">&nbsp;&nbsp;{lang pluginWriter}:</td>
+					<td ><input style="width:200px;" class="inp_txt" id="author" name="style[author]" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;{lang styleAuthorHttp}:</td>
+					<td ><input style="width:200px;" class="inp_txt" id="authorurl" name="style[authorurl]" type="text" value="http://"  /><font color="red">({lang styleauthorurltip})</font></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;{lang pluginDescript}:</td>
+					<td ><textarea name="style[desc]" id="desc" style="width:300px;" rows="4" cols="47"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;{lang styleSiteName}:</td>
+					<td ><input style="width:200px;" class="inp_txt" name="style[sitename]" id="sitename" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;{lang styleWebUrl}:</td>
+					<td ><input style="width:200px;" class="inp_txt" name="style[weburl]" id="weburl" type="text" value="http://" /></td>
+				</tr>
+				<tr>
+					<td >&nbsp;&nbsp;{lang styleVersion}:</td>
+					<td ><input style="width:200px;" class="inp_txt" name="style[version]" id="version" type="text" value="" /></td>
+				</tr>				
+				<tr>
+					<td >&nbsp;&nbsp;{lang styleCopyRight}:</td>
+					<td ><input style="width:200px;" class="inp_txt" name="style[copyright]" id="copyright" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<td height="40" colspan="2">&nbsp;&nbsp;<input class="inp_btn2" type="submit" value="{lang stylecreatenew}" name="stylesubmit" id="stylesubmit" /></td>
+				</tr>
+			</table>
+		</form>
+{template admin_footer}

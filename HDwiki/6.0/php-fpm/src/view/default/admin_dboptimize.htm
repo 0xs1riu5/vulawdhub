@@ -1,0 +1,31 @@
+{template admin_header}
+<p class="map">数据库管理：数据库优化</p>
+<h3 class="col-h4 m-t10">数据库优化</h3>
+<table class="table">
+	<tr>
+		<td style="width:150px;">{lang dbTable}</td>
+		<td style="width:100px;">{lang dbTableType}</td>
+		<td style="width:80px;">{lang dbRecordCount}</td>
+		<td style="width:100px;">{lang commonData}</td>
+		<td style="width:80px;">{lang commonFragment}</td>
+		<td style="width:120px;">{lang commonCharset}</td>
+		<td>{lang commonState}</td>
+	</tr>
+	<!--{loop $tablelist $key $value}-->
+	<tr>
+		<td>{$value['table']}</td>
+		<td>{$value['type']}</td>
+		<td>{$value['rec_num']}</td>
+		<td>{$value['rec_index']}</td>
+		<td>{$value['rec_chip']}</td>
+		<td>{$value['chartset']}</td>
+		<td>{$value['status']}</td>
+	</tr>
+	<!--{/loop}-->
+	<tr>
+		<td colspan="7">{lang dbFragmentTotal}:{$num}&nbsp;
+			<input type="button" class="inp_btn2" value="{lang dbStartOptimize}" name="opsubmit" onclick="javascript:window.location='index.php?admin_db-optimize'" />
+			<input type="button" class="inp_btn2" value="{lang dbStartFix}" name="resubmit" onclick="javascript:window.location='index.php?admin_db-repair'" /></td>
+	</tr>
+</table>
+{template admin_footer}

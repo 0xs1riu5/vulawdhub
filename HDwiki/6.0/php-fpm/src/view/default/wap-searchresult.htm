@@ -1,0 +1,48 @@
+{template wapheader}
+{template wapbody}
+    <section class="column">
+        <p class="body gray9">搜索"<span class="blue">{$searchtext}</span>"找到相关内容<i class="blue">{$count}</i>篇</p>
+    </section>
+    <!--{if $docnoexit}-->
+        <!--{if $count ==0 }-->
+            <section class="column nobody">
+                <i class="ico-warn"></i>
+                <p class="gray9">还没有内容<br>您可以登录电脑版创建词条</p>
+            </section>
+        <!--{else}-->
+        <section class="column">
+            <p class="body gray9">当前没有收录"<span class="blue">{$searchtext}</span>"词条，您可以登录电脑版创建词条</p>
+        </section>
+        <!--{/if}-->
+    <!--{/if}-->
+    <!--{if isset($list) && !empty($list)}-->
+    <section class="search-result">
+        <ul class="ul-row1">
+            <!--{loop $list $key $doc}-->
+            <li>
+                <a href="{url doc-view-$doc['did']}">
+                    <!--{if $doc['img']}-->
+                    <span class="aimg w150"><img src="$doc['img']" alt="{$doc['title']}"></span>
+                    <!--{/if}-->
+                    <strong class="title">{$doc['title']}</strong>
+                    <span class="summary">{$doc['summary']}</span>
+                </a>
+            </li>
+            <!--{/loop}-->
+        </ul>
+    </section>
+    <!--{/if}-->
+<!--<section class="search-result">
+    <ul class="ul-row1">
+        <li><a href=""><span class="aimg w150"><img src="../../uploads/201008/f_2OepKa.jpg" alt=""></span><strong class="title">最机关报协硒鼓</strong><span class="summary">这里是简介简介简介</span></a></li>
+        <li><a href=""><span class="aimg w150"><img src="../../uploads/userface/1/1_src.jpg" alt=""></span><strong class="title">最机关报协硒鼓</strong><span class="summary">这里是简介简介简介</span></a></li>
+        <li><a href=""><span class="aimg w150"><img src="../../uploads/201007/1280484381eiJRbLHZ.gif" alt=""></span><strong class="title">56asdf45asd4f5asdf545asd6f6da4sf</strong><span class="summary">这里是简介简介简介</span></a></li>
+        <li><a href=""><span class="aimg w150"><img src="../../uploads/201007/1280478661MFjaRlse.jpg" alt=""></span><strong class="title">最机关报协硒鼓</strong><span class="summary">这里是简介简介简介</span></a></li>
+        <li><a href=""><strong class="title">最机关报协硒鼓</strong><span class="summary">这里是简介简介简介</span></a></li>
+        <li><a href=""><strong class="title">最机关报协硒鼓</strong><span class="summary">这里是简介简介简介</span></a></li>
+        <li><a href=""><strong class="title">最机关报协硒鼓</strong><span class="summary">这里是简介简介简介</span></a></li>
+    </ul>
+</section>
+ <p class="loading gray9">正在加载更多数据...</p>
+-->
+ {template wapfooter}

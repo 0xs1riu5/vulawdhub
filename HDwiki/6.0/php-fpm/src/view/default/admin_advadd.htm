@@ -1,0 +1,267 @@
+{template admin_header}
+<style type="text/css">
+.pos li{ float:left; list-style-type:none;}
+</style>
+<script type="text/javascript">
+	<!--{if isset($adv)}--> 
+	$(function(){
+		$("select[name='type']")[0].disabled = true;
+		$("input[name='advnew[title]']").val("{$adv[title]}");
+		<!--{if !empty($adv[targets])}--> 
+		var objSelect=$("select[name='advnew[targets][]'] option") ;
+		for(var i=0;i<objSelect.length;i++){
+			objSelect[i].selected = false;
+			<!--{loop $adv[targets] $target}-->
+			if(objSelect[i].value=='{$target}'){
+				objSelect[i].selected = true; 
+			}
+			<!--{/loop}-->
+		}
+		<!--{/if}-->
+		<!--{if isset($adv[position]) && $adv[position]!=='0'}--> 
+		$("input[name='advnew[position]']").get({$adv[position]}-1).checked = true;
+		<!--{/if}-->
+		<!--{if isset($adv[parameters][floath])}--> 
+		$("input[name='advnew[floath]']").val('{$adv[parameters][floath]}');
+		<!--{/if}-->
+		<!--{if $adv[starttime]!=='0' }--> 
+		$("input[name='advnew[starttime]']").val('$adv[starttime]');
+		<!--{/if}-->
+		<!--{if $adv[endtime]!=='0' }--> 
+		$("input[name='advnew[endtime]']").val('{$adv[endtime]}');
+		<!--{/if}-->
+		
+		$("#advstyle").attr("value",'{$adv['parameters']['style']}');
+		var styles, key;
+		styles=new Array('code','text','image','flash'); 
+		for(key in styles) {
+			var obj=$('#style_'+styles[key]);
+			var dis=styles[key]=='{$adv[parameters][style]}'?'':'none';
+			obj.css('display',dis);
+		}
+		<!--{if {$adv[parameters][style]}=='text' }--> 
+		$("input[name='advnew[text][title]']").val('{$adv[parameters][title]}');
+		$("input[name='advnew[text][link]']").val('{$adv[parameters][link]}');
+		$("input[name='advnew[text][size]']").val('{$adv[parameters][size]}');
+		<!--{/if}-->
+		<!--{if {$adv[parameters][style]}=='image' }--> 
+		$("input[name='advnew[image][url]']").val('{$adv[parameters][url]}');
+		$("input[name='advnew[image][link]']").val('{$adv[parameters][link]}');
+		$("input[name='advnew[image][width]']").val('{$adv[parameters][width]}');
+		$("input[name='advnew[image][height]']").val('{$adv[parameters][height]}');
+		$("input[name='advnew[image][alt]']").val('{$adv[parameters][alt]}');
+		<!--{/if}-->
+		<!--{if {$adv[parameters][style]}=='flash' }--> 
+		$("input[name='advnew[flash][url]']").val('{$adv[parameters][url]}');
+		$("input[name='advnew[flash][width]']").val('{$adv[parameters][width]}');
+		$("input[name='advnew[flash][height]']").val('{$adv[parameters][height]}');
+		<!--{/if}-->
+	}); 
+	<!--{else}-->
+	function change(type){
+		window.location='{$setting[seo_prefix]}admin_adv-add-'+type+'{$setting[seo_suffix]}';
+	}
+	<!--{/if}-->
+	function check(){
+		var image_num = $("input[name='advnew[image][width]']").val()+$("input[name='advnew[image][height]']").val();
+		var flash_num = $("input[name='advnew[flash][width]']").val()+$("input[name='advnew[flash][height]']").val();
+		if($("input[name='advnew[title]']").val()=='') {
+			alert('{lang adv_title_invalid}');
+			return false;
+		}
+		<!--{if $position==6}-->
+		else if($("input[name='advnew[floath]']").val()<40 || $("input[name='advnew[floath]']").val()>600){
+			alert('{lang adv_float_height_error}');
+			return false;
+		}else if( /\D+/.test( $("input[name='advnew[floath]']").val() ) ){
+			alert('{lang adv_float_height_notnum}');
+			return false;
+		}
+		<!--{/if}-->
+		else if(($("#advstyle").val() == 'code' && $("textarea[name='advnew[code][html]']").val()=='')
+			|| ($("#advstyle").val() == 'text' && ($("input[name='advnew[text][title]']").val()=='' || $("input[name='advnew[text][link]']").val()==''))
+			|| ($("#advstyle").val() == 'image' && ($("input[name='advnew[image][url]']").val()=='' || $("input[name='advnew[image][link]']").val()==''))
+			|| ($("#advstyle").val() == 'flash' && ($("input[name='advnew[flash][url]']").val()=='' || $("input[name='advnew[flash][width]']").val()=='' || $("input[name='advnew[flash][height]']").val()==''))) {
+			alert('{lang adv_parameter_invalid}');
+			return false;
+		}else if(  (image_num != '' && /\D+/.test(image_num))||(flash_num != '' && /\D+/.test(flash_num))  ){
+			alert('{lang adv_not_num}');
+			return false;
+		}
+		return true;;
+	}
+</script>
+<p class="map">内容管理：广告管理</p>
+<p class="sec_nav">广告管理：<a href="index.php?admin_adv-default"><span>管理广告</span></a>
+<a href="index.php?admin_adv-config"><span>设置广告</span></a>
+<a href="index.php?admin_adv-add" class="on"><span>添加广告</span></a>
+<a href="index.php?admin_adv-union"><span>加入广告联盟</span></a>
+</p>
+<h3 class="col-h3">添加广告</h3>
+
+<!--{if isset($adv)}--> 
+<form action="index.php?admin_adv-edit" method="post">
+<input name="advid" value="{$adv[advid]}" type="hidden">
+<!--{else}-->
+<form action="index.php?admin_adv-add" method="post">
+<!--{/if}-->
+
+<table class="table">
+	<colgroup>
+		<col style="width:300px;"></col>
+		<col></col>
+	</colgroup>
+	<tr>
+		<td><span>选择您要添加的广告类型</span>
+			<select name="type" onchange="change(this.value);">
+				<option value="0" <!--{if $position==0}--> selected <!--{/if}-->>{lang adv_position_0}</option>
+				<option value="1" <!--{if $position==1}--> selected <!--{/if}-->>{lang adv_position_1}</option>
+				<option value="2" <!--{if $position==2}--> selected <!--{/if}-->>{lang adv_position_2}</option>
+				<option value="3" <!--{if $position==3}--> selected <!--{/if}-->>{lang adv_position_3}</option>
+				<option value="4" <!--{if $position==4}--> selected <!--{/if}-->>{lang adv_position_4}</option>
+				<option value="7" <!--{if $position==7}--> selected <!--{/if}-->>{lang adv_position_7}</option>
+				<option value="5" <!--{if $position==5}--> selected <!--{/if}-->>{lang adv_position_5}</option>
+				<option value="6" <!--{if $position==6}--> selected <!--{/if}-->>{lang adv_position_6}</option>
+			</select>
+		</td>
+		<td class="v-b" >选择你要添加的广告类型</td>
+	</tr>
+	<tr>
+		<td colspan="2"><span>广告说明</span>{$adv_note}</td>
+	</tr>	
+</table>
+<!--{if isset($adv)}--> 
+<input name="type" value="{$adv[type]}" type="hidden">
+<!--{/if}-->
+
+
+<!--默认不显示要添加的广告类型,用户选择广告类型以后显示-->
+<h3 class="col-h3">{lang add_adv} - {$adv_position}</h3>
+<table class="table">
+	<colgroup>
+		<col  style="width:300px;"></col>
+		<col></col>
+	</colgroup>
+	<tr>
+		<td><span>广告标题</span><input name="advnew[title]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b" >注意: 广告标题只为识别辨认不同广告条目之用，并不在广告中显示</td>
+	</tr>
+	<!--{if isset($adv_range)}-->	
+	<tr>
+		<td><span>广告投放范围(必选):</span>
+			<select name="advnew[targets][]" size="10" multiple="MULTIPLE" id="advrange">
+				{$adv_range}
+			</select>
+		</td>
+		<td class="v-m" > 设置本广告投放的页面或论坛范围，可以按住 CTRL 多选，选择“全部”为不限制选择广告投放的范围</td>
+	</tr>
+	<!--{/if}-->
+	<!--{if isset($dis_pos)}-->
+	<tr>
+		<td><span>{lang adv_show_position}:</span><ul class="pos">{$dis_pos}</ul></td>
+		<td class="v-m" > {lang adv_tip2}</td>
+	</tr>
+	<!--{/if}-->
+	<!--{if isset($isfloat)}--> 
+	<tr>
+		<td><span>{lang adv_fload_height}:</span><input name="advnew[floath]" value="200" class="inp_txt" type="text"></td>
+		<td class="v-m" > {lang adv_tip3}</td>
+	</tr>
+	<!--{/if}-->
+	<tr>
+		<td><span>广告起始时间(选填):</span><input class="inp_txt" name="advnew[starttime]" value="" onclick="showcalendar(event, this);"  type="text"></td>
+		<td class="v-b" >设置广告起始生效的时间，格式 yyyy-mm-dd，留空为不限制起始时间</td>
+	</tr>	
+	<tr>
+		<td><span>广告结束时间(选填):</span><input class="inp_txt" name="advnew[endtime]" value="" onclick="showcalendar(event, this);"  type="text"></td>
+		<td class="v-t" ><p>设置广告广告结束的时间，格式 yyyy-mm-dd，留空为不限制结束时间</p></td>
+	</tr>	
+	<tr>
+		<td><span>展现方式:</span>
+			<select name="advnew[style]" id="advstyle" onchange="
+				var styles, key;
+				styles=new Array('code','text','image','flash'); 
+				for(key in styles) {
+				var obj=$('#style_'+styles[key]);
+				var dis=styles[key]==this.options[this.selectedIndex].value?'':'none';
+				obj.css('display',dis);
+				}">
+				<!--{if $position!=5 && $position!=6}-->
+				<option value="code" selected="selected"> {lang adv_style_code}</option>
+				<option value="text"> {lang adv_style_text}</option>
+				<!--{/if}-->
+				<option value="image"> {lang adv_style_image}</option>
+				<option value="flash"> {lang adv_style_flash}</option>
+			</select>
+		</td>
+		<td class="v-b">请选择所需的广告展现方式</td>		
+	</tr>
+	
+	<!--{if $position!=5 && $position!=6}-->
+	<tr id="style_code">
+		<td><span>HTML 代码 :</span>
+			<textarea rows="6" name="advnew[code][html]" cols="50" class="textarea"><!--{if !empty($adv[parameters][style]) && {$adv[parameters][style]}=='code' }--> {$adv[parameters][html]}<!--{/if}--></textarea>
+		</td>
+		<td class="v-b">{lang adv_import_code}</td>		
+	</tr>
+	
+	<tbody id="style_text" style="display: none;">
+	<tr>
+		<td><span>{lang adv_charactornotnull} :</span><input name="advnew[text][title]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_charactor_con}</td>		
+	</tr>
+	
+	<tr>
+		<td><span>{lang adv_charactor_link} :</span><input name="advnew[text][link]" value="http://" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_charactor_url}</td>		
+	</tr>
+	
+	<tr>
+		<td><span>{lang adv_charsize} :</span><input name="advnew[text][size]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_charactor_tip}</td>		
+	</tr>
+	</tbody>
+	<!--{/if}-->
+	
+	<tbody id="style_image"  <!--{if $position!=5 && $position!=6}-->style="display: none;" <!--{/if}-->>
+	<tr>
+		<td><span>{lang adv_img_add} :</span><input name="advnew[image][url]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_img_tip}</td>		
+	</tr>
+	<tr>
+		<td><span>{lang adv_img_link} :</span><input name="advnew[image][link]" value="http://" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_img_url}</td>		
+	</tr>
+	<tr>
+		<td><span>{lang adv_img_width} :</span><input name="advnew[image][width]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_img_widthtip}</td>		
+	</tr>
+	<tr>
+		<td><span>{lang adv_img_height} :</span><input name="advnew[image][height]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_img_heighttip}</td>		
+	</tr>
+	<tr>
+		<td><span>{lang adv_imgtochar} :</span><input name="advnew[image][alt]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_moutip}</td>		
+	</tr>
+	</tbody>
+
+	<tbody id="style_flash" style="display: none;">
+	<tr>
+		<td><span>Flash {lang adv_flash_add} :</span><input name="advnew[flash][url]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_flashtip}</td>		
+	</tr>
+	
+	<tr>
+		<td><span>Flash {lang adv_flashwidth} :</span><input name="advnew[flash][width]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_flashwidth_tip}</td>		
+	</tr>
+	<tr>
+		<td><span>Flash {lang adv_flash_height} :</span><input name="advnew[flash][height]" value="" class="inp_txt" type="text"></td>
+		<td class="v-b">{lang adv_falsh_heighttip}</td>		
+	</tr>
+	</tbody>
+</table>
+<p class="submit"><input class="inp_btn" name="advsubmit" onclick="return check()" value="{lang submit}" type="submit"></p>
+</form>
+{template admin_footer}

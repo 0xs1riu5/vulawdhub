@@ -1,0 +1,33 @@
+{template admin_header}
+
+<p class="map">系统设置：后台搜索</p>
+<div class="seach_list" id="seach_list">
+<h3 class="col-h4">搜索结果列表</h3>
+
+<!--{if $list}-->
+	<!--{loop $list $data}-->
+	<dl class="col-dl">
+		<dt>{$data}</dt>
+	</dl>
+	<!--{/loop}-->
+<!--{else}-->
+	<dl class="col-dl">
+		<dd>对不起，没有找到相关设置或功能菜单！</dd>
+<!--{/if}-->
+</div>
+<a id="keywords" style="display:none;">{$keywords}</a>
+<script type="text/JavaScript">
+function go(AElement){
+	var a = $(AElement), menu = a.attr('menu');
+	if( menu == "2"){
+		var url = a.parent().find("a[menu=1]").attr('href');
+		if(url){
+			parent.initMenu(url);
+		}
+	}
+	parent.initMenu($(AElement).attr('href'));
+	parent.setSearchWordColor($("#keywords").text());
+}
+</script>
+
+{template admin_footer}

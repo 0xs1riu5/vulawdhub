@@ -1,0 +1,162 @@
+{template header}
+<section class="wrap clearfix">
+<div class="l group1">
+	<div class="columns">
+		<h2 class="col-h2">{lang checkCreditRule}</h2>
+		<div class="jfhl_theme">
+			<img alt="{lang checkCreditProcess}" src="./style/default/jfhl-step.gif"/>
+			<p class="gray9">{lang checkCreditTip}</p>
+		</div>
+	</div>
+	
+	<div id='block_price'>{block:price/}</div>
+
+	<div class="columns redeed_present">
+		<h2 class="col-h2">{lang checkGift}</h2>
+		<ul class="col-ul clearfix j-zhong">
+			<!--{loop $giftlist $gift}-->
+				<li>
+				<a class="a-img1">
+				<img name="img_gift" id="gift{$gift['id']}" alt="$gift['title']"  src="$gift['image']" onclick="open_img(this)" />
+				</a>
+					{if $gift['credit']>$user['credit1'] }
+						<p title="{$gift['title']}"><a href="javascript:alert('{lang checkCreditTip2}');">{$gift['shorttitle']}</a><span class="red">$gift['credit']{lang needGolds}</span></p>
+						<a href="javascript:alert('{lang checkCreditTip2}');"  class="btn_sys disabled">我要兑换</a>
+					{else}					
+						<p title="{$gift['title']}"><a id="title{$gift['id']}" href="javascript:apply($gift['id']);">{$gift['shorttitle']}</a><span class="red">$gift['credit']{lang needGolds}</span></p>
+						<a href="javascript:apply($gift['id']);" class="btn_sys">我要兑换</a>	
+					{/if}
+					
+				</li>
+				<div  id="credit{$gift['id']}" style="display:none">$gift['credit']</div>
+				<div  id="description{$gift['id']}" style="display:none">$gift['description']</div>
+			<!--{/loop}-->
+		</ul>
+		 <div id="fenye" class="a-c"> 
+			{$departstr}
+		</div>
+	</div>
+</div>
+
+<aside class="r group2">
+	<div class="columns a-c">
+		<p class="col-p a-l">{lang checkCreditTip3}<a class="clink" href="index.php?doc-innerlink-{eval echo urlencode('{lang contactus}')}" >{lang checkCreditTip4}</a></p>
+		
+	</div>
+	<div class="columns p-b10">
+		<p class="col-p m-t10 break">
+		{$setting['gift_notice']}
+		</p>
+	</div>
+	<div class="columns" id="zxdtold">
+		<h2 class="col-h2">{lang news}</h2>
+		<div class="timeline-list" id="zxdt">
+			<!--{loop $loglist $giftlog}-->
+			<p class="col-p"><a href="{url user-space-$giftlog['uid']}" class="clink">{$giftlog['username']}</a>{lang chineseDe}<span color="blue">{$giftlog['title']}</span>{lang checkSucWaite}</p>
+			<p class="col-p"><a href="{url user-space-$giftlog['uid']}" class="clink">{$giftlog['username']}</a>：{lang giveGiftTo}<span color="blue">{$giftlog['title']}</span> 。</p>
+			<!--{/loop}-->
+			<div class="timeline"></div>
+		</div>
+	</div>	
+</aside>
+</section>
+<div id="gift_dialog" style="display:none">
+	<form id="giftform"  action="{url gift-apply}" method="post">
+	<input id="gid"  type="hidden" name="gid" value="" />
+	<div class="lp_info j-zhong a-l">
+		<div class="l">			
+			<b class="a-img1"><img id="giftdiv" src="style/default/jfhl/lp_01.jpg"/></b>
+		</div>
+		<h3 class="f16 cblue" id="titlediv"></h3>
+		<ul class="gray">
+			<li	id="creditdiv"></li>
+			<li	id="descriptiondiv"></li>
+		</ul>
+	</div> 
+	<p class="red ico-warna m-t20">{lang checkCreditTip5}</p>
+	<ul class="ul_l_s real_info a-l">
+	<li><span>{lang realname}：</span><input id="truename" name="truename" type="text" class="inp_txt" value="{$user['truename']}"/><label class="red">*</label><label class="tip red" id="v_truename">{lang importantTip}</label></li>
+	<li><span>{lang tel}：</span><input id="telephone" name="telephone" type="text" class="inp_txt" value="{$user['telephone']}"/><label class="red">*</label><label class="tip red" id="v_telephone">{lang importantTip}</label></li>
+	<li><span>E-mail：</span><input id="email" name="email" type="text" class="inp_txt" value="{$user['email']}"/><label class="red">*</label><label class="tip red" id="v_email"></label></li>
+	<li><span>{lang address}：</span><input id="location" name="location" type="text" class="inp_txt" size="50" value="{$user['location']}"/><label class="red">*</label><label class="tip red" id="v_location">{lang importantTip}</label></li>
+	<li><span>{lang ZipCode}：</span><input id="postcode" name="postcode" type="text" class="inp_txt" value="{$user['postcode']}"/><label class="red">*</label><label class="tip red" id="v_postcode"></label></li>
+	<li><span>{lang Notes}：</span><textarea name="extra" rows="3" cols="45"></textarea></li>
+	<li><span>{lang qq}：</span><input name="qq" type="text"class="inp_txt" value="{$user['qq']}" /></li>
+	<li><input name="submit" type="submit" value="{lang sure}" class="btn_inp blue"/><input name="cancel" type="button" value="{lang cancel}" class="btn_sys" onclick="javascript:mycancel();" /></li>
+	</ul>
+	</form>
+</div>
+
+<script type="text/javascript" src="js/validator.js"></script>
+<script type="text/javascript">
+var Validator_giftform;
+
+$(document).ready(function(){
+	if($("#zxdt").height()>464){
+		$("#zxdt").height(440);
+		$("#zxdt").css("overflow","hidden");
+	};
+	
+	(function(zxdt, delay, speed, lh){
+		 var rotator = document.getElementById(zxdt);
+		 var delay = delay || 3000, speed = speed || 20, lh = lh || 20;
+		 var tid = null, pause = false;
+		 var start = function(){
+			 tid = setInterval(rotation, speed);
+		 }
+		 var rotation = function(){
+			 if (pause) return;
+			 rotator.scrollTop += 1;
+			 if (rotator.scrollTop % lh == 0){
+				 clearInterval(tid);
+				 if(typeof(rotator.getElementsByTagName('p')[0]) != "undefined"){
+					 rotator.appendChild(rotator.getElementsByTagName('p')[0]);
+					 rotator.scrollTop = 0;
+					 setTimeout(start, delay);
+				 }
+			 }
+		 }
+		rotator.onmouseover = function(){ pause = !pause; }
+		rotator.onmouseout = function(){ pause = !pause; }
+		setTimeout(start, 1000);
+	})('zxdt', 3000, 40, 440);
+});
+
+function apply(gid){
+	$("#gid").attr('value',gid);
+	$("#giftdiv").attr("src",$("#gift"+gid).attr("src"));
+	$("#titlediv").html(' 您兑换的奖品：'+$("#title"+gid).html() );
+	$("#creditdiv").html( '<span >所需金币：</span><b class="red">'+$("#credit"+gid).html()+'</b>' );
+	$("#descriptiondiv").html( '<span >礼品描述：</span>'+$("#description"+gid).html() );
+	
+	//$.dialog.open('gift', '奖品兑换申请', 'selector:#gift_dialog');
+	$.dialog({
+		id:'gift',
+		title:'奖品兑换申请',
+		type:'selector',
+		content:'#gift_dialog',
+		width:500
+		
+	});
+	$("#gift_dialog").empty();
+	
+	if(!Validator_giftform){
+		Validator_giftform=new Validator("giftform",false,null);
+		Validator_giftform.bind("truename",[["empty","真实姓名不能为空"]]);
+		Validator_giftform.bind("telephone",[["empty","电话不能为空"],["phone","电话格式不正确"]]);
+		Validator_giftform.bind("email",[["empty","email不能为空"],["email","email格式不正确"]]);
+		Validator_giftform.bind("location",[["empty","邮寄地址不能为空"]]);
+		Validator_giftform.bind("postcode",[["empty","邮编不能为空"],["zip","邮编格式不正确"]]);
+	}
+}
+
+function mycancel(){
+	$.dialog.close('gift');
+}
+
+function open_img(E){
+	var path=E.src;
+	$.dialog.open('gift_img', E.alt, 'img:'+path.replace("_s.", '.'),'c');
+}
+</script>
+{template footer}

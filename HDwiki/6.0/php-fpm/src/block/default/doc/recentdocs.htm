@@ -1,0 +1,10 @@
+
+<div id="zjgx" class="columns zjgx o-v {$data['config']['style']}" bid="{$bid}">
+    <h2 class="col-h2">{lang recentUpdate}</h2>
+    <a href="{url list-recentchange}" class="more">{lang more}</a>
+    <div class="timeline-list">
+       <!--{loop $data['doclist'] $doc}-->
+            <p class="col-p"><a href="{url doc-view-$doc['did']}"  class="ctm" title="{$doc['title']}">{$doc['shorttitle']}</a><br><span class="gray9 f12">$doc['lastedit']</span></p>
+       <!--{/loop}-->
+    <div class="timeline"></div></div>
+</div>

@@ -1,0 +1,96 @@
+{template admin_header}
+<script type="text/javascript">
+function checkAll(id,bool){
+	$("input[name='"+id+"']").attr('checked',bool);
+}
+
+function showMuli(){
+	var state = $("#muli").css('display');
+	if(state == 'none'){
+		$("#muli").css('display','');
+	}else{
+		$("#muli").css('display','none');
+	}
+}
+</script>
+<p class="map">全局：扩展设置</p>
+<p class="sec_nav">扩展设置：
+    <a href="index.php?admin_setting-sec" > <span>防灌水设置</span></a>
+    <a href="index.php?admin_setting-anticopy"><span>防采集设置</span></a>
+    <a href="index.php?admin_setting-mail"><span>{lang mailConfig}</span></a>
+    <a href="index.php?admin_setting-noticemail"><span>{lang noticeMailConfig}</span></a>
+    <a href="index.php?admin_banned" class="on" ><span>IP禁止</span></a>
+    <a href="index.php?admin_setting-passport" ><span>通行证设置</span></a>
+    <a href="index.php?admin_setting-ucenter"><span>UCenter设置</span></a>
+    <a href="index.php?admin_setting-ldap"><span>LDAP设置</span></a>
+</p>
+<h3 class="col-h3">IP禁止</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示：</li>
+	<li>禁止ip可以使用“*”作为通配符禁止某段地址。</li>
+	<li>输入禁止ip或上传包含禁止ip的文件!(支持txt和cvs格式文件，ip之间用空格或换行隔开)</li>
+</ul>
+<form name="ipinfo" method="POST" action="" enctype="multipart/form-data">
+	<table class="table">
+		<tr>
+			<td width="80px;"><span><input class="checkbox" type="checkbox" name="chkall" onclick="checkAll('id[]',this.checked)">{lang commonTitleDelete}</span></td>
+			<td width="180px"><span>{lang commonIPAddress}</span></td>
+			<td width="150px"><span>{lang commonOperator}</span></td>
+			<td width="150px"><span>{lang commonStartTime}</span></td>
+			<td ><span>{lang commonEndTime}</span></td>
+		</tr>
+		{if is_array($ips)}
+			{loop $ips $id $ip}
+			<tr>
+				<td><input type="checkbox" name="id[]" value="{$ip[id]}" /><input type="hidden" name="idselect[]" value="{$ip[id]}" /></td>
+				<td>{$ip[ip]}</td>
+				<td>{$ip[admin]}</td>
+				<td>{$ip[starttime]}</td>
+				<td>{$ip[endtime]}</td>
+			</tr>
+			{/loop}
+		{else}
+			<tr>
+				<td colspan="5">{lang ipbanNoData}</td>
+			</tr>
+		{/if}
+		<tr>
+			<td>{lang commonAddNew}</td>
+			<td>
+				<input type="text" name="ip1new" id="ip1new" size="3" maxlength="3" class="inp_txt2">.
+				<input type="text" name="ip2new" id="ip2new" size="3" maxlength="3" class="inp_txt2">.
+				<input type="text" name="ip3new" id="ip3new" size="3" maxlength="3" class="inp_txt2">.
+				<input type="text" name="ip4new" id="ip4new" size="3" maxlength="3" class="inp_txt2">
+			</td>
+			<td>{lang commonLife}:
+			<input type="text" name="validitynew" value="30" size="3" maxlength="2" class="inp_txt2">
+			{lang commonDay} 
+			</td>
+			<td colspan="2">
+			<a href="javascript:showMuli();" class="inp_btn2">点击此处批量上传</a>
+			</td>
+		</tr>
+		<tr id="muli" style="display:none">
+			<td  width="80px;">请选择文件</td>
+			<td colspan="4">
+				<input name="file_path" id="file_path" type="file" class="inp_file" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="5"><input class="inp_btn" name="submit" value="{lang commonOK}" type="submit"></td>
+		</tr>
+		<tr>
+			<td colspan="5"><p class="fenye a-r"> {$departstr} </p></td>
+		</tr>
+	</table>
+	
+<script type="text/javascript">
+$(".inp_txt2").keydown(function(event){
+	if(event.keyCode == 190 || event.keyCode == 110) {
+		$(this).next().focus().select();
+		return false;
+    }
+});
+</script>
+</form>
+{template admin_footer}

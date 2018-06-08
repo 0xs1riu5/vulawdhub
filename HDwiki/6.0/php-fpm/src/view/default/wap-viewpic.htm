@@ -1,0 +1,65 @@
+{template wapheader}
+<body ontouchstart><div class="wrap">
+    <section class="viewpic">
+        <ul>
+            <li>
+                <figure class="pic"><img src="{$pic['attachment']}"></figure>
+                <figcaption class="info">{$pic['description']}</figcaption>
+            </li>
+        </ul>
+        <span class="no"><i>{eval echo $all_key+1;}</i> / {$max_num}</span>
+        <a class="goback" onclick="history.go(-1);">返回词条</a>
+    </section>
+</div>
+<script>
+$(function() {
+    var jsonData = {$piclist};
+    //console.log(jsonData);
+    var coord ={
+        index : {$all_key},
+        total : jsonData.length,
+        start : 0,
+        end   : 0,
+        change_pic_src:function(key){
+            //console.log(key);
+            coord.index = key;
+            $('.pic img').attr('src',jsonData[key]['attachment2'])
+            $('.info').html(jsonData[key]['description']);
+            $('.no i').html(key+1);
+        }
+
+    };
+    //console.log(coord);
+
+$('.viewpic ul li').on('touchstart', function(event){
+    coord.start = event.changedTouches[0].pageX;
+});
+
+$('.viewpic ul li').on('touchend', function(event){
+    coord.end = event.changedTouches[0].pageX;
+    if (coord.start - coord.end > 0) {
+        //console.log('左');
+        if(coord.index < coord.total-1){
+            var current_index = coord.index+1;
+            coord.change_pic_src(current_index)
+        }else{
+            return false;
+        }
+
+    } else {
+        //console.log('右');
+        if(coord.index >= 1){
+            var current_index = coord.index-1;
+            coord.change_pic_src(current_index);
+        }else{
+            return false;
+        }
+    }
+
+});
+
+});
+
+</script>
+</body>
+</html>

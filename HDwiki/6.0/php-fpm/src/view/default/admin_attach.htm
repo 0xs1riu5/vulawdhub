@@ -1,0 +1,112 @@
+{template admin_header}
+<script type="text/javascript">
+function deletecomment(){
+	if($("input[name='attach[]']:checked").length==0){
+		$.dialog.box('immageshow', '提示', '请选择需要删除的内容');
+		return false;
+	}else{
+		if(confirm('{lang commonConfirmRemove}')){
+			$('#formattachlist').attr("action","index.php?admin_attachment-remove");
+			$('#formattachlist').submit();
+		}else{
+			return false;
+		}
+	}
+}
+function selectAll(obj){
+	$("input[name='attach[]']").attr('checked',obj.checked);
+}
+
+function showimg(){
+	$.dialog();
+}
+
+$(document).ready(function(){
+	$('a[att]').click(function(){
+		var url = $(this).attr('att');
+		if(url.match(/\.(jpg|gif|png)$/i)){
+			$.dialog.box("image", $(this).text(), 'img:'+url);
+			return false;
+		}
+	});
+});
+</script>
+<p class="map">内容管理：附件管理</p>
+<div class="synonym">
+	<form name="list" method="POST" action="index.php?admin_attachment-search">
+		<ul class="col-ul ul_li_sp m-t10">
+			<li><span>{lang attachSearch}:</span>
+				<select name="qcattype">
+					<option value="0" >{lang commonAllCat}</option>
+					{$catstr}
+				</select>
+			</li>
+			<li><span>{lang attachAttachtype}:</span>
+				<select name="qfiletype">
+					<option value="0" >{lang commonAllType}</option>
+					<!--{loop $filetype $type}-->
+					<option value="{$type}" >{$type}</option>
+					<!--{/loop}-->
+					{$filetype}
+				</select>
+			</li>
+			<li><span>{lang attachDocName}:</span>
+				<input name="qtitle" type="text" class="inp_txt"  value="{$qtitle}" />
+			</li>
+			<li><span>{lang attachAuthor}:</span>
+				<input type="text" class="inp_txt" name="qauthor" value="{$qauthor}" />
+			</li>
+			<li><span>{lang attachTime}:</span>
+				<input name="qstarttime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly" value="{$qstarttime}" />
+				—
+				<input name="qendtime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly"  value="{$qendtime}"/>
+			</li>
+			<li>
+				<input name="submit" type="submit" value="{lang commonSearch}"   class="inp_btn"/>
+			</li>
+		</ul>
+	</form>
+	<h3 class="tol_table">[共 <b>{$attachsum}</b> 个附件]</h3>
+	<form name="formattachlist" id="formattachlist"  method="POST">
+		<table class="table">
+			<tr>
+				<td style="width:30px;">{lang commonSelect}</td>
+				<td style="width:180px;">{lang attachName}</td>
+				<td style="width:120px;">{lang commonTitle}</td>
+				<td style="width:60px;">{lang attachFileSize}</td>
+				<td style="width:50px;">{lang attachAuthorName}</td>
+				<td style="width:100px;">{lang attachUpTime}</td>
+				<td style="width:60px;">{lang attachDownTimes}</td>
+				<td >{lang pluginDescript}</td>
+			</tr>
+			<!-- {if $attachlist != null} -->
+			<!--{loop $attachlist $attach}-->
+			<tr>
+				<td><input type="checkbox" class="box" name="attach[]" value="{$attach['id']}_{$attach['attachment']}"  /></td>
+				<td ><a href="index.php?admin_attachment-download-{$attach['id']}-{$attach['isimage']}" att="{$attach['attachment']}">{$attach['filename']}</a></td>
+				<td><a target="_blank"  href="index.php?doc-view-{$attach['did']}" title="{$attach['title']}">{$attach['title']}</a></td>
+				<td>{$attach['filesize']}</td>
+				<td><a target="_blank" href="index.php?user-space-{$attach['uid']}"  title="{$attach['author']}">{$attach['author']}</a></td>
+				<td>{$attach['time']}</td>
+				<td>{$attach['downloads']}</td>
+				<td>{$attach['description']}</td>
+			</tr>
+			<!--{/loop}-->
+			<!-- {else} -->
+			<tr>
+				<td colspan="8">{$message}{lang attachHaveNone}</td>
+			</tr>
+			<!-- {/if} -->
+			<tr>
+				<td colspan="8">
+				<label class="m-r10"><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll(this);">&nbsp;&nbsp;{lang commonAllSelect}</label>
+					<input type="button" class="inp_btn2 m-r10" name="casemanage" onClick="deletecomment();" value="{lang commonDel}" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8"><p class="fenye a-r"> {$departstr} </p></td>
+			</tr>
+		</table>
+	</form>
+</div>
+{template admin_footer}

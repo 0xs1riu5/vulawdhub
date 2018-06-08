@@ -1,0 +1,98 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	var forbidden_edit_time = $("#forbidden_edit_time").val();
+	if ( forbidden_edit_time=='' || !/^\d+$/.test(forbidden_edit_time) || forbidden_edit_time < 0){
+		alert('{lang secForbidEditTimeWarning}');
+		$("#forbidden_edit_time").focus();
+		return false;
+	}
+}
+</script>
+
+<p class="map">全局：扩展设置</p>
+<p class="sec_nav">扩展设置：
+    <a href="index.php?admin_setting-sec" class="on"> <span>防灌水设置</span></a>
+    <a href="index.php?admin_setting-anticopy" ><span>防采集设置</span></a>
+    <a href="index.php?admin_setting-mail"><span>{lang mailConfig}</span></a>
+    <a href="index.php?admin_setting-noticemail"><span>{lang noticeMailConfig}</span></a>
+    <a href="index.php?admin_banned" ><span>IP禁止</span></a>
+    <a href="index.php?admin_setting-passport" ><span>通行证设置</span></a>
+    <a href="index.php?admin_setting-ucenter"><span>UCenter设置</span></a>
+    <a href="index.php?admin_setting-ldap"><span>LDAP设置</span></a>
+</p><h3 class="col-h3">{lang secConfig}</h3>
+<form method="POST" action="index.php?admin_setting-sec" onsubmit="return doSubmit();">
+<table class="table">
+	<tr>
+		<td width="300px"><span>{lang commonParameterName}</span></td>
+		<td><span>{lang commonParameterValue}</span></td>
+	</tr>
+	<tr>
+		<td><span>{lang secVerificationCreateCode}</span>{lang secVerificationCodeTrip}</td>
+		<td>
+		<label><input type="radio"  name="doc_verification_create_code" value="1"
+		{if $basecfginfo['doc_verification_create_code']=='1'}checked{/if}/>{lang commonYes}</label>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label><input type="radio"  name="doc_verification_create_code" value="0" 
+		{if $basecfginfo['doc_verification_create_code']=='0'}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang secVerificationEditCode}</span>{lang secVerificationCodeTrip}</td>
+		<td>
+		<label><input type="radio"  name="doc_verification_edit_code" value="1"
+		{if $basecfginfo['doc_verification_edit_code']=='1'}checked{/if}/>{lang commonYes}</label>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label><input type="radio"  name="doc_verification_edit_code" value="0" 
+		{if $basecfginfo['doc_verification_edit_code']=='0'}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang secVerificationReferenceCode}</span>{lang secVerificationCodeTrip}</td>
+		<td>
+		<label><input type="radio"  name="doc_verification_reference_code" value="1"
+		{if $basecfginfo['doc_verification_reference_code']=='1'}checked{/if}/>{lang commonYes}</label>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label><input type="radio"  name="doc_verification_reference_code" value="0" 
+		{if $basecfginfo['doc_verification_reference_code']!='1'}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang secForbidEditTime}</span>{lang secForbidEditTimeTrip}</td>
+		<td><input class="inp_txt" id="forbidden_edit_time" name="forbidden_edit_time"  type="text" style="width:200px;"  maxlength="3" value="<!--{if !empty($basecfginfo['forbidden_edit_time'])}-->{$basecfginfo['forbidden_edit_time']}<!--{/if}-->" /> {lang commonMinute}</td>
+	</tr>
+	<tr>
+		<td width="300px"><span>{lang eng_max_pcnt_err}</span>{lang eng_max_pcnt_tip}</td>
+		<td>
+		<input class="inp_txt" id="eng_max_pcnt" name="eng_max_pcnt"  type="text" style="width:200px;"  maxlength="3" value="<!--{if !empty($basecfginfo['eng_max_pcnt'])}-->{$basecfginfo['eng_max_pcnt']}<!--{/if}-->" /> %</td>
+	</tr>
+	<tr>
+		<td width="300px"><span>{lang extlink_max_pcnt}</span>{lang extlink_max_pcnt_tip}</td>
+		<td>
+		<input class="inp_txt" id="extlink_max_pcnt" name="extlink_max_pcnt"  type="text" style="width:200px;"  maxlength="3" value="<!--{if !empty($basecfginfo['extlink_max_pcnt'])}-->{$basecfginfo['extlink_max_pcnt']}<!--{/if}-->" /> %</td>
+	</tr>
+	<tr>
+		<td><span>{lang submit_min_interval}</span>{lang submit_min_interval_tip}</td>
+		<td >		<input class="inp_txt" id="submit_min_interval" name="submit_min_interval"  type="text" style="width:200px;"  maxlength="5" value="<!--{if !empty($basecfginfo['submit_min_interval'])}-->{$basecfginfo['submit_min_interval']}<!--{/if}-->" /> 秒</td>
+	</tr>
+	
+	<tr>
+		<td><span>{lang deal_with_spam}</span></td>
+		<td >
+		<label><input type="radio"  name="save_spam" value="1" 
+		{if !empty($basecfginfo['save_spam']) && $basecfginfo['save_spam']=='1'}checked="checked"{/if}/> {lang spam_audit}</label>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label><input type="radio"  name="save_spam" value="0"
+		{if !empty($basecfginfo['save_spam']) && $basecfginfo['save_spam']=='0'}checked="checked"{/if}/> {lang spam_die}</label>
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">
+			<input class="inp_btn" name="secsubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+			<input class="inp_btn" type="reset" value="{lang commonReset}" />
+		</td>
+	</tr>
+</table>
+</from>
+{template admin_footer}

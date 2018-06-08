@@ -1,0 +1,60 @@
+{template header}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#tpbk img,#tjct img").each(function(i) {
+            var w = this.width;
+            var h = this.height;
+            if (w > 100 || h > 75) {
+                if (w / h > 4 / 3) {
+                    this.style.width = "100px"
+                } else {
+                    this.style.height = "75px"
+                }
+            }
+        });
+
+        $("input[name*='searchtext']").focus();
+    });
+
+</script>
+
+
+
+<section class="wrap clearfix">
+    <div class="group2 home">
+        <div id="block_right">{block:right/}</div>
+    </div>
+    <div class="group1-2 home">
+        <div id="block_ctop1">{block:ctop1/}</div>
+    </div>
+    <div class="group1-2 home">
+        <div id="block_ctop2">{block:ctop2/}</div>
+    </div>
+
+    <!--ad start -->
+
+    <!--{if isset($advlist[2]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+    <div class="group1 home" id="advlist_2">
+        <div class="ad">{$advlist[2]['code']}</div>
+    </div>
+    <!--{elseif isset($advlist[2]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+    <div class="group1 home" id="advlist_2">
+        <div class="ad"></div>
+    </div>
+    <!--{/if}-->
+
+    <!--ad end -->
+    <div class="group1 home">
+        <div id="block_cbottomr">{block:cbottomr/}</div>
+    </div>
+    <div class="group1-2 home">
+        <div id="block_cbottoml">{block:cbottoml/}</div>
+    </div>
+    <div class="group1-2 home">
+        <div id="block_dbottomr">{block:dbottomr/}</div>
+    </div>
+</section>
+
+<div class="wrap" id="block_bottom">{block:bottom/}</div>
+
+{template footer}

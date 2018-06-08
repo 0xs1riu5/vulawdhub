@@ -1,0 +1,13 @@
+{template admin_header}
+<p class="map">数据库管理：sql调用</p>
+<form action="index.php?admin_db-sqlwindow" method="post" target="sqlfrm">
+<dl class="col-ul">
+	<dt>在下面窗口中输入sql语句 （数据表前缀为：{$tablepre} ）</dt>
+	<dd><textarea name="sqlwindow" cols="120" rows="12"><!--{if isset($sql)}-->{$sql}<!--{/if}--></textarea></dd>
+	<dd class="m-t8"><input name="sqltype" type="radio" value="0" checked="checked"/>单行SQL（支持简单查询）<input name="sqltype" type="radio" class="m-l10" value="1"/> 多行SQL</dd>
+	<dd><input name="sqlsubmit" type="submit" value="执 行" class="inp_btn m-t10" /></dd>
+</dl>
+</form>
+<h3 class="col-h4 m-t10">执行结果显示窗口:</h3>
+<p class="m-t10"><iframe name="sqlfrm" frameborder="0" id="sqlfrm" width="100%" height="100%" class="area2"  style= "border:1px solid #7f9db9 "></iframe></p>
+{template admin_footer}

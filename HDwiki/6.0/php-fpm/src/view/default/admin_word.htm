@@ -1,0 +1,64 @@
+{template admin_header}
+<script type="text/javascript">
+function checkAll(id,bool)
+{
+	$("input[name='"+id+"']").attr('checked',bool);	
+}
+function showMuli(){
+	var state = $("#muli").css('display');
+	if(state == 'none'){
+		$("#muli").css('display','');
+	}else{
+		$("#muli").css('display','none');
+	}
+}
+
+</script>
+<p class="map">内容管理：词语过滤</p>
+<ul class="col-ul tips">
+	<li class="bold">提示: 	</li>
+	<li>创建词条的时候，如果词条名含有不良词语则不允许创建，内容里面的不良词语会被自动替换掉。</li>
+	<li>批量上传违禁词是请上传包含过滤词语的txt或csv格式文件! </li>
+	<li>批量上传文件违禁词请用逗号","或"，"分隔 </li>
+	<li>注意:"不良词语"和"替换为"里面的词语只能为18个汉字或36个字符,多余的字符将被截断。</li>
+</ul>
+<h3 class="tol_table">{lang docmanageDoclist} <b>{$docsum}</b> 个词语]</h3>
+<form name="badword" method="post" action=""  enctype="multipart/form-data">
+	<table class="table">
+		<tr>
+			<td style="width:80px;"><input type="checkbox" name="selectAll" value="checkbox" onclick="checkAll('word_id[]',this.checked)" />&nbsp;&nbsp;<strong>{lang commonTitleDelete}</strong></td>
+			<td style="width:300px;"><strong>{lang badword}</strong></td>
+			<td style="width:300px;"><strong>{lang badwordreplace}</strong></td>
+			<td><strong>{lang badwordadd}</strong></td>
+		</tr>
+		{if is_array($words)}
+		{loop $words $id $word}
+		<tr>
+			<td ><input type="checkbox" name="word_id[]" value="{$word[id]}" /><input type="hidden" name="upword_id[]" value="{$word[id]}" /></td>
+			<td><input class="inp_txt" type="text" name="find[]"  value="{$word[find]}"></td>
+			<td><input class="inp_txt" type="text" name="replacement[]"  value="{$word[replacement]}"></td>
+			<td>{$word[admin]}</td>
+		</tr>
+		{/loop}
+		<tr>
+			<td colspan="4"><p class="fenye a-r"> {$departstr} </p></td>
+		</tr>
+		{else}
+		<tr>
+			<td colspan="4">{lang badwordNull}</td>
+		</tr>
+		{/if}
+	<tr>
+		<td>&nbsp;{lang commonAddNew}:</td>
+		<td><input class="inp_txt" type="text" name="newfind"/></td>
+		<td><input class="inp_txt" type="text" name="newreplacement" value="*" /></td>
+		<td><!-- 批量上传修改为增加<input type="button" name="name1" class="inp_btn2" onclick="showMuli()" value="{lang wordmuli}"  /> --><input type="submit" name="submit" class="inp_btn2"  value="增加"  /></td>
+	</tr>
+</table>
+<h3 class="col-h4">批量上传违禁词列表</h3>
+<ul class="col-ul m-t10">
+	<li class="m-t10"><input name="file_path" id="file_path" type="file" class="inp_file"/></li>
+	<li class="m-t10"><input class="inp_btn" name="submit" value="确 定" type="submit"></li>
+</ul>
+</form>
+{template admin_footer}

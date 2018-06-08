@@ -1,0 +1,74 @@
+{template admin_header}
+<script type="text/javascript">
+	function checkCatname(){
+		if($("input[name='catname[]'][value!='']").length>0)
+			return true;
+		return false;
+	}
+	function doSubmit(){
+		if(!checkCatname()){
+			$.dialog.box('immageshow', '注意', '{lang msgJsNullCatName}');
+			return false;
+		}
+	}
+
+	function addInput(){
+		$('#catblock').append("<dd><input name=\"catname[]\" class=\"inp_txt\" type=\"text\" size=\"22\" maxlength=\"40\" />&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"javascript:delInput(this)\">{lang commonDel}</a></dd>");
+	}
+
+	function delInput(obj){
+		var j = $('#catblock');
+		j[0].removeChild(obj.parentNode);
+	}
+</script>
+<p class="map">内容管理：分类管理</p>
+<p class="sec_nav">分类管理： <a href="index.php?admin_category-list"> <span>{lang magManageCat}</span></a> <a href="index.php?admin_category-add" class="on"><span>{lang magAddCat}</span></a> <a href="index.php?admin_category-merge"  ><span>{lang magUniteCat}</span></a> </p>
+<h3 class="col-h3">{lang magAddCat}</h3>
+<form action="index.php?admin_category-add" onsubmit="return doSubmit();" method="POST">
+	<table class="table">
+		<tr>
+			<td style="width:120px;"><span>{lang magParentCat}</span></td>
+			<td><select name='pcid'>
+					<!--{if is_array($tcat)}-->
+					<option value="{$tcat[cid]}" selected="selected">{$tcat[name]}</option>
+					<!--{else}-->
+					<option value="0">{lang magTopLevelCat}</option>
+					{$cats}
+					<!--{/if}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top"><span>{lang magCatName}</span></td>
+			<td><dl id="catblock" >
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+					<dd><input name="catname[]" class="inp_txt" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;[<a href="javascript:void(0)" onclick="javascript:addInput()">{lang commonAdd}</a>]</dd>
+				</dl></td>
+		</tr>
+		<tr style="display:none">
+			<td style="width:100px;" align="center">{lang magCatIco}万维网</td>
+			<td><input id="catico" name="catico" class="inp_txt" type="text" size="22" maxlength="40" value=""/></td>
+		</tr>
+		<tr style="display:none">
+			<td style="width:100px;" align="center">{lang magCatIntro}</td>
+			<td><textarea id="catintro" name="catintro" class="inp_txt" cols="23" rows="8"></textarea></td>
+		</tr>
+		<tr><td></td>
+			<td colspan="2" align="left">
+				<input name="submit" class="inp_btn m-r10" type="submit" value="{lang commonOK}" /><input name="reset" class="inp_btn m-r10" type=reset value="{lang commonReset}" />
+			</td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

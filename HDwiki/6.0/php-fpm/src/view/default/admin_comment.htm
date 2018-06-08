@@ -1,0 +1,134 @@
+{template admin_header}
+<script type="text/javascript" src="js/function.js"></script>
+<script type="text/javascript">
+function deletecomment(){
+	if($("input[name='id[]']:checked").length==0){
+		$.dialog.box('immageshow', '注意', '请先选择要删除的内容');
+		return false;
+	}else{
+		if(confirm('{lang commonConfirmRemove}')){
+		$('#formcommentlist').attr("action","index.php?admin_comment-delete");
+		$('#formcommentlist').submit();
+		}else{
+			return false;
+		}
+	}
+}
+function selectAll(obj){
+	$("input[name='id[]']").attr('checked',obj.checked);
+}
+
+function edit_comment(id){
+	var comment=$('#c_'+id).html();
+	var msg="<textarea id='editcomment' name='editcomment' cols='62' rows='6' >"+comment+"</textarea><br/>"+
+	"<input name='editsubmit' class='inp_btn2 m-r10' type='button' onclick='saveedit("+id+")' value='{lang commonOK}'>"+
+	"&nbsp;&nbsp;&nbsp;<input name='cancel' type='button' class='inp_btn2 m-r10' onclick='$.dialog.close(\"edit_comment\")' value='{lang commonCancel}'>";
+	$.dialog.box('edit_comment', '编辑评论', msg);
+	//setPopMsg(msg);
+	//divDance('popmsg');
+	//showPop(465,165);
+}
+function saveedit(id){
+	var comment=$.trim($('#editcomment').val());
+	if(comment==""){
+//		alert('{lang commentCannone}');
+		$.dialog.box('immageshow', '注意', '{lang commentCannone}');
+		return false;
+	}else if(bytes(comment)>200){
+//		alert('{lang commentLongSize}');
+		$.dialog.box('immageshow', '注意', '{lang commentCannone}');
+		return false;
+	}
+	$.post(
+		"{$setting['seo_prefix']}comment-edit",
+		{id:id,comment:comment},
+		function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			if(message){
+				MSG = '{lang commentEditSucc}';
+				$('#c_'+id).html(comment);
+				$('#z_'+id).html(comment);
+				//$('z_'+id).innerHTML = comment;
+				//alert($('#z_'+id).html());
+				//$('z_'+id).innerHTML=message;
+			}else{
+//				setPopMsg('{lang commentWrong}');
+				MSG = '{lang commentWrong}';
+			}
+			$.dialog.close("edit_comment");
+			$('#c_'+id).html(comment);
+			//$('#z_'+id).val(comment);
+			$.dialog.box('immageshow', '注意', MSG);
+			////divDance('popmsg');
+			//showPop(300,100);
+			//setTimeout(hidePop,3000);
+		}
+	);
+}
+</script>
+<p class="map">内容管理：评论管理</p>
+<div class="synonym">
+<form name="list" method="POST" action="index.php?admin_comment-search">
+		<ul class="col-ul ul_li_sp m-t10">
+			<li><span>{lang attachCate}:</span>
+				<select name="qcattype">
+					<option value="0" >{lang commonAllCat}</option>
+					{$catstr}
+	    		</select>
+			</li>
+			<li><span>{lang attachDocName}:</span>
+				<input type="text" class="inp_txt" name="qtitle"  value="{$qtitle}" />
+			</li>
+			<li><span>{lang attachAuthor}:</span>
+				<input type="text" class="inp_txt" name="qauthor"  value="{$qauthor}" />
+			</li>
+			<li><span>{lang attachTime}:</span>
+				<input name="qstarttime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly" value="{$qstarttime}" />
+				—
+				<input name="qendtime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly"  value="{$qendtime}"/>
+			</li>
+			<li>
+				<input name="submit" type="submit" value="{lang commonSearch}"   class="inp_btn"/>
+			</li>
+		</ul>
+	</form>
+	<h3 class="tol_table">{lang docmanageDoclist} <b>{$commentsum}</b> 条{lang commentCom}]</h3>
+    <form name="formcommentlist" id="formcommentlist"  method="POST">
+        <table class="table">
+          <tr>
+		  <td style="width:30px;">ID</td>
+            <td style="width:40px;">{lang commonSelect}</td>
+            <td style="width:250px;">{lang commentCom}</td>
+            <td style="width:120px;">{lang commonTitle}</td>
+			<td style="width:80px;">{lang attachAuthorName}</td>
+            <td>{lang commentTime}</td>
+          </tr>
+          	<!-- {if $commentsum} -->
+			<!--{loop $commentlist $comment}-->
+          <tr>
+		  <td>{$comment['id']}</td>
+            <td><input type="checkbox" name="id[]" value="{$comment['id']}_{$comment['did']}" /></td>
+            <td ><a href="javascript:void(0)" id="z_{$comment['id']}"  onclick="edit_comment({$comment['id']});">{$comment['partcomment']}</a><span id="c_{$comment['id']}" style="display:none">{$comment['comment']}</span></td>
+            <td><a target="_blank" href="index.php?doc-view-{$comment['did']}" title="{$comment['title']}">{$comment['title']}</a></td>
+            <td><a target="_blank" href="index.php?user-space-{$comment['authorid']}"  title="{$comment['author']}">{$comment['author']}</a></td>
+            <td>{$comment['time']}</td>
+          </tr>
+          <!--{/loop}-->
+			<!-- {else} -->
+          <tr>
+            <td colspan="6">{$message}{lang commentHaveNone}</td>
+          </tr>
+          <!-- {/if} -->
+		  <tr>
+				<td colspan="6">
+				<label class="m-r10"><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll(this);">&nbsp;&nbsp;{lang commonAllSelect}</label>
+					<input type="button" class="inp_btn2 m-r10" name="casemanage" onClick="deletecomment();" value="{lang commonDel}" />
+				</td>
+		</tr>
+		<tr>
+			<td colspan="6"><p class="fenye a-r"> {$departstr} </p></td>
+		</tr>
+        </table>
+   </form>
+</div>
+{template admin_footer}

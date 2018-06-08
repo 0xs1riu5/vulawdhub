@@ -1,0 +1,45 @@
+{template admin_header}
+<p class="map">站内统计：{lang credit_toplist}</p>
+<h3 class="col-h4 m-t10">{lang credit_toplist}</h3>
+<table class="table">
+  <tr>
+    <td style="width:150px;">{lang user_credit_toplist}</td> 
+    <td style="width:150px;">{lang user_week_credit}</td>
+    <td>{lang user_views_toplist}</td>
+  </tr>  
+  <tr>
+    <td valign="top" >
+    <!--{if !(bool)$credit_toplist[user_credit_toplist]}-->
+    {lang no_user}
+    <!--{else}-->
+    <!--{loop $credit_toplist[user_credit_toplist]  $user}-->
+    <a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a> ({$user[credit]})<br/>
+    <!--{/loop}-->
+    <!--{/if}--> 
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$credit_toplist[user_week_credit]}-->
+    {lang no_user}
+    <!--{else}-->
+    <!--{loop $credit_toplist[user_week_credit]  $user}-->
+    <a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a> ({$user[credit]})<br/>
+    <!--{/loop}-->
+    <!--{/if}--> 
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$credit_toplist[user_views_toplist]}-->
+    {lang no_user}
+    <!--{else}-->
+    <!--{loop $credit_toplist[user_views_toplist]  $user}-->
+    <a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a> ({$user[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+  </tr>
+</table>
+<table class="table">
+  <tr>
+    <td class="td_b">{lang statistics_message1} {$credit_toplist[last_cache_time]} {lang statistics_message2} {$credit_toplist[cache_time]} {lang statistics_message3}</td>
+  </tr>
+</table>
+{template admin_footer}

@@ -1,0 +1,52 @@
+{template admin_header}
+<p class="map" style="margin-bottom:10px;">FTP设置</p>
+<form name="ftpset" action="index.php?admin_ftpsetting-default" method="post">
+<table>
+	<tr>
+		<th width="25%"><strong>启用FTP功能</strong></th>
+		<td>
+			<input type='radio' name='FTP_ENABLE' value='1'  <!--{if $setting['FTP_ENABLE']==1}-->checked <!--{/if}-->> 是&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type='radio' name='FTP_ENABLE' value='0'  <!--{if $setting['FTP_ENABLE']==0}-->checked <!--{/if}-->> 否&nbsp;&nbsp;&nbsp;&nbsp;<br>
+			<font color=red>* 开启FTP功能F5刷新页面后，将采用FTP方式建立目录和修改权限</font><br/> 
+			<!--{if $status==1}--><font color="red">当前PHP环境不支持FTP功能！</font><!--{/if}-->
+		</td>
+    </tr>
+    <tr>
+		<th height=35><strong>FTP主机</strong></th>
+		<td><input name="FTP_HOST" id="ftp_host" type="text" size="30" value="{$setting['FTP_HOST']}"></td>
+    </tr> 
+    <tr>
+		<th height=35><strong>FTP端口</strong></th>
+		<td><input name="FTP_PORT" id="ftp_port" type="text" size="30" value="{$setting['FTP_PORT']}"></td>
+    </tr>
+    <tr>
+		<th height=35><strong>FTP帐号</strong></th>
+		<td><input name="FTP_USER" id="ftp_user" type="text" size="30" value="{$setting['FTP_USER']}"></td>
+    </tr>
+    <tr>
+		<th height=35><strong>FTP密码</strong><br></th>
+		<td><input name="FTP_PW" id="ftp_pw" type="password" size="30" value="{$setting['FTP_PW']}"></td>
+    </tr>
+    <tr>
+		<th height=55><strong>FTP目录</strong></th>
+		<td><input name="FTP_PATH" id="ftp_path" type="text" size="30" value="{$setting['FTP_PATH']}">以/结尾</td>
+    </tr>
+    <tr>
+		<th></th>
+		<td>
+			<input type="submit" name="sure" value="确认设置" style="border:1px solid #cccccc">&nbsp;
+			<input name="ftp_test" type="button" size="40" value="测试FTP连接" onClick="Setftp.send();" style="border:1px solid #cccccc">
+		</td>
+    </tr>
+ </table>
+ </form>
+{template admin_footer}
+<script type="text/javascript">
+	var Setftp = {					
+		send: function(){
+			$.post("index.php?admin_ftpsetting-testftp",  {ftp_host:$('#ftp_host').val(),ftp_port:$('#ftp_port').val(),ftp_user:$('#ftp_user').val(),ftp_pw:$('#ftp_pw').val(),ftp_path:$('#ftp_path').val()},function(data){
+				alert(data);
+			});
+		}
+	}
+</script>

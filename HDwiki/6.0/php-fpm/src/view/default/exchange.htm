@@ -1,0 +1,119 @@
+{template header}
+<div class="hd_map">
+	<a href="{WIKI_URL}">{$setting['site_name']}</a> &gt; <a href="{url user-profile}">个人管理</a> &gt; {lang profile}</div>
+    
+<div class="r w-710 o-v m-t10 p-b10 gl_manage_main">
+	<h2 class="h3 bold">UC积分兑换</h2>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td>
+                <form method="post" action="{url user-exchange}">
+                <div>
+                    <div style="width:100px;float:left">
+                            <div style="height:25px;">您的百科经验数:</div>
+                            <div style="height:25px;">您的百科金币数:</div>
+                            <div style="height:25px;">密码:</div>
+                            <div style="height:25px;">支出百科积分: </div>
+                            <div style="height:25px;">兑换成:</div>
+                            <div style="height:25px;">兑换比率:</div>
+                    </div>
+                    <div style="width:300px; float:left">
+                        <div style="height:25px;">$user[credit2]</div>
+                        <div style="height:25px;">$user[credit1]</div>
+                        <div style="height:25px;"><input type="password" name="password" class="t_input" /></div>
+                        <div style="height:25px;">
+                        <input type="text" id="amount" name="amount" value="0" class="t_input" onkeyup="calcredit();" />
+                        <select name="fromcredit" id="fromcredit" onChange="calcredit();">
+                        <!--{loop $option $id $ecredits}-->
+                            <!--{if $id == 0}-->
+                            <option value="$id"  title="经验">经验</option>
+                            <!--{else}-->
+                            <option value="$id"  title="金币">金币</option>
+                            <!--{/if}-->
+                        <!--{/loop}-->
+                        </select>
+						</div>
+                        <div style="height:25px;">
+                        <input type="text" id="desamount" value="0" class="t_input" disabled />
+                        <!--{loop $option $id $ecredits}-->
+                        <select name="tocredit_{$id}" id="tocredit_{$id}" onChange="calcredit();" style="display:none">
+                                <!--{loop $ecredits $key $credit}-->
+                                	<!--{if $credit[ratio]}-->
+                                    <option value="$key" unit="$credit['unit']" title="$credit[title]" ratio="$credit[ratio]">$credit[title]</option>
+                                    <!--{/if}-->
+                                <!--{/loop}-->
+                        </select>
+                        <!--{/loop}-->
+                        </div>
+                        <div style="height:25px;">
+                        <span class="bold">1</span>&nbsp;<span id="orgcreditunit">&nbsp;</span><span id="orgcredittitle"></span>&nbsp;兑换&nbsp;<span class="bold" id="descreditamount"></span>&nbsp;<span id="descreditunit"></span><span id="descredittitle"></span>
+                        </div>
+                        <input class="btn" type="submit" name="exchangesubmit" value="兑换积分">
+                    </div>
+                   </div>
+                    
+                </form>
+            </td>
+        </tr>
+        </table>
+</div>
+
+<div class="l w-230">
+<div class="m-t10 p-b10 sidebar gl_manage">
+	<h2 class="col-h2"><span onclick="expand('usermanage');">{lang profile}</span></h2>	
+	<ul id="usermanage">
+		<li><a href="{url user-profile}" target="_self" class="on"><img alt="" src="style/default/gl_manage/grzl.gif" />个人资料</a></li>
+		<li><a href="{url user-editprofile}" target="_self" ><img src="style/default/gl_manage/grzl_set.gif"/>个人资料设置</a></li>
+		<li><a href="{url user-editpass}" target="_self"><img src="style/default/gl_manage/change_pw.gif"/>修改密码</a></li>
+		<li><a href="{url user-editimage}" target="_self"><img src="style/default/gl_manage/grzl_set.gif" />修改头像</a></li>
+		<li><a href="{url doc-managesave}" target="_self"><img src="style/default/gl_manage/ctbccgx.gif"/>词条保存草稿箱</a></li>
+	</ul>
+	<h2 class="col-h2"><span onclick="expand('userpms');">短消息</span></h2>		
+	<ul id="userpms">
+		<li><a href="{url pms-box-inbox}" target="_self"><img alt="" src="style/default/gl_manage/sjx.gif" />收件箱</a></li>
+		<li><a href="{url pms-box-outbox}" target="_self" ><img src="style/default/gl_manage/fjx.gif"/>发件箱</a></li>
+		<li><a href="{url pms-sendmessage}" target="_self" ><img src="style/default/gl_manage/fdxx.gif"/>发短消息</a></li>
+		<li><a href="{url pms-box-drafts}" target="_self"><img src="style/default/gl_manage/cgx.gif" />草稿箱</a></li>
+		<li><a href="{url pms-blacklist}" target="_self"><img src="style/default/gl_manage/hllb.gif"/>忽略列表</a></li>
+	</ul>
+</div>
+</div>
+<div class="c-b"></div>
+{template footer}
+<script type="text/javascript">
+	function expand(id){
+		if(id=='usermanage'){
+			$("ul#usermanage").toggle(); 
+		}else{
+			$('ul#userpms').toggle();
+		}
+	}
+	function calcredit() {
+		var fromcredit = $('#fromcredit option:selected');
+		var fromid=fromcredit.val();
+		var amount=$('#amount').val();
+		
+		var tocredit = $('#tocredit_'+fromid);
+		$("select[name^='tocredit_']").hide();
+		tocredit.show();
+		var tooption=tocredit.children("option:selected");
+		var ratio=tooption.attr('ratio');
+		var title=tooption.attr('title');
+		var unit=tooption.attr('unit');
+		
+		
+		$('#orgcreditunit').html(fromcredit.attr('title'));
+		$('#descreditunit').html(unit);
+		$('#descredittitle').html(title);
+		$('#descreditamount').html(Math.round(1/ratio * 100) / 100);
+		$('#amount').val(isNaN(parseInt(amount))? 0 : amount);
+		if(amount != 0) {
+			$('#desamount').val(Math.floor(1/ratio * amount));
+		} else {
+			$('#desamount').val(amount);
+		}
+	}
+	calcredit();
+
+</script>
+{template footer}

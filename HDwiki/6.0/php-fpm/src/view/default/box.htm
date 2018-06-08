@@ -1,0 +1,162 @@
+{template header}
+<script type="text/javascript" src="js/popWindow.js"></script>
+<script type="text/javascript">
+	var preid='';
+	function showpm(id,type,isnew) {
+		var row1=id+'-message';
+		var row2=id+'-operation';
+		var td=id+'-td';
+		if($('#'+row1)[0].style.display == 'none'){
+			$('#'+row1)[0].style.display = '';
+		}else{
+			$('#'+row1)[0].style.display = 'none';
+		}		
+		if($('#'+row2)[0].style.display == 'none'){
+			$('#'+row2)[0].style.display = '';
+		}else{
+			$('#'+row2)[0].style.display = 'none';
+		}
+//		$('#'+row1).toggle();
+//		$('#'+row2).toggle();
+		if(preid!='' && preid!=id){
+			var row1=preid+'-message';
+			var row2=preid+'-operation';
+			$('#'+row1).css('display','none');
+			$('#'+row2).css('display','none');
+		}
+		preid=id;
+		if(type=='inbox' && isnew==1){
+			jQuery.ajax({
+				url: "index.php?pms-setread",
+				cache: false,
+				dataType: "xml",
+				type:"post",
+			//	async:false, 
+				data: {id:id},
+				success: function(xml){
+					message=xml.lastChild.firstChild.nodeValue;
+					if(message){
+					$('#'+td).css('fontWeight','normal');
+					}
+				}
+			});
+		}	
+	}
+	
+	function deletepms(id,type){
+		if (confirm('{lang remove}')){
+			type=(type=='inbox')?1:2;
+			jQuery.ajax({
+				url: "index.php?pms-remove-single",
+				type:"post",
+				data: {id:id,type:type}
+			});
+			row1=id+'-pms';
+			row2=id+'-message';
+			row3=id+'-operation';
+			$('#'+row1).css('display','none');
+			$('#'+row2).css('display','none');
+			$('#'+row3).css('display','none');
+			$('#'+id+'-td').parents('tr').remove();
+		}
+	}
+	
+	function delsubmit(){
+		if($("input[name='checkid[]']:checked").length==0){
+			alert('{lang selectdelpms}');
+		}else{
+			if (confirm('{lang remove}')){
+				$("#form1").submit();
+			}
+		}
+		return false;
+	}
+	
+	function expand(id){
+		if(id=='usermanage'){
+			$("ul#usermanage").toggle(); 
+		}else{
+			$('ul#userpms').toggle();
+		}
+	}
+	
+	function selectAll(){
+		$("input[name='checkid[]']").prop('checked',$("input[name='checkbox']").is(':checked'));
+	}	
+</script>
+<div class="wrap hd_map">
+	<a href="{WIKI_URL}">{$setting[site_name]}</a> &gt; <a href="{url pms}">{lang shortmessage}</a> &gt; {if $type=='outbox' }{lang outbox}{/if}{if $type=='drafts'}{lang draft}{/if}{if $type=='inbox'}{lang inbox}{/if}</div>
+<section class="wrap clearfix">	
+<div class="r group1 bor-ccc gl_manage_main">
+	<h2 class="col-h2">{if $type=='outbox'}{lang outbox}{/if}{if $type=='drafts'}{lang draft}{/if}{if $type=='inbox'}{lang inbox}{/if}{if $count>200 && $type=='inbox'}  &nbsp;&nbsp;<span style="color:#FF0000">[{lang pmsfull}]</span>{/if}</h2>
+	<form  name="delform" id="form1" action="{url pms-remove-muli-$type-$current}" method="post">
+	{if $type=='inbox'}
+		<hgroup class="h3-tag"><h3 <!--{if $current=='owner'}-->class="hover"<!--{/if}-->><a class="f16" href="{url pms-box-inbox-owner}">{lang pmsowner}</a></h3>
+		<h3 <!--{if $current!='owner'}-->class="hover"<!--{/if}-->><a class="f16" href="{url pms-box-inbox-system}">{lang pmspublic}</a></h3>
+		</hgroup>
+	{/if}
+	<table cellspacing="0" cellpadding="0" width="830" class="table message">
+	<thead class="bold">
+		<tr>
+			<td style="width: 25px;"><input type="checkbox" onclick="selectAll();" id="chkall" name="checkbox"/><i class="checkbox"></i></td>
+			<td>{lang saveTitle}</td>
+			<td style="width: 184px;"><!--{if $type=='inbox'}-->{lang from}<!--{else}-->{lang sendto}<!--{/if}--></td>
+			<td style="width: 130px;">{lang sendtime}</td>
+		</tr>
+	</thead>
+	<tbody>
+	{if $pmslist}
+		{loop $pmslist $pms}
+		<tr>
+			<td><input name="checkid[]" type="checkbox" value="$pms[id]"/><i class="checkbox"></i></td>
+			<td {if $pms['new']==1 and $type=='inbox'}class="bold"{/if} id="$pms[id]-td"><!--{if $type=='drafts'}--><a href="{url pms-sendmessage-drafts-$pms['id']}" ><!--{else}--><a href="javascript:void(0)" onclick="showpm('$pms[id]','$type','$pms[new]');" ><!--{/if}-->$pms['subject']</a></td>
+			<td><!--{if $type=='inbox'}--><!--{if $current=='owner'}-->$pms['from']<!--{else}-->{lang system}<!--{/if}--><!--{else}-->$pms['to']<!--{/if}--></td>
+			<td>$pms['time']</td>
+		</tr>
+		<tr  style="display:none;" id="$pms[id]-message">
+			<td colspan="4"  >$pms[message]</td>
+		</tr>
+		<tr  style="display:none" id="$pms[id]-operation">
+			<td colspan="4"  >&nbsp;{if $type=='inbox' && $group=='owner'}<a href="{url pms-sendmessage-reply-$pms['id']}">{lang reply}</a>&nbsp;&nbsp;{/if}<a href="{url pms-sendmessage-forward-$pms['id']}">{lang forward}</a>&nbsp;&nbsp;<a href='#' onclick="deletepms('$pms[id]','$type');">{lang commentDel}</a>&nbsp;&nbsp;<a href='#' onclick="showpm('$pms[id]');">{lang close}</a></td>
+		</tr>
+		{/loop}
+	{/if}
+	</tbody>	
+	<tfoot>
+		<!--{if $type=='inbox' && $count>200}-->
+		<tr>
+			<td colspan="2" align="center"><span style="color:red; text-align:center">{lang pmsexceed}</span></td>
+		</tr>
+		<!--{/if}-->
+		<tr>
+			<td class="a-r" colspan="4"><a href="#" class="l" onclick='delsubmit();'>{lang pmsdel}</a> <span class="message_tip">{if $type=='inbox'}{lang pmstotal}$count {lang ownertotal}$ownercount {lang systotal}$publiccount{lang pmslimit} {/if}</span></td>
+		</tr>
+	</tfoot>
+	</table>	
+	  <div id="fenye">{$departstr}</div>
+</form>
+</div>
+<aside class="l group2">
+<div class="sidebar bor-ccc gl_manage">
+	<h2 class="col-h2 cblue"><span onclick="expand('usermanage');">{lang profile}</span></h2>	
+	<ul id="usermanage">
+		<li><a href="{url user-profile}" target="_self">{lang profile}</a></li>
+		<li><a href="{url user-editprofile}" target="_self" >{lang editProfile}</a></li>
+		<li><a href="{url user-editpass}" target="_self">{lang editPass}</a></li>
+		<li><a href="{url user-editimage}" target="_self">{lang editImage}</a></li>
+		<li><a href="{url doc-managesave}" target="_self">{lang manageSave}</a></li>
+		<li><a href="{url user-invite}" target="_self">{lang regInvite}</a></li>
+	</ul>
+</div><div class="sidebar columns gl_manage">
+	<h2 class="col-h2 cblue"><span onclick="expand('userpms');">{lang shortmessage}</span></h2>		
+	<ul id="userpms">
+		<li{if $type=='inbox'} class="on" {/if}><a href="{url pms-box-inbox}" target="_self">{lang inbox}</a></li>
+		<li{if $type=='outbox'} class="on" {/if} ><a href="{url pms-box-outbox}" target="_self">{lang outbox}</a></li>
+		<li><a href="{url pms-sendmessage}" target="_self">{lang sendmessage}</a></li>
+		<li{if $type=='drafts'} class="on" {/if}><a href="{url pms-box-drafts}" target="_self">{lang draft}</a></li>
+		<li><a href="{url pms-blacklist}" target="_self">{lang blacklist}</a></li>
+	</ul>
+</div>
+</aside>
+</section>
+{template footer}

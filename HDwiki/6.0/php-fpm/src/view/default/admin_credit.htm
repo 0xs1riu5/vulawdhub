@@ -1,0 +1,88 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	if(isNaN($('#credit_register').val())==true||isNaN($('#credit_login').val())==true||isNaN($('#credit_create').val())==true||isNaN($('#credit_edit').val())==true||isNaN($('#credit_upload').val())==true||isNaN($('#credit_pms').val())==true||isNaN($('#credit_comment').val())==true){
+		alert('{lang baseConfigCredit}');
+		return false;
+	}
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<p class="map">全局：基本设置</p>
+<p class="sec_nav">基本设置：<a href="index.php?admin_channel"> <span>频道管理</span></a> <a href="index.php?admin_setting-cache"> <span>缓存设置</span></a> <a href="index.php?admin_setting-seo"><span>SEO设置</span></a> <a href="index.php?admin_setting-code"><span>验证码</span></a> <a href="index.php?admin_setting-time"><span>时间设置</span></a> <a href="index.php?admin_setting-cookie" ><span>COOKIE设置</span></a> <a href="index.php?admin_setting-credit" class="on"><span>经验金币设置</span></a> <a href="index.php?admin_setting-logo" ><span>LOGO设置</span></a></p>
+<h3 class="col-h3">经验金币设置</h3>
+<form method="POST" action="index.php?admin_setting-credit" onsubmit="return doSubmit();">
+	<table class="table">
+		<tr>
+			<td width="125px;"><strong>{lang commonParameterName}</strong></td>
+			<td width="300px;" ><strong>{lang admin_credit}</strong></td>
+			<td><strong>{lang coin}</strong></td>
+		</tr>
+		<tr style="display:none">
+			<td >{lang unit}</td>
+			<td ><input class="inp_txt" name="credit_unit" id="credit_unit" maxlength="10" value="{$creditconfig['credit_unit']}" /></td>
+			<td ><input class="inp_txt" name="coin_unit" id="coin_unit" maxlength="10" value="{$creditconfig['coin_unit']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang bonusRegister}</td>
+			<td ><input class="inp_txt" name="credit_register" id="credit_register" maxlength="10" value="{$creditconfig['credit_register']}"></td>
+			<td ><input class="inp_txt" name="coin_register" id="coin_register" maxlength="10" value="{$creditconfig['coin_register']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang bonusLogin}</td>
+			<td ><input class="inp_txt" name="credit_login" id="credit_login" maxlength="10" value="{$creditconfig['credit_login']}"></td>
+			<td ><input class="inp_txt" name="coin_login" id="coin_login" maxlength="10" value="{$creditconfig['coin_login']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang bonusCreateDoc}</td>
+			<td ><input class="inp_txt" name="credit_create" id="credit_create" maxlength="10" value="{$creditconfig['credit_create']}"></td>
+			<td ><input class="inp_txt" name="coin_create" id="coin_create" maxlength="10" value="{$creditconfig['coin_create']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang bonusEditDoc}</td>
+			<td ><input class="inp_txt" name="credit_edit" id="credit_edit" maxlength="10" value="{$creditconfig['credit_edit']}"></td>
+			<td ><input class="inp_txt" name="coin_edit" id="coin_edit" maxlength="10" value="{$creditconfig['coin_edit']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang bonusUpload}</td>
+			<td ><input class="inp_txt" name="credit_upload" id="credit_upload" maxlength="10" value="{$creditconfig['credit_upload']}"></td>
+			<td ><input class="inp_txt" name="coin_upload" id="coin_upload" maxlength="10" value="{$creditconfig['coin_upload']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang bonusPms}</td>
+			<td ><input class="inp_txt" name="credit_pms" id="credit_pms" maxlength="10" value="{$creditconfig['credit_pms']}" /></td>
+			<td ><input class="inp_txt" name="coin_pms" id="coin_pms" maxlength="10" value="{$creditconfig['coin_pms']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang bonusComment}</td>
+			<td ><input class="inp_txt" name="credit_comment" id="credit_comment" maxlength="10" value="{$creditconfig['credit_comment']}" /></td>
+			<td ><input class="inp_txt" name="coin_comment" id="coin_comment" maxlength="10" value="{$creditconfig['coin_comment']}" /></td>
+		</tr>
+		<tr>
+			<td >{lang bonusDownload}</td>
+			<td ><input class="inp_txt" name="credit_download" id="credit_download" maxlength="10" value="{$creditconfig['credit_download']}" /></td>
+			<td ><input class="inp_txt" name="coin_download" id="coin_download" maxlength="10" value="{$creditconfig['coin_download']}" /></td>
+		</tr>
+		<tr style="display:none">
+			<td >&nbsp;</td>
+			<td >&nbsp;</td>
+			<td >&nbsp;</td>
+		</tr>
+		<tr style="display:none">
+			<td >{lang allowExchange}</td>
+			<td ><input type="checkbox" name="credit_exchange" value="1"  {if $creditconfig['credit_exchange']}checked{/if} /></td>
+			<td ><input type="checkbox" name="coin_exchange" value="1" {if $creditconfig['coin_exchange']}checked{/if} /></td>
+		</tr>
+		<tr style="display:none">
+			<td >{lang exchangeRate}</td>
+			<td ><input class="inp_box" name="credit_exchangeRate" id="credit_exchangeRate" maxlength="10" value="{$creditconfig['credit_exchangeRate']}" /></td>
+			<td ><input class="inp_txt" name="coin_exchangeRate" id="coin_exchangeRate" maxlength="10" value="{$creditconfig['coin_exchangeRate']}" /></td>
+		</tr>
+		<tr>
+			<td colspan="3"><input class="inp_btn" type="submit" value="{lang commonSave}" name="creditsubmit" /></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

@@ -1,0 +1,42 @@
+{template admin_header}
+<script type="text/javascript">
+	function filecheck(){
+		var url = 'index.php?admin_filecheck-filecheck'+'-'+Math.random();
+		$("#filecheck_result").html('<img src="style/default/loading.gif">');
+		$.get(url, function(data, state){
+			var html;
+			if (state == 'success' && data.substr(0,3) == 'OK:'){
+				$("#filecheck_result").html(data.substr(3));
+			}else{
+				html = '操作失败！错误信息：'+data.substr(0, 2000);
+				$("#filecheck_result").text(html);
+			}
+		});
+	}
+</script>
+
+<p class="map">文件检测</p>
+<p class="sec_nav">文件检测
+</p>
+
+<h3 class="col-h3">提示：</h3>
+
+<ul class="col-ul tips">
+		<li>本程序可以检测被修改、丢失以及可能是多余的文件，被修改或丢失的文件通过FTP工具重新上传即可，多余文件视情况删除即可。</li>
+		<li>如果是升级过来的版本，可能会存在一些被检测为多余的文件，如lang/en/*，style/aoyun/* 等等。</li>
+		<li>当提示没有校对文件时，请访问<a href="http://kaiyuan.hudong.com/bbs/forumdisplay.php?fid=18" target="_blank">HDWiki论坛--	   HDWiki工具箱</a>下载对应版本的校对文件，解压缩后上传到 tool/cache 目录下。</li>
+		</ul>
+<h5 class="col-h3">操作：</h5>
+<table class="table">
+<tr>
+	<td>
+		<input type="button" onclick="filecheck()" value="开始检测" class="inp_btn2 m-r10">[大约需要2~5秒]
+	</td>
+</tr>
+<tr>
+	<td>
+		<div id="filecheck_result" class="content"></div>
+	</td>
+</tr>
+</table>
+{template admin_footer}

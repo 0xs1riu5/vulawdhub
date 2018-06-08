@@ -1,0 +1,52 @@
+{template admin_header}
+<script type="text/javascript">
+function clearcache(){
+	window.location="index.php?admin_setting-removecache";
+}
+function checkcachedata(){
+	/*
+	var cachedata=/^[0-9]\d*?$/;
+	if(!cachedata.test(document.cacheset.{$cache[variable]}_value.value))
+	{
+		alert("index_cache_time{lang commonNotNumber}");
+		cacheset.index_cache_time.focus();
+		return false;
+	}
+	*/
+	document.cacheset.action="index.php?admin_setting-renewcache";
+	document.cacheset.submit();
+}
+</script>
+<p class="map">全局：基本设置</p>
+<p class="sec_nav">基本设置：<a href="index.php?admin_channel"> <span>频道管理</span></a> <a href="index.php?admin_setting-cache" class="on"> <span>缓存设置</span></a> <a href="index.php?admin_setting-seo" ><span>SEO设置</span></a> <a href="index.php?admin_setting-code" ><span>验证码</span></a> <a href="index.php?admin_setting-time" ><span>时间设置</span></a> <a href="index.php?admin_setting-cookie" ><span>COOKIE设置</span></a> <a href="index.php?admin_setting-credit" ><span>经验金币设置</span></a> <a href="index.php?admin_setting-logo" ><span>LOGO设置</span></a></p>
+<h3 class="col-h3">缓存设置</h3>
+<form name="cacheset"  method="post">
+	<table class="table">
+		<tr>
+			<td width="100px;"><span>{lang cacheName}</span></td>
+			<td width="100px;"><span>{lang cacheDescribe}</span></td>
+			<td><span>{lang cacheTime}</span></td>
+		</tr>
+		<!-- {if $cachelist==""} -->
+		<tr>
+			<td colspan="3">{lang cacheNoConfig}</td>
+		</tr>
+		<!-- {/if} -->
+		<!-- {if $cachelist!=""} -->
+		<!-- {loop $cachelist $cache} -->
+		<tr>
+			<td>{$cache[cache_name]}<input type="hidden" name="$cache[]" value = "{$cache[variable]}" /></td>
+			<td>{$cache[describ]}</td>
+			<td><input class="inp_txt" name="{$cache[variable]}_value" type="text" value="{$cache[value]}" maxlength="5" /></td>
+		</tr>
+		<!-- {/loop} -->
+		<tr>
+			<td colspan="3">
+				<input class="inp_btn"  type="button" name="cachesetsubmit" value="{lang cacheSaveConfig}" onclick="checkcachedata();"/>&nbsp;&nbsp;
+				<input class="inp_btn"  type="button" name="cacheclear" value="{lang cacheClear}" onclick="clearcache();"/>
+			</td>
+		</tr>
+		<!-- {/if} -->
+	</table>
+</form>
+{template admin_footer}

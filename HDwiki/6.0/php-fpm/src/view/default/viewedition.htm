@@ -1,0 +1,143 @@
+{template header}
+<!--{if $audit}-->
+<script>
+	function partsection(){
+		$('#fullsection').css('display','block');
+		$('#partsection').css('display','none');
+		$("#hidesection > li:gt(3)").css('display','none');
+	}
+	function fullsection(){
+		$('#fullsection').css('display','none');
+		$('#partsection').css('display','block');
+		$("#hidesection > li:gt(3)").css('display','block');
+	}
+	function unexcellent(){
+		$.post(
+			"index.php?edition-unexcellent",{eid:$edition['eid']},
+			function(xml){
+				var message=xml.lastChild.firstChild.nodeValue;
+				if(message=='1'){
+					alert('{lang editProfileTip1}');
+				}else if(message=='-1'){
+					alert('{lang parameterError}');
+				}else{
+					alert('{lang viewDocTip3}');
+				}
+			}
+		);
+	}
+</script>
+<!--{/if}-->
+ 
+<div class="wrap hd_map">
+<a href="index.php" target="_blank">{$setting['site_name']}</a> &gt;&gt; <a href="{url doc-view-$edition['did']}">{$edition['title']}</a> &gt;&gt; {lang edition}
+</div>
+<div class="wrap">
+<table class="table bor-ccc" id="cklsbb">
+	<thead><tr><td>{lang editTime}</td><td>{lang edition}</td><td>{lang docLength}</td><td>{lang editionImages}</td><td>{lang editionCatNum}</td><td>{lang reason}</td></tr></thead>
+	<tr>
+		<td>{$edition['time']}</td>
+		<td><!--{if $doc['version']== 0 || $doc['version']== $doc['editions']}-->
+	{lang latest}{lang edition}
+	<!--{else}-->
+	{lang edition}{$doc['version']}
+	<!--{/if}--></td>
+		<td>{$edition['words']}</td>
+		<td>{$edition['images']}</td>
+		<td>{eval echo count($sectionlist)}</td>
+		<td class="orange"><!--{if $edition['reason']!=''}-->{$edition['reason']}<!--{else}--> <!--{/if}--></td>
+	</tr>
+</table>
+</div>
+<section class="wrap m-t20 clearfix">
+<div class="doc-show group1"><article class="bor-ccc">
+	<span class="r grayc"><!--{if  $doc['version']== 0 || $doc['version']>1}-->
+	<a href="{url edition-view-$edition['previous']-{eval echo $doc['version']-1}}">{lang previous}{lang edition}</a> | 
+	<!--{/if}-->
+	<!--{if $doc['version']!= 0 && $doc['version']!= $doc['editions']}-->
+	<a href="{url edition-view-$edition['latest']-0}">{lang latest}{lang edition}</a> | 
+	<!--{/if}-->&nbsp;
+	<!--{if  $doc['version']!= 0 && $doc['version']<$doc['editions']}-->
+	<a href="{url edition-view-{$edition['next']}-{eval echo $doc['version']+1}}">{lang next}{lang edition}</a> | 
+	<!--{/if}-->
+	<a href="{url doc-view-$edition['did']}" target="_self">{lang backDoc}</a>
+	</span>
+	<div class="title_thema"><h1>{$edition['title']}</h1></div>	
+	<div class="content_1 clearfix"><link rel="stylesheet" href="style/{$theme}/content.css">
+		<!--{loop $edition['sectionlist'] $key $section}-->
+		<!--{if $section['flag'] == 1}-->	
+		<!--{if ($key==1)&&!empty($sectionlist)}-->
+		<fieldset id="catalog">
+			<legend><a name='section'>{lang catalog}</a></legend>
+			<div id="full-all">
+			<ul id="hidesection">
+				<!--{loop $sectionlist $k $sec}-->
+				<li><em>$k</em><a href="#{$sec['key']}">{$sec['value']}</a></li>
+				<!--{/loop}-->
+			</ul>
+			</div>
+		</fieldset>
+		<!--{/if}-->
+		<h2 name="{$key}" id="{$key}"><span class="texts">{$section['value']}</span></h2>
+		<!--{else}-->	
+		<div class="content_topp">
+		{$section['value']}
+		</div>
+		<!--{/if}-->	
+		<!--{/loop}-->
+	</div>
+</article>
+	<div class="columns cate_open">
+		<h2 class="col-h2">{lang tag}</h2>
+		<ul class="doc-list">
+			<!--{loop $doc['tag'] $key $tag}--><li><a href="{url search-tag-$tag}" >{$tag}</a></li><!--{/loop}-->
+		</ul>
+	</div>
+
+</div>
+<aside class="doc-aside group2">
+	<div class="bor-ccc ctxx">
+	<h2 class="col-h2">{lang docMessage}</h2>
+	<!--{if $author}-->
+	<dl class="col-dl twhp2">
+	<dd><a href="{url user-space-$edition['authorid']}" target="_blank"  class="a-img1"><img src="<!--{if $author[image]}-->$author[image]<!--{else}-->style/default/user_l.jpg<!--{/if}-->" width="50" height="50"/></a></dd>
+	<dt><a href="{url user-space-$edition['authorid']}" target="_self">{$edition['author']}</a><em><img src="style/default/jb.gif" title="{$author['credit1']}{lang gold}"></em></dt>
+	<dd><span class="gray9" style="color:{$author['color']}" class="l m-r8">{$author['grouptitle']}</span>
+	<span title="{lang userstars} {$author['stars']}" class="u-stars"><!--{for $i=0; $i<$author['editorstar'][3]; $i++}--><img src="style/default/star_level3.gif"/><!--{/for}--><!--{for $i=0; $i<$author['editorstar'][2]; $i++}--><img src="style/default/star_level2.gif"/><!--{/for}--><!--{for $i=0; $i<$author['editorstar'][1]; $i++}--><img src="style/default/star_level1.gif"/><!--{/for}--></span>
+	</dd>
+	<dd><span class="gray9">{lang editionCreator}</span> <a class="s-msg clink" onclick="return Message.box('{$edition['author']}')" href="javascript:void(0)">{lang sendmessage}</a></dd>
+	</dl>
+	<!--{else}-->
+	<dl class="col-dl twhp2">
+	<dd><a class="a-img1">
+	<img alt="{lang haveDel}" src="style/default/user_l.jpg" width="50" height="50" /></a></dd>
+	<dt>{lang userHaveDel}</dt>
+	<dd class="gray9">{lang editionCreator}</dd>
+	</dl>
+	<!--{/if}-->	
+	<ul class="col-ul">
+	<li><span class="gray">{lang viewTimes}:</span> {$doc['views']}  {lang times}</li>
+	<li><span class="gray">{lang editTimes}:</span> {$doc['editions']} {lang times} <a href="{url edition-list-$doc['did']}" class="clink" >{lang edition}</a></li>
+	<li><span class="gray">{lang updateTime}:</span> {$doc['lastedit']}</li>
+	</ul>
+
+	</div>
+	<!--
+	<div class="ad">
+	<a href="#" target="_blank"><img src="style/default/ad-230.jpg"/></a>
+	</div>
+	-->
+	<!--{if $audit}-->
+	<div class="columns ctgl">
+	<h2 class="col-h2">{lang editionManage}</h2>
+	<form method="post">
+	<dl>
+	<dd class="a-c"><input name="Button2" type="button" value="{lang editionTip11}" class="m-lr8 btn_inp" onclick="window.location='{url edition-remove-{$doc['did']}-{$edition['eid']}}'"/><input name="Button3" type="button" value="{lang editionTip12}" class="m-lr8 btn_inp" onclick="unexcellent();"/>
+	</dd>
+	</dl>
+	</form>
+	</div>
+	<!--{/if}-->
+</aside>
+</section>
+{template footer}

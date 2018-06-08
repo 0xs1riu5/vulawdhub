@@ -1,0 +1,100 @@
+{template wapheader}
+<body ontouchstart><div class="wrap">
+    <section class="userinfo">
+        <div class="uface"><img src="<!--{if $spaceuser[image]}-->$spaceuser[image]<!--{else}-->style/default/user.jpg<!--{/if}-->" alt=""><span>{$spaceuser[username]}</span></div>
+        <ul>
+            <li><i>{$spaceuser[credit2]}</i>总经验</li>
+            <li><i>{$spaceuser[views]}</i>{lang popularity}</li>
+            <li><i>{$spaceuser[credit1]}</i>总金币</li>
+        </ul>
+        <a href="{WIKI_URL}" class="goback"></a>
+    </section>
+    <nav class="nav-tag">
+
+        <h4 <!--{if $type == '0'}-->class="current"<!--{/if}-->><a href="{url user-space-$spaceuser['uid']-0}" style="display:block;<!--{if $type == '0'}-->color:#0068b7;<!--{/if}-->>">创建的词条</a></h4>
+        <h4 <!--{if $type == '1'}-->class="current"<!--{/if}-->><a href="{url user-space-$spaceuser['uid']-1}" style="display:block;<!--{if $type == '1'}-->color:#0068b7;<!--{/if}-->>">编辑的词条</a></h4>
+        <h4 <!--{if $type == '2'}-->class="current"<!--{/if}-->><a href="{url user-space-$spaceuser['uid']-2}" style="display:block;<!--{if $type == '2'}-->color:#0068b7;<!--{/if}-->>">收藏的词条</a></h4>
+    </nav>
+
+     <!--{if $doclist}-->
+        <section class="column">
+            <ul class="ul-row1">
+                <!--{loop $doclist $doc}-->
+                    <!--{if $doc['img'] != ''}-->
+                        <li>
+                            <a href="{url doc-view-$doc['did']}">
+                                <span class="aimg w150">
+                                    <img src="{$doc['img']}">
+                                </span>
+                                <strong class="title">{$doc[title]}</strong>
+                                <span class="summary">{$doc[summary]}</span>
+                            </a>
+                        </li>
+                    <!--{else}-->
+                        <li>
+                            <a href="{url doc-view-$doc['did']}">
+                                <strong class="title">{$doc[title]}</strong>
+                                <span class="summary">{$doc[summary]}</span>
+                            </a>
+                        </li>
+                    <!--{/if}-->
+                <!--{/loop}-->
+            </ul>
+        </section>
+     <!--{else}-->
+        <section class="column nobody">
+            <i class="ico-warn"></i>
+            <p class="gray9">还没有内容</p>
+        </section>
+     <!--{/if}-->
+    
+    <p class="loading gray9"></p>
+<script src="js/jquery.js"></script>
+<script src="js/wap_load_data.js"></script>
+<script>
+var order_flag = '{$order_flag}';
+window.WapLoadData.init_data({
+    'bind_element'  : $('.wrap'),
+    'touch_element' : $('.loading'),
+    'load_url'      : parseUrl()
+});
+
+function parseUrl() {
+    var temp_url = window.location.href.split('-');
+    var len = temp_url.length;
+	if (len == 3) {
+        temp_url.push(0);
+	}
+    if (len > 4) {
+        temp_url.pop();
+    }
+    return temp_url.join('-');
+}
+
+function return_wap_str(json) {
+    var str = '';
+    var con = json.length;
+    for(var i = 0; i < con; i++) {
+        if (json[i]['img'] != '') {
+            str +='<li>\
+                <a href="{url doc-view-'+ json[i]['did'] +'}">\
+                    <span class="aimg w150">\
+                        <img src="'+ json[i]['img'] +'">\
+                    </span>\
+                    <strong class="title">'+ json[i]['title'] +'</strong>\
+                    <span class="summary">'+ json[i]['summary'] +'</span>\
+                </a>\
+            </li>';
+        } else {
+            str += '<li>\
+                        <a href="{url doc-view-'+ json[i]['did'] +'}">\
+                            <strong class="title">'+ json[i]['title'] +'</strong>\
+                            <span class="summary">'+ json[i]['summary'] +'</span>\
+                        </a>\
+                    </li>';
+        }
+    }
+    return str;
+}
+</script>
+{template wapfooter}
