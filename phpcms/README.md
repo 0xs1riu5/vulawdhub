@@ -6,13 +6,6 @@ docker-compose build
 docker-compose up -d
 ```
 
-或者是直接从docker上直接pull镜像
-
-
-```
-docker pull s1r1u5/php-fpm-cms:5.6
-docker pull s1r1u5/mysql_cms:5.7
-```
 
 ## 漏洞一:
 
