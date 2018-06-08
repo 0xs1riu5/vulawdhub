@@ -1,0 +1,64 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop');  
+echo <<<EOT
+-->
+        <div id="news_list">
+<!--
+EOT;
+if($lang_NewsStyle==0){
+echo <<<EOT
+-->
+            <ul>
+<!--
+EOT;
+foreach($news_list as $key=>$val){
+echo <<<EOT
+-->
+                <li><span>[{$val[updatetime]}]</span><a href="$val[url]" target="$Blank" title="$val[title]">$val[title]</a>$val[top] $val[news] $val[hot]</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</ul> 
+<!--
+EOT;
+}else if($lang_NewsStyle==1){
+foreach($news_list as $key=>$val){
+echo <<<EOT
+-->
+            <dl>
+			    <dt class="floatl" style="width:{$lang_NewsImgX}px;">
+				    <a href="$val[url]" target="$Blank" title="$val[title]">
+					    <img src="$val[imgurls]" alt="$val[title]" title="$val[title]" width="{$lang_NewsImgX}" height="{$lang_NewsImgY}" />
+					</a>
+				</dt>
+				<dd class="floatr" style="margin-left:-{$lang_NewsImgX}px;">
+				    <div class="text" style="margin-left:{$lang_NewsImgX}px;">
+				        <h3><a href="$val[url]" target="$Blank" title="$val[title]">$val[title]</a>$val[top] $val[news] $val[hot]</h3>
+					    <p>$val[description]</p>
+					</div>
+				</dd>
+			</dl>
+			<div class="line clear"></div>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+-->
+         <div id="flip">$page_list</div>
+        </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div class="clear"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

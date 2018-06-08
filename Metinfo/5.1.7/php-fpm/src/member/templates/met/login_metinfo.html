@@ -1,0 +1,33 @@
+<!--<?php
+require_once templatemember('head'); 
+echo <<<EOT
+-->
+<script type="text/javascript">
+function checkcookie()
+{
+	if (document.cookie == "") 
+	{	
+		var tmp=document.getElementById('remember');
+		alert('{$lang_memberCookie}');
+		tmp.checked=false;
+	}
+
+}
+</script>
+<link href="templates/met/css/style.css" rel="stylesheet" />
+<link href="../public/css/reset.css" rel="stylesheet" />
+<div class="user_main">
+<div class="user_nav">
+<div class="user_top">{$member_title}</div>
+$methtl_membernav
+ <div class="user_bottom"></div>
+</div>
+<div class="user_main_right">
+<iframe src="login_member.php?lang=$lang" name="main" frameborder="0"></iframe>
+</div>
+</div>
+<div style="clear:both;"></div>
+<!--
+EOT;
+require_once templatemember('foot'); 
+?>

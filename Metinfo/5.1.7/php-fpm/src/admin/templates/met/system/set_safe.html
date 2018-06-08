@@ -1,0 +1,117 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+        <form method="POST" name="myform" action="safe.php?anyid={$anyid}&lang=$lang" target="_self">
+		<input name="action" type="hidden" value="modify">
+<table cellpadding="2" cellspacing="1" class="table safe">
+		  <tr style="{$updatestyle}"> 
+            <td class="text">{$lang_setsafeupdate}：</td>
+            <td class="input"><font color="#FF0000">{$lang_setsafeupdate1}</font> <a href="safe.php?anyid={$anyid}&action=delete&filename=update&lang=$lang">{$lang_delete}</a></td>
+          </tr>
+		  <tr style="{$installstyle}"> 
+            <td class="text">{$lang_setsafeinstall}：</td>
+            <td class="input"><font color="#FF0000">{$lang_setsafeinstall1}</font> <a href="safe.php?anyid={$anyid}&action=delete&filename=install&lang=$lang">{$lang_delete}</a></td>
+          </tr>
+<!--
+EOT;
+$filepop='disabled="disabled"';
+if($admin_list[admin_group]==10000)$filepop='';
+echo <<<EOT
+-->
+         <tr> 
+            <td class="text">{$lang_setsafeadminname}：</td>
+            <td class="input">
+			    <input name="met_adminfile" type="text" class="text med" value="$met_adminfile" {$filepop} />
+				<span class="tips">{$lang_setsafeadminname1c}{$localurl}{$met_adminfile}/</span>
+			</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_setsafeadmin}：</td>
+            <td class="input">
+			    <label><input name="met_login_code" type="radio" value="1" $met_login_code1[1] />&nbsp;{$lang_open}</label>&nbsp;&nbsp;
+				<label><input name="met_login_code" type="radio" value="0" $met_login_code1[0] />&nbsp;{$lang_close}</label>
+			</td>
+          </tr>
+		    <tr> 
+            <td class="text">{$lang_setsafemember}：</td>
+            <td class="input">
+			    <label><input name="met_memberlogin_code" type="radio" value="1" $met_memberlogin_code1[1] >&nbsp;{$lang_open}</label>&nbsp;&nbsp;
+				<label><input name="met_memberlogin_code" type="radio" value="0" $met_memberlogin_code1[0]>&nbsp;{$lang_close}</label>
+				<span class="tips">{$lang_upfiletips24}</span>
+			</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_upfiletips25}</td>
+            <td class="input">
+			    <label><input name="met_recycle" type="radio" value="1" $met_recycle1[1] >&nbsp;{$lang_open}</label>&nbsp;&nbsp;
+				<label><input name="met_recycle" type="radio" value="0" $met_recycle1[0]>&nbsp;{$lang_close}</label>
+				<span class="tips">{$lang_upfiletips26}</span>
+			</td>
+          </tr>
+<!--
+EOT;
+if($met_agents_sms==1){
+echo <<<EOT
+-->		  
+		  <tr> 
+            <td class="text">{$lang_upfiletips27}</td>
+            <td class="input">
+			    <label><input name="met_smspass" type="radio" value="1" $met_smspass1[1] >&nbsp;{$lang_open}</label>&nbsp;&nbsp;
+				<label><input name="met_smspass" type="radio" value="0" $met_smspass1[0]>&nbsp;{$lang_close}</label>
+				<span class="tips">{$lang_upfiletips28}</span>
+			</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		  
+       <tr> 
+        <td class="text"><span class="bi_tian">*</span>{$lang_setbasicUploadMax}：</td>
+        <td class="input"><input name="met_file_maxsize" type="text" class="text mid" value="{$met_file_maxsize}" /><span class="tips">Mb</span></td>
+    </tr> 
+	<tr> 
+        <td class="text"><span class="bi_tian">*</span>{$lang_setbasicEnableFormat}：</td>
+        <td class="input">
+		<textarea name="met_file_format" type="text" class="textarea" rows="5" style="width:350px;">{$met_file_format}</textarea>
+		<span class="tips">{$lang_setbasicTip5}</span>
+		</td>
+    </tr>
+	      <tr> 
+            <td class="text"></td>
+	      <td class="submit">
+		      <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+			 </td>
+          </tr>
+		<tr>
+         <tr> 
+            <td colspan="2" class="input">
+			    {$lang_setsafeadminname1}
+				<ol>
+				    <li>{$lang_setsafeadminname1a}</li>
+				    <li>{$lang_setsafeadminname1b}</li>
+				</ol>
+			</td>
+          </tr>
+		<tr>
+		  <td class="footer" colspan="2" align="center">$foot</td>
+	  </tr>
+</table>
+        </form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.d.
+?>-->

@@ -1,0 +1,105 @@
+<!--<?php
+require_once template('head');
+echo <<<EOT
+-->
+<div class="index inner">
+	<div class="aboutus style-1">
+		<h3 class="title">
+			<span class='myCorner' data-corner='top 5px'>{$Column1[name]}</span>
+			<a href="{$Column1[url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
+		</h3>
+		<div class="active editor clear contour-1">{$index[content]}<div class="clear"></div></div>
+	</div>
+	<div class="case style-2">
+		<h3 class='title myCorner' data-corner='top 5px'>
+		{$Column2[name]}
+		<a href="{$Column2[url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
+		</h3>
+		<div class="active dl-jqrun contour-1">
+<!--
+EOT;
+foreach(methtml_getarray($lang_Column2,'com','time','img') as $key=>$val){
+$val['desc']=utf8substr($val['description'],0,30);
+echo <<<EOT
+-->
+		<dl class="ind">
+            <dt><a href="{$val[url]}" {$metblank}><img src="{$val[imgurls]}" alt="{$met_alt}" title="{$met_alt}" style="width:{$val[img_x]}px; height:{$val[img_y]}px;" /></a></dt>
+			<dd>
+			    <h4><a href="{$val[url]}" {$metblank} title="{$val[title]}">{$val[title]}</a></h4>
+				<p class="desc" title="{$val[description]}">{$val[desc]}</p>
+			</dd>
+		</dl>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+        <div class="clear"></div>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div class="index-news style-1">
+		<h3 class="title">
+			<span class='myCorner' data-corner='top 5px'>{$Column3[name]}</span>
+			<a href="{$Column3[url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
+		</h3>
+		<div class="active clear listel contour-2">{$index_list_1}</div>
+	</div>
+	<div class="index-news style-1">
+		<h3 class="title">
+			<span class='myCorner' data-corner='top 5px'>{$Column4[name]}</span>
+			<a href="{$Column4[url]}" class="more" title="{$met_atitle}">{$lang_more}</a>
+		</h3>
+		<div class="active clear listel contour-2">{$index_list_2}</div>
+	</div>
+	<div class="index-conts style-2">
+		<h3 class='title myCorner' data-corner='top 5px'>
+			{$Column5[name]}
+			<a href="{$Column5[url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
+		</h3>
+		<div class="active clear listel contour-2">{$index_list_3}</div>
+	</div>
+	<div class="clear p-line"></div>
+	<div class="index-product style-2">
+		<h3 class='title myCorner' data-corner='top 5px'>
+			<span>{$Column6[name]}</span>
+		    <div class="flip">
+				<p id="trigger"></p>
+		        <a class="prev" id="car_prev" href="javascript:void(0);"></a>
+			    <a class="next" id="car_next" href="javascript:void(0);"></a>
+			</div>
+			<a href="{$Column6[url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
+		</h3>
+		<div class="active clear">
+			<div class="profld" id="indexcar" data-listnum="{$lang_listnum}">
+			{$index_product}
+			</div>
+		</div>
+	</div>
+<!--
+EOT;
+if($index_link_ok){
+echo <<<EOT
+-->
+	<div class="clear"></div>
+	<div class="index-links">
+		<h3 class="title">
+			{$Column7[name]}
+			<a href="{$Column7[url]}" title="{$met_atitle}" class="more">{$lang_more}</a>
+		</h3>
+		<div class="active clear">
+			<div class="img">{$metlinkimg}</div>
+			<div class="txt">{$metlinktxt}</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+require_once template('foot');
+?>

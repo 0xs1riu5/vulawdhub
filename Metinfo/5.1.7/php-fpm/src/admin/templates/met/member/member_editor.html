@@ -1,0 +1,200 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<script type="text/javascript">
+function Disb1(M,K){
+var ty= K==1?false:true;
+    M.attr('disabled',ty);
+}
+function pass2null(pass2){
+			Disb1($('#passsubmit'),0);
+			$('#pass2').text('{$lang_memberjstxt1}');
+			$('#pass2').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function pass1null(pass1){
+			Disb1($('#passsubmit'),0);
+			$('#pass1').text('{$lang_memberjstxt2}');
+			$('#pass1').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function passnot(pass2){
+			Disb1($('#passsubmit'),0);
+			$('#pass2').text('{$lang_memberjstxt3}');
+			$('#pass2').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+$(document).ready(function(){
+    var pass1 = $("input[name='pass1']");
+    var pass2 = $("input[name='pass2']");
+	pass1.focusout(function(){
+		if(pass2.val()!='' && pass2.val()!=pass1.val()){
+		$('#pass1').hide();
+		passnot(pass2);
+		}else if($(this).val()!='' && pass2.val()==''){
+			$('#pass1').hide();
+			pass2null(pass2);
+		}else{ 
+		$('#pass1').hide();
+		$('#pass2').hide();
+		$("input[type='submit']").attr('disabled',false);
+		}
+	});
+	pass2.focusout(function(){
+		if(pass1.val()!='' && pass2.val()!=pass1.val())passnot($(this));
+		else if($(this).val()!='' && pass1.val()==''){
+			$('#pass2').hide();
+			pass1null(pass1);
+		}else{ 
+		$('#pass1').hide();
+		$('#pass2').hide();
+		$("input[type='submit']").attr('disabled',false);
+		}
+	});
+});
+</script>
+<body>
+<!--
+EOT;
+$title="{$lang_editor}{$lang_content}({$admin_list[admin_id]})";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang&anyid={$anyid}" target="_self">
+		<input name="useid" type="hidden" value="$admin_list[admin_id]">
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td class="text">{$lang_memberUserName}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="useid" type="text" class="text" autocomplete="off" value="{$admin_list[admin_id]}" disabled="disabled"></td>
+          </tr> 
+          <tr> 
+            <td class="text">{$lang_membertips1}{$lang_marks}</td>
+            <td colspan="2" class="input">{$admin_list[admin_register_date]}</td>
+          </tr>
+          <tr> 
+            <td class="text">{$lang_adminLastIP}{$lang_marks}</td>
+            <td colspan="2" class="input">{$admin_list[admin_modify_ip]}</td>
+          </tr> 		  
+          <tr> 
+            <td class="text">{$lang_adminLastLogin}{$lang_marks}</td>
+            <td colspan="2" class="input">{$admin_list[admin_modify_date]}</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberPs}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="pass1" type="password" class="text" autocomplete="off" maxlength="20">{$lang_memberTip}<span id='pass1'></span></td>
+          </tr> 
+		   <tr> 
+            <td class="text">{$lang_memberPs1}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="pass2" type="password" class="text" autocomplete="off" maxlength="20">{$lang_memberTip}<span id='pass2'></span></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberName}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="name" type="text" class="text" value="$admin_list[admin_name]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberSex}{$lang_marks}</td>
+            <td colspan="2" class="input">
+<!--
+EOT;
+if($admin_list[admin_sex]==0){
+echo <<<EOT
+-->	
+		<label><input name="sex" type="radio" value="0" checked="checked"> {$lang_memberMan}</label>&nbsp;&nbsp;
+		<label><input name="sex" type="radio" class="radio" value="1"> {$lang_memberWoman}</label>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+		<label><input name="sex" type="radio" value="0" > {$lang_memberMan}</label>&nbsp;&nbsp;
+		<label><input name="sex" type="radio" value="1" class="radio" checked="checked"> {$lang_memberWoman}</label>
+<!--
+EOT;
+}echo <<<EOT
+-->
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberTel}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="tel" type="text" class="text" value="$admin_list[admin_tel]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberCell}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="mobile" type="text" class="text" value="$admin_list[admin_mobile]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">Email{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="email" type="text" class="text" value="$admin_list[admin_email]">{$lang_memberTip1}</td>
+          </tr> 
+		  <tr> 
+            <td class="text">QQ{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="qq" type="text" class="text" value="$admin_list[admin_qq]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">MSN{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="msn" type="text" class="text" value="$admin_list[admin_msn]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberTaoBao}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="taobao" type="text" class="text" value="$admin_list[admin_taobao]"></td>
+          </tr> 
+          <tr> 
+          <td class="text" valign="middle">{$lang_memberIntro}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <textarea name="admin_introduction" class="textarea gen" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyName}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyname" type="text" class="text" value="$admin_list[companyname]"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyFax}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyfax" type="text" class="text" value="$admin_list[companyfax]"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyCode}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companycode" type="text" class="text" value="$admin_list[companycode]"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyAddress}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyaddress" type="text" class="text" value="$admin_list[companyaddress]"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyWebsite}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companywebsite" type="text" class="text" value="$admin_list[companywebsite]"></td>
+          </tr>
+		  <tr> 
+         <tr> 
+          <td class="text" valign="middle">{$lang_memberType}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top">
+		  <select name="usertype" id="usertype" >
+			 $level
+            </select>
+		  </td>
+          </tr>
+		  <tr>
+		  <td class="text" valign="middle">{$lang_memberCheck}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"><input name="checkid" type="checkbox" value="1" $checkid>
+		  </td>
+          </tr>
+		  <tr> 
+            <td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		  </td>
+          </tr>
+         <tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr>
+</table>
+        </form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

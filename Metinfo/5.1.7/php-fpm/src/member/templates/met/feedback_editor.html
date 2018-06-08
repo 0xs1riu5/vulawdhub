@@ -1,0 +1,154 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+{$fdjs}
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
+<form  enctype="multipart/form-data" method="POST" onSubmit="return Checkfeedback();" name="myform" action="fdeditor.php?action=edit" target="_self">
+<input name="id" type="hidden" value="$id">
+<input name="lang" type="hidden" value="$lang">
+<table cellpadding="2" cellspacing="1" border="0" class="table_member">
+		
+		  <tr> 
+            <td colspan="10" class="member_title">{$lang_memberModifyFD}</td>
+          </tr>
+		 
+<!--
+EOT;
+foreach($feedback_para as $key=>$val){
+switch($val[type]){
+case 1:
+echo <<<EOT
+-->
+         <tr> 
+            <td class="member_text">$val[name]：</td>
+            <td colspan="2" class="member_input"><input name="$val[para]" type="text" class="input" size="40"  value='$val[content]'></td>
+			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+		 </tr>
+<!--
+EOT;
+break;
+case 2:
+echo <<<EOT
+-->
+			<tr> 
+            <td class="member_text">$val[name]：</td>
+            <td colspan="2" class="member_input">
+			<select name='para$val[id]'> 
+			<option value=''>$lang_Nolimit</option>
+<!--
+EOT;
+foreach($paravalue[$val[id]] as $key=>$val1){
+$selected='';
+if($val[content]==$val1['info']) $selected="selected=selected";
+echo <<<EOT
+-->
+          <option value='$val1[info]' $selected >$val1[info]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</select>
+			</td>
+			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+			</tr>
+<!--
+EOT;
+break;
+case 3:
+echo <<<EOT
+-->
+         <tr> 
+            <td class="member_text">$val[name]：</td>
+            <td colspan="2"  class="member_input"><textarea name="$val[para]" cols="60" rows="5">$val[content]</textarea></td>
+			<td class="member_input">$val[wr_must]</td>
+			</tr>
+<!--
+EOT;
+break;
+case 4:
+$i=0;
+     $nowinfo="-".$val[content]."-";
+     foreach($paravalue[$val[id]] as $key=>$val1){
+     $checked='';
+     $i++;
+     if(strstr($nowinfo, "-".$val1[info]."-")) $checked="checked='checked'";
+     $tmp1=$tmp1."<input name='para$val[id]_$i' type='checkbox' value='$val1[info]' $checked>$val1[info]  ";
+     }
+echo <<<EOT
+-->
+         <tr> 
+            <td class="member_text">$val[name]：</td>
+            <td colspan="2"  class="member_input">$tmp1</td>
+			<td class="member_input">$val[wr_must]</td>
+			</tr>
+<!--
+EOT;
+break;
+case 5:
+echo <<<EOT
+-->
+			<tr> 
+            <td class="member_text">$val[name]：</td>
+            <td colspan="2" class="member_input"><a href="../upload/file/$val[content]" target="_blank" />$val[content] </a><input name="$val[para]" type='file' class="input" size="20"  ></td>
+			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+			</tr>
+<!--
+EOT;
+break;
+case 6:
+$tmp2="";
+     $i=0;
+     foreach($paravalue[$val[id]] as $key=>$val2){
+     $checked='';
+     $i++;
+     if($i==1)$checked="checked='checked'";
+     if($val[content]==$val2['info']) $checked="checked='checked'";
+     $tmp2=$tmp2."<input name='para$val[id]' type='radio' value='$val2[info]' $checked>$val2[info]  ";
+     }
+echo <<<EOT
+-->
+			<tr> 
+            <td class="member_text">$val[name]：</td>
+            <td colspan="2" class="member_input"> $tmp2</td>
+			<td class="member_input" bgcolor="#FFFFFF" style="color:#990000">$val[wr_must]</td>
+			</tr>
+<!--
+EOT;
+break;
+}}
+echo <<<EOT
+-->       
+		  <tr> 
+            <td class="member_text">{$lang_memberAddTime}：</td>
+            <td colspan="2" class="member_input">$feedback_list[addtime]</td>
+          </tr>
+		 
+<!--
+EOT;
+if($met_memberlogin_code==1){
+echo <<<EOT
+-->
+		  <tr>    
+         <td class="member_text">{$lang_memberImgCode}：</td>
+         <td colspan="2" class="member_input"><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:50px" />
+         <img align="absbottom" src="ajax.php?action=code"  onclick=this.src="ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_memberTip1}"/>
+		</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr> 
+            <td class="member_text"></td>
+	      <td class="cv_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit"></td>
+        </tr>
+</table>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

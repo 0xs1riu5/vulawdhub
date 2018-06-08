@@ -1,0 +1,137 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+$colspan=4;
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$title=$class1?"<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&module={$module}'>{$met_class[$class1][name]}</a>":"<a href='index.php?anyid={$anyid}&lang={$lang}&module={$module}'>{$lang_modulemanagement1}</a>";
+$rurl="../content.php?anyid={$anyid}&lang={$lang}";
+require_once template('metlangs');
+if(!$class1)$style="style='color:#f00'";
+echo <<<EOT
+-->
+<div class="contc3 classlist1">
+<span class="color999 left classlist2">{$lang_modClass1}：</span> 
+<a href="index.php?anyid={$anyid}&lang={$lang}&module={$module}" title="{$lang_allcategory}" {$style}>{$lang_allcategory}</a>-
+<!--
+EOT;
+$i=0;
+foreach($met_classindex[$module] as $key=>$val){
+$admin_column_power="admin_pop".$val[id];
+if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
+$i++;$style='';$qn=$i==1?'':'-';
+if($val[id]==$class1)$style="style='color:#f00'";
+echo <<<EOT
+-->
+{$qn}
+<a href="index.php?anyid={$anyid}&lang={$lang}&class1={$val[id]}&module={$module}" title="{$val[name]}" {$style}>{$val[name]}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="clear"></div>
+<!--
+EOT;
+if($met_class[$class1][releclass]){
+	$met_class22=$met_class3;
+	$met_class3='';
+}
+if(count($met_class22[$class1])){
+echo <<<EOT
+-->		
+<div class="contc3 classlist2">
+<span class="color999 left classlist2">{$lang_modClass2}：</span> 
+<!--
+EOT;
+$i=0;
+foreach($met_class22[$class1] as $key=>$val){
+$i++;$style='';$qn=$i==1?'':'-';
+if($val[id]==$class2)$style="style='color:#f00'";
+echo <<<EOT
+-->
+{$qn}
+<a href="index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&class2={$val[id]}&module={$module}" title="{$val[name]}" {$style}>{$val[name]}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="clear"></div>
+<!--
+EOT;
+if($met_class3 && count($met_class3[$class2])){
+echo <<<EOT
+-->		
+<div class="contc3">
+<span class="color999">{$lang_modClass3}：</span>
+<!--
+EOT;
+$metc2 = count($met_class3[$class2]);
+$i=0;
+foreach($met_class3[$class2] as $key=>$val){
+$i++;$style='';$qn=$i==1?'':'-';
+if($val[id]==$class3)$style="style='color:#f00'";
+echo <<<EOT
+-->
+{$qn}<a href="index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&class2={$val[bigclass]}&class3={$val[id]}&module={$module}" {$style}>{$val[name]}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+</div>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->	
+	<table cellpadding="2" cellspacing="1" class="table">
+		<tr>
+              <tr id="list-top">
+				<td width="40" class="list" style="padding:0px; text-align:center;" >{$lang_sort}</td>
+                <td class="list">{$lang_title}</td>				
+	           <td width="50" class="list" >{$lang_operate}</td>
+        </tr>
+<!--
+EOT;
+foreach($about_list as $key=>$val){
+echo <<<EOT
+-->  
+		<tr>
+              <tr class="mouse click">
+				<td class="list-text">$val[no_order]</td>
+                <td class="list-text alignleft">&nbsp;&nbsp;$val[name]</td>				
+	            <td class="list-text  color999">
+					<a href="about.php?anyid={$anyid}&action=editor&lang=$lang&id=$val[id]&page={$page}&cengci={$cengci}">{$lang_editor}</a>
+				</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+		<tr><td colspan="{$colspan}" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
+	<tr>
+		<td class="footer" colspan="$colspan">$foot</td>
+	</tr>
+</table>
+<script type="text/javascript">
+$(document).ready(function(){
+	seachinput($('#searchtext'),'{$lang_modsearch}');
+});
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

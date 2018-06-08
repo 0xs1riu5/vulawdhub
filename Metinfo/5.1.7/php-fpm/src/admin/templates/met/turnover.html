@@ -1,0 +1,81 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<script type="text/javascript">
+var gent='{$gent}';
+var hml='{$hml}';
+var hz = lang=='{$met_index_type}'?'.{$met_htmtype}':'_'+lang+'.{$met_htmtype}';
+function turnaphtm(){
+	var nxt = $('#mthmltru');
+	nxt.empty();
+	nxt.append('{$lang_js53}');
+	$("#geturllink").show();
+	setTimeout(function(){ methistory({$rf}); }, {$gettime} );
+}
+function metgenthml(hml,nxt){
+	var list = hml.split('$|$');
+	var cont = list.length;
+	var json=new Array();
+		for(var i=0;i<cont;i++){
+			if(list[i]!='')json[i]=list[i];
+		}
+		generatehtm(json,nxt,'',2);
+}
+function metgent(gent){
+	$.ajax({ url : gent,type: "POST" });
+}
+function methistory(rf){
+	if(rf==1 && $.browser.msie && hml=='') {
+		history.go(-2);
+	}else{
+		{$getjs} 
+	}
+}
+if(gent!=''){
+	metgent(gent);
+}
+<!--
+EOT;
+if($rf && $rfhm){
+echo <<<EOT
+-->
+setTimeout(function(){ methistory({$rf}); }, {$gettime} );
+<!--
+EOT;
+}elseif($rfhm){
+echo <<<EOT
+-->
+methistory({$rf});
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</script>
+<body>
+<div id="turnover">
+<h1>{$text}<span id="mthmltru"></span></h1>
+<div class="geturl"><a href="{$geturl}" id="geturllink" title="{$lang_funjumpget}">{$lang_funjumpget}</a></div>
+</div>
+<div class="footer">$foot</div>
+<script type="text/javascript">
+if(hml!=''){
+	var nxt = $('#mthmltru');
+	nxt.empty();
+	nxt.append('{$lang_js54}');
+	nxt.after('<span class="tips"></span>');
+	$("#geturllink").hide();
+	metgenthml(hml,nxt);
+}
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

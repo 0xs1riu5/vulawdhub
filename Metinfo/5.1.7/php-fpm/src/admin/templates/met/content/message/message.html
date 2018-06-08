@@ -1,0 +1,132 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+$colspan=9;
+if(!$met_member_use)$colspan=$colspan-1;
+$colspanj=$colspan-1;
+if($readok==""){
+   $style1="style='color:#FF0000' selected='selected'";
+ }elseif($readok==0){
+   $style2="style='color:#FF0000' selected='selected'";
+ }elseif($readok==1){
+   $style3="style='color:#FF0000' selected='selected'";
+ }
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+if(!$customerid){
+$title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+}else{
+$title="{$lang_eidtmsg}";
+}
+require_once template('content/message/top');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+      <tr>
+ <td align="left" class="centle" colspan="{$colspan}" style="color:#666;">
+ 			<form name="delform" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1={$class1}&customerid={$customerid}" style="float:left; font-weight:normal; padding-left:10px;">
+			    <select name="action" id="deltype">
+					<option value="delall">{$lang_messageClass1}</option>
+					<option value="delnoreply">{$lang_messageClass2}</option>
+					<option value="delreply">{$lang_messageClass3}</option>
+					<option value="delno" selected>{$lang_messageClass4}</option>
+					<option value="delyes">{$lang_messageClass5}</option>
+				</select>
+				<input name="submit" type='submit' value='{$lang_setsafesq3text}' class="submitmi" onclick="return linkSmit('',1,safesq());" /> 
+			</form>
+			<div style="float:right; margin-right:5px; font-weight:normal;" >
+ 			    {$lang_messageClass}&nbsp;<select name="new" id="new" onChange="changes($(this));">
+					<option value="index.php?anyid={$anyid}&search=$search&useinfo=$useinfo&lang=$lang&class1={$class1}&customerid={$customerid}" $style1>{$lang_messageClass1}</option>
+					<option value="index.php?anyid={$anyid}&search=$search&readok=0&useinfo=$useinfo&lang=$lang&class1={$class1}&customerid={$customerid}" $style2>{$lang_messageClass2}</option>
+					<option value="index.php?anyid={$anyid}&search=$search&readok=1&useinfo=$useinfo&lang=$lang&class1={$class1}&customerid={$customerid}" $style3>{$lang_messageClass3}</option>
+				</select>
+</div> 
+</td> 
+</tr>
+	  	<tr>
+                <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+				<td width="80" class="list" style="padding:0px; text-align:center;">{$lang_messageID}</td>
+                <td class="list">{$lang_name}</td>
+				<td class="list">{$lang_messageTel}</td>
+				<td class="list">Email</td>
+				<td width="50" class="list" style="padding:0px; text-align:center;">{$lang_messageReply}</td>             
+                <td width="110" class="list">{$lang_messageTime}</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+--> 
+				<td width="70" class="list" style="padding:0px; text-align:center;">{$lang_access}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+				<td width="50" class="list">{$lang_operate}</td>
+              </tr>
+<form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1={$class1}&customerid={$customerid}">
+<!--
+EOT;
+foreach ($message_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+              <td  class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' /></td>
+				<td  class="list-text">$val[customerid]</td>
+			    <td  class="list-text">$val[name]</td>
+				<td  class="list-text color999">$val[tel]</td>
+				<td  class="list-text color999">$val[email]</td>
+                <td  class="list-text color999">$val[readok]</td>				
+                <td  class="list-text color999">$val[addtime]</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+--> 					
+				<td  class="list-text color999">$val[access]</td>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+				<td class="list-text"><a href="editor.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1={$class1}&customerid={$customerid}" >{$lang_View}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1={$class1}&customerid={$customerid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value="">
+</form>	
+   	   <tr> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			  <td class="all-submit" align="left" colspan="{$colspanj}" style="padding:5px 10px;">
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
+              </td>
+          </tr>
+		  <tr><td colspan="{$colspan}" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
+		<tr>
+		  <td class="footer" colspan="{$colspan}">$foot</td>
+	  </tr>
+</table>
+<script type="text/javascript">
+function safesq(){
+	var vl = $("#deltype").val();
+	var vp = $("option[value='"+vl+"']").text();
+		vp = '{$lang_js63}'+vp+'？';
+	return vp;
+}
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,227 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+$boxwidth=$met_kzqie?'100%':'1000px';
+$qietext =$met_kzqie?$lang_indexnarrowver1:$lang_indexwidever1;
+$qietext_title =$met_kzqie?$lang_indexnarrowver2:$lang_indexwidever2;
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$lang_metinfo}</title>
+<link href="$img_url/css/metinfo.css" rel="stylesheet" />
+</head>
+<script type="text/javascript" src="../public/js/jQuery1.7.2.js"></script>
+<script type="text/javascript" src="{$img_url}/js/cookie.js"></script>
+<script type="text/javascript">
+var lang='$lang';
+var atop='{$lang_authTip13}';
+var user_msg = new Array();
+	user_msg['jsx1']='{$lang_jsx1}';
+$(function(){
+	var clang = $.cookie('clang');
+	if(clang){
+		window.location.href='index.php?lang='+clang;
+		$.cookie('clang', null);
+	}
+});
+function kzqie(my){
+	if(my.text()=='{$lang_indexwidever1}'){
+		$('#metcmsbox').css('width','100%');
+		$.ajax({url : 'include/config.php?lang={$lang}&met_kzqie=1',type: "POST"});
+		my.attr('title','{$lang_indexnarrowver2}');
+		my.text('{$lang_indexnarrowver1}');
+	}else{
+		$('#metcmsbox').css('width','1000px');
+		$.ajax({url : 'include/config.php?lang={$lang}&met_kzqie=0',type: "POST"});
+		my.attr('title','{$lang_indexwidever1}');
+		my.text('{$lang_indexwidever1}');
+	}
+}
+</script>
+<style>
+#metcmsbox{ width:$boxwidth;}
+#top .floatr li a span{ behavior: url({$img_url}/iepngfix.htc); }
+</style>
+<body id="indexid">
+<div id="metcmsbox">
+<div id="top"> 
+    <div class="floatr">
+		<div class="top-r-box">
+		<div class="top-right-boxr">
+			<div class="top-r-t">
+				{$lang_indexwelcom} <a href="index.php?lang={$lang}" id="mydata" title="{$lang_editor} {$metinfo_admin_name} {$lang_indexpeople}" class='tui' style="text-decoration:underline;">{$metinfo_admin_name}</a><span>-</span><a target="_top" href="login/login_out.php" id="outhome" title="{$lang_indexloginout}" class='tui'>{$lang_indexloginout}</a><span>|</span><a href="javascript:;" onclick="kzqie($(this))" title="{$qietext_title}">{$qietext}</a>
+			</div>
+		    <div class="langs">
+<!--
+EOT;
+if(count($met_langok)>1 and (count($adminlang)>3 or $langadminok=="metinfo" or $langadminok=='metinfo')){
+$langname=utf8substr($met_langok[$lang][name], 0, 9);
+echo <<<EOT
+-->
+        <div class="langtxt">
+			<div class="langkkkbox">
+				<div id="langcig">
+					<span id="langcion" title="{$lang}">{$langname}</span>
+					<span class="langqie">{$lang_indexlang}</span>
+				</div>
+				<div class="langlist shadow" style="display:none;"></div>
+			</div>
+			<div class="webyy">{$lang_langweb}：</div>
+		</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</div>
+		</div>
+		<div class="nav">
+            <ul id="topnav">
+<!--
+EOT;
+$i=0;$c=0;
+foreach($metinfocolumn as $key=>$val){
+$i++;
+if($val['display']!=1){
+foreach($sidebarcolumn as $sidekey=>$sideval){
+if($sideval['bigclass']==$val['id']){
+$c++;$onnav=$c==1?'class="onnav"':'';
+echo <<<EOT
+-->
+                <li id="metnav_{$val[id]}" class="list">
+					<a href="javascript:;" id="nav_{$i}" {$onnav} hidefocus="true">
+					<span class="c$i"></span>
+					{$val[name]}
+					</a>
+				</li>
+<!--
+EOT;
+break;
+}}}}
+echo <<<EOT
+-->
+            </ul>
+		</div>
+		</div>
+    </div>
+    <div class="floatl">
+	    <a href="index.php?lang={$lang}" hidefocus="true" id="met_logo"><img src="{$met_agents_logo_index}" alt="{$lang_metinfo}" title="{$lang_metinfo}" /></a>
+	</div>
+</div>
+<div id="content">
+    <div class="floatl" id="metleft">
+        <div class="fast">
+	        <a target="_blank" href="../" id="qthome" title="{$lang_indexhome}">{$lang_indexhome}</a>
+			<span></span>
+			<a href="index.php?lang={$lang}" id="hthome" title="{$lang_indexadmin}">{$lang_indexadmin}</a>
+		</div>
+	    <div class="nav_list" id="leftnav">
+<!--
+EOT;
+$k=0;
+foreach($metinfocolumn as $key=>$val){
+if(count($ad_navlist2[$val[id]])){
+$k++;
+$none=$k==1?'':'style="display:none;"';
+echo <<<EOT
+-->
+                <ul {$none} id="ul_{$val[id]}">
+<!--
+EOT;
+$x=0;
+foreach($ad_navlist2[$val[id]] as $key=>$val2){
+$x++;
+if($k==1 && $x==1){
+$val2[property]=$val2[property].' class="on"';
+$morenurl=$val2[url];
+}
+echo <<<EOT
+-->
+                <li ><a href="{$val2[url]}" {$val2[property]} title="{$val2[name]}" hidefocus="true">{$val2[name]}</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+				</ul>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+	    </div>
+		<div class="claer"></div>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
+		<div class="left_footer">{$lang_indexthanks} <a href="http://www.metinfo.cn/" target="_blank">MetInfo</a><span class="none">{$foot}</span></div>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+	<div class="left_footer">{$lang_indexthanks}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+	</div>
+    <div class="floatr" id="metright">
+        <div class="iframe">
+		    <div class="min"><iframe frameborder="0" id="main" name="main" src="{$morenurl}" scrolling="no"></iframe></div>
+		</div>
+    </div>
+	<div class="clear"></div>
+	</div>
+</div>
+<script src="{$img_url}/js/metinfo.js" type="text/javascript"></script>
+<script type="text/javascript">
+if(!$.cookie('upgraderemind')){
+	var src=$("#main").attr("src");
+	if(src.substring(0,15)=='system/sysadmin'){
+		$.ajax({
+			url: 'http://$met_host/sysnew.php?ver=$metcms_v&patch=$met_patch',
+			type: 'GET',
+			dataType: 'jsonp',
+			jsonp: 'jsoncallback',
+			success: function(data) {
+				if(data.metok==1){
+					alert(data.message);
+					$("#main").attr("src",src+'&click=1');
+				}
+				if(data.metpatch==1){
+					$.ajax({
+						url: './system/olupdate.php?action=patch',
+						type: 'GET',
+						success: function(data) {
+						}
+					});	
+				}
+			}
+		});	
+	}
+	$.cookie('upgraderemind', '1');
+}
+if(!$.cookie('appsynchronous')|| {$appaddok} == 0){
+	$.ajax({
+		url: 'app/dlapp/upapp.php',
+		type: 'GET',
+		success: function(data) {
+		}
+	});	
+	$.cookie('appsynchronous', '1');
+}
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

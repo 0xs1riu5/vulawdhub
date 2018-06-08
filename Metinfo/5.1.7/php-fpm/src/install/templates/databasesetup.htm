@@ -1,0 +1,66 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+<script language="javascript">
+parent.document.getElementById("license").className='stepnowno';
+parent.document.getElementById("inspect").className='stepnowno';
+parent.document.getElementById("databasesetup").className='stepnow';
+</script>
+<body>
+<div id="jsheit">
+<div class="contenttext databasesetup round">
+<p style="font-size:14px;">检查您的数据库设置情况，请在相应栏目仔细输入配置内容。</p>
+    <form method="post" action="">
+    <input name="setup" type="hidden" value="1">
+	 <input name="db_type" type="hidden" value="mysql">
+	  <fieldset style="padding-bottom:0px;">
+	  <legend><strong>数据库信息</strong></legend>
+		<div class="section1">
+		  <p>数据表前缀</p>
+		  <input type="text" class="text" name="db_prefix" value="met_" size="18" />
+		  <span>例如：met_ 请不要留空，且使用“_”结尾</span>
+		</div>
+        <div class="section1">
+		  <p>数据库主机</p>
+		  <input type="text" class="text" name="db_host" value="localhost" size="18" />
+		  <span>数据库主机地址，一般不需要更改</span>
+		</div>
+		<div class="section1">
+		  <p>数据库名 </p>
+		 <input type="text" name="db_name" class="text" size="18" />
+		  <span>例如'met'或'my_met',请确保用字母开头</span>
+		</div>
+		<div class="section1">
+		  <p>数据库用户名</p>
+		  <input type="text" class="text" name="db_username" value="root" size="18" />
+		</div>
+		<div class="section1" style="margin-bottom:0px;">
+		  <p>数据库密码</p>
+		  <input type="password" class="text" name="db_pass" />
+		</div>
+		<div class="section1" style="margin-bottom:0px;">
+		  <p>选项</p>
+		<label style="margin-right:20px; font-weight:normal;"><input name="cndata" type="checkbox" value="yes" checked="checked"/>&nbsp;安装中文语言包</label> 
+		<label style="margin-right:20px; font-weight:normal;"><input name="endata" type="checkbox" value="yes" checked="checked"/>&nbsp;安装英文语言包</label>
+		<label style=" font-weight:normal;"><input name="showdata" type="checkbox" value="yes" checked="checked"/>&nbsp;安装官方演示数据</label>
+		</div>
+		<div style="padding:8px 0px 8px 80px;">
+		
+		</div>
+      </fieldset>
+	  <div style="text-align:center; margin-top:5px;">
+	  <input type="submit" name="submit" class="submit" tabindex="15" value="保存数据库设置并继续" />
+	 </div>
+    </form>
+</div>
+</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,64 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<!--
+EOT;
+require_once template('app/wap/top');
+echo <<<EOT
+-->
+<body>
+    <form method="POST" name="myform" action="list.php?lang={$lang}&anyid={$anyid}" target="_self">
+		<input name="action" type="hidden" value="modify" />
+		<table cellpadding="2" cellspacing="1" class="table">
+			<tr> 
+				<td class="text">{$lang_mod2}{$lang_marks}</td>
+				<td class="input">
+					{$lang_setskinNumOfPage} <input type="text" name="wap_news_list" class="text mid" value="$wap_news_list" />&nbsp;{$lang_waptiao}
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_mod3}{$lang_marks}</td>
+				<td class="input">
+					{$lang_setskinNumOfPage} <input type="text" name="wap_product_list" class="text mid" value="$wap_product_list" />&nbsp;{$lang_waptiao}
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_mod4}{$lang_marks}</td>
+				<td class="input">
+					{$lang_setskinNumOfPage} <input type="text" name="wap_download_list" class="text mid" value="$wap_download_list" />&nbsp;{$lang_waptiao}
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_mod5}{$lang_marks}</td>
+				<td class="input">
+					{$lang_setskinNumOfPage} <input type="text" name="wap_img_list" class="text mid" value="$wap_img_list" />&nbsp;{$lang_waptiao}
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_mod6}{$lang_marks}</td>
+				<td class="input">
+					{$lang_setskinNumOfPage} <input type="text" name="wap_job_list" class="text mid" value="$wap_job_list" />&nbsp;{$lang_waptiao}
+				</td>
+			</tr>
+			<tr> 
+				<td class="text"></td>
+				<td class="submit">
+					<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" />
+				</td>
+			</tr>
+			<tr>
+				<td class="footer" colspan="2">$foot</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

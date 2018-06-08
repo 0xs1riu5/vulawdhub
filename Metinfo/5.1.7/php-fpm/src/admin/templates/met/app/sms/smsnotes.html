@@ -1,0 +1,83 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<script src="$img_url/My97DatePicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<body>
+<!--
+EOT;
+$listclass[4]='class="now"';
+require_once template('app/sms/top');
+echo <<<EOT
+-->
+	<table cellpadding="2" cellspacing="1" class="table">
+		<tr>
+			<td colspan="7" class="centle" style="font-weight:normal; color:#999; padding:5px 0px;">
+				<form method="POST" name="deqing" action="smsnotes.php?anyid={$anyid}&lang={$lang}&action=deqing&cs={$cs}" target="_self" style="float:left; margin:5px 0px 0px 5px;">
+					<input type="submit" name="searchsubmit" value="{$lang_setsafesq3text}" class="submitmi" onclick="return linkSmit('',1,'{$lang_smstips53}');" />
+				</form>
+				<div class="formright">
+				<form method="POST" name="search" action="smsnotes.php?anyid={$anyid}&lang={$lang}&search=detail_search" target="_self">
+					<input name="title" type="text" class="text" id="searchtext" value="{$lang_smstips54}" />				
+					<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
+				</form>
+				</div>
+			</td>
+		</tr>
+		<tr id="list-top">
+                <td class="list" width="110">{$lang_smstips55}</td>
+                <td class="list" width="60">
+				<form method="POST" name="filterform" action="smsnotes.php?anyid={$anyid}&lang={$lang}&search=type_search" target="_self">
+					<select name="notes_type" onChange="handle_form('filterform')">
+						<option value="0" {$selec_notes_type[0]}>{$lang_smstips56}</option>
+						<option value="1" {$selec_notes_type[1]}>{$lang_smstips57}</option>
+						<option value="2" {$selec_notes_type[2]}>{$lang_smstips58}</option>
+						<option value="3" {$selec_notes_type[3]}>{$lang_smstips59}</option>
+						<option value="4" {$selec_notes_type[4]}>{$lang_smstips60}</option>
+						<option value="5" {$selec_notes_type[5]}>{$lang_smstips61}</option>
+					</select>
+				</form>
+				</td>
+				<td class="list">{$lang_smstips62}</td>
+				<td class="list">{$lang_smstips63}</td>
+				<td class="list">{$lang_smstips64}</td>
+				<td class="list" width="60" style="padding:0px; text-align:center;">{$lang_smstips65}</td>
+        </tr>
+<!--
+EOT;
+foreach ($record_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+			    <td class="list-text color666">{$val[time]}</td>
+			    <td class="list-text color666">{$val[type]}</td>
+			    <td class="list-text color666 alignleft" title="{$val[content]}">&nbsp;&nbsp;{$val[text]}</td>
+			    <td class="list-text color666 alignleft" title="{$val[tel]}">&nbsp;&nbsp;{$val[teltext]}({$val[telnum]}{$lang_smstips40})</td>
+			    <td class="list-text color666">{$val[remark]}</td>
+                <td class="list-text color666"><a href="smsnotes_detail.php?anyid={$anyid}&lang={$lang}&id={$val[id]}&cs=$cs">{$lang_authDetail}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+   	   <tr> 
+			 <td class="page_list" colspan="6">$page_list</td>
+        </tr>
+	<tr>
+		<td class="footer" colspan="6">$foot</td>
+	</tr>
+</table>
+<script type="text/javascript">
+seachinput($('#searchtext'),'{$lang_smstips54}');
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

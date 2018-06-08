@@ -1,0 +1,128 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved
+require_once template('head');
+if($module==10000){$style1="style='color:#FF0000' selected='selected'";}
+else if($module==2){$style2="style='color:#FF0000' selected='selected'";}
+else if($module==3){$style3="style='color:#FF0000' selected='selected'";}
+else if($module==4){$style4="style='color:#FF0000' selected='selected'";}
+else if($module==5){$style5="style='color:#FF0000' selected='selected'";}
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+<!--
+EOT;
+if($met_recycle){
+echo <<<EOT
+-->
+          <tr>
+			<td class="centle" colspan="5" style=" height:20px; line-height:30px; font-weight:normal;">	
+			<span style=" float:left;font-weight:normal; color:#999; padding-left:10px;">{$lang_recycleexplain1}</span>
+			<div class="formright">
+				&nbsp;{$lang_recycletype}
+				<select name="module" id="module" onChange="changes($(this));" style="position:relative; top:2px;">
+					<option value="index.php?lang={$lang}&anyid={$anyid}&module=10000" $style1>{$lang_recycleall}</option>
+					<option value="index.php?lang={$lang}&anyid={$anyid}&module=2" $style2>{$lang_recyclenew}</option>
+					<option value="index.php?lang={$lang}&anyid={$anyid}&module=3" $style3>{$lang_recycleproduct}</option>
+					<option value="index.php?lang={$lang}&anyid={$anyid}&module=4" $style4>{$lang_recycledownload}</option>
+					<option value="index.php?lang={$lang}&anyid={$anyid}&module=5" $style5>{$lang_recycleimg}</option>
+				</select>
+				<form method="POST" name="search" action="index.php?anyid={$anyid}&lang={$lang}&search=detail_search" target="_self">
+					<input name="title_search" type="text" class="text" id="searchtext" value="{$lang_modsearch}" />				
+					<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
+					<input name="module" type="hidden" id="module" value="$module">
+				</form>
+			</div>
+			 </td>
+          </tr>
+              <tr>
+                <td width="30" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+                <td class="list">{$lang_memberProductSN}{$lang_title}</td>
+                <td width="110" class="list">{$lang_memberProductType}{$lang_recycledietime}</td>
+                <td width="150" class="list">{$lang_memberProductFactoryTime}{$lang_category}</td>
+				<td width="70" class="list">{$lang_operate}</td>
+              </tr>
+			  <form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang">
+<!--
+EOT;
+foreach ($recycle_list as $key=>$val){
+$title_c=$c_list[$val[class1]][name];
+$title_now=$c_list[$val[class1]][name];
+if($val[class2]!=0){$title_c.=">".$c_list[$val[class2]][name];$title_now=$c_list[$val[class2]][name];}
+if($val[class3]!=0){$title_c.=">".$c_list[$val[class3]][name];$title_now=$c_list[$val[class3]][name];}
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+                <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]|$val[recycle]|$val[class1]|$val[class2]|$val[class3]' /></td>
+                <td class="list-text alignleft">&nbsp;&nbsp;$val[title]</td>
+                <td class="list-text color999">$val[updatetime]</td>
+                <td class="list-text color999" title="{$title_c}">$title_now</td>
+				<td class="list-text"><a href="reduction.php?anyid={$anyid}&id=$val[id]|$val[recycle]&lang=$lang" onclick="return linkSmit('',1,'{$lang_js64}');">{$lang_recyclere}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&id=$val[id]|$val[recycle]|$val[class1]&lang=$lang" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value=""></form>
+   	   <tr> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			  <td class="all-submit" align="left" colspan="4" style="padding:5px 10px;">
+			  <form name="reduction" method="Post" action="reduction.php?anyid={$anyid}&lang=$lang">
+			  <input name="action" type="hidden" id="action" value="reduction">
+			  <input name="allid" type="hidden" id="allid" value="">
+			  </form>
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
+			  <input name="submit" type='submit' value='{$lang_recyclere}' class="submit li-submit" onclick="return met_modify($(this),'reduction','editor');" /> 
+			<div class="page_list">
+			<form name="delform" method="Post" action="reduction.php?anyid={$anyid}&lang=$lang">
+				<input name="action" type="hidden" id="action" value="delall">
+				<input name="submit" type='submit' value='{$lang_recyclereall}' class="submit" onclick="return linkSmit('',1,'$lang_js65');" /> 
+			</form>
+			<form name="delform" method="Post" action="delete.php?anyid={$anyid}&lang=$lang">
+				<input name="action" type="hidden" id="action" value="delall">
+				<input name="submit" type='submit' value='{$lang_recycledelall}' class="submit" onclick="return linkSmit('',1,'$lang_js66');" /> 
+			</form>
+			</div>
+              </td>
+          </tr>
+		  <tr><td colspan="7" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
+		     <tr> 
+			 <!--
+EOT;
+}else{
+echo <<<EOT
+-->
+		<td class="text"></td>
+		<td class="input color390">
+			{$lang_recycleno}
+		</td>
+	</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</table>
+<div class="clear"></div>
+<div class="footer">$foot</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	seachinput($('#searchtext'),'{$lang_modsearch}');
+});
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

@@ -1,0 +1,105 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+$SERVER_SIGNATURE=$_SERVER['SERVER_SIGNATURE']==''?$_SERVER['SERVER_SOFTWARE']:$_SERVER['SERVER_SIGNATURE'];
+$SERVER_NAME=$_SERVER['SERVER_NAME'];
+$bigtime=ini_get("max_execution_time");
+$PHP_VERSION=PHP_VERSION;
+$errormsg_v=$errormsg['version'];
+echo <<<EOT
+-->
+<script language="javascript">
+$(window.parent.document).find(".bodyleft li").removeClass('stepnow');
+$(window.parent.document).find("#inspect").addClass('stepnow');
+</script>
+<body>
+<div id="jsheit">
+<form method="post" action="index.php?action=db_setup">
+<div class="contenttext round">
+<p style="font-size:14px;">检查您的服务器是否支持安装MetInfo企业网站管理系统，请在继续安装前消除错误或警告信息。</p>
+	<fieldset>
+		<legend><strong>环境检测结果</strong></legend>
+		<div class="section">
+			<ul class="inspect-list aownbwef">
+				<li class='$mysql_ver_class'><span>MySQL支持</span>$mysql_support</li>
+				<li class='$ver_class'><span>PHP版本</span> $PHP_VERSION $errormsg_v</li>
+<!--
+EOT;
+if($function=='OK'){//
+echo <<<EOT
+-->	
+				<li class='OK'><span>函数支持正常</span>&nbsp;</li>
+<!--
+EOT;
+}
+else{
+echo <<<EOT
+-->	
+$fstr
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
+				<li id='api' class='WARN'>检测链接API服务器中....</li>
+		</ul>
+		</div>
+	</fieldset>
+
+<fieldset>
+<legend><strong>文件和目录权限</strong></legend>
+<div class='section'>&nbsp;&nbsp;&nbsp;&nbsp;要能正常使用MetInfo企业网站管理系统，
+需要将几个文件/目录设置为 "可写"。下面是需要设置为"可写" 的目录清单， 
+以及建议的 CHMOD 设置。<br/>
+某些主机不允许您设置 CHMOD 777，要用666。先试最高的值，不行的话，再逐步降低该值。
+<ul class="inspect-list auwgph">
+<!--
+EOT;
+for($i=0; $i<$count; $i++){
+$thisurl=explode('..',$w_check[$i]);
+$thisurl=$thisurl[1];
+echo <<<EOT
+-->
+   <li class='$class_chcek[$i]'>
+   <span>$thisurl</span>$check_msg[$i]  
+   </li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</ul>
+<div class="clear"></div>
+</div>
+</fieldset>
+</div>
+<div style=" text-align:center; ">
+<input type="button" name="refresh" class="submit" tabindex="11" value="重新检查" onClick="history.go(0)" />
+<input type="submit" name="submit" class="submit" style="margin-right:5px;" value="下一步" $disabled />
+</div>
+</form>
+</div>
+<script language="javascript">
+	$.ajax({
+		url: 'index.php?action=apitest',
+		type: 'POST',
+		success: function(data) {
+			if(data=='ok'){
+				$('#api').removeClass("WARN"); 
+				$('#api').addClass("OK"); 
+				$('#api').html("<span>API服务器链接正常</span>&nbsp;此服务器用于下载应用和在线更新程序"); 
+			}else{
+				$('#api').removeClass("WARN");
+				$('#api').addClass("WARN"); 
+				$('#api').html("<span>API服务器链接失败</span>&nbsp;此服务器用于下载应用和在线更新程序（<a target='_blank' href='http://www.metinfo.cn/course/faq/23-cn.html'>点击获取解决方案</a>）"); 
+			}
+		}
+	});
+</script>
+</body></html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

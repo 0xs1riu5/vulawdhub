@@ -1,0 +1,150 @@
+<!--<?php
+$metlang=methtml_lang('<span>|</span>');
+$methtml_login=methtml_login();
+$met_online=methtml_online();
+$metseo=$classnow==10001?'<h1>'.$met_seo.'</h1>':'<h2>'.$met_seo.'</h2>';
+$navdown=$class1;
+if($class1 == 0 || $class_list[$class1][nav] == 2)$navdown="10001";
+$metlang=$methtml_hadd?'<span>|</span>'.$metlang:$metlang;
+echo <<<EOT
+-->
+{$methtml_head}
+<link href="$img_url/css/reset.css" rel="stylesheet" type="text/css" />
+
+		<!--[if IE 6]>
+<script src="{$img_url}js/DD_belatedPNG_0.0.8a-min.js" type="text/javascript"></script>
+<script type="text/javascript">
+DD_belatedPNG.fix('.bg,img'); 
+</script>
+		<![endif]-->
+<script type="text/javascript">
+$(function(){
+       var navdown = $('#nav_$navdown');
+	   navdown.addClass('navdown');
+	   var margueedom = $('#notice marquee');
+	   var twidth = $('#notice h3.title');
+	   var cwidth = $('#notice div.content');
+	   var widthx = $('#notice div.border').width() - twidth.width() - 20;
+	   cwidth.width(widthx);
+   
+   }); 
+   function onnav(my,id){
+        var ul = document.getElementById('navul-'+id);
+		var width = $(my).width();
+		$(my).addClass('navdown');
+        $(ul).css('display','block');
+		$(ul).width(width); 
+}
+   function outnav(my,id){
+         var ul = document.getElementById('navul-'+id);
+		 $(my).removeClass('navdown');
+		 $(ul).css('display','none');
+   }
+
+</script>
+<body>
+<div id="metinfo">
+   <div id="head" style="background:url($otherinfo[imgurl1]) no-repeat 0px 0px;">
+        <div class="logo" >
+		    <a href="$index_url" title="$met_alt">
+			    <img src="$met_logo" alt="$met_alt" title="$met_alt" style="margin-top:{$lang_logotop}px; margin-left:{$lang_logoleft}px;" />
+			</a>
+		</div>
+		<div class="sidebar">
+		    <div class="lang"><span class="time">{$methtml_now}</span>{$methtml_hadd}{$metlang}</div>
+		    $metseo
+		    <div class="login">$methtml_login </div> 
+        </div>
+		<div style="clear:both;"></div>
+	  <div class="nav">
+			<ul>
+                <li class="class1"><a href="$index_url" title="{$lang_home}" class="class1" id="nav_10001"><span>{$lang_home}</span></a></li>
+<!--
+EOT;
+$i=0;
+foreach($nav_list as $key=>$val){
+$i++;
+$p=count($nav_list2[$val[id]]);
+if($p==0){
+echo <<<EOT
+-->
+<li class="line"></li>
+<li class="class1"><a href="$val[url]" $val[new_windows] title="$val[name]" class="class1" id="nav_$val[id]"><span>$val[name]</span></a></li>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+<li class="line"></li>
+<li class="class1" onmouseover="onnav(this,'$val[id]');" onmouseout="outnav(this,'$val[id]');"><a href="$val[url]" $val[new_windows] title="$val[name]" class="class1" id="nav_$val[id]"><span>$val[name]</span></a>
+                             <ul id="navul-$val[id]" style="display:none;">
+<!--
+EOT;
+foreach($nav_list2[$val[id]] as $key=>$val2){
+echo <<<EOT
+-->	 
+		                     <li><a href="$val2[url]" $val2[new_windows] title="$val2[name]">$val2[name]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	 
+                             </ul>	
+</li>
+<!--
+EOT;
+}
+if($i>=7)break;
+}
+echo <<<EOT
+-->
+			</ul>
+<div>
+<form method="POST" name="myform1" action="$searchurl"  target="_self">
+<input type="text" name="searchword" size="20"  class="navtext" />
+<input type='submit' name='Submit' value='&nbsp;&nbsp;' class="navsb" />
+</form>
+</div>
+			</div>
+<!--
+EOT;
+if($met_flasharray[$classnow][type]){
+echo <<<EOT
+-->
+			<div id="flash">
+			    <div class="topbg"></div>   
+				<div class="content">{$methtml_flash}</div>
+				<div class="bottombg"></div>
+			</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+   </div>
+<div id="notice">
+<div class="border">
+<h3 class="title"><span>{$lang_YouPosition} : <a href="$index_url">{$lang_home}</a>&nbsp;{$asd}&nbsp;$nav_x[name]</span></h3>
+<div class="content">
+<marquee behavior="scroll" direction="left" scrollamount="1" onMouseOver="this.stop()" onMouseOut="this.start()" >
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('2','all','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a>
+<!--
+EOT;
+if($i>=$lang_Newsno)break;
+}
+echo <<<EOT
+-->
+</marquee>
+</div>
+</div>
+</div> 
+<!--
+EOT;
+?>

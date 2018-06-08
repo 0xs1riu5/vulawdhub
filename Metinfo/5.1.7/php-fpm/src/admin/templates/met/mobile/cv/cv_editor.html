@@ -1,0 +1,52 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('mobile/head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<div style="padding:15px;">
+<table cellpadding="2" cellspacing="1" class="table" style="position:relative;">
+<!--
+EOT;
+foreach($cv_para as $key=>$val){
+echo <<<EOT
+-->
+         <tr> 
+            <td class="text">{$val[name]}{$lang_marks}</td>
+            <td class="input">{$val[content]}</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->      
+		  <tr> 
+            <td class="text">{$lang_cvAddtime}{$lang_marks}</td>
+            <td class="input">{$cv_list[addtime]}</td>
+          </tr>
+<!--
+EOT;
+if($jobzhaop){
+if($jobzhaop=='../../')$jobzhaop.='../upload/image/logoimg.gif';
+echo <<<EOT
+-->
+         <tr> 
+			<td class="text">{$lang_mobiletips6}</td>
+            <td class="input">
+			<a href="{$jobzhaop}" target="_blank">{$lang_mobiletips6}</a>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</table>
+</div>
+<!--
+EOT;
+require_once template('mobile/foot'); 
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

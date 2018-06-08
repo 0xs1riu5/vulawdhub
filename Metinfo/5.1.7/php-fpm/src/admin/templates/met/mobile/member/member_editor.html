@@ -1,0 +1,128 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('mobile/head');
+echo <<<EOT
+-->
+</head>
+<body>
+<div style="padding:15px;">
+<form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang" target="_self">
+		<input name="useid" type="hidden" value="$admin_list[admin_id]">
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td class="text">{$lang_memberUserName}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="useid" type="text" class="text" value="{$admin_list[admin_id]}" disabled="disabled"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberName}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="name" type="text" class="text" value="$admin_list[admin_name]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberSex}{$lang_marks}</td>
+            <td colspan="2" class="input">
+<!--
+EOT;
+$awegre[$admin_list[admin_sex]]='checked';
+echo <<<EOT
+-->	
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="vertical">
+				<input name="sex" type="radio" id="radio2" value="0" {$awegre[0]}>
+                <label for="radio2">
+                    {$lang_memberMan}
+                </label>
+                <input name="sex" type="radio" id="radio3" class="radio" value="1" {$awegre[1]}>
+                <label for="radio3">
+                    {$lang_memberWoman}
+                </label>
+            </fieldset>
+        </div>
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberTel}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="tel" type="text" class="text" value="$admin_list[admin_tel]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberCell}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="mobile" type="text" class="text" value="$admin_list[admin_mobile]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">Email{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="email" type="text" class="text" value="$admin_list[admin_email]">{$lang_memberTip1}</td>
+          </tr> 
+		  <tr> 
+            <td class="text">QQ{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="qq" type="text" class="text" value="$admin_list[admin_qq]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">MSN{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="msn" type="text" class="text" value="$admin_list[admin_msn]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberTaoBao}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="taobao" type="text" class="text" value="$admin_list[admin_taobao]"></td>
+          </tr> 
+          <tr> 
+          <td class="text" valign="middle">{$lang_memberIntro}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <textarea name="admin_introduction" class="textarea gen" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyName}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyname" type="text" class="text" value="$admin_list[companyname]"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyFax}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyfax" type="text" class="text" value="$admin_list[companyfax]"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyCode}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companycode" type="text" class="text" value="$admin_list[companycode]"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyAddress}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyaddress" type="text" class="text" value="$admin_list[companyaddress]"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyWebsite}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companywebsite" type="text" class="text" value="$admin_list[companywebsite]"></td>
+          </tr>
+		  <tr> 
+         <tr> 
+          <td class="text" valign="middle">{$lang_memberType}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top">
+		  <select name="usertype" id="usertype" >
+			 <option value="1" $access1>{$lang_access1}</option>
+              <option value="2" $access2>{$lang_access2}</option>
+            </select>
+		  </td>
+          </tr>
+		  <tr>
+		  <td class="text" valign="middle">{$lang_memberCheck}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top">
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="vertical">
+                <input name="checkid" id="checkbox9" type="checkbox" value="1" {$checkid}>
+                <label for="checkbox9">
+                    {$lang_yes}
+                </label>
+            </fieldset>
+        </div>
+		  </td>
+          </tr>
+		  <tr> 
+            <td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		  </td>
+          </tr>
+</table>
+        </form>
+</div>
+<!--
+EOT;
+require_once template('mobile/foot'); 
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

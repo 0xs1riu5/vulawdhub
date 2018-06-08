@@ -1,0 +1,127 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$listclass[6]='class="now"';
+require_once template('app/stat/top');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="set.php?lang={$lang}&anyid={$anyid}&action=modify" target="_self">
+	<table cellpadding="0" cellspacing="1" class="table">
+		<tr>
+			<td class="text">{$lang_statips47}{$lang_marks}</td>
+			<td class="input">
+				<label><input type="radio" name="met_stat" value="1" class="radio" {$stat[1]} />{$lang_open}</label>&nbsp;&nbsp;
+				<label><input type="radio" name="met_stat" value="0" class="radio" {$stat[0]} />{$lang_close}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="tips">{$lang_statips48}</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="text"></td>
+			<td class="input color390">{$lang_statips49}</td>
+		</tr>
+		<tr>
+			<td class="text">{$lang_statips1}{$lang_marks}</td>
+			<td class="input">
+				<select name="met_stat_cr1">
+					<option value="1" {$stat_cr1[1]}>{$lang_stat_cr1}</option>
+					<option value="2" {$stat_cr1[2]}>{$lang_stat_cr2}</option>
+					<option value="3" {$stat_cr1[3]}>{$lang_stat_cr3}</option>
+					<option value="4" {$stat_cr1[4]}>{$lang_stat_cr4}</option>
+					<option value="0" {$stat_cr1[0]}>{$lang_stat_cr0}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="text">{$lang_statips3}{$lang_marks}</td>
+			<td class="input">
+				<select name="met_stat_cr2">
+					<option value="1" {$stat_cr2[1]}>{$lang_stat_cr1}</option>
+					<option value="2" {$stat_cr2[2]}>{$lang_stat_cr2}</option>
+					<option value="3" {$stat_cr2[3]}>{$lang_stat_cr3}</option>
+					<option value="4" {$stat_cr2[4]}>{$lang_stat_cr4}</option>
+					<option value="0" {$stat_cr2[0]}>{$lang_stat_cr0}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="text">{$lang_statips4}{$lang_marks}</td>
+			<td class="input">
+				<select name="met_stat_cr3">
+					<option value="1" {$stat_cr3[1]}>{$lang_stat_cr1}</option>
+					<option value="2" {$stat_cr3[2]}>{$lang_stat_cr2}</option>
+					<option value="3" {$stat_cr3[3]}>{$lang_stat_cr3}</option>
+					<option value="4" {$stat_cr3[4]}>{$lang_stat_cr4}</option>
+					<option value="0" {$stat_cr3[0]}>{$lang_stat_cr0}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="text">{$lang_statips5}{$lang_marks}</td>
+			<td class="input">
+				<select name="met_stat_cr4">
+					<option value="1" {$stat_cr4[1]}>{$lang_stat_cr1}</option>
+					<option value="2" {$stat_cr4[2]}>{$lang_stat_cr2}</option>
+					<option value="3" {$stat_cr4[3]}>{$lang_stat_cr3}</option>
+					<option value="4" {$stat_cr4[4]}>{$lang_stat_cr4}</option>
+					<option value="0" {$stat_cr4[0]}>{$lang_stat_cr0}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="text">{$lang_statips6}{$lang_marks}</td>
+			<td class="input">
+				<select name="met_stat_cr5">
+					<option value="1" {$stat_cr5[1]}>{$lang_stat_cr1}</option>
+					<option value="2" {$stat_cr5[2]}>{$lang_stat_cr2}</option>
+					<option value="3" {$stat_cr5[3]}>{$lang_stat_cr3}</option>
+					<option value="4" {$stat_cr5[4]}>{$lang_stat_cr4}</option>
+					<option value="0" {$stat_cr5[0]}>{$lang_stat_cr0}</option>
+				</select>&nbsp;&nbsp;
+				<span class="tips">{$lang_statips50}</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="text"></td>
+			<td class="input color390">{$lang_statips51}</td>
+		</tr>
+		<tr>
+			<td class="text">{$lang_statips52}{$lang_marks}</td>
+			<td class="input">
+				<a href="set.php?lang={$lang}&anyid={$anyid}&action=empty&st={$dtime}" title="{$lang_statips53}" style="color:#f00;" onclick="return linkSmit($(this),1);">{$lang_statips54}</a>
+				<span style="font-size:12px;">{$lang_statips55}</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="text"></td>
+			<td class="input color390">{$lang_statips56}</td>
+		</tr>
+		<tr>
+			<td class="text">{$lang_statips57}{$lang_marks}</td>
+			<td class="input">
+				<input type="text" name="met_stat_max" value="{$met_stat_max}" />&nbsp;PV
+				<span class="tips">{$lang_statips58}</span>
+			</td>
+		</tr>
+		<tr> 
+			<td class="text"></td>
+			<td class="input">
+			<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+			</td>
+		</tr>
+	</table>
+</form>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

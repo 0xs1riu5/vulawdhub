@@ -1,0 +1,30 @@
+<!--<?php
+echo <<<EOT
+-->
+<div class="sidebar inner">
+<!--
+EOT;
+$webwds='style="width:100%;"';
+if($sidebar){
+$line='line';
+$webwds='';
+echo <<<EOT
+-->
+    <div class="sb_nav">
+			<h3 class='title'>{$sidebar_title}</h3>
+			<div class="active" id="sidebar" data-csnow="{$csnow}" data-class3="{$class3}" data-jsok="{$lang_sidebarjstype}">{$sidebar}<div class="clear"></div></div>
+    </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->  
+    <div class="sb_box" {$webwds}>
+	    <h3 class="title">
+			<div class="position" id="ny_navx">{$lang_position}：<a href="{$index_url}" title="{$lang_home}">{$lang_home}</a> &gt; {$nav_x[name]}</div>
+			<span>{$class_list[$classnow][name]}</span>
+		</h3>
+		<div class="clear"></div>
+<!--
+EOT;
+?>

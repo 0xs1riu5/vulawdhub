@@ -1,0 +1,37 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+<!--
+EOT;
+foreach($download_list as $key=>$val){
+echo <<<EOT
+-->
+             <dl class="download_list">
+                 <dt><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></dt>
+                 <dd><span><a href="$val[downloadurl]" target="_blank" title="{$lang_Download}">{$lang_Download}</a> | <a href="$val[url]" target="_blank" title="{$lang_Detail}">{$lang_Detail}</a></span><b>{$lang_FileSize}</b>：$val[filesize]KB&nbsp;&nbsp;&nbsp;&nbsp;<b>{$lang_Hits}</b>：$val[hits]&nbsp;&nbsp;&nbsp;&nbsp;<b>{$lang_UpdateTime}</b>：$val[updatetime]</dd>
+             </dl>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div style=" clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -1,0 +1,140 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+<script type="text/javascript">
+function pass2null(pass2){
+			$('#pass2').text('{$lang_memberjstxt1}');
+			$('#pass2').show();
+}
+function pass1null(pass1){
+			$('#pass1').text('{$lang_memberjstxt2}');
+			$('#pass1').show();
+}
+function passnot(pass2){
+			$('#pass2').text('{$lang_memberjstxt3}');
+			$('#pass2').show();
+}
+$(document).ready(function(){
+    var pass1 = $("input[name='pass1']");
+    var pass2 = $("input[name='pass2']");
+	pass1.focusout(function(){
+		if($(this).val()=='')pass1null($(this));
+		else 
+		if(pass2.val()!='' && pass2.val()!=pass1.val()){
+		$('#pass1').hide();
+		passnot(pass2);
+		}
+		else 
+		if(pass2.val()==''){
+		$('#pass1').hide();
+		pass2null(pass2);
+		}
+		else{ 
+		$('#pass1').hide();
+		Disb1($('#passsubmit'),1);
+		}
+	});
+	pass2.focusout(function(){
+		if($(this).val()=='')pass2null($(this));
+		else 
+		if(pass1.val()!='' && pass2.val()!=pass1.val())passnot($(this));
+		else 
+		if(pass1.val()==''){
+		$('#pass2').hide();
+		pass1null(pass1);
+		}
+		else{ 
+		$('#pass2').hide();
+		Disb1($('#passsubmit'),1);
+		}
+	});
+});
+</script>
+<title>{$lang_adminpassTitle}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang&anyid=$anyid" target="_self">
+<input name="useid" type="hidden" value="$admin_list[admin_id]" />
+<input name="editorpass" type="hidden" value="1" />
+<input name="nosql" type="hidden" value="1" />
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td class="text"><font class="must">*</font>{$lang_adminusername}{$lang_marks}</td>
+            <td colspan="2" class="input">$admin_list[admin_id]</td>
+          </tr> 
+		  <tr> 
+            <td class="text"><font class="must">*</font>{$lang_adminpassword}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="pass1" type="password" class="text" autocomplete="off" ><span id="pass1"></span></td>
+          </tr> 
+		   <tr> 
+            <td class="text"><font class="must">*</font>{$lang_adminpassword1}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="pass2" type="password" class="text" autocomplete="off" ><span id="pass2"></span></td>
+          </tr> 
+          <tr> 
+          <td class="text"></td>
+          <td colspan="2" class="input color390">{$lang_admininfo}</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_adminname}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="name" type="text" class="text" value="$admin_list[admin_name]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_adminSex}{$lang_marks}</td>
+            <td colspan="2" class="input">
+			<label><input name="sex" type="radio" class="radio" value="0" $sexx[0]>{$lang_adminMan}</label>&nbsp;&nbsp;
+			<label><input name="sex" type="radio" class="radio" value="1" $sexx[1]>{$lang_adminWoman}</label></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_admintel}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="tel" type="text" class="text" size="20" value="$admin_list[admin_tel]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="text"><font class="must">*</font>{$lang_adminmobile}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="mobile" type="text" class="text nonull" size="20" value="$admin_list[admin_mobile]" ><span class="tips">{$lang_adminTip1}</span></td>
+          </tr> 
+		  <tr> 
+            <td class="text"><font class="must">*</font>Email{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="email" type="text" class="text nonull" size="20" value="$admin_list[admin_email]" ><span class="tips">{$lang_adminTip1}</span></td>
+          </tr> 
+		  <tr> 
+            <td class="text">QQ{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="qq" type="text" class="text" size="20" value="$admin_list[admin_qq]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="text">MSN{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="msn" type="text" class="text" value="$admin_list[admin_msn]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_adminTaoBao}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="taobao" type="text" class="text" value="$admin_list[admin_taobao]" ></td>
+          </tr> 
+          <tr> 
+          <td class="text" valign="middle">{$lang_adminIntro}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <textarea name="admin_introduction" class="textarea gen" cols="60" rows="5" >$admin_list[admin_introduction]</textarea></td>
+          </tr>
+		  <tr> 
+            <td class="text"></td>
+		<td class="submit">
+		<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		</td>
+          </tr>
+         <tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr>
+</table>
+        </form>
+</body>
+</html>
+<!--
+EOT;
+# 本程序是一个开源系统,使用时请你仔细阅读使用协议,商业用途请自觉购买商业授权.
+# Copyright (C) 长沙米拓信息技术有限公司 (http://www.metinfo.cn). All rights reserved.
+?>-->

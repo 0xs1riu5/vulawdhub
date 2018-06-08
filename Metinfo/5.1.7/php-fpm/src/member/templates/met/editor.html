@@ -1,0 +1,107 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
+<form method="POST" name="myform" action="save.php?action=editor" target="_self">
+		<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
+		<input name="lang" type="hidden" value="$lang">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_member">
+          <tr> 
+            <td class="member_text"><font color="#FF0000">*</font>{$lang_memberbasicUserName}&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="useid" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_id]" disabled="disabled"></td>
+          </tr> 
+		  <tr> 
+            <td class="member_text"><font color="#FF0000">*</font>{$lang_membereditorPs}&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="pass1" type="password" class="input" size="20" maxlength="20">{$lang_membereditorTip}</td>
+          </tr> 
+		   <tr> 
+            <td class="member_text"><font color="#FF0000">*</font>{$lang_membereditorPs1}&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="pass2" type="password" class="input" size="20" maxlength="20">{$lang_membereditorTip}</td>
+          </tr>
+		  <tr> 
+            <td class="member_text">{$lang_memberbasicReadlName}&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="realname" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_name]"></td>
+          </tr> 
+		  <tr> 
+            <td class="member_text">{$lang_memberbasicSex}&nbsp;</td>
+            <td colspan="2" class="member_input">
+<!--
+EOT;
+if($admin_list[admin_sex]==0){
+echo <<<EOT
+-->	
+		<label><input name="sex" type="radio" value="0" checked="checked" style="border&nbsp;none;">{$lang_memberbasicMan}</label> &nbsp;<label><input name="sex" type="radio" value="1" style="border&nbsp;none;">{$lang_memberbasicWoman}</label>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+		<input name="sex" type="radio" value="0" >{$lang_memberbasicMan} &nbsp;<input name="sex" type="radio" value="1" checked="checked">{$lang_memberbasicWoman}
+<!--
+EOT;
+}echo <<<EOT
+-->
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="member_text">{$lang_memberbasicTel}&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="tel" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_tel]"></td>
+          </tr> 
+		  <tr> 
+            <td class="member_text">{$lang_memberbasicCell}&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="mobile" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_mobile]"></td>
+          </tr> 
+		  <tr> 
+            <td class="member_text"><font color="#FF0000">*</font>email&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="email" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_email]">  {$lang_membereditorTip1}</td>
+          </tr> 
+		  <tr> 
+            <td class="member_text">QQ&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="qq" type="text" class="input" size="20" maxlength="20" value="$admin_list[admin_qq]"></td>
+          </tr> 
+		  <tr> 
+            <td class="member_text">MSN&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="msn" type="text" class="input" size="20" maxlength="50" value="$admin_list[admin_msn]"></td>
+          </tr> 
+		  <tr> 
+            <td class="member_text">{$lang_memberbasicTaoBao}&nbsp;</td>
+            <td colspan="2" class="member_input"> <input name="taobao" type="text" class="input" size="20" maxlength="30" value="$admin_list[admin_taobao]"></td>
+          </tr> 
+          <tr> 
+          <td class="member_text" valign="middle">{$lang_memberbasicIntro}&nbsp;</td>
+          <td colspan="2" class="member_input" valign="top"> <textarea name="admin_introduction" cols="50" rows="5" >$admin_list[admin_introduction]</textarea></td>
+          </tr>
+		  <tr> 
+          <td class="member_text" valign="middle">{$lang_memberbasicCompanyName}&nbsp;</td>
+          <td colspan="2" class="member_input" valign="top"> <input name="companyname" type="text" class="input" size="20" maxlength="30" value="$admin_list[companyname]"></td>
+          </tr>
+		  <tr> 
+          <td class="member_text" valign="middle">{$lang_memberbasicCompanyFax}&nbsp;</td>
+          <td colspan="2" class="member_input" valign="top"> <input name="companyfax" type="text" class="input" size="20" maxlength="30" value="$admin_list[companyfax]"></td>
+          </tr>
+		  <tr> 
+          <td class="member_text" valign="middle">{$lang_memberbasicCompanyCode}&nbsp;</td>
+          <td colspan="2" class="member_input" valign="top"> <input name="companycode" type="text" class="input" size="20" maxlength="30" value="$admin_list[companycode]"></td>
+          </tr>
+		  <tr> 
+          <td class="member_text" valign="middle">{$lang_memberbasicCompanyAddress}&nbsp;</td>
+          <td colspan="2" class="member_input" valign="top"> <input name="companyaddress" type="text" class="input" size="20" maxlength="30" value="$admin_list[companyaddress]"></td>
+          </tr>
+		  <tr> 
+          <td class="member_text" valign="middle">{$lang_memberbasicCompanyWebsite}&nbsp;</td>
+          <td colspan="2" class="member_input" valign="top"> <input name="companywebsite" type="text" class="input" size="20" maxlength="30" value="$admin_list[companywebsite]"></td>
+          </tr>
+ 		  <tr> 
+            <td class="member_text"></td>
+	      <td class="member_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit"></td>
+          </tr>
+        </form>
+         
+</table>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

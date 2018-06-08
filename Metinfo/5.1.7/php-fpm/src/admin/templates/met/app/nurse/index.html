@@ -1,0 +1,306 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[2]}><a href="index.php?lang={$lang}&anyid={$anyid}&cs=2" title="{$lang_nursetips1}">{$lang_nursetips1}</a></li>
+		<li {$listclass[3]}><a href="index.php?lang={$lang}&anyid={$anyid}&cs=3" title="{$lang_nursetips2}">{$lang_nursetips2}</a></li>
+		<li {$listclass[4]}><a href="index.php?lang={$lang}&anyid={$anyid}&cs=4" title="{$lang_nursetips3}">{$lang_nursetips3}</a></li>
+	</ul>
+</div>
+<div style="clear:both;"></div>
+<form method="POST" name="myform" action="index.php?lang={$lang}&anyid={$anyid}&cs={$cs}&action=modify" target="_self">
+<table cellpadding="2" cellspacing="1" class="table">
+<!--
+EOT;
+if($cs==2){
+echo <<<EOT
+-->
+	<tr>
+        <td class="text"></td>
+        <td class="input color390">
+		{$lang_nursetips4}
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips5}{$lang_marks}</td>
+        <td class="input">
+			<label><input name="met_nurse_stat" type="radio" value="1" {$met_nurse_statx[1]} /> {$lang_open}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_stat" type="radio" value="0" {$met_nurse_statx[0]} /> {$lang_close}</label>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips6}{$lang_marks}</td>
+        <td class="input">
+			<span class="red">{$met_weburl}</span>&nbsp;&nbsp;<span class="tips">{$lang_nursetips7}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips8}{$lang_marks}</td>
+        <td class="input">
+			<select name="met_nurse_sendtime">
+<!--
+EOT;
+for($i=0;$i<24;$i++){
+$n=$i<10?'0'.$i:$i;
+$sel=$i==$met_nurse_sendtime?'selected':'';
+echo <<<EOT
+-->
+			<option value="{$i}" {$sel}>{$n}:00</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</select>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips9}{$lang_marks}</td>
+        <td class="input">
+			<textarea class="textarea" style="width:120px; height:80px;" name="met_nurse_stat_tel">{$met_nurse_stat_tel}</textarea>&nbsp;&nbsp;<span class="tips">{$lang_nursetips10}</span>
+		</td>
+    </tr>
+<!--
+EOT;
+}elseif($cs==3){
+echo <<<EOT
+-->
+	<tr>
+        <td class="text"></td>
+        <td class="input color390">{$lang_nursetips11}</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips12}{$lang_marks}</td>
+        <td class="input">
+			<label><input name="met_nurse_monitor" type="radio" value="1" {$met_nurse_monitorx[1]} /> {$lang_open}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_monitor" type="radio" value="0" {$met_nurse_monitorx[0]} /> {$lang_close}</label>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips13}{$lang_marks}</td>
+        <td class="input">
+			<span class="red">{$met_weburl}</span>&nbsp;&nbsp;<span class="tips">{$lang_nursetips7}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips14}{$lang_marks}</td>
+        <td class="input">
+			<script type="text/javascript">
+function pinlv(p){
+	if(p<3){
+		$(".pinlvc").hide();
+		$("#pinlv_1").show();
+	}else{
+		$(".pinlvc").hide();
+		$("#pinlv_"+p).show();
+	}
+}
+			</script>
+			<label><input name="met_nurse_monitor_fre" type="radio" value="1" {$met_nurse_monitor_frex[1]} onclick="pinlv(1)" /> {$lang_nursetips15}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_monitor_fre" type="radio" value="2" {$met_nurse_monitor_frex[2]} onclick="pinlv(2)" /> {$lang_nursetips16}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_monitor_fre" type="radio" value="3" {$met_nurse_monitor_frex[3]} onclick="pinlv(3)" /> {$lang_nursetips17}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_monitor_fre" type="radio" value="4" {$met_nurse_monitor_frex[4]} onclick="pinlv(4)" /> {$lang_nursetips18}</label>
+			&nbsp;&nbsp;<span class="tips">{$lang_nursetips19}</span>
+		</td>
+    </tr>
+	<tr id="pinlv_4" class="pinlvc {$monitor[4]}">
+        <td class="text">{$lang_nursetips20}{$lang_marks}</td>
+        <td class="input">
+			&nbsp;&nbsp;<span class="tips">{$lang_nursetips21}</span>
+		</td>
+    </tr>
+	<tr id="pinlv_3" class="pinlvc {$monitor[3]}">
+        <td class="text">{$lang_nursetips20}{$lang_marks}</td>
+        <td class="input">
+		<select name="met_nurse_monitor_weeka">
+			<option value="1" {$weeka[1]}>{$lang_nursetips22}</option>
+			<option value="2" {$weeka[2]}>{$lang_nursetips23}</option>
+			<option value="3" {$weeka[3]}>{$lang_nursetips24}</option>
+			<option value="4" {$weeka[4]}>{$lang_nursetips25}</option>
+			<option value="5" {$weeka[5]}>{$lang_nursetips26}</option>
+			<option value="6" {$weeka[6]}>{$lang_nursetips27}</option>
+			<option value="7" {$weeka[7]}>{$lang_nursetips27x}</option>
+		</select>
+			{$lang_nursetips28} 
+		<select name="met_nurse_monitor_weekb">
+			<option value="1" {$weekb[1]}>{$lang_nursetips22}</option>
+			<option value="2" {$weekb[2]}>{$lang_nursetips23}</option>
+			<option value="3" {$weekb[3]}>{$lang_nursetips24}</option>
+			<option value="4" {$weekb[4]}>{$lang_nursetips25}</option>
+			<option value="5" {$weekb[5]}>{$lang_nursetips26}</option>
+			<option value="6" {$weekb[6]}>{$lang_nursetips27}</option>
+			<option value="7" {$weekb[7]}>{$lang_nursetips27x}</option>
+		</select>
+			&nbsp;&nbsp;<span class="tips">{$lang_nursetips29}</span>
+		</td>
+    </tr>
+	<tr id="pinlv_1" class="pinlvc {$monitor[1]}">
+        <td class="text">{$lang_nursetips20}{$lang_marks}</td>
+        <td class="input">
+		<select name="met_nurse_monitor_timea">
+<!--
+EOT;
+for($i=0;$i<24;$i++){
+$n=$i<10?'0'.$i:$i;
+$sel=$i==$met_nurse_monitor_timea?'selected':'';
+echo <<<EOT
+-->
+			<option value="{$i}" {$sel}>{$n}:00</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</select>
+		{$lang_nursetips28}
+		<select name="met_nurse_monitor_timeb">
+<!--
+EOT;
+for($i=0;$i<24;$i++){
+$n=$i<10?'0'.$i:$i;
+$sel=$i==$met_nurse_monitor_timeb?'selected':'';
+echo <<<EOT
+-->
+			<option value="{$i}" {$sel}>{$n}:00</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</select>
+		&nbsp;&nbsp;<span class="tips">{$lang_nursetips29x}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips9}{$lang_marks}</td>
+        <td class="input">
+			<textarea class="textarea" style="width:120px; height:80px;" name="met_nurse_monitor_tel">{$met_nurse_monitor_tel}</textarea>&nbsp;&nbsp;<span class="tips">{$lang_nursetips10}</span>
+		</td>
+    </tr>
+<!--
+EOT;
+}elseif($cs==4){
+echo <<<EOT
+-->
+	<tr>
+        <td class="text"></td>
+        <td class="input color390">{$lang_nursetips30}</td>
+    </tr>
+	<tr>
+        <td class="text red">{$lang_nursetips31}{$lang_marks}</td>
+        <td class="input">
+			<label><input name="met_nurse_member" type="radio" value="1" {$met_nurse_memberx[1]} /> {$lang_open}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_member" type="radio" value="0" {$met_nurse_memberx[0]} /> {$lang_close}</label>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips9}{$lang_marks}</td>
+        <td class="input">
+			<textarea class="textarea" style="width:120px; height:50px;" name="met_nurse_member_tel">{$met_nurse_member_tel}</textarea>&nbsp;&nbsp;<span class="tips">{$lang_nursetips10}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text"></td>
+        <td class="input color390">{$lang_nursetips32}</td>
+    </tr>
+	<tr>
+        <td class="text red">{$lang_nursetips33}{$lang_marks}</td>
+        <td class="input">
+			<label><input name="met_nurse_feed" type="radio" value="1" {$met_nurse_feedx[1]} /> {$lang_open}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_feed" type="radio" value="0" {$met_nurse_feedx[0]} /> {$lang_close}</label>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips9}{$lang_marks}</td>
+        <td class="input">
+			<textarea class="textarea" style="width:120px; height:50px;" name="met_nurse_feed_tel">{$met_nurse_feed_tel}</textarea>&nbsp;&nbsp;<span class="tips">{$lang_nursetips10}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text"></td>
+        <td class="input color390">{$lang_nursetips34}</td>
+    </tr>
+	<tr>
+        <td class="text red">{$lang_nursetips35}{$lang_marks}</td>
+        <td class="input">
+			<label><input name="met_nurse_massge" type="radio" value="1" {$met_nurse_massgex[1]} /> {$lang_open}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_massge" type="radio" value="0" {$met_nurse_massgex[0]} /> {$lang_close}</label>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips9}{$lang_marks}</td>
+        <td class="input">
+			<textarea class="textarea" style="width:120px; height:50px;" name="met_nurse_massge_tel">{$met_nurse_massge_tel}</textarea>&nbsp;&nbsp;<span class="tips">{$lang_nursetips10}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text"></td>
+        <td class="input color390">{$lang_nursetips36}</td>
+    </tr>
+	<tr>
+        <td class="text red">{$lang_nursetips37}{$lang_marks}</td>
+        <td class="input">
+			<label><input name="met_nurse_job" type="radio" value="1" {$met_nurse_jobx[1]} /> {$lang_open}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_job" type="radio" value="0" {$met_nurse_jobx[0]} /> {$lang_close}</label>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips9}{$lang_marks}</td>
+        <td class="input">
+			<textarea class="textarea" style="width:120px; height:50px;" name="met_nurse_job_tel">{$met_nurse_job_tel}</textarea>&nbsp;&nbsp;<span class="tips">{$lang_nursetips10}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text"></td>
+        <td class="input color390">{$lang_nursetips38}</td>
+    </tr>
+	<tr>
+        <td class="text red">{$lang_nursetips39}{$lang_marks}</td>
+        <td class="input">
+			<label><input name="met_nurse_link" type="radio" value="1" {$met_nurse_linkx[1]} /> {$lang_open}</label>&nbsp;&nbsp;
+			<label><input name="met_nurse_link" type="radio" value="0" {$met_nurse_linkx[0]} /> {$lang_close}</label>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips9}{$lang_marks}</td>
+        <td class="input">
+			<textarea class="textarea" style="width:120px; height:50px;" name="met_nurse_link_tel">{$met_nurse_link_tel}</textarea>&nbsp;&nbsp;<span class="tips">{$lang_nursetips10}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_nursetips40}{$lang_marks}</td>
+        <td class="input">
+			<input type="text" name="met_nurse_max" class="text" value="{$met_nurse_max}" style="width:60px;" /> {$lang_nursetips41}
+			&nbsp;&nbsp;<span class="tips">{$lang_nursetips42}</span>
+		</td>
+    </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	<tr> 
+		<td class="text"></td>
+		<td class="submit"><input type="submit" name="submit" class="submit" value="{$lang_Submit}" /></td>
+	</tr>
+</table>
+</form>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

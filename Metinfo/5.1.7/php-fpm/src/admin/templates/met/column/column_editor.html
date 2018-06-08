@@ -1,0 +1,330 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+if($column_list[module]==100 or $column_list[module]==101)$bigclass=$lang_funMod100;
+echo <<<EOT
+-->
+</head>
+{$edjs}
+<body>
+<!--
+EOT;
+$title="{$lang_columnmeditor}({$column_list[name]})";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="save.php?anyid={$anyid}&action=editor" target="_self">
+	<table cellpadding="2" cellspacing="1" class="table">
+		<tr> 
+<!--
+EOT;
+if($column_list[classtype]!=1){
+echo <<<EOT
+-->	
+			<td class="text">{$lang_columnPreName}：</td>
+			<td class="input">{$bigclass}</td>
+<!--
+EOT;
+}	
+echo <<<EOT
+-->	
+			<input name="bigclass" type="hidden" value="$class" />
+			<input name="id" type="hidden" value="$id" />
+			<input name="module" type="hidden" value="$column_list[module]" />
+			<input name="foldername" type="hidden" value="$column_list[foldername]" />
+			<input name="filename" type="hidden" value="$column_list[filename]" />
+			<input name="filenameold" type="hidden" value="$column_list[filename]" />
+			<input name="if_in" type="hidden" value="$column_list[if_in]" />
+			<input name="classtype" type="hidden" value="$classtype" />
+			<input name="releclass" type="hidden" value="$releclass" />
+			<input name="access" type="hidden" value="$column_list[access]" />
+			<input name="lang" type="hidden" value="$lang" />
+        </tr> 
+		  <tr> 
+            <td class="text"><span class="bi_tian">*</span>{$lang_columnname}：</td>
+            <td class="input"><input name="name" type="text" class="text nonull" value="$column_list[name]" /></td>
+          </tr> 
+		<tr>  
+            <td class="text">{$lang_columnorder}：</td>
+            <td class="input">
+			<input name="no_order" type="text" class="text small" value="$column_list[no_order]" />
+			<span class="tips">{$lang_noorderinfo}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_columnnav}：</td>
+            <td class="input">
+				<label><input name="nav" type="radio" value="0" class="radio" {$nav[0]} />{$lang_columnnav1}</label>&nbsp;&nbsp;
+				<label><input name="nav" type="radio" value="1" class="radio" {$nav[1]} />{$lang_columnnav2}</label>&nbsp;&nbsp;
+				<label><input name="nav" type="radio" value="2" class="radio" {$nav[2]} />{$lang_columnnav3}</label>&nbsp;&nbsp;
+				<label><input name="nav" type="radio" value="3" class="radio" {$nav[3]} />{$lang_columnnav4}</label>&nbsp;
+			</td>
+        </tr> 
+		<tr> 
+            <td class="text">{$lang_columnnewwindow}：</td>
+            <td class="input">
+			<label><input name="new_windows" type="radio" class="radio" {$new_windows[1]} value="target='_blank'" />{$lang_yes}</label>&nbsp;&nbsp;
+			<label><input name="new_windows" type="radio" class="radio" {$new_windows[0]} value="0" />{$lang_no}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="tips">{$lang_columnexplain4}</span>
+			</td>
+        </tr>
+<!--
+EOT;
+if($column_list[if_in]==0){
+echo <<<EOT
+-->
+		<tr id="list_order" style="display:{$list_orderok}"> 
+            <td class="text">{$lang_columncontentorder}：</td>
+            <td class="input"> 
+				<label><input name="list_order" type="radio" class="radio" value="1" $list_order[1] />{$lang_updatetime}</label>&nbsp;&nbsp; 
+				<label><input name="list_order" type="radio" class="radio" value="2" $list_order[2]>{$lang_addtime}</label>&nbsp;&nbsp;
+				<label><input name="list_order" type="radio" class="radio" value="3" $list_order[3]>{$lang_hits}</label>&nbsp; &nbsp;
+				<label><input name="list_order" type="radio" class="radio" value="4" $list_order[4]>ID{$lang_columnReverseSort} </label>&nbsp;&nbsp; 
+				<label><input name="list_order" type="radio" class="radio" value="5" $list_order[5]>ID{$lang_columnaddOrder}</label>
+			</td>
+        </tr>
+		<tr id="static2" style="display:{$filenameok}"> 
+            <td class="text">{$lang_columnshow}：</td>
+            <td class="input">
+			<label><input name="isshow" type="radio" class="radio" value="1" {$isshowcheck[1]} />{$lang_columnmallow}</label>&nbsp;&nbsp;
+			<label><input name="isshow" type="radio" class="radio" value="0" {$isshowcheck[0]} />{$lang_columnmnotallow}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="tips">{$lang_columntip8}</span>
+			</td>
+        </tr>	
+<!--
+EOT;
+if($column_list[module]==9){
+$met_addlinkopens[$met_addlinkopen]="checked";
+echo <<<EOT
+-->	
+		<tr> 
+            <td class="text">{$lang_columnmlink}</td>
+            <td class="input">
+			<label><input name="met_addlinkopen" type="radio" class="radio" value="1" {$met_addlinkopens[1]}>{$lang_open}</label>&nbsp;&nbsp;
+			<label><input name="met_addlinkopen" type="radio" class="radio" value="0" {$met_addlinkopens[0]}>{$lang_close}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="tips">{$lang_columnexplain5}</span>
+			</td>
+        </tr>
+<!--
+EOT;
+}	
+echo <<<EOT
+-->	
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
+		<tr> 
+            <td class="text">{$lang_webaccess}：</td>
+            <td class="input">
+				<select name="access" id="access" >$level</select>
+			</td>
+		</tr>
+<!--
+EOT;
+}	
+echo <<<EOT
+-->	
+<!--
+EOT;
+if($met_wap && $met_wap_ok && $column_list[module] < 7){
+echo <<<EOT
+-->	
+		<tr> 
+            <td class="text">{$lang_columnmwap}</td>
+            <td colspan="2" class="input">
+				<label><input name="wap_ok" type="checkbox" class="checkbox" value="1" {$wap_ok}>{$lang_wapcontentcom}</label>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($column_list[module]==8){
+echo <<<EOT
+-->	
+		<tr> 
+		    <td class="text"></td>
+            <td class="input color390">{$lang_columnmfeedback}</td> 
+        </tr>
+		<tr> 
+		    <td class="text">{$lang_columnmfeedback1}</td>
+            <td class="input color390">
+			<select name="copyculmnid">
+				<option value="0">{$lang_columnmfeedback2}</option>
+<!--
+EOT;
+foreach($met_module[8] as $key=>$val){
+if($val[id]!=$id){
+echo <<<EOT
+-->	
+				<option value="{$val[id]}">{$val[name]}</option>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->	
+			</select>
+			&nbsp;<a href="copyfeed.php?lang={$lang}&id={$id}" onclick="return copyfromlist($(this));" title="{$lang_columnmfeedback3}">{$lang_columnmfeedback4}</a>
+			<span class="tips">{$lang_columnexplain6}</span>
+			</td> 
+        </tr>
+		<tr> 
+		    <td class="text"></td>
+            <td class="input color390"><a href="parameter/parameter.php?anyid=31&lang=cn&module=8&class1={$id}&cs=2" title="{$lang_columnmfeedback5}">{$lang_columnmfeedback6}</a></td> 
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		<tr> 
+		    <td class="text"></td>
+            <td class="input color390">{$lang_columnSEO}</td> 
+        </tr>
+		<tr> 
+            <td class="text">{$lang_columnctitle}：</td>
+            <td class="input"><input name="ctitle" type="text" class="text" maxlength="200" value="$column_list[ctitle]" /><span class="tips">{$lang_ctitleinfo}</span></td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_keywords}：</td>
+            <td class="input"><input name="keywords" type="text" class="text" maxlength="200" value="$column_list[keywords]" /><span class="tips">{$lang_keywordsinfo}</span></td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_description}：</td>
+            <td class="input"><textarea name="description" class="textarea keytext" cols="50" rows="4" >$column_list[description]</textarea></td>
+        </tr>
+		<tr id="static1" style="display:{$filenameok1}"> 
+            <td class="text">{$lang_columnhtmlname}：</td>
+            <td class="input"><input name="filename" type="text" class="text med" value="$column_list[filename]" $filenameable />
+			&nbsp;&nbsp;<span class="tips">{$lang_columntip14}</span>
+			</td>
+        </tr>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+		<tr> 
+            <td class="text">{$lang_columnhref}</td>
+            <td class="input">
+				<input name="out_url" type="text" class="text" value="{$column_list[out_url]}" />
+				<span class="tips">{$lang_columntip7}</span>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr> 
+		    <td class="text"></td>
+            <td class="input color390">{$lang_columnnamemarkinfo}</td> 
+        </tr>
+		<tr> 
+            <td class="text">{$lang_columnmark}：</td>
+            <td class="input">
+				<input name="index_num" type="text" class="text small" value="$column_list[index_num]" />
+				&nbsp;<span class="tips">{$lang_columnexplain7}</span>
+			</td>
+        </tr>
+<!--
+EOT;
+if($metadmin[categorynamemark]){	
+echo <<<EOT
+-->	
+		<tr> 
+            <td class="text">{$lang_columnnamemark}：</td>
+            <td class="input">
+				<input name="namemark" type="text" class="text" value="$column_list[namemark]" />
+			</td>
+        </tr> 
+<!--
+EOT;
+}	
+echo <<<EOT
+-->	
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<!--
+EOT;
+if($metadmin[categorymarkimage]){
+echo <<<EOT
+-->	 
+		<tr>
+			<td class="text">{$lang_columnImg1}：</td>
+            <td class="input upload">
+				<input name="indeximg" type="text" class="text" value="$column_list[indeximg]" />
+				<input name="met_upsql" type="file" id="file_upload" />
+<script type="text/javascript">
+$(document).ready(function(){
+	metuploadify('#file_upload','upimage','indeximg');
+});
+</script>	
+			</td>
+        </tr>
+<!--
+EOT;
+}
+if($metadmin[categoryimage]){
+echo <<<EOT
+-->	
+		<tr>
+			<td class="text">{$lang_columnImg2}：</td>
+            <td class="input upload">
+				<input name="columnimg" type="text" class="text" value="$column_list[columnimg]" />
+				<input name="met_upsql" type="file" id="file_upload1" />
+<script type="text/javascript">
+$(document).ready(function(){
+	metuploadify('#file_upload1','upimage','columnimg');
+});
+</script>				
+				</td>
+          </tr>
+<!--
+EOT;
+}	
+if($column_list[module]>=2&&$column_list[module]<=5){
+echo <<<EOT
+-->	
+<tr> 
+ <td class="text">
+ {$lang_columnmappend}
+ </td>
+            <td class="input">
+<script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
+			<textarea class="ckeditor" name="content">$column_list[content]</textarea>
+<script type="text/javascript">
+met_ckeditor('ckeditor','content',1);
+</script>
+<br /><span class="tips">{$lang_columnexplain8}</span>
+</td>
+</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		  
+		<tr>
+			<td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform');" />
+			</td>
+        </tr>
+        </form>
+		<tr>
+		<td class="footer" colspan="2">$foot</td>
+	</tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

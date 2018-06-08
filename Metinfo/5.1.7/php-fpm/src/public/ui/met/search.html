@@ -1,0 +1,15 @@
+<!--<?php
+require_once template('head'); 
+require_once template('sidebar');
+$methtml_searchlist=methtml_searchlist();
+echo <<<EOT
+-->
+        <div class="active" id="searchlist">
+            {$methtml_searchlist}
+            <div id="flip">{$page_list}</div>
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

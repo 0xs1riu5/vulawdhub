@@ -1,0 +1,82 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+	<table cellpadding="2" cellspacing="1" class="table">
+        <tr>
+            <td class="centle" colspan="3" style="font-weight:normal; padding-left:10px;">
+				<a href="strcontent.php?anyid={$anyid}&lang=$lang&action=add" onclick="return addsave($(this),0);" title="{$lang_labelAdd}">+{$lang_labelAdd}</a>
+			</td>
+          </tr>
+			 <tr>
+			 <td colspan="3">
+<form name="del" method="Post" action="strcontent.php?anyid={$anyid}&lang=$lang">
+<input type="hidden" name="action" value="" />
+<table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+              <tr id="list-top">
+                <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+                <td width="40" class="list" style="padding:0px; text-align:center;">ID</td>
+                <td class="list" >{$lang_labelOld}</td>
+                <td class="list" >{$lang_labelNew}</td>
+                <td class="list" >{$lang_labelNewtitle}</td>
+                <td class="list" >{$lang_labelUrl}</td>
+				<td class="list" width="60">{$lang_labelnum}</td>
+				<td width="30" class="list" >{$lang_operate}</td>
+              </tr>
+<!--
+EOT;
+foreach ($skin_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+				<td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+                <td class="list-text">$val[id]</td>
+                <td class="list-text"><input type="text" name="oldwords_$val[id]" class="text max nonull" value="$val[oldwords]" /></td>
+                <td class="list-text"><input type="text" name="newwords_$val[id]" class="text max" value="$val[newwords]" /></td>
+                <td class="list-text"><input type="text" name="newtitle_$val[id]" class="text max" value="$val[newtitle]" /></td>
+                <td class="list-text"><input type="text" name="url_$val[id]" class="text max" value="$val[url]" /></td>
+				<td class="list-text"><input type="text" name="num_$val[id]" class="text max" value="$val[num]" /></td>
+				<td class="list-text"><a href="strcontent.php?anyid={$anyid}&id=$val[id]&action=delete&lang=$lang" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+   	   </table>
+			<input name="action_type" type="hidden" id="action_type" value="del" />
+			<input name="allid" type="hidden" id="allid" value="" /> 
+</form>
+   	   </td> 
+   	   </tr>
+		<tr> 
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td align="left" class="all-submit" colspan="2" style="padding:5px 10px;">
+				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','delete');" /> 
+			</td>
+        </tr>
+   	   <tr>
+		  <td class="page_list" colspan="3"> $page_list</td>
+	  </tr>
+   	   <tr>
+		  <td class="footer" colspan="3">$foot</td>
+	  </tr>
+</table>
+
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,33 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+$lang_fontfamily=str_replace("'","\"",$lang_fontfamily);
+$lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="$img_url/css/metinfo.css" />
+<script type="text/javascript">var basepath='{$img_url}';</script>
+<script type="text/javascript"src="{$depth}../include/metvar.js"></script>
+<script type="text/javascript" src="{$depth}../../public/js/jQuery1.7.2.js"></script>
+<script type="text/javascript" src="{$img_url}/js/iframes.js"></script>
+<script type="text/javascript" src="{$img_url}/js/cookie.js"></script>
+<script type="text/javascript">
+/*ajax执行*/
+var lang = '$lang';
+var metimgurl='{$img_url}/';
+var depth='{$depth}';
+var metinfo_admin_id='{$admin_list[id]}';
+var metinfo_admin_pass='{$_SESSION[metinfo_admin_pass]}';
+$(document).ready(function(){
+	ifreme_methei();
+});
+</script>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

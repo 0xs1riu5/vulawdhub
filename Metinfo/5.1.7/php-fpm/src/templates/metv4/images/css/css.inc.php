@@ -1,0 +1,11 @@
+<?php
+//模板风格定义
+$cssnum[0]=array('蓝色','metinfo.css');//array('风格名称,'调用css名称')
+$cssnum[1]=array('青色','cyan.css');//array('风格名称,'调用css名称')
+$cssnum[2]=array('灰色','black.css');//array('风格名称,'调用css名称')
+$cssnum[3]=array('红色','red.css');//array('风格名称,'调用css名称')
+$cssnum[4]=array('紫色','purple.css');//array('风格名称,'调用css名称')
+$cssnum[5]=array('橙色','orange.css');//array('风格名称,'调用css名称')
+$cssnum[6]=array('绿色','green.css');//array('风格名称,'调用css名称')
+$cssnum[7]=array('黑色','blacks.css');//array('风格名称,'调用css名称')
+?>

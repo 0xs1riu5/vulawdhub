@@ -1,0 +1,189 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setbasicWebInfoSet}</title>
+<script src="$img_url/My97DatePicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<!--
+EOT;
+$listclass[4]='class="now"';
+require_once template('app/stat/top');
+echo <<<EOT
+-->
+<div class="lablelist">
+	<ul>
+		<li class="round {$labtypeclass[1]}"><a href="source.php?lang={$lang}&anyid={$anyid}&labtype=1&st={$st}&et={$et}&cs={$cs}" title="{$lang_statips59}">{$lang_statips59}</a></li>
+		<li class="round {$labtypeclass[2]}"><a href="source.php?lang={$lang}&anyid={$anyid}&labtype=2&st={$st}&et={$et}&cs={$cs}" title="{$lang_statips60}">{$lang_statips60}</a></li>
+	</ul>
+</div>
+<!--
+EOT;
+if($labtype==1){
+echo <<<EOT
+-->
+<table cellpadding="0" cellspacing="1" class="stat_table stat_mingxi">
+<tr>
+	<td colspan='7' class="title" style="padding-left:5px;">
+		<div class="more">
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$dtime}&et={$dtime}&labtype={$labtype}&cs=1" {$dancs[1]} title="{$lang_statips10}">{$lang_statips10}</a>
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$ztime}&et={$ztime}&labtype={$labtype}&cs=2" {$dancs[2]} title="{$lang_statips11}">{$lang_statips11}</a>
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$xtime}&et={$dtime}&labtype={$labtype}&cs=3" {$dancs[3]} title="{$lang_statips12}">{$lang_statips12}</a>
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$timeq30}&et={$dtime}&labtype={$labtype}&cs=4" {$dancs[4]} title="{$lang_statips13}">{$lang_statips13}</a>
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$timed1}&et={$dtime}&labtype={$labtype}&cs=5" {$dancs[5]} title="{$lang_statips14}">{$lang_statips14}</a>&nbsp;-&nbsp;{$lang_statips15}
+			<form name="myform" action="source.php?lang={$lang}&anyid={$anyid}&labtype={$labtype}" method="POST" target="_self" class="stet">
+				<input type="text" name="stt" value="{$tmst}" class="txt Wdate" onclick="WdatePicker()" /> {$lang_columnmove2}
+				<input type="text" name="ett" value="{$tmet}" class="txt Wdate" onclick="WdatePicker()" />
+				<input type="submit" name="submit" value="{$lang_Submitall}" />
+			</form>
+		</div>
+	<span style="font-weight:normal; color:#fff;">{$lang_statips17} {$tmst} {$lang_batchtips14} {$tmet}</span></td>
+</tr>
+	<tr class="j">
+	<td class="t" width="40" style="padding:0px; text-align:center;">{$lang_statips18}</td>
+		<td class="t">{$lang_statips61}</td>
+		<td class="t" width="80" style="padding:0px; text-align:center;"><a href="source.php?lang={$lang}&anyid={$anyid}&st={$st}&et={$et}&cs={$cs}&field=pv&visitmod={$visitmod}&visitlan={$visitlan}&visitcum={$visitcum}">{$lang_statips62}</a>{$zvist[pv]}</td>
+		<td class="t" width="80" style="padding:0px; text-align:center;"><a href="source.php?lang={$lang}&anyid={$anyid}&st={$st}&et={$et}&cs={$cs}&field=alone&visitmod={$visitmod}&visitlan={$visitlan}&visitcum={$visitcum}">{$lang_statips21}</a>{$zvist[alone]}</td>
+		<td class="t" width="80" style="padding:0px; text-align:center;"><a href="source.php?lang={$lang}&anyid={$anyid}&st={$st}&et={$et}&cs={$cs}&field=ip&visitmod={$visitmod}&visitlan={$visitlan}&visitcum={$visitcum}">IP</a>{$zvist[ip]}</td>
+		<td class="t" width="100" style="padding:0px; text-align:center;"><a href="source.php?lang={$lang}&anyid={$anyid}&st={$st}&et={$et}&cs={$cs}&field=per&visitmod={$visitmod}&visitlan={$visitlan}&visitcum={$visitcum}">{$lang_statips22}</a>{$zvist[per]}</td>
+	</tr>
+<!--
+EOT;
+foreach($visit as $key=>$val){
+$val['name']=$val['name']==''?$lang_statips26:$val['name'];
+$valname=utf8substr($val['name'],0,50);
+$valtext=$val['name']==$lang_statips26?$val['name']:"<a href='{$val['name']}' title='{$val['name']}' target='_blank'>{$valname}</a>";
+echo <<<EOT
+-->
+	<tr>
+		<td>{$val[order]}</td>
+		<td>{$valtext}</td>
+		<td>{$val[pv]}</td>
+		<td>{$val[alone]}</td>
+		<td>{$val[ip]}</td>
+		<td>{$val['per']}</td>
+	</tr>
+<!--
+EOT;
+}
+if(!$visit){
+echo <<<EOT
+-->
+	<tr>
+		<td colspan='9' align='center'>{$lang_csvnodata}</td>
+	</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	<tr>
+		<td colspan='9' align='center' class="page_list">{$page_list}</td>
+	</tr>
+</table>
+<!--
+EOT;
+}elseif($labtype==2){
+echo <<<EOT
+-->
+<table cellpadding="0" cellspacing="1" class="stat_table stat_mingxi">
+<tr>
+	<td colspan='5' class="title" style="padding-left:5px;">		<div class="more">
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$dtime}&et={$dtime}&labtype={$labtype}&cs=1" {$dancs[1]} title="{$lang_statips10}">{$lang_statips10}</a>
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$ztime}&et={$ztime}&labtype={$labtype}&cs=2" {$dancs[2]} title="{$lang_statips11}">{$lang_statips11}</a>
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$xtime}&et={$dtime}&labtype={$labtype}&cs=3" {$dancs[3]} title="{$lang_statips12}">{$lang_statips12}</a>
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$timeq30}&et={$dtime}&labtype={$labtype}&cs=4" {$dancs[4]} title="{$lang_statips13}">{$lang_statips13}</a>
+			<a href="source.php?lang={$lang}&anyid={$anyid}&st={$timed1}&et={$dtime}&labtype={$labtype}&cs=5" {$dancs[5]} title="{$lang_statips14}">{$lang_statips14}</a>&nbsp;-&nbsp;{$lang_statips15}
+			<form name="myform" action="source.php?lang={$lang}&anyid={$anyid}&labtype={$labtype}" method="POST" target="_self" class="stet">
+				<input type="text" name="stt" value="{$tmst}" class="txt Wdate" onclick="WdatePicker()" /> {$lang_columnmove2}
+				<input type="text" name="ett" value="{$tmet}" class="txt Wdate" onclick="WdatePicker()" />
+				<input type="submit" name="submit" value="{$lang_Submitall}" />
+			</form>
+		</div>
+	<span style="font-weight:normal; color:#fff;">{$lang_statips17} {$tmst} {$lang_batchtips14} {$tmet}</span></td>
+</tr>
+<tr>
+<!--
+EOT;
+if($yqnum){
+$rowspan=count($visit)+2;
+echo <<<EOT
+-->
+	<td class="t" width="40" style="padding:0px; text-align:center;">{$lang_statips18}</td>
+	<td class="t">{$lang_statips60}</td>
+	<td class="t" width="100" style="padding:0px; text-align:center;">{$lang_statips63}</td>
+	<td rowspan="$rowspan" style="padding:0px;"><div id='chartContainer'></div></td>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+	<td align='center'>{$lang_csvnodata}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</tr>
+<!--
+EOT;
+$i=0;
+foreach($visit as $key=>$val){
+$i++;
+if($key==$lang_statips26){
+$val[link]=$met_weburl;
+}else{
+$val[link]='http://'.$key;
+}
+echo <<<EOT
+-->
+<tr>
+	<td>{$val[order]}</td>
+	<td><a href="{$val[link]}" target="_blank">{$key}</a></td>
+	<td>{$val[pv]}</td>
+</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<tr>
+	<td colspan='3'></td>
+</tr>
+<!--
+EOT;
+if($page_list){
+echo <<<EOT
+-->
+	<tr>
+		<td colspan='4' class="page_list">{$page_list}</td>
+	</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</table>
+<script language="JavaScript" src="{$img_url}/Chart/js/FusionCharts.js"></script>
+<script type="text/javascript">
+   var chart = new FusionCharts("{$img_url}/Chart/swf/FCF_Pie2D.swf", "ChartId", 500, 270);
+   chart.setDataURL("data.php?action=accept%26yqnums=1%26st={$st}%26et={$et}%26lang=$lang");		   
+   chart.render("chartContainer");
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<div class="clear"></div>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

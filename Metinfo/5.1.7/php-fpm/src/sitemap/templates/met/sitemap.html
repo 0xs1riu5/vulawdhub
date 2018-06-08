@@ -1,0 +1,76 @@
+<!--<?php
+echo <<<EOT
+-->
+{$methtml_head}
+<link href="templates/met/css/style.css" rel="stylesheet" />
+<body>
+<div class="memberhead">
+<div class="memberhead1">
+<div class="memberheadlogo"><a href="$index_url" ><img src="$met_logo" alt="$met_alt" /></a></div>
+<div class="memberheadtext"><a href="$index_url">{$lang_home}</a><font style="font-family:Arial, Helvetica, sans-serif">></font><a href="#">{$class_info[name]}</a></div>
+</div>
+</div>
+<div class="sitemapweb">
+<!--
+EOT;
+if($met_sitemap_html==2){
+$i=0;
+foreach($sitemaplist as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+
+<li class="sitemaplist"><a href="$val[url]" title="$val[title]" target="_blank">$val[title]</a>  <span>$val[updatetime]</span> </li>
+
+<!--
+EOT;
+if($i>=$met_sitemap_max)break;
+}
+}else{
+foreach($nav_list_1 as $key=>$val){
+if($val[nav]){
+echo <<<EOT
+-->
+<dl class="sitemapclass" >
+<dd class="sitemapclass1"><h2 style="font-size:13px;"><a href="$val[url]" title="$val[name]">$val[name]</a></h2></dd>
+<!--
+EOT;
+foreach($nav_list2[$val[id]] as $key=>$val2){
+echo <<<EOT
+-->
+<dd class="sitemapclass2" ><h3 style="font-weight:normal; font-size:12px;"><a href="$val2[url]"  title="$val2[name]" >$val2[name]</a></h3>
+<div>
+<!--
+EOT;
+foreach($nav_list3[$val2[id]] as $key=>$val3){
+echo <<<EOT
+-->
+<h4 style="font-weight:normal; font-size:12px;"><a href="$val3[url]" class="sitemapclass3" title="$val3[name]">$val3[name]</a></h4>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+</dd>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</dl>
+<!--
+EOT;
+}}}
+echo <<<EOT
+-->
+
+</div>
+
+<div class="memberfoot">
+Powered by <a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info1}"><b>MetInfo</b></a> $metcms_v &copy;2008-$m_now_year <a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info3}">www.MetInfo.cn</a>
+</div>
+</body></html>
+<!--
+EOT;
+?>-->

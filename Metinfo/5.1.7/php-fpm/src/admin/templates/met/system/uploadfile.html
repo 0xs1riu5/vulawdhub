@@ -1,0 +1,297 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="uploadfile.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_upfiletips1}">{$lang_upfiletips1}</a></li>
+		<li {$listclass[2]}><a href="uploadfile.php?anyid={$anyid}&lang={$lang}&cs=2&Type=upload" title="{$lang_upfiletips2}">{$lang_upfiletips2}</a></li>
+	</ul>
+</div>
+<!--
+EOT;
+if($cs==2){
+echo <<<EOT
+-->
+<script type="text/javascript" src="../ckfinder/ckfinder.js"></script>
+<div id="ckfinder"></div>
+	<script type="text/javascript">
+(function()
+{
+		var config = {
+		};
+		var get = CKFinder.tools.getUrlParam;
+		var getBool = function( v )
+		{
+			var t = get( v );
+
+			if ( t === null )
+				return null;
+
+			return t == '0' ? false : true;
+		};
+
+		var tmp;
+		if ( tmp = get( 'basePath' ) )
+			CKFINDER.basePath = tmp;
+
+		if ( tmp = get( 'startupPath' ) )
+			config.startupPath = decodeURIComponent( tmp );
+
+		config.id = get( 'id' ) || '';
+
+		if ( ( tmp = getBool( 'rlf' ) ) !== null )
+			config.rememberLastFolder = tmp;
+
+		if ( ( tmp = getBool( 'dts' ) ) !== null )
+			config.disableThumbnailSelection = tmp;
+
+		if ( tmp = get( 'data' ) )
+			config.selectActionData = tmp;
+
+		if ( tmp = get( 'tdata' ) )
+			config.selectThumbnailActionData = tmp;
+
+		if ( tmp = get( 'type' ) )
+			config.resourceType = tmp;
+
+		if ( tmp = get( 'skin' ) )
+			config.skin = tmp;
+
+		if ( tmp = get( 'langCode' ) )
+			config.language = tmp;
+
+		// Try to get desired "File Select" action from the URL.
+		var action;
+		if ( tmp = get( 'CKEditor' ) )
+		{
+			if ( tmp.length )
+				action = 'ckeditor';
+		}
+		if ( !action )
+			action = get( 'action' );
+
+		var parentWindow = ( window.parent == window )
+			? window.opener : window.parent;
+
+		switch ( action )
+		{
+			case 'js':
+				var actionFunction = get( 'func' );
+				if ( actionFunction && actionFunction.length > 0 )
+					config.selectActionFunction = parentWindow[ actionFunction ];
+
+				actionFunction = get( 'thumbFunc' );
+				if ( actionFunction && actionFunction.length > 0 )
+					config.selectThumbnailActionFunction = parentWindow[ actionFunction ];
+				break ;
+
+			case 'ckeditor':
+				var funcNum = get( 'CKEditorFuncNum' );
+				if ( parentWindow['CKEDITOR'] )
+				{
+					config.selectActionFunction = function( fileUrl, data )
+					{
+						parentWindow['CKEDITOR'].tools.callFunction( funcNum, fileUrl, data );
+					};
+
+					config.selectThumbnailActionFunction = config.selectActionFunction;
+				}
+				break;
+
+			default:
+				if ( parentWindow && parentWindow['FCK'] && parentWindow['SetUrl'] )
+				{
+					action = 'fckeditor' ;
+					config.selectActionFunction = parentWindow['SetUrl'];
+
+					if ( !config.disableThumbnailSelection )
+						config.selectThumbnailActionFunction = parentWindow['SetUrl'];
+				}
+				else
+					action = null ;
+		}
+
+		config.action = action;
+		// Always use 100% width and height when nested using this middle page.
+		config.width = '100%';
+		config.height = '500';
+		var ckfinder = new CKFinder( config );
+		ckfinder.replace( 'ckfinder', config );
+})();
+	</script>
+	<div class="footer">$foot</div>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table uploadfile">
+	<tr> 
+        <td colspan="8" class="input" style="padding:2px 5px;">
+			<div style="float:left;">
+			<a  href="?anyid={$anyid}&lang=$lang&filename={$metnowdir}&file_classnow=$file_classnow&action=deletefolder" 
+			    onClick="return linkSmit($(this),1);"
+             	title="{$lang_setsafesq3text}">{$lang_setsafesq2text}{$lang_setsafesq3text}</a>
+			 <span class="tips">({$metnowdir}){$lang_setfiletext4}</span>
+			</div>
+			 <span class="tips" style="float:right;">({$metnowdir}){$lang_setfiletext2} {$total_count} {$lang_setfiletext3}</span>
+		</td>
+    </tr>
+	<tr>	
+        <td width="120" class="list">{$lang_setsafesq4text}</td>	
+        <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>	
+        <td width="60" class="list" style="padding:0px; text-align:center;">{$lang_setfiletype}</td>
+		<td class="list">{$lang_skinDocument}</td>
+        <td class="list">{$lang_setfilename}</td>
+        <td width="60" class="list">{$lang_setfilesize}</td>
+		<td width="120" class="list">{$lang_setfiletime}</td>
+		<td class="list">{$lang_operate}</td>
+    </tr>
+<!--
+EOT;
+$nowclas='';
+if($metnowdir=='upload')$nowclas='class="now"';
+echo <<<EOT
+-->
+	<tr>
+        <td class="files" id="files" valign="top">
+		    <dl>
+			    <dt {$nowclas}><img class="small" src="{$img_url}/botton/File.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl=upload" title="upload">upload</a></dt>
+				<dd>
+				<ul>
+<!--
+EOT;
+foreach($fileclass[1] as $key=>$val){
+$fileurl1='upload/'.$val[name];
+$nowclas='';
+if($metnowdir==$fileurl1)$nowclas='class="now"';
+echo <<<EOT
+-->
+                <li {$nowclas}>
+				<img class="small" src="$img_url/botton/Filey.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl={$fileurl1}&file_classnow=2" title="$val[name]">$val[name]</a>				
+<!--
+EOT;
+if($file_classnow>=2){
+foreach ($fileclass[2] as $key=>$val2){
+if (strstr($val2[url],$fileurl)&&strstr($val2[url],$val[name])){
+$fileurl2='upload/'.$val[name].'/'.$val2[name];
+$nowclas='';
+if($metnowdir==$fileurl2)$nowclas='class="now"';
+echo <<<EOT
+-->
+            <p {$nowclas}><img src="$img_url/botton/Filey.png" /> <a href="?anyid={$anyid}&lang=$lang&fileurl={$fileurl2}&file_classnow=3" title="$val2[name]">$val2[name]</a>
+			</p>
+<!--
+EOT;
+}}}
+echo <<<EOT
+-->
+                </li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                </dd>
+			</dl>
+		</td>
+	</tr>
+	<form name="del" method="Post" action="?anyid={$anyid}&lang=$lang&fileurl={$metnowdir}&file_classnow=$file_classnow&page=$page&action=delete&cs=$cs">
+<!--
+EOT;
+$i=0;
+foreach ($metfile as $key=>$val){
+if($i>=$startnum and $i<$endnum){
+$val[uploadtime]=strftime("%y-%m-%d %H:%M",$val["time"]);
+$val[size]=number_format($val[size]/1024, 2);
+$filetypearray=explode('.',$val[file]);
+$val[type]=$filetypearray[1];
+if(!is_utf8($val[file])){
+	$val[file] = iconv("gbk","utf-8",$val[file]);
+}
+$valfolder=explode('../../',$val[folder]);
+$valfolder=utf8substr($valfolder[1],0,15);
+echo <<<EOT
+-->    
+    <tr class="mouse click">
+        <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='{$val[folder]}/{$val[file]}' /></td>
+        <td class="list-text">$val[type]</a></td>
+		<td class="list-text" title="{$val[folder]}">$valfolder</td>
+        <td class="list-text">$val[file]</td>
+        <td class="list-text">$val[size] KB</td>
+		<td class="list-text">20$val[uploadtime]</td>
+		<td class="list-text">
+		    <a href="{$val[folder]}/$val[file]" target="_blank" >{$lang_setfileview}</a>&nbsp;&nbsp; 
+			<a href="?anyid={$anyid}&lang=$lang&filename={$val[folder]}/{$val[file]}&fileurl={$metnowdir}&file_classnow=$file_classnow&page=$page&action=delete" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
+		</td>
+    </tr> 
+<!--
+EOT;
+}
+$i++;
+}
+echo <<<EOT
+-->  
+<!--
+EOT;
+if(count($metfile)<1 || $metfile==''){
+echo <<<EOT
+--> 
+    <tr class="mouse click">
+        <td class="list-text" colspan="7">{$lang_setsafesq5text}</td>
+    </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    <tr class="click">
+        <td class="list-text"colspan="7"></td>
+    </tr>
+<input name="action" type="hidden" id="action" value="del">
+<input name="action_type" type="hidden" value="del">
+<input name="allid" type="hidden" id="allid" value="">
+			  </form>
+   	   <tr> 
+			<td class="all"></td>
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			  <td class="all-submit" align="left" colspan="7">
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="met_modify($(this),'del','delete');" /> 
+			  <div class="page_list">
+			  {$page_list}
+			  </div>
+              </td>
+          </tr>
+	<tr>
+	    <td class="input" colspan="8" style="text-align:center;"><span class="tips">{$lang_setfiletext1}</span></td>
+	</tr>
+	<tr>
+		<td class="footer" colspan="8">$foot</td>
+	</tr>
+</table>
+<script type="text/javascript">
+    var tdfile = $("#files");
+	    tdfile.attr("rowspan",$('tr.click').length+1);
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

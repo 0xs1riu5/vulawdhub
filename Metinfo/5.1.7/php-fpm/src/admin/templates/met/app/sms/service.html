@@ -1,0 +1,107 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$title=$lang_smstips25;
+$listclass[1]='class="now"';
+require_once template('app/sms/top');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="service.php?lang={$lang}&anyid={$anyid}&action=modify&serpe={$serpe}" target="_self">
+<input type="hidden" name="usertype" value="0.08" />
+<table cellpadding="2" cellspacing="1" class="table">
+	<tr>
+        <td class="text color390">{$lang_smstips26}{$lang_marks}</td>
+        <td class="input">
+			<input type="text" class="text nonull" name="old_code" value="" />
+			<span class="tips">{$lang_smstips27}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_smstips28}{$lang_marks}</td>
+        <td class="input">
+			<input type="text" class="text nonull" name="new_code" value="" /><span id="pass1"></span><span class="tips">{$lang_smstips29}</span>
+		</td>
+    </tr>
+	<tr>
+        <td class="text">{$lang_smstips29}{$lang_marks}</td>
+        <td class="input">
+			<input type="text" class="text nonull" name="new_codeto" value="" />
+			<span id="pass2"></span>
+			<span class="tips"></span>
+		</td>
+    </tr>
+		<tr> 
+			<td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="submit" class="submit" value="{$lang_Submitall}" onclick="return Smit($(this),'myform')" />
+			</td>
+		</tr>
+</table>
+</form>
+<script type="text/javascript">
+function pass2null(pass2){
+			$('#pass2').text('{$lang_memberjstxt1}');
+			$('#pass2').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function pass1null(pass1){
+			$('#pass1').text('{$lang_memberjstxt2}');
+			$('#pass1').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function passnot(pass2){
+			$('#pass2').text('{$lang_memberjstxt3}');
+			$('#pass2').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+$(document).ready(function(){
+    var pass1 = $("input[name='new_code']");
+    var pass2 = $("input[name='new_codeto']");
+	pass1.focusout(function(){
+		if($(this).val()=='')pass1null($(this));
+		else 
+		if(pass2.val()!='' && pass2.val()!=pass1.val()){
+		$('#pass1').hide();
+		passnot(pass2);
+		}
+		else 
+		if(pass2.val()==''){
+		$('#pass1').hide();
+		pass2null(pass2);
+		}
+		else{ 
+		$('#pass1').hide();
+		$("input[type='submit']").attr('disabled',false);
+		}
+	});
+	pass2.focusout(function(){
+		if($(this).val()=='')pass2null($(this));
+		else 
+		if(pass1.val()!='' && pass2.val()!=pass1.val())passnot($(this));
+		else 
+		if(pass1.val()==''){
+		$('#pass2').hide();
+		pass1null(pass1);
+		}
+		else{ 
+		$('#pass2').hide();
+		$("input[type='submit']").attr('disabled',false);
+		}
+	});
+});
+</script>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

@@ -1,0 +1,247 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+$colspan=11;
+if(!$met_wap && !$met_wap_ok)$colspan=$colspan-1;
+if(!$met_member_use)$colspan=$colspan-1;
+$colspanj=$colspan-1;
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$class1_info[name]}</a>";
+require_once template('content/job/top');
+echo <<<EOT
+-->
+    <table cellpadding="2" cellspacing="1" class="table">
+		<tr>
+			<td colspan="$colspan" class="centle" style=" height:20px; line-height:30px; font-weight:normal; padding-left:10px;">
+				<div style="float:left;">
+				<a href="content.php?class1={$class1}&action=add&lang={$lang}&anyid={$anyid}">+{$lang_addinfo}</a>
+				<span style="font-weight:normal; color:#999; padding-left:10px;">{$lang_article4}</span>
+				</div>
+				<div class="formright">
+				<form method="POST" style="position:relative; top:2px;" name="filterform" action="index.php?anyid={$anyid}&lang=$lang&search=detail_search" target="_self">
+				<input name="class1" type="hidden" value="$class1">
+				&nbsp;{$lang_top}
+				<select name="top" id="shaix-top" onChange="handle_form('filterform')">
+					<option value="all" $top0>{$lang_selectnow}</option>
+					<option value="1" {$top1}>{$lang_yes}</option>
+					<option value="0" {$top2}>{$lang_no}</option>
+				</select>
+				</form>
+				<form method="POST" name="search" action="index.php?anyid={$anyid}&lang={$lang}&search=detail_search&class1={$class1}" target="_self">
+					<input name="position" type="text" class="text" id="searchtext" value="{$lang_modsearch}" />				
+					<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
+					<input name="top" type="hidden" id="se-top" value="{$top}">
+				</form>
+				</div>
+			</td>
+		</tr>
+        <tr>
+            <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+			<td width="50" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
+            <td class="list">{$lang_jobposition}</td>
+            <td width="70" class="list" style="padding:0px; text-align:center;">{$lang_jobnum}</td>
+			<td width="70" class="list" style="padding:0px; text-align:center;">{$lang_jobaddress}</td>
+            <td width="80" class="list" style="padding:0px; text-align:center;">{$lang_joblife}</td>
+			<td width="50" style="padding:0px; text-align:center;" class="list">{$lang_top}</td>
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->	
+				<td width="50" style="padding:0px; text-align:center;" class="list">{$lang_wap}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+            <td width="90" style="padding:0px; text-align:center;" class="list">{$lang_jobpublish}</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
+			<td width="70" style="padding:0px; text-align:center;" class="list" >{$lang_webaccess}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			<td width="70"  class="list" >{$lang_operate}</td>
+        </tr>
+		<form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1=$class1">
+<!--
+EOT;
+foreach ($job_list as $key=>$val){
+echo <<<EOT
+-->          
+        <tr class="mouse click">
+            <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+            <td class="list-text">
+			    <input type="text" name="no_order_$val[id]" value="$val[no_order]" class="text no_order" />
+			</td>
+			<td class="list-text alignleft">&nbsp;&nbsp;<a href="../../../job/showjob.php?lang=$lang&id=$val[id]" title="{$lang_preview}" target="_blank">$val[position]</a></td>
+            <td class="list-text color999">$val[count]</td>
+			<td class="list-text color999">$val[place]</td>
+            <td class="list-text color999">$val[useful_life]</td>
+			<td class="list-text">
+			    <a href="changeState.php?anyid={$anyid}&lang=$lang&top_ok=$val[top_ok]&id=$val[id]&class1=$class1" onClick="return linkSmit($(this));">$val[top_ok1]</a>
+			</td>
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->	
+				<td class="list-text"><a href="changeState.php?anyid={$anyid}&lang=$lang&wap_ok=$val[wap_ok]&id=$val[id]&class1=$class1&class2=$class2&class3=$class3" onClick="return linkSmit($(this));">$val[wap_ok1]</a></td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <td class="list-text color999">$val[addtime]</td>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
+			<td class="list-text color999">$val[access]</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			<td class="list-text">
+			    <a href="content.php?anyid={$anyid}&lang=$lang&id=$val[id]&class1=$class1&action=editor&page={$page}" title="{$lang_editor}">{$lang_editor}</a>&nbsp;&nbsp;<a href="cv.php?anyid={$anyid}&lang=$lang&search=detail_search&jobid=$val[id]&class1={$class1}" title="查看{$lang_jobCV}">{$lang_jobCV}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&lang=$lang&id=$val[id]&class1=$class1" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<input name="allid" type="hidden" id="allid" value="" /><input name="action" type="hidden" id="action" value="del" />
+		</form>
+   	    <tr> 
+            <td class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox"></td>
+			 <td class="all-submit" colspan="$colspanj" style="padding:5px 10px;">
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+				<input name="saveorder" type='submit' value='{$lang_Submit}{$lang_sort}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
+			  <div class="li-submit">
+<form method="POST" name="mycopy" action="changeState.php?anyid={$anyid}&lang={$lang}&action=copy" target="_self">
+	<input name="allid" type="hidden" value="" />
+	<input name="access" type="hidden" value="" />
+	<input name="class1" type="hidden" value="{$class1}" />
+	<input name="class2" type="hidden" value="{$class2}" />
+	<input name="class3" type="hidden" value="{$class3}" />
+	<select name="copylang">
+		<option value="">{$lang_Copytitle}</option>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+echo <<<EOT
+-->	
+		<option value="{$val[mark]}">{$val[name]}</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</select>
+	<select name="copyclass1" style="display:none;">
+		<option value="">{$lang_modClass1}</option>
+	</select>
+	<select name="copyclass2" style="display:none;">
+		<option value="">{$lang_modClass2}</option>
+	</select>
+	<select name="copyclass3" style="display:none;">
+		<option value="">{$lang_modClass3}</option>
+	</select>
+</form>
+			  </div>
+			  <div class="li-submit">
+<form method="POST" name="mymove" action="changeState.php?anyid={$anyid}&lang={$lang}&action=moveto" target="_self">
+	<input name="allid" type="hidden" value="" />
+	<input name="access" type="hidden" value="" />
+	<input name="class1" type="hidden" value="{$class1}" />
+	<input name="class2" type="hidden" value="{$class2}" />
+	<input name="class3" type="hidden" value="{$class3}" />
+	<select name="movelang">
+		<option value="">{$lang_columnmove1}{$lang_columnmove2}...</option>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+echo <<<EOT
+-->	
+		<option value="{$val[mark]}">{$val[name]}</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</select>
+	<select name="moveclass1" style="display:none;">
+		<option value="">{$lang_modClass1}</option>
+	</select>
+	<select name="moveclass2" style="display:none;">
+		<option value="">{$lang_modClass2}</option>
+	</select>
+	<select name="moveclass3" style="display:none;">
+		<option value="">{$lang_modClass3}</option>
+	</select>
+</form>
+			 </div>
+<!--
+EOT;
+if($met_webhtm){
+echo <<<EOT
+-->
+<div style="padding-top:5px;">{$lang_article5}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			  </td>
+		</tr>
+		<tr><td colspan="{$colspan}" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
+		<tr>
+		  <td class="footer" colspan="$colspan" >$foot</td>
+	  </tr>
+</table>
+<script type="text/javascript">
+var cplang = new Array();
+var cpar   = new Array('copylang','copyclass1','copyclass2','copyclass3');
+var mvar   = new Array('movelang','moveclass1','moveclass2','moveclass3');
+$(document).ready(function(){
+<!--
+EOT;
+$i=0;
+foreach($column_lang[6] as $key=>$val){
+if($val['bigclass']>0 && $val['releclass']==0)$val['lang']=$val['bigclass'];
+echo <<<EOT
+-->
+    cplang[$i]=new Array('{$val[name]}','{$val[lang]}','{$val[id]}','{$val[access]}');
+<!--
+EOT;
+$i++;
+}
+echo <<<EOT
+-->
+	for(i=0;i<cpar.length;i++){ $("select[name='"+cpar[i]+"']").change(function(){ cparinc($(this),$("form[name='mycopy']"),'{$lang_js61}'); }); }
+	for(i=0;i<mvar.length;i++){ $("select[name='"+mvar[i]+"']").change(function(){ cparinc($(this),$("form[name='mymove']"),'{$lang_js62}'); }); }
+	modifyview('{$modify}');
+	seachinput($('#searchtext'),'{$lang_modsearch}');
+});
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

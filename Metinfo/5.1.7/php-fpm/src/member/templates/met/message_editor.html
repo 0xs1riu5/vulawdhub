@@ -1,0 +1,70 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<script type="text/javascript">
+function pressCaptcha(obj)//MetInfo
+  {
+    obj.value = obj.value.toUpperCase();
+  }
+</script>
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
+<form  method="POST" name="myform"  action="messageeditor.php?action=editor" target="_self">
+		<input name="id" type="hidden" value="$id">
+		<input name="lang" type="hidden" value="$lang">
+<table cellpadding="2" cellspacing="1" border="0" width="95%" class="table_member">
+		<tr> 
+            <td colspan="10" class="member_title">{$lang_memberModifyMS}</td>
+          </tr>
+          <tr> 
+            <td class="member_text">{$lang_messageeditorName}：</td>
+            <td colspan="2" class="member_input"><input name="messagename" type="text" class="input" size="20" maxlength="20" value="$message_list[name]" ></td>
+          </tr> 
+		   <tr> 
+            <td class="member_text">{$lang_messageeditorTel}：</td>
+            <td colspan="2" class="member_input"><input name="tel" type="text" class="input" size="20" maxlength="20" value="$message_list[tel]" ></td>
+          </tr> 
+		   <tr> 
+            <td class="member_text">Email：</td>
+            <td colspan="2" class="member_input"><input name="email" type="text" class="input" size="20" maxlength="20" value="$message_list[email]" ></td>
+          </tr> 
+		   <tr> 
+            <td class="member_text">{$lang_messageeditorContact}：</td>
+            <td colspan="2" class="member_input"><input name="contact" type="text" class="input" size="20" maxlength="20" value="$message_list[contact]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="member_text">{$lang_messageeditorContent}：</td>
+            <td colspan="2" class="member_input"><textarea name="info" cols="50" rows="5">$message_list[info]</textarea></td>
+			</tr> 
+		  <tr> 
+            <td class="member_text">{$lang_messageeditorTime}：</td>
+            <td colspan="2" class="member_input">$message_list[addtime]</td>
+          </tr>	
+<!--
+EOT;
+if($met_memberlogin_code){
+echo <<<EOT
+-->
+		 <tr>    
+         <td class="member_text">{$lang_memberImgCode}：</td>
+         <td colspan="2" class="member_input"><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width&nbsp;50px" />
+         <img align="absbottom" src="ajax.php?action=code"  onclick=this.src="ajax.php?action=code&"+Math.random() style="cursor&nbsp; pointer;" title="{$lang_memberTip1}"/>
+		</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+		  <tr> 
+            <td class="member_text"></td>
+	      <td class="list1_submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit"></td>
+          </tr>		  
+        </form>
+</table>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

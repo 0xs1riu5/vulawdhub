@@ -1,0 +1,49 @@
+<?php
+/*页面全局标签（顶部）-------------------------------*/
+$methtml_head=metlabel_html5();//基于Html5
+$metlang=metlable_lang('<span>|</span>');//语言切换标签
+$met_nav=metlabel_nav(1,'<li class="line"></li>',940,20);//顶部导航标签
+$methtml_flash=metlabel_flash();//FLASH展示标签
+//顶部搜索框标签
+$topsearch=methtml_search('1','0','','','botton.gif');
+/*页面全局标签（底部）--------------------------------*/
+$met_foot_nav=methtml_footnav('<span>|</span>');//底部导航标签（次导航）
+$met_foot_txt=metlabel_foot();//底部信息标签
+$metonline=methtml_online();//在线交流漂浮框标签
+if($lang_bgdcolor!=''){//顶部背景
+	if(strstr($lang_bgdcolor,"/")){
+		$lang_bgdcolor ='background-image:url('.$lang_bgdcolor.');';
+		$lang_bgdcolor.='background-repeat:no-repeat;';
+		$lang_bgdcolor.='background-position:center center;';
+	}else{
+		$lang_bgdcolor='background-color:'.$lang_bgdcolor.';';
+	}
+}
+/*---------------------------------------------------*/
+if($classnow==10001){//首页标签
+	$Column2=tmpcentarr($lang_Index_Column2_id);
+	$Column3=tmpcentarr($lang_Index_Column3_id);
+	$Column4=tmpcentarr($lang_Index_Column4_id);
+	$Column5=tmpcentarr($lang_Index_Column5_id);
+	$Column6=tmpcentarr($lang_Index_Column6_id);
+	$metnavnow=metlabel_navnow($lang_leftnavtype,'',$lang_Index_Column1_id,$lang_leftnavlist,$lang_leftnavmax);
+	$indexnews1=metlabel_list('text',$lang_Index_Column4_id,'','time','',1);
+	$indexnews2=metlabel_list('text',$lang_Index_Column5_id,'','time','',1);
+	$indexnews3=metlabel_list('text',$lang_Index_Column6_id,'','time','',1);
+	$indexproduct=metlabel_list('img',$lang_Index_Column3_id,'com');
+	$indexcase=metlabel_list('img',$lang_Index_Column7_id,'','','','',0);
+	$metlinkimg=methtm_link('img','com');//图片友情链接标签
+	$metlinktxt=methtm_link('text','com');//文字友情链接标签
+}else{//内页标签
+	$sidebar=metlabel_sidebar(0,$lang_sidebarjstype);//内页侧栏标签
+	$sidebar_title=metlabel_sidebar(1);//内页侧栏标题
+	/*产品列表页*/
+	$met_pro_boxw=$sidebar?718:($lang_Web_Contactok?718:928);//产品列表页宽度
+	$met_pro_liw=$met_productimg_x+2;//单个产品li宽度，2为边框累计宽度
+	$met_pro_num=$lang_metpronum;//产品列表页每行显示数量
+	/*图片列表页*/
+	$met_img_boxw=$sidebar?718:($lang_Web_Contactok?718:928);//产品列表页宽度
+	$met_img_liw=$met_imgs_x+2;//单个产品li宽度，2为边框累计宽度
+	$met_img_num=$lang_metimgnum;//产品列表页每行显示数量
+}
+?>

@@ -1,0 +1,168 @@
+<!--<?php
+$navdown="nav_0";
+require_once template('head'); 
+$title1=$class_index[1][name];
+
+$title4=$class_index[4][name];
+$title6=$class_index[6][name];
+$moreur1=$class_index[2][url];
+$moreur2=$class_index[4][url];
+$moreur3=$class_index[6][url];
+$metlinkimg=methtm_link('img','com');
+$metlinktext=methtm_link('text','com');
+echo <<<EOT
+-->
+<div class="main">
+ <div class="main_left">
+        <div class="left_div1">
+		<div class="left_div2">
+		    <div class="left_top">
+			     <div class="left_title"><span>{$lang_Column1}</span></div>
+	<ul class="index_productlist">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('1','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li style="overflow:hidden;"><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+</ul>
+<div class="left_foot"></div>
+			</div>
+			<div class="left_bottom">
+			    <div class="left_title"><span>{$lang_Column2}</span></div>
+				<div class="left_bottom_content">
+$otherinfo[info10]
+				</div>
+				<div class="left_foot"></div>
+			</div>
+		</div>
+		</div>
+ </div>
+ <div class="main_center">
+       <div class="center_top">
+	          <div class="abuto_title"><span>{$lang_Column3}</span></div>
+			  <div class="aboto_content">$index[content]</div>
+	   </div>
+	   <div class="center_center">
+	          <div class="advice_title"><span>{$lang_Column4}</span><div class="more"><a href="$moreur1" title="{$lang_more}"></a></div></div>
+			  <div class="advice1">
+     <ul>
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('2','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+	 </ul>
+	 <ul>
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('3','com','time','') as $key=>$val){ 
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+	 </ul>
+<div style=" clear:both;"></div>
+</div>
+	   </div>
+	   
+	   <div class="center_bottom">
+<!--
+EOT;
+if($index[link_ok]){
+echo <<<EOT
+-->
+			    <div class="links_title"><span>{$lang_Column7}</span></div>
+<div class="links_list">
+<div>{$metlinkimg}</div>
+<div>{$metlinktext}</div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	   </div>
+ </div>
+ <div class="main_right">
+     <div class="right_div1"></div>
+	 <div class="right_content">
+	       <div class="right_top">
+		         <div class="news_title"><span>{$title4}</span></div>
+<ul class="index_newslist">				   
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('4','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a><span>$val[top] $val[news] $val[hot]</span></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+<li class="more1"><a href="$moreur2" title="{$lang_more}">{$lang_more}…</a></li>
+<div style="clear:both;"></div>
+</ul>
+		   </div>
+		   <div class="right_bottom">
+		        <div class="news_title"><span>{$title6}</span></div>
+<div class="case">
+<ul  class="index_newslist">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('6','com','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<li><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a><span>$val[top] $val[news] $val[hot]</span></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+<li class="more1"><a href="$moreur3" title="{$lang_more}">{$lang_more}…</a></li>
+<div style=" clear:both;"></div>
+</ul>
+
+              </div>
+		   </div>
+	 </div>
+	 <div class="right_div2"></div>
+ </div>
+<div style="clear:both;"></div>
+      
+</div>$met_online
+<!--
+EOT;
+require_once template('foot'); 
+?>

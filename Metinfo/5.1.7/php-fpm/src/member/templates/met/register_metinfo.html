@@ -1,0 +1,22 @@
+<!--<?php
+require_once templatemember('head'); 
+echo <<<EOT
+-->
+
+<link href="templates/met/css/style.css" rel="stylesheet" />
+<link href="../public/css/reset.css" rel="stylesheet" />
+<div class="user_main">
+<div class="user_nav">
+<div class="user_top">{$member_title}</div>
+$methtl_membernav
+ <div class="user_bottom"></div>
+</div>
+<div class="user_main_right">
+<iframe src="register_include.php?lang=$lang" name="main" frameborder="0"></iframe>
+</div>
+</div>
+<div style="clear:both;"></div>
+<!--
+EOT;
+require_once templatemember('foot'); 
+?>

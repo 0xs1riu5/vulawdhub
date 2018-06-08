@@ -1,0 +1,39 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<link href="../member/templates/met/css/style.css" type="text/css" rel="stylesheet" />
+<div class="main_deng">
+   <div class="login_top">{$lang_memberLogin}</div>
+  <form method="post" action="login_check.php?lang=$lang" name="main_login" onSubmit="javascript: return check_main_login()">
+	<input type="hidden" name="action" value="login"/>
+	<input type="hidden" name="lang" value="$lang"/>
+	<input type="hidden" name="refererok" value="{$referer}"/>
+	<label><span>{$lang_memberName}</span><input name="login_name" type="text" class="input_text"/></label>
+	<label><span>{$lang_memberPs}</span><input name="login_pass" type="password" class="input_text" id="user_pass"  value="" size="20" /></label>
+
+<!--
+EOT;
+if($met_memberlogin_code==1){
+echo <<<EOT
+-->
+	<label>
+<span>{$lang_memberImgCode}</span><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width:67px; " />
+<img align="absbottom" src="ajax.php?action=code"  onclick=this.src="ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_memberTip1}"/></label>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	<div class="member_login_submit">
+		<input type="submit" value="{$lang_memberGo}" /><span><a href="getpassword.php?lang=$lang">{$lang_memberForget}</a></span>
+	</div>
+<div class="member_login_register"><a href="register_include.php?lang=$lang">{$lang_memberRegister}</a></div>
+</form>
+</div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

@@ -1,0 +1,201 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$title='Flash'.$lang_add;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="flashsave.php?anyid={$anyid}&lang=$lang" target="_self" onSubmit="return CheckFormflash();">
+		<input name="action" type="hidden" value="add" />
+		<input name="module" type="hidden" value="$module" />
+		<input name="met_flash_type" type="hidden" value="$mtype" />
+<table cellpadding="2" cellspacing="1" class="table">
+		<tr> 
+			<td class="text">{$lang_flashMode}{$lang_marks}</td>
+			<td colspan="2" class="input">
+			<select name="flashmdtype" onchange="location.href='flashadd.php?anyid={$anyid}&lang=$lang&flashmdtype='+$(this).val();">
+				<option value="1" {$flashmdtype1[1]}>{$lang_flashMode1}/{$lang_setflashMode3}</option>
+				<option value="2" {$flashmdtype1[2]}>{$lang_flashMode2}</option>
+			</select>
+			<span style="color:#999; padding-left:20px;">{$lang_flashmodify}<a href="setflash.php?anyid={$anyid}&lang={$lang}" title="{$lang_indexflashexplain2}" style="color:#690;">{$lang_indexflashset}</a>{$lang_flashmodify1}{$lang_indexflashexplain7}</span>
+			</td>
+		</tr> 
+		<tr> 
+			<td class="text">{$lang_setflashSize}{$lang_marks}</td>
+            <td colspan="2" class="input">
+			<span style="color:#999;">{$lang_flashmodify}<a href="setflash.php?anyid={$anyid}&lang={$lang}" title="{$lang_indexflashexplain2}" style="color:#690;">{$lang_indexflashset}</a>{$lang_flashmodify1}{$lang_indexflashexplain3}</span>
+			</td>
+		</tr>
+<!--
+EOT;
+if($flashmdtype==1){ 
+echo <<<EOT
+-->	
+		  <tr>
+			<td colspan="2" class="text">{$lang_sort}{$lang_marks}</td>
+            <td class="input"><input name="no_order" type="text" class="text mid" value="0"><span class="tips">{$lang_ordernumber}</span></td>
+          </tr>
+		  <tr >
+			<td colspan="2" class="text">{$lang_setflashName}{$lang_marks}</td>
+            <td class="input"><input name="img_title" type="text" class="text" value=""></td>
+          </tr>
+		  <tr >
+		    <td colspan="2" class="text"><span class="bi_tian">*</span>{$lang_setflashImgUrl}{$lang_marks}</td>
+	        <td class="input upload">
+			<input name="img_path" type="text" class="text" value="">
+			<input name="met_upsql" type="file" id="file_upload" />
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	metuploadify('#file_upload','upimage','img_path');
+});
+</script>
+<span class="tips">{$lang_indexflashexplain4}</span>
+			</td>
+		  </tr>
+		  <tr > 
+            <td colspan="2" class="text">{$lang_setflashImgHref}{$lang_marks}</td>
+            <td class="input"><input name="img_link" type="text" class="text" value=""><span class="tips">{$lang_indexflashexplain9}</span></td>
+          </tr> 
+<!--
+EOT;
+}elseif($flashmdtype==2){ 
+echo <<<EOT
+-->	
+		  <tr>
+			<td colspan="2" class="text">{$lang_sort}{$lang_marks}</td>
+            <td class="input"><input name="no_order" type="text" class="text mid" value=""><span class="tips">{$lang_ordernumber}</span></td>
+          </tr>
+		   <tr > 
+            <td colspan="2" class="text" ><span class="bi_tian">*</span>{$lang_setflashUrl}{$lang_marks}</td>
+            <td class="input upload">
+				<input name="flash_path" type="text" class="text" value="">
+				<input name="met_upsql" type="file" id="file_upload" />
+			</td>
+          </tr>		  
+		  <tr> 
+            <td colspan="2" class="text" >{$lang_setflashBg}{$lang_marks}</td>
+            <td class="input upload">
+			<input name="flash_back" type="text" class="text" value="">
+			<input name="met_upsql1" type="file" id="file_upload1" />
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	metuploadify('#file_upload','upfile','flash_path');
+	metuploadify('#file_upload1','upimage','flash_back');
+});
+</script>
+	<span class="tips">{$lang_indexflashexplain5}</span>
+			</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		<tr> 
+			<td class="text">{$lang_category}{$lang_marks}</td>
+			<td colspan="2" class="input">
+<!--
+EOT;
+if(count($modclumlist)){
+echo <<<EOT
+-->
+				<div class="flashaddclumn flashaddclumn_c1">
+				<h3><p><label><input name="met_clumid_all" type="checkbox" class="checkbox" value="10002"> {$lang_allcategory}</label></p></h3>
+				<div class="list">
+<!--
+EOT;
+foreach($mod1 as $key=>$val){
+echo <<<EOT
+-->	
+	<p><label><input name="met_clumid_{$val[id]}" type="checkbox" class="checkbox" value="{$val[id]}"> {$val[name]}</label></p>
+<!--
+EOT;
+foreach($mod2[$val[id]] as $key=>$val2){
+echo <<<EOT
+-->	
+    <p class="met_bigloumn2id_{$val2[bigclass]}" style="margin-left:22px;"><label><input name="met_clumid_{$val2[id]}" type="checkbox" class="checkbox" value="{$val2[id]}"> {$val2[name]}</label></p>
+<!--
+EOT;
+foreach($mod3[$val2[id]] as $key=>$val3){
+echo <<<EOT
+-->	
+    <p class="met_bigloumn3id_{$val3[bigclass]}" style="margin-left:42px;"><label><input name="met_clumid_{$val3[id]}" type="checkbox" class="checkbox" value="{$val3[id]}"> {$val3[name]}</label></p>		
+<!--
+EOT;
+}}}  
+echo <<<EOT
+-->	
+				</div>
+				</div>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+				<p class="red">{$lang_indexflashexplain6}</p>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				<div class="clear"></div>
+			</td>
+		</tr> 
+	      <tr> 
+            <td class="text" colspan="2"></td>
+	      <td class="submit">
+			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return flashsubm()" >
+			<input type="hidden" name="f_columnlist" value="" >
+		  </td>
+          </tr>        
+          <tr>
+		  <td class="footer" colspan="4">$foot</td>
+	  </tr>
+</table>
+</form>
+<script type="text/javascript">
+	function flashsubm(){
+		var list = $('.flashaddclumn').find('input');
+		var vl = ',';
+			list.each(function(){
+				if($(this).attr("checked"))vl+=$(this).val()+',';
+			});
+			if(vl==','){
+				alert('{$lang_js67}');
+				return false;
+			}else{
+				$("input[name='f_columnlist']").val(vl);
+				return true;
+			}
+	}
+	$("input[name='met_clumid_all']").change(function(){
+		if($(this).attr("checked")){
+			$('.flashaddclumn').find('input').attr("checked",true);
+		}else{	
+			$('.flashaddclumn').find('input').attr("checked",false);
+		}
+	});
+	$('.flashaddclumn').find('input').change(function(){
+		if(!$(this).attr("checked")){
+			$("input[name='met_clumid_all']").attr("checked",false);
+		}
+	});
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,166 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+<script language="javascript">
+jQuery.myPlugin={Client:function(){var a={ie:0,webkit:0,gecko:0,opera:0,khtml:0};var b={se360:0,se:0,maxthon:0,qq:0,tt:0,theworld:0,cometbrowser:0,greenbrowser:0,ie:0,chrome:0,netscape:0,firefox:0,opera:0,safari:0,konq:0};var c=navigator.userAgent.toLowerCase();for(var d in a){if(typeof d==='string'){var e='gecko'===d?/rv:([\w.]+)/:RegExp(d+'[ \\/]([\\w.]+)');if(e.test(c)){a.version=window.opera?window.opera.version():RegExp.$1;a[d]=parseFloat(a.version);a.type=d;break}}};for(var d in b){if(typeof d==='string'){var e=null;switch(d){case'se360':e=/360se(?:[ \/]([\w.]+))?/;break;case'se':e=/se ([\w.]+)/;break;case'qq':e=/qqbrowser\/([\w.]+)/;break;case'tt':e=/tencenttraveler ([\w.]+)/;break;case'safari':e=/version\/([\w.]+)/;break;case'konq':e=/konqueror\/([\w.]+)/;break;case'netscape':e=/navigator\/([\w.]+)/;break;default:e=RegExp(d+'(?:[ \\/]([\\w.]+))?')};if(e.test(c)){b.metversion=window.opera?window.opera.version():RegExp.$1?RegExp.$1:'';b[d]=parseFloat(b.metversion);b.type=d;break}}};return{engine:a,metshell:b}}};
+function broversion(){
+	var bro=jQuery.myPlugin.Client();
+		t=bro.metshell.type;
+		v=bro.metshell.metversion;
+		//bro=t=='ie'?t+v:t;
+		if(t=='ie'&&v==''){
+			e=/ie(?:[ \\/]([\\w.]+))?/;	
+			v=e.exec(navigator.userAgent.toLowerCase())[1];
+		}
+		bro=t=='ie'?t+v:t;
+		if(typeof window.external !='undefined' && typeof window.external.twGetRunPath!='unknown'&& typeof window.external.twGetRunPath!='undefined'){
+			var r=external.twGetRunPath();
+			if(r&&r.toLowerCase().indexOf('360se') > -1) bro='se360';
+		}
+		if(t=='ie'&&typeof external.addChannel=='undefined'){
+			bro='se360';
+		}
+	return bro;
+}
+function emailtest(email){
+	var x = /^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/;	
+	return x.test(email);
+}
+function adminsubmit(){
+	var bro=broversion();
+	$("input[name='se360']").val(bro);
+	var regname=$("input[name='regname']");
+	var regpwd=$("input[name='regpwd']");
+	var aginpwd=$("input[name='aginpwd']");
+	var email=$("input[name='email']");
+	if(regname.val()==''){
+		alert('管理员帐号不能为空');regname.focus();
+		return false;
+	}else if(regpwd.val()==''){
+		alert('管理员密码不能为空');regpwd.focus();
+		return false;
+	}else if(aginpwd.val()==''){
+		alert('请再次填写管理员密码');aginpwd.focus();
+		return false;
+	}else if(aginpwd.val()!=regpwd.val()){
+		alert('两次输入的密码不一致！');aginpwd.focus();
+		return false;
+	}else if(email.val()==''){
+		alert('请填写管理员邮箱地址！');email.focus();
+		return false;
+	}else if(!emailtest(email.val())){
+		alert('邮箱地址无效，请正确填写！');email.focus();
+		return false;
+	}
+	return true;
+}
+$(window.parent.document).find(".bodyleft li").removeClass('stepnow');
+$(window.parent.document).find("#adminsetup").addClass('stepnow');
+</script>
+<body>
+<div id="jsheit">
+<div class="contenttext adminsetup round">
+<p style="font-size:14px;">请设置网站后台管理员帐号，该管理员帐号拥有最高管理权限且不能被删除。 </p>
+    <form method="post" action="" name="adminsetup">
+     <input name="setup" type="hidden" value="1">
+	 <input name="cndata" type="hidden" value="$cndata" />
+	 <input name="endata" type="hidden" value="$endata" />
+	 <input name="showdata" type="hidden" value="$showdata" />
+	 <input name="se360" type="hidden" value="111111111" />
+	  <fieldset>
+	  <legend><strong>管理员信息</strong></legend>
+		<div class="section1">
+		  <p>管理员用户名</p>
+		  <input type="text" class="text" name="regname" />
+		  <span>输入系统管理员帐号的用户名</span>
+		</div>
+		<div class="section1">
+		  <p>管理员密码</p>
+		  <input type="password" class="text" name="regpwd" />
+		  <span>输入系统管理员帐号的密码</span>
+		</div>
+		<div class="section1">
+		  <p>确认管理员密码</p>
+		  <input type="password" class="text" name="aginpwd" />
+		  <span>确认系统管理员帐号的密码</span>
+		</div>
+		<div class="section1">
+		  <p>手机号码</p>
+		  <input type="text" class="text" name="tel" />
+		  <span>可用于密码找回</span>
+		</div>
+		<div class="section1">
+		  <p>电子邮件</p>
+		  <input type="text" class="text" name="email" />
+		  <span>请务必填写正确，以便当忘记密码时找回</span>
+		</div>
+	  </fieldset>
+<!--
+EOT;
+if($langnum==2){
+echo <<<EOT
+-->
+	  <fieldset>
+	  <legend><strong>网站默认语言</strong></legend>
+		<div style="padding:4px 20px;">
+			<label><input type="radio" name="lang_index_type" value="cn" class="radio" checked="checked"/> 中文</label>&nbsp;&nbsp;
+			<label><input type="radio" name="lang_index_type" value="en" class="radio"/> 英文</label>
+		</div>
+	  </fieldset>
+<!--
+EOT;
+}
+if($cndata=='yes'){
+echo <<<EOT
+-->
+	  <fieldset>
+	  <legend><strong>网站基本信息（中文）</strong></legend>
+		<div class="section1">
+		  <p>网站名称</p>
+		  <input type="text" class="text" name="webname_cn" value="网站名称"/>
+		  <span>输入网站名称</span>
+		</div>
+		<div class="section1">
+		  <p>网站关键词</p>
+		  <input type="text" class="text" name="webkeywords_cn" value="网站关键词"/>
+		  <span>多个关键词请用竖线|隔开，建议3到4个关键词</span>
+		</div>
+	  </fieldset>
+<!--
+EOT;
+}
+if($endata=='yes'){
+echo <<<EOT
+-->
+	  <fieldset>
+	  <legend><strong>网站基本信息（英文）</strong></legend>
+		<div class="section1">
+		  <p>网站名称</p>
+		  <input type="text" class="text" name="webname_en" value="Website Name"/>
+		  <span>输入网站名称</span>
+		</div>
+		<div class="section1">
+		  <p>网站关键词</p>
+		  <input type="text" class="text" name="webkeywords_en" value="Website Keywords"/>
+		  <span>多个关键词请用竖线|隔开，建议3到4个关键词</span>
+		</div>
+	  </fieldset>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	  <p align="center" style="margin-top:5px;"><input type="submit" name="submit" class="submit" value="保存管理设置" onclick="return adminsubmit()" /></p>
+    </form>
+
+</div>
+</div>
+</body></html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

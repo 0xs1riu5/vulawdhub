@@ -1,0 +1,185 @@
+<!--<?php
+require_once template('head'); 
+$title1=$class_index[1][name];
+$title3=$class_index[3][name];
+$title4=$class_index[4][name];
+$moreur2=$class_index[3][url];
+$moreur3=$class_index[4][url];
+$metlinkimg=methtm_link('img','com');
+$metlinktext=methtm_link('text','com');
+$webnav=methtml_classlist('1','','1');
+echo <<<EOT
+-->
+<div id="main">
+ <div class="left">
+             <div class="topbg"><div></div></div>
+<div class="content">
+     <div class="bg">
+			     <h3 class="title"><span>{$title1}</span></h3>
+                     <div class="nav">{$webnav}</div>
+				 <div class="foot"><span></span></div>
+			     <h3 class="title"><span>{$lang_Column2}</span></h3>
+				 <div class="cont">
+                    $otherinfo[info10]
+				 </div>
+				 <div class="foot"><span></span></div>
+	</div>
+</div>
+             <div class="bottombg"><div></div></div>
+		
+ </div>
+ <div class="center">
+	          <h3 class="title first"><span>{$lang_Column3}</span></h3>
+			  <div class="text">$index[content]</div>
+	          <h3 class="title line"><span>{$lang_Column4}</span></h3>
+			  <div class="advice">
+<TABLE cellSpacing=0 cellPadding=0 width=550 align=center border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <DIV id=demo style="OVERFLOW: hidden; WIDTH: 550px; COLOR: #ffffff">
+      <TABLE cellSpacing=0 cellPadding=0 align=left border=0 cellspace="0">
+        <TBODY>
+        <TR>
+          <TD id=demo1 vAlign=top><table width="550" border="0" cellpadding="0" cellspacing="0">
+            <tr>			  
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('','com','time','product') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+<td>
+<div class="indeximg">
+<a href="$val[url]" target="_blank" title="$val[title]">
+<img src="$val[imgurls]" alt="$val[title]" title="$val[title]" width="{$lang_imgwidth}" height="{$lang_imgheight}" />
+</a>
+<h2><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></h2>
+</div>
+</td>
+<!--
+EOT;
+if($i>=$index[product_no])break;
+}
+$mn=$lang_imgwidth;
+echo <<<EOT
+-->
+</tr>
+          </table></TD>
+          <TD id=demo2 vAlign=top> </TD></TR></TBODY></TABLE></DIV>
+</TD></TR></TBODY></TABLE></TD></TR></TABLE>
+<SCRIPT>
+var speed3=25//速度数值越大速度越慢
+var t=false;
+document.getElementById("demo2").innerHTML=document.getElementById("demo1").innerHTML
+function Marquee(){
+if(document.getElementById("demo2").offsetWidth-document.getElementById("demo").scrollLeft<=0)
+document.getElementById("demo").scrollLeft-=document.getElementById("demo1").offsetWidth
+else{
+document.getElementById("demo").scrollLeft++;
+}
+t=false;
+}
+function RMarquee(){  
+if(document.getElementById("demo").scrollLeft<=0)
+  document.getElementById("demo").scrollLeft+=document.getElementById("demo2").offsetWidth
+  else{
+  document.getElementById("demo").scrollLeft--
+  }
+  t=true;
+
+}
+function clickdiv(){
+clearInterval(MyMar)
+Marquee();
+}
+function Rclickdiv(){
+clearInterval(MyMar)
+RMarquee();
+}
+var MyMar=setInterval(Marquee,speed3)
+document.getElementById("demo").onmouseover=function() {clearInterval(MyMar)}
+document.getElementById("demo").onmouseout=function() {if(t){MyMar=setInterval(RMarquee,speed3)}else{MyMar=setInterval(Marquee,speed3)}}
+</SCRIPT>
+	   </div>   
+<!--
+EOT;
+if($index[link_ok]){
+echo <<<EOT
+-->
+			    <h3 class="title line"><span>{$lang_Column7}</span></h3>
+                <div class="links_list">{$metlinktext}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+ </div>
+ <div class="right">
+     <div class="topbg"><div></div></div>
+	 <div class="content">
+	       <div class="bg">
+		         <h3 class="title"><span>{$title3}</span></h3>
+<ul class="list">				   
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('3','com','time','') as $key=>$val){ 
+$i++;
+echo <<<EOT
+-->
+<li><span>$val[top] $val[news] $val[hot]</span><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index[news_no])break;
+}
+echo <<<EOT
+-->
+<li class="more"><a href="$moreur2" title="{$lang_more}">{$lang_more}…</a></li>
+</ul>
+				<h3 class="title line"><span>{$title4}</span></h3>
+<div class="case">
+<!--
+EOT;
+$i=0;
+$heightdt=$lang_caseheight;
+foreach(methtml_getarray('4','com','time','') as $key=>$val){ 
+$i++;
+echo <<<EOT
+-->
+<dl style="height:{$heightdt}px;">
+<dt><a href="$val[url]" target="_blank" title="$val[title]"><img src="$val[imgurls]" alt="$val[title]" title="$val[title]" width="{$lang_casewidth}" height="{$lang_caseheight}" /></a></dt>
+<dd>
+<h4 class="title"><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></h4> 
+<p class="img_text">$val[description]</p>
+</dd>
+</dl>
+<!--
+EOT;
+if($i>=$index[img_no])break;
+}
+echo <<<EOT
+--> 
+<div class="more"><a href="$moreur3" title="{$lang_more}">{$lang_more}…</a></div>
+              </div>
+<script type="text/javascript">
+$(function(){
+	   var dlwidth = $('#main div.case dl');
+	   var ddwidth = $('#main div.case dd');
+	   var widthmx = dlwidth.width() - {$lang_casewidth} - 5;
+	   ddwidth.width(widthmx);
+   }); 
+</script>
+	 </div>
+	 </div>
+	 <div class="bottombg"><div></div></div>
+ </div>
+<div style="clear:both;"></div>
+      
+</div>
+$met_online
+<!--
+EOT;
+require_once template('foot'); 
+?>

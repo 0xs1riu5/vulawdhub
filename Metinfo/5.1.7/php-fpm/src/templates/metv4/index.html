@@ -1,0 +1,135 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div id="index">
+<!--
+EOT;
+if($lang_Column1ok){
+echo <<<EOT
+-->
+	<div class="floatl left" id="leftnav" data-leftnavtype="{$lang_leftnavtype}">
+		<h3 class="titled"><span>{$lang_Index_Column1}</span></h3>
+		<div class="listbox">{$metnavnow}</div>
+	</div>
+<!--
+EOT;
+}else{
+$tclass='metwd100';
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Column2ok || $lang_Column3ok){
+echo <<<EOT
+-->
+	<div class="floatr right {$tclass}">
+<!--
+EOT;
+if($lang_Column2ok){
+$tclass2='line';
+echo <<<EOT
+-->
+		<h3 class="title"><a href="{$Column2[url]}" class="more">{$lang_Index_Detailed}</a><span>{$lang_Index_Column2}</span></h3>
+		<div class="editor border">{$index[content]}<div class="clear"></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Column3ok){
+echo <<<EOT
+-->
+		<h3 class="title {$tclass2}"><a href="{$Column3[url]}" class="more">{$lang_Index_More}</a><span>{$lang_Index_Column3}</span></h3>
+		<div class="box border1" id="indexpdt">
+			{$indexproduct}
+			<div class="clear"></div>
+		</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</div>
+	<div class="clear"></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Column4ok){
+echo <<<EOT
+-->
+	<div class="floatl newsbox metheit">
+		<h3 class="title"><a href="{$Column4[url]}" class="more">{$lang_Index_More}</a><span>{$lang_Index_Column4}</span></h3>
+		{$indexnews1}
+	</div>
+	<div class="floatl newsbox newscenter metheit">
+		<h3 class="title"><a href="{$Column5[url]}" class="more">{$lang_Index_More}</a><span>{$lang_Index_Column5}</span></h3>
+		{$indexnews2}
+	</div>
+	<div class="floatr newsbox metheit">
+		<h3 class="title"><a href="{$Column6[url]}" class="more">{$lang_Index_More}</a><span>{$lang_Index_Column6}</span></h3>
+		{$indexnews3}
+	</div>
+	<div class="clear"></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Column7ok){
+echo <<<EOT
+-->
+	<div class="indecase">
+		<h3 class="title"><div><a class="next" id="next4" href="javascript:void(0);"></a><a class="prev" id="prev4" href="javascript:void(0);"></a><p id="trigger4"></p></div><span>{$lang_Index_Column7}</span></h3>
+		<div class="border"><div class="imglist" id="panel4">{$indexcase}</div></div>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($index_link_ok==1){
+echo <<<EOT
+-->
+	<div class="indexlink denggao">
+	    <h3 class="linktd">{$lang_Index_Column8}</h3>
+		<div class="text denggao" id='linksandy' style='overflow:hidden;'>
+		<div class="list">
+<!--
+EOT;
+$linkimgnum=count($link_img_com);
+if($linkimgnum>0){
+echo <<<EOT
+-->
+		<div class="img">{$metlinkimg}<div class="clear"></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<div class="text">{$metlinktxt}<div class="clear"></div></div>
+		</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+require_once template('foot');
+?>

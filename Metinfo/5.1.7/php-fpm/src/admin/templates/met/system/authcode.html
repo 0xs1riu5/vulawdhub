@@ -1,0 +1,153 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_upfiletips3}">{$lang_upfiletips3}</a></li>
+		<li {$listclass[2]}><a href="?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_upfiletips4}">{$lang_upfiletips4}</a></li>
+		<li {$listclass[3]}><a href="?anyid={$anyid}&lang={$lang}&cs=3" title="{$lang_upfiletips5}">{$lang_upfiletips5}</a></li>
+	</ul>
+</div>
+    <table cellpadding="2" cellspacing="1" class="table authcode">
+<!--
+EOT;
+if($cs==1){
+	if($usertemp[0]!='NOUSER'){
+echo <<<EOT
+-->
+		<tr>
+			<td colspan="2" style="padding:0px 10px;">
+				<table cellpadding="2" cellspacing="1" class="table authcode">
+					<tr>
+						<td class="text">{$lang_authTip5}</td>
+						<td class="input">{$user[domain]}</td>
+					</tr>
+					<tr>
+						<td class="text">{$lang_authTip6}</td>
+						<td class="input">{$user[webname]}</td>
+					</tr>
+					<tr>
+						<td class="text">{$lang_authTip7}</td>
+						<td class="input">{$user[type]}</td>
+					</tr>
+					<tr>
+						<td class="text">{$lang_authTip8}</td>
+						<td class="input">{$user[service]}</td>
+					</tr>
+					<tr>
+						<td class="text">{$lang_authTip9}</td>
+						<td class="input">{$user[buytime]}</td>
+					</tr>
+					<tr>
+						<td class="text">{$lang_authTip10}</td>
+						<td class="input">{$user[lifetime]}</td>
+					</tr>
+				</table>
+		    </td>
+		<tr>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+		<tr> 
+            <td colspan="2" class="input" style="padding:0px 10px;">
+				<h1>{$lang_authDifferentLicense}</h1>
+		        <ol>
+				    <li>{$lang_authDifferent1}；</li>
+		            <li>{$lang_authDifferent2}；</li>
+		            <li>{$lang_authDifferent3}</li>
+		            <li><a href="http://www.metinfo.cn/web/product.htm" target="_blank" title="{$lang_authDifferent4}">{$lang_authDifferent4}</a>；</li>
+				</ol>
+			</td>
+        </tr>
+		<tr> 
+            <td colspan="2" class="input" style="padding:0px 10px;">
+			    <h1 style="margin-top:15px;">{$lang_authGetLicense}</h1>
+				<ul>
+		            <li>{$lang_authGet1}；</li>
+		            <li>{$lang_authGet2}；</li>
+		            <li>{$lang_authGet3}(<a href="http://www.metinfo.cn/blc/" target="_blank">http://www.metinfo.cn/blc/</a>)；</li>
+		            <li>{$lang_authGet4}；</li>
+				</ul>
+		    </td>
+        </tr>
+		<tr> 
+            <td colspan="2" class="input">
+		<input type="submit" url="http://www.metinfo.cn/" class="submit" value="MetInfo{$lang_sysadminOfficialWebsite}" onclick="metsubgeturl($(this))" />
+			</td>
+        </tr>
+<!--
+EOT;
+}
+}elseif($cs==2){
+echo <<<EOT
+-->
+		<form method="POST" name="myform"  action="authcode.php?anyid={$anyid}&action=modify&lang={$lang}&cs={$cs}" target="_self">
+		    <input name="id" type="hidden" value="$authinfo[id]">
+		<tr> 
+            <td class="text">{$lang_authDomain}：</td>
+            <td class="input">{$authurlself}</td>
+		</tr>
+		<tr>
+			<td class="text">{$lang_authKey}：</td>
+            <td class="input"><input name="authpass" type="text" class="text max" value="$authinfo[authpass]" /></td>
+		</tr>
+		<tr> 
+            <td class="text">{$lang_authAuthorizedCode}：</td>
+            <td class="input">
+			    <textarea name="authcode" rows="5" class="textarea">{$authinfo[authcode]}</textarea>
+			</td>
+		</tr>
+		<tr>
+		    <td class="text"></td>
+	        <td class="submit">
+			    <input type="submit" name="Submit" value="{$lang_upfiletips6}" class="submit" />
+			</td>
+        </tr>
+        </form>
+<!--
+EOT;
+}elseif($cs==3){
+echo <<<EOT
+-->
+<form method="POST" name="myform"  action="http://www.metinfo.cn/code/code.php" target="_blank">
+		<tr> 
+            <td class="text">{$lang_authQuery}：</td>
+            <td class="input">
+			    <input name="url" type="text" class="text" value="{$authurlself}" />
+			</td>
+		</tr>
+		<tr>
+		    <td class="text"></td>
+	        <td class="submit">
+			    <input type="submit" name="Submit" value="{$lang_authSubmitQuery}" class="submit" />
+			</td>
+        </tr>
+</form>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr>
+		    <td class="footer" colspan="2">$foot</td>
+	    </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

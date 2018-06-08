@@ -1,0 +1,28 @@
+<!--<?php
+require_once template('head'); 
+$methits=methtml_hits('news');
+$met_newsnext=methtml_prenextinfo();
+echo <<<EOT
+-->
+<div id="web">
+<div class="left">
+	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+     <div class="webcontent">
+         <h1 class="title">$news[title]</h1>
+		 <div class="hits">$methits</div>
+         <div class="editor">$news[content]</div>
+         <div class="page">$met_newsnext</div>
+     </div>
+</div>
+
+<!--
+EOT;
+require_once template('webright'); 
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

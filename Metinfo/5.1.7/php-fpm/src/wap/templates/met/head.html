@@ -1,0 +1,34 @@
+<!--<?php
+$toptext = $wap_description;
+if($module)$toptext = '<div class="waptle">'.$modulename['name'].'</div>';
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<!--STATUS OK-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<link href="$img_url/css/reset.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="$img_url/css/metinfo.css" />
+<title>$waptitle</title>
+<style>
+	html,body{ background:$met_wap_bgcolor;}
+	.logo{ background:$met_wap_logobg;}
+	#footer{ background:$met_wap_footbg;}
+</style>
+</head>
+<body>
+	<div id="content">
+		<div class="logo" style="text-align:center; height:70px; ">
+			<img src="$met_wap_logo" style="padding-top:8px;"/>
+		</div>
+		<div class="img">
+			<img src="$met_wap_img" style="text-align:center;" />
+		</div>
+		<div class="description">
+			<div>$toptext</div>
+		</div>
+<!--
+EOT;
+?>

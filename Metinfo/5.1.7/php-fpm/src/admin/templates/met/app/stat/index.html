@@ -1,0 +1,272 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setbasicWebInfoSet}</title>
+<script src="$img_url/My97DatePicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<!--
+EOT;
+$listclass[1]='class="now"';
+require_once template('app/stat/top');
+echo <<<EOT
+-->
+<!--
+EOT;
+if($action=='all'){
+echo <<<EOT
+-->
+<table cellpadding="0" cellspacing="1" class="stat_table">
+<!--
+EOT;
+if($st==$et){
+echo <<<EOT
+-->
+<tr>
+	<td colspan='5' class="title">
+		<div class="more">
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$dtime}&et={$dtime}&cs=1" {$dancs[1]} title="{$lang_statips10}">{$lang_statips10}</a>
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$ztime}&et={$ztime}&cs=2" {$dancs[2]} title="{$lang_statips11}">{$lang_statips11}</a>
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$xtime}&et={$dtime}&cs=3" {$dancs[3]} title="{$lang_statips12}">{$lang_statips12}</a>
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$timeq30}&et={$dtime}&cs=4" {$dancs[4]} title="{$lang_statips13}">{$lang_statips13}</a>
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$timed1}&et={$dtime}&cs=5" {$dancs[5]} title="{$lang_statips14}">{$lang_statips14}</a>&nbsp;-&nbsp;{$lang_statips15}
+			<form name="myform" action="index.php?lang={$lang}&anyid={$anyid}&action=all" method="POST" target="_self" class="stet">
+				<input type="text" name="stt" value="{$tmst}" class="txt Wdate" onclick="WdatePicker()" /> {$lang_columnmove2}
+				<input type="text" name="ett" value="{$tmet}" class="txt Wdate" onclick="WdatePicker()" />
+				<input type="submit" name="submit" value="{$lang_Submitall}" class="submitmi" />
+			</form>
+		</div>
+	{$lang_statips34}<span style="font-weight:normal; color:#fff;">({$lang_statips17} {$tmst} {$lang_batchtips14} {$tmet})</span></td>
+</tr>
+	<tr class="j">
+		<td class="t" width="18%">{$lang_statips35}</td>
+		<td class="t" width="20%">PV</td>
+		<td class="t" width="20%">{$lang_statips21}</td>
+		<td class="t" width="20%">IP</td>
+		<td class="t" width="20%">{$lang_statips22}</td>
+	</tr>
+<!--
+EOT;
+$i=0;
+foreach($summarylist as $key=>$val){
+$i++;
+$val['week']=$lang_statips36.$weekarray[date('w',$val['stattime'])];
+$val['stattime']=date("Y-m-d",$val['stattime']);
+$val['per']=sprintf("%.2f",($val['pv']/$val['alone']));
+echo <<<EOT
+-->
+	<tr>
+		<td class="t">{$val['stattime']}{$val['week']}</td>
+		<td>{$val['pv']}</td>
+		<td>{$val['alone']}</td>
+		<td>{$val['ip']}</td>
+		<td>{$val['per']}</td>
+	</tr>
+<!--
+EOT;
+}}else{
+echo <<<EOT
+-->
+<tr>
+	<td class="title">
+		<div class="more">
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$dtime}&et={$dtime}&cs=1" {$dancs[1]} title="{$lang_statips10}">{$lang_statips10}</a>
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$ztime}&et={$ztime}&cs=2" {$dancs[2]} title="{$lang_statips11}">{$lang_statips11}</a>
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$xtime}&et={$dtime}&cs=3" {$dancs[3]} title="{$lang_statips12}">{$lang_statips12}</a>
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$timeq30}&et={$dtime}&cs=4" {$dancs[4]} title="{$lang_statips13}">{$lang_statips13}</a>
+			<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$timed1}&et={$dtime}&cs=5" {$dancs[5]} title="{$lang_statips14}">{$lang_statips14}</a>&nbsp;-&nbsp;{$lang_statips15}
+			<form name="myform" action="index.php?lang={$lang}&anyid={$anyid}&action=all" method="POST" target="_self" class="stet">
+				<input type="text" name="stt" value="{$tmst}" class="txt Wdate" onclick="WdatePicker()" /> {$lang_columnmove2}
+				<input type="text" name="ett" value="{$tmet}" class="txt Wdate" onclick="WdatePicker()" />
+				<input type="submit" name="submit" value="{$lang_Submitall}" />
+			</form>
+		</div>
+	{$lang_statips37}<span style="font-weight:normal; color:#fff;">({$lang_statips17} {$tmst} {$lang_batchtips14} {$tmet})</span></td>
+</tr>
+<tr>
+<td><div style="height:220px;" id="charttd"><div id='chartContainer'></div></div></td>
+</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</table>
+<table cellpadding="0" cellspacing="1" class="stat_table">
+<!--
+EOT;
+if($st==$et){
+echo <<<EOT
+-->
+<tr>
+	<td class="title">{$lang_statips38}</td>
+</tr>
+<tr>
+<td><div style="height:220px;" id="charttd"><div id='chartContainer'></div></div>
+<div align='center'>
+<label><input type="radio" name="view_flash" checked="checked" onclick="getchangexml('pv','{$st}','{$et}')"> <strong>{$lang_statips39}</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;
+<label><input type="radio" name="view_flash" onclick="getchangexml('al','{$st}','{$et}')"> <strong>{$lang_statips40}</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;
+<label><input type="radio" name="view_flash" onclick="getchangexml('ip','{$st}','{$et}')"> <strong>{$lang_statips41}</strong></label>
+</div>
+</td>
+</tr>
+<!--
+EOT;
+}else{
+echo <<<EOT
+--> 
+<tr>
+	<td colspan='5' class="title">{$lang_statips34}</td>
+</tr>
+	<tr class="j">
+		<td class="t" width="18%">{$lang_statips35}</td>
+		<td class="t" width="20%">PV</td>
+		<td class="t" width="20%">{$lang_statips21}</td>
+		<td class="t" width="20%">IP</td>
+		<td class="t" width="20%">{$lang_statips22}</td>
+	</tr>
+<!--
+EOT;
+$i=0;
+foreach($summarylist as $key=>$val){
+$i++;
+$datew=date('w',$val['stattime']);
+$val['week']='';
+if($datew==6 || $datew==0)$val['week']=$lang_statips36.$weekarray[$datew];
+$val['stattimed']=date("Y-m-d",$val['stattime']);
+$val['per']=sprintf("%.2f",($val['pv']/$val['alone']));
+echo <<<EOT
+-->
+	<tr>
+		<td class="t"><a href="index.php?lang={$lang}&anyid={$anyid}&action=all&st={$val['stattime']}&et={$val['stattime']}" title="{$lang_setfileview}{$val['stattimed']}">{$val['stattimed']}</a> {$val['week']}</td>
+		<td>{$val['pv']}</td>
+		<td>{$val['alone']}</td>
+		<td>{$val['ip']}</td>
+		<td>{$val['per']}</td>
+	</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+</table>
+<script language="JavaScript" src="{$img_url}/Chart/js/FusionCharts.js"></script>
+<script type="text/javascript">
+	var wdth = $('#charttd').width()-20;
+	var heth = '220';
+<!--
+EOT;
+if($st==$et){
+echo <<<EOT
+-->
+   var chart = new FusionCharts("{$img_url}/Chart/swf/FCF_Column2D.swf", "ChartId", wdth, heth);
+   chart.setDataURL("data.php?action=index-all%26st={$st}%26et={$et}%26lang=$lang");
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+   var chart = new FusionCharts("{$img_url}/Chart/swf/FCF_MSLine.swf", "ChartId", wdth, heth);
+   chart.setDataURL("data.php?action=index-all-line%26st={$st}%26et={$et}%26lang=$lang");
+<!--
+EOT;
+}
+echo <<<EOT
+-->   
+   chart.render("chartContainer");
+</script>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+<table cellpadding="0" cellspacing="1" class="stat_table">
+<tr>
+	<td colspan='5' class="title">
+	<div class="more">
+		<a href="index.php?lang={$lang}&anyid={$anyid}&action=all&cs=1" title="{$lang_feedbackShowAll}">{$lang_feedbackShowAll}</a>
+	</div>
+	{$lang_statips42}
+	</td>
+</tr>
+	<tr class="j">
+		<td class="t" width="18%"></td>
+		<td class="t" width="20%">PV</td>
+		<td class="t" width="20%">{$lang_statips21}</td>
+		<td class="t" width="20%">IP</td>
+		<td class="t" width="20%">{$lang_statips22}</td>
+	</tr>
+	<tr class="j">
+		<td class="t">{$lang_statips10}</td>
+		<td>{$visit_summary[pv]}</td>
+		<td>{$visit_summary[alone]}</td>
+		<td>{$visit_summary[ip]}</td>
+		<td>{$per_visit}</td>
+	</tr>
+	<tr class="j">
+		<td class="t">{$lang_statips11}</td>
+		<td>{$visit_summaryz[pv]}</td>
+		<td>{$visit_summaryz[alone]}</td>
+		<td>{$visit_summaryz[ip]}</td>
+		<td>{$per_visitz}</td>
+	</tr>
+	<tr>
+		<td class="t">{$lang_statips43}</td>
+		<td>{$pvaver}</td>
+		<td>{$alaver}</td>
+		<td>{$ipaver}</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="t">{$lang_statips44}</td>
+		<td>{$maxpv}</td>
+		<td>{$maxal}</td>
+		<td>{$maxip}</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="t">{$lang_statips45}</td>
+		<td>{$pvaccum}</td>
+		<td>{$alaccum}</td>
+		<td>{$ipaccum}</td>
+		<td></td>
+	</tr>
+</table>
+<table cellpadding="0" cellspacing="1" class="stat_table">
+<tr>
+	<td class="title">{$lang_statips46}</td>
+</tr>
+<tr>
+<td><div style="height:270px;" id="charttd"><div id='chartContainer'></div></div></td>
+</tr>
+</table>
+<script language="JavaScript" src="{$img_url}/Chart/js/FusionCharts.js"></script>
+<script type="text/javascript">
+	var wdth = $('#charttd').width()-20;
+	var heth = '270';
+   var chart = new FusionCharts("{$img_url}/Chart/swf/FCF_MSLine.swf", "ChartId", wdth, heth);
+   chart.setDataURL("data.php?action=time%26st={$dtime}%26et={$dtime}%26lang=$lang");		   
+   chart.render("chartContainer");
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

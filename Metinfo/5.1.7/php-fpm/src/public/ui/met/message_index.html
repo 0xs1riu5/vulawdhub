@@ -1,0 +1,18 @@
+<!--<?php
+require_once template('head'); 
+require_once template('sidebar');
+$messagelist=metlabel_messagelist();
+$message_form=messagelabel_table(1);
+echo <<<EOT
+-->
+       <div class="active" id="messagelist">
+            {$messagelist}
+        <div id="flip">{$page_list}</div>
+			<h3 class="ctitle">{$lang_SubmitInfo}</h3>
+			{$message_form}
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

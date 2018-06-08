@@ -1,0 +1,61 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_memberAdd}</title>
+</head>
+<body>
+<script type="text/javascript">
+function array_submit(my,form){
+	var name=$('#array_name').val();
+	var webpower=parseInt($('#user_webpower').val());
+	if(!name){
+		alert('$lang_memberjstxt4');
+		return false;
+	}
+	if((webpower<1||webpower>255)||isNaN(webpower)){
+		alert('$lang_memberjstxt5');
+		return false;
+	}
+	return Smit(my,form);
+}
+</script>
+<!--
+EOT;
+$title="{$lang_memberAdd}";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form method="POST" name="myform" id="myform" action="arraysave.php?action=add&lang=$lang&anyid={$anyid}" target="_self">
+<table cellpadding="2" cellspacing="1" class="table">
+			<tr> 
+            <td class="text">{$lang_memberarayname}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input id="array_name" name="array_name" type="text" class="text" value="{$admin_list[array_name]}"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberpermission}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input id="user_webpower" name="user_webpower" type="tex" class="text" value="{$admin_list[user_webpower]}" >
+			<span class="tips">{$lang_memberaddarraytips1}</span>
+			</td>
+          </tr> 
+		  <tr> 
+          <td class="text"></td>
+          <td class="submit">
+		<input type="submit" name="submit" id="passsubmit" value="{$lang_Submit}" class="submit" 
+		onclick="return array_submit($(this),'myform')" />
+		  </td>
+          </tr>
+          <tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr> 
+</table>
+        </form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

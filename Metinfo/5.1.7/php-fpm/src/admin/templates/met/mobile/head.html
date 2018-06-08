@@ -1,0 +1,117 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+echo <<<EOT
+-->
+<!DOCTYPE html> 
+<html> 
+　<head> 
+　 <title>{$lang_metinfo}</title> 
+　 <meta name="viewport" content="width=device-width, initial-scale=1"> 
+　 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<link rel="stylesheet" type="text/css" href="$img_url/css/mobile.css">
+	<script type="text/javascript"src="{$depth}../include/metvar.js"></script>
+　 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+　 <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+　 <script src="$img_url/js/mobile.js"></script>
+　 <script src="$img_url/js/jquery.validate.min.js"></script>
+</head> 
+<body>
+	<div data-role="page">
+	<div class="ui-bar" data-theme="a" data-role="header" style="height:30px;">
+		<div class="ui-btn-left logininfo">
+			{$lang_indexwelcom} {$metinfo_admin_name}
+		</div>
+<!--
+EOT;
+$langokmbs=0;
+$mb_index1=$mb_index?'':'../';
+if(count($met_langok)>1 and (count($adminlang)>3 or $langadminok=="metinfo") and $met_lang_mark){
+$langname=utf8substr($met_langok[$lang][name], 0, 9);
+$langokmbs=1;
+echo <<<EOT
+-->
+        <div data-role="fieldcontain" class="ui-btn-right yesjslanglist" style="margin-top:3px;display:none;">
+            <select name="selectmenu1" id="selectmenu1" data-mini="true" onchange=javascript:window.location.href=this.options[this.selectedIndex].value>
+<!--
+EOT;
+foreach($met_langok as $key=>$val){
+if($langadminok=="metinfo" or (strstr($langadminok,"-".$val[mark]."-"))){
+$sed=$val[mark]==$lang?'selected':'';
+echo <<<EOT
+-->
+				<option value="{$mb_index1}index.php?lang={$val[mark]}" {$sed}>{$val[name]}</option>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+            </select>
+        </div>	
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($langokmbs){
+echo <<<EOT
+-->
+	<div class="nojslanglist">
+		{$lang_langweb}{$lang_marks}
+<!--
+EOT;
+$i=0;
+foreach($met_langok as $key=>$val){
+if($langadminok=="metinfo" or (strstr($langadminok,"-".$val[mark]."-"))){
+$i++;$mpk='';
+if($i!=1)$mpk=' - ';
+echo <<<EOT
+-->
+				{$mpk}<a href="{$mb_index1}index.php?lang={$val[mark]}" {$sed}>{$val[name]}</a>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</div>
+    <div data-role="tabbar" data-iconpos="top" data-theme="a" class="codiqa-control ui-header ui-bar-a ui-navbar">
+        <ul class="ui-grid-b">
+            <li class="ui-block-a">
+                <a href="{$mb_index1}index.php?lang={$lang}" data-theme="" data-icon="home" class="{$navoks[1]} ui-state-persist ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-ajax="false">
+					<span class="ui-btn-inner">
+						<span class="ui-btn-text">{$lang_sysadminUnread}</span>
+					<span class="ui-icon ui-icon-star ui-icon-shadow ui-iconsize-18">&nbsp;</span>
+					</span>
+                </a>
+            </li>
+            <li class="ui-block-b">
+                <a href="{$mb_index1}stat/stat.php?lang={$lang}" data-theme="" data-icon="star" class="{$navoks[2]} ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-ajax="false">
+					<span class="ui-btn-inner">
+						<span class="ui-btn-text">{$lang_indexwebcount}</span>
+					<span class="ui-icon ui-icon-star ui-icon-shadow ui-iconsize-18">&nbsp;</span>
+					</span>
+                </a>
+            </li>
+            <li class="ui-block-c">
+                <a href="{$mb_index1}add/index.php?lang={$lang}" data-theme="" data-icon="info" class="{$navoks[3]} ui-btn ui-btn-inline ui-btn-icon-top ui-btn-up-a" data-ajax="false">
+					<span class="ui-btn-inner">
+						<span class="ui-btn-text">{$lang_mobiletips3}</span>
+					<span class="ui-icon ui-icon-star ui-icon-shadow ui-iconsize-18">&nbsp;</span>
+					</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

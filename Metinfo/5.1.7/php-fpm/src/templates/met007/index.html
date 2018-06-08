@@ -1,0 +1,223 @@
+<!--<?php
+require_once template('head'); 
+$Mark1=$lang_Index_Column1_Mark;
+$Mark2=$lang_Index_Column2_Mark;
+$Mark3=$lang_Index_Column3_Mark;
+$Mark4=$lang_Index_Column4_Mark;
+$Mark5=$lang_Index_Column5_Mark;
+$Tite=$lang_Index_Column==""?$class_index[$lang_M1][name]:$lang_Index_Column;
+$Tite1=$lang_Index_Column1==""?$class_index[$Mark1][name]:$lang_Index_Column1;
+$Tite2=$lang_Index_Column2==""?$class_index[$Mark2][name]:$lang_Index_Column2;
+$Tite3=$lang_Index_Column3==""?$class_index[$Mark3][name]:$lang_Index_Column3;
+$Tite4=$lang_Index_Column4;
+$Tite5=$lang_Index_Column5==""?$class_index[$Mark5][name]:$lang_Index_Column5;
+$Tite6=$lang_Index_Column6;
+$Url=$class_index[$lang_M1][url];
+$Url1=$class_index[$Mark1][url];
+$Url2=$class_index[$Mark2][url];
+$Url3=$class_index[$Mark3][url];
+$Url4=$class_index[$Mark4][url];
+$Url5=$class_index[$Mark5][url];
+$More=$lang_Index_More;
+$metlinkimg=methtm_link('img','com');
+$metlink=methtm_link('text','com');
+echo <<<EOT
+-->
+<!--
+EOT;
+$M1=$lang_M1;
+$Down=$lang_Down;
+$fheight=$met_flasharray[$classnow][y]-2;
+$style='';
+if($lang_flashr=='off')$style="style='width:100%;'";
+echo <<<EOT
+-->
+        <div id="flash">
+		    <div class="left floatl" $style>{$methtml_flash}</div>
+<!--
+EOT;
+if($lang_flashr=='on'){
+echo <<<EOT
+-->
+		    <div class="right floatr">
+			    <div class="top" style="height:{$fheight}px;">
+<h3 class="title"><a href="$Url" title="$More" class="more floatr">$More</a><div class="line"><span>$Tite</span></div></h3>
+					<div class="text clear">
+				<div class="box editor">{$index[content]}</div>
+				    </div>
+				</div>
+			</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<div class="clear"></div>
+		</div> 
+<div id="main">
+    <div class="left floatl column">
+	    <h3 class="title"><a href="$Url1" title="$More" class="more floatr">$More</a><div class="line"><span>$Tite1</span></div></h3>
+		   <ul class="newsx list-style">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray($Mark1,'all','time','') as $key=>$val){
+$i++;
+$k='';
+if($i==1)$k='class="top"';
+echo <<<EOT
+-->
+            <li $k><span>[{$val[updatetime]}]</span>
+			    <a href="$val[url]" target="$Blank" title="$val[title]">$val[title]</a>$val[top] $val[news] $val[hot]
+			</li>
+<!--
+EOT;
+if($i>=$index_news_no)break;
+}
+echo <<<EOT
+-->
+            </ul>
+	</div>
+	<div class="center floatl column">
+	    <h3 class="title"><a href="$Url2" title="$More" class="more floatr">$More</a><div class="line"><span>$Tite2</span></div></h3>
+		   <ul class="newsx list-style">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray($Mark2,'all','time','') as $key=>$val){
+$i++;
+$k='';
+if($i==1)$k='class="top"';
+echo <<<EOT
+-->
+            <li $k><span>[{$val[updatetime]}]</span>
+			    <a href="$val[url]" target="$Blank" title="$val[title]">$val[title]</a>$val[top] $val[news] $val[hot]
+			</li>
+<!--
+EOT;
+if($i>=$index_news_no)break;
+}
+echo <<<EOT
+-->
+            </ul>
+	</div>
+	<div class="right floatr column">
+	    <h3 class="title"><a href="$Url3" title="$More" class="more floatr">$More</a><div class="line"><span>$Tite3</span></div></h3>
+		   <ul class="newsx list-style">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray($Mark3,'all','time','') as $key=>$val){
+$i++;
+$k='';
+if($i==1)$k='class="top"';
+echo <<<EOT
+-->
+            <li $k><span>[{$val[updatetime]}]</span>
+			    <a href="$val[url]" target="$Blank" title="$val[title]">$val[title]</a>$val[top] $val[news] $val[hot]
+			</li>
+<!--
+EOT;
+if($i>=$index_news_no)break;
+}
+echo <<<EOT
+-->
+            </ul>
+	</div>
+	<div class="clear"></div>
+<!--
+EOT;
+$LiY=$lang_Index_ImgY + 25 + 6;
+$ImgX=$lang_Index_ImgX + 6;
+echo <<<EOT
+-->
+	<div class="product floatl columnde">
+	    <h3 class="title">
+		    <div class="flip floatr">
+			    <a class="next" id="next4" href="javascript:void(0);"></a>
+		        <a class="prev" id="prev4" href="javascript:void(0);"></a>
+				<p id="trigger4"></p>
+			</div>
+			<div class="line"><span>$Tite4</span></div>
+		</h3>
+		<div class="imglist" id="panel4" style="height:{$LiY}px;">
+		   <ul class="list-style" style="height:{$LiY}px;">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('','com','time',$Mark4) as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+            <li style="width:{$ImgX}px; height:{$LiY}px;">
+			    <a href="$val[url]" target="$Blank" title="$val[title]" class="img">
+				    <img src="$val[imgurls]" title="$val[title]" alt="$val[title]" width="{$lang_Index_ImgX}" height="{$lang_Index_ImgY}" />
+				</a>
+			    <h4><a href="$val[url]" target="$Blank" title="$val[title]">$val[title]</a></h4>
+			</li>
+<!--
+EOT;
+if($i>=$index_product_no)break;
+}
+echo <<<EOT
+-->
+            </ul>
+		</div>
+	</div>
+	<div class="case floatr columnde">
+	    <h3 class="title"><a href="$Url5" title="$More" class="more floatr">$More</a><div class="line"><span>$Tite5</span></div></h3>
+		   <ul class="newsx list-style">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray($Mark5,'all','time','') as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+            <li><a href="$val[url]" target="$Blank" title="$val[title]">$val[title]</a>$val[top] $val[news] $val[hot]</li>
+<!--
+EOT;
+if($i>=$index_img_no)break;
+}
+echo <<<EOT
+-->
+            </ul>
+	</div>
+	<div class="clear"></div> 
+<!--
+EOT;
+if($index_link_ok==1){
+echo <<<EOT
+-->
+	<div class="links">
+	    <h4 class="title">$Tite6</h4>
+		<div class="text">
+		<div class="list">
+<!--
+EOT;
+if($index_link_img>0){
+echo <<<EOT
+-->
+		<div class="img">$metlinkimg</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+        <div class="clear"></div>
+		$metlink
+		</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+
+<!--
+EOT;
+require_once template('foot');
+?>

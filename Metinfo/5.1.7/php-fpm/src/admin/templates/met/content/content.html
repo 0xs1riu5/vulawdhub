@@ -1,0 +1,95 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setbasicWebInfoSet}</title>
+<style>
+img{ behavior: url({$img_url}/iepngfix.htc); }
+</style>
+
+</head>
+<body>
+<!--
+EOT;
+if(($class1 || $class2) && !$met_class[$class2][releclass])$title="<a href='?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}'>{$met_class[$class1][name]}</a>";
+if(!$met_class[$class2][releclass] && $class2)$title.=" > ";
+if($class2)$title.="<a href='?anyid={$anyid}&lang={$lang}&module=1&class2={$class2}'>{$met_class[$class2][name]}</a>";
+$other_op ='<span class="contentshowtype">'.$lang_columnarrangement1;
+$awegcs[$met_content_type]="class='nowawecs'";
+$other_op.="<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=2\" title=\"{$lang_columnarrangement2}{$lang_columnarrangement3}\" {$awegcs[2]}>{$lang_columnarrangement3}</a>".' - '."<a href=\"content.php?anyid={$anyid}&lang={$lang}&met_content_type=1\" title=\"{$lang_columnarrangement2}{$lang_columnarrangement4}\" {$awegcs[1]}>{$lang_columnarrangement4}</a></span>";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="metv5box">
+	<ul class="columnlist">
+<!--
+EOT;
+foreach ($contentlist as $key=>$val){
+echo <<<EOT
+--> 
+		<li class="contlist">
+			<div class="box">
+				<div class="img" style="text-align:center;"><a href='{$val[conturl]}'><img src="{$img_url}/metv5/tubiao_{$val[module]}.png" /></a></div>
+			<h2 class="title"><a href='{$val[conturl]}'>{$val['name']}</a></h2>
+			</div>
+			<div class="text">{$val['set']}<div class="clear" style="height:2px;"></div></div>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+</ul>
+</div>
+<script type="text/javascript">
+$('.contmorehver').hover(
+	function () {
+		$(this).find('div.contmore').show();
+	},
+	function () {
+		$(this).find('div.contmore').hide();
+	}
+);
+function metHeight(group,type) {
+	tallest = 0;
+	group.each(function() {
+		thisHeight = $(this).height();
+		if(thisHeight > tallest) {
+			tallest = thisHeight;
+		}
+	});
+	if(type==1){
+		group.each(function(){
+			if($(this).outerHeight(true)<tallest){
+				var ht = (tallest - $(this).outerHeight(true))/2;
+				$(this).css('padding-top',ht+'px');
+				$(this).css('padding-bottom',ht+'px');
+			}
+		});
+	}else{
+		group.height(tallest);
+		group.each(function(){
+			var h = tallest - $(this).find('.img').outerHeight(true);
+			var x = h - $(this).find('.title').outerHeight(true);
+			if(x>0){
+				var ht = (x/2)+3;
+				$(this).find('.title').css('padding-top',ht+'px');
+				$(this).find('.title').css('padding-bottom',ht+'px');
+			}
+		});
+	}
+}
+metHeight($('.box'));
+metHeight($('.contlist .text'),1);
+</script>
+<div class="clear"></div>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

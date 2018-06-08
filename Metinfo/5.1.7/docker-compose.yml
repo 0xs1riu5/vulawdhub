@@ -1,0 +1,17 @@
+version: '2'
+services:
+  php5-app:
+    build: ./php-fpm
+    image: s1r1u5/metinfo:5.1
+    restart: always
+    links: 
+        - mysql_metinfo:db
+    ports:
+        - 8002:80
+    depends_on:
+        - mysql_metinfo
+
+  mysql_metinfo:
+      build: ./mysql
+      image: s1r1u5/metinfo_mysql:5.7
+

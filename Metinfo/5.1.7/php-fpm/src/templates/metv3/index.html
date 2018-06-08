@@ -1,0 +1,179 @@
+<!--<?php
+require_once template('head'); 
+$title1=$lang_Column1;
+$title2=$lang_Column2;
+$title3=$lang_Column3;
+$title4=$lang_Column4;
+$title5=$lang_Column5;
+$title6=$lang_Column6;
+$title7=$lang_Column7;
+$metlinkimg=methtm_link('img','com');
+$metlinktext=methtm_link('text','com');
+echo <<<EOT
+-->
+<div id="main">
+   <div class="left">
+      <h3 class="title"><span>{$title1}</span></h3>
+       <div class="content editor">$index[content]</div>
+	      <div class="news-left">
+		     <h3 class="title"><span>{$title2}</span></h3>
+			 <ul class="index-list">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('1','all','time','') as $key=>$val){ 
+$i++;
+echo <<<EOT
+-->
+                 <li><span>$val[top] $val[news] $val[hot]</span><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index_news_no)break;
+}
+echo <<<EOT
+-->
+             </ul>
+		  </div>		 		  
+		  <div class="news-right">
+		     <h3 class="title"><span>{$title3}</span></h3>
+			 <ul class="index-list">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('2','all','time','') as $key=>$val){ 
+$i++;
+echo <<<EOT
+-->
+                 <li><span>$val[top] $val[news] $val[hot]</span><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></li>
+<!--
+EOT;
+if($i>=$index_news_no)break;
+}
+echo <<<EOT
+-->  
+             </ul>
+		  </div>	  
+	    <h3 class="title line"><span>{$title4}</span></h3>
+	<div clas="index-img">
+	<style type="text/css">
+	.left .left-arr,.left .right-arr,.left .cont,.left .bg-center,.left .index-img{ height:{$lang_imgheight}px;}
+	</style>
+		<div class="bg-top"><div></div></div>
+		<div id="trigger4"></div>
+		<div class="bg-center">
+			 <div class="left-arr" id="LeftArr"></div>
+			     <div class="picdiv" id="picdiv" style="height:{$lang_imgheight}px;">
+				 <div class="piccont" style=" height:{$lang_imgheight}px;">
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('3','all','time','') as $key=>$val){ 
+$i++;
+echo <<<EOT
+-->
+			       <div class="cont" style="width:{$lang_imgwidth}px; height:{$lang_imgheight}px;">
+				       <a href="$val[url]" target="_blank" title="$val[title]">
+			     <img src="$val[imgurls]" alt="$val[title]" title="$val[title]" width="{$lang_imgwidth}" height="{$lang_imgheight}" />
+			            </a>
+					</div>
+<!--
+EOT;
+if($i>=$index_product_no)break;
+}
+echo <<<EOT
+--> 
+                 </div>
+			     </div>
+			<div class="right-arr" id="RightArr"></div>
+			<div style="clear:both"></div>	
+		</div>
+		<div class="bg-bottom"><div></div></div>
+	</div>
+	<script type="text/javascript">
+$(function(){
+	$("#trigger4").switchable("#picdiv > div.piccont > div.cont", {
+		triggerType: "click",
+		effect: "scroll",
+		steps: 1,
+		visible: 7
+	}).autoplay().carousel().mousewheel();
+	
+	var api4 = $("#trigger4").switchable();
+	$("#RightArr").click(function(){
+		api4.next();
+	});
+	$("#LeftArr").click(function(){
+		api4.prev();
+	});
+});
+
+
+	</script>
+<!--
+EOT;
+if($index[link_ok]){
+echo <<<EOT
+-->
+			    <div class="links">
+				    <h3 class="title"><span>{$title5}</span></h3>
+                        <div class="links_list">
+                            <div>{$metlinkimg}</div>
+                            <div>{$metlinktext}</div>
+                        </div>
+				</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		  	  
+   </div>
+     
+   <div class="right">
+       <h3 class="title"><span>{$title6}</span></h3>
+<!--
+EOT;
+$i=0;
+foreach(methtml_getarray('4','com','time','') as $key=>$val){ 
+$i++;
+echo <<<EOT
+-->
+<dl class="case_list" id="dldom-$i">
+     <dt id="dtdom-$i"><a href="$val[url]" target="_blank" title="$val[title]"><img src="$val[imgurls]" alt="$val[title]" width="{$lang_casewidth}" height="{$lang_caseheight}" title="$val[title]" /></a></dt>
+     <dd id="dddom-$i">
+	     <h3><a href="$val[url]" target="_blank" title="$val[title]">$val[title]</a></h3>
+         <h4>$val[description]</h4>
+     </dd>
+	 <div style="clear:both;"></div>
+</dl>
+<!--
+EOT;
+if($i>=$index_img_no)break;
+}
+echo <<<EOT
+-->
+<script type="text/javascript">
+ for( var i=1;i<=$i;i++){
+  var dl=document.getElementById('dldom-' + i);
+  var dt=document.getElementById('dtdom-' + i);
+  var dd=document.getElementById('dddom-' + i);
+   dl.style.height = {$lang_caseheight} + 5 + 'px';
+   dd.style.width = dl.scrollWidth - dt.scrollWidth - 20 + 'px';
+   }
+</script>
+ 
+ 
+			    <h3 class="title line"><span>{$title7}</span></h3>
+				<div class="bg-top"><div></div></div>
+				<div class="content">
+                        <div>{$otherinfo[info10]}</div>
+				</div>
+				<div class="bg-bottom"><div></div></div>
+			</div>
+			<div style="clear:both"></div>
+</div>
+{$metonline}
+<!--
+EOT;
+require_once template('foot');
+?>

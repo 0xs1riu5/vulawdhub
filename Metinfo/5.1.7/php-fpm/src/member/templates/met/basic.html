@@ -1,0 +1,47 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
+<div id="member_basic">
+<input name="useid" type="hidden"size="20" maxlength="20" value="$admin_list[admin_id]">
+<h3 class="hrtl"><span>{$lang_memberIndex9}</span></h3>
+<ul class="hrtl_txt">
+	<li><em>{$lang_memberbasicUserName}</em> <span>$admin_list[admin_id]</span></li>
+	<li><em>{$lang_memberbasicType}</em> <span>$access</span></li>
+	<li><em>{$lang_memberbasicLoginNum}</em> <span>$admin_list[admin_login]</span></li>
+	<li><em>{$lang_memberbasicLastLogin}</em> <span>$admin_list[admin_modify_date]</span></li>
+</ul>
+<h3 class="hrtl line"><span>活跃情况</span></h3>
+<ul class="hrtl_txt_1">
+	<li>
+		<div class="hrtl_t hrtl1"><div>{$lang_memberIndex5}(<span>{$feedback_totalcount}</span>)</div></div>
+		<div class="hrtl_t hrtl2"><div>
+		<span style="color:#f00;">{$feedback_totalcount_readyes}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}
+		</div></div>
+		<div class="hrtl_t hrtl3"><div>
+		<span style="color:#f00;">{$feedback_totalcount_readno}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}
+		</div></div>
+	</li>
+	<li>
+		<div class="hrtl_t hrtl1"><div>{$lang_memberIndex6}(<span>{$message_totalcount}</span>)</div></div>
+		<div class="hrtl_t hrtl2"><div><span style="color:#f00;">{$message_totalcount_readyes}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}</div></div>
+		<div class="hrtl_t hrtl3"><div><span style="color:#f00;">{$message_totalcount_readno}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}</div></div>
+	</li>
+	<li>
+		<div class="hrtl_t hrtl1"><div>{$lang_memberIndex15}(<span>{$cv_totalcount}</span>)</div></div>
+		<div class="hrtl_t hrtl2"><div><span style="color:#f00;">{$cv_totalcount_readyes}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex13}</div></div>
+		<div class="hrtl_t hrtl3"><div><span style="color:#f00;">{$cv_totalcount_readno}</span>{$lang_memberIndex12}{$lang_memberbasicType3}{$lang_memberIndex14}</div></div>
+	</li>
+</ul>
+<h3 class="hrtl line"><span>{$lang_memberIndex16}</span></h3>
+<div class="hrtl_texts">
+{$met_membercontrol}
+</div>
+</div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

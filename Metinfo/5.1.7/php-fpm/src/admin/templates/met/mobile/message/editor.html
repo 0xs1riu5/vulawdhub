@@ -1,0 +1,78 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('mobile/head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<div style="padding:15px;">
+<form  method="POST" name="myform"  action="editor.php?action=editor&lang=$lang" target="_self">
+		<input name="id" type="hidden" value="$id">
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td class="text">{$lang_name}{$lang_marks}</td>
+            <td class="input">$message_list[name]</td>
+          </tr> 
+		   <tr> 
+            <td class="text">{$lang_messageTel}{$lang_marks}</td>
+            <td class="input">$message_list[tel]</td>
+          </tr> 
+		   <tr> 
+            <td class="text">Email{$lang_marks}</td>
+            <td class="input">$message_list[email]</td>
+          </tr> 
+		   <tr> 
+            <td class="text">{$lang_messageeditorContact}{$lang_marks}</td>
+            <td class="input">$message_list[contact]</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_messageeditorContent}{$lang_marks}</td>
+            <td class="input"><textarea name="info" class="textarea gen" cols="50" rows="5">$message_list[info]</textarea></td>
+			</tr> 
+		  <tr> 
+            <td class="text">{$lang_messageTime}{$lang_marks}</td>
+            <td class="input">$message_list[addtime]</td>
+          </tr>
+			 <tr> 
+            <td class="text">{$lang_messageID}{$lang_marks}</td>
+            <td class="input">$message_list[customerid]</td>
+			</tr> 
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->
+			<tr> 
+            <td class="text">{$lang_access}{$lang_marks}</td>
+            <td class="input"><select name="access" id="access" >
+             $level
+            </select></td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			 <tr> 
+            <td class="text">{$lang_messageeditorReply}{$lang_marks}</td>
+            <td class="input"><textarea name="useinfo" cols="50" class="textarea gen" rows="5">$message_list[useinfo]</textarea></td></tr>
+		  <tr> 
+            <td class="text">{$lang_messageeditorCheck}{$lang_marks}</td>
+            <td class="input"><label><input name="readok" type="checkbox" class="checkbox" value="1" $met_readok>{$lang_messageeditorShow}</label></td>
+          </tr>
+		  <tr> 
+            <td class="text"></td>
+	      <td class="submit">
+			    <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		  </td>
+          </tr>
+</table>
+        </form>
+</div>
+<!--
+EOT;
+require_once template('mobile/foot'); 
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

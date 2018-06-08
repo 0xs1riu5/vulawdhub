@@ -1,0 +1,147 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+$fcls='';
+$fclsa='';
+if($flashmode==1)$fcls='downalnk';
+if($flashmode==2)$fclsa='downalnk';
+echo <<<EOT
+-->
+<title>{$lang_indexflash}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="setflash.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_indexflashset}">{$lang_indexflashset}</a></li>
+		<li {$listclass[2]}><a href="flash.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_indexflash}">{$lang_indexflash}</a></li>
+	</ul>
+</div>
+<div class="clear"></div>
+<table cellpadding="2" cellspacing="1" class="table">
+	<tr>
+		<td class="centle color999" colspan="7">
+			<div style="float:left;"><a href="flashadd.php?anyid={$anyid}&lang={$lang}" title="{$lang_indexflashaddimg}">+{$lang_indexflashaddflash}</a></div>
+			<div class="formright">
+				<form method="POST" style="position:relative; top:2px;" name="filterform" action="flash.php?anyid={$anyid}&lang=$lang&search=detail_search" target="_self">
+				<input name="class1" type="hidden" value="250">
+				<input name="class2" type="hidden" value="">
+				<input name="class3" type="hidden" value="">
+	
+				&nbsp;{$lang_category}
+				<select name="modulex" style="margin:3px 0px;" onchange='javascript:window.location.href=$(this).val();'>
+				<option value='flash.php?anyid={$anyid}&lang=$lang'>{$lang_setflashBelong}</option>
+<!--
+EOT;
+foreach($mod1 as $key=>$val){
+echo <<<EOT
+-->	
+	<option value='flash.php?anyid={$anyid}&lang=$lang&module=$val[id]' {$module1[$val[id]]}>$val[name]</option>
+<!--
+EOT;
+foreach($mod2[$val[id]] as $key=>$val2){
+echo <<<EOT
+-->	
+    <option value='flash.php?anyid={$anyid}&lang=$lang&module=$val2[id]' {$module1[$val2[id]]}>&nbsp;&nbsp;-- $val2[name]</option>
+<!--
+EOT;
+foreach($mod3[$val2[id]] as $key=>$val3){
+echo <<<EOT
+-->	
+    <option value='flash.php?anyid={$anyid}&lang=$lang&module=$val3[id]' {$module1[$val3[id]]}>&nbsp;&nbsp;&nbsp;&nbsp;-- $val3[name]</option>		
+<!--
+EOT;
+}}}  
+echo <<<EOT
+-->	
+            </select>
+
+				&nbsp;{$lang_type}
+				<select name="ftype" id="shaix-top" onchange="handle_form('filterform')">
+					<option value="all" {$ftype1[all]}>{$lang_selected}</option>
+					<option value="1" {$ftype1[1]}>{$lang_image}</option>
+					<option value="2" {$ftype1[2]}>{$lang_flashMode2}</option>
+				</select>
+				</form>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+		<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
+		<td width="12%" class="list">{$lang_setflashBelong}</td>
+		<td class="list">{$lang_type}</td>
+		<td class="list">{$lang_setflashName}</td>
+		<td class="list">{$lang_setflashImgUrl}/{$lang_setflashUrl}</td>
+		<td width="12%" class="list">{$lang_operate}</td>
+	</tr>
+<form name="del" method="Post" action="flashdelete.php?anyid={$anyid}&lang={$lang}">
+	<input name="module" type="hidden" value="$module">
+<!--
+EOT;
+foreach($flashrec as $key=>$val){
+$valmdy=explode(',',$val[modulename]);
+if(count($valmdy)==3){
+	$val[modulename]=$valmdy[1];
+}elseif(count($valmdy)>3){
+	$val[modulename]='';
+	for($i=0;$i<count($valmdy);$i++){
+		if($valmdy[$i]!='')$val[modulename].=$i==(count($valmdy)-2)?$valmdy[$i]:$valmdy[$i].'-';
+	}
+}
+$valmname=utf8substr($val[modulename],0,6);
+$val[ftype]=$val['img_path']!=''?$lang_image:$lang_flashMode2;
+$val[img_path]=$val['img_path']!=''?$val['img_path']:$val['flash_path'];
+echo <<<EOT
+-->
+		<tr class="mouse">
+			<td class="list-text">$mp<input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' class="xz"></td>     
+			<td width="30" class="list-text">{$val[no_order]}</td>
+			<td class="list-text" title="{$val[modulename]}">{$valmname}</td>
+			<td class="list-text">{$val[ftype]}</td>
+			<td class="list-text">{$val[img_title]}</td>
+			<td class="list-text">{$val[img_path]}</td>
+			<td class="list-text" style="color:#0066FF;">
+				<a href="flashedit.php?anyid={$anyid}&lang=$lang&id=$val[id]&module={$module}" >{$lang_editor}</a>&nbsp;&nbsp;
+				<a href="flashdelete.php?anyid={$anyid}&lang=$lang&module={$module}&id={$val[id]}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a>
+			</td>
+		</tr>
+<!--
+EOT;
+}if(count($flashrec)==0){
+echo <<<EOT
+-->
+		<tr class="mouse">
+			<td class="list-text" colspan="6">{$lang_indexflashexplain8}</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value="">			
+			</form> 
+   	   <tr> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="all-submit" colspan="6">
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
+				<div class="page_list">{$page_list}</div>
+			 </td>
+          </tr>
+		<tr>
+		  <td class="footer" colspan="10">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

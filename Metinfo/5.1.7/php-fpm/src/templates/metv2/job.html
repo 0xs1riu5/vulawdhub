@@ -1,0 +1,37 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+					    <dl class="job-list">
+						 <dt><span>{$lang_cvtitle}</span><span>{$lang_Detail}</span><span>{$lang_AddDate}</span><span>{$lang_WorkPlace}</span><span>{$lang_PersonNumber}</span>{$lang_Position}</dt>
+<!--
+EOT;
+foreach($job_list as $key=>$val){
+echo <<<EOT
+-->
+                            <dd><span><a href="$val[cv]" >{$lang_cvtitle}</a></span><span><a href="$val[url]" target="_blank">{$lang_Detail}</a></span><span>$val[addtime]</span><span>$val[place]</span><span>$val[count]</span><a href="$val[url]" target="_blank">$val[position]</a></dd> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                        </dl>
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -1,0 +1,75 @@
+<!--<?php
+$metfootnav=methtml_footnav('<span>|</span>');
+echo <<<EOT
+-->
+<div id="bottom">
+            <div class="nav">
+			    {$metfootnav}
+			</div>
+            <div class="text">
+                {$methtml_foot}
+                <div class="powered_by_metinfo">
+				    Powered&nbsp;by&nbsp;
+					<a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info1}">
+					    <b>MetInfo</b>
+					</a>
+					&nbsp;{$metcms_v}&nbsp;&copy;2008-$m_now_year&nbsp;
+					<a href="http://www.MetInfo.cn" target="_blank" title="{$lang_Info3}">
+					    www.MetInfo.cn
+					</a>
+				</div>
+            </div>
+</div>
+    </div>
+        <div id="footer">
+		    <div class="left"></div>
+		    <div class="right"></div>
+        </div>
+<!--
+EOT;
+if($classnow==10001){
+echo <<<EOT
+-->
+<script src="{$img_url}js/switchable.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript">
+function equalHeight(group) {
+	tallest = 0;
+	group.each(function() {
+		thisHeight = $(this).height();
+		if(thisHeight > tallest) {
+			tallest = thisHeight;
+		}
+	});
+	group.height(tallest);
+}
+$(function() {
+	equalHeight($(".column"));   
+	equalHeight($(".columnde")); 
+	
+	$("#trigger4").switchable("#panel4 > ul > li", {
+		triggerType: "click",
+		effect: "scroll",
+		steps: 1,
+		visible: 4
+	}).autoplay().carousel().mousewheel();
+	
+	var api4 = $("#trigger4").switchable();
+	$("#next4").click(function(){
+		api4.next();
+	});
+	$("#prev4").click(function(){
+		api4.prev();
+	});	
+});
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+{$metonline}
+</body>
+</html>
+<!--
+EOT;
+?>-->

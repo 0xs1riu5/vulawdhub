@@ -1,0 +1,58 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved..
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+        <form method="POST" name="myform" action="foot.php?anyid={$anyid}&lang=$lang" target="_self">
+		<input name="action" type="hidden" value="modify" />
+		<input name="langp" type="hidden" value="$val[mark]" />
+		<input name="langname" type="hidden" value="$val[name]" />
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td class="text">{$lang_setfootVersion}{$lang_marks}</td>
+            <td class="input"><input name="met_footright" type="text" class="text max" value="{$met_footright}" /><span class="tips">{$lang_htmlok}</span></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_setfootAddressCode}{$lang_marks}</td>
+            <td class="input"><input name="met_footaddress" type="text" class="text max" value="{$met_footaddress}" /><span class="tips">{$lang_htmlok}</span></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_setfootContact}{$lang_marks}</td>
+            <td class="input"><input name="met_foottel" type="text" class="text max" value="{$met_foottel}" /><span class="tips">{$lang_htmlok}</span></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_setfootstat}{$lang_marks}</td>
+          <td class="input" valign="top"><textarea name="met_footstat" class="textarea" rows="5" style="height:80px;">{$met_footstat}</textarea><span class="tips">{$lang_htmlok}</span></td>
+          </tr>
+          <tr> 
+          <td class="text" valign="middle">{$lang_setfootOther}{$lang_marks}</td>
+          <td class="input" valign="top"><textarea name="met_footother" class="ckeditor textarea" rows="5">{$met_footother}</textarea></td>
+          </tr>
+	      <tr> 
+            <td class="text"></td>
+	        <td class="submit">
+				<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" />
+			</td>
+          </tr>
+	</table>
+	</form>
+<div class="footer">$foot</div>
+<script type="text/javascript">
+met_ckeditor('$depth','met_footother',1);
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

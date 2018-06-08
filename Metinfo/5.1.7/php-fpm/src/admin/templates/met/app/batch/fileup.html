@@ -1,0 +1,303 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+$listjs
+<body>
+<!--
+EOT;
+require_once template('app/batch/top');
+echo <<<EOT
+-->
+<!--
+EOT;
+if(!$img_list){
+echo <<<EOT
+--> 
+<form method="POST" name="myform" action="fileup.php?anyid={$anyid}&lang=$lang" target="_self">
+<input type="hidden" name="action" value="do"/>
+<table cellpadding="2" cellspacing="1" class="table">
+		  <tr>
+            <td class="text">{$lang_js37}{$lang_marks}</td>
+            <td class="input">
+			<select name="class1" id="class1select" class="noselect" onChange="changelocation1(document.myform.class1.options[document.myform.class1.selectedIndex].value,1)" size="1">		
+			<option value="-1">{$lang_settopcolumns}</option>
+<!--
+EOT;
+foreach($clist1now as $key=>$val1){
+$newnoimage=0;
+if((!$metadmin['newsimage'])&&$val1['module']==2)$newnoimage=1;
+if($val1['module']!=4&&$newnoimage==0){
+echo <<<EOT
+-->			
+<option  value="$val1[id]">$val1[name]</option>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+			</select>
+			<select name="class2" id="class2select" onChange="changelocation1(document.myform.class2.options[document.myform.class2.selectedIndex].value,2)"> 
+			<option value=0>{$lang_modClass2}</option>
+            </select>
+			<select name="class3" id="class3select" onChange=""> 
+			<option value=0>{$lang_modClass3}</option>
+            </select>
+			</td>
+			<td></td>
+			<td></td>			
+          </tr> 
+		  <tr>
+			 <td class="text"></td>
+			 <td class="input">
+				<input type="submit" name="button" value="{$lang_batchtips12}" class="submit"/>
+				<span class="red">$listnots</span>
+			 </td>
+		  </tr>
+		  </table>
+</form>		  
+</table>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->   
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<form  method="POST" name="upimg" action="upload.php?anyid={$anyid}&lang=$lang" target="_self" enctype="multipart/form-data">
+<input name="action" type="hidden" value="do">
+<input type="hidden" name="module" id="" value="$classimg[module]"/>
+<input type="hidden" name="class1"  id="" value="$class1"/>
+<input type="hidden" name="class2" id="" value="$class2"/>
+<input type="hidden" name="class3" id="" value="$class3"/>
+<input type="hidden" name="ignore" id="ignore" value="1"/>
+<input type="hidden" name="fid" id="" value="$fid"/>
+<input type="hidden" name="lid" id="" value="$lid"/>
+<input type="hidden" name="listid" id="" value="$listid"/>
+	<table cellpadding="2" cellspacing="1" class="table">
+	<tr> 
+	<td colspan="10" class="centle" style="padding:5px 10px;"><span class="color390">{$classtitle}</span> {$lang_batchtips13}{$from_record_1}{$lang_batchtips14}{$from_record_2}{$lang_batchtips15}，{$lang_batchtips16}{$numtotal}{$lang_batchtips15}</td>
+	</tr>
+<!--
+EOT;
+$i=0;
+foreach($img_list as $key=>$val){
+$i++;
+$cp=$i%2==0?'fileuptonow':'';
+echo <<<EOT
+-->
+	<tr class="fileuptonow_t {$cp}">
+	<td class="text">{$lang_batchtips17}{$lang_marks}</td>
+	<td class="input" style="font-size:14px; font-weight:bold;">{$val[title]}</td>
+	</tr>
+<!--
+EOT;
+if($classimg['module']!=4){
+if(stristr(PHP_OS,"WIN"))$val[imgurls]=@iconv("utf-8","gbk",$val[imgurls]);
+$valimgurls=file_exists("../../$val[imgurls]")&&$val['imgurls']?$val['imgurls']:'../'.$met_agents_img;
+if(stristr(PHP_OS,"WIN"))$valimgurls=@iconv("gbk","utf-8",$valimgurls);
+if(stristr(PHP_OS,"WIN"))$val[imgurls]=@iconv("gbk","utf-8",$val[imgurls]);
+echo <<<EOT
+--> 	
+	<tr class="{$cp}">
+	<td class="text">{$lang_batchtips18}{$lang_marks}</td>
+	<td class="input">
+		<div class="showimgbox showimgbox1">
+			<input type="hidden" name="bigimgold$val[id]" value="$val[imgurl]"/>
+			<input type="hidden" name="thumbold$val[id]" value="$val[imgurls]"/>
+			<div class="list hovershowimg">
+			<img src="../../{$valimgurls}" id="thumbold{$val[id]}" width="180" height="150" />
+			<div class="text">
+				<a href="javascript:;" class="uploadlink"><input name="met_upsql_{$val[id]}" type="file" class="none" id="file_upload_{$val[id]}" />{$lang_batchtips19}</a>
+			</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			metuploadify('#file_upload_{$val[id]}','big_wate_img','bigimgold{$val[id]}-thumbold{$val[id]}',{$classimg[module]},{$classimg[module]});
+		</script>
+	</td>
+	</tr>
+<!--
+EOT;
+if($classimg['module']==3||$classimg['module']==5){
+$disnumnow=0;
+if($val['displayimg']){
+$displayimg=explode('|',$val['displayimg']);
+$disnumnow=count($displayimg);
+}
+echo <<<EOT
+--> 
+	<tr class="{$cp}">
+	<td class="text">{$lang_wapshowimg}{$lang_marks}</td>
+	<td class="input">
+	<div id="showimgbox_$val[id]" class="showimgbox">
+<!--
+EOT;
+if($val['displayimg']){
+$num=0;
+foreach($displayimg as $key2=>$val2){
+$displayimgs=explode('*',$val2);
+$num++;
+if(stristr(PHP_OS,"WIN"))$displayimgs[1]=@iconv("utf-8","gbk",$displayimgs[1]);
+$dispyimg=file_exists("../../$displayimgs[1]")&&$displayimgs[1]?$displayimgs[1]:'../'.$met_agents_img;
+if(stristr(PHP_OS,"WIN"))$dispyimg=@iconv("gbk","utf-8",$dispyimg);
+echo <<<EOT
+-->
+	<div class="list hovershowimg" id="dis-box-$val[id]-$num">
+	<img src="../../{$dispyimg}" id="dis-$val[id]-$num" width="100" height="80" />
+	<div class="text">
+		<a href="javascript:;" class="uploadlink"><input name="upload-{$val[id]}-$num" type="file" class="none" id="upload-{$val[id]}-$num" />{$lang_batchtips19}</a><a href="javascript:;" onclick="return deldis('dis-box-$val[id]-$num');">{$lang_delete}</a>
+	</div>
+	<p class="intxt"><input type="text" name="dis_tit-$val[id]-$num" value="$displayimgs[0]" class="text" /></p>
+		<script type="text/javascript">
+			metuploadify('#upload-{$val[id]}-$num','big_wate_img','dis-$val[id]-$num',67,'$classimg[module]');
+		</script>
+	</div>
+<!--
+EOT;
+}}else{
+$nulltxt1=$lang_batchtips20;
+}
+echo <<<EOT
+-->   
+		<div class="list" onclick="adddis($(this),'$val[id]')" style="cursor:pointer;">
+			{$lang_batchtips21}
+		</div>
+	<input name="disnum-$val[id]" type="hidden" value="$disnumnow"/>
+	<input name="dis-$val[id]" type="hidden" value="$val[displayimg]"/>
+	</div>
+	</td>
+	</tr>
+<!--
+EOT;
+}}}
+echo <<<EOT
+-->  
+<!--
+EOT;
+if($page_type){
+echo <<<EOT
+-->
+			<tr> 
+				<td class="page_list" colspan="2" style="padding:5px 0px;">
+				  	<input type="hidden" name="page" id="page" value="$page"/>
+					<input type="hidden" name="numcsv" id="numcsv" value="$numcsv"/>
+					<input type="hidden" name="fileup" id="fileup" value="1"/>
+					<input name="submit" type="submit" class="submit" value="{$lang_batchtips22}" onclick="return fileupsub()">
+				  </td>
+			  </tr>
+<!--
+EOT;
+}else{
+echo <<<EOT
+--> 
+
+			<tr> 
+				<td class="page_list" colspan="2" style="padding:5px 0px;">
+					<input type="hidden" name="page" id="" value="$page"/>
+					<input type="hidden" name="numcsv" id="" value="$numcsv"/>
+					<input name="submit" type="submit" class="submit" value="{$lang_batchtips22}" onclick="return fileupsub()" />
+				</td>
+			</tr>
+			<tr> 
+				<td class="page_list" colspan="2" style="text-align:center;">
+					{$page_list}
+				</td>
+			</tr>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+	</table>
+</form>
+<script type="text/javascript">
+function fileupsub(){
+	var ints = $("[name^=dis_tit-],[name^=disold_tit-]");
+	ints.each(function(){
+		var data = $(this).val().replace(/\s+/g,""); 
+	    var qt = $(this).attr('name');
+		    qt = qt.split('-');
+		var lt = qt[0].split('_');
+		var dt = lt[0]+'-'+qt[1];
+			dt = $("input[name='"+dt+"']");
+		var dtlist = dt.val().split('|');
+		var nt='';
+			for(var i=0;i<dtlist.length;i++){
+				k=i+1;
+				if(k==qt[2]){
+					var xm = dtlist[i].split('*');
+					nt+=i==(dtlist.length-1)?data+'*'+xm[1]:data+'*'+xm[1]+'|';
+				}else{
+					nt+=i==(dtlist.length-1)?dtlist[i]:dtlist[i]+'|';
+				}
+			}
+			dt.val(nt);
+	});
+	return true;
+}
+function adddis(my,id){
+	var p = Number($("input[name='disnum-"+id+"']").val())+1;
+	var content = '<div class="list hovershowimg" id="disold-box-'+id+'-'+p+'">';
+		content+= '<img src="../../../{$met_agents_img}" id="disold-'+id+'-'+p+'" width="100" height="80" />';
+		content+= '<div class="text">';
+		content+= '<a href="javascript:;" class="uploadlink"><input name="met_upsql" type="file" class="none" id="upload_old-'+id+'-'+p+'" />{$lang_batchtips19}</a>';
+		content+= '<a href="javascript:;" onclick="return deldis(\'disold-box-'+id+'-'+p+'\');">{$lang_delete}</a>';
+		content+= '</div>';
+		content+= '<p class="intxt">';
+		content+= '<input type="text" name="disold_tit-'+id+'-'+p+'" value="{$lang_batchtips23}" class="text" />';
+		content+= '</p>';
+		content+= '</div>';
+	my.before(content);
+	$("input[name='disnum-"+id+"']").val(p);
+	var dis =$("input[name='dis-"+id+"']");
+	var dvl = dis.val()==''?'{$lang_batchtips23}*':dis.val()+'|{$lang_batchtips23}*';
+	dis.val(dvl);
+	metuploadify("#upload_old-"+id+"-"+p,"big_wate_img","disold-"+id+"-"+p,67,'$classimg[module]');
+	$('div.hovershowimg').find('p.text').css("opacity","0");
+	$('span.uptips').css("opacity","0.5");
+	ifreme_methei();
+}
+function deldis(id){
+	var pc = id.split('-');
+	var dom = $('#'+id);
+	var dis = 'dis-'+pc[2];
+		dis =$("input[name='"+dis+"']");
+	var alu = dis.val().split('|');
+	var nt='';
+	for(var i=0;i<alu.length;i++){
+		k=i+1;
+		if(k!=pc[3])nt+=i==(alu.length-1)?alu[i]:alu[i]+'|';
+		if(k==pc[3])nt+=i==(alu.length-1)?'':'|';
+	}
+	dis.val(nt);
+	dom.remove();
+}
+$(document).ready(function(){
+	var imglist = $('div.hovershowimg');
+	imglist.find('div.text').css("opacity","0");
+	$('span.uptips').css("opacity","0.5");
+	imglist.live('hover',function(tm){
+		if(tm.type=='mouseover' || tm.type=='mouseenter'){
+			var nbox = $(this).find('div.text');
+			nbox.css("opacity","1");
+			nbox.find('.metuplaodify').css("opacity","0");
+		}
+		if(tm.type=='mouseout' || tm.type=='mouseleave'){
+			var nbox = $(this).find('div.text');
+			nbox.css("opacity","0");
+		}
+	});
+});
+</script>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

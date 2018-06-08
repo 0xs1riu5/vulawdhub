@@ -1,0 +1,54 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<!--
+EOT;
+require_once template('app/wap/top');
+echo <<<EOT
+-->
+<body>
+    <form method="POST" name="myform" action="index.php?lang={$lang}&anyid={$anyid}" target="_self">
+		<input name="action" type="hidden" value="modify" />
+		<table cellpadding="2" cellspacing="1" class="table">
+			<tr> 
+				<td class="text">{$lang_wapindextitle}{$lang_marks}</td>
+				<td class="input">
+					<input type="text" name="wap_title" class="text" value="$wap_title" />&nbsp;&nbsp;
+					<span class="tips">{$lang_waptips3}</span>
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_wapdescription}{$lang_marks}</td>
+				<td class="input">
+					<textarea class="textarea gen" name="wap_description">$wap_description</textarea>
+					<span class="tips">{$lang_waptips4}</span>
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_wapfoottext}{$lang_marks}</td>
+				<td class="input">
+					<textarea class="textarea gen" name="wap_footertext">$wap_footertext</textarea>
+				</td>
+			</tr>
+			<tr> 
+				<td class="text"></td>
+				<td class="submit">
+					<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" />
+				</td>
+			</tr>
+			<tr>
+				<td class="footer" colspan="2">$foot</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

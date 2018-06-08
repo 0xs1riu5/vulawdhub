@@ -1,0 +1,55 @@
+<!--<?php
+echo <<<EOT
+-->
+<ul>
+<!--
+EOT;
+$i=$class1;
+foreach($nav_list2[$i] as $key=>$val){
+$val[name]=utf8substr($val[name], 0, 10); 
+echo <<<EOT
+-->
+<li onmousedown="showhide($val[id])"><a href="$val[url]" id="product$val[id]">$val[name]</a></li>
+<span id="$val[id]" style="display:none; " class="spand">
+<!--
+EOT;
+$j=$val[id];
+foreach($nav_list3[$j] as $key=>$val1){
+$val[name]=utf8substr($val[name], 0, 10); 
+echo <<<EOT
+-->
+
+<li class="nli" style="background:#F4F4F4; *margin-top:-2px;" ><a href="$val1[url]">$val1[name]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+</span>
+<!--
+EOT;
+}
+if($class3=="")$class3=0;
+echo <<<EOT
+-->
+
+</ul>
+<script type="text/javascript">
+function showhide(d)
+{       
+        var d1=document.getElementById(d);
+        if(d1.style.display=="none")
+        {
+         d1.style.display="block";
+        }
+        else
+        {
+		d1.style.display="none";
+        }
+}
+
+</script>
+<!--
+EOT;
+?>

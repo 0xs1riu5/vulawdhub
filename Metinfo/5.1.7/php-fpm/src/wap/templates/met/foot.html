@@ -1,0 +1,53 @@
+<!--<?php
+echo <<<EOT
+-->
+<!--
+EOT;
+if($temp != 'index'){
+echo <<<EOT
+--> 
+<div class="footfalse">
+	<div class="gohome">
+		<a href="$wapindex_url">{$lang_home}</a>
+	</div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+	<div id="footer">
+<div style="text-align:center; font-size:12px; padding:2px 0px;">
+<!--
+EOT;
+if(count($met_langok)>0 && $met_lang_mark){
+foreach($met_langok as $key=>$val){
+echo <<<EOT
+--> 
+<a href="$val[wapurl]" title="$val[name]" class="langs">$val[name]</a>
+<!--
+EOT;
+}}
+echo <<<EOT
+--> 
+</div>
+	<div class="box">
+		<div class="text">$wap_footertext</div>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->
+		<div class="powered">Powered by <a href="http://www.metinfo.cn/wap/" style="color:#fff; font-size:12px;">MetInfo</a> $metcms_v</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+	</div>
+	</div>
+</body>
+</html>
+<!--
+EOT;
+?>-->

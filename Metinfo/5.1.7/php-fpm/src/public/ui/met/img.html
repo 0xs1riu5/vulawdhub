@@ -1,0 +1,16 @@
+<!--<?php
+require_once template('head'); 
+require_once template('sidebar');
+$weblist=metlabel_img($met_img_boxw,$met_img_liw,$met_img_num);
+echo <<<EOT
+-->
+        <div class="active" id="imglist">
+			{$weblist}
+			<div class="clear"></div>
+		</div>
+		<div id="flip">{$page_list}</div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

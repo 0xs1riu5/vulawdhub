@@ -1,0 +1,139 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setimgSet}</title>
+</head>
+$listjs
+<body>
+<!--
+EOT;
+require_once template('app/batch/top');
+echo <<<EOT
+-->
+<script type="text/javascript">
+function batch(dofile){
+	if($("#class1select").val()<0){
+		alert(user_msg['js37']);
+		$('#class1select').focus();
+		return false;
+	}
+	$('#submit').attr("disabled","true");
+	$.ajax({
+		url: dofile+'.php?action=class'+'&class1='+$("#class1select").val()+'&class2='+$("#class2select").val()+'&class3='+$("#class3select").val(),
+		type: 'POST',
+		data: '',
+		success: function(result) {
+			$('#idlist').val(result);
+			batchone(0,dofile);
+		}
+	});
+return false;
+}
+function batchone(num,dofile){
+	var idlist=$('#idlist').val();
+	var ids=idlist.split("|");
+	var id=ids[1].split("-");
+	$.ajax({
+		url: dofile+'.php?action=do'+'&table='+ids[0]+'&id='+id[num],
+		type: 'POST',
+		data: '',
+		success: function(result) {
+			num_next=num+1;
+			var len=id.length-1;
+			$('#schedule').empty();
+			$('#schedule').append(num_next+'/'+len);
+			if(num==id.length-1){
+				$('#schedule').empty();
+				$('#schedule').append(user_msg['jsx8']);
+				$('#submit').removeAttr("disabled");
+			}
+			else{
+				batchone(num_next,dofile);
+			}
+			
+		}
+	});
+}
+</script>
+<form  method="POST" name="myform" action="watermark.php?anyid={$anyid}lang=$lang" target="_self">
+<input type="hidden" name="action" value="do"/>
+<input type="hidden" id="idlist" value=""/>
+<table cellpadding="2" cellspacing="1" class="table">
+            <td class="text">{$lang_batchtips5}{$lang_marks}</td>
+            <td class="input">
+			<select name="class1" id="class1select" class="noselect" onChange="changelocation1(document.myform.class1.options[document.myform.class1.selectedIndex].value,1)" size="1">		
+			<option value="-1">{$lang_settopcolumns}</option>
+<!--
+EOT;
+foreach($clist1now as $key=>$val1){
+$k=$val1['id'];
+echo <<<EOT
+-->			
+<option  value="$val1[id]" $class1[$k]>$val1[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</select>
+			<select name="class2" id="class2select" onChange="changelocation1(document.myform.class2.options[document.myform.class2.selectedIndex].value,2)"> 
+			<option value=0>{$lang_modClass2}</option>
+            </select>
+			<select name="class3" id="class3select" onChange=""> 
+			<option value=0>{$lang_modClass3}</option>
+            </select></td>
+			<td></td>
+			<td></td>			
+          </tr> 
+		  <tr>
+			<td class="text">{$lang_batchtips46}{$lang_marks}</td>
+			<td class="input"><span id="schedule">0/0</span></td>
+			<td></td>
+			<td></td>
+		  </tr>
+		  </table>
+</form>	
+<!--
+EOT;
+if($cs==3){
+echo <<<EOT
+-->		  
+<table cellpadding="2" cellspacing="1" class="table">
+		 <tr> 
+            <td class="text">{$lang_batchtips6}{$lang_marks}</td>
+		<td class="submit">
+		<input type="button" id="submit" name="button" value="{$lang_batchtips7}" class="submit" onclick="return batch('watermark')"/>
+		<span class="tips">{$lang_batchtips8}</span>
+		</td>
+          </tr>
+</table>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->	
+<table cellpadding="2" cellspacing="1" class="table">
+		 <tr> 
+            <td class="text">{$lang_batchtips9}{$lang_marks}</td>
+		<td class="submit">
+		<input type="button" id="submit" name="button" value="{$lang_batchtips10}" class="submit" onclick="return batch('thumb')"/>
+		<span class="tips">{$lang_batchtips11}</span>
+		</td>
+          </tr>
+</table>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

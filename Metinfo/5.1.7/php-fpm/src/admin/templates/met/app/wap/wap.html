@@ -1,0 +1,102 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<!--
+EOT;
+require_once template('app/wap/top');
+echo <<<EOT
+-->
+<body>
+    <form method="POST" name="myform" action="wap.php?lang={$lang}&anyid={$anyid}" target="_self">
+		<input name="action" type="hidden" value="modify" />
+		<input name="met_wap_tpa" type="hidden" value="0" />
+		<input name="met_wap_tpb" type="hidden" value="0" />
+		<table cellpadding="2" cellspacing="1" class="table">
+			<tr> 
+				<td class="text">{$lang_waptype}{$lang_marks}</td>
+				<td class="input">
+					<label><input name="met_wap" type="radio" class="radio" value="1" {$met_wap1[1]} />{$lang_open}</label>&nbsp;&nbsp;
+					<label><input name="met_wap" type="radio" class="radio" value="0" {$met_wap1[0]} />{$lang_close}</label>&nbsp;&nbsp;
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_waplang}{$lang_marks}</td>
+				<td class="input">
+					<label><input name="met_waplink" type="radio" class="radio" value="1" {$met_waplink1[1]} />{$lang_waptips5}</label>&nbsp;&nbsp;
+					<label><input name="met_waplink" type="radio" class="radio" value="0" {$met_waplink1[0]} />{$lang_waptips6}</label>&nbsp;&nbsp;
+					<span class="tips">{$lang_wapsetlang}</span>
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_waplistshow}{$lang_marks}</td>
+				<td class="input">
+					<label><input name="met_wap_ok" type="radio" class="radio" value="1" {$met_wap_ok1[1]} />{$lang_waplistaud}</label>&nbsp;&nbsp;
+					<label><input name="met_wap_ok" type="radio" class="radio" value="0" {$met_wap_ok1[0]} />{$lang_waplistauk}</label>&nbsp;&nbsp;
+					<span class="tips">{$lang_wapinfo7}</span>
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_wapfang}{$lang_marks}</td>
+				<td class="input">
+					<label><input name="met_wap_tpa" type="checkbox" class="checkbox" value="1" {$met_wap_tpa1[1]} />{$lang_wapgeturl}</label>&nbsp;&nbsp;
+					<label><input name="met_wap_tpb" type="checkbox" class="checkbox" value="1" {$met_wap_tpb1[1]} />{$lang_wapinfo3}</label>
+					&nbsp;&nbsp;<span class="tips">{$lang_waptips7}</span>
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_waptips8}{$lang_marks}</td>
+				<td class="input">
+					<input type="text" name="met_wap_url" class="text" value="$met_wap_url" />&nbsp;&nbsp;<span class="tips">{$lang_wapinfo4}</span>
+				</td>
+			</tr>
+			<tr> 
+				<td class="text">LOGO{$lang_marks}</td>
+				<td class="input upload">
+					<input name="met_wap_logo" type="text" class="text" value="{$met_wap_logo}" />
+					<input name="met_upsql" type="file" id="file_upload" />
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	metuploadify('#file_upload','upimage','met_wap_logo');
+});
+</script>
+<span class="tips">{$lang_waptips9}</span>
+				</td>
+			</tr>
+			</tr>
+			<tr> 
+				<td class="text">{$lang_wapshowimg}{$lang_marks}</td>
+				<td class="input upload">
+					<input name="met_wap_img" type="text" id="met_wap_logos" class="text" value="{$met_wap_img}" />
+					<input name="met_upsql1" type="file" id="file_upload1" />
+<script type="text/javascript">
+$(document).ready(function(){
+	metuploadify('#file_upload1','upimage','met_wap_img');
+});
+</script>
+<span class="tips">{$lang_wapinfo6}</span>
+				</td>
+			</tr>
+			<tr> 
+				<td class="text"></td>
+				<td class="submit">
+					<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" />
+				</td>
+			</tr>
+			<tr>
+				<td class="footer" colspan="2">$foot</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

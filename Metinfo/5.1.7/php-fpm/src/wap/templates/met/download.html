@@ -1,0 +1,64 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once waptemplate('head'); 
+echo <<<EOT
+-->
+	<div class="main">
+<!--
+EOT;
+if(!$id){
+echo <<<EOT
+-->
+		<div class="news">
+<!--
+EOT;
+foreach($wap_list as $key=>$val){
+echo <<<EOT
+-->
+			<div><a href="$val[url]">$val[title]</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</div>
+		<div class="page">{$page_list}</div>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+			<div class="shownews">
+				<div class="title">{$show[title]}</div>
+				<div clas="time">
+				{$show[updatetime]}
+			    <div>
+                    
+<!--
+EOT;
+foreach($paralist[4] as $key=>$val){
+echo <<<EOT
+-->
+			<div><b>$val[name]</b> : {$show[$val[para]]}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                </div>
+				</div>
+				<div class="show">{$show[content]}</div>
+			</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</div>
+<!--
+EOT;
+require_once waptemplate('foot');
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

@@ -1,0 +1,192 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="sethtm.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_seotips2}">{$lang_seotips2}</a></li>
+		<li {$listclass[2]}><a href="htm.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_seotips3}">{$lang_seotips3}</a></li>
+		<li {$listclass[3]}><a href="sethtm.php?anyid={$anyid}&lang={$lang}&cs=3" title="{$lang_seotips4}">{$lang_seotips4}</a></li>
+	</ul>
+</div>
+        <form method="POST" name="myform" action="sethtm.php?anyid={$anyid}&lang={$lang}&cs={$cs}" target="_self">
+		<input name="action" type="hidden" value="modify" />
+		<input name="met_webhtming" type="hidden" value="{$met_webhtm}" />
+		<input name="dehtm" type="hidden" value="" />
+		<input name="depsdo" type="hidden" value="" />
+<table cellpadding="2" cellspacing="1" class="table">
+<!--
+EOT;
+if($cs==1){
+echo <<<EOT
+-->
+    <tr> 
+        <td class="text">{$lang_sethtmok}{$lang_marks}</td>
+        <td class="input">
+		    <label><input name="met_webhtm" type="radio" value="0" {$met_webhtm1[0]} />&nbsp;{$lang_close}</label>&nbsp;&nbsp;&nbsp;
+			<label><input name="met_webhtm" type="radio" value="1" {$met_webhtm1[1]} />&nbsp;{$lang_setbasicTip3}</label>&nbsp;&nbsp;&nbsp;
+			<label><input name="met_webhtm"  type="radio" value="2" {$met_webhtm1[2]} />&nbsp;{$lang_sethtmall}</label>&nbsp;&nbsp;&nbsp;
+			<span class="tips">{$lang_setbasicTip4}</span>
+		</td>
+        </tr> 
+	<tr> 
+        <td class="text">{$lang_sethtmway}{$lang_marks}</td>
+        <td class="input">
+		    <label><input name="met_htmway" type="radio" id="label4" value="0" {$met_htmway1[0]} />&nbsp;{$lang_sethtmway1}</label>&nbsp;&nbsp;&nbsp;
+			<label><input name="met_htmway" type="radio" id="label5" value="1" {$met_htmway1[1]} />&nbsp;{$lang_sethtmway2}</label>&nbsp;&nbsp;&nbsp;
+			<span class="tips">{$lang_sethtmway3}</span>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text"></td>
+        <td class="input color390">{$lang_sethtmpage4}</td>
+    </tr>
+	<tr> 
+        <td class="text">{$lang_sethtmtype}{$lang_marks}</td>
+        <td class="input">
+		    <label><input name="met_htmtype" type="radio" value="htm" {$met_htmtype1[0]} />&nbsp;htm</label>&nbsp;&nbsp;&nbsp;
+			<label><input name="met_htmtype" type="radio" value="html" {$met_htmtype1[1]} />&nbsp;html</label>&nbsp;&nbsp;&nbsp;
+		</td>
+    </tr>
+	<tr> 
+        <td class="text">{$lang_sethtmpage}{$lang_marks}</td>
+        <td class="input" style="line-height:2.3;">
+		    <label><input name="met_htmpagename" type="radio" value="0" {$met_htmpagename1[0]} />&nbsp;{$lang_sethtmpage1}</label><br/>
+			<label><input name="met_htmpagename" type="radio" value="1" {$met_htmpagename1[1]} />&nbsp;{$lang_sethtmpage2}</label><br/>
+			<label><input name="met_htmpagename"  type="radio" value="2"  {$met_htmpagename1[2]} />&nbsp;{$lang_sethtmpage3}</label>
+		</td>
+    </tr>
+		<tr> 
+        <td class="text">{$lang_setlisthtmltype}{$lang_marks}</td>
+        <td class="input" style="line-height:2.3;">
+		    <label><input name="met_listhtmltype" type="radio" value="0" {$met_listhtmltype1[0]} />&nbsp;{$lang_setlisthtmltype1}</label><br/>
+			<label><input name="met_listhtmltype" type="radio" value="1" {$met_listhtmltype1[1]} />&nbsp;{$lang_setlisthtmltype2}</label>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text">{$lang_sethtmlist}{$lang_marks}</td>
+        <td class="input" style="line-height:2.3;">
+		    <label><input name="met_htmlistname" type="radio" value="0" {$met_htmlistname1[0]} />&nbsp;{$lang_sethtmlist1}</label><br/>
+			<label><input name="met_htmlistname" type="radio" value="1" {$met_htmlistname1[1]} />&nbsp;{$lang_sethtmlist2}</label>
+		</td>
+    </tr>
+<!--
+EOT;
+}elseif($cs==3){
+echo <<<EOT
+-->
+	<tr> 
+        <td class="text"></td>
+        <td class="input color390">{$lang_rewriteok}
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->			
+		<a href="http://www.metinfo.cn/faq/rewrite.htm" target="_blank" title="{$lang_rewritefaq}">{$lang_rewritefaq}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
+		&nbsp;<a href="pseudo.php?pseudo_download=1" target="_blank" title="{$lang_rewriteruledownload1}">{$lang_rewriteruledownload1}</a>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text">{$lang_rewrite}{$lang_marks}</td>
+        <td class="input">
+		    <label><input name="met_pseudo" type="radio" value="0" id="label18" {$met_pseudo1[0]} />&nbsp;{$lang_close}</label>&nbsp;&nbsp;&nbsp;
+			<label><input name="met_pseudo" type="radio" value="1" id="label19" {$met_pseudo1[1]} />&nbsp;{$lang_open}</label>&nbsp;&nbsp;&nbsp;
+	        <span class="tips red">{$lang_rewritefinfo2}</span>
+		</td>
+    </tr>
+	<tr> 
+        <td class="text"></td>
+        <td class="input color999">{$lang_seotips5}</td>
+    </tr>
+	<tr> 
+        <td class="text color999">{$lang_seotips6}{$lang_marks}</td>
+        <td class="input color999">index-{$lang_langmark}.html（{$lang_seotips7}：index-cn.html）</td>
+    </tr>
+	<tr> 
+        <td class="text color999">{$lang_setskinListPage}{$lang_marks}</td>
+        <td class="input color999">{$lang_columndocument}/list-{$lang_seotips8}-{$lang_langmark}.html（{$lang_seotips7}：product/list-1-cn.html）</td>
+    </tr>
+	<tr> 
+        <td class="text color999">{$lang_seotips9}{$lang_marks}</td>
+        <td class="input color999">{$lang_columndocument}/{$lang_seotips8}-{$lang_langmark}.html（{$lang_seotips7}：product/100-cn.html）</td>
+    </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	<tr>
+        <td class="text"></td>
+	    <td class="submit">
+		    <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return sethtmsub()" />
+		</td>
+    </tr>
+</table>
+</form>
+<script type="text/javascript">
+function sethtmsub(){
+	var psdo = $("input[name='met_pseudo']:checked").val();
+	if(psdo){
+		if(psdo==0){
+			if(confirm('{$lang_seotips10}')){
+				$("input[name='depsdo']").val('deleteall');
+				return true;
+			}else{
+				return true;
+			}
+		}else{
+			return true;
+		}
+	}else{
+		var d1 = $("input[name='met_webhtming']").val();
+		var d2 = $("input[name='met_webhtm']:checked").val();
+		if(d1!=0 && d2==0){
+			if(confirm('{$lang_seotips11}')){
+				$("input[name='dehtm']").val('deleteall');
+				return true;
+			}else{
+				return true;
+			}
+		}else if(d1==0 && d2!=0){
+			if(confirm('{$lang_seotips12}')){
+				$("input[name='dehtm']").val('newhtm');
+				return true;
+			}else{
+				return true;
+			}
+		}else if((d1==2 && d2==1) || (d1==1 && d2==2)){
+			if(confirm('{$lang_seotips13}')){
+				$("input[name='dehtm']").val('bianhtm');
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return true;
+		}
+	}
+}
+</script>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

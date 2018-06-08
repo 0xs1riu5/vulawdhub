@@ -1,0 +1,40 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop'); 
+$metlinkimg=methtm_link('img','all','0','100','1');
+$metlinktext=methtm_link('text','all','0','100','1');
+echo <<<EOT
+-->
+        <div id="link_index">
+<!--
+EOT;
+if($class_list[$classnow][releclass]!=0){
+echo <<<EOT
+-->
+            <div class="inside"><a href="$addlink_url">{$lang_ApplyLink}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <dl>
+                <dt>{$lang_PictureLink}:</dt>
+                <dd>$metlinkimg</dd>
+            </dl>
+            <dl>
+                <dt>{$lang_TextLink}:</dt>
+                <dd>$metlinktext</dd>
+            </dl>
+        </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

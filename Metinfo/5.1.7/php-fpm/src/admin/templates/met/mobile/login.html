@@ -1,0 +1,155 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+echo <<<EOT
+-->
+<!DOCTYPE html> 
+<html> 
+　<head> 
+　 <title>{$lang_logintitle} - {$lang_metinfo}</title> 
+　 <meta name="viewport" content="width=device-width, initial-scale=1">
+　 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<link rel="stylesheet" type="text/css" href="$img_url/css/mobile.css">
+　 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+　 <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+<script type="text/javascript">
+function check_main_login(){
+	var name = $("input[name='login_name']");
+	var pass = $("input[name='login_pass']");
+		if(name.val() == ''){
+			alert('$lang_loginid');
+			name.focus();
+			return false;
+		}
+		if(pass.val() == ''){
+			alert('$lang_loginps');
+			pass.focus();
+			return false;
+		}
+}
+function pressCaptcha(obj){
+    obj.value = obj.value.toUpperCase();
+}
+</script>
+</head> 
+<body>
+<div data-role="page" id="page1">
+    <div data-role="content" style="padding: 15px">
+        <div style=" text-align:center">
+			<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$lang_metinfo}">
+				<img style="width: 180px; height: 60px" src="../{$met_agents_logo_login}">
+			</a>
+        </div>
+        <form action="login_check.php?langset={$langset}" method="post" name="main_login" data-ajax="false" onSubmit="return check_main_login()">
+		<input type="hidden" name="action" value="login" />
+<!--
+EOT;
+if($met_admin_type_ok){
+echo <<<EOT
+-->
+        <div class="nojslanglist">
+            <label>{$lang_loginlanguage}</label>
+<!--
+EOT;
+ob_pcontent();
+$langset=$langset==""?$met_admin_type:$langset;
+$met_langtype_select[$langset]="selected='selected'" ;
+$i=0;
+foreach($met_langadmin as $key=>$val){
+$i++;$mpk=' - ';
+if($i==count($met_langadmin))$mpk='';
+echo <<<EOT
+-->
+<a href="login.php?langset=$val[mark]">$val[name]</a>{$mpk}
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+        </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($met_admin_type_ok){
+echo <<<EOT
+-->
+        <div data-role="fieldcontain" class="yesjslanglist" style="display:none;">
+            <label for="selectmenu1">
+                {$lang_loginlanguage}
+            </label>
+            <select name="loginlang" id="selectmenu1" onchange=javascript:window.location.href=this.options[this.selectedIndex].value>
+<!--
+EOT;
+ob_pcontent();
+foreach($met_langadmin as $key=>$val){
+echo <<<EOT
+-->
+<option value="login.php?langset=$val[mark]" {$met_langtype_select[$val[mark]]}>$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            </select>
+        </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="textinput2">
+                        {$lang_loginusename}
+                    </label>
+                    <input name="login_name" id="textinput2" placeholder="" value="$check_name" type="text">
+                </fieldset>
+            </div>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="textinput3">
+                        {$lang_loginpassword}
+                    </label>
+                    <input name="login_pass" id="textinput3" placeholder="" type="password">
+                </fieldset>
+            </div>
+<!--
+EOT;
+if($met_login_code==1){
+echo <<<EOT
+-->
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="textinput3">
+                        {$lang_logincode}
+                    </label>
+                    <input name="code" onKeyUp="pressCaptcha(this)" type="text" id="code" style="float:left; width:100px; margin-right:5px;" />
+					<img align="absbottom" src="../include/ajax.php?action=code"  onclick=this.src="../include/ajax.php?action=code&"+Math.random() style="cursor: pointer; height:32px;" title="{$lang_logincodechange}"/>
+                </fieldset>
+            </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <input type="submit" value="{$lang_loginconfirm}">
+        </form>
+	</div>
+	 <div class="nojslanglist">{$lang_mobiletips1}</div>
+	<div class="footer">$foot</div>
+</div>
+<script type="text/javascript">
+$(".nojslanglist").hide();
+$(".yesjslanglist").show();
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

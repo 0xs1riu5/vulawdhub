@@ -1,0 +1,92 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+if($met_content_type==2){
+	if(!$met_class[$class2][releclass])$title="<a href='../about/index.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}'>{$met_class[$class1][name]}</a>";
+	if(!$met_class[$class2][releclass] && $ctp)$title.=" > ";
+	if($ctp)$title.=$ctype1?"<a href='../about/index.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}&class2={$class2}'>{$met_class[$class2][name]}</a>":"{$met_class[$class2][name]}";
+	if($nott)$title.=$ctype?" > <a href='../about/index.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}&class2={$id}'>{$about[name]}</a>":" > {$about[name]}";
+	if(!$met_class[$class2][releclass])$rurl="../about/index.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}";
+}else{
+	if(!$met_class[$class2][releclass])$title="<a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}'>{$met_class[$class1][name]}</a>";
+	if(!$met_class[$class2][releclass] && $ctp)$title.=" > ";
+	if($ctp)$title.=$ctype1?"<a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class2={$class2}'>{$met_class[$class2][name]}</a>":"{$met_class[$class2][name]}";
+	if($nott)$title.=$ctype?" > <a href='../content.php?anyid={$anyid}&lang={$lang}&module=1&class2={$id}'>{$about[name]}</a>":" > {$about[name]}";
+	if(!$met_class[$class2][releclass])$rurl="../content.php?anyid={$anyid}&lang={$lang}&module=1&class1={$class1}";
+}
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="about.php?anyid={$anyid}&action=modify" target="_self">
+		<input name="id" type="hidden" value="$about[id]">
+		<input name="lang" type="hidden" value="$lang">
+		<input name="filenameold" type="hidden"  value="$about[filename]">
+		<input name="updatetimeold" type="hidden"  value="$about[updatetime]">
+		<table cellpadding="2" cellspacing="1" class="table">
+		  <tr> 
+            <td class="text">{$lang_title}：</td>
+            <td class="input">{$about[name]}</td>
+          </tr>
+		<tr> 
+			<td class="text"></td>
+			<td class="input color390">{$lang_columnSEO}</td>
+		</tr>
+		<tr> 
+            <td class="text">{$lang_columnmtitle}：</td>
+            <td class="input"><input name="ctitle" type="text" class="text" maxlength="200" value="$about[ctitle]" /><span class="tips">{$lang_ctitleinfo}</span></td>
+        </tr>
+		  <tr> 
+            <td  class="text">{$lang_keywords}：</td>
+            <td  class="input"><input name="keywords" type="text" size="40" class="text" value="$about[keywords]"><span class="tips">{$lang_descriptioninfo},{$lang_keywordsinfo}</span>
+			</td>
+			</tr>
+		<tr> 
+            <td class="text">{$lang_description}：
+			</td>
+            <td class="input"><textarea name="description" cols="60" class="textarea" rows="5">$about[description]</textarea></td>
+		</tr>
+		<tr> 
+            <td class="text">{$lang_columnhtmlname}：</td>
+            <td class="input">
+			    <input name="filename" type="text" class="text med" value="$about[filename]" />
+				<span class="tips">{$lang_columntip14}</span>
+			</td>
+        </tr>
+		  <tr> 
+				<td class="text"></td>
+				<td class="input color390">{$lang_contentdetail}</td>
+		  </tr>
+		<tr>
+            <td class="input" colspan="2">
+			<script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
+					<textarea class="ckeditor" name="content">$about[content]</textarea>
+<script type="text/javascript">
+met_ckeditor('$depth','content');
+</script>
+			</td>
+		</tr>
+		<tr>
+			<td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+			</td>
+        </tr>
+        <tr>
+		  <td class="footer" colspan="2">$foot</td>
+		</tr>
+</table>
+        </form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.d.
+?>-->

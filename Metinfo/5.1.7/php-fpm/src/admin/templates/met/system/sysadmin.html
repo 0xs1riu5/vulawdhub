@@ -1,0 +1,217 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="sysadmin">
+	<div class="topbox">
+	<div class="boxlist listxp">
+		<div style="margin-left:8px;">
+		<h2>{$lang_upfiletips29}</h2>
+		<div class="text">
+			<h3>{$lang_sysadminUserInfo}</h3>
+			<ul class="user">
+				<li><span>{$lang_sysadminUsername}{$lang_marks}</span>$metinfo_admin_name</li>
+				<li><span>{$lang_sysadminLoginNum}{$lang_marks}</span>$admin_login</li>
+				<li><span>IP{$lang_marks}</span>$m_user_ip</li>
+				<li style="clear:both;"><br/><span>{$lang_sysadminLoginTime}{$lang_marks}</span>$admin_modify_date</li>
+			</ul>
+			<h3 class="line">{$lang_sysadminUnread}</h3>
+			<ul class="user">
+				<li><span>{$lang_sysadminFeedbackInfo}{$lang_marks}</span>$feedback</li>
+				<li><span>{$lang_sysadminLeaveMessage}{$lang_marks}</span>$message</li>
+				<li><span>{$lang_sysadminFriendlyLink}{$lang_marks}</span>$link</li>
+				<li><span>{$lang_sysadminMember}{$lang_marks}</span>$member</li>
+			</ul>
+			<div class="clear"></div>
+			<h3 class="line">{$lang_upfiletips30}</h3>
+			<div class="statb">
+			{$lang_statips10}{$lang_marks} PV=><span>{$visit[pv]}</span> &nbsp;&nbsp;&nbsp; {$lang_statips21}=><span>{$visit[alone]}</span> &nbsp;&nbsp;&nbsp; IP=><span>{$visit[ip]}</span>
+			</div>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->			
+			<h3 style="margin-top:2px;">{$lang_upfiletips31}</h3>
+			<div class="fuwu">
+				<a href="http://bbs.metinfo.cn" target="_blank">{$lang_upfiletips32}</a><span>-</span><a href="http://www.metinfo.cn/course/" target="_blank">{$lang_indexebook}</a><span>-</span><a href="http://www.metinfo.cn" target="_blank">{$lang_sysadminOfficialWebsite}</a><span>-</span><a href="http://www.metinfo.cn/idc/index.htm" target="_blank">{$lang_upfiletips33}</a>
+				<br/><a href="http://www.metinfo.cn/product/" target="_blank">{$lang_upfiletips34}</a><span>-</span><a href="http://www.metinfo.cn/web/product.htm" target="_blank">{$lang_upfiletips35}</a><span>-</span><a href="http://www.metinfo.cn/web/web.htm" target="_blank">{$lang_upfiletips36}</a><span>-</span><a href="mailto:sales@metinfo.cn">sales@metinfo.cn</a>
+			</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->				
+		</div>
+		</div>
+	</div>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
+	<div class="boxlist listxr">
+		<div style="margin-right:8px;">
+		<h2>MetInfo{$lang_upfiletips37}</h2>
+		<div class="text" id="newslist"></div>
+		</div>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+	<div class="boxlist listxr">
+		<div style="margin-right:8px;">
+		<h2>{$lang_sysadminHelp}</h2>
+		<div class="text" style="padding:5px 6px 6px;">
+			<ul class="descr">
+				<li>{$lang_sysadminHelp1}</li> 
+				<li>{$lang_sysadminHelp2}</li> 
+				<li>{$lang_sysadminHelp3}</li> 
+				<li>{$lang_sysadminHelp4}</li> 
+				<li>{$lang_sysadminHelp5}</li> 
+			</ul>
+		</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="boxlist listxp">
+		<div style="margin-left:8px;">
+		<h2>{$lang_upfiletips38}</h2>
+		<div class="text dengao">
+			<div class="mtsv">
+				<h3>{$lang_upfiletips39}{$lang_marks}</h3>
+				<p>{$lang_metinfo} 
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->					
+				- MetCMS({$lang_upfiletips40})
+<!--
+EOT;
+}
+echo <<<EOT
+-->					
+				</p>
+			</div>
+			<div class="mtsv">
+				<h3>{$lang_metinfoversion}{$lang_marks}</h3>
+				<p>v{$metcms_v}</p>&nbsp;{$new_metcms_v}
+			</div>
+			<div class="mtsv">
+				<h3>{$lang_Operating}{$lang_marks}</h3>
+				<p>{$xitong}</p>
+			</div>
+			<div class="mtsv">
+				<h3>PHP{$lang_upfiletips41}{$lang_marks}</h3>
+				<p>{$met_sever1}</p>
+			</div>
+			<div class="mtsv">
+				<h3>{$lang_sysadminDBVersion}{$lang_marks}</h3>
+				<p>{$mysql1}</p>
+			</div>
+			<div class="mtsv">
+			<h3>{$lang_reserved}{$lang_marks}</h3>
+	        <p>{$lang_copyright}</p>
+			</div>
+			<div class="mtsv">
+			<h3>{$lang_upfiletips42}{$lang_marks}</h3>
+			<p>
+			<span id="oltest_cms"><a id="updatenow" href="http://$met_host/dl/olupdate.php" onclick="return olupdate('cms','new','test');">{$lang_upfiletips43}</a>&nbsp;&nbsp;</span>
+			<input id="sucess_cms" type="hidden" value=""/>
+			<input id="addr_cms" type="hidden" value=""/>
+			<input id="met_url_r" type="hidden" value="http://$met_host/dl/olupdate.php?"/>
+			<input id="met_url_h" type="hidden" value="olupdate.php?type=1&"/>
+			<input id="ver_now_cms" type="hidden" value="$metcms_v"/>
+			<input id="ver_to_cms" type="hidden" value="new"/>
+			<input id="date_back" type="hidden" value="0"/>
+			</p>
+			</div>
+			<div class="clear"></div>
+		</div>
+		</div>
+	</div>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->		
+	<div class="boxlist listxr">
+		<div style="margin-right:8px;">
+		<h2>{$lang_sysadminUseAgreement}</h2>
+		<div class="text dengao">
+			<ol class="xieyi">
+			<li>{$lang_sysadminAgreement1}</li>
+			<li>{$lang_sysadminAgreement2}</li>
+			<li>{$lang_sysadminAgreement3}</li>
+			</ol>
+			<p style="padding-left:28px;"><a href="http://www.metinfo.cn/web/license.htm" target="_blank">{$lang_sysadminlicense}</a></p>
+		</div>
+		</div>
+	</div>
+<!--
+EOT;
+}else{
+	echo <<<EOT
+-->		
+	<div class="boxlist listxr">
+		<div style="margin-right:8px;">
+		<h2>{$lang_about}</h2>
+		<div class="text dengao">
+			{$met_agents_about}
+		</div>
+		</div>
+	</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+	<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div class="footer">$foot</div>
+<script type="text/javascript">
+function metnewslist(){
+	$('#newslist').html('{$lang_jsx1}');
+	$.ajax({
+		url : 'sysadmin.php?lang={$lang}&action=list', 
+		type: 'POST',
+		success: function(msg){
+			$('#newslist').empty();
+			$('#newslist').append(msg);
+		}
+	});
+}
+<!--
+EOT;
+if($click==1){
+echo <<<EOT
+-->	
+$('#updatenow').click();
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+metnewslist();
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,43 @@
+<!--<?php
+require_once template('head'); 
+$metlinkimg=methtm_link('img','all','0','100','1');
+$metlinktext=methtm_link('text','all','0','100','1');
+echo <<<EOT
+-->
+<div id="web">
+<div class="left">
+	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+ <div class="webcontent">
+<!--
+EOT;
+if($addlinkok==1 && $class_list[$classnow][releclass]!=0){
+echo <<<EOT
+-->
+ <div class="message_line"><a href="$addlink_url">{$lang_ApplyLink}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+     <dl class="link_main">
+        <dt>{$lang_PictureLink}:</dt>
+        <dd>$metlinkimg</dd>
+     </dl>
+     <dl class="link_main">
+         <dt>{$lang_TextLink}:</dt>
+         <dd>$metlinktext</dd>
+     </dl>
+ </div>
+</div>
+<!--
+EOT;
+require_once template('webright'); 
+echo <<<EOT
+-->
+
+<div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

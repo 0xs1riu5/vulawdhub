@@ -1,0 +1,32 @@
+<!--<?php
+require_once template('head'); 
+$met_img=methtml_showimg('all');
+$methits=methtml_hits('img');
+$met_next=methtml_prenextinfo();
+echo <<<EOT
+-->
+<div id="web">
+<div class="left">
+	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="wevcontent">
+<h1 class="title">$img[title]</h1>
+<div class="hits">$methits</div>
+<div class="product_list">
+{$met_img}
+</div>
+<div class="editor">$img[content]</div>
+<div class="page">$met_next</div>
+</div>
+</div>
+<!--
+EOT;
+require_once template('webright'); 
+echo <<<EOT
+-->
+
+<div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

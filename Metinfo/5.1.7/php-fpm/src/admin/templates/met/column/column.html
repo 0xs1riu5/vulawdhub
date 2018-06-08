@@ -1,0 +1,498 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+if($met_member_use)$memfunc=1;
+echo <<<EOT
+-->
+</head>
+<body id="column">
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+	<table cellpadding="0" cellspacing="0" class="table">
+		<tr>
+<!--
+EOT;
+if(!$met_columnshow)$met_columnshow=0;
+$tname = $lang_columntip11;
+if($met_columnshow)$tname = $lang_columntip12;
+echo <<<EOT
+-->	
+			<td colspan="3" class="centle" style="font-weight:normal;">
+				<a href="index.php?anyid={$anyid}&lang={$lang}&action=modify&met_columnshow=" onclick="return columnshow($(this),'{$lang_columntip11}','{$lang_columntip12}');" style="float:right; font-weight:normal; padding-right:10px;">{$tname}</a>
+				&nbsp;&nbsp;<a href="add.php?lang=$lang&type=1&action=add" onclick="return addcolumn($(this),'',1);">{$lang_add}{$lang_modClass1}</a>&nbsp;&nbsp;
+				<font style=' color:#999;'>{$lang_noorderinfo}</font>
+				<span id="loadtxt"></span>
+			</td>
+		</tr>
+			 <tr>
+			 <td colspan="3">
+			  <form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang">
+			  <table cellpadding="0" cellspacing="0" class="table neitable columntables" style="margin:0px; border:none;">
+		<tr id="list-top"> 
+			<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+			<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
+			<td class="list">{$lang_columnname}</td>
+			<td class="list" width="130" style="padding:0px 5px; text-align:center;">{$lang_columnnav}</td>
+			<td class="list" width="100" style="padding:0px; text-align:center;">{$lang_columnmodule}</td>
+			<td class="list" width="100" style="padding:0px; text-align:center;">{$lang_columndocument}</td>
+			<td class="list" width="70" style="padding:0px; text-align:center;">{$lang_columnmark1}</td>			
+			<td width="60" class="list">{$lang_operate}</td>
+		</tr>
+<!--
+EOT;
+foreach ($met_class1 as $key=>$val){
+$valfoldername=utf8substr($val[foldername], 0, 12);
+echo <<<EOT
+--> 
+        <tr class="mouse click column_1">
+			<td class="list-text">
+				<input name='id' type='checkbox' onClick="list_all($(this),1);" id="id" value='$val[id]' />
+			</td>
+			<td class="list-text">
+				<input type="text" class="text no_order" value="$val[no_order]" name="no_order_$val[id]" />
+				<div style='display:none;'>
+				<input type="hidden" value="$val[bigclass]" name="bigclass_$val[id]" />
+				<input type="hidden" value="$val[foldername]" name="foldername_$val[id]" />
+				<input type="hidden" value="$val[module]" name="module_$val[id]" />
+				<input type="hidden" value="$val[classtype]" name="classtype_$val[id]" />
+				<input type="hidden" value="$val[out_url]" name="out_url_$val[id]" />
+				<input type="hidden" value="$val[if_in]" name="if_in_$val[id]" />
+				<input type="hidden" value="$val[access]" name="access_$val[id]" />
+				</div>
+			</td>
+			<td class="list-text blues" style="text-align:left;">
+				{$val['openclass']}<input type="text" class="text nonull" value="$val[name]" name="name_$val[id]" />
+			</td>
+			<td class="list-text">
+			<select name="nav_$val[id]">{$val['navpotion']}</select>
+			</td>
+			<td class="list-text color999">$val[modulename]</td>
+			<td class="list-text color999" title="$val[foldername]">$valfoldername</td>
+			<td class="list-text"><input type="text" class="text no_order" value="$val[index_num]" name="index_num_$val[id]" /></td>	
+			<td class="list-text">
+				<div style=" position:relative;">
+				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val[id]" style="float:left; margin-left:10px;">{$lang_editor}</a>
+				<div class="columnmore">
+					<span class="text">{$lang_columnmore}&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" /></span>
+					<div class="none columnmorediv">
+					{$val['addclass']}
+<!--
+EOT;
+if(!$val['moveno']){
+echo <<<EOT
+-->
+					<div class="move">
+						<a href="move.php?anyid={$anyid}&lang={$lang}&id={$val[id]}&action=b1" onClick="return columnMove($(this))">{$lang_columnmove}{$lang_columnmove2}&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" /></a>
+						<div class="moveb1"></div>
+					</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($val['module']==8){
+echo <<<EOT
+-->
+					<div><a href="parameter/parameter.php?anyid=31&lang={$lang}&module=8&class1={$val[id]}&cs=2">{$lang_columnmfeedback7}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+					<div><a href="delete.php?anyid={$anyid}&lang=$lang&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></div>
+					</div>
+				</div>
+				</div>
+			</td>
+        </tr>	
+<!--
+EOT;
+foreach ($met_class2[$val[id]] as $key=>$val2){
+$val2foldername=utf8substr($val2[foldername], 0, 12);
+echo <<<EOT
+-->
+        <tr id="class_$val2[id]" class="none mouse click columnz_$val[id] column_2">
+			<td class="list-text2">
+				<input name='id' type='checkbox' onClick="linkage($(this),'bgid_$val2[id]');" id="id" value='$val2[id]' bgid_$val[id]" />
+			</td>
+			<td class="list-text2">
+				<input type="text" class="text no_order" value="$val2[no_order]" name="no_order_$val2[id]" />
+				<div style='display:none;'>
+				<input type="hidden" value="$val2[bigclass]" name="bigclass_$val2[id]" />
+				<input type="hidden" value="$val2[foldername]" name="foldername_$val2[id]" />
+				<input type="hidden" value="$val2[module]" name="module_$val2[id]" />
+				<input type="hidden" value="$val2[classtype]" name="classtype_$val2[id]" />
+				<input type="hidden" value="$val2[out_url]" name="out_url_$val2[id]" />
+				<input type="hidden" value="$val2[if_in]" name="if_in_$val2[id]" />
+				<input type="hidden" value="$val2[access]" name="access_$val2[id]" />
+				</div>
+			</td>
+            <td class="list-text2" id="tr$val2[id]" style="text-align:left; padding-left:10px;">
+				<img src='{$img_url}/{$val2['imgxurl']}' style="position:relative; top:6px;" />
+				{$val2['openclass']}
+				<input type="text" class="text nonull" value="$val2[name]" name="name_$val2[id]" style=" width:141px;" />
+			</td>
+            <td class="list-text2">
+				<select name="nav_$val2[id]">{$val2['navpotion']}</select>
+			</td>
+            <td class="list-text2 color999">$val2[modulename]</td>
+			<td class="list-text2 color999" title="$val2[foldername]">$val2foldername</td>
+			<td class="list-text2"><input type="text" class="text no_order" value="$val2[index_num]" name="index_num_$val2[id]" /></td>
+			<td class="list-text2" style="text-align:center;">
+				<div style=" position:relative;">
+				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val2[id]" style="float:left; margin-left:10px;">{$lang_editor}</a>
+				<div class="columnmore">
+					<span class="text">{$lang_columnmore}&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" /></span>
+					<div class="none columnmorediv">
+					{$val2['addclass']}
+					<div class="move">
+						<a href="move.php?anyid={$anyid}&lang={$lang}&id={$val2[id]}&action=b1" onClick="return columnMove($(this))">
+						{$lang_columnmove}{$lang_columnmove2}
+						&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" />
+						</a>
+						<div class="moveb1"></div>
+					</div>
+<!--
+EOT;
+if($val2['module']==8){
+echo <<<EOT
+-->
+					<div><a href="parameter/parameter.php?anyid=31&lang={$lang}&module=8&class1={$val2[id]}&cs=2">{$lang_columnmfeedback7}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+					<div><a href="delete.php?anyid={$anyid}&lang=$lang&id={$val2[id]}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></div>
+					</div>
+				</div>
+				</div>
+			</td>
+        </tr>
+<!--
+EOT;
+foreach ($met_class3[$val2[id]] as $key=>$val3){
+$val3foldername=utf8substr($val3[foldername], 0, 12);
+echo <<<EOT
+-->
+        <tr id="class_$val3[id]" class="none mouse click columnz_$val2[id] column_3">
+			<td class="list-text3"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val3[id]' class="bgid_$val2[id]"></td>
+			<td class="list-text3">
+				<input type="text" class="text no_order" value="$val3[no_order]" name="no_order_$val3[id]" />
+				<div style='display:none;'>
+				<input type="hidden" value="$val3[bigclass]" name="bigclass_$val3[id]" />
+				<input type="hidden" value="$val3[foldername]" name="foldername_$val3[id]" />
+				<input type="hidden" value="$val3[module]" name="module_$val3[id]" />
+				<input type="hidden" value="$val3[classtype]" name="classtype_$val3[id]" />
+				<input type="hidden" value="$val3[out_url]" name="out_url_$val3[id]" />
+				<input type="hidden" value="$val3[if_in]" name="if_in_$val3[id]" />
+				<input type="hidden" value="$val3[access]" name="access_$val3[id]" />
+				</div>
+			</td>
+            <td class="list-text3" style="text-align:left; padding-left:10px;">
+				<img src='{$img_url}/bg_column1.gif' style="float:left; margin-right:3px;" />
+				<input type="text" class="text nonull" value="$val3[name]" name="name_$val3[id]" style="float:left; width:121px;" />
+			</td>
+            <td class="list-text3">
+			<select name="nav_$val3[id]">{$val3['navpotion']}</select>
+			</td>
+            <td class="list-text3 color999">$val3[modulename]</td>
+			<td class="list-text3 color999" title="$val3[foldername]">$val3foldername</td>
+			<td class="list-text3"><input type="text" class="text no_order" value="$val3[index_num]" name="index_num_$val3[id]" /></td>
+			<td class="list-text3">
+				<div style=" position:relative;">
+				<a href="editor.php?anyid={$anyid}&lang=$lang&id=$val3[id]" style="float:left; margin-left:10px;">{$lang_editor}</a>
+				<div class="columnmore">
+					<span class="text">{$lang_columnmore}&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" /></span>
+					<div class="none columnmorediv">
+					<div class="move">
+						<a href="move.php?anyid={$anyid}&lang={$lang}&id={$val3[id]}&action=b1" onClick="return columnMove($(this))">
+						{$lang_columnmove}{$lang_columnmove2}
+						&nbsp;<img src="$img_url/metcolumn12.gif" style="position:relative; bottom:2px;" />
+						</a>
+						<div class="moveb1"></div>
+					</div>
+					<div><a href="delete.php?anyid={$anyid}&lang=$lang&id={$val3[id]}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></div>
+					</div>
+					</div>
+				</div>
+				</div>
+			</td>
+        </tr>
+<!--
+EOT;
+}}}
+echo <<<EOT
+-->
+		<tr id="bottom-id">
+			<td class="list-text"></td>
+			<td class="list-text alignleft" colspan='2'>&nbsp;&nbsp;<a href="add.php?anyid={$anyid}&lang=$lang&type=1&action=add" onclick="return addcolumn($(this),'',1);">+{$lang_add}{$lang_modClass1}</a></div>
+			<td class="list-text"></td>
+			<td class="list-text"></td>
+			<td class="list-text"></td>
+			<td class="list-text"></td>
+			<td class="list-text"></td>
+		</tr>
+   	   </table>
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value="">
+</form>	   
+              <input name="anyid" type="hidden" id="anyid" value="$anyid">
+			  <input name="lang" type="hidden" id="lang" value="$lang">
+   	   </td> 
+   	   </tr>
+		<tr> 
+			<td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="all-submit" colspan="2" style="text-align:left; padding: 5px 10px;">
+				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit" onclick="return columneditoradd($(this));" />&nbsp;&nbsp;
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit" style="margin-right:20px;" onclick="return met_modify($(this),'del','del');" /> 
+			</td>
+        </tr>
+		<tr>
+			<td class="footer" colspan="3">$foot</td>
+		</tr>
+</table>
+		
+<script type="text/javascript">
+function newmodule(my,module,type){
+	var mtd = my.parent('td').next();
+	if(type>1)mtd.find("span").hide();
+	if(my.val()==999){
+		mtd.find("input").hide();
+		mtd.find('font').empty();
+		mtd.find("input[name*='out_url_new_']").show();
+	}else if(my.val()>5 && my.val()!=8){
+		mtd.find('input').hide();
+		mtd.find('font').text(addmodulefold(my.val()));
+	}else{
+		mtd.find("input").hide();
+		mtd.find('font').empty();
+		if(type>1 && my.val()==module){
+			mtd.find("span").show();
+		}else{
+		mtd.find("input.foldernonull").show();
+		}
+	}
+}
+function addmodulefold(module){
+	var fname='';
+	switch(module){
+		case '6':fname = 'job';break;
+		case '7':fname = 'message';break;
+		case '9':fname = 'link';break;
+		case '10':fname= 'member';break;
+		case '11':fname= 'search';break;
+		case '12':fname= 'sitemap';break;
+		case '100':fname= 'product';break;
+		case '101':fname= 'img';break;
+	}
+	return fname;
+}
+function columnshow(my,t1,t2){
+	var type = my instanceof jQuery?1:0;
+	var text = my instanceof jQuery?my.text():my;
+		t1   = my instanceof jQuery?t1:1;
+		t2   = my instanceof jQuery?t2:0;
+	$('img.columnimg').each(function(){
+		var xp=$(this).attr('id');
+			xp=xp.split('img_');
+			xp=xp[1];
+		if(text==t1){
+			$('.columnz_'+xp).show();
+			$(this).attr('src','{$img_url}/colum1nx2.gif');
+		}else{
+			$('.columnz_'+xp).hide();
+			$(this).attr('src','{$img_url}/colum1nx.gif');
+		}
+	});
+	if(my instanceof jQuery){
+		text==t1?my.text(t2):my.text(t1);
+		var num=text==t1?1:0;
+		$.ajax({
+			url : my.attr('href')+num,
+			type: "POST"
+		});
+	}
+	ifreme_methei();
+	return false;
+}
+function columnFormNum(form){
+	var list=$("input[name='allid']").val();
+	var lists=list.split(',');
+	var nlist = '';
+	var i;
+	reg=/^[0-9]+$/; 
+	for(i=0;i<lists.length-1;i++){
+		var no_order='no_order_'+lists[i];
+		nlist+='&'+no_order+'='+encodeURIComponent($("input[name='"+no_order+"']").val());
+		var name='name_'+lists[i];
+		nlist+='&'+name+'='+encodeURIComponent($("input[name='"+name+"']").val());
+		var nav='nav_'+lists[i];
+		nlist+='&'+nav+'='+encodeURIComponent($("select[name='"+nav+"']").val());
+		var index_num='index_num_'+lists[i];
+		nlist+='&'+index_num+'='+encodeURIComponent($("input[name='"+index_num+"']").val());
+		if(!reg.test(lists[i])){
+			var bigclass='bigclass_'+lists[i];
+			nlist+='&'+bigclass+'='+encodeURIComponent($("input[name='"+bigclass+"']").val());
+			var foldername='foldername_'+lists[i];
+			nlist+='&'+foldername+'='+encodeURIComponent($("input[name='"+foldername+"']").val());
+			var module='module_'+lists[i];
+			nlist+='&'+module+'='+encodeURIComponent($("select[name='"+module+"']").val());	
+			if($("select[name='"+module+"']").val()=='999'){
+				var out_url='out_url_'+lists[i];
+				nlist+='&'+out_url+'='+encodeURIComponent($("input[name='"+out_url+"']").val());	
+			}			
+			var classtype='classtype_'+lists[i];
+			nlist+='&'+classtype+'='+encodeURIComponent($("input[name='"+classtype+"']").val());
+		}
+	}
+	nlist+='&action='+$("input[name='action']").val()+'&lang='+$("input[name='lang']").val()+'&anyid='+$("input[name='anyid']").val()+'&allid='+$("input[name='allid']").val()
+	return nlist;
+}
+function columneditoradd(my){
+	var list = $("input[name='allid']").val();
+	var id = $("input[name='id']");
+	var all = $("input[name='allid']");
+	var type='editor';
+	    allid(id,all);
+    var form = $("form[name='del']");
+	var aller = all.val();
+	    if(aller==''){
+		    Problem(user_msg['js23']);
+		}else{
+			var Ato = Atoform(form,1);
+			if(Ato && type == 'editor'){
+				Problem(Ato);
+			}else{
+				if(type)$("input[name='action']").val(type);
+				var dataNum = columnFormNum(form);
+				$.ajax({
+					type: "POST",
+					url: form.attr('action'),
+					data: "ajaxmetinfo=1"+dataNum,
+					success: function(data){
+						if(data==0){
+							var reurl='delete.php?anyid='+$("input[name='anyid']").val()+'&lang='+$("input[name='lang']").val()+'&action=editorok';
+							location.href=reurl;
+						}else{
+							var reg=/\$/;
+							if(reg.test(data)){
+								var datt = data.split('$');
+								var atext='';
+									for(i=0;i<datt.length-1;i++){
+										datx='';datx = datt[i].split('|');
+										$("input[name='"+datx[1]+"']").addClass('focusred');
+										atext+=datx[0]+'['+datx[datx.length-1]+']\\n';
+									}
+									alert(atext);
+									setTimeout(function (){ $("input").removeClass('focusred'); },3000);
+							}else{
+								alert('$lang_jsx32');
+								var reurl='index.php?anyid='+$("input[name='anyid']").val()+'&lang='+$("input[name='lang']").val();
+								location.href=reurl;
+							}
+						}
+					}
+				});
+			}
+		}
+	return false;
+}
+function columnMove(my){
+	var w = my.parent('div').width();
+	var mv = my.next('.moveb1');
+		mv.css('right',w+'px');
+	if(mv.html()!=''){
+		mv.show();
+	}else{
+		$.ajax({
+			type: "POST",
+			url: my.attr('href'),
+			data: '',
+			success: function(data){
+				mv.append(data);
+				mv.show();
+				var dg = $(document.body).outerHeight(true) - my.offset().top;
+				if(dg<(mv.height()+100)){
+					mv.css('bottom','0px');
+				}else{
+					mv.css('top','0px');
+				}
+			}
+		});
+	}
+	return false;
+}
+function new1column(my){
+	var nvlue = window.prompt("{$lang_js56}","");
+		if(nvlue && nvlue!=''){
+			$.ajax({
+				type: "POST",
+				url: my.attr('href')+'&foldername='+nvlue+'&foldyanzheng=1',
+				data: '',
+				success: function(data){
+					if(data!=''){
+						alert(data);
+					}else{
+						nvlue = my.attr('href')+'&foldername='+nvlue;
+						if(linkSmit(my,1,"{$lang_js57}")){
+							location.href=nvlue;
+						}
+					}
+				}
+			});
+			return false;
+		}else{
+			alert('{$lang_js59}');
+			return false;
+		}
+}
+function new2column(my){
+	if(!confirm('{$lang_js58}')){
+		nvlue = my.attr('href')+'&removeurl=1';
+		my.attr('href',nvlue);	
+	}
+	return linkSmit(my,1,"{$lang_js57}");
+}
+$(document).ready(function(){
+	$('.columnmore').hover(
+		function () {
+			$(this).find('span.text').addClass("columnmore_hover");
+			$(this).find('div.columnmorediv').show();
+		},
+		function () {
+			$(this).find('span.text').removeClass("columnmore_hover");
+			$(this).find('div.columnmorediv').hide();
+			$(this).find('.moveb1').hide();
+		}
+	);
+	$('.moveb1 .b2box').live('mouseenter',function(){
+		var w = $(this).width();
+		var dg = $(document.body).outerHeight(true) - $(this).offset().top;
+		var moveb = $(this).find('div.moveb2');
+		if(dg<(moveb.height()+100)){
+			moveb.css('bottom','0px');
+		}else{
+			moveb.css('top','0px');
+		}
+		moveb.css('right',w+'px');
+		moveb.show();
+	}).live('mouseleave',function(){
+		$(this).find('div.moveb2').hide();
+	});
+	columnshow('{$met_columnshow}');
+});
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

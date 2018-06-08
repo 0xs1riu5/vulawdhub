@@ -1,0 +1,65 @@
+<!--<?php
+$Tite1=$lang_Web_Column1;
+
+$Conw=$class_list[$classnow][module];
+$metsearchadv='';
+if($Conw==11)$metsearchadv=methtml_advsearch();
+if($Conw==11||$Conw==10)$Y=1;
+if($nav_list2[$class1]!="" || $Conw >= 100 || $Conw==11 || $Conw==10){$G=1;}
+echo <<<EOT
+-->
+</div>
+    <div id="right">
+<!--
+EOT;
+if($G==1){
+$C1=$class1;
+if($Y==1)$C1=$classnow;
+echo <<<EOT
+-->
+<div class="border">
+	    <h3 class="title"><div><span>{$class_list[$C1][name]}</span></div></h3>
+		<div class="webnav"> 
+		$metsearchadv
+<!--
+EOT;
+if($Conw==10){
+echo <<<EOT
+-->
+   <!--
+EOT;
+$met_mermber_metinfo_news_left_class='memberul';
+$mermber_metinfo_news_left=membernavlist();
+echo <<<EOT
+-->
+$mermber_metinfo_news_left
+<!--
+EOT;
+}
+if($Y<>1){
+require_once template('webnav'); 
+}
+echo <<<EOT
+-->
+		</div>
+		</div>
+<!--
+EOT;
+$Line='line';
+}
+if($lang_WebNav_contact){
+echo <<<EOT
+-->
+	   <div class="border $Line">
+		<h3 class="title"><div><span>$Tite1</span></div></h3>
+		<div class="text">{$otherinfo[info10]}</div>
+		</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    </div>
+<!--
+EOT;
+?>

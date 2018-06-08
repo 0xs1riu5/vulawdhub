@@ -1,0 +1,45 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+<script type="text/javascript">
+$(window).load(function(){
+       var simg = $('#web ul.news_list li span img');
+	   var cspan = $('#web ul.news_list li span');
+       if(simg.length > 0){
+	       cspan.addClass('ie6span');
+	   }
+   }); 
+</script>
+<ul class="news_list">
+<!--
+EOT;
+foreach($news_list as $key=>$val){
+echo <<<EOT
+-->
+<li><span>$val[top] $val[news] $val[hot] $val[updatetime]</span><a href="$val[url]" target="_blank">$val[title]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</ul>
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

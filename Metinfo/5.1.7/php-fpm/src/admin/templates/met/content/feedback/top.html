@@ -1,0 +1,53 @@
+<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('metlangs');
+if($met_content_type==2){
+echo <<<EOT
+-->
+<div class="contc3 classlist1">
+<span class="color999 left classlist2">{$lang_htmColumn}：</span> 
+<!--
+EOT;
+$i=0;
+foreach($met_classindex[8] as $key=>$val){
+$admin_column_power="admin_pop".$val[id];
+if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
+$i++;$style='';$qn=$i==1?'':'-';
+if($val[id]==$class1)$style="style='color:#f00'";
+$url=$cs==3?'index.php':($cs==2?'parameter.php':'inc.php');
+echo <<<EOT
+-->
+{$qn}
+<a href="$url?anyid={$anyid}&lang={$lang}&class1={$val[id]}&module=8&cs={$cs}" title="{$val[name]}" {$style}>{$val[name]}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<div class="clear"></div>
+<!--
+EOT;
+}
+if(!$customerid){
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[3]}><a href="../../content/feedback/index.php?anyid={$anyid}&lang={$lang}&module=8&class1={$class1}&cs=3" title="{$lang_indexfeedbackm}">{$lang_indexfeedbackm}</a></li>
+		<li {$listclass[2]}><a href="../../column/parameter/parameter.php?anyid={$anyid}&lang={$lang}&module=8&class1={$class1}&cs=2" title="{$lang_columnmfeedback}">{$lang_columnmfeedback}</a></li>
+		<li {$listclass[1]}><a href="../../content/feedback/inc.php?anyid={$anyid}&lang={$lang}&class1={$class1}&cs=1" title="{$lang_fdincTitle}">{$lang_fdincTitle}</a></li>
+	</ul>
+</div>
+<div style="clear:both;"></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>

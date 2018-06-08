@@ -1,0 +1,60 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('system/database/top');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table filedown">
+		   <tr> 
+            <td width="40" class="list" style="padding:0px; text-align:center;">ID</td>
+            <td width="60" class="list">{$lang_type}</td>
+            <td class="list">{$lang_setdbFilename}</td>
+            <td width="100" class="list">{$lang_setdbFilesize}</td>
+            <td width="20%" class="list">{$lang_setdbTime}</td>
+            <td class="list">{$lang_operate}</td>
+			</tr>
+
+<!--
+EOT;
+if(count($metinfodata)>0){
+$i=0;
+foreach($metinfodata as $id => $info){
+$i++;
+echo <<<EOT
+-->
+            <tr class="mouse"> 
+            <td class="list-text">$i</td>
+            <td class="list-text">{$info[typename]}</td>
+            <td class="list-text" style="text-align:left; padding-left:15px;">$info[filename]</td>
+            <td class="list-text">{$info[filesize]} MB</td>
+            <td class="list-text">$info[maketime]</td>
+            <td class="list-text">
+	<a href="?anyid={$anyid}&action=delete&filenames=$info[filename]&fileon={$info[type]}&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;&nbsp;<a href="../../databack/{$info[type]}/$info[filename]" target="_blank" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
+			</tr>
+<!--
+EOT;
+}}else{
+echo <<<EOT
+-->
+<tr><td colspan="6" class="list-text">{$lang_databackup9}</td></tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</table>
+	<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

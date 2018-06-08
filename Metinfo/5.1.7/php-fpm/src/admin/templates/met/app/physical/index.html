@@ -1,0 +1,178 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_setbasicWebInfoSet}</title>
+<script type="text/javascript">
+function physicalsub(my){
+	$("input[type='submit']").attr('disabled',true);
+	my.next('span.tips').append('<img src="'+metimgurl+'loadings.gif" style="position:relative; top:3px;" />'+'{$lang_physicaltips1}');
+	location.href=my.attr('href');
+	return false;
+}
+</script>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="index.php?lang={$lang}&anyid={$anyid}&cs=1" title="{$lang_physicaltips2}">{$lang_physicaltips2}</a></li>
+		<li {$listclass[2]}><a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=2" title="{$lang_physicaltips3}">{$lang_physicaltips3}</a></li>
+		<li {$listclass[3]}><a href="advanced.php?lang={$lang}&anyid={$anyid}&cs=3" title="{$lang_physicaltips4}">{$lang_physicaltips4}</a></li>
+	</ul>
+</div>
+<!--
+EOT;
+if(!$phy){
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+		<tr>
+			<td class="input" colspan="2" style="padding:0px 40px;">{$lang_physicaltips5}{$lang_marks}<span class="physical_stm">{$sctimenum}</span>{$sctimetxt}</td>
+		</tr>
+		<tr>
+			<td class="input" colspan="2" style="padding:7px 40px;">
+			{$lang_physicaltips6}<span class="physical_stm1">{$defen}</span>{$lang_physicaltips7}
+			{$lang_physicaltips8}<span class="physical_stm1">10</span>{$lang_physicaltips9}
+			{$lang_physicaltips10}<span class="physical_stm1">{$notde}</span>{$lang_physicaltips11}
+<!--
+EOT;
+if($physical_time!=''){
+echo <<<EOT
+-->
+			<a href="index.php?lang=$lang&anyid={$anyid}&phy=1">{$lang_setfileview}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
+			</td>
+		</tr>
+		<tr>
+			<td class="input color390" colspan="2" style="padding:7px 40px;">{$lang_physicaltips12}</td>
+		</tr>
+		<tr>
+		<td class="input" colspan="2" style="padding-left:40px;">
+			<input type="submit" name="submit" value="{$lang_physicaltips13}" class="submit" href="physical.php?lang={$lang}&anyid={$anyid}&action=do" onclick="return physicalsub($(this))" />
+			<span class="tips"></span>
+		</td>
+        </tr>
+</table>
+<!--
+EOT;
+}else{
+$p1=count($physical1);
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+		  <tr> 
+            <td colspan="1" class="text">{$lang_physicaltips14}{$lang_marks}</td>
+			<td colspan="3" class="input" style="position:relative;"><span class="red" style="font-size:22px; position:absolute; left:5px; top:-5px;">{$defen}</span><span style="padding-left:40px;">{$lang_physicaltips17}</span></td>
+          </tr>
+		  <tr> 
+            <td colspan="1" class="text">{$lang_physicaltips15}{$lang_marks}</td>
+			<td colspan="3" class="input">{$physical_time}&nbsp;&nbsp;<a href="physical.php?lang={$lang}&anyid={$anyid}&action=do" onclick="return physicalsub($(this))">{$lang_physicaltips16}</a></td>
+          </tr>	
+<!--
+EOT;
+if($p1>0){
+echo <<<EOT
+-->
+		<tr>
+			<td class="input red" colspan="4" style="padding:0px 40px; font-weight:bold; font-size:14px;">{$lang_physicaltips18}( $p1 ) - {$lang_physicaltips19}</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($physical1 as $key=>$val){
+echo <<<EOT
+-->
+		  <tr> 
+            <td colspan="1" class="text">{$val[name]}{$lang_marks}</td>
+			<td colspan="3" class="input">{$val[text]}</td>
+          </tr>	
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+$p2=count($physical2);
+if($p2>0){
+echo <<<EOT
+-->
+		<tr>
+			<td class="input" colspan="4" style="color:#2366A8; padding:0px 40px; font-weight:bold; font-size:14px;">{$lang_physicaltips20}( $p2 ) - {$lang_physicaltips21}</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($physical2 as $key=>$val){
+echo <<<EOT
+-->
+		  <tr> 
+            <td colspan="1" class="text">{$val[name]}{$lang_marks}</td>
+			<td colspan="3" class="input">{$val[text]}</td>
+          </tr>	
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+$p3=count($physical3);
+if($p3>0){
+echo <<<EOT
+-->
+		<tr>
+			<td class="input color390" colspan="4" style="padding:0px 40px; font-weight:bold; font-size:14px;">{$lang_physicaltips22}( $p3 ) </td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($physical3 as $key=>$val){
+echo <<<EOT
+-->
+		  <tr> 
+            <td colspan="1" class="text">{$val[name]}{$lang_marks}</td>
+			<td colspan="3" class="input color999">{$val[text]}</td>
+          </tr>	
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</table>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

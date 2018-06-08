@@ -1,0 +1,48 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop');  
+echo <<<EOT
+-->
+        <div id="download_list">
+<!--
+EOT;
+$i=0;
+foreach($download_list as $key=>$val){
+$i++;
+$k='';
+if($i==1)$k='class="top"';
+echo <<<EOT
+-->
+            <dl id="plug1">
+                <dt $k>
+				    <a href="$val[url]" target="$Blank" title="$val[title]">$val[title]</a>
+				</dt>
+                <dd>
+				    <div>
+						<a href="$val[url]" target="$Blank" title="{$lang_Detail}">{$lang_Detail}</a> |
+						<a href="$val[downloadurl]" class="down" target="_blank" title="{$lang_Download}">{$lang_Download}</a> 
+					</div>
+					<span><b>{$lang_FileSize}</b>：$val[filesize]KB</span>
+					<span><b>{$lang_Hits}</b>：$val[hits]</span>
+					<span><b>{$lang_UpdateTime}</b>：$val[updatetime]</span>
+				</dd>
+            </dl>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <div id="flip">$page_list</div>
+	    </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div style=" clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

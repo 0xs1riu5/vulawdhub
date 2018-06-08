@@ -1,0 +1,30 @@
+<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('metlangs');
+echo <<<EOT
+-->
+<!--
+EOT;
+if(!$customerid){
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[4]}><a href="../../content/job/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&cs=1" title="{$lang_jobmanagement}">{$lang_jobmanagement}</a></li>
+		<li {$listclass[1]}><a href="../../content/job/cv.php?anyid={$anyid}&lang={$lang}&class1={$class1}&cs=1" title="{$lang_cvmanagement}">{$lang_cvmanagement}</a></li>
+		<li {$listclass[2]}><a href="../../column/parameter/parameter.php?module=6&anyid={$anyid}&lang={$lang}&cs=3&class1={$class1}" title="{$lang_cvset}">{$lang_cvset}</a></li>
+		<li {$listclass[3]}><a href="../../content/job/inc.php?anyid={$anyid}&lang={$lang}&class1={$class1}&cs=2" title="{$lang_indexcv}">{$lang_indexcv}</a></li>
+	</ul>
+</div>
+<div style="clear:both;"></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>

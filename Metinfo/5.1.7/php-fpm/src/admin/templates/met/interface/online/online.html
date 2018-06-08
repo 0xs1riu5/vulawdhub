@@ -1,0 +1,80 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_onlineTitle}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('interface/online/top');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+			 <tr>
+			 <td colspan="2">
+<form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1=$class1">
+<input name="allid" type="hidden" id="allid" value=""><input name="action" type="hidden" id="allid" value="del">
+<table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+              <tr id="list-top">
+                <td class="list" width="40" style="padding:0px; text-align:center;">{$lang_selected}</td>
+				<td class="list" width="30">{$lang_sort}</td>
+                <td class="list">{$lang_onlineName}</td>
+                <td class="list">{$lang_onlieqq}</td>
+				<td class="list">{$lang_onliemsn}</td>
+                <td class="list">{$lang_onlinetaobao}</td>
+                <td class="list">{$lang_onlinealibaba}</td>
+				<td class="list">{$lang_onlineskype}</td>
+				<td class="list">{$lang_operate}</td>
+              </tr>
+<!--
+EOT;
+foreach ($online_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+                <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]'></td>
+                <td class="list-text"><input type="text" name="no_order_$val[id]" class="text no_order" value="$val[no_order]" /></td>
+			    <td class="list-text"><input type="text" name="name_$val[id]" class="text max" value="$val[name]" /></td>
+                <td class="list-text"><input type="text" name="qq_$val[id]" class="text max" value="$val[qq]" /></td>
+				<td class="list-text"><input type="text" name="msn_$val[id]" class="text max" value="$val[msn]" /></td>
+                <td class="list-text"><input type="text" name="taobao_$val[id]" class="text max" value="$val[taobao]" /></td>
+                <td class="list-text"><input type="text" name="alibaba_$val[id]" class="text max" value="$val[alibaba]" /></td>
+				<td class="list-text"><input type="text" name="skype_$val[id]" class="text max" value="$val[skype]" /></td>
+				<td class="list-text" width="60"><a href="delete.php?anyid={$anyid}&lang=$lang&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr>
+			<td class="list-text"></td>
+			<td class="list-text" colspan="9" style="padding-left:10px; text-align:left;"><a href="save.php?anyid={$anyid}&lang=$lang&action=add" onclick="return addsave($(this),0);">+{$lang_onlineAdd}</a></td>
+		</tr>
+		</table>
+			<input name="action_type" type="hidden" id="action_type" value="del" />
+			<input name="allid" type="hidden" id="allid" value="" /> 	
+</form>
+		</td> 
+		</tr>
+   	   <tr> 
+            <td class="all" width="40" style="padding:0px; text-align:center;"><input name="chkAll" type="checkbox" id="chkAll" title="{$lang_selectall}" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			  <td class="all-submit" align="left" style="padding-left:10px;">
+				<input name="saveorder" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" /> 
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+				</td>
+          </tr>
+		<tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

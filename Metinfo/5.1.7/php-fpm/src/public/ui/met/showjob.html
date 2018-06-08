@@ -1,0 +1,42 @@
+<!--<?php
+require_once template('head'); 
+require_once template('sidebar');
+$methits=methtml_hits('job');
+$met_next=methtml_prenextinfo(1);
+$mp=dump($job);
+if($job[useful_life_a]==0)$lang_Job2='';
+echo <<<EOT
+-->
+        <div class="active" id="showjob">
+            <h1 class="title">{$job[position]}</h1>
+            <div class="paralist">
+			    <ul class="list-none">
+                    <li><span>{$lang_PersonNumber}</span>{$job[count]}</li>
+                    <li><span>{$lang_WorkPlace}</span>{$job[place]}</li>
+                    <li><span>{$lang_Deal}</span>{$job[deal]}</li>
+                    <li><span>{$lang_AddDate}</span>{$job[addtime]}</li>
+                    <li><span>{$lang_Validity}</span>{$job[useful_life]} {$lang_Job2}</li>
+                </ul>
+				<div class="clear"></div>
+			</div>
+<!--
+EOT;
+if($job[content]!=''){
+echo <<<EOT
+-->
+			<h3 class="ctitle"><span>{$lang_JobDescription}</span></h3>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <div class="editor">{$job[content]}</div>
+			<div class="info_cv"><a href="{$job[cv]}" {$metblank} title="$lang_cvtitle" class="button orange">{$lang_cvtitle}</a></div>
+			<div class="met_hits">{$methits}</div>
+            <div class="met_page">{$met_next}</div>
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

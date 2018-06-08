@@ -1,0 +1,199 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+<script type="text/javascript" src="{$img_url}/js/func.inc.js"></script>
+<script type="text/javascript" src="$depth../ckeditor/ckeditor.js"></script>
+</head>
+{$jslist}
+<body>
+<div id="lodfalsh" class="none" ></div>
+<!--
+EOT;
+require_once template('interface/online/top');
+echo <<<EOT
+-->
+    <form method="POST" name="myform" action="online.php?anyid={$anyid}&lang=$lang" target="_self">
+	<input name="action" type="hidden" value="modify" />
+<table cellpadding="2" cellspacing="1" class="table">
+		  <tr> 
+            <td class="text">{$lang_setskinOnline}：</td>
+            <td class="input">
+			<label><input name="met_online_type" type="radio" class="radio" value="0" {$met_online_type1[0]} onClick="onlineposition(0,'');">{$lang_setskinOnline1}</label>&nbsp;&nbsp;
+			<label><input name="met_online_type" type="radio" value="4" class="radio" {$met_online_type1[4]} onClick="onlineposition(4,'');">{$lang_setskinOnline9}</label>&nbsp;&nbsp;
+			<label><input name="met_online_type" type="radio" value="1" class="radio" {$met_online_type1[1]}onClick="onlineposition(1,'');">{$lang_setskinOnline2}</label>&nbsp;&nbsp;
+			<label><input name="met_online_type" type="radio" value="2" class="radio" {$met_online_type1[2]} onClick="onlineposition(2,'');">{$lang_setskinOnline3}</label>&nbsp;&nbsp;
+			<label><input name="met_online_type" type="radio" value="3" class="radio" {$met_online_type1[3]} onClick="onlineposition(3,'');">{$lang_close}</label></td>
+          </tr>
+<!--
+EOT;
+$displayleft='none';
+$displayright='none';
+if($met_online_type<2)$displayleft='';
+if($met_online_type==2||$met_online_type==4)$displayright='';
+echo <<<EOT
+-->
+		  <tr id="onlineleft" style="display:$displayleft"> 
+            <td class="text">{$lang_setskinOnline4}：</td>
+            <td class="input">
+			{$lang_setskinOnline5}{$lang_marks} <input type="text" name="met_onlineleft_left" value="$met_onlineleft_left" class="text mid">{$lang_setflashPixel}&nbsp;&nbsp; 
+			{$lang_setskinOnline6}{$lang_marks} <input type="text" name="met_onlineleft_top" value="$met_onlineleft_top" class="text mid">{$lang_setflashPixel}</td>
+          </tr>
+          <tr id="onlineright" style="display:{$displayright}"> 
+            <td class="text">{$lang_setskinOnline8}：</td>
+            <td class="input">
+			{$lang_setskinOnline7}{$lang_marks} <input type="text" name="met_onlineright_right" value="$met_onlineright_right" class="text mid">{$lang_setflashPixel}&nbsp;&nbsp; 
+			{$lang_setskinOnline6}{$lang_marks} <input type="text" name="met_onlineright_top" value="$met_onlineright_top" class="text mid">{$lang_setflashPixel}</td>
+          </tr>
+
+		<tr> 
+            <td class="text">{$lang_onlineskintype}：</td>
+            <td class="input">
+<select name="met_online_skin" id="fengge" style="width:70px;" onChange="changecss($(this));">
+<!--
+EOT;
+for($i=1;$i<=count($met_online_count);$i++){
+echo <<<EOT
+-->
+<option value="$i" {$met_online_skin1[$i]} >{$lang_onlineskin}$i</option>		
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+</select>	
+		<select name="met_online_color" style="width:70px;">
+<!--
+EOT;
+foreach($met_online_skinarray1 as $key=>$valp){
+echo <<<EOT
+-->
+		<option value="$valp[2]" {$met_online_color1[$valp[2]]}>$valp[1]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		</select>
+</td>
+          </tr> 			  
+          <tr> 
+            <td class="text">QQ{$lang_onlineimg}：</td>
+            <td class="input">
+			<img src="../../../public/images/qq/qq_{$met_qq_type}.jpg" id="metqqimg" style="vertical-align:middle; margin:5px;" />
+			<a href="javascript:void(0)" onclick="divshow('online_box_qq')" style="text-decoration:underline;">{$lang_indexonlieicon}</a>
+		</td>
+          </tr> 
+          <tr> 
+            <td class="text">MSN{$lang_onlineimg}：</td>
+            <td class="input">
+			<img src="../../../public/images/msn/msn_{$met_msn_type}.gif" id="metmsnimg" style="vertical-align:middle; margin:5px;" />
+			<a href="javascript:void(0)" onclick="divshow('online_box_msn')" style="text-decoration:underline;">{$lang_indexonlieicon}</a>
+		 </td>
+          </tr>
+          <tr> 
+            <td class="text">{$lang_onlinetaobao}{$lang_onlineimg}：</td>
+            <td class="input">
+			<img src="../../../public/images/taobao/taobao_{$met_taobao_type}.jpg" id="mettaobaoimg" style="vertical-align:middle; margin:5px;" />
+			<a href="javascript:void(0)" onclick="divshow('online_box_taobao')" style="text-decoration:underline;">{$lang_indexonlieicon}</a>
+          </tr>
+          <tr> 
+            <td class="text">SKYPE{$lang_onlineimg}：</td>
+            <td class="input">
+			<img src="../../../public/images/skype/skype_{$met_skype_type}.gif" id="metskypeimg" style="vertical-align:middle; margin:5px;" />
+			<a href="javascript:void(0)" onclick="divshow('online_box_skype')" style="text-decoration:underline;">{$lang_indexonlieicon}</a>
+		 </td>
+          </tr>		  
+          <tr> 
+            <td class="text">{$lang_onlinealibaba}{$lang_onlineimg}：</td>
+            <td class="input">
+			<img src="../../../public/images/alibaba/alibaba_{$met_alibaba_type}.jpg" id="metalibabaimg" style="vertical-align:middle; margin:5px;" />
+			<a href="javascript:void(0)" onclick="divshow('online_box_alibaba')" style="text-decoration:underline;">{$lang_indexonlieicon}</a>
+			</td>
+          </tr>
+		 	<tr> 
+            <td class="text">{$lang_close}{$lang_onlineName}：</td>
+            <td class="input"><label><input name="met_onlinenameok2" type="checkbox" class="checkbox" value="1" {$met_onlinenameok1}>{$lang_close}</label></td>
+			</tr>
+           <tr> 
+          <td class="text" valign="middle">{$lang_onlinetel}：</td>
+          <td  class="input" valign="top"><textarea name="met_onlinetel" class="ckeditor textarea gen" rows="5" >{$met_onlinetel}</textarea><span class="tips">{$lang_onlinetel1}</span></td>
+          </tr>
+	      <tr>
+            <td class="text"></td>
+	      <td class="submit">
+		  <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')">
+		  </td>
+          </tr>
+</table>
+<!--imgtype-->
+<!--
+EOT;
+$imgtype=array(0=> 'qq', 1=>'msn', 2=> 'taobao', 3=> 'skype',4=>'alibaba');
+for($i=0;$i<5;$i++){
+echo <<<EOT
+-->
+<div id="online_box_{$imgtype[$i]}">
+	<h3><img src="{$img_url}/botton/delete.png" onclick="closediv('online_box_{$imgtype[$i]}')" />{$lang_indexonlieimg}</h3>
+	<ul>
+<!--
+EOT;
+$qqstyle=array(0=> 4, 1=>45, 2=> 5, 3=> 8,4=> 9, 5=>10, 6=>44, 7=>46,8=> 1, 9=> 6,10=> 7,11=>47,12=>41,13=>42,14=> 2,15=> 3,16=>11,17=>12,18=>43,19=>13);
+$msnstyle=array(0=> 1, 1=> 2, 2=> 3, 3=> 4,4=> 5, 5=>6, 6=>7, 7=>8,8=> 9, 9=>10,10=>11,11=>12,12=>13);
+$taobaostyle=array(0=>2,1=>1);
+$skypestyle=array(0=> 11, 1=> 12, 2=> 13, 3=> 4,4=> 5, 5=>6, 6=>7, 7=>8,8=> 9, 9=>10,10=>1,11=>2,12=>3);
+$alibabastyle=array(0=>102,1=>101, 2=> 1, 3=> 2);
+if($i==0)$style=$qqstyle;
+if($i==1)$style=$msnstyle;
+if($i==2)$style=$taobaostyle;
+if($i==3)$style=$skypestyle;
+if($i==4)$style=$alibabastyle;
+$num=count($style);
+for($k=0;$k<$num;$k++){
+$stl='';
+if($i==0 && $style[$k]==11)$stl='style="position:relative; bottom:10px;"';
+if($i==0)$met_type1=$met_qq_type1[$style[$k]];
+if($i==1)$met_type1=$met_msn_type1[$style[$k]];
+if($i==2)$met_type1=$met_taobao_type1[$style[$k]];
+if($i==3)$met_type1=$met_skype_type1[$style[$k]];
+if($i==4)$met_type1=$met_alibaba_type1[$style[$k]];
+$hz='jpg';
+if($i==1||$i==3)$hz='gif';
+echo <<<EOT
+-->
+	<li>
+	<span><input type="radio" value="{$style[$k]}" name="met_{$imgtype[$i]}_type" {$met_type1} /></span>
+	<img src="../../../public/images/{$imgtype[$i]}/{$imgtype[$i]}_{$style[$k]}.{$hz}" {$stl} />
+	</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</ul>
+	<div class="clear"></div>
+	<div class="botom">
+		<a href="javascript:void(0)" onclick="closediv('online_box_{$imgtype[$i]}')">{$lang_indexonlieno}</a>
+		<a href="javascript:void(0)" onclick="okonlineqq('{$imgtype[$i]}')">{$lang_indexonlieok}</a>
+	</div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--imgtype_over-->
+</form>
+<div class="footer">$foot</div>
+<script type="text/javascript">
+met_ckeditor('$depth','met_onlinetel',2);
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

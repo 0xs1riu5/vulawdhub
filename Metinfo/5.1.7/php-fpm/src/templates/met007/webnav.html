@@ -1,0 +1,134 @@
+<!--<?php
+echo <<<EOT
+-->
+<div id="web-sidebar">
+<!--
+EOT;
+if($class_list[$class1][module]==100 || $class_list[$class1][module]==101 ){
+$k=$class_list[$class1][module]==100?3:5;
+foreach($module_list1[$k] as $key=>$val0){
+echo <<<EOT
+-->
+        <h2><a href="$val0[url]" title="$val0[name]" $val0[new_windows]>$val0[name]</a></h2>
+		
+            <div class="part2dom">
+<!--
+EOT;
+foreach($nav_list2[$val0[id]] as $key=>$val){
+echo <<<EOT
+-->
+            <dl>
+			    <dt id="part2-id$val[id]">
+				    <a href="$val[url]" title="$val[name]" $val[new_windows]>$val[name]</a>
+				</dt>
+                <dd>
+<!--
+EOT;
+foreach($nav_list3[$val[id]] as $key=>$val2){
+echo <<<EOT
+-->
+                    <h4 id="part3-id$val2[id]">
+				        <a href="$val2[url]" title="$val2[name]" $val2[new_windows]>$val2[name]</a>
+					</h4>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                </dd>
+			</dl>	
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+        </div>
+<!--
+EOT;
+}
+if($lang_WebNav_JsOk == 1){
+echo <<<EOT
+-->
+<script type="text/javascript">
+        var Dom=$("#web-sidebar");
+        var K=0;	
+        var Dom_h2=Dom.find("h2");
+        var Dom_dl=Dom.find("div.part2dom");
+		    Dom_dl.css("display","none");
+		    Dom_h2.click(function(){
+			    var Cdom_h2=$(this);
+			    var Cdom_dl=Cdom_h2.next('div.part2dom');
+				if(Cdom_dl.css("display")=="block"){ K=1;}else{K=0;}
+			    if(K==0){Cdom_dl.css("display","block"); Cdom_h2.addClass("part-on");}
+				else{ Cdom_dl.css("display","none"); Cdom_h2.removeClass("part-on");}
+			});
+</script>   
+<!--
+EOT;
+}
+}else{
+$navid=$class1;
+if($Now==1)$navid=$class_index[$NavMark][id];
+foreach($nav_list2[$navid] as $key=>$val){
+$k=count($nav_list3[$val[id]]);
+echo <<<EOT
+-->
+            <dl>
+			    <dt id="part2-$val[id]">
+				    <a href="$val[url]" title="$val[name]" $val[new_windows]>$val[name]</a>
+				</dt>
+<!--
+EOT;
+if($k > 0){
+echo <<<EOT
+-->
+                <dd>
+<!--
+EOT;
+foreach($nav_list3[$val[id]] as $key=>$val2){
+echo <<<EOT
+-->
+                    <h4 id="part3-$val2[id]">
+				        <a href="$val2[url]" title="$val2[name]" $val2[new_windows]>$val2[name]</a>
+					</h4>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                </dd>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</dl>	
+<!--
+EOT;
+}
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+if($lang_WebNav_JsOk == 1){
+echo <<<EOT
+-->
+<script type="text/javascript">
+        var Type=1; //侧栏效果|1为点击展开|2为鼠标划过右浮动
+        var Dom=$("#web-sidebar");
+		var Part2=$("#part2-$class2");
+		var Part3=$("#part3-$classnow");
+		    Dom.find("dd").css("display","none");
+</script>
+<script src="{$img_url}js/sidebar.js" language="javascript" type="text/javascript"></script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+<!--
+EOT;
+?>

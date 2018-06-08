@@ -1,0 +1,24 @@
+<!--<?php
+require_once template('head'); 
+echo <<<EOT
+-->
+<div id="web">
+<div class="left">
+	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+<div class="message_line"><a href="$message[listurl]">{$lang_ReadInfo}</a></div>
+$methtml_message
+</div>
+</div>
+<!--
+EOT;
+require_once template('webright'); 
+echo <<<EOT
+-->
+
+<div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

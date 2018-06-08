@@ -1,0 +1,331 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+<script type="text/javascript">
+var hl = 0;
+var hz = lang=='{$met_index_type}'?'.{$met_htmtype}':'_'+lang+'.{$met_htmtype}';
+var weburl = '{$met_weburl}';
+</script>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="sethtm.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_seotips2}">{$lang_seotips2}</a></li>
+		<li {$listclass[2]}><a href="htm.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_seotips3}">{$lang_seotips3}</a></li>
+		<li {$listclass[3]}><a href="sethtm.php?anyid={$anyid}&lang={$lang}&cs=3" title="{$lang_seotips4}">{$lang_seotips4}</a></li>
+	</ul>
+</div>
+<div style="position:relative;">
+<!--
+EOT;
+if($met_webhtm){
+echo <<<EOT
+-->
+<div id="htmlloading">
+	<h3></h3>
+	<div class="listbox"></div>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+<!--
+EOT;
+if($met_webhtm){
+echo <<<EOT
+-->
+<!--
+EOT;
+if($met_pseudo){
+echo <<<EOT
+-->
+	<tr> 
+        <td class="text"></td>
+        <td class="input red">{$lang_seotips24}</td>
+    </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    <tr> 
+		<td class="text">{$lang_htmAll}{$lang_marks}</td>
+		<td class="input">
+			<a href="htm.php?action=all&lang=$lang" class="htm red" id="quanbuhtm" title="{$lang_htmCreateAll}" onclick="return methtml($(this))">{$lang_htmCreateAll}</a>
+			&nbsp;<span class="tips color390"></span>&nbsp;<span class="tips">({$lang_htmcreateallinfo})</span>
+		</td>
+	</tr>
+	<tr> 
+        <td class="text">{$lang_htmHome}{$lang_marks}</td>
+        <td class="input">
+			<a href="htm.php?index=index&lang=$lang" class="htm" title="{$lang_htmCreateHome}" onclick="return methtml($(this))">{$lang_htmCreateHome}</a>
+			&nbsp;<span class="tips color390"></span>
+<!--
+EOT;
+if($newhtm_open){
+echo <<<EOT
+-->
+<script type="text/javascript">
+		$("#quanbuhtm").click();
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</td>
+	</tr>
+<!--
+EOT;
+foreach($met_classindex[1] as $key=>$val){
+echo <<<EOT
+-->
+    <tr>
+        <td class="text">$val[name]{$lang_htmColumn}{$lang_marks}</td>
+        <td class="input">
+			<a href="htm.php?class1=$val[id]&module=$val[module]&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			&nbsp;<span class="tips color390"></span>
+		</td>
+    </tr> 
+<!--
+EOT;
+}
+foreach($met_classindex[2] as $key=>$val){
+echo <<<EOT
+-->
+    <tr> 
+        <td class="text">$val[name]{$lang_htmColumn}{$lang_marks}</td>
+        <td class="input"><a href="htm.php?class1=$val[id]&module=$val[module]&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+		<span class="tips color390"></span>
+<!--
+EOT;
+if($met_webhtm==2){
+echo <<<EOT
+-->
+		<span class="j9">|</span>  <a href="htm.php?class1=$val[id]&module=$val[module]&listall=all&lang=$lang" class="htm" title="{$lang_htmTip2}" onclick="return methtml($(this))">{$lang_htmTip2}</a>
+		<span class="tips color390"></span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</td>
+    </tr> 
+<!--
+EOT;
+}
+foreach($met_classindex[3] as $key=>$val){
+echo <<<EOT
+-->
+          <tr> 
+            <td class="text">$val[name]{$lang_htmColumn}{$lang_marks}</td>
+            <td class="input"><a href="htm.php?class1=$val[id]&module=$val[module]&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+<!--
+EOT;
+if($met_webhtm==2){
+echo <<<EOT
+-->
+<span class="j9">|</span>  <a href="htm.php?class1=$val[id]&module=$val[module]&listall=all&lang=$lang" class="htm" title="{$lang_htmTip2}" onclick="return methtml($(this))">{$lang_htmTip2}</a>
+<span class="tips color390"></span>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+foreach($met_classindex[4] as $key=>$val){
+echo <<<EOT
+-->
+          <tr> 
+            <td class="text">$val[name]{$lang_htmColumn}{$lang_marks}</td>
+            <td class="input"><a href="htm.php?class1=$val[id]&module=$val[module]&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+<!--
+EOT;
+if($met_webhtm==2){
+echo <<<EOT
+-->
+<span class="j9">|</span>  <a href="htm.php?class1=$val[id]&module=$val[module]&listall=all&lang=$lang" class="htm" title="{$lang_htmTip2}" onclick="return methtml($(this))">{$lang_htmTip2}</a>
+<span class="tips color390"></span>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+foreach($met_classindex[5] as $key=>$val){
+echo <<<EOT
+-->
+          <tr> 
+            <td class="text">$val[name]{$lang_htmColumn}{$lang_marks}</td>
+            <td class="input"><a href="htm.php?class1=$val[id]&module=$val[module]&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+<!--
+EOT;
+if($met_webhtm==2){
+echo <<<EOT
+-->
+<span class="j9">|</span>  <a href="htm.php?class1=$val[id]&module=$val[module]&listall=all&lang=$lang" class="htm" title="{$lang_htmTip2}" onclick="return methtml($(this))">{$lang_htmTip2}</a>
+<span class="tips color390"></span>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+foreach($met_classindex[6] as $key=>$val){
+echo <<<EOT
+-->
+          <tr> 
+            <td class="text">$val[name]{$lang_htmColumn}{$lang_marks}</td>
+            <td class="input"><a href="htm.php?class1=$val[id]&module=$val[module]&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+<!--
+EOT;
+if($met_webhtm==2){
+echo <<<EOT
+-->
+<span class="j9">|</span>  <a href="htm.php?class1=$val[id]&module=$val[module]&listall=all&lang=$lang" class="htm" title="{$lang_htmTip2}" onclick="return methtml($(this))">{$lang_htmTip2}</a>
+<span class="tips color390"></span>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+if(count($met_module[7])){
+echo <<<EOT
+-->
+          <tr> 
+            <td class="text">{$met_module[7][0][name]}{$lang_htmColumn}{$lang_marks}</td>
+            <td class="input"><a href="htm.php?class1={$met_module[7][0][id]}&module=7&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+<!--
+EOT;
+if($met_webhtm==2){
+echo <<<EOT
+-->
+<span class="j9">|</span>  <a href="htm.php?class1={$met_module[7][0][id]}&module=7&listall=all&lang=$lang" class="htm" title="{$lang_htmTip2}" onclick="return methtml($(this))">{$lang_htmTip2}</a>
+<span class="tips color390"></span>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+</td>
+          </tr> 
+<!--
+EOT;
+}
+foreach($met_classindex[8] as $key=>$val){
+echo <<<EOT
+-->
+          <tr> 
+            <td class="text">$val[name]{$lang_htmColumn}{$lang_marks}</td>
+            <td class="input">
+			<a href="htm.php?class1=$val[id]&module=$val[module]&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+			</td>
+          </tr> 
+<!--
+EOT;
+}
+if(count($met_module[9])){
+echo <<<EOT
+-->
+   <tr> 
+            <td class="text">{$met_module[9][0][name]}{$lang_htmColumn}{$lang_marks}</td>
+            <td class="input"><a href="htm.php?class1={$met_module[9][0][id]}&module=9&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+			</td>
+          </tr> 
+<!--
+EOT;
+}
+if($met_member_use!=0){
+echo <<<EOT
+-->
+   <tr> 
+            <td class="text">{$lang_htmlogin}{$lang_marks}</td>
+            <td class="input"><a href="htm.php?class1=login&lang=$lang" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+			</td>
+          </tr> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    <tr> 
+		<td class="text">{$lang_htmsitemap}{$lang_marks}</td>
+		<td class="input">
+			<a href="htm.php?action=sitemap&lang={$lang}" class="htm" title="{$lang_htmTip1}" onclick="return methtml($(this))">{$lang_htmTip1}</a>
+			<span class="tips color390"></span>
+		</td>
+    </tr> 
+	<tr> 
+        <td class="text"></td>
+        <td class="input color390">{$lang_htmdabaoinfo2}</td>
+    </tr>
+	<tr>
+		<td class="text">{$lang_htmdabao}{$lang_marks}</td>
+		<td class="input">
+			<a href="htm.php?action=all&lang={$lang}&htmpack=1" onclick="return methtml($(this),1)">{$lang_seotips25}</a>
+			<span class="tips color390"></span>
+		</td>
+	</tr>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+    <tr> 
+		<td class="text"></td>
+		<td class="input color390">
+			{$lang_htmnoopen}
+		</td>
+	</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	<tr>
+		  <td class="footer" colspan="2">$foot</td>
+	</tr>
+</table>
+</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

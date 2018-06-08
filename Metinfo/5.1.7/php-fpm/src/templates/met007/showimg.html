@@ -1,0 +1,27 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop'); 
+$met_img=methtml_showimg('all');
+$methits=methtml_hits('img');
+$met_next=methtml_prenextinfo();
+echo <<<EOT
+-->
+        <div id="showimg">
+		    <h1 class="title">$img[title]</h1>
+            <div class="para">{$met_img}</div>
+            <div class="text editor">$img[content]</div>
+			<div class="hits">$methits</div>
+            <div class="page">$met_next</div>
+        </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

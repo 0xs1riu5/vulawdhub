@@ -1,0 +1,80 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_memberarrayManag}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr>
+            <td class="centle" colspan="7" style=" height:20px; line-height:30px; font-weight:normal; padding-left:10px;">
+				<div style="float:left;">
+				<a href="addarray.php?lang=$lang&anyid={$anyid}">+{$lang_memberaddarray}</a>
+				</div>
+				<div class="formright">	
+				<a href="array.php?anyid=$anyid&lang=$lang">{$lang_memberall}</a>
+			<form method="POST" name="search" action="array.php?search=detail_search&lang=$lang&anyid={$anyid}" target="_self">
+			<input name="array_name" type="text" class="text" id="searchtext" value="{$lang_memberarayname}" />
+			<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
+			<input name="usertype" type="hidden" id="se-usertype" value="{$usertype}">
+			</form>
+				</div>
+			</td>
+          </tr>
+              <tr>
+                <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+                <td width="100" class="list">{$lang_memberarayname}</td>
+                <td width="80" class="list" style="padding:0px; text-align:center;">{$lang_memberpermission}</td>
+				<td width="180" class="list">{$lang_operate}</td>
+              </tr>
+			  <form name="del" method="Post" action="arraydelete.php?lang=$lang&anyid=$anyid">
+<!--
+EOT;
+foreach ($admin_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' /></td>
+                <td class="list-text alignleft">&nbsp;&nbsp;<a href="arrayeditor.php?id=$val[id]&lang=$lang&anyid={$anyid}" title="{$lang_detail}">$val[array_name]</a></td>
+				<td class="list-text color999">$val[user_webpower]</td>
+				<td class="list-text"><a href="arrayeditor.php?id=$val[id]&lang=$lang&anyid={$anyid}" >{$lang_setfileview}{$lang_editor}</a>&nbsp;&nbsp;<a href="arraydelete.php?id=$val[id]&lang=$lang&anyid={$anyid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<input name="action" type="hidden" id="action" value="del">
+<input name="allid" type="hidden" id="allid" value=""></form>
+   	   <tr> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			  <td class="all-submit" colspan="6" style="padding:5px 10px;">
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+              </td>
+          </tr>
+		 <tr>
+		  <td class="page_list" colspan="7">$page_list</td>
+	  </tr>
+		 <tr>
+		  <td class="footer" colspan="7">$foot</td>
+	  </tr>
+</table>
+<script type="text/javascript">
+$(document).ready(function(){
+	seachinput($('#searchtext'),'$lang_memberarayname');
+});
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

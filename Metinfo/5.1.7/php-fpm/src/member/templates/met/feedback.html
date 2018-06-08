@@ -1,0 +1,71 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
+<table cellpadding="2" cellspacing="1" border="0" class="table_member">
+		<tr> 
+            <td colspan="10" class="member_title">
+			<div style="float:right; font-size:12px; padding-top:3px;">
+         <script language="JavaScript">
+          <!--
+            function MM_jumpMenu(selObj){ 
+			var url=selObj.options[selObj.selectedIndex].value; 
+            location.href=url;
+            }
+          //-->
+          </script>
+<select name="met_fd_class" style="float:right;" onChange="MM_jumpMenu(this)">
+<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=">{$lang_memberShowAll}</option>
+<!--
+EOT;
+foreach ($selectlist as $key=>$val){
+if($met_fd_classname==$val['info']){
+echo <<<EOT
+-->
+<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=$val[info]" selected="selected">$val[info]</option>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+<option value="feedback.php?search=$search&lang=$lang&met_fd_classname=$val[info]">$val[info]</option>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+</select>
+			</div>
+			{$lang_memberIndex5}
+			</td>
+            </tr>
+              <tr>
+                <td width="50%" class="member_text1"><b>{$lang_memberFeedbackName}</b></td>
+                <td width="30%" class="member_text1" ><b>{$lang_memberAddTime}</b></td>
+				<td width="20%" class="member_text1" ><b>{$lang_memberOperate}</b></td>
+              </tr>
+<!--
+EOT;
+foreach ($feedback_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr>
+			    <td class="member_text1">$val[fdtitle]</td>
+                <td class="member_text1">$val[addtime]</td>
+				<td class="member_text1"><a href="fddetail.php?lang=$lang&id=$val[id]" >{$lang_memberDetail}</a>&nbsp;&nbsp;<a href="fdeditor.php?lang=$lang&id=$val[id]" >{$lang_memberEdit}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+   	     <td class="member_input" colspan="3">$page_list</td>
+        </tr>		
+</table>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

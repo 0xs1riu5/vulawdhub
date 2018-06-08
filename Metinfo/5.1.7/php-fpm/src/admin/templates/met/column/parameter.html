@@ -1,0 +1,205 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+$colspan=8;
+if(!$met_member_use)$colspan=$colspan-1;
+if($module==6 || $module==8)$colspan=$colspan-1;
+$colspanj=$colspan-1;
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+if($module==6){
+$title="<a href='../../content/job/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+}
+if($module==8){
+$title="<a href='../../content/feedback/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+}
+require_once template('metlangs');
+echo <<<EOT
+-->
+<!--
+EOT;
+if($module==6){
+$listclass[2]='class="now"';
+require_once template('content/job/top');
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($module==8){
+$listclass[2]='class="now"';
+require_once template('content/feedback/top');
+}
+echo <<<EOT
+-->
+<table cellpadding="0" cellspacing="0" class="table">
+<!--
+EOT;
+if($module!=6 && $module!=8){
+echo <<<EOT
+-->
+		<tr>
+			<td colspan="2" class="centle" style="font-weight:normal; color:#999;">
+				&nbsp;&nbsp;{$lang_columnexplain3}
+			</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr>
+		<td colspan="2">
+			<form method="POST" name="myform" action="parameter.php?anyid={$anyid}&lang={$lang}&class1={$class1}&module={$module}" target="_self">
+			<table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+				<tr id="list-top"> 
+			<td class="list" width="40" style="padding:0px; text-align:center;">{$lang_selected}</td>
+            <td width="60" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
+            <td class="list">{$lang_name}</td>
+<!--
+EOT;
+if($module<6){
+echo <<<EOT
+-->
+			<td class="list" style="padding:0px; text-align:center;">
+			<select name="category" onchange='javascript:window.location.href=this.options[this.selectedIndex].value'>
+			<option value="parameter.php?anyid={$anyid}&lang=$lang&module=$module" selected="selected">{$lang_category}</option>
+<!--
+EOT;
+foreach($met_classindex[$module] as $key=>$val1){
+if($class1==$val1[id])$gclass="selected='selected'";
+echo <<<EOT
+-->
+			  <option value="parameter.php?anyid={$anyid}&lang=$lang&module=$module&class1=$val1[id]" $gclass>{$val1[name]}</option>
+<!--
+EOT;
+$gclass="";
+}
+echo <<<EOT
+-->
+            </select>
+			</td>
+<!--
+EOT;
+}
+if($met_member_use){
+echo <<<EOT
+-->
+			<td width="15%" class="list">{$lang_webaccess}</td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<td width="12%" class="list">{$lang_parametertype}</td>
+			<td width="80" class="list" style="padding:0px; text-align:center;">{$lang_parameterMust}</td>
+            <td width="90" class="list">{$lang_operate}</td>
+          </tr>
+<!--
+EOT;
+foreach($list as $key=>$val){
+echo <<<EOT
+-->		   
+			<tr class="mouse"> 
+              <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+			<td class="list-text">
+<input name='access_$val[id]' type="hidden" value="$val[access]">
+			<input name='no_order_$val[id]' type="text" class="text no_order" value="$val[no_order]"></td>
+            <td class="list-text" style="padding-left:15px; text-align:left;"><input name='name_{$val[id]}' type="text" class="text" value="{$val[name]}" ></td>
+<!--
+EOT;
+if($module<6){
+echo <<<EOT
+-->				
+			<td class="list-text">
+			<select name="class1_$val[id]" >
+			<option value="0" selected="selected">{$lang_allcategory}</option>
+<!--
+EOT;
+foreach($met_classindex[$module] as $key=>$val1){
+if($val[class1]==$val1[id])$gclass1="selected='selected'";
+echo <<<EOT
+-->
+			  <option value="$val1[id]" $gclass1>{$val1[name]}</option>
+<!--
+EOT;
+$gclass1="";
+}
+echo <<<EOT
+-->
+            </select></td>
+<!--
+EOT;
+}
+if($met_member_use){
+echo <<<EOT
+-->
+			<td class="list-text"><select name="access_$val[id]" id="access" >
+              $val[level]
+            </select></td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<td class="list-text"><select name="type_$val[id]" id="access" >
+			  <option value="1" $val[type1]>{$lang_parameter1}</option>
+              <option value="2" $val[type2]>{$lang_parameter2}</option>
+              <option value="3" $val[type3]>{$lang_parameter3}</option>
+			  <option value="4" $val[type4]>{$lang_parameter4}</option>
+			  <option value="5" $val[type5]>{$lang_parameter5}</option>
+			  <option value="6" $val[type6]>{$lang_parameter6}</option>
+            </select></td>
+            <td class="list-text"><input type="checkbox" name=wr_ok_$val[id] value=1 class="xz" $val[wr_ok]/></td>
+			<td class="list-text">
+<!--
+EOT;
+if($val[type]==2 or $val[type]==4 or $val[type]==6){  
+echo <<<EOT
+-->
+			<a href="list.php?anyid={$anyid}&bigid=$val[id]&lang=$lang&class1={$class1}">{$lang_listTitle}</a>&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<a href="parameter.php?anyid={$anyid}&id=$val[id]&action=del&bigid=$val[id]&lang=$lang&type=$val[type]&module=$module&class1=$class1" onClick="return linkSmit($(this),1);">{$lang_delete}</a></td>
+		  </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->  
+		<tr id="bottom-id"> 
+			<td class="list-text"></td>
+			<td class="list-text" colspan="$colspanj" style="text-align:left;">&nbsp;&nbsp;<a href="parameter.php?anyid={$anyid}&lang=$lang&action=addsave&module=$module" onclick="return addsave($(this),0);">+{$lang_parameteradd}</a></td>
+        </tr>
+		</table>
+				<input name="action" type="hidden" value="delete" />
+				<input name="allid" type="hidden" id="allid" value="" />
+			</form>
+		</td>
+		</tr>
+          <tr> 
+			<td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'myform')" value="checkbox" /></td>
+			<td class="all-submit" style="padding:5px 10px;">
+				<input name="submit" type='submit' value='{$lang_Submit}' class="submit li-submit" onclick="return met_modify($(this),'myform','editor');" />
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'myform','delete');" />
+			</td>
+          </tr>
+    <tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

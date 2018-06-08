@@ -1,0 +1,45 @@
+<!--<?php
+require_once template('head'); 
+require_once template('sidebar'); 
+$met_img=methtml_imgdisplay('img');
+$methits=methtml_hits('img');
+$met_next=methtml_prenextinfo(1);
+echo <<<EOT
+-->
+        <div class="active" id="showimg">
+		    <h1 class="title">{$img[title]}</h1>
+            <div class="imgshow">{$met_img}</div>
+			<ul class="list-none imgparalist">
+<!--
+EOT;
+foreach($img_paralist as $key=>$val2){
+echo <<<EOT
+-->
+				<li><span>{$val2[name]}</span>{$img[$val2[para]]}<div style="clear:both;"></div></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</ul>
+			<div class="clear"></div>
+<!--
+EOT;
+if($img[content]!=''){
+echo <<<EOT
+-->
+			<h3 class="ctitle"><span>{$lang_detailtxt}</span><div class="clear"></div></h3>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <div class="editor">{$img[content]}<div class="clear"></div></div>
+			<div class="met_hits">{$methits}</div>
+            <div class="met_page">{$met_next}</div>
+        </div>
+<!--
+EOT;
+require_once template('gap');
+require_once template('foot'); 
+?>

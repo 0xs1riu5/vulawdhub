@@ -1,0 +1,61 @@
+<!--<?php
+require_once template('config');
+echo <<<EOT
+-->
+{$methtml_head}
+<body>
+    <header>
+         <div class="inner clear">
+              <div class="logo">
+<!--
+EOT;
+if($met_logo!=''){
+echo <<<EOT
+-->
+				<a href="{$index_url}" title="{$met_webname}" id="web_logo">
+					<img src="{$met_logo}" alt="{$met_webname}" title="{$met_webname}" style="margin:{$lang_LogoTop}px 0px 0px {$lang_LogoLeft}px;" />
+				</a> 
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+              </div>
+              <div class="otr-nav">
+                   <div class="top-nav">{$metlang}</div> 
+                   <nav>{$met_nav}</nav>           
+              </div>
+         </div>
+	</header>
+<!--
+EOT;
+if($classnow==10001){
+echo <<<EOT
+-->
+    <div class="Zbannar">
+      <div id="flash8box" class="a1">
+      <div id="anim">
+        <div id="marquee">
+		<ul id="mPics" class="list-none">
+		    <li id="li"><a href="#">&nbsp;</a></li>
+		</ul>
+           <ul id="circle" class="list-none"></ul>
+        </div>
+      </div>
+      </div>
+    </div> 
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+     <div class="inner met_flash">{$methtml_flash}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+<!--
+EOT;
+?>

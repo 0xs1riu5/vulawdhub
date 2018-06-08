@@ -1,0 +1,41 @@
+<!--<?php
+# 文件名称
+require_once template('head'); 
+echo <<<EOT
+-->
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent">
+<!--
+EOT;
+include templatemember($mfname);
+echo <<<EOT
+-->
+</div>
+</div>
+
+   <div class="left">
+        <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+        <div class="webnav">
+   <!--
+EOT;
+$met_mermber_metinfo_news_left_class='';
+$mermber_metinfo_news_left=membernavlist();
+echo <<<EOT
+-->
+$mermber_metinfo_news_left
+        </div>
+		<h3 class="title"><span>{$lang_Column1}</span></h3>
+		<div class="text">
+             $otherinfo[info10]
+        </div>
+		$met_online
+   </div>
+<div style="clear:both;"></div>
+</div>
+
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -1,0 +1,65 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+if(!$customerid){
+$listclass[1]='class="now"';
+$title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a> > ";
+$title.="{$lang_cveditorTitle}";
+require_once template('content/job/top');
+}else{
+$title.="{$lang_cveditorTitle}";
+require_once template('metlangs');
+}
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table" style="position:relative;">
+<!--
+EOT;
+if($jobzhaop){
+if($jobzhaop=='../../')$jobzhaop.='../upload/image/logoimg.gif';
+echo <<<EOT
+-->
+         <tr style="position:absolute; left:620px; top:0px;"> 
+            <td class="input" colspan="2"><img src="{$jobzhaop}" width="200" height="240" style="border:1px solid #ccc;" /></td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($cv_para as $key=>$val){
+echo <<<EOT
+-->
+         <tr> 
+            <td class="text">{$val[name]}{$lang_marks}</td>
+            <td class="input">{$val[content]}</td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->      
+		  <tr> 
+            <td class="text">{$lang_cvAddtime}{$lang_marks}</td>
+            <td class="input">{$cv_list[addtime]}</td>
+          </tr>
+		<tr>
+		  <td class="footer" colspan="2" align="center">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,169 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<link href="../member/templates/met/css/style.css" type="text/css" rel="stylesheet" />
+<script src="../member/templates/met/common.js" ></script>
+<script>
+function form_submit(id,delid){
+var str="";
+   if(id==0)
+   { //====n等于1表示可以增加
+    if(formcheck())
+     { 
+	  document.theform.action="save.php?action=add";
+      document.theform.method="post";
+      document.theform.submit();
+      }
+  }
+  
+}
+  function formcheck() 
+    { 
+       if(trim(document.theform.yhid.value) == "") 
+         { alert("{$lang_memberRegisterName}");
+		   document.theform.yhid.focus();
+		   document.theform.yhid.select(); 
+           return false;
+         }
+       //else if(/[^0-9a-zA-Z]/g.test(document.theform.yhid.value))
+		  //{alert("{$lang_js6}");
+		  // document.theform.yhid.focus();
+		  // document.theform.yhid.select(); 
+		 //  return false;
+		 //  }
+	   if(trim(document.theform.yhid.value).length<3) 
+         { alert("{$lang_js7}");
+		   document.theform.yhid.focus();
+		   document.theform.yhid.select(); 
+           return false;
+         }
+		        
+        else if(trim(document.theform.mm.value)=="")
+         { alert("{$lang_memberPassword}");
+           document.theform.mm.focus();
+		   document.theform.mm.select(); 
+		   return false;
+         }
+		  else if ((document.theform.mm.value).length<6)
+          {alert("{$lang_js8}");
+		   document.theform.mm.focus();
+		   document.theform.mm.select(); 
+           return false;
+          }
+		 else if(trim(document.theform.mm1.value)=="")
+         { alert("{$lang_js9}");
+           document.theform.mm.focus();
+		   document.theform.mm.select(); 
+		   return false;
+         }
+		 else if(document.theform.mm1.value!=document.theform.mm.value)
+         { alert("{$lang_js10}");
+           document.theform.mm.focus();
+		   document.theform.mm.select(); 
+		   return false;
+         }
+	   else if(trim(document.theform.email.value)=="")
+         { alert("{$lang_js12}");
+           document.theform.email.focus();
+		   document.theform.email.select(); 
+		   return false;
+         }
+	   else if(trim(document.theform.companyname.value)=="")
+         { alert("{$lang_js11}");
+		   document.theform.companyname.focus();
+		   document.theform.companyname.select();  
+           return false;
+         }
+	  else if(!isValidEmail(document.theform.email.value))
+         { alert("{$lang_js13}");
+           document.theform.email.focus();
+		   document.theform.email.select(); 
+		   return false;
+         }
+ 
+    return true;      
+    }
+function pressCaptcha(obj)//字母变大写
+  {
+    obj.value = obj.value.toUpperCase();
+  }
+</script>
+<div class="main_zhuce">
+   <div class="main_top"><span>{$lang_memberReg}</span></div>
+  <form method="POST"  name="theform"  >
+  <input type="hidden" name="lang" value="$lang"/>
+    <table cellpadding="1" cellspacing="1">
+	<tr>
+	<td class="zhuce_text"><span class="reqd">*</span><span>{$lang_memberbasicUserName}</span></td>
+	<td class="zhuce_input"><input id="yhid" name="yhid" type="text" class="input_text" /></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"><span class="reqd">*</span><span>{$lang_membereditorPs}</span></td>
+	<td class="zhuce_input"><input name="mm" id="mm" type="password" class="input_text" /></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"><span class="reqd">*</span><span>{$lang_membereditorPs1}</span></td>
+	<td class="zhuce_input"><input  name="mm1" id="mm1" type="password" class="input_text" /></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"><span class="reqd">*</span><span>E-mail</span></td>
+    <td class="zhuce_input"><input id="email" name="email" type="text" class="input_text" /></td>
+	</tr>
+    <tr>
+	<td class="zhuce_text"><span class="reqd">*</span><span>{$lang_memberbasicCompanyName}</span></td>
+    <td class="zhuce_input"><input name="companyname" id="companyname" type="text" class="input_text" /></td>
+	</tr>
+<!--
+EOT;
+if($met_memberlogin_code==1){
+echo <<<EOT
+-->
+	<tr>
+	<td class="zhuce_text">{$lang_memberImgCode}</td>
+	<td class="zhuce_input"><input name="code" onKeyUp="pressCaptcha(this)" type="text" class="inp" id="code" size="6" maxlength="8" style="width50px" />
+<img align="absbottom" src="ajax.php?action=code"  onclick=this.src="ajax.php?action=code&"+Math.random() style="cursor pointer;" title="{$lang_memberTip1}"/>
+</td>
+	</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    <tr>
+	<td class="zhuce_text"></td>
+    <td class="zhuce_input"></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"><span>{$lang_memberbasicTel}</span></td>
+    <td class="zhuce_input"><input name="lxdh" id="lxdh" type="text" class="input_text" /></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"><span>{$lang_memberbasicCompanyFax}</span></td>
+    <td class="zhuce_input"><input id="companyfax" name="companyfax" type="text" class="input_text" /></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"><span>{$lang_memberbasicCompanyAddress}</span></td>
+    <td class="zhuce_input"><input name="companyaddress" id="companyaddress" type="text" class="input_text" /></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"><span>{$lang_memberbasicCompanyCode}</span></td>
+    <td class="zhuce_input"><input id="yzbm" name="yzbm" type="text" class="input_text" /></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"><span>{$lang_memberbasicCompanyWebsite}</span></td>
+    <td class="zhuce_input"><input name="wz" id="wz" type="text" class="input_text" /></td>
+	</tr>
+	<tr>
+	<td class="zhuce_text"></td>
+	<td class="zhuce_subimt" colspan="2"><input type="button" id="b_save" name="b_save" onClick="javascript:form_submit(0,0)" value="{$lang_memberRegister}" /></td>
+    </tr>
+	</table>
+</form>
+</div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

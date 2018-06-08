@@ -1,0 +1,143 @@
+<!--<?php
+$metonline=methtml_online();
+$metlang=methtml_lang('</li><li>',$lang_LangType);
+$navdown=$class1;
+if($class1 == 0 || $class_list[$class1][nav] == 2)$navdown="10001";
+if($class_list[$classnow][nav] == 1 || $class_list[$classnow][nav] == 3)$navdown=$classnow;
+
+$Blank;
+if($lang_Met_Blank == '0'){$Blank='_self';}
+else{$Blank='_blank';}
+if($lang_LangType==1){
+$sethome="<li>".$methtml_sethome."</li>";
+$addfave="<li>".$methtml_addfavorite."</li>";
+}
+echo <<<EOT
+-->
+{$methtml_head}
+		<!--[if IE 6]>
+<script src="{$img_url}js/IE6-png.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript">
+DD_belatedPNG.fix('.bg,img'); 
+</script>
+		<![endif]-->
+<link href="{$img_url}css/reset.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#nav_$navdown").addClass("downnav");
+	    $("#nav li").hover(
+  function () {
+    $(this).addClass("hover");
+  },
+  function () {
+    $(this).removeClass("hover");
+  }
+);
+  });
+</script>
+<!--
+EOT;
+if($otherinfo[imgurl2]!=""){
+echo <<<EOT
+-->
+<style type="text/css">
+#top{ background:url({$otherinfo[imgurl2]}) no-repeat;}
+</style>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<body>
+    <div id="metinfo">
+	    <div class="topbg"></div>
+        <div id="top">		 
+			<div class="floatl"><a href="{$index_url}" title="{$met_webname}">
+				<img 
+				    src="{$met_logo}" 
+					alt="{$met_webname}" 
+					title="{$met_webname}" 
+					style="margin-top:{$lang_LogoTop}px; 
+					margin-left:{$lang_LogoLeft}px;"
+				/>
+			</a></div>
+<!--
+EOT;
+$SideMake[0]=$class_index[$lang_Side1_Make];
+$SideMake[1]=$class_index[$lang_Side2_Make];
+$SideMake[2]=$class_index[$lang_Side3_Make];
+$SideMake[3]=$class_index[$lang_Side4_Make];
+$i = 0; 
+$j=0;  
+while($i <= 3){ 
+   $listarr[$i] = array(
+       'name'=>$SideMake[$i][name],
+	   'url'=>$SideMake[$i][url],
+	   'imgurl'=>$SideMake[$i][indeximg],
+	   'new_windows'=>$SideMake[$i][new_windows]
+	   );
+	   if($SideMake[$i][name]<>'')$j++;
+$i++;
+}
+echo <<<EOT
+-->
+			<div class="sidebar floatr">
+				<ul class="list-style">
+<!--
+EOT;
+foreach($listarr as $key=>$val){
+$k='';
+if($val[imgurl] != '')$k="<img src='".$val[imgurl]."' alt='".$val[name]."' title='".$val[name]."' />";
+echo <<<EOT
+-->
+    <li>$k<a href="$val[url]" $val[new_windows] title="$val[name]">$val[name]</a></li>
+<!--
+EOT;
+}
+if(!$j){
+echo <<<EOT
+-->
+                {$sethome}
+                {$addfave}
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                <li class="lang">$metlang</li>
+				</ul>
+				<div class="seo">$met_seo</div>
+			</div>
+			<div class="clear"></div>
+        </div>  
+        <div id="nav" class="top-nav">	
+            <div class="top-nav">		
+		    <ul class="top-nav list-style">
+                <li id="nav_10001">
+				    <a href="$index_url" title="{$lang_home}">
+					    <span>{$lang_home}</span>
+					</a>
+				</li>	 	      
+<!--
+EOT;
+foreach($nav_list as $key=>$val){
+echo <<<EOT
+-->
+                <li class="line top-nav"></li> 
+                <li id="nav_$val[id]">
+				    <a href="$val[url]" $val[new_windows] title="$val[name]">
+					    <span>$val[name]</span>
+					</a>
+				</li>       
+<!--
+EOT;
+}
+echo <<<EOT
+-->  
+			</ul>
+			</div>
+		</div>
+<!--
+EOT;
+?>

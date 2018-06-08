@@ -1,0 +1,89 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_modify}{$lang_indexlink}</title>
+</head>
+<body>
+<!--
+EOT;
+$title="{$lang_add}({$lang_indexlink})";
+if($id)$title="{$lang_editor}({$lang_indexlink})";
+$rurl="index.php?anyid={$anyid}&lang={$lang}";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form  method="POST" name="myform" action="save.php?action=$action&anyid={$anyid}" target="_self">
+<input name="lang" type="hidden"  value="$lang">
+<input name="id" type="hidden"  value="$id">
+<table cellpadding="2" cellspacing="1" class="table">
+		  <tr> 
+            <td class="text"><span class="bi_tian">*</span>{$lang_linkType}{$lang_marks}</td>
+            <td colspan="2" class="input">
+				<label><input name="link_type" type="radio" class="radio" value="0"  {$link_type[0]} checked />{$lang_linkType4}</label>&nbsp;&nbsp;
+				<label><input name="link_type" type="radio" class="radio" value="1" {$link_type[1]} />{$lang_linkType5}</label>
+			</td>
+          </tr> 
+          
+		   <tr> 
+            <td class="text">{$lang_linkUrl}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="weburl" type="text" class="text nonull" value="$link_list[weburl]"></td>
+          </tr> 
+		   <tr> 
+            <td class="text">{$lang_linkLOGO}{$lang_marks}</td>
+            <td colspan="2" class="input upload"> 
+		    <input name="weblogo" type="text" class="text" value="$link_list[weblogo]">
+			<input name="met_upsql1" type="file" id="file_upload" />
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	metuploadify('#file_upload','upimage','weblogo');
+});
+</script>
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="text"><span class="bi_tian">*</span>{$lang_linkName}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="webname" type="text" class="text nonull" value="$link_list[webname]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_linkKeys}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="info" type="text" class="text" value="$link_list[info]"></td>
+          </tr> 		  
+			<tr> 
+			<td class="text">{$lang_sort}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="orderno" type="text" class="text mid" value="$link_list[orderno]">{$lang_linktip1}</td>
+          </tr> 
+		  <tr> 
+			<td class="text">{$lang_article1}</td>
+            <td colspan="2" class="input">
+				<label><input name="show_ok" type="checkbox" class="checkbox" value="1" $show_ok1>{$lang_linkPass}</label>&nbsp;&nbsp;
+				<label><input name="com_ok" type="checkbox" class="checkbox" value="1"  $com_ok1>{$lang_linkRecommend}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_linkcontact}{$lang_marks}</td>
+            <td class="input"><textarea name="contact" cols="60" rows="5" class="textarea gen">$link_list[contact]</textarea></td>
+			</tr> 
+		  <tr> 
+            <td class="text"></td>
+	      <td class="submit" colspan="2">
+		  <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		  <input name="id" type="hidden" value="$link_list[id]" />
+		  </td>
+          </tr>
+		<tr>
+		  <td class="footer" colspan="3" align="center">$foot</td>
+	  </tr>
+</table>
+</form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

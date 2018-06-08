@@ -1,0 +1,92 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('mobile/head'); 
+echo <<<EOT
+-->
+<title>{$lang_modify}{$lang_indexlink}</title>
+</head>
+<body>
+<div style="padding:15px;">
+<form  method="POST" name="myform" action="save.php?action=$action" target="_self">
+<input name="lang" type="hidden"  value="$lang">
+<input name="id" type="hidden"  value="$id">
+<table cellpadding="2" cellspacing="1" class="table">
+		  <tr> 
+            <td class="text">{$lang_linkType}{$lang_marks}</td>
+            <td colspan="2" class="input">
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="vertical">
+				<input name="link_type" type="radio" id="radio2" value="0" {$link_type[0]} />
+                <label for="radio2">
+                    {$lang_linkType4}
+                </label>
+                <input name="link_type" type="radio" id="radio3" value="1" {$link_type[1]} />
+                <label for="radio3">
+                    {$lang_linkType5}
+                </label>
+            </fieldset>
+        </div>
+			</td>
+          </tr> 
+          
+		   <tr> 
+            <td class="text">{$lang_linkUrl}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="weburl" type="text" class="text nonull" value="$link_list[weburl]"></td>
+          </tr> 
+		   <tr> 
+            <td class="text">{$lang_linkLOGO}{$lang_marks}</td>
+            <td colspan="2" class="input upload"> 
+		    <input name="weblogo" type="text" class="text" value="$link_list[weblogo]">
+</script>
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_linkName}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="webname" type="text" class="text nonull" value="$link_list[webname]"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_linkKeys}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="info" type="text" class="text" value="$link_list[info]"></td>
+          </tr> 		  
+			<tr> 
+			<td class="text">{$lang_sort}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="orderno" type="text" class="text mid" value="$link_list[orderno]">{$lang_linktip1}</td>
+          </tr> 
+		  <tr> 
+			<td class="text">{$lang_article1}</td>
+            <td colspan="2" class="input">
+				<div data-role="fieldcontain">
+					<fieldset data-role="controlgroup" data-type="vertical">
+						<input name="show_ok" type="checkbox" id="checkbox7" value="1" $show_ok1>
+						<label for="checkbox7">
+							{$lang_linkPass}
+						</label>
+						<input name="com_ok" type="checkbox" id="checkbox8" value="1"  $com_ok1>
+						<label for="checkbox8">
+							{$lang_linkRecommend}
+						</label>
+					</fieldset>
+				</div>
+			</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_linkcontact}{$lang_marks}</td>
+            <td class="input"><textarea name="contact" cols="60" rows="5" class="textarea gen">$link_list[contact]</textarea></td>
+			</tr> 
+		  <tr> 
+            <td class="text"></td>
+	      <td class="submit" colspan="2">
+		  <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		  <input name="id" type="hidden" value="$link_list[id]" />
+		  </td>
+          </tr>
+</table>
+</form>
+</div>
+<!--
+EOT;
+require_once template('mobile/foot'); 
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

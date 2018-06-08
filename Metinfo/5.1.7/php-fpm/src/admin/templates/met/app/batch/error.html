@@ -1,0 +1,278 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setimgSet}</title>
+</head>
+$listjs
+<body>
+<!--
+EOT;
+$littr=13;
+require_once template('app/batch/top');
+echo <<<EOT
+-->
+<script type="text/javascript">
+function batch(dofile){
+	var form = $("form[name='"+dofile+"']");
+	var class1 = $("input[id='"+dofile+"class1']");
+	var class2 = $("input[id='"+dofile+"class2']");
+	var class3 = $("input[id='"+dofile+"class3']");
+	class1.val($("select[id='class1select']").val());
+	class2.val($("select[id='class2select']").val());
+	class3.val($("select[id='class3select']").val());
+	form.submit()
+}
+function ignore(){
+var ignore = $("input#ignore");
+ignore.val(0);
+}
+</script>
+<form  method="POST" name="myform" action="fileup.php?lang=$lang" target="_self">
+<input type="hidden" name="action" value="do"/>
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td colspan="4" class="title">{$lang_batchtips24}</td>
+          </tr>
+		  <tr>
+            <td class="text">{$lang_batchtips5}</td>
+            <td class="input">
+			<select name="class1" id="class1select" class="noselect" onChange="changelocation1(document.myform.class1.options[document.myform.class1.selectedIndex].value,1)" size="1">		
+			<option value="-1">{$lang_settopcolumns}</option>
+<!--
+EOT;
+foreach($clist1now as $key=>$val1){
+$k=$val1['id'];
+echo <<<EOT
+-->			
+<option  value="$val1[id]">$val1[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</select>
+			<select name="class2" id="class2select" onChange="changelocation1(document.myform.class2.options[document.myform.class2.selectedIndex].value,2)"> 
+			<option value=0>{$lang_modClass2}</option>
+            </select>
+			<select name="class3" id="class3select" onChange=""> 
+			<option value=0>{$lang_modClass3}</option>
+            </select>
+			<input type="submit" value="{$lang_batchtips25}"/>
+			</td>
+			<td></td>
+			<td></td>			
+          </tr> 
+		  </table>
+</form>		  
+</table>
+<!--
+EOT;
+if($error_list){
+echo <<<EOT
+-->   
+<form  method="POST" name="upimg" action="upload.php?lang=$lang" target="_self" enctype="multipart/form-data">
+<input name="action" type="hidden" value="do">
+<input type="hidden" name="module" id="" value="$classimg[module]"/>
+<input type="hidden" name="class1"  id="" value="$class1"/>
+<input type="hidden" name="class2" id="" value="$class2"/>
+<input type="hidden" name="class3" id="" value="$class3"/>
+<input type="hidden" name="fid" id="" value="$fid"/>
+<input type="hidden" name="lid" id="" value="$lid"/>
+	<table cellpadding="2" cellspacing="1" class="table">
+	<tr> 
+	<td colspan="10" class="title">{$lang_batchtips26}</td>
+	</tr>
+	</table>
+<!--
+EOT;
+	foreach ($error_list as $key=>$val){
+echo <<<EOT
+-->    
+	<table cellpadding="2" cellspacing="1" class="table" id="$val[id]">
+	<tr>
+	<input type="hidden" name="imgbatch[]" id="" value="$val[id]"/>
+	<td class="text">{$lang_title}</td>
+	<td class="submit">$val[title]</td>
+	</tr>
+	
+<!--
+EOT;
+	if($classimg['module']!=4){
+		if($val['bigerror']){
+echo <<<EOT
+--> 	
+	<tr>
+	<td class="text">{$lang_batchtips27}</td>
+	<td class="submit">{$lang_batchtips28}<input name="bigimg$val[id]" id="bigimg$val[id]" class="file" type="file" style="width:140px"/>
+<!--
+EOT;
+			if(file_exists("../../$val[imgurl]")&&$val['imgurl']){
+echo <<<EOT
+--> 
+	<a href="../../$val[imgurl]" target="_blank">{$lang_batchtips29}</a>
+	<input type="hidden" name="bigimgold$val[id]" id="bigimgold$val[id]" value="$val[imgurl]"/>
+	<input type="hidden" name="thumbold$val[id]" id="thumbold$val[id]" value="$val[imgurls]"/>
+<!--
+EOT;
+			}
+			else{
+echo <<<EOT
+--> 
+	<label style="color:#FF0000">{$lang_batchtips30}<label>
+<!--
+EOT;
+			}
+echo <<<EOT
+--> 
+	<a href="javascript:void(0)" onclick="return addbigimg($(this),'bigimg$val[id]');">{$lang_batchtips31}</a>
+	<label style="color:#FF0000">$val[bigerror]<label>
+	</td>
+	</tr>
+<!--
+EOT;
+	}
+	if($classimg['module']==3||$classimg['module']==5){
+		$disnumnow=0;
+		if($val['displayimg']){	
+			$displayimg=explode(',',$val['displayimg']);
+			$disnumnow=count($displayimg);
+		}
+	if(!in_array('',$val['diserror'])){	
+echo <<<EOT
+--> 
+	<tr>
+	<input name="disnum$val[id]" id="disnum$val[id]" type="hidden" value="$disnumnow"/>
+	<input name="dis$val[id]" id="dis$val[id]" type="hidden" value="$val[displayimg]"/>
+	<td class="text">{$lang_displayimg}</td>
+	</tr>
+<!--
+EOT;
+		if($val['displayimg']){		
+			$num=0;
+			foreach($displayimg as $key2=>$val2){
+				$displayimgs=explode('-',$val2);
+				$num++;
+				if($val['diserror'][$num]){
+echo <<<EOT
+-->   
+	<tr>
+	<td class="text">{$lang_displayimg}{$num}{$lang_batchtips32}</td>
+<!--
+EOT;
+
+echo <<<EOT
+-->  
+	<td class="submit">
+	{$lang_batchtips28}<input name="dis$val[id]-$num" id="dis$val[id]-$num" type="file" style="width:140px"/>
+<!--
+EOT;
+			if(file_exists("../../$displayimgs[1]")&&$displayimgs[1]){
+echo <<<EOT
+-->	
+	
+	<a href="../../$displayimgs[1]" target="_blank">{$lang_batchtips29}</a>
+	<input type="hidden" name="disold$val[id]-$num" id="disold$val[id]-$num" value="$displayimgs[1]"/>
+<!--
+EOT;
+			}else{
+echo <<<EOT
+-->	
+	<label style="color:#FF0000">{$lang_batchtips30}<label>
+<!--
+EOT;
+			}
+echo <<<EOT
+-->	
+	<a href="javascript:void(0)" onclick="return addbigimg($(this),'dis$val[id]-$num');">{$lang_batchtips31}</a>
+	<label style="color:#FF0000">{$val[diserror][$num]}<label>
+	</td>
+	</tr>
+<!--
+EOT;
+				}
+				else{
+echo <<<EOT
+-->	
+	<input type="hidden" name="disold$val[id]-$num" id="disold$val[id]-$num" value="$displayimgs[1]"/>
+<!--
+EOT;
+				}
+			}
+		}
+	}
+echo <<<EOT
+-->   
+<!--
+EOT;
+	}
+	}
+	else{
+		if($val['bigerror']){
+echo <<<EOT
+-->  
+	<tr>
+	<td class="text">下载文件地址</td>
+	<td class="submit">上传文件地址：<input name="download$val[id]" id="download$val[id]" type="file" style="width:140px">
+	<input type="hidden" name="downloadurl$val[id]" id="downloadurl$val[id]" value="$val[downloadurl]"/>
+<!--
+EOT;
+		if(file_exists("../../$val[downloadurl]")&&$val['downloadurl']){
+echo <<<EOT
+-->	
+	
+	<a href="../../$val[downloadurl]" target="_blank">下载当前文件</a>
+<!--
+EOT;
+		}else{
+echo <<<EOT
+-->	
+	<label style="color:#FF0000">文件不存在<label>
+<!--
+EOT;
+		}
+echo <<<EOT
+-->	
+	<a href="javascript:void(0)" onclick="return addbigimg($(this),'download$val[id]');">更改</a>
+	<label style="color:#FF0000">$val[bigerror][$num]<label>
+	</tr>
+<!--
+EOT;
+		}
+	}
+echo <<<EOT
+-->
+	</table>
+<!--
+EOT;
+	}
+echo <<<EOT
+-->
+	<table cellpadding="2" cellspacing="1" class="table">
+			<tr> 
+				 <div class="page_list">
+				  	<input type="hidden" name="page" id="" value="$page"/>
+					<input type="hidden" name="numcsv" id="" value="$numcsv"/>
+					<input type="hidden" name="ignore" id="ignore" value="1"/>
+					<input name="submit" type="submit" value="{$lang_batchtips33}">
+					<input name="submit" type="submit" value="{$lang_batchtips34}" onclick="return ignore();">
+				  </div>
+				  </td>
+			  </tr>
+	</table>
+<!--
+EOT;
+}
+echo <<<EOT
+-->   
+</form>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

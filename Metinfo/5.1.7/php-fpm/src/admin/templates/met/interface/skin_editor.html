@@ -1,0 +1,95 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+$colspan=($langnowok=='metinfo')?3:2;
+$colspan1=$colspan-1;
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$title="{$lang_skintypeset}";
+$rurl="skin_manager.php?anyid={$anyid}&lang={$lang}";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<style>
+	td.input select{ font-size:14px;}
+	td.input select option.c0{ color:red;}
+	td.input select option.c1{ color:#000;}
+	td.input select option.c2{ color:blue;}
+	td.input select option.c3{ color:green;}
+</style>
+<div class="stat_list">
+	<ul>
+		<li {$listclass[2]}><a href="?anyid={$anyid}&lang={$lang}&cs=2&skin_file={$skin_file}&id={$id}" title="{$lang_skinset}">{$lang_skinset}</a></li>
+		<li {$listclass[1]}><a href="?anyid={$anyid}&lang={$lang}&cs=1&skin_file={$skin_file}&id={$id}" title="{$lang_skinbaseset}">{$lang_skinbaseset}</a></li>	
+	</ul>
+</div>
+<form method="POST" name="myform" action="?anyid={$anyid}&lang={$lang}&id={$id}&skin_file={$skin_file}&cs={$cs}" target="_self">
+<input name="action" type="hidden" value="modify">
+<input name="skin_file" type="hidden" value="{$skin_file}">
+<table cellpadding="2" cellspacing="1" class="table">
+<!--
+EOT;
+if($cs==1){
+echo <<<EOT
+-->
+<tr>
+	<td class="text">{$lang_skinDocument}{$lang_marks}</td>
+	<td class="input">{$skin_list[skin_file]}</td>
+</tr>
+<tr>
+	<td class="text">{$lang_skintemplatename}{$lang_marks}</td>
+	<td class="input"><input name="skin_name" type="text" class="text" value="{$skin_list[skin_name]}" /></td>
+</tr>
+<tr>
+	<td class="text">{$lang_skintemplatedescription}{$lang_marks}</td>
+	<td class="input"><textarea name="skin_info" type="text" class="textarea" rows='5' style="width:300px;">{$skin_list[skin_info]}</textarea></td>
+</tr>
+<!--
+EOT;
+}elseif($cs==2){
+echo <<<EOT
+-->
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<!--
+EOT;
+foreach($langtext as $key=>$val){
+echo <<<EOT
+-->
+<tr class="gexing">
+	<td class="text">{$val[valueinfo]}</td>
+	<td class="input">{$val[inputhtm]}</td>
+</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	<tr>
+		<td class="text"></td>
+		<td class="submit">
+			<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		</td>
+	</tr>
+	<tr>
+		<td class="footer" colspan="2" align="center">{$foot}</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

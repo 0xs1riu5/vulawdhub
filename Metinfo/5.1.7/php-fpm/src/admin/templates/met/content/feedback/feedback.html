@@ -1,0 +1,186 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.  
+require_once template('head');
+if($readok=="" && $langnow==""){
+   $style1="style='color:#FF0000' selected='selected'";
+ }elseif($readok==0  && $langnow==""){
+   $style2="style='color:#FF0000' selected='selected'";
+ }elseif($readok==1){
+   $style3="style='color:#FF0000' selected='selected'";
+  }elseif($langnow=="cn"){
+   $style4="style='color:#FF0000' selected='selected'";
+ }
+ elseif($langnow=="en"){
+   $style5="style='color:#FF0000' selected='selected'";
+ }
+ elseif($langnow=="other"){
+   $style6="style='color:#FF0000' selected='selected'";
+ }
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+if(!$customerid){
+$title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+}else{
+$title="{$lang_feedbackview}";
+}
+require_once template('content/feedback/top');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+      <tr>
+     <td class="centle" colspan="7" align="left" style="color:#666;">
+<!--
+EOT;
+if(!$customerid){
+echo <<<EOT
+-->	
+			<form name="delform" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1={$class1}&customerid={$customerid}" style="float:left; font-weight:normal; padding-left:10px;">
+			    <select name="action" id="deltype">
+					<option value="delall">{$lang_feedbackClass1}</option>
+					<option value="delno" selected>{$lang_feedbackClass2}</option>
+					<option value="delyse">{$lang_feedbackClass3}</option>
+				</select>
+				<input name="submit" type='submit' value='{$lang_setsafesq3text}' class="submitmi" onclick="return linkSmit('',1,safesq());" /> 
+			</form>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			<div style="float:right; margin-right:5px; font-weight:normal;" >
+			    {$lang_feedbackClass}
+				<select name="new" id="new" onChange="changes($(this));">
+					<option value="index.php?anyid={$anyid}&search=$search&useinfo=$useinfo&lang=$lang&class1=$class1&customerid={$customerid}" $style1>{$lang_feedbackClass1}</option>
+					<option value="index.php?anyid={$anyid}&search=$search&readok=0&useinfo=$useinfo&lang=$lang&class1=$class1&customerid={$customerid}" $style2>{$lang_feedbackClass2}</option>
+					<option value="index.php?anyid={$anyid}&search=$search&readok=1&useinfo=$useinfo&lang=$lang&class1=$class1&customerid={$customerid}" $style3>{$lang_feedbackClass3}</option>
+				</select>
+<!--
+EOT;
+if(!$customerid){
+echo <<<EOT
+-->	
+				&nbsp;{$lang_feedbackClasp}
+<select name="met_fd_class" onChange="changes($(this));">
+<option value="index.php?anyid={$anyid}&lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&class1=$class1&customerid={$customerid}&met_fd_classname=">{$lang_feedbackShowAll}</option>
+<!--
+EOT;
+foreach ($selectlist as $key=>$val){
+if($met_fd_classname==$val['info']){
+echo <<<EOT
+-->
+<option value="index.php?anyid={$anyid}&lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&class1=$class1&met_fd_classname=$val[info]&customerid={$customerid}" selected="selected">$val[info]</option>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+<option value="index.php?anyid={$anyid}&lang=$lang&search=$search&readok=$readok&useinfo=$useinfo&class1=$class1&met_fd_classname=$val[info]&customerid={$customerid}">$val[info]</option>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+</select>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+</div>
+</td> 
+      </tr>
+		  <tr>
+			<td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+			<td width="50" class="list" style="padding:0px; text-align:center;">ID</td>
+			<td class="list">{$lang_title}</td>
+			<td width="50" class="list" style="padding:0px; text-align:center;">{$lang_read}</td>
+			<td width="100" class="list" >{$lang_feedbackID}</td>
+			<td class="list" width="120" >{$lang_feedbackTime}</td>
+			<td width="10%" class="list" >{$lang_operate}</td>
+		  </tr>
+<form name="del" method="Post" action="delete.php?anyid={$anyid}&lang=$lang&class1=$class1&customerid={$customerid}">
+<!--
+EOT;
+foreach ($feedback_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+                <td class="list-text color999">$val[id]</td>
+			    <td class="list-text alignleft">&nbsp;&nbsp;<a href="editor.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" title="{$lang_detail}">$val[fdtitle]</a></td>
+                <td class="list-text color999">$val[readok]</td>
+				<td class="list-text color999">$val[customerid]</td>
+                <td class="list-text color999">$val[addtime]</td>
+				<td class="list-text"><a href="editor.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" >{$lang_View}</a>&nbsp;&nbsp;<a href="delete.php?anyid={$anyid}&id=$val[id]&lang=$lang&class1=$class1&customerid={$customerid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+              <input name="action" type="hidden" id="action" value="del" />
+			  <input name="allid" type="hidden" id="allid" value="" />
+			  <input name="class1" type="hidden" id="class1" value="$class1" />
+</form>	
+   	   <tr> 
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="all-submit" align="left" colspan="6" style="padding:5px 10px;">
+			<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
+<!--
+EOT;
+if(!$customerid){
+echo <<<EOT
+-->			
+			<div class="page_list">
+			<form method="POST" name="exportform" action="export.php?anyid={$anyid}&lang={$lang}&class1={$class1}&customerid={$customerid}" target="_self">
+			       &nbsp;&nbsp;{$lang_feedbackTip2}
+				   <select name="met_fd_export">
+				   <option value="-1">{$lang_feedbackTip4}</option>
+<!--
+EOT;
+foreach ($selectlist as $key=>$val){
+echo <<<EOT
+-->
+				   
+					<option value="$val[info]">$val[info]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+					</select>				   
+					<input name="submit" type='submit' value='{$lang_feedbackExport}' class="submitmi" />
+			</form>
+			</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</td>
+          </tr>
+		  <tr><td colspan="7" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
+		<tr>
+		  <td class="footer" colspan="7">$foot</td>
+	  </tr>
+</table>
+<script type="text/javascript">
+function safesq(){
+	var vl = $("#deltype").val();
+	var vp = $("option[value='"+vl+"']").text();
+		vp = '{$lang_js63}'+vp+'？';
+	return vp;
+}
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

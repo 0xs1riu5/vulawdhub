@@ -1,0 +1,56 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$listclass[4]='class="now"';
+$title=$lang_View.'('.$lang_smstips2.')';
+$rurl="smsnotes.php?lang={$lang}&anyid={$anyid}&cs=4";
+require_once template('app/sms/top');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang&anyid={$anyid}" target="_self">
+		<input name="useid" type="hidden" value="$admin_list[admin_id]">
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td class="text">{$lang_smstips55}{$lang_marks}</td>
+            <td colspan="2" class="input"> {$sms_list['time']}</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_smstips56}{$lang_marks}</td>
+            <td colspan="2" class="input"> {$sms_list['type']}</td>
+          </tr> 
+		   <tr> 
+            <td class="text">{$lang_smstips64}{$lang_marks}</td>
+            <td colspan="2" class="input color390"> {$sms_list['remark']}</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_smstips62}{$lang_marks}</td>
+            <td colspan="2" class="input"> 
+			<textarea class="textarea gen nonull" id="smsbox" name="message" style="float:left; height:78px;">{$sms_list['content']}</textarea>
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_smstips63}{$lang_marks}</td>
+            <td colspan="2" class="input">
+			<textarea class="textarea nonull" id="smstelbox" style="width:120px; height:150px;" name="phone">{$sms_list['tel']}</textarea>
+			{$lang_smstips37}{$sms_list['telnum']}{$lang_physicaltips29}
+			</td>
+          </tr> 
+         <tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr>
+</table>
+        </form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

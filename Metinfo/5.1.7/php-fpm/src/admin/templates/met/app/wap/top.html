@@ -1,0 +1,20 @@
+<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="wap.php?lang={$lang}&anyid={$anyid}" title="{$lang_waptips1}">{$lang_waptips1}</a></li>
+		<li {$listclass[2]}><a href="index.php?lang={$lang}&anyid={$anyid}" title="{$lang_indexhomeset}">{$lang_indexhomeset}</a></li>
+		<li {$listclass[3]}><a href="list.php?lang={$lang}&anyid={$anyid}" title="{$lang_pagesting}">{$lang_pagesting}</a></li>
+		<li {$listclass[4]}><a href="content.php?lang={$lang}&anyid={$anyid}" title="{$lang_contsting}">{$lang_contsting}</a></li>
+	</ul>
+</div>
+<div style="clear:both;"></div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>

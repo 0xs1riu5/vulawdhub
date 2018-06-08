@@ -1,0 +1,44 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+echo <<<EOT
+-->
+<link href="../member/templates/met/css/style.css" rel="stylesheet" />
+<table cellpadding="2" cellspacing="1" border="0" align="center" width="95%" class="table_member">
+			<tr> 
+            <td colspan="10" class="member_title">{$lang_memberShowMS}</td>
+          </tr>
+          <tr> 
+            <td class="member_text">{$lang_messageeditorName}：</td>
+            <td colspan="2" class="member_input">$message_list[name]</td>
+          </tr> 
+		   <tr> 
+            <td class="member_text">{$lang_messageeditorTel}：</td>
+            <td colspan="2" class="member_input">$message_list[tel]</td>
+          </tr> 
+		   <tr> 
+            <td class="member_text">Email：</td>
+            <td colspan="2" class="member_input">$message_list[email]</td>
+          </tr> 
+		   <tr> 
+            <td class="member_text">{$lang_messageeditorContact}：</td>
+            <td colspan="2" class="member_input">$message_list[contact]</td>
+          </tr> 
+		  <tr> 
+            <td class="member_text">{$lang_messageeditorContent}：</td>
+            <td colspan="2" class="member_input"><textarea name="info" cols="50" rows="5">$message_list[info]</textarea></td>
+			</tr> 
+		  <tr> 
+            <td class="member_text">{$lang_messageeditorTime}：</td>
+            <td colspan="2" class="member_input">$message_list[addtime]</td>
+          </tr>			 
+			<tr> 
+            <td class="member_text">{$lang_messageeditorReply}：</td>
+            <td colspan="2" class="member_input"><textarea name="useinfo" cols="50" rows="5">$message_list[useinfo]</textarea></td>
+			</tr>
+</table>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

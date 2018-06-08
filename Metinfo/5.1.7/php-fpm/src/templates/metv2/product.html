@@ -1,0 +1,29 @@
+<!--<?php
+require_once template('head');
+$met_product=methtml_product('img','all','','4','1','0','0','0'); 
+echo <<<EOT
+-->
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<div class="webcontent"> 
+<style>
+#product-list li{ height:{$met_img_y}px;}
+</style>
+<div id="product-list">
+$met_product
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+</div>
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -1,0 +1,92 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop'); 
+$met_img=methtml_img('img','all');
+echo <<<EOT
+-->	
+        <div id="img_list">
+<!--
+EOT;
+if($lang_ImgStyle==0){
+$plug1_width=$met_img_x + 8;
+$plug1_height=$met_img_y + 8 + 25;
+echo <<<EOT
+-->
+<style type="text/css">
+#img_list #plug1 li{ width:{$plug1_width}px; height:{$plug1_height}px;}
+</style>
+            <div id="plug1">
+                $met_img
+                <div class="clear"></div>
+            </div>
+<!--
+EOT;
+}else if($lang_ImgStyle==1){
+foreach($img_list as $key=>$val){
+echo <<<EOT
+-->
+                <dl>
+			        <dt class="floatl" style="width:{$lang_ImgX}px;">
+				        <a href="$val[imgurl]" class="example" title="$val[title]">
+					        <img src="$val[imgurls]" alt="$val[title]" title="$val[title]" width="{$lang_ImgX}" height="{$lang_ImgY}" />
+					    </a>
+				    </dt>
+				    <dd class="floatl" style="margin-left:-{$lang_ImgX}px;">
+				    <div class="text" style="margin-left:{$lang_ImgX}px;">
+					       <h3><a href="$val[url]" title="$val[title]">$val[title]</a></h3>
+ <!--
+EOT;
+$k=0;
+foreach($img_paralist as $key=>$val2){
+$k++;
+echo <<<EOT
+-->
+                            <h5>{$val2[name]}: <span>{$val[$val2[para]]}</span></h5>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                        <h4>{$lang_ImgText}</h4>
+                            <p>$val[description]</p>
+					</div>
+				    </dd>
+					<div class="clear"></div>
+				</dl>
+				<div class="line clear"></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<link href="{$img_url}fancybox/fancybox.css" rel="stylesheet" type="text/css" />
+<script src="{$img_url}fancybox/fancybox.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript">
+var MetClose = $('<a id="fancybox-close"><img src="{$img_url}fancybox/fancy_close.png" /></a>');
+  $(document).ready(function(){
+$("a.example").fancybox({
+    'titleShow' : false,
+    'transitionIn' : 'elastic',
+    'transitionOut' : 'elastic' 
+}); 
+  });
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <div id="flip">$page_list</div>
+        </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div class="clear"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

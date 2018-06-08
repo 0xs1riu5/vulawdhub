@@ -1,0 +1,93 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_memberManage}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr>
+            <td class="centle" colspan="7" style=" height:20px; line-height:30px; font-weight:normal; padding-left:10px;">
+				<div style="float:left;">
+				<a href="add.php?lang=$lang&anyid={$anyid}">+{$lang_memberAdd}</a>
+				</div>
+				<div class="formright">		
+				<a href="index.php?searchall=all&lang=$lang&anyid={$anyid}"><font color="red">{$lang_memberall}</font></a>
+				<form method="POST" name="filterform" action="index.php?search=detail_search&lang=$lang&searchall=$searchall&anyid={$anyid}" target="_self">
+				<span>{$lang_memberType}</span>
+				<select name="usertype" id="usertype" onChange="handle_form('filterform')">
+				<option value="" $user0>{$lang_memberSelectType}</option>
+				 $level
+				</select></form>
+			<form method="POST" name="search" action="index.php?search=detail_search&lang=$lang&anyid={$anyid}" target="_self">
+			<input name="admin_id" type="text" class="text" id="searchtext" value="{$lang_memberSearch}" />
+			<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
+			<input name="usertype" type="hidden" id="se-usertype" value="{$usertype}">
+			</form>
+				</div>
+			</td>
+          </tr>
+              <tr>
+                <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+                <td width="170" class="list">{$lang_memberUserName}</td>
+                <td width="80" class="list" style="padding:0px; text-align:center;">{$lang_memberType}</td>
+                <td width="60" class="list" style="padding:0px; text-align:center;">{$lang_memberActive}</td>
+                <td width="80" class="list" style="padding:0px; text-align:center;">{$lang_memberNum}</td>
+				<td class="list">{$lang_memberLastLogin}</td>
+				<td width="180" class="list">{$lang_operate}</td>
+              </tr>
+			  <form name="del" method="Post" action="delete.php?lang=$lang&anyid={$anyid}">
+<!--
+EOT;
+foreach ($admin_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' /></td>
+                <td class="list-text alignleft">&nbsp;&nbsp;<a href="editor.php?id=$val[id]&lang=$lang&anyid={$anyid}" title="{$lang_detail}">$val[admin_id]</a></td>
+                <td class="list-text color999">$val[usertype]</td>
+                <td class="list-text color999">$val[checked]</td>
+                <td class="list-text color999">$val[admin_login]</td>
+				<td class="list-text color999" >$val[admin_modify_date] </td>
+				<td class="list-text"><a href="editor.php?id=$val[id]&lang=$lang&anyid={$anyid}" >{$lang_setfileview}{$lang_editor}</a>&nbsp;&nbsp;<a href="../content/message/index.php?search=detail_search&customerid=$val[admin_id]&lang=$lang&anyid={$anyid}" >{$lang_memberMessage}</a>&nbsp;&nbsp;<a href="../content/feedback/index.php?search=detail_search&customerid=$val[admin_id]&lang=$lang&anyid={$anyid}" >{$lang_memberFD}</a>&nbsp;&nbsp;<a href="../content/job/cv.php?search=detail_search&customerid=$val[admin_id]&lang=$lang&anyid={$anyid}" >{$lang_memberCV}</a>&nbsp;&nbsp;<a href="delete.php?id=$val[id]&lang=$lang&anyid={$anyid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<input name="action" type="hidden" id="action" value="del">
+<input name="allid" type="hidden" id="allid" value=""></form>
+   	   <tr> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			  <td class="all-submit" colspan="6" style="padding:5px 10px;">
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />&nbsp;&nbsp;
+			  <a href='delete.php?&lang=$lang&anyid={$anyid}&action=delactive'>{$lang_memberdelactive}</a>
+			 </td>
+          </tr>
+		 <tr>
+		  <td class="page_list" colspan="7">$page_list</td>
+	  </tr>
+		 <tr>
+		  <td class="footer" colspan="7">$foot</td>
+	  </tr>
+</table>
+<script type="text/javascript">
+$(document).ready(function(){
+	seachinput($('#searchtext'),'{$lang_memberSearch}');
+});
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

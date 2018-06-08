@@ -1,0 +1,30 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+<script language="javascript">
+$(window.parent.document).find(".bodyleft li").removeClass('stepnow');
+$(window.parent.document).find("#finished").addClass('stepnow');
+</script>
+<body>
+<div id="jsheit">
+<div class="contenttext round">
+<h1 class="titleok">安装成功！</h1>
+<p>欢迎使用MetInfo！希望MetInfo能够为您的企业带来客户并创造价值！</p>
+<p style="margin-top:5px; color:#666;">基于安全考虑，/config/config_db.php文件的权限，已默认设为只读。</p>
+<p style="color:#666;">请登陆后台在 系统设置-安全与效率 删除/install/目录，以防止再次安装而覆盖数据。</p>
+<div style="margin-top:5px;">
+<a class="getweburl" href="../" target="_parent">进入网站</a>
+<span style="margin:0px 8px;">-</span>
+<a class="getweburl" href="../admin/" target="_parent">管理网站</a>
+</div>
+</div>
+</div>
+</body></html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

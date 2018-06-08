@@ -1,0 +1,150 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<!--
+EOT;
+$title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$title.=$action=='editor'?" > {$lang_editor}{$lang_content}":" > {$lang_add}{$lang_content}";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<body>
+        <form  method="POST" name="myform" action="save.php?anyid={$anyid}&action=$action&page={$page}" target="_self">
+		<input name="id" type="hidden" value="$id">
+		<input name="class1" type="hidden" value="$class1" />
+		<input name="lang" type="hidden" value="$lang" />
+		<input name="filenameold" type="hidden"  value="$job_list[filename]">
+		<input name="updatetimeold" type="hidden"  value="$job_list[updatetime]">
+		<input type="hidden" name="no_order" value="$job_list[no_order]" />
+<table cellpadding="2" cellspacing="1" class="table">
+        <tr> 
+            <td class="text"><span class="bi_tian">*</span>{$lang_jobposition}{$lang_marks}</td>
+            <td class="input"> 
+			    <input name="position" type="text" class="text nonull" value="$job_list[position]" />
+			</td>
+        </tr> 	
+		<tr> 
+            <td class="text">{$lang_article1}</td>
+            <td colspan="2" class="input">
+			    <label><input name="top_ok" type="checkbox" class="checkbox" value="1" $top_ok />{$lang_top}</label>&nbsp;&nbsp;&nbsp;
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->	
+				<label><input name="wap_ok" type="checkbox" class="checkbox" value="1" {$wap_ok}>{$lang_article3}</label>&nbsp;&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+			</td>
+        </tr>		
+		<tr > 
+            <td class="text">{$lang_jobaddress}{$lang_marks}</td>
+            <td class="input">
+			    <input name="place" type="text" class="text" value="$job_list[place]" />
+			</td>
+        </tr>
+		<tr > 
+            <td class="text">{$lang_jobdeal}{$lang_marks}</td>
+            <td class="input">
+			    <input name="deal" type="text" class="text" value="$job_list[deal]" />
+			</td>
+        </tr>
+		<tr > 
+            <td class="text">{$lang_jobnum}{$lang_marks}</td>
+            <td class="input">
+			    <input name="count" type="text" class="text mid" value="$job_list[count]" /><span class="tips">{$lang_jobtip1}</span>
+			</td>
+        </tr>	
+<!--
+EOT;
+if($met_cv_emtype){
+echo <<<EOT
+-->		
+		<tr> 
+            <td class="text">{$lang_cvemail}{$lang_marks}</td>
+            <td colspan="2" class="input">
+			    <input name="email" type="text" class="text med" value="$job_list[email]" />
+				<span class="tips">{$lang_jobtip5} {$lang_fdincTip9}</span>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr > 
+            <td class="text">{$lang_joblife}{$lang_marks}</td>
+            <td class="input">
+			    <input name="useful_life" type="text" class="text mid" value="$job_list[useful_life]" /><span class="tips">{$lang_jobtip3}</span>
+			</td>
+        </tr>
+		<tr > 
+            <td class="text">{$lang_jobpublish}{$lang_marks}</td>
+            <td colspan="2" class="input">
+			    <input name="addtime" type="text" class="text" style="width:100px;" value="$job_list[addtime]" />
+				<span class="tips">{$lang_jobnow} $m_now_counter {$lang_jobtip2}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_columnhtmlname}{$lang_marks}</td>
+            <td class="input">
+			    <input name="filename" type="text" class="text med" value="$job_list[filename]" />
+				<span class="tips">{$lang_columntip14}</span>
+			</td>
+        </tr>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->	
+		<tr> 
+            <td class="text">{$lang_webaccess}{$lang_marks}</td>
+            <td class="input" colspan="2">
+			    <select name="access" id="access" >
+                    $level
+                </select>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+		<tr>
+			<td class="text"></td>
+			<td class="input color390">{$lang_contentdetail}</td>
+		</tr>
+		<tr> 
+            <td class="input" colspan="2">
+<script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
+			<textarea class="ckeditor" name="content">$job_list[content]</textarea>
+<script type="text/javascript">
+met_ckeditor('$depth','content');
+</script>
+            </td>
+		</tr>
+		<tr>
+		    <td class="text"></td>
+	        <td class="submit">
+			    <input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+			</td>
+        </tr>
+		<tr>
+		  <td class="footer" colspan="2">$foot</td>
+	    </tr>
+</table>
+</form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,51 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop');
+echo <<<EOT
+-->
+        <div id="job_list">
+			<dl id="plug1">
+				<dt>
+				    <span>{$lang_cvtitle}</span>
+					<span>{$lang_Detail}</span>
+					<span>{$lang_AddDate}</span>
+					<span>{$lang_WorkPlace}</span>
+					<span>{$lang_PersonNumber}</span>
+					{$lang_Position}
+				</dt>
+<!--
+EOT;
+$i=0;
+foreach($job_list as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+                <dd>
+				    <span><a href="$val[cv]" title="{$lang_cvtitle}" target="$Blank">{$lang_cvtitle}</a></span>
+					<span><a href="$val[url]" target="$Blank">{$lang_Detail}</a></span>
+					<span>$val[addtime]</span>
+					<span>$val[place]</span>
+					<span>$val[count]</span>
+					<a href="$val[url]" target="$Blank">$val[position]</a>
+				</dd> 
+<!--
+EOT;
+if($i>=$met_job_list)break;
+}
+echo <<<EOT
+-->
+            </dl>
+        </div>
+        <div class="web_bottom">$page_list</div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

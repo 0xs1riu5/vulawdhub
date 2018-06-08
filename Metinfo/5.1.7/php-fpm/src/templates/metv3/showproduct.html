@@ -1,0 +1,31 @@
+<!--<?php
+require_once template('head'); 
+$met_product=methtml_showproduct('all');
+$met_productnext=methtml_prenextinfo();
+$methits=methtml_hits('product');
+echo <<<EOT
+-->
+<div id="web">
+<div class="left">
+	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+     <div class="webcontent">
+         <h1 class="title">$product[title]</h1>
+		 <div class="hits">$methits</div>
+         <div class="product_list">$met_product</div>
+         <div class="editor">$product[content]</div>
+         <div class="page">$met_productnext</div>
+	 </div>
+</div>
+<!--
+EOT;
+require_once template('webright'); 
+echo <<<EOT
+-->
+
+<div style="clear:both;"></div>
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

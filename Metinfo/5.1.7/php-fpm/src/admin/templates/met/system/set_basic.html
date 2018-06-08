@@ -1,0 +1,124 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="basic.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_upfiletips7}">{$lang_upfiletips7}</a></li>
+		<li {$listclass[2]}><a href="basic.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_upfiletips8}">{$lang_upfiletips8}</a></li>
+	</ul>
+</div>
+    <form method="POST" name="myform" action="basic.php?anyid={$anyid}&lang={$lang}&cs={$cs}" target="_self">
+	<input name="action" type="hidden" value="modify" />
+<table cellpadding="2" cellspacing="1" class="table">
+<!--
+EOT;
+if($cs==1){
+echo <<<EOT
+-->
+    <tr> 
+        <td class="text"><span class="bi_tian">*</span>{$lang_setbasicWebName}：</td>
+        <td class="input"><input name="met_webname" type="text" class="text" value="{$met_webname}" /></td>
+    </tr>
+    <tr> 
+        <td class="text"><span class="bi_tian">*</span>{$lang_upfiletips9}</td>
+        <td class="input upload">
+		    <input name="met_logo" type="text" class="text" value="{$met_logo}" />
+			<input name="met_upsql" type="file" id="file_upload" />
+			<script type='text/javascript'>
+				$(document).ready(function(){
+					metuploadify('#file_upload','upimage','met_logo');
+				});
+			</script>
+		</td>
+    </tr>	
+	<tr> 
+        <td class="text"><span class="bi_tian">*</span>{$lang_setbasicWebSite}：</td>
+        <td class="input">
+		    <input name="met_weburl" type="text" class="text" value="{$met_weburl}" />
+		    <span class="tips color390">{$lang_upfiletips10}<font class="red">$localurl</font></span>
+	    </td>
+    </tr>
+    <tr> 
+        <td class="text"></td>
+        <td class="input color390">{$lang_upfiletips11}</td>
+    </tr> 
+    <tr> 
+        <td class="text"><span class="bi_tian">*</span>{$lang_upfiletips12}</td>
+        <td class="input">
+			<input name="met_keywords" type="text " class="text gen" value="{$met_keywords}" />
+			<span class="tips">{$lang_upfiletips13}</span>
+		</td>
+    </tr> 
+    <tr> 
+        <td class="text"><span class="bi_tian">*</span>{$lang_upfiletips14}</td>
+        <td class="input">
+			<textarea name="met_description" cols="45" class="textarea" rows="5">{$met_description}</textarea>
+			<span class="tips">{$lang_upfiletips15}</span>
+		</td>
+    </tr> 
+	$linkapijs
+<!--
+EOT;
+}elseif($cs==2){
+echo <<<EOT
+-->	
+	<tr> 
+        <td class="text"></td>
+        <td class="input color390">{$lang_setbasicTip6}</td>
+    </tr>
+	<tr> 
+        <td class="text">{$lang_setbasicFromName}：</td>
+        <td class="input"><input name="met_fd_fromname" type="text" class="text" autocomplete="off" value="{$met_fd_fromname}" /><span class="tips">{$lang_setbasicTip7}</span></td>
+    </tr> 
+	<tr> 
+        <td class="text">{$lang_setbasicEmailAccount}：</td>
+        <td class="input"><input name="met_fd_usename" type="text" class="text" autocomplete="off" value="{$met_fd_usename}" /><span class="tips">{$lang_setbasicTip8}</span></td>
+    </tr> 
+	<tr> 
+        <td class="text">{$lang_setbasicSMTPServer}：</td>
+        <td class="input"><input name="met_fd_smtp" type="text" class="text" autocomplete="off" value="{$met_fd_smtp}" /><span class="tips">{$lang_setbasicTip10}</span></td>
+    </tr> 
+	<tr> 
+        <td class="text">{$lang_setbasicSMTPPassword}：</td>
+        <td class="input"><input name="met_fd_password" type="password" class="text" autocomplete="off" value="{$met_fd_password}" /><span class="tips">{$lang_setbasicTip11}</span></td>
+    </tr>
+	<tr> 
+        <td class="text">{$lang_upfiletips16}</td>
+        <td class="input">
+		<a href="basic.php?lang={$lang}&action=email" onclick="return emailtest($(this)); return false;">{$lang_upfiletips17}</a>
+		<span id="emailtest"></span>
+		</td>
+    </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+	<tr> 
+        <td class="text"></td>
+	    <td class="submit">
+		<input type="submit" name="submit1" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		</td>
+    </tr>
+	</table>
+	</form>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

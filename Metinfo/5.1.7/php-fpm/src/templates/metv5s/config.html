@@ -1,0 +1,52 @@
+<?php
+/*页面全局标签（顶部）-------------------------------*/
+$methtml_head=metlabel_html5();//基于Html5
+$metlang=metlable_lang('<span>-</span>');//语言切换标签
+$met_nav=metlabel_nav(1,'<li class="line"></li>');//顶部导航标签
+$methtml_flash=metlabel_flash();//FLASH展示标签
+/*页面全局标签（底部）--------------------------------*/
+$met_foot_nav=methtml_footnav('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');//底部导航标签（次导航）
+$met_foot_txt=metlabel_foot();//底部信息标签
+$metonline=methtml_online();//在线交流漂浮框标签
+/*---------------------------------------------------*/
+if($classnow==10001){//首页标签
+	$Column1=tmpcentarr($lang_Column1);
+	$Column2=tmpcentarr($lang_Column2);
+	$metclist=array();
+	$metlinkimg=methtm_link('img','com');//图片友情链接标签
+	$metlinktxt=methtm_link('text','com');//文字友情链接标签
+	/*metv5s专享大图展示特效*/
+	$flashstyle="\n".'<style type="text/css">'."\n";
+	$i=0;
+	foreach($met_flashimg as $key=>$val){
+		$i++;
+		$flashstyle.=".Zbannar .a{$i} #mPics li{ background:url({$val[img_path]}) 50% 50% no-repeat;}\n";
+	}
+	$flashstyle.="</style>\n";
+	$flash8imgs='<script type="text/javascript">'."\n";
+	$flash8imgs.="var flash8imgs = [\n";
+	$btn=range('a','z');
+	$i=0;
+	foreach($met_flashimg as $key=>$val){
+		$i++;
+		$cnow=$i==1?'cnow':'';
+		$dou=count($met_flashimg)==$i?'':',';
+		$flash8imgs.="{ cn:'a{$i}' , btn:'{$btn[$i]}' , cs:'{$cnow}' , href:'{$val[img_link]}'}{$dou}\n";
+	}
+	$flash8imgs.="];\n</script>\n";
+	$flash8imgs.="<script src='{$img_url}js/M.js' type='text/javascript'></script>";
+	$metv5s_flash=$flashstyle.$flash8imgs;
+	/**/
+}else{//内页标签
+	$sidebar=metlabel_sidebar(0,$lang_sidebarjstype);//内页侧栏标签
+	$sidebar_title=metlabel_sidebar(1);//内页侧栏标题
+	/*产品列表页*/
+	$met_pro_boxw=$sidebar?760:980;//产品列表页宽度
+	$met_pro_liw=$met_productimg_x+12;//单个产品li宽度，12为边框累计宽度
+	$met_pro_num=$lang_metpronum;//产品列表页每行显示数量
+	/*图片列表页*/
+	$met_img_boxw=$sidebar?760:980;//产品列表页宽度
+	$met_img_liw=$met_imgs_x+12;//单个产品li宽度，12为边框累计宽度
+	$met_img_num=$lang_metimgnum;//产品列表页每行显示数量
+}
+?>

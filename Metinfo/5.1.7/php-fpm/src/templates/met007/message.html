@@ -1,0 +1,31 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop'); 
+echo <<<EOT
+-->
+        <div id="message">
+<!--
+EOT;
+if($class_list[$classnow][releclass]!=0){
+echo <<<EOT
+-->
+            <div class="inside"><a href="$message[listurl]">{$lang_ReadInfo}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            $methtml_message
+        </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

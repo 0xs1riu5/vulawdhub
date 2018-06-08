@@ -1,0 +1,99 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+    <form method="POST" name="myform" action="seo.php?anyid={$anyid}&lang=$lang" target="_self">
+	<input name="action" type="hidden" value="modify" />
+	<input name="met_jiathis_custom" type="hidden" value="0" />
+	<input name="met_tools_custom" type="hidden" value="0" />
+	<table cellpadding="2" cellspacing="1" class="table seo">
+		<tr> 
+            <td class="text">{$lang_setseohomeKey}{$lang_marks}</td>
+            <td class="input"> 
+				<input name="met_hometitle" type="text" class="text gen" value="$met_hometitle" />
+				<span class="tips">{$lang_setseoTip10}</span>
+			</td>
+		</tr>
+		<tr> 
+            <td class="text">{$lang_setseotitletype}{$lang_marks}</td>
+            <td class="input">
+				<ul>
+					<li class="floatl" style="padding-right:30px; line-height:2.5;">
+						<label><input type="radio" name="met_title_type" class="radio" value="0" {$radio1[0]} />{$lang_setseotitletype1}</label><br/>
+						<label><input type="radio" name="met_title_type" class="radio" value="2" {$radio1[2]} />{$lang_setseotitletype2}</label>
+					</li>
+					<li class="floatl" style=" line-height:2.5;">
+						<label><input type="radio" name="met_title_type" class="radio" value="1" {$radio1[1]} />{$lang_setseotitletype3}</label><br/>
+						<label><input type="radio" name="met_title_type" class="radio" value="3" {$radio1[3]} />{$lang_setseotitletype4}</label>
+					</li>
+				</ul>
+				<div class="clear"></div>
+				<span class="tips">{$lang_setseoTip14}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseoKey}{$lang_marks}</td>
+            <td class="input"> 
+				<input name="met_keywords" type="text" class="text gen" value="$met_keywords" /><span class="tips">{$lang_seotips1}</span>
+			</td>
+		</tr>
+		<tr> 
+            <td class="text">{$lang_setseoTip6}{$lang_marks}</td>
+            <td class="input"> 
+				<input name="met_alt" type="text" class="text gen" value="$met_alt" /><span class="tips">{$lang_setseoTip7}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseoTip8}{$lang_marks}</td>
+            <td class="input"> 
+				<input name="met_atitle" type="text" class="text gen" value="$met_atitle" /><span class="tips">{$lang_setseoTip9}</span>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseoFriendLink}{$lang_marks}</td>
+            <td class="input"> 
+				<input name="met_linkname" type="text" class="text gen" value="$met_linkname" /><span class="tips">{$lang_setseoTip13}</span>
+			</td>
+        </tr>
+		<tr> 
+			<td class="text" valign="middle">{$lang_setseoFoot}{$lang_marks}</td>
+			<td class="input" valign="top"> 
+				<textarea name="met_foottext" class="ckeditor textarea gen">$met_foottext</textarea>
+			</td>
+        </tr>
+		<tr> 
+            <td class="text">{$lang_setseoTip4}{$lang_marks}</td>
+            <td class="input">
+				<textarea name="met_seo" class="ckeditor textarea gen">$met_seo</textarea>
+			</td>
+        </tr>		
+	    <tr> 
+            <td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="Submit" value="{$lang_Submit}" class="submit"  />
+			</td>
+        </tr>
+</table>
+        </form>
+<div class="footer">$foot</div>
+<script type="text/javascript">
+met_ckeditor('$depth','met_foottext',2);
+met_ckeditor('$depth','met_seo',2);
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

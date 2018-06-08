@@ -1,0 +1,47 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('mobile/head'); 
+echo <<<EOT
+-->
+<!--
+EOT;
+if($turnovertext){
+echo <<<EOT
+-->
+	<div class="returnover">{$turnovertext}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    <div>
+        <ul data-role="listview" data-divider-theme="b" data-inset="false">
+<!--
+EOT;
+foreach($admin_list as $key=>$val){
+echo <<<EOT
+-->
+            <li data-theme="c">
+                <a href="{$val[url]}" data-transition="slide">
+                    {$val[admin_id]}
+					<p style="padding-top:15px;">
+						{$lang_memberType}{$lang_marks}{$val[usertype]}<br/>
+						{$lang_memberCheck}{$lang_marks}{$val[checked]}<br/>
+					</p>
+                </a>
+            </li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+        </ul>
+		<div class="clear"></div>
+    </div>
+<!--
+EOT;
+require_once template('mobile/foot'); 
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

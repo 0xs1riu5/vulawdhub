@@ -1,0 +1,54 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved..
+if($title)$title=' > '.$title;
+echo <<<EOT
+-->
+<script type="text/javascript">
+function metreturn(url){
+	if(url){
+		location.href=url;
+	}else if($.browser.msie){
+		history.go(-1);
+	}else{
+		history.go(-1);
+	}
+}
+</script>
+	<div class="metinfotop">
+	<div class="position">{$met_langok[$lang][name]}：{$toplace[$letplace[$anyid][bigclass]][name]} > <a href="{$depth}../{$letplace[$anyid][url]}">{$letplace[$anyid][name]}</a>{$title}</div>
+<!--
+EOT;
+if($title){
+echo <<<EOT
+-->
+	<div class="return"><a href="javascript:metreturn('{$rurl}');">&lt;&lt;{$lang_js55}</a></div>
+<!--
+EOT;
+}else if($other_op){
+echo <<<EOT
+-->
+	<div class="return">$other_op</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</div>
+	<div class="clear"></div>
+<!--
+EOT;
+if($turnovertext){
+echo <<<EOT
+-->
+	<div class="returnover">{$turnovertext}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>

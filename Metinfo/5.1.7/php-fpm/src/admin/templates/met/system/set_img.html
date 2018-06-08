@@ -1,0 +1,234 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setimgSet}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="img.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_upfiletips18}">{$lang_upfiletips18}</a></li>
+		<li {$listclass[2]}><a href="img.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_upfiletips19}">{$lang_upfiletips19}</a></li>
+	</ul>
+</div>
+    <form method="POST" name="myform" action="img.php?anyid={$anyid}&lang=$lang&cs={$cs}" target="_self">
+	<input name="action" type="hidden" value="modify" />	
+<!--
+EOT;
+if($cs==1){
+echo <<<EOT
+-->
+		<input name="met_autothumb_ok" type="hidden" value=0 />	
+		<input name="met_deleteimg" type="hidden" value=0 />
+		<input name="met_img_rename" type="hidden" value=0 />
+<table cellpadding="2" cellspacing="1" class="table">
+	<tr> 
+	<td class="text">{$lang_setimgdeleteimg}：</td>
+	<td class="input"><label><input name="met_deleteimg" type="checkbox" class="checkbox" value=1 {$met_deleteimg1}>{$lang_setimgdeleteimg1}</label></td>
+	</tr>
+	<tr> 
+	<td class="text">{$lang_setimgWater}：</td>
+	<td class="input"><label><input name="met_autothumb_ok" type="checkbox" class="checkbox" value=1 {$met_autothumb_ok1}>{$lang_setimgWaterok}</label></td>
+	</tr>
+	<tr> 
+	<td class="text">{$lang_setimgrename}：</td>
+	<td class="input"><label><input name="met_img_rename" type="checkbox" class="checkbox" value=1 {$met_img_rename1}>{$lang_setimgrename1}</label>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->		
+	<br />
+	<span class="tips">{$lang_setimgrename2}</span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+	</td>
+	</tr>
+	<tr> 
+	<td class="text">{$lang_upfiletips23}</td>
+	<td class="input">
+	<label><input type="radio" name="met_thumb_kind" value="1" class="radio" {$metthumbkind[1]} />{$lang_upfiletips20}</label>&nbsp;&nbsp;
+	<label><input type="radio" name="met_thumb_kind" value="2" class="radio" {$metthumbkind[2]} />{$lang_upfiletips21}</label>&nbsp;&nbsp;
+	<label><input type="radio" name="met_thumb_kind" value="3" class="radio" {$metthumbkind[3]} />{$lang_upfiletips22}</label>
+	</td>
+	<tr> 
+	<td class="text"></td>
+	<td class="input color390">
+		{$lang_setimgThumbnail} ({$lang_setimgmodule_tips})
+	</td>
+	</tr> 
+	<tr>
+		<td class="text"><span class="bi_tian">*</span>{$lang_mod3}：</td>
+		<td class="input">
+	<input name="met_productimg_x" type="text" class="text mid" value="$met_productimg_x" />×
+	<input name="met_productimg_y" type="text" class="text mid" value="$met_productimg_y" /><span class="tips">({$lang_setimgWidth} × {$lang_setimgHeight})({$lang_setimgPixel})</span>
+	<input name="moren_productimg_x" type="hidden" value="$met_productimg_x" />
+	<input name="moren_productimg_y" type="hidden" value="$met_productimg_y" />
+		</td>
+	</tr>
+	<tr>
+		<td class="text"><span class="bi_tian">*</span>{$lang_mod5}：</td>
+		<td class="input">
+	<input name="met_imgs_x" type="text" class="text mid" value="$met_imgs_x" />×
+	<input name="met_imgs_y" type="text" class="text mid" value="$met_imgs_y" />
+	<input name="moren_imgs_x" type="hidden" value="$met_imgs_x" />
+	<input name="moren_imgs_y" type="hidden" value="$met_imgs_y" />
+		</td>
+	</tr>
+	<tr>
+		<td class="text"><span class="bi_tian">*</span>{$lang_mod2}：</td>
+		<td class="input">
+	<input name="met_newsimg_x" type="text" class="text mid" value="$met_newsimg_x" />×           
+	<input name="met_newsimg_y" type="text" class="text mid" value="$met_newsimg_y" />
+	<input name="moren_newsimg_x" type="hidden" value="$met_newsimg_x" />
+	<input name="moren_newsimg_y" type="hidden" value="$met_newsimg_y" />
+		</td>
+	</tr>
+<!--
+EOT;
+}elseif($cs==2){
+echo <<<EOT
+-->
+		<input name="met_big_wate" type="hidden" value=0 />
+		<input name="met_thumb_wate" type="hidden" value=0 />	
+<table cellpadding="2" cellspacing="1" class="table">
+	<tr> 
+	<td class="text">{$lang_setimgWatermark}：</td>
+	<td class="input"><label><input name="met_big_wate" type="checkbox" class="checkbox" value=1 {$met_big_wate1}>{$lang_setimgBigImg}</label>&nbsp;&nbsp;
+	<label><input name="met_thumb_wate" type="checkbox" class="checkbox" value=1 {$met_thumb_wate1}>{$lang_setimgThumb}</label></td>
+	</tr> 
+	<tr> 
+	<td class="text">{$lang_setimgWatermarkType}：</td>
+	<td class="input"><label><input name="met_wate_class" type="radio" class="radio" value="1" {$met_wate_class1}>{$lang_setimgWordWatermark}</label>&nbsp;&nbsp;<label><input name="met_wate_class" type="radio" value="2" {$met_wate_class2}>&nbsp;{$lang_setimgImgWatermark}</label></td>
+	</tr> 
+	<tr> 
+	<td class="text">{$lang_setimgImg}：</td>
+	<td class="input upload">
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+		    <input name="met_wate_img" type="text" class="text" value="$met_wate_img">
+			<input name="met_upsql" type="file" id="file_upload" />
+			<script type='text/javascript'>
+				$(document).ready(function(){
+					metuploadify('#file_upload','upimage','met_wate_img');
+				});
+			</script>
+			<span class="tips">{$lang_setimgTip2}</span>
+	</td>
+	</tr>
+	<tr> 
+	<td class="text">{$lang_setimgImg2}：</td>
+	<td class="input upload">
+	<input name="met_wate_bigimg" type="text" class="text" value="$met_wate_bigimg">
+	<input name="met_upsql1" type="file" id="file_upload1" />
+	<script type='text/javascript'>
+		$(document).ready(function(){
+			metuploadify('#file_upload1','upimage','met_wate_bigimg');
+		});
+	</script>
+	<span class="tips">{$lang_setimgTip2}</span>
+	</td>
+	</tr>
+	<tr> 
+	<td class="text">{$lang_setimgWord}：</td>
+	<td class="input"><input name="met_text_wate" type="text" class="text" style="color:$met_text_color" id="fontZoom" value="$met_text_wate"><span class="tips">{$lang_setimgTip3}</span></td>
+	</tr> 
+	<tr> 
+	<td class="text">{$lang_setimgWordSize}：</td>
+	<td class="input"><input name="met_text_size" type="text" class="text mid" value="$met_text_size"><span class="tips">{$lang_setflashPixel}</span></td>
+	</tr> 
+	<tr> 
+	<td class="text">{$lang_setimgWordSize2}：</td>
+	<td class="input"><input name="met_text_bigsize" type="text" class="text mid" value="$met_text_bigsize"><span class="tips">{$lang_setflashPixel}</span></td>
+	</tr> 
+	<tr> 
+	<td class="text">{$lang_setimgWordFont}：</td>
+	<td class="input"><input name="met_text_fonts" type="text" class="text" value="$met_text_fonts"><span class="tips">{$lang_setimgTip4}</span></td>
+	</tr>
+	<tr> 
+	<td class="text">{$lang_setimgWordAngle}：</td>
+	<td class="input"><input name="met_text_angle" type="text" class="text mid" value="$met_text_angle"><span class="tips">{$lang_setimgTip5}</span></td>
+	</tr> 
+	<tr> 
+	<td class="text">{$lang_setimgWordColor}：</td>
+	<td class="input"><input name="met_text_color" id="met_text_color" type="text" class="text med" value="$met_text_color">
+	<select name='select_color' class="select" size=1 onChange="if(this.options[this.selectedIndex].value!='') 
+	{do_color('#fontZoom',this.options[this.selectedIndex].value,'#met_text_color');}"> 
+	<option>{$lang_setimgSelectColor}</option>
+	<option style="background-color: #FFFFFF;color:#FFFFFF" value="#FFFFFF">{$lang_setimgWhite}</option> 
+	<option style="background-color:Black;color:Black" value="#000000">{$lang_setimgBlack}</option> 
+	<option style="background-color:Red;color:Red" value="#FF0000">{$lang_setimgRed}</option> 
+	<option style="background-color:Yellow;color:Yellow" value="#FFFF00">{$lang_setimgYellow}</option> 
+	<option style="background-color:Green;color:Green" value="#008000">{$lang_setimgGreen}</option> 
+	<option style="background-color:Orange;color:Orange" value="#FF8000">{$lang_setimgOrange}</option> 
+	<option style="background-color:Purple;color:Purple" value="#800080">{$lang_setimgPurple}</option> 
+	<option style="background-color:Blue;color:Blue" value="#0000FF">{$lang_setimgBlue}</option> 
+	<option style="background-color:Brown;color:Brown" value="#800000">{$lang_setimgBrown}</option> 
+	<option style="background-color:#00FFFF;color: #00FFFF" value="#00FFFF">{$lang_setimgGreen1}</option> 
+	<option style="background-color:#7FFFD4;color: #7FFFD4" value="#7FFFD4">{$lang_setimgGreen2}</option> 
+	<option style="background-color:#FFE4C4;color: #FFE4C4" value="#FFE4C4">{$lang_setimgGray1}</option> 
+	<option style="background-color:#7FFF00;color: #7FFF00" value="#7FFF00">{$lang_setimgGreen3}</option> 
+	<option style="background-color:#D2691E;color: #D2691E" value="#D2691E">{$lang_setimgRed1}</option> 
+	<option style="background-color:#FF7F50;color: #FF7F50" value="#FF7F50">{$lang_setimgRed2}</option> 
+	<option style="background-color:#6495ED;color: #6495ED" value="#6495ED">{$lang_setimgBlue1}</option> 
+	<option style="background-color:#DC143C;color: #DC143C" value="#DC143C">{$lang_setimgRed3}</option> 
+	<option style="background-color:#FF1493;color: #FF1493" value="#FF1493">{$lang_setimgRed4}</option> 
+	<option style="background-color:#FF00FF;color: #FF00FF" value="#FF00FF">{$lang_setimgRed5}</option> 
+	<option style="background-color:#FFD700;color: #FFD700" value="#FFD700">{$lang_setimgYellow1}</option> 
+	<option style="background-color:#DAA520;color: #DAA520" value="#DAA520">{$lang_setimgYellow2}</option> 
+	<option style="background-color:#808080;color: #808080" value="#808080">{$lang_setimgGray2}</option> 
+	<option style="background-color:#778899;color: #778899" value="#778899">{$lang_setimgGray3}</option> 
+	<option style="background-color:#B0C4DE;color: #B0C4DE" value="#B0C4DE">{$lang_setimgBlue2}</option> 
+	</select> 
+	</td>
+	</tr>
+	<tr> 
+	<td class="text">{$lang_setimgPosition}：</td>
+	<td class="input" style=" line-height:25px;"> 
+	<label><input type="radio" value="1" class="radio" name="met_watermark" {$met_watermark1}/>{$lang_setimgLeftTop}</label>&nbsp;&nbsp;
+	<label><input type="radio" value="5" class="radio" name="met_watermark" {$met_watermark5}/>{$lang_setimgTopMid}</label>&nbsp;&nbsp;
+	<label><input type="radio" value="2" class="radio" name="met_watermark" {$met_watermark2}/>{$lang_setimgRightTop}</label>&nbsp;&nbsp;<br/>
+	<label><input type="radio" value="8" class="radio" name="met_watermark" {$met_watermark8}/>{$lang_setimgLeftMid}</label>&nbsp;&nbsp;
+	<label><input type="radio" value="0" class="radio" name="met_watermark" {$met_watermark0}/>{$lang_setimgMid}</label>&nbsp;&nbsp;
+	<label><input type="radio" value="6" class="radio" name="met_watermark" {$met_watermark6}/>{$lang_setimgRightMid}</label>&nbsp;&nbsp;<br/>
+	<label><input type="radio" value="4" name="met_watermark" class="radio" id="label11" {$met_watermark4}/>{$lang_setimgLeftLow}</label>&nbsp;&nbsp;
+	<label><input type="radio" value="7" class="radio" id="label14" name="met_watermark" {$met_watermark7}/>{$lang_setimgLowMid}</label>&nbsp;&nbsp;
+	<label><input type="radio" value="3" class="radio" id="label10" name="met_watermark" {$met_watermark3}/>{$lang_setimgRightLow}</label>&nbsp;
+	</td>
+	</tr>  
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	<tr> 
+	<td class="text"></td>
+	<td class="submit">
+	<input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')"></td>
+	</tr>
+</table>
+</form>
+<div class="footer">$foot</div>
+<script type="text/javascript">
+	function do_color(vobject,vvar,valor){ 
+	$(vobject).css('color',vvar);
+	$(valor).val(vvar);
+	}
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

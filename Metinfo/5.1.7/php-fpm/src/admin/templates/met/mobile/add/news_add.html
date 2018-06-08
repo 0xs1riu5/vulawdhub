@@ -1,0 +1,165 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. ed.
+require_once template('mobile/head'); 
+echo <<<EOT
+-->
+{$listjs}
+<script type="text/javascript">
+$().ready(function() {
+	$.validator.addMethod("valueNotEquals", function(value, element, arg){
+		return arg != value;
+	}, "Value must not equal arg.");
+	$("#frmLogin").validate({
+		rules: {
+			title: "required",
+			class2: { valueNotEquals: 0 }
+		},
+		messages: {
+			title: "{$lang_mobiletips4}",
+			class2: { valueNotEquals: "{$lang_js38}" }
+		}
+	});
+});
+</script>
+<div style="padding:15px;">
+<form  method="POST" name="myform" action="news_save.php?action=add&lang=$lang" target="_self" id="frmLogin" class="validate">
+		<input name="class1" type="hidden" value="$class1">
+		<input name="id" type="hidden" value="$id">
+		<input type="hidden" name="no_order" value="$news_list[no_order]" />
+		<input name="addtime" type="hidden" value="$news_list[addtime]">
+		<input name="updatetime" type="hidden" value="$m_now_date">
+		<input name="issue" type="hidden" value="$news_list[issue]">
+		<input name="hits" type="hidden" value="0">
+		<table cellpadding="2" cellspacing="1" class="table">
+		  <tr> 
+            <td class="text"><span class="bi_tian">*</span>{$lang_setflashBelong}{$lang_marks}</td>
+            <td colspan="2" class="input">
+<!--
+EOT;
+if(count($met_class22[$class1])){
+echo <<<EOT
+-->	
+<select name="class2" onChange="changelocation($(this))">
+<option value=0 {$class2x[0]}>{$lang_modClass2}</option>
+<!--
+EOT;
+foreach($met_class22[$class1] as $key=>$val2){
+$k=$val2[id];
+echo <<<EOT
+-->			
+<option  value="$val2[id]" {$class2x[$k]}>$val2[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+              </select>
+			<div style="height:10px; width:10px;"></div>
+			<select name="class3" onChange="changelocation2($(this))"> 
+			<option value=0 {$class3x[0]}>{$lang_modClass3}</option>
+<!--
+EOT;
+foreach($met_class3[$news_list[class2]] as $key=>$val3){
+$k=$val3[id];
+echo <<<EOT
+-->			
+<option  value="$val3[id]" {$class3x[$k]}>$val3[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
+             </select>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->		 
+		 <font color="#FF0000">{$met_class[$class1][name]}</font>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		 </td>
+          </tr>
+		  <tr> 
+            <td class="text"><span class="bi_tian">*</span>{$lang_title}：</td>
+            <td colspan="2" class="input"> <input name="title" type="text" value="$news_list[title]"></td>
+          </tr>
+		  <tr>
+			<td class="text">{$lang_article1}</td>
+			<td class="input">
+            <fieldset data-role="controlgroup" data-type="vertical">
+<!--
+EOT;
+if($metadmin['newscom']){
+echo <<<EOT
+-->
+				<input name="com_ok" type="checkbox" id="checkbox1" value="1" {$com_ok}>
+                <label for="checkbox1">
+                    {$lang_recom}
+                </label>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+				<input name="top_ok" type="checkbox" id="checkbox2" value="1" {$top_ok}>
+                <label for="checkbox2">
+                    {$lang_top}
+                </label>
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->	
+				<input name="wap_ok" type="checkbox" id="checkbox3" value="1" {$wap_ok}>
+                <label for="checkbox3">
+                    {$lang_article3}
+                </label>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            </fieldset>
+			</td>
+		  </tr>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->		  
+
+		  <tr> 
+            <td class="text">{$lang_webaccess}：</td>
+            <td class="input" colspan="2" ><select name="access" id="access" > {$level} </select></td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			 <tr> 
+			 <td class="text">{$lang_contentdetail}：</td>
+            <td class="input">
+			<textarea class="ckeditor" name="content"></textarea>
+</td></tr>
+		   
+
+		  <tr> 
+            <td class="text"></td>
+	      <td class="submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" />
+		  </td>
+          </tr>
+</table>
+</form>
+</div>
+<!--
+EOT;
+require_once template('mobile/foot'); 
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

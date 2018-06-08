@@ -1,0 +1,52 @@
+<!--<?php
+require_once template('config');
+echo <<<EOT
+-->
+{$methtml_head}
+<!--
+EOT;
+if($lang_bgdcolor!=''){
+echo <<<EOT
+-->
+<style type="text/css">
+#top{ {$lang_bgdcolor} }
+</style>
+<!--
+EOT;
+}
+echo <<<EOT
+--><body>
+    <div id="metinfo">
+        <div id="top">		
+			<a href="{$index_url}" title="{$met_webname}" id="web_logo"><img 
+				src="{$met_logo}" 
+				alt="{$met_webname}" 
+				title="{$met_webname}" 
+				style="margin-top:{$lang_LogoTop}px; margin-left:{$lang_LogoLeft}px;"
+			/></a>
+			<div class="topnavbox">
+				<div class="top">{$metlang}</div>
+				<div class="search">{$topsearch}</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div id="navbox">
+			<div id="nav">	
+				<div class="nava">{$met_nav}</div>
+			</div>
+<!--
+EOT;
+if($lang_nav2ok){
+echo <<<EOT
+-->
+			<div class="navnow">{$met_seo}<div class="clear"></div></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</div>
+		<div id='flash'>{$methtml_flash}</div>
+<!--
+EOT;
+?>

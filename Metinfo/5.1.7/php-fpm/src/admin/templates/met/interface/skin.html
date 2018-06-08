@@ -1,0 +1,197 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+{$scriptcss}
+</head>
+<body>
+<!--
+EOT;
+if($cs==2)$title="{$lang_setskinAdd}";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<!--
+EOT;
+if($cs==2){
+echo <<<EOT
+-->
+			    <form enctype="multipart/form-data" method="POST" name="myform" action="?anyid={$anyid}&action=add&lang={$lang}" target="_self">
+				<input name="met_skin_user" type="hidden" value="0" />
+			    <table cellpadding="0" cellspacing="1" class="table">
+				    <tr>
+				        <td class="text"><span class="bi_tian">*</span>{$lang_skinname}{$lang_marks}</td>
+			            <td class="input" colspan="7"><input name="skin_name" type="text" class="text t1 nonull" /></td>
+					</tr>
+                    <tr>
+					    <td class="text">{$lang_skinup}{$lang_marks}</td>
+						<td class="input" colspan="7">
+							<span class="tips">{$lang_skinexplain1}</span>
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+			<input name="met_upsql" type="file" id="file_upload" />
+			<script type='text/javascript'>
+				$(document).ready(function(){
+					metuploadify('#file_upload','skin','skin_file','','','*.zip','{$lang_js68}');
+				});
+			</script>
+						</td>
+                    </tr>
+				    <tr>
+					    <td class="text"><span class="bi_tian">*</span>{$lang_skinDocument}{$lang_marks}</td>
+					    <td class="input" colspan="7">
+							    <input name="skin_file" type="text" class="text t1 med nonull" value="" />
+								<span class="tips-text color390">{$lang_skinaddinfo1}</span>
+						</td>
+					</tr>
+					<tr>
+				        <td class="text">{$lang_skinIntroduce}{$lang_marks}</td>
+					    <td class="input" colspan="7">   
+						    <textarea name="skin_info" type="textarea" class="textarea t1" cols='25' rows='4' style="width:300px;"></textarea>
+					    </td>
+                    </tr>
+					<tr>
+				        <td class="text">{$lang_skinuse}{$lang_marks}</td>
+					    <td class="input" colspan="7">   
+						    <label><input name="met_skin_user" type="checkbox" class="radio" value="1" />&nbsp;{$lang_skinexplain2}</label>
+					    </td>
+                    </tr>
+                    <tr>
+					    <td class="text"></td>
+						<td class="input" colspan="7">
+						    <input type="submit" name="Submit2" value="{$lang_Submit}" class="submit"  onclick="return Smit($(this),'myform')" />
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="http://www.metinfo.cn/product/" target="_blank" title="{$lang_skinmore}">{$lang_skinmore}</a>
+						</td>
+                    </tr>
+		<tr>
+		  <td class="footer" colspan="7">$foot</td>
+	  </tr>
+			    </table>
+	            </form>
+				
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table skin_manager">
+		<tr>
+			<td colspan="8" class="centle" style="font-weight:normal;">
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
+			<span style="float:right;"><a href="http://www.metinfo.cn/product/" title="{$lang_skinerr2}" target="_blank" class="color390">{$lang_skinerr2}</a></span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->			
+			<a href="?anyid={$anyid}&lang={$lang}&cs=2">+{$lang_skinAddNew}</a><br/>
+			</td>
+		</tr>
+        <tr>
+            <td width="50" class="list" style="padding:0px; text-align:center;">{$lang_skinusenow}</td>
+			<td width="100" class="list">{$lang_preview}</td>
+            <td class="list">{$lang_skininfo}</td>
+            <td width="60" class="list">{$lang_skinstyle}</td>
+			<td class="list">{$lang_operate}</td>
+        </tr>
+<!--
+EOT;
+foreach ($skin_list as $key=>$val){
+$val[open]='';
+$skinok='';
+$selects='';
+$df=0;
+if($met_skin_user==$val[skin_file]){
+$val[open]="<img src='{$img_url}/greencheck.png' style='position:relative; top:5px;' />&nbsp;<b class='color390'>{$lang_skinused}</b>";
+$skinok='checked';
+$df=1;
+$selects="onchange=\"fenggeok('{$val[id]}','{$val[skin_file]}',1);\"";
+}
+echo <<<EOT
+-->          
+        <tr>
+            <td class="list-text"><input name='id' id="sklist_{$val[id]}" value='' type='radio' {$skinok} onclick="fenggeok('{$val[id]}','{$val[skin_file]}');" /></td>
+			<td class="list-text">
+				<img src="../../templates/{$val[skin_file]}/view.jpg" width="120" height="120" style="margin:5px; border:1px solid #ddd; padding:3px;" />
+			</td>
+            <td class="list-text alignleft" style="padding-left:10px;">
+			<span style="font-size:14px;">{$val[skin_name]}</span>&nbsp;&nbsp;&nbsp;&nbsp;{$val[open]}
+			<p style="color:#666;">{$lang_skindescription}{$lang_marks}{$val[skin_info]}<br/>
+			{$lang_skinnumber}{$lang_marks}{$val[skin_file]}<br/>
+			</p>
+			</td>
+			<td class="list-text">
+		    <select name="met_skin_css_{$val[id]}" {$selects}>
+<!--
+EOT;
+foreach($cssnumnow[$val['id']] as $key=>$val2){
+$select_ok='';
+if($df && $met_skin_css==$val2[1])$select_ok='selected';
+echo <<<EOT
+-->
+		        <option value="{$val2[1]}" {$select_ok}>{$val2[0]}</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+		    </select>
+			</td>
+			<td class="list-text"><a href="skin_editor.php?anyid={$anyid}&lang={$lang}&skin_file={$val[skin_file]}&id={$val[id]}&cs=2" title="{$lang_skinsetup}">{$lang_skinsetup}</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="skin_manager.php?anyid={$anyid}&id=$val[id]&action=delete&lang=$lang" onClick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+   	    <tr> 
+			<td class="list-text"></td>
+			<td class="list-text" colspan="5" style="text-align:left; padding-left:10px;"><a href="?anyid={$anyid}&lang={$lang}&cs=2">+{$lang_skinAddNew}</a></td>
+        </tr>		
+   	    <tr> 
+			<td class="page_list" colspan="5">$page_list</td>
+        </tr>
+		<tr>
+		  <td class="footer" colspan="7">$foot</td>
+	  </tr>
+</table>
+<script type="text/javascript">
+	var d=$("input[name='id']:checked");
+function fenggeok(id,file,type){
+	var v=$("select[name='met_skin_css_"+id+"']").val();
+	var text=type==1?'{$lang_js69}':'{$lang_js70}';
+	if(confirm(text)){
+		$.ajax({
+		url : 'skin_manager.php?anyid={$anyid}&lang={$lang}&action=openthis&met_skin_user='+file+'&met_skin_css='+v, 
+		type: "POST",
+		success: function(data){
+			location.reload();
+		}
+		});
+	}else{
+		$("input[name='id']").attr('checked',false);
+		var tid = "#"+d.attr("id");
+		$(tid).attr('checked',true);
+	}
+}
+</script>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

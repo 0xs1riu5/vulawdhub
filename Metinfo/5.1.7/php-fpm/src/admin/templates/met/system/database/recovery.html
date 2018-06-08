@@ -1,0 +1,105 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('system/database/top');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table import">
+		<tr> 
+            <td width="40" class="list" style="padding:0px; text-align:center;">ID</td>
+            <td class="list">{$lang_setdbFilename}</td>
+			<td width="60" class="list">{$lang_setdbsysver}</td>
+            <td width="100" class="list">{$lang_setdbFilesize}</td>
+            <td class="list">{$lang_setdbTime}</td>
+            <td width="40"  class="list">{$lang_setdbNumber}</td>
+            <td class="list">{$lang_operate}</td>
+		</tr>
+<!--
+EOT;
+if($infos){
+$i=0;
+foreach($infos as $id => $info){
+$filenamearray=explode(".sql",$info[filename]);
+$i++;
+echo <<<EOT
+-->
+            <tr class="mouse"> 
+            <td class="list-text">$i</td>
+            <td class="list-text">$info[filename]</td>
+			<td class="list-text">{$info[ver]}</td>
+            <td class="list-text">{$info[filesize]} MB</td>
+            <td class="list-text">$info[maketime]</td>
+            <td class="list-text">$info[number]</td>
+            <td class="list-text">
+<!--
+EOT;
+if($info[error]==1){
+echo <<<EOT
+-->	
+			{$lang_setdbLack}&nbsp;
+			<a href="?anyid={$anyid}&action=delete&filenames=$id&lang=$lang&rutnmt=import" onclick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;  
+			<a href="filedown.php?anyid={$anyid}&lang=$lang&cs=6&filenames=$id" target="_self" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a>
+<!--
+EOT;
+}elseif($info[error]==2){
+echo <<<EOT
+-->	
+			版本不一致&nbsp;
+			<a href="?anyid={$anyid}&action=delete&filenames=$id&lang=$lang&rutnmt=import" onclick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;  
+			<a href="filedown.php?anyid={$anyid}&lang=$lang&cs=6&filenames=$id" target="_self" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->			
+			<a href="?anyid={$anyid}&pre=$info[pre]&dosubmit=1&lang=$lang" title="{$lang_setdbImportData}">{$lang_setdbImportData}</a>&nbsp; 
+	        <a href="?anyid={$anyid}&action=delete&filenames=$id&lang=$lang&rutnmt=import" onclick="return linkSmit($(this),1);" title="{$lang_delete}">{$lang_delete}</a>&nbsp;  
+	        <a href="filedown.php?anyid={$anyid}&lang=$lang&cs=6&filenames=$id" target="_self" title="{$lang_setdbDownload}">{$lang_setdbDownload}</a></td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->				
+			</tr>
+<!--
+EOT;
+}
+}else{
+echo <<<EOT
+-->
+		<tr><td class="list-text" colspan="7">{$lang_dataexplain1}</td></tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<tr>
+            <td colspan="7" class="all-submit" style="padding:5px 10px;">
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+			<input name="met_upsql" type="file" id="file_upload" />
+			<script type='text/javascript'>
+				$(document).ready(function(){
+					metuploadify('#file_upload','sql','');
+				});
+			</script>
+<span style="color:#999;">{$lang_dataexplain2}</span>
+</td>
+</tr> 
+<tr><td colspan="7" style="color:#666;"></td></tr>
+</table>
+	<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

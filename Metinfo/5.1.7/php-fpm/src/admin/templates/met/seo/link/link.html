@@ -1,0 +1,131 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+if($show_ok==0 && $show_ok<>""){
+   $style1="style='color:#FF0000' selected='selected'";
+ }elseif($com_ok==1 && $com_ok<>""){
+   $style2="style='color:#FF0000' selected='selected'";
+ }elseif($link_type==0 && $link_type<>""){
+   $style4="style='color:#FF0000' selected='selected'";
+ }
+ elseif($link_type==1 && $link_type<>""){
+   $style5="style='color:#FF0000' selected='selected'";
+ }else{
+   $style3="style='color:#FF0000' selected='selected'";
+ }
+
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+       <tr>
+	        <td class="centle" colspan="3" style=" height:20px; line-height:30px; font-weight:normal; padding-left:10px;">
+			<div style="float:left;">
+			<a href="content.php?action=add&lang={$lang}&anyid={$anyid}" title="{$lang_add}{$lang_indexlink}">+{$lang_add}{$lang_indexlink}</a>
+			</div>
+			<div class="formright">
+			    &nbsp;{$lang_linkType}
+				<select name="new" id="new" onChange="changes($(this));" style="position:relative; top:2px;">
+					<option value="index.php?lang=$lang&anyid={$anyid}&show_ok=0" $style1>{$lang_linkType1}</option>
+					<option value="index.php?lang=$lang&anyid={$anyid}&com_ok=1" $style2>{$lang_linkType2}</option>
+					<option value="index.php?lang=$lang&anyid={$anyid}" $style3>{$lang_linkType3}</option>
+					<option value="index.php?lang=$lang&anyid={$anyid}&link_type=0" $style4>{$lang_linkType4}</option>
+					<option value="index.php?lang=$lang&anyid={$anyid}&link_type=1" $style5>{$lang_linkType5}</option>
+				</select>
+			<form method="POST" name="myform" action="index.php?search=detail_search&lang=$lang&anyid={$anyid}" target="_self">
+			    <input name="webname" type="text" value="{$lang_linkTip2}" class="text" id="searchtext" />
+				<input type="submit" name="Submit2" value="{$lang_search}" class="submitmi" /> 
+				<input name="show_ok" type="hidden" id="show_ok" value="$show_ok">
+				<input name="com_ok" type="hidden" id="com_ok" value="$com_ok">
+				<input name="link_type" type="hidden" id="link_type" value="$link_type">
+				<input name="link_type" type="hidden" id="link_type" value="$link_type">
+			</form>
+			</div>
+			</td>		
+</tr>
+			 <tr>
+			 <td colspan="3">
+			  <form name="del" method="Post" action="delete.php?lang=$lang&anyid={$anyid}">
+			  <table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+              <tr>
+                <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+				<td width="50" class="list" style="padding:0px; text-align:center;">ID</td>
+                <td width="80" class="list" style="padding:0px; text-align:center;">{$lang_linkType}</td>
+                <td class="list" >{$lang_linkName}</td>
+                <td class="list" >{$lang_linkKeys}</td>
+                <td width="50" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
+				<td width="50" class="list" style="padding:0px; text-align:center;">{$lang_linkCheck}</td>
+				<td width="50" class="list" style="padding:0px; text-align:center;">{$lang_recom}</td>
+				<td width="10%" class="list" >{$lang_operate}</td>
+              </tr>
+<!--
+EOT;
+foreach ($link_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' /></td>
+                <td class="list-text">$val[id]</td>
+				<td class="list-text">$val[link_type]</td>
+			    <td class="list-text alignleft">&nbsp;&nbsp;$val[webname]</td>
+				<td class="list-text alignleft">&nbsp;&nbsp;$val[info]</td>
+				<td class="list-text">$val[orderno]</td>
+                <td class="list-text">$val[show_ok]</td>
+                <td class="list-text">$val[com_ok]</td>          
+				<td class="list-text"><a href="content.php?action=editor&lang=$lang&anyid={$anyid}&id=$val[id]" >{$lang_editor}</a>&nbsp;&nbsp;<a href="delete.php?lang=$lang&anyid={$anyid}&id=$val[id]" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		   
+   	   </table>
+              <input name="action" type="hidden" id="action" value="del">
+			  <input name="allid" type="hidden" id="allid" value="">
+</form>	   
+   	   </td> 
+   	   </tr> 
+   	   <tr> 
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="all-submit" align="left" style="padding:5px 10px;">
+			<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
+			<div class="page_list">
+			<form name="delform" method="Post" action="delete.php?anyid={$anyid}&lang=$lang">
+			    <select name="action" id="deltype">
+					<option value="delno" selected>{$lang_linkType1}</option>
+					<option value="delall">{$lang_linkType3}</option>
+				</select>
+				<input name="submit" type='submit' value='{$lang_setsafesq3text}' class="submitmi" onclick="return linkSmit('',1,safesq());" />  
+			</form>
+			</div>
+			</td>
+          </tr>
+		  <tr><td colspan="7" class="page_list" style="padding:5px 0px;">{$page_list}</td></tr>
+		<tr>
+		  <td class="footer" colspan="3">$foot</td>
+	  </tr>
+</table>
+<script type="text/javascript">
+function safesq(){
+	var vl = $("#deltype").val();
+	var vp = $("option[value='"+vl+"']").text();
+		vp = '{$lang_js63}'+vp+'？';
+	return vp;
+}
+seachinput($('#searchtext'),'{$lang_linkTip2}');
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

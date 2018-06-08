@@ -1,0 +1,31 @@
+<!--<?php
+echo <<<EOT
+-->
+<div class="sidebar inner">
+    <div class="sb_nav">
+<!--
+EOT;
+$line='title';
+if($sidebar){
+echo <<<EOT
+-->
+			<h3 class='title myCorner' data-corner='top 5px'>{$sidebar_title}</h3>
+			<div class="active" id="sidebar" data-csnow="{$csnow}" data-class3="{$class3}" data-jsok="{$lang_sidebarjstype}">{$sidebar}<div class="clear"></div></div>
+<!--
+EOT;
+$line='line';
+}
+echo <<<EOT
+-->
+			<h3 class='title {$line} myCorner' data-corner='top 5px'>{$lang_metname1}</h3>
+			<div class="active editor">{$otherinfo[info10]}<div class="clear"></div></div>
+    </div>
+    <div class="sb_box">
+	    <h3 class="title">
+			<div class="position">{$lang_position}：<a href="{$index_url}" title="{$lang_home}">{$lang_home}</a> &gt; {$nav_x[name]}</div>
+			<span>{$class_list[$classnow][name]}</span>
+		</h3>
+		<div class="clear"></div>
+<!--
+EOT;
+?>

@@ -1,0 +1,67 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop');
+$met_product=methtml_imgdisplay('product');
+$met_productnext=methtml_prenextinfo();
+$methits=methtml_hits('product');
+echo <<<EOT
+-->
+        <div id="showproduct">
+<!--
+EOT;
+$dtwidth=$met_productdetail_x + 8;
+echo <<<EOT
+-->
+            <dl>
+                <dt style="width:{$dtwidth}px;">$met_product</dt>
+		        <dd style="margin-left:-{$dtwidth}px;">
+				    <div style="margin-left:{$dtwidth}px;">
+		            <ul>
+			            <li><h1>$product[title]</h1></li>
+<!--
+EOT;
+foreach($product_paralist as $key=>$val2){
+echo <<<EOT
+-->
+                        <li>$val2[name] : <span>{$product[$val2[para]]}</span></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			        </ul>
+					<div class="text">$product[description]</div>
+<!--
+EOT;
+if($lang_PrdctFd==1){
+echo <<<EOT
+-->
+<div class="feedback">
+<a href="{$addfeedback_url}$product[title]" target="$Blank" title="{$lang_Product_Column3}">{$lang_Product_Column3}</a>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                    </div>
+		        </dd>
+	        </dl>
+			<div style="clear:both;"></div>
+			<h3 class="hr"><span>{$lang_Product_Column2}</span></h3>
+			<div class="text editor">$product[content]</div>
+		    <div class="hits">$methits</div>
+            <div class="page">$met_productnext</div>
+	    </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -1,0 +1,49 @@
+<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+<!--
+EOT;
+if($met_stat){
+echo <<<EOT
+-->
+		<li {$listclass[1]}><a href="index.php?lang={$lang}&anyid={$anyid}&cs=1" title="{$lang_statips1}">{$lang_statips1}</a></li>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+		<li {$listclass[6]}><a href="set.php?lang={$lang}&anyid={$anyid}" title="{$lang_statips2}">{$lang_statips2}</a></li>
+		<li {$listclass[1]}><a href="index.php?lang={$lang}&anyid={$anyid}&cs=1" title="{$lang_statips1}">{$lang_statips1}</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<li {$listclass[2]}><a href="engine.php?lang={$lang}&anyid={$anyid}&cs=1" title="{$lang_statips3}">{$lang_statips3}</a></li>
+		<li {$listclass[3]}><a href="accept.php?lang={$lang}&anyid={$anyid}&cs=1" title="{$lang_statips4}">{$lang_statips4}</a></li>
+		<li {$listclass[4]}><a href="source.php?lang={$lang}&anyid={$anyid}&cs=1" title="{$lang_statips5}">{$lang_statips5}</a></li>
+		<li {$listclass[5]}><a href="details.php?lang={$lang}&anyid={$anyid}&cs=1" title="{$lang_statips6}">{$lang_statips6}</a></li>
+<!--
+EOT;
+if($met_stat){
+echo <<<EOT
+-->
+		<li {$listclass[6]}><a href="set.php?lang={$lang}&anyid={$anyid}" title="{$lang_statips2}">{$lang_statips2}</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</ul>
+</div>
+<div style="clear:both;"></div>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>

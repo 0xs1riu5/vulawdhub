@@ -1,0 +1,159 @@
+<!--<?php
+$langp="</li><li onmouseover=\"this.style.background = '#B3D4FF';\" onmouseout=\"this.style.background = 'none';\">";
+$metlang=methtml_lang($langp);
+$metsearch=methtml_search(); 
+$methtml_login=methtml_login();
+$metonline=methtml_online();
+$navdown=$class1;
+if($class1 == 0 || $class_list[$class1][nav] == 2)$navdown="10001";
+$metseo=$classnow==10001?'<h1>'.$met_seo.'</h1>':'<h2>'.$met_seo.'</h2>';//жҳҳʾͬhǩSEOŻ
+foreach($module_list1[12] as $key=>$val){
+$webimg=$val;
+}
+echo <<<EOT
+-->
+{$methtml_head}
+
+<script src="{$img_url}js/switchable.js" type="text/javascript" language="javascript"></script>
+<link href="{$img_url}css/reset.css" rel="stylesheet" type="text/css" />
+<body>
+<!--
+EOT;
+$i=0;
+if(count($met_langok)>1 or $met_ch_lang){
+foreach($met_langok as $key=>$val){
+if($val[useok])$i++;
+}}
+if(($i>1 or $met_ch_lang) or $met_seo<>'' or $met_member_use){
+echo <<<EOT
+-->
+	     <div id="sidebar">
+		    <div class="ding">
+<!--
+EOT;
+if($i>1 or $met_ch_lang){
+echo <<<EOT
+-->
+				     <dl>
+					     <dd id="langdt" onMouseOver="document.getElementById('langdd').style.display = 'block';" onMouseOut="document.getElementById('langdd').style.display = 'none';">
+						 {$lang_Language}
+						     <ul id="langdd" style="display:none;">
+						         <li onMouseOver="this.style.background = '#B3D4FF';" onMouseOut="this.style.background = 'none';">{$metlang}</li>
+							 </ul>
+						 </dd>
+					 </dl>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		         <div class="seo">
+					 {$metseo}
+				 </div>
+				 <div class="login">{$methtml_login}</div>
+			</div>
+		 </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+      <div id="content">
+         <div id="top">
+				     <ul>
+					  <li class="set">{$methtml_sethome}</li><li class="add">{$methtml_addfavorite}</li><li class="cont"><a href="mailto:{$otherinfo[info2]}" title="{$lang_Column0}">{$lang_Column0}</a></li><li class="webmp"><a href="$webimg[url]" title="{$webimg[name]}">{$webimg[name]}</a></li>
+					 </ul>
+			         <a href="{$index_url}" title="{$met_alt}"><img src="{$met_logo}" alt="{$met_alt}" title="{$met_alt}" style="margin-top:{$lang_logotop}px; margin-left:  
+				     {$lang_logoleft}px;"/></a>
+         </div>  
+         <div id="nav">		 
+         <dl>
+		    <dd class="nav">
+                <a href="$index_url" title="{$lang_home}" id="nav_10001"><span>{$lang_home}</a></span>	 	      
+<!--
+EOT;
+$i=0;
+foreach($nav_list as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+                 <a class="navline">&nbsp;</a>
+                 <a href="$val[url]" $val[new_windows] title="$val[name]" id="nav_$val[id]"><span>$val[name]</span></a>
+<!--
+EOT;
+if($i>=8)break;
+}
+echo <<<EOT
+--> 
+			 </dd>
+			 <dt>
+                     <form method="POST" name="myform1" action="$searchurl"  target="_self">
+                     <input type="text" name="searchword" size="20"  class="text" />
+                     <input type='submit' name='Submit' value='' class="submit" />
+                     </form>
+			 </dt>
+	  <dd class="nav2" id="nav2_10001" style="display:none;">
+	      {$otherinfo[info1]}
+	  </dd>
+<!--
+EOT;
+$i=0;
+foreach($nav_list as $key=>$val){
+$t=count($nav_list2[$val[id]]);
+$i++;
+echo <<<EOT
+-->
+      <dd class="nav2" id="nav2_$val[id]" style="display:none;">
+<!--
+EOT;
+if($t==0){
+echo <<<EOT
+-->
+        {$class_list[$classnow][description]}
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+$k=0;
+foreach($nav_list2[$val[id]] as $key=>$val2){
+$k++;
+if($k==1){
+echo <<<EOT
+-->	
+                 <a href="$val2[url]" $val2[new_windows] title="$val[name]">$val2[name]</a>
+<!--
+EOT;
+}
+else{
+echo <<<EOT
+-->
+                 <a class="nav2line">&nbsp;</a>
+                 <a href="$val2[url]" $val2[new_windows] title="$val[name]">$val2[name]</a>
+<!--
+EOT;
+}
+}
+echo <<<EOT
+-->
+     </dd>
+<!--
+EOT;
+if($i>=8)break;
+}
+echo <<<EOT
+-->
+         </dl>
+		 </div>
+             <script type="text/JavaScript">
+                 document.getElementById('nav_' + $navdown).className="navdn";
+				 document.getElementById('nav2_' + $navdown).style.display="block";
+             </script>
+		  <div id="flash"> 
+			      {$methtml_flash}
+          </div>
+<!--
+EOT;
+?>

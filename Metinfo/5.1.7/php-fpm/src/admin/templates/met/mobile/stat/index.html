@@ -1,0 +1,101 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('mobile/head'); 
+echo <<<EOT
+-->
+<!--
+EOT;
+if($turnovertext){
+echo <<<EOT
+-->
+	<div class="returnover">{$turnovertext}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    <div style="padding:15px;">
+        <ul data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                {$lang_statips10}
+            </li>
+            <li data-theme="c">
+                PV：{$visit_summary[pv]}
+            </li>
+            <li data-theme="c">
+                {$lang_statips21}{$lang_marks}{$visit_summary[alone]}
+            </li>
+            <li data-theme="c">
+                IP：{$visit_summary[ip]}
+            </li>
+            <li data-theme="c">
+                {$lang_statips22}{$lang_marks}{$per_visit} {$lang_mobiletips7}
+            </li>
+        </ul>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true" style="margin-top:15px;">
+            <li data-role="list-divider" role="heading">
+                {$lang_statips11}
+            </li>
+            <li data-theme="c">
+                PV：{$visit_summaryz[pv]}
+            </li>
+            <li data-theme="c">
+                {$lang_statips21}{$lang_marks}{$visit_summaryz[alone]}
+            </li>
+            <li data-theme="c">
+                IP：{$visit_summaryz[ip]}
+            </li>
+            <li data-theme="c">
+                {$lang_statips22}{$lang_marks}{$per_visitz} {$lang_mobiletips7}
+            </li>
+        </ul>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true" style="margin-top:15px;">
+            <li data-role="list-divider" role="heading">
+                {$lang_statips43}
+            </li>
+            <li data-theme="c">
+                PV：{$pvaver}
+            </li>
+            <li data-theme="c">
+                {$lang_statips21}{$lang_marks}{$alaver}
+            </li>
+            <li data-theme="c">
+                IP：{$ipaver}
+            </li>
+        </ul>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true" style="margin-top:15px;">
+            <li data-role="list-divider" role="heading">
+                {$lang_statips44}
+            </li>
+            <li data-theme="c">
+                PV：{$maxpv}
+            </li>
+            <li data-theme="c">
+                {$lang_statips21}{$lang_marks}{$maxal}
+            </li>
+            <li data-theme="c">
+                IP：{$maxip}
+            </li>
+        </ul>
+        <ul data-role="listview" data-divider-theme="b" data-inset="true" style="margin-top:15px;">
+            <li data-role="list-divider" role="heading">
+                {$lang_statips45}
+            </li>
+            <li data-theme="c">
+                PV：{$pvaccum}
+            </li>
+            <li data-theme="c">
+                {$lang_statips21}{$lang_marks}{$alaccum}
+            </li>
+            <li data-theme="c">
+                IP：{$ipaccum}
+            </li>
+        </ul>
+    </div>
+<!--
+EOT;
+require_once template('mobile/foot'); 
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>

@@ -1,0 +1,32 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop'); 
+echo <<<EOT
+-->
+        <div id="message_index">
+<!--
+EOT;
+if($class_list[$classnow][releclass]!=0){
+echo <<<EOT
+-->
+            <div class="inside"><a href="$addmessage_url">{$lang_SubmitInfo}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            $methtml_messagelist
+        </div>
+        <div id="flip">$page_list</div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

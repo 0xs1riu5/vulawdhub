@@ -1,0 +1,98 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop');
+$met_product=methtml_product('img'); 
+echo <<<EOT
+-->
+        <div id="product-list">
+<!--
+EOT;
+if($lang_Product_Plug==1){
+$plug1_width=$met_img_x + 8;
+$plug1_height=$met_img_y + 8 + 25;
+echo <<<EOT
+-->
+<style type="text/css">
+    #product-list #plug1 li{ width:{$plug1_width}px; height:{$plug1_height}px;}
+</style>
+		    <div id="plug1">$met_product</div>
+<!--
+EOT;
+}else if($lang_Product_Plug==2){
+$dlheight=$met_img_y+8;
+$dtwidth=$met_img_x+8;
+echo <<<EOT
+-->
+            <div id="plug2">
+<!--
+EOT;
+$i=0;
+foreach($product_list as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+                <dl>
+	                <dt style="width:{$dtwidth}px;">
+		                <a href="$val[url]" title="$val[title]" target="$Blank">
+		                    <img 
+							    src="$val[imgurls]" 
+								alt="$val[title]" 
+								title="$val[title]" 
+								width="$met_img_x" 
+								height="$met_img_y" 
+							/>
+		                </a>
+					</dt>
+<!--
+EOT;
+$K=$dlheight/(count($product_paralist)+1);
+echo <<<EOT
+-->
+		            <dd style="margin-left:-{$dtwidth}px;">
+		                <ul style="margin-left:{$dtwidth}px;">
+			                <li style="height:{$K}px; line-height:{$K}px"><h4 class="title"><a href="$val[url]" title="$val[title]" target="$Blank">$val[title]</a>$val[top] $val[news] $val[hot]</h4></li>
+<!--
+EOT;
+$k=0;
+foreach($product_paralist as $key=>$val2){
+$k++;
+echo <<<EOT
+-->
+                            <li style="height:{$K}px; line-height:{$K}px">{$val2[name]}: <span>{$val[$val2[para]]}</span></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			            </ul>
+		            </dd>
+	            </dl>
+				<div class="dl-line clear"></div>
+     
+<!--
+EOT;
+if($i>=$met_product_list)break;
+}
+echo <<<EOT
+-->
+			</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		    <div style="clear:both;"></div>
+        </div>
+        <div id="flip">$page_list</div>   
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot');
+?>

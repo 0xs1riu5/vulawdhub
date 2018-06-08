@@ -1,0 +1,132 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$listclass[3]='class="now"';
+require_once template('app/sms/top');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="http://{$met_host}/sms/alipay/alipayto.php" target="_blank">
+	<input type="hidden" name="total_title" value="{$lang_smstips5}" />
+	<input type="hidden" name="total_email" value="{$admin_list[admin_email]}" />
+	<input type="hidden" name="total_weburl" value="{$met_weburl}" />
+	<input type="hidden" name="total_pass" value="{$total_pass}" />
+<table cellpadding="2" cellspacing="1" class="table">
+		<tr> 
+			<td class="text">{$lang_smstips6}{$lang_marks}</td>
+			<td class="input"><span class="red">{$balance}</span> {$lang_smstips9}</td>
+		</tr>
+		<tr> 
+			<td class="text">{$lang_smstips7}{$lang_marks}</td>
+			<td class="input"><img src="http://{$met_host}/sms/alipay/images/alipay.gif" /></td>
+		</tr>
+		<tr> 
+			<td class="text">{$lang_smstips8}{$lang_marks}</td>
+			<td class="input"><input type="text" name="total_fee" class="text nonull" style="width:60px;" /> {$lang_smstips9}</td>
+		</tr>
+<!--
+EOT;
+if($firstcharge){
+echo <<<EOT
+-->
+		<tr> 
+			<td class="text">{$lang_memberEmail}{$lang_marks}</td>
+			<td class="input">
+			<input type="text" name="total_email" class="text nonull" style="width:120px;" value="{$admin_list[admin_email]}" />
+			<span class="tips">{$lang_smstips10}</span>
+			</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr> 
+			<td class="text"></td>
+			<td class="submit"><input type="submit" name="submit" class="submit" value="{$lang_smstips11}" onclick="return Smit($(this),'myform')" $disable/>$fstr</td>
+		</tr>
+		<tr> 
+			<td class="input color390" colspan="2" style="padding-left:88px;">
+			{$lang_smstips12}{$lang_marks}
+			<ol>
+				<li>{$lang_smstips13}{$met_weburl}</li>
+				<li class="red">{$lang_smstips14}</li>
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->	
+				<li><a href="http://www.metinfo.cn/faq/sms_costs.htm" target="_blank">{$lang_smstips15}</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->					
+			</ol>
+			</td>
+		</tr>
+</table>
+</form>
+<form method="POST" name="myform1" action="index.php?lang=$lang&anyid=$anyid&cs=$cs">
+	<input type="hidden" name="action" value="code" />
+	<input type="hidden" name="total_title" value="{$lang_smstips5}" />
+	<input type="hidden" name="total_weburl" value="{$met_weburl}" />
+	<input type="hidden" name="total_pass" value="{$total_pass}" />
+<table cellpadding="2" cellspacing="1" class="table">
+		<tr> 
+			<td class="text">{$lang_smstips78}{$lang_marks}</td>
+			<td class="input">
+			<input type="text" name="total_code" class="text nonull" style="width:120px;" value="" />
+			<span class="tips"></span>
+			</td>
+		</tr>
+<!--
+EOT;
+if($firstcharge){
+echo <<<EOT
+-->
+		<tr> 
+			<td class="text">{$lang_memberEmail}{$lang_marks}</td>
+			<td class="input">
+			<input type="text" name="total_email" class="text nonull" style="width:120px;" value="{$admin_list[admin_email]}" />
+			<span class="tips">{$lang_smstips10}</span>
+			</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr> 
+			<td class="text"></td>
+			<td class="submit">
+				<input type="submit" name="submit" class="submit" value="{$lang_smstips84}" onclick="return Smit($(this),'myform1')" $disable/>$fstr
+<!--
+EOT;
+if($met_agents_type<=1){
+echo <<<EOT
+-->					
+				<span class="tips"><a href="http://www.metinfo.cn/faq/sms_costs.htm" target="_blank">{$lang_smstips83}</a></span>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+				</td>
+		</tr>
+</table>
+</form>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

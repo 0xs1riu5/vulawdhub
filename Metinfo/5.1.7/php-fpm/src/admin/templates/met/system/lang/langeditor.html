@@ -1,0 +1,72 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_langwebeditor}</title>
+</head>
+<body>
+<!--
+EOT;
+$title=$lang_langwebeditor.'('.$met_langok[$langeditor][name].')';
+$rurl='lang.php?anyid='.$anyid.'&lang='.$lang.'&cs=1';
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+<!--
+EOT;
+for($i=0;$i<$j;$i++){
+echo <<<EOT
+-->
+<li {$listclass[$i]}><a href="?anyid={$anyid}&cs={$i}&langeditor={$langeditor}&langid={$i}&lang={$lang}" title="{$langarray[$i]}">{$langarray[$i]}</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</ul>
+</div>
+<div class="clear"></div>
+        <form method="POST" name="myform" action="langeditor.php?anyid={$anyid}&cs={$cs}&lang=$lang" target="_self">
+		<input name="action" type="hidden" value="modify">
+		<input name="langnum" type="hidden" value="$j">
+		<input name="lang" type="hidden" value="$lang">
+		<input name="langeditor" type="hidden" value="$langeditor">
+<table cellpadding="2" cellspacing="1" class="table">
+<tr>
+<td class="input color390" colspan="3">{$lang_langexplain1}</td>
+</tr>
+<input name="metinfolangid" type="hidden" value="{$langid}">
+<!--
+EOT;
+foreach($langtext[$langid] as $key=>$val){
+echo <<<EOT
+-->
+ <tr> 
+	<td class="text color999" style="font-weight:normal;">&#123;&#36;lang_{$val[name]}&#125;：</td>
+	<td class="input"><input name="$val[name]_metinfo" type="text" class="text" value="$val[value]" /></td>
+ </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	      <tr> 
+		  <td class="text"></td>
+	      <td class="submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" /></td>
+          </tr>
+		<tr>
+		  <td class="footer" colspan="2" align="center">$foot</td>
+	  </tr>
+</table>
+        </form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

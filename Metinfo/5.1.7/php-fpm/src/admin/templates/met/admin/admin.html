@@ -1,0 +1,147 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_metadmin}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr>
+            <td class="centle" height="20" colspan="9" style="font-weight:normal;">
+<!--
+EOT;
+if($admin_list[admin_group]!=0){
+echo <<<EOT
+-->
+			<div style="float:left;">&nbsp;&nbsp;<a href="add.php?lang=$lang&anyid={$anyid}">+{$lang_add}{$lang_metadmin}</a></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<div class="formright">
+			<form method="POST" name="myform" action="index.php?search=detail_search&lang=$lang&anyid={$anyid}" target="_self">
+			{$lang_adminusername}&nbsp;<input name="admin_id" type="text" class="text med" />&nbsp;&nbsp;{$lang_adminname}&nbsp;<input name="admin_name" type="text" class="text med" />
+<input type="submit" name="Submit2" value="{$lang_search}" class="submitmi">&nbsp;</form>
+			</div>
+			</td>
+          </tr>
+              <tr>
+                <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+                <td class="list">{$lang_adminusername}</td>
+                <td width="100" class="list" style="padding:0px; text-align:center;">{$lang_admintips5}</td>
+                <td class="list" >{$lang_adminname}</td>
+                <td width="100" class="list" style="padding:0px; text-align:center;">{$lang_adminmobile}</td>
+                <td width="70" class="list" style="padding:0px; text-align:center;">{$lang_adminLoginNum}</td>
+				<td class="list" >{$lang_adminLastLogin}</td>
+                <td class="list">{$lang_adminLastIP}</td>
+				<td width="100" class="list" >{$lang_operate}</td>
+              </tr>
+			  <form name="del" method="Post" action="delete.php?lang=$lang&anyid={$anyid}">
+<!--
+EOT;
+foreach($admin_list1 as $key=>$val){
+$val[admin_idxd]=$val[editok]?"<a href=\"editor.php?id=$val[id]&lang=$lang&anyid={$anyid}\" title=\"{$lang_detail}\">$val[admin_id]</a>":$val[admin_id];
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+              <td class="list-text">
+<!--
+EOT;
+if($val[grplok]){
+echo <<<EOT
+-->
+			  <input name='id' type='checkbox' id="id" value='$val[id]' />
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			  </td>
+                <td class="list-text color999">{$val[admin_idxd]}</td>
+                <td class="list-text color999">$val[admin_grouptd]</td>
+                <td class="list-text color999">$val[admin_name]</td>
+                <td class="list-text color999">$val[admin_mobile]</td>
+                <td class="list-text color999">$val[admin_login]</td>
+				<td class="list-text color999">$val[admin_modify_date]</td>
+                <td class="list-text color999">$val[admin_modify_ip]</td>
+				<td class="list-text">
+<!--
+EOT;
+if($val[editok]){
+echo <<<EOT
+-->
+				<a href="editor.php?id=$val[id]&lang=$lang&anyid={$anyid}">{$lang_editor}</a>&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($val[grplok]){
+echo <<<EOT
+-->
+				<a href="editor.php?id=$val[id]&lang=$lang&anyid={$anyid}&edtp=1">{$lang_access}</a>&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($val[grplok]){
+echo <<<EOT
+-->
+				<a href="delete.php?id=$val[id]&lang=$lang&anyid={$anyid}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				<input name="action" type="hidden" id="action" value="del">
+			    <input name="allid" type="hidden" id="allid" value=""></form>
+<!--
+EOT;
+if($admin_list[admin_group]!=0){
+echo <<<EOT
+-->
+   	   <tr> 
+            <td width="40" class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			  <td class="all-submit" colspan="8" style="padding:5px 10px;">
+			  <input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" /> 
+              </td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		 <tr>
+		  <td class="page_list" colspan="9"> $page_list</td>
+	  </tr>
+		 <tr>
+		  <td class="footer" colspan="9">$foot</td>
+	  </tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

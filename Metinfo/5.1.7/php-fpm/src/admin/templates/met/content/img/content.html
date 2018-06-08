@@ -1,0 +1,416 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. ed.
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+$listjs
+<body>
+<!--
+EOT;
+$title=$class1?"<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>":"<a href='index.php?anyid={$anyid}&lang={$lang}'>{$lang_modulemanagement5}</a>";
+$title.=$action=='editor'?" > {$lang_editor}{$lang_content}":" > {$lang_add}{$lang_content}";
+$rurl="index.php?anyid={$anyid}&lang={$lang}&class1={$class1}";
+if($cengci==2)$rurl="index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&class2={$class2}";
+if($cengci==3)$rurl="index.php?anyid={$anyid}&lang={$lang}&class1={$class1}&class2={$class2}&class3={$class3}";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form  method="POST" name="myform" action="save.php?anyid={$anyid}&action=$action" target="_self">
+		<input name="id" type="hidden" value="$id">
+		<input name="lang" type="hidden" value="$lang">
+		<input name="module" type="hidden" value="$module">
+		<input id="acesss_contents" type="hidden"   value="$list_access[access]">
+		<input name="filenameold" type="hidden"  value="$img_list[filename]">
+		<input name="updatetimeold" type="hidden"  value="$img_list[updatetime]">
+		<input name="page" type="hidden"  value="$page">
+		<input type="hidden" name="no_order" value="$img_list[no_order]" />
+		<input type="hidden" name="cengci" value="$cengci" />
+<table cellpadding="2" cellspacing="1" class="table">
+			<tr>
+		<td class="text"><span class="bi_tian">*</span>{$lang_category}：</td>
+		<td class="input">
+		<select name="class1" id="class1select" class="noselect" onChange="changelocation_contents(document.myform.class1.options[document.myform.class1.selectedIndex].value,1)" $class1style>		
+		<option value="">{$lang_modClass1}</option>
+<!--
+EOT;
+foreach($met_classindex[$module] as $key=>$val1){
+$k=$val1['id'];
+$admin_column_power="admin_pop".$val1[id];
+if(!($metinfo_admin_pop=='metinfo'||$$admin_column_power=='metinfo'))continue;
+echo <<<EOT
+-->			
+<option  value="$val1[id]" $class1x[$k]>$val1[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		</select>
+		<select name="class2" id="class2select" class="noselect" onChange="changelocation_contents(document.myform.class2.options[document.myform.class2.selectedIndex].value,2)" $class2style> 
+<!--
+EOT;
+if(count($met_class22[$class1])&&$class1){	
+echo <<<EOT
+-->	
+		<option value=''>{$lang_modClass2}</option>		
+<!--
+EOT;
+	foreach($met_class22[$class1] as $key=>$val2){
+	$k=$val2[id];
+echo <<<EOT
+-->	
+		<option  value="$val2[id]" {$class2x[$k]}>$val2[name]</option>
+<!--
+EOT;
+	}
+}else{
+echo <<<EOT
+-->
+		<option value=0>----------</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+		</select>
+		<select name="class3" id="class3select" class="noselect" onChange="changepower(3)" $class3style> 
+<!--
+EOT;
+if(count($met_class3[$class2])&&$class2){
+echo <<<EOT
+-->			
+	<option value=''>{$lang_modClass3}</option>
+<!--
+EOT;
+	foreach($met_class3[$class2] as $key=>$val3){
+	$k=$val3[id];
+echo <<<EOT
+-->	
+	<option  value="$val3[id]" {$class3x[$k]}>$val3[name]</option>	
+<!--
+EOT;
+	}
+}else{
+echo <<<EOT
+-->
+	<option value=0>----------</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->		
+		</select>
+		</td>			
+    </tr> 
+		  <tr> 
+            <td class="text"><span class="bi_tian">*</span>{$lang_title}：</td>
+            <td colspan="2" class="input"> <input name="title" type="text" class="text nonull" value="$img_list[title]"></td>
+          </tr>
+		  <tr>
+			<td class="text">{$lang_article1}</td>
+			<td class="input">
+<!--
+EOT;
+if($metadmin['imgnew']){
+echo <<<EOT
+-->
+				<label><input name="new_ok" type="checkbox" class="checkbox" value="1" {$new_ok}>{$lang_newest}</label>&nbsp;&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+<!--
+EOT;
+if($metadmin['imgcom']){
+echo <<<EOT
+-->
+				<label><input name="com_ok" type="checkbox" class="checkbox" value="1" {$com_ok}>{$lang_recom}</label>&nbsp;&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->	
+				<label><input name="top_ok" type="checkbox" class="checkbox" value="1" {$top_ok}>{$lang_top}</label>&nbsp;&nbsp;&nbsp;
+<!--
+EOT;
+echo <<<EOT
+-->
+<!--
+EOT;
+if($met_wap && $met_wap_ok){
+echo <<<EOT
+-->	
+				<label><input name="wap_ok" type="checkbox" class="checkbox" value="1" {$wap_ok}>{$lang_article3}</label>&nbsp;&nbsp;&nbsp;
+<!--
+EOT;
+}
+if($met_autothumb_ok!=1)
+$styletip="style='display:none;'";
+echo <<<EOT
+-->
+			</td>
+		  </tr>
+		  <tr> 
+            <td class="text">{$lang_modimgurl}：</td>
+            <td colspan="2" class="input upload"> 
+				<input name="imgurl" type="text" class="text" value="$img_list[imgurl]"> 
+				<input name="met_upsql" type="file" id="file_upload" />
+				<span class="tips" {$styletip}>{$lang_modimgauto}</span>
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_modimgurls}：</td>
+            <td colspan="2" class="input upload">
+			<input name="imgurls" type="text" class="text" value="$img_list[imgurls]">
+			<input name="met_upsql1" type="file" id="file_upload1" />
+<script type="text/javascript" src="{$img_url}/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="{$img_url}/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	metuploadify('#file_upload','big_wate_img','imgurl-imgurls',5,5);
+	metuploadify('#file_upload1','small','imgurls');
+});
+</script>
+			</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_modpublish}：</td>
+            <td colspan="2" class="input"><input name="issue" type="text" class="text mid" value="$img_list[issue]"></td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_hits}：</td>
+            <td colspan="2" class="input"><input name="hits" type="text" class="text mid" value="$img_list[hits]" />
+			<span class="tips">{$lang_modhits}</span></td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_addtime}：</td>
+            <td colspan="2" class="input"><input name="addtime" type="text" class="text" value="$img_list[addtime]">
+			<span class="tips">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</span>
+			</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_updatetime}：</td>
+            <td colspan="2" class="input"><input name="updatetime" type="text" class="text" value="$m_now_date">
+			<span class="tips">{$lang_modtimenow}$m_now_date {$lang_modtimenow1}</span></td>
+          </tr>
+<!--
+EOT;
+if($met_member_use){
+echo <<<EOT
+-->		  
+
+		  <tr> 
+            <td class="text">{$lang_webaccess}{$lang_marks}</td>
+            <td class="input" colspan="2" ><select name="access" id="access" >
+             $level
+            </select></td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->	 
+		  <tr id="list-top"> 
+				<td class="text"></td>
+				<td class="input color390">
+				{$lang_displayimgTip}<input name="imgnum" type="hidden" value="{$imgnum}" />
+				</td>
+		  </tr>
+<!--
+EOT;
+if($displaylist){
+$i=0;
+foreach($displaylist as $key=>$val){
+$i++;
+$k=$i-1;
+echo <<<EOT
+-->
+         <tr class='newlist'> 
+            <td class="text">
+			{$lang_displayimg}{$i}{$lang_marks}<br/>
+			<a href="javascript:;" onclick="imgnumfu();delettr($(this));" style="font-weight:normal; margin-right:5px;">{$lang_delete}</a>
+			</td>
+            <td class="input upload">
+				<div style='height:30px;'>
+					<input name='displayname{$k}' type='text' class='text med' value='{$val[name]}' />
+					<span class='tips'>{$lang_imagename}</span>
+				</div>
+				<input name='displayimg{$k}' type='text' class='text' value='{$val[imgurl]}' />
+				<input name='met_upsql{$k}' type='file' id='displayimg_upload{$k}' />
+				<script type='text/javascript'>
+				$(document).ready(function(){
+					metuploadify('#displayimg_upload{$k}','big_wate_img','displayimg{$k}','','5');
+				});
+				</script>
+			</td>
+        </tr>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+		  <tr>
+			<td></td>
+			<td class="input">
+				<a href="addimg.php?lang={$lang}&action=add" onclick="return adddisplayimg($(this));">+{$lang_add}{$lang_displayimg}</a>
+				<span id="loadtxt"></span>
+			</td>
+		  </tr>
+		  <tr id='parastart'> 
+				<td class="text"></td>
+				<td class="input color390">{$lang_article6}</td>
+		  </tr>
+<!--
+EOT;
+foreach($para_list as $key=>$val){
+$upcs='';
+if($val['type']==5)$upcs='upload';
+echo <<<EOT
+-->
+        <tr name='paralist'> 
+			<td class="text">{$val[name]}{$lang_marks}</td>
+			<td colspan="2" class="input {$upcs}">{$val[inputcont]}</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		  <tr> 
+				<td class="text"></td>
+				<td class="input color390">{$lang_columnSEO}</td>
+		  </tr>
+		  <tr> 
+            <td class="text">{$lang_columnmtitle}</td>
+            <td colspan="2" class="input">
+				<input name="ctitle" type="text" class="text" value="{$img_list[ctitle]}"><span class="tips">{$lang_ctitleinfo}</span>
+			</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_keywords}{$lang_marks}</td>
+            <td colspan="2" class="input">
+				<input name="keywords" type="text" class="text" value="{$img_list[keywords]}">
+				<span class="tips">{$lang_descriptioninfo},{$lang_keywordsinfo}</span>
+			</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_description}{$lang_marks}</td>
+            <td class="input" colspan="2"><textarea name="description" cols="60" class="textarea gen" rows="5" >{$img_list[description]}</textarea></td>
+			</tr> 
+		  <tr> 
+            <td class="text">{$lang_columnhtmlname}{$lang_marks}</td>
+            <td colspan="2" class="input"><input name="filename" type="text" class="text med" value="$img_list[filename]">
+			<span class="tips">{$lang_columntip14}</span></td>
+          </tr>
+<!--
+EOT;
+$contxt1=$lang_contentdetail;
+if($metadmin[imgother]){
+$contxt1=$img_list[contentinfo];
+echo <<<EOT
+-->	
+		  <tr> 
+				<td class="input" colspan="2" style="padding-bottom:0px;">
+				<ul id="metinfocms">
+					<li class="hover">{$contxt1}</li>
+<!--
+EOT;
+for($i=1;$i<=$metadmin[imgother];$i++){
+$othertitle='contentinfo'.$i;
+$othermark='content'.$i;
+echo <<<EOT
+-->	
+					<li>{$img_list[$othertitle]}</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				</ul>
+				</td>
+		  </tr>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+		  <tr> 
+				<td class="text"></td>
+				<td class="input color390">{$contxt1}</td>
+		  </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+
+		<tr> 
+            <td class="input" colspan="2">
+			<div class="ckeditormetbox">
+<script type="text/javascript" src="../../ckeditor/ckeditor.js"></script>
+			<textarea class="ckeditor" name="content">$img_list[content]</textarea>
+<script type="text/javascript">
+met_ckeditor('$depth','content');
+</script>
+			</div>
+<!--
+EOT;
+if($metadmin[imgother]){
+for($i=1;$i<=$metadmin[imgother];$i++){
+$othertitle='contentinfo'.$i;
+$othermark='content'.$i;
+echo <<<EOT
+-->	   
+<div class="ckeditormetbox none">
+			<textarea class="ckeditor" name="$othermark">{$img_list[$othermark]}</textarea>
+<script type="text/javascript">
+met_ckeditor('$depth','$othermark');
+</script>
+</div>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+</td>
+</tr>
+		  <tr> 
+            <td class="text"></td>
+	      <td class="submit"><input type="submit" name="Submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		  </td>
+          </tr>
+		<tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr>
+</table>        
+</form>
+<script type="text/javascript">
+  $(document).ready(function(){
+       var list = $("#metinfocms li");
+	   var text = $(".ckeditormetbox");
+	        list.each(function(i){
+			    var my = $(this);
+				    my.click(
+                        function () {
+                text.each(function(d){
+				    var o = $(this);
+				    if(i==d){ o.css("display","block"); }else{ o.css('display','none'); }
+				});
+                list.each(function(t){
+				    var o = $(this);
+				    if(i==t){ o.addClass("hover"); }else{ $(this).removeClass("hover"); }
+				});
+                         });
+            });
+  });
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,102 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+if($type!='online'){
+require_once template('head');
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($type!='online'){
+echo <<<EOT
+-->
+<title>{$lang_viewtitle}</title>
+</head>
+<body>
+<table cellpadding="2" cellspacing="1" style="margin:0px;" width="500" class="table">
+         <tr> 
+            <td colspan="3" class="title">{$nowtitle}{$lang_viewtitle}
+<!--
+EOT;
+if($type=='flash'){
+echo <<<EOT
+-->
+			<div style="float:left;"><a herf="javascript:;" style="cursor:pointer; margin-left:10px; color:#fff;" onclick="parent.$('#lodfalsh').hide();">{$lang_close}</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</div>
+			</td>
+          </tr>
+<!--
+EOT;
+foreach($met_view as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+		  <tr> 
+<!--
+EOT;
+if($type!='flash'){
+echo <<<EOT
+-->
+            <td class="text"><b>{$val[title]}</b></td>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            <td class="input" style="padding:0px;">{$val[out]}</td></tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr>	
+</table>
+</body>
+</html>
+<!--
+EOT;
+}elseif($type=='online'){
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($met_view as $key=>$val){
+$i++;
+echo <<<EOT
+-->
+		  <tr> 
+<!--
+EOT;
+if($type!='flash'){
+echo <<<EOT
+-->
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+            {$val[out]}
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<div class="none">$foot</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

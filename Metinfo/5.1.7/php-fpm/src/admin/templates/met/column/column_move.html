@@ -1,0 +1,72 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+$listjs
+<body>
+<!--
+EOT;
+$title="{$lang_columnmove}({$movenow[name]})";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form  method="POST" name="myform" action="move.php?action=move" target="_self">
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td colspan="4" class="title">{$lang_columnmove3}</td>
+          </tr>
+          <tr> 
+            <td class="text">{$lang_columnmove1} <span style="color:#390;">{$movenow[name]}</span> {$lang_columnmove2}&nbsp;&nbsp;</td>
+            <td class="input">
+<!--
+EOT;
+if($movenow['classtype']!=1){
+echo <<<EOT
+-->
+			<p><label><input name="class2" type="radio" class="radio" value="0" />{$lang_columnmove4}</label></p>
+<!--
+EOT;
+}
+foreach($clist1now as $key=>$val1){
+echo <<<EOT
+-->			
+<p><label><input name="class2" type="radio" class="radio" value="{$val1[id]}" />{$val1[name]}</label></p>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			</td>
+			<td class="input">
+			<select name="class3" onChange="changelocation2(document.myform.class3.options[document.myform.class3.selectedIndex].value)"> 
+			<option value=0>{$lang_modClass2}</option>
+            </select></td>
+          </tr> 
+		  <tr>
+			<td class="text">{$lang_columnmove5}</td>
+			<td colspan="1" class="input"><input type="text" name="foldername" value=""/></td>
+		  </tr>
+		  </table>
+		  
+		  <table cellpadding="2" cellspacing="1" class="table">
+		  <tr> 
+            <td class="text"></td>
+		<td class="submit">
+		<input type="hidden" name="id" value="$id"/>
+		<input type="submit" name="submit" value="{$lang_columnmove1}" class="submit" /></td>
+          </tr>
+</table>
+</form>
+</script>
+<div class="clear"></div>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

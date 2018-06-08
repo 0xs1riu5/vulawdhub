@@ -1,0 +1,32 @@
+<!--<?php
+require_once template('head'); 
+$methits=methtml_hits('download');
+$metdownload=methtml_showdownload();
+$met_next=methtml_prenextinfo();
+echo <<<EOT
+-->
+<div id="web">
+<div class="left">
+	    <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+     <div class="webcontent">
+         <h1 class="title">$download[title]</h1>
+		 <div class="hits">$methits</div>
+             <div class="download_list">
+                $metdownload
+             </div>
+          <div class="editor">$download[content]</div>
+          <div class="page">$met_next</div>
+</div>
+
+</div>
+<!--
+EOT;
+require_once template('webright'); 
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

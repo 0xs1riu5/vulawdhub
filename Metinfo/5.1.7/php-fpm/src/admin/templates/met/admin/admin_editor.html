@@ -1,0 +1,305 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+<script type="text/javascript">
+function pass2null(pass2){
+			$('#pass2').text('{$lang_memberjstxt1}');
+			$('#pass2').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function pass1null(pass1){
+			$('#pass1').text('{$lang_memberjstxt2}');
+			$('#pass1').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function passnot(pass2){
+			$('#pass2').text('{$lang_memberjstxt3}');
+			$('#pass2').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+$(document).ready(function(){
+    var pass1 = $("input[name='pass1']");
+    var pass2 = $("input[name='pass2']");
+	pass1.focusout(function(){
+		if($(this).val()=='')pass1null($(this));
+		else 
+		if(pass2.val()!='' && pass2.val()!=pass1.val()){
+		$('#pass1').hide();
+		passnot(pass2);
+		}
+		else 
+		if(pass2.val()==''){
+		$('#pass1').hide();
+		pass2null(pass2);
+		}
+		else{ 
+		$('#pass1').hide();
+		$("input[type='submit']").attr('disabled',false);
+		}
+	});
+	pass2.focusout(function(){
+		if($(this).val()=='')pass2null($(this));
+		else 
+		if(pass1.val()!='' && pass2.val()!=pass1.val())passnot($(this));
+		else 
+		if(pass1.val()==''){
+		$('#pass2').hide();
+		pass1null(pass1);
+		}else{ 
+		$('#pass2').hide();
+		$("input[type='submit']").attr('disabled',false);
+		}
+	});
+});
+</script>
+<title>{$lang_adminpassTitle}</title>
+</head>
+<body>
+<!--
+EOT;
+$title="{$lang_adminpassTitle}({$admin_listed[admin_id]})";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form method="POST" name="myform" action="save.php?action=editor&id=$id&lang=$lang&anyid=$anyid&edtp=$edtp" target="_self">
+		<input name="useid" type="hidden"size="20"  value="$admin_listed[admin_id]">
+		<input name="nosql" type="hidden" value="1" />
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td class="text"><font class="must">*</font>{$lang_adminusername}{$lang_marks}</td>
+            <td colspan="2" class="input">$admin_listed[admin_id]</td>
+          </tr> 
+<!--
+EOT;
+if(!$edtp){
+echo <<<EOT
+-->
+		  <tr> 
+            <td class="text"><font class="must">*</font>{$lang_adminpassword}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="pass1" type="password" class="text" autocomplete="off" /><span id="pass1"></span></td>
+          </tr> 
+		   <tr> 
+            <td class="text"><font class="must">*</font>{$lang_adminpassword1}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="pass2" type="password" class="text" autocomplete="off" /><span id="pass2"></span></td>
+          </tr> 
+          <tr> 
+          <td class="text"></td>
+          <td colspan="2" class="input color390">{$lang_admininfo}</td>
+          </tr>
+		  <tr> 
+            <td class="text">{$lang_adminname}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="name" type="text" class="text" value="$admin_listed[admin_name]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_adminSex}{$lang_marks}</td>
+            <td colspan="2" class="input">
+			<label><input name="sex" type="radio" class="radio" value="0" $sexx[0]>{$lang_adminMan}</label>&nbsp;&nbsp;
+			<label><input name="sex" type="radio" class="radio" value="1" $sexx[1]>{$lang_adminWoman}</label></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_admintel}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="tel" type="text" class="text" size="20" value="$admin_listed[admin_tel]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="text"><font class="must">*</font>{$lang_adminmobile}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="mobile" type="text" class="text nonull" size="20" value="$admin_listed[admin_mobile]" ><span class="tips">{$lang_adminTip1}</span></td>
+          </tr> 
+		  <tr> 
+            <td class="text"><font class="must">*</font>Email{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="email" type="text" class="text nonull" size="20" value="$admin_listed[admin_email]" ><span class="tips">{$lang_adminTip1}</span></td>
+          </tr> 
+		  <tr> 
+            <td class="text">QQ{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="qq" type="text" class="text" size="20" value="$admin_listed[admin_qq]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="text">MSN{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="msn" type="text" class="text" value="$admin_listed[admin_msn]" ></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_adminTaoBao}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="taobao" type="text" class="text" value="$admin_listed[admin_taobao]" ></td>
+          </tr> 
+          <tr> 
+          <td class="text" valign="middle">{$lang_adminIntro}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <textarea name="admin_introduction" class="textarea gen" cols="60" rows="5" >$admin_listed[admin_introduction]</textarea></td>
+          </tr>
+<!--
+EOT;
+}else{
+echo <<<EOT
+-->
+		  <tr> 
+          <td class="text" valign="middle"><font class="must">*</font>{$lang_admintips5}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top">
+			<label onclick="controle(1)"><input name="admin_group" type="radio" value="1" class="radio" $admin_groupx[1]>{$lang_managertyp4}</label>&nbsp;&nbsp;
+			<label onclick="controle(2)"><input name="admin_group" type="radio" value="2" class="radio" $admin_groupx[2]>{$lang_managertyp3}</label>&nbsp;&nbsp;
+<!--
+EOT;
+if($admin_list[admin_group]==10000){
+echo <<<EOT
+-->
+			<label onclick="controle(3)"><input name="admin_group" type="radio" value="3" class="radio" $admin_groupx[3]>{$lang_managertyp2}</label>&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<label onclick="controle(0)"><input name="admin_group" type="radio" value="0" class="radio" $admin_groupx[0]>{$lang_managertyp5}</label>&nbsp;&nbsp;
+		  </td>
+          </tr>
+<!--
+EOT;
+if(count($met_langok)>1){
+echo <<<EOT
+-->
+		  <tr> 
+          <td class="text" valign="middle"><font class="must">*</font>{$lang_adminjurisd}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top">
+			<div id="adpoplangok">
+<!--
+EOT;
+if($admin_list[langok]=='metinfo'){
+echo <<<EOT
+-->
+		  <label><input name="langok" type="checkbox" value="metinfo" class="checkbox" {$langok1}>{$lang_admintips1}</label>&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+foreach($met_langoka as $key=>$val){
+echo <<<EOT
+-->
+<label><input name="langok_$val[mark]" type="checkbox" value="$val[mark]" class="checkbox langok_list" {$langok2[$val[mark]]}>{$val[name]}</label>&nbsp;&nbsp;
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		  <span class="tips">{$lang_admintips2}</span>
+		  </div>
+		  </td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		  <tr class="tradpoplist"> 
+          <td class="text" valign="middle">{$lang_adminPower}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"><label><input name="admin_issue" type="checkbox" class="checkbox" value="yes" {$admin_issue_ok}>{$lang_adminTip2}</label></td>
+          </tr>
+		  <tr class="tradpoplist"> 
+          <td class="text" valign="middle">{$lang_adminOperate}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top">
+		  <div id="adminrate">
+		  <label><input name="admin_op0" id="admin_op0" type="checkbox" class="checkbox" value="metinfo" {$admin_op_0}>{$lang_adminOperate1}</label>&nbsp;&nbsp;
+		  <label><input name="admin_op1" type="checkbox" class="checkbox" value="add" {$admin_op_1}>{$lang_adminOperate2}</label>&nbsp;&nbsp;
+		  <label><input name="admin_op2" type="checkbox" class="checkbox" value="editor" {$admin_op_2}>{$lang_adminOperate3}</label>&nbsp;&nbsp;
+		  <label><input name="admin_op3" type="checkbox" class="checkbox" value="del" {$admin_op_3}>{$lang_adminOperate4}</label>&nbsp;&nbsp;
+		  </div>
+		  </td>
+          </tr>
+		   <tr class="tradpoplist"> 
+		   <td class="text">{$lang_adminColumn}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top">
+		  <label><input name="admin_pop" type="checkbox" value="yes" class="checkbox">{$lang_adminSelectAll}</label>
+<!--
+EOT;
+foreach($metinfocolumn as $key=>$val){
+echo <<<EOT
+-->
+<div class="admin_poplistdiv round">
+<h2>{$val[name]}</h2>
+<div class="clear"></div>
+<!--
+EOT;
+foreach($sidebarcolumn as $key=>$val2){
+if($val2[bigclass]==$val[id] && $val2[field]){
+echo <<<EOT
+-->
+<label><input name="admin_pop{$val2[field]}" type="checkbox" class="checkbox" value="{$val2[field]}" {$admin_popx[$val2[field]]}>{$val2[name]}</label>&nbsp;&nbsp;
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($val[id]==4){
+foreach($met_langoka as $key=>$val4){
+echo <<<EOT
+-->
+	<div class="adpopcnkdiv round poplang_{$val4[lang]}">
+		<h2>{$val4[name]}</h2>
+		<div class="clear"></div>
+<!--
+EOT;
+foreach($column_pop[$val4[lang]] as $key=>$val3){
+if($val3['module']<9 && !$val3['if_in']){
+echo <<<EOT
+-->
+	<label><input name="admin_pop{$val3[id]}" type="checkbox" class="checkbox" value="{$val3[id]}" {$admin_popx[$val3[id]]}>{$val3[name]}</label>&nbsp;&nbsp;
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+	</div>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($val[id]==4){
+echo <<<EOT
+-->
+<label title="{$lang_admintips3}"><input name="admin_pop9999" type="checkbox" class="checkbox" value="9999" {$admin_popx[9999]}>{$lang_admintips4}</label>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+ </td>
+          </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		  <tr> 
+            <td class="text"></td>
+		<td class="submit">
+		<input type="submit" name="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform')" />
+		</td>
+          </tr>
+         <tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr>
+</table>
+        </form>
+<script type="text/javascript">
+var apop_type='$admin_listed[admin_type]';
+</script>
+<script type="text/javascript" src="{$img_url}/js/admin_fuc.js"></script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

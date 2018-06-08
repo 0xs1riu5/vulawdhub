@@ -1,0 +1,49 @@
+<!--<?php
+echo <<<EOT
+-->
+<div id="web">
+<!--
+EOT;
+$line='title';
+if($sidebar || $lang_Web_Contactok){
+echo <<<EOT
+-->
+    <div class="web-left floatl">
+<!--
+EOT;
+if($sidebar){
+echo <<<EOT
+-->
+		<h3 class="title"><span>{$sidebar_title}</span></h3>
+		<div class="box" id="sidebar" data-csnow="{$csnow}" data-class3="{$class3}" data-jsok="{$lang_sidebarjstype}">{$sidebar}<div class="clear"></div></div>
+<!--
+EOT;
+$line='line';
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($lang_Web_Contactok){
+echo <<<EOT
+-->
+		<h3 class="title {$line}"><span>{$lang_Web_Column1}</span></h3>
+		<div class="box editor">{$otherinfo[info10]}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+    </div>
+<!--
+EOT;
+}else{
+$tclass='metwd100';
+}
+echo <<<EOT
+-->
+    <div class="web-right floatr {$tclass}">
+	    <h3 class="title"><div>{$lang_Web_Position}: <a href="{$index_url}" title="{$lang_home}">{$lang_home}</a> &gt; {$nav_x[name]}</div><span>{$class_list[$classnow][name]}</span></h3>
+<!--
+EOT;
+?>

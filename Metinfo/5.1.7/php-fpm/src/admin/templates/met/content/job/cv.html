@@ -1,0 +1,95 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.ed.
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+if(!$customerid){
+$title="<a href='index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+}else{
+$title="{$lang_cveditorTitle}";
+}
+require_once template('content/job/top');
+echo <<<EOT
+-->
+<div id="Problem"></div>
+    <table cellpadding="2" cellspacing="1" class="table">
+		<tr>
+			<td colspan="7" class="centle" style=" height:20px; line-height:30px; font-weight:normal; padding-left:10px;">
+				<div class="formright">
+				<form method="POST" style="position:relative; top:2px;" name="filterform" action="cv.php?anyid={$anyid}&search=detail_search&lang=$lang&jobid=$jobid&customerid={$customerid}&class1={$class1}" target="_self">
+				&nbsp;{$lang_cvsha}
+				<select name="readok" id="readok" onChange="handle_form('filterform')">
+					<option value="" $readok0>{$lang_cvall}</option>
+					<option value="1" $readok1>{$lang_cvyd}</option>
+					<option value="0" $readok2>{$lang_cvwd}</option>
+				</select>
+				</form>
+				<form method="POST" name="search" action="cv.php?anyid={$anyid}&search=detail_search&lang={$lang}&customerid={$customerid}" target="_self">
+					<input name="position" type="text" class="text" id="searchtext" value="{$lang_modsearch}" />				
+					<input type="submit" name="searchsubmit" value="{$lang_search}" class="submitmi" />
+					<input name="readok" type="hidden" id="se-readok" value="{$readok}">
+				</form>
+				</div>
+			</td>
+		</tr>
+        <tr>
+            <td width="40" class="list" style="padding:0px; text-align:center;">{$lang_selected}</td>
+            <td class="list">{$lang_cvPosition}</td>
+            <td class="list" width="100">{$lang_cvName}</td>
+            <td class="list" width="140">{$lang_cvAddtime}</td>
+			<td width="60" class="list" >{$lang_read}</td>
+			<td width="70" class="list" >{$lang_operate}</td>
+        </tr>
+			  <form name="del" method="Post" action="cv_delete.php?anyid={$anyid}&lang=$lang&jobid={$jobid}&class1={$class1}">
+<!--
+EOT;
+foreach ($cv_list as $key=>$val){
+echo <<<EOT
+-->          
+        <tr class="mouse click">
+            <td class="list-text"><input name='id' type='checkbox' onClick="unselectall()" id="id" value='$val[id]' /></td>
+			<td class="list-text alignleft">&nbsp;&nbsp;$val[position]</td>
+            <td class="list-text color999">$val[customerid]</td>
+            <td class="list-text color999">$val[addtime]</td>
+			<td class="list-text color999">$val[readok]</td>
+			<td class="list-text">
+			    <a href="cv_editor.php?anyid={$anyid}&lang=$lang&id=$val[id]&customerid={$customerid}" >{$lang_detail}</a>&nbsp;&nbsp;
+				<a href="cv_delete.php?anyid={$anyid}&lang=$lang&id=$val[id]&jobid=$jobid&customerid={$customerid}" onClick="return linkSmit($(this),1);" />{$lang_delete}</a>
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+			<input name="allid" type="hidden" id="allid" value="" /><input name="action" type="hidden" id="action" value="del" />
+		</form>
+   	   <tr> 
+            <td class="all"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox"></td>
+            <td class="all-submit" colspan="7" style="padding:5px 0px;">
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','del');" />
+			</td>
+        </tr>
+		<tr>
+		  <td class="page_list" colspan="7">{$page_list}</td>
+	    </tr>
+		<tr>
+		  <td class="footer" colspan="7">$foot</td>
+	    </tr>
+</table>
+<script type="text/javascript">
+modifyview('{$modify}');
+seachinput($('#searchtext'),'{$lang_modsearch}');
+</script>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

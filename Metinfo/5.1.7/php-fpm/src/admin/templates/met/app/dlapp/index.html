@@ -1,0 +1,62 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setbasicWebInfoSet}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="index.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_dlapptips1}">{$lang_dlapptips1}</a></li>
+		<li {$listclass[2]}><a href="dlapp.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_dlapptips2}">{$lang_dlapptips2}</a></li>
+	</ul>
+</div>
+<div style="clear:both;"></div>
+<!--
+EOT;
+foreach($app as $keyapps=>$valapps){
+if(file_exists("../$valapps[file]/delapp.php")){$del_url="../$valapps[file]/delapp.php?action=del";}
+else{$del_url="delapp.php?action=del";}
+if(file_exists("../$valapps[file]/setapp.php")){$set_url="../$valapps[file]/setapp.php";}
+else{$set_url="setapp.php";}
+$valapps[img]=$valapps[img]==''?'../../../../'.$met_agents_img:$valapps[img];
+echo <<<EOT
+--> 
+<div class="metv5">
+	<ul class="applist">
+		<li>
+		<div class="img"><a href="$set_url?lang={$lang}&id={$valapps[id]}&anyid={$anyid}"><img src="img/{$valapps[img]}"></a></div>
+		<div class="text">
+		<div class="name"><span class="title"><a href="$set_url?lang={$lang}&id={$valapps[id]}&anyid={$anyid}">{$valapps[name]}</a></span></div>
+		<div class="info">
+			<dl>
+			<dd>{$valapps[info]}</dd>
+			<dd><a href="$set_url?lang={$lang}&id={$valapps[id]}&anyid={$anyid}">{$lang_dlapptips5}</a>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="del_$valapps[id]"><a href="$del_url&lang={$lang}&id={$valapps[id]}&anyid={$anyid}" onclick="return appdel($(this),'$valapps[id]');">{$lang_dlapptips6}</a></span></dd>
+			</dl>
+		</div>
+		</div>
+		</div>
+		</li>
+</ul>
+</div>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+<div class="clear"></div>
+<div class="footer">{$foot}</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

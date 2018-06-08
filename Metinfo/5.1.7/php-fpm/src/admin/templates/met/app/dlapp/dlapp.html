@@ -1,0 +1,69 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.d.
+require_once template('head'); 
+echo <<<EOT
+-->
+<title>{$lang_setbasicWebInfoSet}</title>
+</head>
+<body>
+<!--
+EOT;
+require_once template('metlangs');
+echo <<<EOT
+-->
+<div class="stat_list">
+	<ul>
+		<li {$listclass[1]}><a href="index.php?anyid={$anyid}&lang={$lang}&cs=1" title="{$lang_dlapptips1}">{$lang_dlapptips1}</a></li>
+		<li {$listclass[2]}><a href="dlapp.php?anyid={$anyid}&lang={$lang}&cs=2" title="{$lang_dlapptips2}">{$lang_dlapptips2}</a></li>
+	</ul>
+</div>
+<div style="clear:both;"></div>
+<div class='metv5'>
+<span class="color390" style="padding-left:15px;">{$lang_appdl1}</span>
+<ul class="applist">	
+<!--
+EOT;
+foreach ($str_apps as $keyapps=>$valapps){
+$rrr=metver($metcms_v,$valapps[7]);
+$valapps[3]=$valapps[3]==''?'../../../../'.$met_agents_img:$valapps[3];
+echo <<<EOT
+--> 
+		<li>
+		<div class='img'><img src="img/{$valapps[3]}"></div>
+		<div class='text'>
+		<div class='name'>
+		<span id="oltest_$valapps[1]" style="float:right; text-align:right;">{$valapps[xtype]}</span>
+		<span class="title">{$valapps[0]}</span></div>
+		<div class='info'> 
+			<dl>
+			<dd>{$valapps[4]}</dd>
+			<dd style="color:#999;">{$lang_dlapptips4}{$valapps[2]}</dd>
+			</dl>
+		</div>
+		<input id="ver_now_$valapps[1]" type="hidden" value="{$valapps[ver_now]}"/>
+		<input id="ver_to_$valapps[1]" type="hidden" value=""/>
+		<input id="addr_$valapps[1]" type="hidden" value=""/>
+		<input id="checksum_$valapps[1]" type="hidden" value=""/>
+		</div>
+		</li>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 		
+		<input id="met_url_h" type="hidden" value="../../system/olupdate.php?lang=$lang&type=2&"/>
+		<input id="met_url_p" type="hidden" value="1"/>
+		<input id="met_code" type="hidden" value="$authinfo[authcode]"/>
+		<input id="met_key" type="hidden" value="$authinfo[authpass]"/>
+</ul>
+</div>
+<div class="clear"></div>
+<div class="footer">$foot</div>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved..
+?>-->

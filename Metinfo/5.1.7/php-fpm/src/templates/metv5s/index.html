@@ -1,0 +1,96 @@
+<!--<?php
+require_once template('head');
+echo <<<EOT
+-->
+<div class="indx-pro">
+     <div class="inner">
+          <h3 class="title"><span>{$Column1[name]}</span></h3>
+          <div class="clear">
+			  <div class="profld" data-listnum="{$lang_listnum}">
+                   
+<!--
+EOT;
+$i=0;
+foreach($nav_list2[$Column1[id]] as $key=>$val){
+$i++;
+$val[desc]=utf8substr($val['description'], 0,$lang_inxtxtsize);
+echo <<<EOT
+-->
+						<dl class="dl-jqrun">
+                            <dt><img src="{$val[indeximg]}" alt="{$val[name]}" title="{$val[name]}" width="92" height="108"/></dt>
+                            <dd>
+								<div class="mp">
+									<h2><a href="{$val[url]}" title="{$val[name]}">{$val[name]}</a></h2>
+									<h3><a href="{$val[url]}" title="{$val[namemark]}">{$val[namemark]}</a></h3>
+									<p><a href="{$val[url]}" title="{$val[description]}">{$val[desc]}</a></p>
+								</div>
+                            </dd>
+                        </dl>
+<!--
+EOT;
+if($i>=3)break;
+}
+echo <<<EOT
+-->
+			  </div>
+          </div>
+     </div>
+</div>
+<div class="doly-abo">
+     <div class="inner">
+          <div class="fl Newxx">
+               <h3 class="title"><a href="{$Column2[url]}" title="{$met_atitle}" class="More">{$lang_more}</a><span>{$class_index[3][name]}</span></h3>
+               <div class="news">
+				<ul class="list-none">
+<!--
+EOT;
+foreach(methtml_getarray($lang_Column2,'all','time','') as $key=>$val){
+$val[desc]=utf8substr($val['description'], 0, 70);
+echo <<<EOT
+-->
+                <li>                                  
+					<h2><span><i>{$val[updatetime]}</i></span><a href="{$val[url]}" title="{$val[title]}">{$val[title]}</a></h2>
+                    <p title="{$val[description]}">{$val[desc]}</p>
+				</li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+					</ul>
+               </div>
+          </div>
+          <div class="fr Aboutz">
+               <h3 class="title"><span>{$lang_indextext1}</span></h3>
+               <div class="editor">{$index[content]}<div class="clear"></div></div>
+          </div>
+          <div class="clear"></div>
+     </div>
+</div>
+<div class="cotac-lk">
+     <div class="inner">
+          <div class="fl contact editor">{$otherinfo[info10]}<div class="clear"></div></div>
+<!--
+EOT;
+if($index_link_ok){
+echo <<<EOT
+-->
+          <div class="fr index-Link">
+			<h3>{$lang_metname1}</h3>
+			<div class="linklist">
+               <div class="imglk">{$metlinkimg}</div>
+               <div class="textlk">{$metlinktxt}</div>
+			</div>
+          </div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+          <div class="clear"></div>
+     </div>
+</div>
+<!--
+EOT;
+require_once template('foot');
+?>

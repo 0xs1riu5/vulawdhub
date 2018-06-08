@@ -1,0 +1,56 @@
+<!--<?php
+require_once template('config');
+echo <<<EOT
+-->
+{$methtml_head}
+<!--
+EOT;
+if($lang_bgdcolor!=''){
+echo <<<EOT
+-->
+<style type="text/css">
+header{ {$lang_bgdcolor} }
+</style>
+<!--
+EOT;
+}
+echo <<<EOT
+--><body>
+    <header>
+		<div class="inner">
+			<div class="top-logo">
+<!--
+EOT;
+if($met_logo!=''){
+echo <<<EOT
+-->
+				<a href="{$index_url}" title="{$met_webname}" id="web_logo">
+					<img src="{$met_logo}" alt="{$met_webname}" title="{$met_webname}" style="margin:{$lang_LogoTop}px 0px 0px {$lang_LogoLeft}px;" />
+				</a>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+				<ul class="top-nav list-none">
+					<li class="t">{$metlang}</li>
+					<li class="b">{$met_seo}</li>
+				</ul>
+			</div>
+			<nav>{$met_nav}</nav>
+		</div>
+	</header>
+<!--
+EOT;
+if($met_flasharray[$classnow][type]){
+echo <<<EOT
+-->
+	<div class="inner met_flash">{$methtml_flash}</div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+?>

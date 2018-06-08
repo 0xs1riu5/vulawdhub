@@ -1,0 +1,32 @@
+<!--<?php
+require_once template('head'); 
+$met_img=methtml_img('img','all');
+echo <<<EOT
+-->	
+<div id="web">
+<div class="right">
+   <h3 class="title"><span>{$class_list[$classnow][name]}</span></h3>
+<style>
+.img_list12 ul li{ width:{$met_img_x}px;}
+</style>
+<div class="webcontent" id="imgqwe">
+<div class="img_list12">
+$met_img
+<div style=" clear:both;"></div>
+</div>
+<div class="web_bottom">$page_list</div>
+</div>
+</div>
+<!--
+EOT;
+require_once template('webleft'); 
+echo <<<EOT
+-->
+<div style="clear:both;"></div>
+
+
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

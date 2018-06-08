@@ -1,0 +1,50 @@
+<!--<?php
+require_once template('head'); 
+require_once template('webtop'); 
+$methits=methtml_hits('news');
+$met_newsnext=methtml_prenextinfo();
+echo <<<EOT
+-->
+        <div id="shownews">
+            <h1 class="title">$news[title]</h1>
+            <div class="text editor">$news[content]</div>
+			<div class="hits">$methits</div>
+            <div class="page">$met_newsnext</div>
+<!--
+EOT;
+if($lang_NewsRelatedKO==1){
+echo <<<EOT
+-->
+			<h4 class="related">{$lang_NewsRelated}</h4>
+			    <ul class="related-list">
+<!--
+EOT;
+foreach($news_list as $key=>$val){
+echo <<<EOT
+-->
+                    <li>•&nbsp;<a href="$val[url]" title="$val[title]" target="$Blank">$val[title]</a></li>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+                </ul>
+				<div class="clear"></div>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+        </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div class="clear"></div>
+</div>
+<!--
+EOT;
+require_once template('foot'); 
+?>

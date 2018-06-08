@@ -1,0 +1,39 @@
+<!--<?php
+# 文件名称
+require_once template('head'); 
+require_once template('webtop'); 
+echo <<<EOT
+-->
+        <div id="member">
+            <!--
+EOT;
+include templatemember($mfname);
+echo <<<EOT
+-->
+        </div>
+    </div>
+<!--
+EOT;
+require_once template('web'); 
+echo <<<EOT
+-->
+    <div style="clear:both;"></div>
+</div>
+<script type="text/javascript">
+    function Iframedom(){  
+        var Iframe = $("#iframe");
+        var Iframe_Conts = Iframe.contents().find("body");
+	        Iframe_Conts.css("height","100%");
+	    var Iframe_div = Iframe_Conts.find("div.main_deng");
+	    var Iframe_div1 = Iframe_Conts.find("div.main_zhuce");
+		    Iframe_div.css("margin","0px auto");
+		    Iframe_div1.css("margin","0px auto");
+        var Iframe_Height = Iframe_Conts.outerHeight(true);
+
+	        Iframe.height(Iframe_Height);
+    }
+</script>
+<!--
+EOT;
+require_once template('foot'); 
+?>

@@ -1,0 +1,70 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. 
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$listclass[5]='class="now"';
+require_once template('app/sms/top');
+echo <<<EOT
+-->
+	<table cellpadding="2" cellspacing="1" class="table">
+		<tr>
+			<td colspan="6" class="centle" style="font-weight:normal; color:#999; padding:5px 0px;">
+				&nbsp;&nbsp;{$lang_smstips16}
+			</td>
+		</tr>
+		<tr id="list-top">
+                <td class="list" width="60" style="padding:0px; text-align:center;">{$lang_smstips17}</td>
+                <td class="list" width="60">
+				<form method="POST" name="filterform" action="recharge.php?anyid={$anyid}&lang={$lang}" target="_self">
+					<select name="notes_type" onChange="handle_form('filterform')">
+						<option value="0" {$selec_type[0]}>{$lang_smstips18}</option>
+						<option value="1" {$selec_type[1]}>{$lang_smstips19}</option>
+						<option value="-1" {$selec_type[-1]}>{$lang_smstips20}</option>
+					</select>
+				</form>
+				</td>
+                <td class="list" width="80">{$lang_smstips21}</td>
+                <td class="list" width="80">{$lang_smstips22}</td>
+                <td class="list">{$lang_smstips23}</td>
+                <td class="list" width="120">{$lang_smstips24}</td>
+        </tr>
+<!--
+EOT;
+$i=0;
+foreach ($record_list as $key=>$val){
+$i++;
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+                <td class="list-text color666">{$val[order]}</td>
+                <td class="list-text color666">{$val[type]}</td>
+                <td class="list-text color666">￥{$val[cost]}</td>
+                <td class="list-text color666">￥{$val[balance]}</td>
+			    <td class="list-text color666 alignleft">&nbsp;&nbsp;{$val[remark]}</td>
+			    <td class="list-text color666">{$val[time]}</td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+   	   <tr> 
+			 <td class="page_list" colspan="6">$page_list</td>
+        </tr>
+	<tr>
+		<td class="footer" colspan="6">$foot</td>
+	</tr>
+</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.ed.
+?>-->

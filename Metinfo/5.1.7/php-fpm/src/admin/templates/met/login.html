@@ -1,0 +1,131 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved. .
+$lang_fontfamily=str_replace("'","\"",$lang_fontfamily);
+$lang_fontfamily=str_replace("&quot;","\"",$lang_fontfamily);
+echo <<<EOT
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{$lang_logintitle} - {$lang_metinfo}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Content-Language" content="zh-cn"/>
+<meta name="author" content="www.metinfo.cn"/>
+<meta name="copyright" content="www.metinfo.cn"/>
+<meta content="{$lang_metinfo}{$lang_logintitle}"/>
+<link rel="stylesheet" type="text/css" href="$img_url/css/metinfo.css">
+<script type="text/javascript" src="../../public/js/metinfo-min.js"></script>
+</head>
+<script type="text/javascript">
+function check_main_login(){
+	var name = $("input[name='login_name']");
+	var pass = $("input[name='login_pass']");
+		if(name.val() == ''){
+			alert('$lang_loginid');
+			name.focus();
+			return false;
+		}
+		if(pass.val() == ''){
+			alert('$lang_loginps');
+			pass.focus();
+			return false;
+		}
+}
+function pressCaptcha(obj){
+    obj.value = obj.value.toUpperCase();
+}
+function metfocus(intext){
+        intext.focus(function(){
+		    $(this).addClass('metfocus');
+		});
+        intext.focusout(function(){
+		    $(this).removeClass('metfocus');
+		});
+}
+</script>
+<style>
+	html,body{  background:#fbfbfb;}
+</style>
+<body id="login">
+<div class="login-min">
+			<div class="login-left">
+				<div style=" border-right:1px solid #fff; padding:0px 0px 20px;">
+				<a href="http://www.metinfo.cn" style="font-size:0px;" target="_blank" title="{$lang_metinfo}" class="img">
+					<img src="../{$met_agents_logo_login}" alt="{$lang_metinfo}" title="{$lang_metinfo}" />
+				</a>
+				<p>{$lang_loginmetinfo}</p>
+				</div>
+			</div>
+			<div class="login-right">	
+				<h1 class="login-title">{$lang_loginadmin}</h1>
+				<div>
+				<form method="post" action="login_check.php?langset=$langset" name="main_login" onSubmit="return check_main_login()">
+					<input type="hidden" name="action" value="login" />
+<p style="height:22px; margin-top:0px;">
+<!--
+EOT;
+if($met_admin_type_ok){
+echo <<<EOT
+-->
+	<label>{$lang_loginlanguage}</label>
+	<select name="loginlang" onchange=javascript:window.location.href=this.options[this.selectedIndex].value >
+<!--
+EOT;
+ob_pcontent();
+$langset=$langset==""?$met_admin_type:$langset;
+$met_langtype_select[$langset]="selected='selected'" ;
+foreach($met_langadmin as $key=>$val){
+echo <<<EOT
+-->
+<option value="login.php?langset=$val[mark]" {$met_langtype_select[$val[mark]]}>$val[name]</option>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+	</select>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+</p>
+					<p><label>{$lang_loginusename}</label><input type="text" class="text" name="login_name" value="$check_name" $disabled /></p>
+					<p><label>{$lang_loginpassword}</label><input type="password" class="text" name="login_pass" /></p>
+					<p class="login-code">
+<!--
+EOT;
+if($met_login_code==1){
+echo <<<EOT
+-->
+						<label>{$lang_logincode}</label>
+						<input name="code" onKeyUp="pressCaptcha(this)" type="text" class="text mid" id="code" />
+						<img align="absbottom" src="../include/ajax.php?action=code"  onclick=this.src="../include/ajax.php?action=code&"+Math.random() style="cursor: pointer;" title="{$lang_logincodechange}"/>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+					</p>
+					<p class="login-submit">
+						<input type="submit" name="Submit" value="{$lang_loginconfirm}" />
+						<a href="../admin/getpassword.php">{$lang_loginforget}</a>
+					</p>
+				</form>
+				</div>
+			</div>
+		<div class="clear"></div>
+</div>
+<div class="footer" style="margin-top:80px;">$foot</div>
+<!--[if IE 6]>
+<script src="{$img_url}/js/IE6-png.js" type="text/javascript"></script>
+<script type="text/javascript">DD_belatedPNG.fix('.bg,img');</script>
+<![endif]-->
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

@@ -1,0 +1,188 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+<title>{$lang_memberAdd}</title>
+</head>
+<body>
+<script type="text/javascript">
+function pass2null(pass2){
+			$('#pass2').text('{$lang_memberjstxt1}');
+			$('#pass2').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function pass1null(pass1){
+			$('#pass1').text('{$lang_memberjstxt2}');
+			$('#pass1').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function passnot(pass2){
+			$('#pass2').text('{$lang_memberjstxt3}');
+			$('#pass2').show();
+			$("input[type='submit']").attr('disabled',true);
+}
+function usercheck(useid){
+	$.ajax({
+	   type: "POST",
+	   url: "ajax.php?lang={$lang}&anyid={$anyid}&action=admin&id="+useid.val(),
+	   success: function(msg){
+		 useid.next('span').html(msg);
+	   }
+	});
+}
+$(document).ready(function(){
+    var pass1 = $("input[name='pass1']");
+    var pass2 = $("input[name='pass2']");
+	pass1.focusout(function(){
+		if($(this).val()=='')pass1null($(this));
+		else 
+		if(pass2.val()!='' && pass2.val()!=pass1.val()){
+		$('#pass1').hide();
+		passnot(pass2);
+		}
+		else 
+		if(pass2.val()==''){
+		$('#pass1').hide();
+		pass2null(pass2);
+		}
+		else{ 
+		$('#pass1').hide();
+		$("input[type='submit']").attr('disabled',false);
+		}
+	});
+	pass2.focusout(function(){
+		if($(this).val()=='')pass2null($(this));
+		else 
+		if(pass1.val()!='' && pass2.val()!=pass1.val())passnot($(this));
+		else 
+		if(pass1.val()==''){
+		$('#pass2').hide();
+		pass1null(pass1);
+		}
+		else{ 
+		$('#pass2').hide();
+		$("input[type='submit']").attr('disabled',false);
+		}
+	});
+	$('#useid').focusout(function(){
+		if($(this).val()!=''){
+			usercheck($(this));
+		}
+	});
+	
+});
+</script>
+<!--
+EOT;
+$title="{$lang_memberAdd}";
+require_once template('metlangs');
+echo <<<EOT
+-->
+<form method="POST" name="myform" id="myform" action="save.php?action=add&lang=$lang&anyid={$anyid}" target="_self">
+<table cellpadding="2" cellspacing="1" class="table">
+          <tr> 
+            <td class="text"><span class="red">*</span>{$lang_memberUserName}{$lang_marks}</td>
+            <td colspan="2" class="input">
+			<input id='useid' name="useid" type="text" autocomplete="off" class="text nonull">
+			<span class="red"></span>
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="text"><span class="red">*</span>{$lang_memberPs}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="pass1" type="password" autocomplete="off" class="text nonull"><span id='pass1'></span></td>
+          </tr> 
+		   <tr> 
+            <td class="text"><span class="red">*</span>{$lang_memberPs1}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="pass2" type="password" autocomplete="off" class="text nonull"><span id='pass2'></span></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberName}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="name" type="text" class="text"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberSex}{$lang_marks}</td>
+            <td colspan="2" class="input">
+			<label><input name="sex" type="radio" value="0" class="radio" checked="checked">{$lang_memberMan}</label>&nbsp;&nbsp;
+			<label><input name="sex" type="radio" value="1">{$lang_memberWoman}</label>
+			</td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberTel}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="tel" type="text" class="text"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberCell}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="mobile" type="text" class="text"></td>
+          </tr> 
+		  <tr> 
+            <td class="text"><span class="red">*</span>Email{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="email" type="text" class="text nonull">{$lang_memberTip1}</td>
+          </tr> 
+		  <tr> 
+            <td class="text">QQ{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="qq" type="text" class="text"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">MSN{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="msn" type="text" class="text"></td>
+          </tr> 
+		  <tr> 
+            <td class="text">{$lang_memberTaoBao}{$lang_marks}</td>
+            <td colspan="2" class="input"> <input name="taobao" type="text" class="text"></td>
+          </tr> 
+          <tr> 
+          <td class="text" valign="middle">{$lang_memberIntro}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <textarea name="admin_introduction" class="textarea gen" cols="60" rows="5" ></textarea></td>
+          </tr>
+		  <td class="text" valign="middle">{$lang_memberCompanyName}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyname" type="text" class="text"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyFax}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyfax" type="text" class="text"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyCode}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companycode" type="text" class="text"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyAddress}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companyaddress" type="text" class="text"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberCompanyWebsite}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"> <input name="companywebsite" type="text" class="text"></td>
+          </tr>
+		  <tr> 
+          <td class="text" valign="middle">{$lang_memberType}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top">
+		  <select name="usertype" id="usertype" >
+			 $level
+            </select>
+		  </td>
+          </tr>
+		  <tr>
+		  <td class="text" valign="middle">{$lang_memberCheck}{$lang_marks}</td>
+          <td colspan="2" class="input" valign="top"><input name="checkid" type="checkbox" class="checkbox" value="1"></td>
+          </tr>
+		  <tr> 
+          <td class="text"></td>
+          <td class="submit">
+		<input type="submit" name="submit" id="passsubmit" value="{$lang_Submit}" class="submit" 
+		onclick="return Smit($(this),'myform')" />
+		  </td>
+          </tr>
+          <tr>
+		  <td class="footer" colspan="2">$foot</td>
+	  </tr> 
+</table>
+        </form>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->

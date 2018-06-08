@@ -1,0 +1,203 @@
+<!--<?php
+# MetInfo Enterprise Content Management System 
+# Copyright (C) MetInfo Co.,Ltd (http://www.metinfo.cn). All rights reserved.
+require_once template('head');
+echo <<<EOT
+-->
+</head>
+<body>
+<!--
+EOT;
+$title="{$lang_indexcv} > {$lang_listTitle}({$bigid_info[name]})";
+if($bigid_info[module]==8)$title="{$lang_fdincTitle}({$met_class[$class1][name]}) > {$lang_listTitle}({$bigid_info[name]})";
+$rurl='parameter.php?anyid='.$anyid.'&lang='.$lang.'&module='.$bigid_info[module].'&class1='.$class1;
+if($bigid_info[module]==6){
+$title="<a href='../../content/job/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$listclass[2]='class="now"';
+require_once template('content/job/top');
+}
+if($bigid_info[module]==8){
+$title="<a href='../../content/feedback/index.php?anyid={$anyid}&lang={$lang}&class1={$class1}'>{$met_class[$class1][name]}</a>";
+$listclass[2]='class="now"';
+require_once template('content/feedback/top');
+}
+if($bigid_info[module]!=6&&$bigid_info[module]!=8){
+require_once template('metlangs');
+}
+echo <<<EOT
+--> 	
+		<table cellpadding="0" cellspacing="0" class="table">
+<!--
+EOT;
+if($bigid_info[module]==8){
+$metlistrele[$listinfo[info]]="selected='selected'";
+echo <<<EOT
+-->
+		<tr>
+			<td class="centle" colspan="4" style="color:#666; padding-left:10px; font-weight:normal;">	
+	<form method="POST" name="myform" style="float:right; margin-right:5px;" action="list.php?anyid={$anyid}&bigid=$bigid&action=add&listproduct=metinfo&class1={$class1}" target="_self">
+			  <input name="lang" type="hidden" value="$lang" >
+			  <span title="{$lang_columnexplain1}">{$lang_listproductre}</span>
+			  <input name="no_order" type="hidden" value="99999">
+			  <select name="info">
+			  <option value="0" $metlistrele[0]>$lang_listproductreok</option>
+			  <option value="metinfoall" $metlistrele[metinfoall]>$lang_allcategory</option>
+<!--
+EOT;
+foreach($met_classindex[3] as $key=>$val){
+echo <<<EOT
+--> 
+    <option value="$val[id]" {$metlistrele[$val[id]]}>$val[name]</option>
+<!--
+EOT;
+foreach($met_class22[$val[id]] as $key=>$val2){
+echo <<<EOT
+--> 
+    <option value='$val2[id]' style="color:#000099" {$metlistrele[$val2[id]]}>&nbsp;&nbsp;- $val2[name]</option>
+<!--
+EOT;
+foreach($met_class3[$val2[id]] as $key=>$val3){
+echo <<<EOT
+--> 
+    <option value='$val3[id]' style="color:#FF0000" {$metlistrele[$val3[id]]}>&nbsp;&nbsp;&nbsp;-- $val3[name]</option>
+<!--
+EOT;
+}}}
+echo <<<EOT
+--> 
+			  </select>
+			  <input type="submit" value="{$lang_Submit}" class="submit" onclick="return Smit($(this),'myform');" />
+	        </form>
+			</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($bigid_info[module]!=6 && $bigid_info[module]!=8){
+$metlistrele[$listinfo[info]]="selected='selected'";
+echo <<<EOT
+-->
+		<tr>
+			<td class="centle" colspan="2" style="color:#999; padding-left:10px; font-weight:normal;">	
+				{$lang_columnexplain2}
+			</td>
+		</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+		<tr>
+		<td colspan="2">
+		<form name="del" method="Post" action="list.php?anyid={$anyid}&lang={$lang}&class1={$class1}">
+		 <table cellpadding="0" cellspacing="0" class="table neitable" style="margin:0px; border:none;">
+<!--
+EOT;
+if($listmarknow<>'metinfo'){
+echo <<<EOT
+--> 
+			<tr id="list-top">
+                <td class="list" width="40" style="padding:0px; text-align:center;">{$lang_selected}</td>
+                <td width="60" class="list" style="padding:0px; text-align:center;">{$lang_sort}</td>
+                <td class="list" >{$lang_name}</td>
+				<td width="10%" class="list" >{$lang_operate}</td>
+              </tr>
+<!--
+EOT;
+foreach ($fd_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr class="mouse click">
+              <td class="list-text"><input name='id' type='checkbox' id="id" value='$val[id]' />
+			  <input name='bigid_$val[id]' type='hidden' value='$bigid' />
+			  </td>
+                <td class="list-text"><input type="text" value="$val[no_order]" name="no_order_$val[id]" class="text no_order" /></td>
+                <td class="list-text" style="text-align:left; padding-left:15px;"><input type="text" value="$val[info]" name="info_$val[id]" class="text nonull" /></td>
+				<td class="list-text"><a href="list.php?bigid=$val[bigid]&id=$val[id]&action=delete&anyid={$anyid}&lang=$lang&class1={$class1}" onClick="return linkSmit($(this),1);" >{$lang_delete}</a></td>
+              </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+-->
+<!--
+EOT;
+if($listmarknow<>'metinfo'){
+echo <<<EOT
+-->
+			<tr id="bottom-id">
+			<td class="list-text"></td>
+			<td class="list-text" colspan="3" style="text-align:left;">
+			&nbsp;&nbsp;<a href="list.php?anyid={$anyid}&bigid=$bigid&lang=$lang&action=addsave" title="{$lang_listAddList}" onclick="return addsave($(this),1);">+{$lang_listAddList}</a>
+			</td>
+			</tr>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+
+<!--
+EOT;
+}else{
+echo <<<EOT
+--> 
+			<tr id="list-top">
+                <td width="5%" class="list">{$lang_sort}</td>
+                <td width="20%" class="list" >{$lang_name}</td>
+              </tr>
+<!--
+EOT;
+foreach ($fd_list as $key=>$val){
+echo <<<EOT
+-->          
+              <tr>
+                <td class="list-text" width="40" style="padding:0px; text-align:center;">$val[no_order]</td>
+                <td class="list-text alignleft" style="padding-left:10px;">$val[info]</td>
+              </tr>
+<!--
+EOT;
+}}
+echo <<<EOT
+-->
+
+			</table>
+				<input name="action_type" type="hidden" id="action_type" value="del" />
+				<input name="action" type="hidden" value="delete" />
+				<input name="allid" type="hidden" id="allid" value="" />
+				<input name="bigid" type="hidden" value="$bigid" />
+				</form>
+		</td>
+		</tr>
+<!--
+EOT;
+if($listmarknow<>'metinfo'){
+echo <<<EOT
+--> 
+   	    <tr> 
+            <td class="all" width="40"><input name="chkAll" type="checkbox" id="chkAll" onclick="CheckAllx($(this),'del')" value="checkbox" /></td>
+			<td class="all-submit" style="padding:5px 0px;">
+				<input name="submit" type='submit' value='$lang_Submit' class="submit li-submit" onclick="return met_modify($(this),'del','editor');" />
+				<input name="submit" type='submit' value='{$lang_deleteselected}' class="submit li-submit" onclick="return met_modify($(this),'del','delete');" />
+			</td>
+        </tr>
+<!--
+EOT;
+}
+echo <<<EOT
+--> 
+		<tr>
+			<td class="footer" colspan="4">$foot</td>
+		</tr>
+		</table>
+</body>
+</html>
+<!--
+EOT;
+# This program is an open source system, commercial use, please consciously to purchase commercial license.
+# Copyright (C) MetInfo Co., Ltd. (http://www.metinfo.cn). All rights reserved.
+?>-->
