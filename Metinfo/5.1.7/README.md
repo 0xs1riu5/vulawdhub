@@ -4,11 +4,6 @@
 docker-compose build
 docker-compose up -d
 ```
-或者是从hub下载
-```
-doker pull s1r1u5/php-fpm_meinfo_5_1:5.6
-s1r1u5/mysql_metinfo_5_1:5.7
-```
 
 ## 后台登录
 通过弱口令admin:123456进入http://127.0.0.1:8002/admin/login/login.php 后台，
