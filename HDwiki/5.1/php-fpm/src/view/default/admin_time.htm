@@ -1,0 +1,85 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	if(isNaN($('#time_diff').val())==true){
+		alert('{lang baseConfigMustNum}');
+		$('#time_diff').focus();
+		return false;
+	}
+	
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<p class="map">全局：基本设置</p>
+<p class="sec_nav">基本设置：<a href="index.php?admin_channel"> <span>频道管理</span></a> <a href="index.php?admin_setting-cache"> <span>缓存设置</span></a> <a href="index.php?admin_setting-seo"><span>SEO设置</span></a> <a href="index.php?admin_setting-code"><span>验证码</span></a> <a href="index.php?admin_setting-time" class="on"><span>时间设置</span></a> <a href="index.php?admin_setting-cookie" ><span>COOKIE设置</span></a> <a href="index.php?admin_setting-credit" ><span>经验金币设置</span></a> <a href="index.php?admin_setting-logo" ><span>LOGO设置</span></a></p>
+<h3 class="col-h3">时间设置</h3>
+<form method="POST" action="index.php?admin_setting-time" onsubmit="return doSubmit();">
+	<table class="table">
+		<tr>
+			<td width="300px;"><span>{lang baseDefaultTimezoneConfig}</span>{lang baseDefaultTimezoneConfigTip}</td>
+			<td>
+				<select class="box" name="setting[time_offset]" >
+				<!--{loop $timeoffset $key $value}-->
+					<option value="{$key}" <!--{if $key==$basecfginfo['time_offset']}--> selected <!--{/if}--> >{$value}</option>
+				<!--{/loop}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><span>{lang baseTimeDifference}</span>{lang baseTimeDifferenceTip}</td>
+			<td><input class="inp_txt" name="setting[time_diff]" id="time_diff"  type="text" value="{$basecfginfo['time_diff']}" /></td>
+		</tr>
+		<tr>
+			<td><span>{lang baseDateFormat}</span>{lang baseDateFormatTip}</td>
+			<td>
+				<select name="setting[date_format]" class="box" style="width:200px;" >
+					<option value=""  <!--{if $basecfginfo['date_format']==""}--> selected <!--{/if}-->  >{eval  echo date("Y-n-j");}  Y-n-j</option>
+					<option value="Y/m/d" <!--{if $basecfginfo['date_format']=="Y/m/d"}-->selected<!--{/if}-->  >{eval  echo date("Y/m/d");} (Y/M/D)</option>
+					<option value="m/d/Y" <!--{if $basecfginfo['date_format']=="m/d/Y"}-->selected<!--{/if}-->  >{eval  echo date("m/d/Y");} (M/D/Y)</option>
+					<option value="d/m/Y" <!--{if $basecfginfo['date_format']=="d/m/Y"}-->selected<!--{/if}-->>{eval  echo date("d/m/Y");} (D/M/Y)</option>
+					<option value="m/d" <!--{if $basecfginfo['date_format']=="m/d"}-->selected<!--{/if}-->>{eval  echo date("m/d");} (M/D)</option>
+					<option value="d/m" <!--{if $basecfginfo['date_format']=="d/m"}-->selected<!--{/if}-->>{eval  echo date("d/m");} (D/M)</option>
+					<option value="Y.m.d" <!--{if $basecfginfo['date_format']=="Y.m.d"}-->selected<!--{/if}-->>{eval  echo date("Y.m.d");} (Y.M.D)</option>
+					<option value="m.d.Y" <!--{if $basecfginfo['date_format']=="m.d.Y"}-->selected<!--{/if}-->>{eval  echo date("m.d.Y");} (M.D.Y)</option>
+					<option value="d.m.Y" <!--{if $basecfginfo['date_format']=="d.m.Y"}-->selected<!--{/if}-->>{eval  echo date("d.m.Y");} (D.M.Y)</option>
+					<option value="m.d" <!--{if $basecfginfo['date_format']=="m.d"}-->selected<!--{/if}-->>{eval  echo date("m.d");} (M.D)</option>
+					<option value="d.m" <!--{if $basecfginfo['date_format']=="d.m"}-->selected<!--{/if}-->>{eval  echo date("d.m");} (D.M)</option>
+					<option value="Y-m-d" <!--{if $basecfginfo['date_format']=="Y-m-d"}-->selected<!--{/if}-->>{eval  echo date("Y-m-d");} (Y-M-D)</option>
+					<option value="m-d-Y" <!--{if $basecfginfo['date_format']=="m-d-Y"}-->selected<!--{/if}-->>{eval  echo date("m-d-Y");} (M-D-Y)</option>
+					<option value="d-m-Y" <!--{if $basecfginfo['date_format']=="d-m-Y"}-->selected<!--{/if}-->>{eval  echo date("d-m-Y");} (D-M-Y)</option>
+					<option value="m-d" <!--{if $basecfginfo['date_format']=="m-d"}-->selected<!--{/if}-->>{eval  echo date("m-d");}(M-D)</option>
+					<option value="d-m" <!--{if $basecfginfo['date_format']=="d-m"}-->selected<!--{/if}-->>{eval  echo date("d-m");} (D-M)</option>
+					<option value="M d Y" <!--{if $basecfginfo['date_format']=="M d Y"}-->selected<!--{/if}-->>{eval  echo date("M d Y");}</option>
+					<option value="d M Y" <!--{if $basecfginfo['date_format']=="d M Y"}-->selected<!--{/if}-->>{eval  echo date("d M Y");}</option>
+					<option value="M d" <!--{if $basecfginfo['date_format']=="M d"}-->selected<!--{/if}-->>{eval  echo date("M d");}</option>
+					<option value="d M" <!--{if $basecfginfo['date_format']=="d M"}-->selected<!--{/if}-->>{eval  echo date("d M");}</option>
+					<option value="jS F, Y" <!--{if $basecfginfo['date_format']=="jS F, Y"}-->selected<!--{/if}-->>{eval  echo date("jS F, Y");}</option>
+					<option value="l, jS F, Y" <!--{if $basecfginfo['date_format']=="l, jS F, Y"}-->selected<!--{/if}-->>{eval  echo date("l, jS F, Y");}</option>
+					<option value="jS F" <!--{if $basecfginfo['date_format']=="jS F"}-->selected<!--{/if}-->>{eval  echo date("jS F");}</option>
+					<option value="l, jS F" <!--{if $basecfginfo['date_format']=="l, jS F"}-->selected<!--{/if}-->>{eval  echo date("l, jS F");}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><span>{lang baseTimeFormat}</span>{lang baseTimeFormatTip}</td>
+			<td>
+				<select name="setting[time_format]" class="box" style="width:200px;" >
+					<option value="" <!--{if $basecfginfo['time_format']==""}-->selected<!--{/if}-->>{eval  echo date("H:i");}  H:i</option>
+					<option value="H:i" <!--{if $basecfginfo['time_format']=="H:i"}-->selected<!--{/if}-->>{eval echo date("H:i");}</option>
+					<option value="H:i:s" <!--{if $basecfginfo['time_format']=="H:i:s"}-->selected<!--{/if}-->>{eval echo date("H:i:s");}</option>
+					<option value="g:i a" <!--{if $basecfginfo['time_format']=="g:i a"}-->selected<!--{/if}-->>{eval echo date("g:i a");}</option>
+					<option value="g:i A" <!--{if $basecfginfo['time_format']=="g:i A"}-->selected<!--{/if}-->>{eval echo date("g:i A");}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input class="inp_btn" name="timesubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+				<input class="inp_btn" type="reset" value="{lang commonReset}" />
+			</td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

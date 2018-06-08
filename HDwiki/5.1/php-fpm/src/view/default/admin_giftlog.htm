@@ -1,0 +1,114 @@
+{template admin_header}
+<script type="text/javascript">
+var getUsername = function getUsername(){
+	var checkedbox = $("input[name='chkid[]']:checked");
+	var namelist = [];
+	checkedbox.each(function(i){
+		namelist.push($(this).attr('username'));
+	});
+	$('#names').val(namelist.join(","));
+}
+
+var doverify = function (){
+	if($("input[name='chkid[]']:checked").length==0){
+		alert('请至少选择一个礼品，然后再进行本操作！');
+		return false;
+	}else{
+		 getUsername();
+		if(confirm('确认设为已寄送？')){
+			getUsername();
+			document.giftlogfrom.action='index.php?admin_gift-verify';
+			document.giftlogfrom.submit();
+		}
+	}
+}
+var selectAll = function (){
+	$("input[name='chkid[]']").attr('checked',$("input[name='checkbox']").attr('checked'));
+}
+</script>
+<p class="map">内容管理：礼品商店</p>
+<p class="sec_nav">礼品商店：<a href="index.php?admin_gift"><span>礼品管理</span></a>
+<a href="index.php?admin_gift-add"><span> 添加礼品</span></a>
+<a href="index.php?admin_gift-price" ><span>礼品价格区间</span></a>
+<a href="index.php?admin_gift-notice"><span>礼品公告</span></a>
+<a href="index.php?admin_gift-log" class="on"><span>礼品兑换日志</span></a>
+</p>
+
+<h3 class="col-h3">礼品兑换日志</h3>    
+
+
+<div class="list-tp">
+	<form name="list" method="POST" action="index.php?admin_gift-log">
+	<ul class="col-ul ul_li_sp m-t10">
+		<li><span>价格范围: </span>
+			<select name="type">
+				<option value="-1" >全部</option>
+				<!--{loop $minprice $index $price}-->
+					<option value="$index" {if $type===$index}selected{/if} >$price—$maxprice[$index] 金币</option> 
+				<!--{/loop}-->
+			</select>
+		</li>
+		<li><span>礼品名称: </span><input name="title" type="text" class="inp_txt m-r10" value="{$title}" maxlength="8"/></li>
+		<li><span>兑换用户:</span><input name="username" type="text" class="inp_txt m-r10" value="{$username}"/></li>
+		<li><span>兑换时间:</span><input readonly name="qstarttime" type="text" class="inp_txt" onclick="showcalendar(event, this);" value="{$qstarttime}" /> — <input readonly name="endtime" type="text" class="inp_txt" onclick="showcalendar(event, this);" value="{$endtime}"/></li>
+		<li><input name="submit" type="submit" value="搜 索"  class="inp_btn"/></li>
+	</ul>
+	</form>
+	<h3 class="tol_table">[ 共 <b>{$total}</b> 条日志 ]</h3>
+	<form method="post" name="giftlogfrom" action="index.php?admin_gift-verify">
+	<table class="table w-img">
+		<thead>
+			<tr>
+				<td style="width:40px;">选择</td>
+				<td style="width:60px;">礼品图片</td>
+				<td style="width:60px;">礼品名称</td>
+				<td style="width:40px;">用户名</td>				
+				<td style="width:40px;">真名</td>
+				<td style="width:50px;">地址</td>
+				<td style="width:40px;">邮编</td>
+				<td style="width:60px;">电话</td>
+				<td style="width:30px;">QQ</td>
+				<td style="width:40px;">Email</td>
+				<td style="width:30px;">备注</td>
+				<td style="width:60px;">兑换时间</td>
+				<td style="width:30px;">状态</td>
+			</tr>
+		</thead>
+		<!-- {if $loglist} -->
+		<!--{loop $loglist $giftlog}-->
+		<tr align="center">
+			<td align='center'><input type="checkbox" name="chkid[]" value="{$giftlog['id']}" username="{$giftlog[username]}"/></td>
+			<td><a class="a-img3">
+					<!--{if file_exists($giftlog['image'])}-->
+						<img src="{$giftlog['image']}"/>
+					<!--{else}-->
+						<img src="style/default/plugin.jpg"/>
+					<!--{/if}--></a>
+			</td>
+			<td>{$giftlog[title]}</td>
+			<td>{$giftlog[username]}</td>
+			<td>{$giftlog[truename]}</td>
+			<td>{$giftlog[location]}</td>
+			<td>{$giftlog[postcode]}</td>
+			<td>{$giftlog[telephone]}</td>
+			<td>{$giftlog[qq]}</td>
+			<td>{$giftlog[email]}</td>
+			<td>{$giftlog['extra']}</td>
+			<td>{$giftlog['time']}</td>
+			<td><!--{if $giftlog[status]}-->已寄送<!--{else}--><font class="red">待寄送</font><!--{/if}--></td>
+		</tr>
+		<!--{/loop}-->
+		<!-- {else} -->
+		<tr><td colspan="5">没有礼品兑换记录！</td></tr>
+		<!-- {/if} -->
+		
+		<tr>
+			<td><label> <input name="checkbox" type="checkbox" id="chkall" onclick="selectAll();"> 全选</label></td>
+			<td colspan="5"><input type="hidden"  name="names" id="names" value="" /><input type="button" value="设为已寄送" onclick="doverify();" class="inp_btn2 m-r10"/></td>
+		</tr>
+		<tr><td colspan="8"><p class="fenye a-r">{$departstr}</p></td></tr>
+	</table>
+	</form>
+</div>
+
+{template admin_footer}

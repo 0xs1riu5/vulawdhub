@@ -1,0 +1,10 @@
+
+<div id="zjpl" class="columns zjpl {$data['config']['style']}" bid="{$bid}">
+	<h2 class="col-h2">{lang recentComment}</h2>
+	<!--{loop $data['list'] $comment}-->
+		<div class="pl_unit">
+			<a href="{url user-space-$comment['authorid']}"  class="a-img1"><img alt="" src="<!--{if $comment['image'] }-->{$comment['image']}<!--{else}--><!--{/if}-->"/></a>
+			<p><a href="{url comment-view-$comment['did']}" title="{$comment['comment']}"  class="block">{$comment['tipcomment']}</a>{$comment['time']}</p>
+		</div>
+	<!--{/loop}-->
+</div>

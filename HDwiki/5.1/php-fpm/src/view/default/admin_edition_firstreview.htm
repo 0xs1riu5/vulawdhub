@@ -1,0 +1,61 @@
+<!--{if !empty($doclist)}-->
+<div style="width:750px;background:#fff;" >
+<form action="index.php?admin_edition-firstreview-{$doclist[0]['lasteditorid']}" method="POST">
+<div class="contents">
+
+<div class="comment">
+<div class="col-p bold" style="text-align:left;">以下是 <a href="index.php?user-space-{$doclist[0]['lasteditorid']}" target="_blank">{$doclist[0]['lasteditor']}</a> 编辑的词条</div>
+
+<div class="com_con" style="text-align:left; overflow-y:scroll; padding-right:0; height: 300px;">
+<!--{loop $doclist $doc}-->
+<ul class="col-ul" {if $doc['eid']}id="edition_{$doc['eid']}"{else}id="doc_{$doc['did']}"{/if}>
+<li><a target="_blank" class="e" href="index.php?doc-view-{$doc['did']}" title="{$doc['title']}">{$doc['title']}</a></li>
+<li><strong>修改原因：</strong>{eval echo $doc['eid'] ? $doc['reason'] : '新词条'}</li>
+<li><strong>当前分类：</strong>{eval echo htmlspecialchars($doc['category'])}</li>
+<li><strong>摘要：</strong>{$doc['summary']}</li>
+<li class="bold m-t10"><a href="index.php?edition-list-{$doc['did']}" target="_blank">版本对比</a> <a href="index.php?search-fulltext-title-{eval echo urlencode($doc['title']);}--all-0-within-time-desc-1" target="_blank">搜索相似词条</a> 
+	{if $doc['eid']}
+	<a href="javascript:removeedition({$doc['eid']})">删除版本</a>
+	{else}
+	<a href="javascript:removedoc({$doc['did']})">删除词条</a>
+	{/if}	
+</li>
+</ul>
+<!--{/loop}-->
+</div>
+
+<dl class="col-dl" style="text-align:left;">
+<dt><strong>权限设置</strong>（根据用户编辑的以上版本情况，给用户删除或者保留。） </dt>
+<dd><span><label><input name="action" type="radio" value="approved" /><b>通过</b>（词条编辑的不错）</label></span>
+<ul>
+<li>奖励积分：<span><label><input name="credit1" type="radio" value="2" />1积分</label></span>
+<span><label><input name="credit1" type="radio" value="5" />5积分</label></span>
+<span><label><input name="credit1" type="radio" value="10" />10积分</label></span>
+<span><label><input name="credit1" type="radio" value="50" />50积分</label></span>
+<label style=""><input name="credit1" type="radio" value="other" /><input type="input" class="inp_txt2" maxlength="5" size="3" value="" name="credit1_other" />积分</label>
+</li>
+<li>奖励信用：<span><label><input name="credit2" type="radio" value="1" />1信用</label></span>
+<span><label><input name="credit2" type="radio" value="2" />2信用</label></span>
+<span><label><input name="credit2" type="radio" value="5" />5信用</label></span>
+<span><label><input name="credit2" type="radio" value="10" />10信用</label></span>
+<label style=""><input name="credit2" type="radio" value="other" /><input type="input" class="inp_txt2" maxlength="5" size="3" value="" name="credit2_other" />信用</label>
+</li>
+</ul>
+</dd>
+
+<dd><span><label><input name="action" type="radio" value="rejected" /><b>删除用户</b>（垃圾用户，删除该帐号；删除帐号的同时，该帐号编辑的版本会一并删除。）</label> </span></dd>
+</dl>
+
+</div>
+
+<div class="button" style="position: static;">
+<input type="submit" value="提交" name="ok" class="ok" style="font-size: 14px; line-height: 20px; padding: 2px 6px 1px; margin-right: 3px;">
+</div>
+
+
+</div>
+</form>
+</div>
+<!--{else}-->
+没有词条
+<!--{/if}-->

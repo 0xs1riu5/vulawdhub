@@ -1,0 +1,33 @@
+{template admin_header}
+<script language="JavaScript" type="text/javascript">
+function changepic(picurl){
+	$("#sitelogo").attr('src',picurl);
+}
+</script>
+<p class="map">全局：基本设置</p>
+<p class="sec_nav">基本设置：<a href="index.php?admin_channel"> <span>频道管理</span></a> <a href="index.php?admin_setting-cache"> <span>缓存设置</span></a> <a href="index.php?admin_setting-seo"><span>SEO设置</span></a> <a href="index.php?admin_setting-code"><span>验证码</span></a> <a href="index.php?admin_setting-time"><span>时间设置</span></a> <a href="index.php?admin_setting-cookie" ><span>COOKIE设置</span></a> <a href="index.php?admin_setting-credit"><span>经验金币设置</span></a> <a href="index.php?admin_setting-logo" class="on"><span>LOGO设置</span></a></p>
+<h3 class="col-h3">LOGO设置</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示： 
+	<li>请上传1M以下的Jpg、Gif、Jpeg图片 </li>
+</ul>
+<form name="_modifyico" enctype="multipart/form-data" action="index.php?admin_setting-logo" method="POST">
+	<table class="table">
+		<tr>
+			<td><img width="{$logowidth}" id="sitelogo" src="style/default/logo.gif"/></td>
+		</tr>
+		<tr>
+			<td><span>设置宽度：</span><input name="logowidth" id="logowidth" type="text" class="inp_txt w-60 m-r10" value="{$logowidth}" />&nbsp;&nbsp;px根据您的实际logo尺寸设置宽度，建议150px～260px</td>
+		</tr>
+		<tr>
+			<td><input class="inp_file"  name="logo" type="file" onchange="changepic(this.value);"/></td>
+		</tr>
+		<tr>
+			<td><input class="inp_btn" type="submit" value="提 交" name="logsubmit" /></td>
+		</tr>
+	</table>
+</form>
+<script type="text/javascript">
+	$('#sitelogo').attr('src',$('#sitelogo').attr('src')+'?'+Math.random());
+</script>
+{template admin_footer}

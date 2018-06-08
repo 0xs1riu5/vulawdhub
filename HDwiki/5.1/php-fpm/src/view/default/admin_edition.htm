@@ -1,0 +1,340 @@
+{template admin_header}
+<p class="map">内容管理：词条管理</p>
+<p class="sec_nav">词条管理：
+<a href="index.php?admin_doc" > <span>管理词条</span></a>
+<a href="index.php?admin_focus-focuslist" ><span>推荐词条</span></a>
+<a href="index.php?admin_synonym" ><span>管理同义词</span></a>
+<a href="index.php?admin_relation" ><span>相关词条</span></a>
+<a href="index.php?admin_edition" class="on"  ><span>版本评审</span></a>
+<a href="index.php?admin_cooperate" ><span>待完善词条</span></a> 
+<a href="index.php?admin_nav" class="new"><span>导航模块<label class="red">new</label></span></a> 
+</p>
+
+
+<h3 class="col-t"><span class="on">{lang edition_audit}</span><span><a href="index.php?admin_edition-newusernewdoc">首次编辑审核</a></span></h3>
+<div class="">
+	<form name="list" method="POST" action="index.php?admin_edition-search">
+		<ul class="col-ul ul_li_sp m-t10">
+			<li><span>{lang commonChoiceCat}: </span>
+				<select name="qcattype">
+					<option value="0" >{lang commonAllCat}</option>
+					{$catstr}
+				</select>
+			</li>
+			<li><span>{lang typesearch}:</span>
+				<select name="typename">
+					<option value="" >{lang alltype}</option>
+					<option value="1" >{lang focusmanage}</option>
+					<option value="2" >{lang hotdoc}</option>
+					<option value="3" >{lang wonderdoc}</option>
+					<option value="4" >{lang commonLock}</option>
+					<option value="5" >{lang commonPassed}</option>
+					<option value="6" >{lang commonUnpass}</option>
+				</select>
+			</li>
+			<li><span>{lang commonTitleKey}:</span>
+				<input name="qtitle" type="text" class="inp_txt" size="30" value="{$qtitle}" />
+			</li>
+			<li><span>{lang commonAuthor}:</span>
+				<input name="qauthor" type="text" class="inp_txt" size="30" value="{$qauthor}" />
+			</li>
+			<li><span>{lang commonCreateTime}:</span>
+				<input name="qstarttime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly" value="{$qstarttime}" />
+				—
+				<input name="qendtime" type="text" class="inp_txt" onclick="showcalendar(event, this);" readonly="readonly" value="{$qendtime}"/>
+			</li>
+			<li>
+				<input name="Submit1" type="submit" value="{lang commonSearch}"   class="inp_btn"/>
+			</li>
+		</ul>
+	</form>
+	<h3 class="tol_table">{lang docmanageDoclist} <b>{$docsum}</b> {lang docmanageEditionNum}</h3>
+	<form method="POST" name="formdoclist">
+		<table class="table">
+			<thead>
+				<tr>
+					<td style="width:30px;">{lang commonSelect}</td>
+					<td style="width:120px;overflow:hidden;">{lang commonTitle}</td>
+					<td style="width:30px;">{lang edition}</td>
+					<td style="width:120px;">{lang commonCat}</td>
+					<td style="width:60px;">{lang commonCreateTime}</td>
+					<td style="width:60px;">{lang commonAuthor}</td>
+					<td style="width:60px;">{lang coin}</td>
+					<td style="width:60px;">{lang modify_reason}</td>
+					<td style="width:30px;">{lang excellent}</td>
+					<td style="width:30px;">{lang state}</td>
+				</tr>
+			</thead>
+			<!-- {if $doclist != null} -->
+			<!--{loop $doclist $doc}-->
+			<tr id="tr{$doc['eid']}">
+				<td><input type="checkbox" name="chkdid[]" class="box" value="{$doc['eid']}" /></td>
+				<td><a target="_blank" class="e" href="index.php?edition-view-{$doc['eid']}-{$doc['did']}" title="{$doc['title']}">{$doc['title']}</a>
+					<input type="hidden" value="{$doc['title']}" id="{$doc['eid']}_title" name="{$doc['eid']}_title"></td>
+				<td><input type="button" class="inp_btn2" onClick="Coin.compare({$doc['did']},{$doc['eid']})" value="对比" title="和上一版本进行对比"/></td>
+				<td>{eval echo htmlspecialchars($doc['category'])}</td>
+				<td>{$doc['time']}</td>
+				<td><a target="_blank" class="e" href="index.php?user-space-{$doc['authorid']}"  title="{$doc['author']}">{$doc['author']}</a></td>
+				<td id="edition{$doc['eid']}">{$doc['coins']}</td>
+				<td>{$doc['reason']}</td>
+				<td id="excellent{$doc['eid']}">{if $doc['excellent']}<img src="style/default/excellent.gif"/>{/if}</td>
+				<td id="judge{$doc['eid']}">{if $doc['judge'] == 0}{lang edition_audit_0}{else}<font color="Red">{lang edition_audit_1}</font>{/if}</td>
+			</tr>
+			<!--{/loop}-->
+			<!-- {/if} -->
+			<!-- {if $doclist == null} -->
+			<tr>
+				<td colspan="10">{lang docmanageSearchMsg}</td>
+			</tr>
+			<!-- {/if} -->
+			<tr>
+				<td colspan="10"><label class="m-r10">
+						<input name="checkbox" type="checkbox" id="chkall" onclick="selectAll(this);">
+						{lang commonAllSelect}</label>
+					<input type="button" class="inp_btn2 m-r10" name="casemanage" onClick="Coin.box()" value="版本奖惩" />
+					<input type="button" class="inp_btn2 m-r10" name="casemanage" onClick="Coin.set('excellent',this)" value="{lang excellent}" />
+					<input type="button" class="inp_btn2 m-r10" name="casemanage" onClick="Coin.set('unexcellent',this)" value="{lang unexcellent}" />
+					<input type="button" class="inp_btn2 m-r10" name="casemanage" onClick="Coin.set('remove',this)" value="{lang commonDel}" /></td>
+			</tr>
+			<tr>
+				<td colspan="10"><p class="fenye a-r"> {$departstr} </p></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="box-coin" style="display:none">
+<form onsubmit="return Coin.send()">
+<table width="300" border="0" align="center" valign="top">
+	<tr style="display:none">
+		<td></td>
+		<td height="20" align="left" name="error"></td>
+	</tr>
+	<tr>
+		<td width="50" height="30">{lang coinNum}:</td>
+		<td><input name="coin_num" type="text" class="inp_txt"  maxlength="8" onblur="Coin.blur()"/></td>
+	</tr>
+	<tr>
+		<td width="50" height="30"></td>
+		<td>
+			<label><input type="radio" name="iscoin" value="+" checked="true"/>奖励</label>&nbsp;&nbsp;
+			<label><input type="radio" name="iscoin" value="-"/>惩罚</label>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td height="25"><br/>
+		<input type="button" value="{lang commonOK}" class="inp_btn2 m-r10" onclick="Coin.send(this)"/>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" value="{lang commonOff}" class="inp_btn2 m-r10" onclick="Coin.close();"/>
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+
+<script type="text/javascript">
+function selectAll(){
+	$("input[type=checkbox].box:enabled").each(function(i){
+		$(this).attr('checked', !$(this).attr('checked'));
+	});
+}
+var Coin = {
+	num:5,
+	names: '',
+	ids:'',
+	img:'<img src="style/default/excellent.gif"/>',
+	iscoin:'',
+	
+	getId : function(){
+		var checkedbox = $("input[type=checkbox].box:checked");
+		var idlist = [];
+		checkedbox.each(function(i){
+			idlist.push(this.value);
+		});
+		
+		return idlist.join(",");
+	},
+	box : function(){
+		var names = this.getId();
+		if (!names){
+			$.dialog.box('immageshow', '注意', '没有选择要操作的版本');
+			return false;
+		}
+		this.names = names;
+		
+		$.dialog({
+			id:'coin',
+			align:'left',
+			width:350,
+			title:'对选中的版本进行奖励或惩罚',
+			type:'selector',
+			content:"#box-coin",
+			styleOverlay:{backgroundColor:'#ffffff'}
+		});
+		
+		this.blur();
+	},
+	
+	compare: function(did, eid){
+		this.names = eid.toString();
+		var content = '<iframe src="index.php?edition-compare-'+did+'-'+eid
+			+'-box" width="100%" height="500" border="0" scrolling="no" frameborder="no"></iframe>'
+			+'<form onsubmit="return Coin.send()">对待评版本进行 '
+			+'<label><input type="radio" name="iscoin" value="+" checked="true"/>奖励</label>&nbsp;&nbsp;'
+			+'<label><input type="radio" name="iscoin" value="-"/>惩罚</label>'
+			+' {lang coinNum}:<input name="coin_num" type="text" class="reg-inp" style="width:60px;" maxlength="8" onblur="Coin.blur()"/>'
+			+' <input type="button" value="{lang commonOK}" onclick="Coin.send(this)"/>&nbsp;&nbsp;'
+			+'<input type="button" value="{lang commonOff}" onclick="Coin.close();"/>'
+			+'</form>';
+		
+		$.dialog({
+			id:'coin',
+			align:'center',
+			width:730,
+			title:'版本对比',
+			content:content,
+			styleOverlay:{backgroundColor:'#ffffff'}
+		});
+		this.blur();
+	},
+	
+	send: function(el){
+		var self=this;
+		var url = "index.php?admin_edition-addcoin-"+Math.random();
+		var eids=this.names;
+		
+		var dialog = $._dialog.parts['coin'].content;
+		var num = dialog.find('input[name=coin_num]').val();
+		num = $.trim(num);
+		num = parseInt(num);
+		if (num == '' || isNaN(num)){
+			num = this.num;
+		}else{
+			this.num = num;
+		}
+		
+		var iscoin = dialog.find('input[name=iscoin]:checked').val();
+		this.iscoin = iscoin;
+		
+		num = (iscoin == '+') ? num : -num;
+		
+		$(el).attr('disabled', true);
+		$.ajax({
+			url:url,
+			dataType:'html',
+			data:{eids:eids, coin:num},
+			timeout: 25000,
+			type: 'POST',
+			success:function(data){
+				if('OK' == data){
+					$.dialog.box('immageshow', '注意', '金币设置成功!');
+				}else{
+					$.dialog.box('immageshow', '注意', data);
+				}
+			},
+			complete:function(xmlhttp, status){
+				switch(status){
+					case 'success':
+						self.sendOk(el);
+						self.close();
+					break;
+					case 'error':
+					
+					break;
+					case 'timeout':
+					
+					break;
+				}
+				$(el).attr('disabled', false);
+			}
+		});
+		return false;
+	},
+	
+	close: function(){
+		$.dialog.close('coin');
+	},
+	
+	blur:function(){
+		var dialog = $._dialog.parts['coin'].content;
+		var num = dialog.find('input[name=coin_num]').val();
+		num = $.trim(num);
+		if (num == '' || isNaN(parseInt(num))){
+			num = this.num;
+		}
+		num = parseInt(num);
+		this.num = num;
+		dialog.find('input[name=coin_num]').val(num);
+	},
+	sendOk:function(el){
+		var el, eid=this.names, coin=0;
+		if (!eid) return;
+		eid = eid.split(",");
+		for (var i=0; i<eid.length; i++){
+			el = $("#edition"+eid[i]);
+			coin = parseInt(el.html());
+			if(isNaN(coin)){coin = 0}
+			if(this.iscoin == '+'){
+				el.html(coin + this.num);
+			}else{
+				el.html(coin - this.num);
+			}
+			$("#judge"+eid[i]).html('<font color="Red">{lang edition_audit_1}</font>');
+		}
+	},
+	
+	//设置、取消优秀、删除， flag= excellent | unexcellent | remove
+	set: function(flag, el){
+		var self=this, action='excellent';
+		if (flag == "remove") action = "remove";
+		var url = "index.php?admin_edition-"+action+"-"+Math.random();
+		var eids=this.getId();
+		if('' == eids) {
+			$.dialog.box('immageshow', '注意', '{lang docmanageSelectDoc}');
+			return false;
+		}
+		$(el).attr("disabled", true);
+		$.ajax({
+			url:url,
+			dataType:'html',
+			data:{eids:eids, flag:flag},
+			timeout:25000,
+			type: 'POST',
+			success:function(data){
+				if('OK' == data){
+					eids = eids.split(",");
+					for(var i=0;i<eids.length;i++){
+						if(flag == 'excellent'){
+							$("#excellent"+eids[i]).html(Coin.img);
+						}else if(flag == 'unexcellent'){
+							$("#excellent"+eids[i]).html('');
+						}else{
+							$("#tr"+eids[i]).remove();
+							if ($("tr[id^=tr]").size() == 0){
+								location.reload();
+							}
+						}
+					}
+				}else{
+					$.dialog.box('immageshow', '注意', '操作失败!');
+				}
+			},
+			complete:function(xmlhttp, status){
+				switch(status){
+					case 'success':
+						
+					break;
+					case 'error':
+					
+					break;
+					case 'timeout':
+					
+					break;
+				}
+				$(el).attr("disabled", false);
+			}
+		});
+		return false;
+	}
+}
+</script>
+{template admin_footer} 

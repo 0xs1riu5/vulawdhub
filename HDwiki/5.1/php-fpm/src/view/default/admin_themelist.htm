@@ -1,0 +1,79 @@
+{template admin_header}
+<script language="javascript">
+function download(appid){
+	if(confirm('{lang style_download}')){
+		window.location.href="index.php?admin_theme-install-"+appid;
+	}
+}
+function add(pathname){
+	if(confirm('{lang styleaddconfirm}')==false){
+		return false;
+	}else{
+		window.location='index.php?admin_theme-add-'+pathname.replace(/\./g,'*');
+	}
+}
+</script>
+
+<p class="map">插件/模板：在线安装</p>
+<p class="sec_nav">模板：
+    <a href="index.php?admin_theme"><span>设置默认风格</span></a>
+    <a href="index.php?admin_theme-create" ><span>创建风格</span></a>
+    <a href="index.php?admin_theme-list" class="on"><span>在线安装</span></a>
+    <a href="index.php?admin_theme-edit" ><span>模板编辑</span></a>
+</p>
+    
+<h3 class="col-h3">在线安装</h3>
+<p class="col-p bold"><span class="m-l8">已有模板：</span>
+    <!--{loop $toaddlist $style}-->
+        <a href="#" onclick="return add('{$style['ename']}')">$style['zname']($style['ename'])</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <!--{/loop}-->
+</p>
+
+<div class="mar-t12 navcontainer">
+  <ul class="navlist">
+    <li><a href="index.php?admin_theme-list-time" <!--{if $orderby=='time'}--> id="current"<!--{/if}-->>{lang attachTime}</a></li>
+    <li><a href="index.php?admin_theme-list-install" <!--{if $orderby=='install'}--> id="current"<!--{/if}-->>{lang orderbyinstall}</a></li>
+    <li><a href="index.php?admin_theme-list-downloads" <!--{if $orderby=='downloads'}--> id="current"<!--{/if}-->>{lang orderbydownload}</a></li>
+    
+	<li><a href="http://kaiyuan.hudong.com/template.php" target="_blank">更多模板</a></li>
+  </ul>
+</div>
+<!--此处模板只提供10个排序的模板，其他的点击更多，到主站模板下载，并根据不同版本的后台，自动筛选模板-->
+ <div class="model">	
+<!--{loop $stylelist $i $style}-->
+    <div class="model-cell"> 
+        <dl>
+            <dt><a href="{$style['name']}" target="_blank"><img src="{$style['image']}" class="plugin_img"/></a></dt>
+            <dd class="link_orange bold"><a href="{$style['homepage']}" target="_blank">{$style['name']}</a> version: {$style['version']}  BY <a href="{$style['homepage']}" target="_blank"> {$style['copyright']}</a></dd>
+            <dd>{lang focusmanageTag}:
+            <!--{loop $style['tag'] $tag}-->
+            <a href="{$tag_url}{eval echo urlencode(string::hiconv($tag,'utf-8','gbk'))}" target="_blank">{$tag}</a>
+            <!--{/loop}--></dd>
+            <dd>{lang suit_edition}:{$style['suit']}</dd>
+            <dd>{lang install_num}:{$style['install']}<a href="{$style['install_list']}" target="_blank">{lang install_list}</a></dd>
+          <dd>{lang pluginDescript}:{$style['description']}</dd>
+            <dd></dd>
+        </dl>
+        <a class="install" href="javascript:download('{$style['appid']}')"><b class="block">{lang pluginDownload}</b>({$style['downloads']})</a>
+        <b class="angle_t_l"></b>
+        <b class="angle_t_r"></b>
+        <b class="angle_b_l"></b>
+        <b class="angle_b_r"></b>
+    </div>
+
+<!--{/loop}-->
+</div>
+<table cellpadding="0" cellspacing="0" width="750px">
+<tr>
+	<td id="pagebar"><p class="fenye a-r"> {$departstr} </p></td>
+</tr>
+</table>
+
+<dl class="col-dl">
+<dt>提示信息：
+</dt>
+<dd>{lang styledeclare}</dd>
+</dl>
+
+
+{template admin_footer}

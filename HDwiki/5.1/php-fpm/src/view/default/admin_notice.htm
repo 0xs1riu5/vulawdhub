@@ -1,0 +1,53 @@
+{template admin_header}
+<script type="text/javascript">
+	function savenotice(type){
+		if('mysubmit'==type){
+			if(''==$.trim($('#notice').val())){
+				$('#notice').focus();
+				alert('{lang notice_msg4}');
+				return;
+			}
+		}else{
+			$('#notice').val('');
+		}
+		document.noticeform.submit();
+	}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-notice" id="current">{lang sitenotice}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+	<tr>
+		<td  height="40" colspan="2" b><strong>{lang message_title}</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2" ><li>{lang notice_msg1}</li></td>
+	</tr>
+	<tr>
+		<td colspan="2"  ><li>{lang notice_msg2}</li></td>
+	</tr>
+	<tr>
+		<td height="50" colspan="2" valign="top" ><li>{lang notice_msg3}</li></td>
+	</tr>
+</table>
+    	<form name="noticeform"   method="post" action="index.php?admin_setting-notice"  >
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list" >
+				<tr>
+				  <td width="90%" height="150" valign="middle" >
+					<textarea name="notice"  id="notice" rows="15" cols="80" >{$setting[site_notice]}</textarea></td>
+				</tr>
+				<tr>
+				  <td >&nbsp;&nbsp;&nbsp;&nbsp;
+				    <input class="btn"  type="button" name="mysubmit" value="{lang cacheSaveConfig}"  onclick="javascript:savenotice('mysubmit');" />
+			        <input class="btn"  type="button" name="myreset" value="{lang usergroupDefault}"  onclick="javascript:savenotice('myreset');" /></td>
+				</tr>
+			</table>
+		</form>
+{template admin_footer}

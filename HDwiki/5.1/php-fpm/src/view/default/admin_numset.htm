@@ -1,0 +1,21 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-credit" id="current">{lang message_indexnum}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+
+{template admin_footer}

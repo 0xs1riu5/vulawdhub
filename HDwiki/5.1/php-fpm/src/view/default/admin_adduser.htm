@@ -1,0 +1,62 @@
+{template admin_header}
+<script type="text/javascript" src="js/function.js"></script>
+<script type="text/javascript">
+function docheck(){
+	var tip='';
+	var g_uname_minlength = "{$setting[name_min_length]}"||3;
+	var g_uname_maxlength = "{$setting[name_max_length]}"||15;
+	var username=$.trim($('#username').val());
+	var password=$.trim($('#password').val());
+	var email=$.trim($('#email').val());
+	if(username==""){
+		alert("{lang adduserEmptyNick}");
+		$('#username').focus();
+		return false;
+	}
+	if( bytes(username) <g_uname_minlength || bytes(username) >g_uname_maxlength){
+		tip = "{lang adduserIllegalNick}".replace('3',g_uname_minlength).replace('15',g_uname_maxlength);
+		alert(tip);
+		$('#username').focus();
+		return false;
+	}
+	if(password==""){
+		alert("{lang adduserPassword}");
+		$('#password').focus();
+		return false;
+	}
+	if(bytes(password)<1||bytes(password)>32){
+		alert("{lang adduserIllegalPassword}");
+		$('#password').focus();
+		return false;
+	}	
+	if( !email.match(/^[\w\.\-]+@([\w\-]+\.)+[a-z]{2,4}$/ig) ){
+		alert("{lang adduserIllegalEmail}");
+		return false;
+	}
+	return true;
+}
+</script>
+<p class="map">用户管理：管理用户</p>
+<p class="sec_nav">管理用户： <a href="index.php?admin_user"> <span>用户列表</span></a> <a href="index.php?admin_user-uncheckeduser"><span>待审核用户</span></a> <a href="index.php?admin_user-add" class="on"><span>添加用户</span></a></p>
+<h3 class="col-h3">添加用户</h3>
+<form action="index.php?admin_user-add" method="post" name="userform"  onSubmit="return docheck();">
+	<ul class="col-ul ul_li_sp m-t10"><input type='hidden' name='id' value="$gift['id']"/>
+		<li><span>{lang commonUserName}</span><input type="text" class="inp_txt m-r10" name='username' id="username" value="" size='50' /><b class="red">*</b></li>
+		<li><span>{lang commonPassword}</span><input type='password' class="inp_txt m-r10" name='password' id="password" value="" maxlength="32" size='52'/><b class="red">*</b></li>
+		<li><span>{lang usermanageEmail}</span><input type="text" class="inp_txt m-r10" name='email' id="email" value="" size='50' /><b class="red">*</b></li>
+		<li><span>{lang usermanageUserGroup}</span>
+			<select name="groupid">
+				<!--{loop $usergrouplist $usergroup}-->
+					<option value="{$usergroup[groupid]}">{$usergroup[grouptitle]}</option>
+				<!--{/loop}-->
+			</select>
+		<b class="red">*</b>
+		</li>
+		<li class="m-t10">
+			<input name="submit" class="inp_btn" type="submit" value="{lang commonOK}"/>
+			<input name="reset" class="inp_btn" type="reset" value="{lang commonReset}" />
+		</li> 
+		</li>
+	</ul>
+</form>
+{template admin_footer}

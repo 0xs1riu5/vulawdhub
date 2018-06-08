@@ -1,0 +1,327 @@
+{template header}
+<style type="text/css">
+<!--
+.li_pading li {
+	margin:5px 0;
+	text-align:left;
+}
+-->
+</style>
+<script type="text/javascript">
+	$._dialog.defaults.height=180;
+	$._dialog.defaults.width=250;
+	function colorTip(tip){
+			return '<font color=red>'+tip+'</font>';
+		}
+	
+	num={$num};
+	function closepop(){
+		var name='tips';
+		$.dialog.close(name);
+	}
+	function bytes(str){
+		var len=0;
+		for(var i=0;i<str.length;i++){
+			if(str.charCodeAt(i)>127){
+				len++;
+			}
+			len++;
+		}
+		return len;
+	}
+	function updateverifycode(num) {
+		var img = "index.php?user-code-"+Math.random();
+		$('#verifycode'+num).attr("src",img);
+	}
+		
+	function aegis_comment(id){
+		$.post("index.php?comment-aegis",{'id':id},function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			if(message>='0'){
+				$('#a_'+id).html(parseInt($('#a_'+id).html())+1);
+			}else{
+				$.dialog.box('tips', '评论提示', colorTip('{lang commentClickError}'));
+				setTimeout("closepop()",1000);
+			}
+			$('#ae_'+id).html('{lang commentAegised}');
+		});
+	}
+	
+	function oppose_comment(id){
+		$.post("index.php?comment-oppose",{'id':id},function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			if(message>='0'){
+				$('#o_'+id).html(parseInt($('#o_'+id).html())+1);
+			}else{
+				$.dialog.box('tips', '评论提示', colorTip('{lang commentClickError}'));
+				setTimeout("closepop()",1000);
+			}
+			$('#op_'+id).html('{lang commentOpposed}');
+		});
+	}
+	
+	function del_comment(id){
+		$.ajax({
+			url: "index.php?comment-remove",
+			cache: false,
+			dataType: "xml",
+			type:"post",
+			//async:false, 
+			data: {id:id,did:$doc['did'],page:$('#page').html()},
+			success: function(xml){
+				var	message=xml.lastChild.firstChild.nodeValue;
+				if(message!=0){
+					$.dialog.box('tips', '评论提示',colorTip( '{lang commentDelSucess}'));
+					if(message!=1){
+						$('#c_content').html(message);
+					}else{
+						$("#c_"+id).parent().parent().empty().hide();
+					}
+					$('#c_num').html(+$('#c_num').html()-1);
+				}else{
+					$.dialog.box('tips', '评论提示', colorTip('{lang commentWrong}'));
+				}
+				setTimeout("closepop()",1000);
+			}
+		});
+	}
+	
+	function edit_comment(id){
+		var comment=$('#c_'+id).html();
+		var msg="<ul class='li_pading'><li><textarea id='editcomment' name='editcomment' cols='50' rows='6' >"+comment+"</textarea></li>"+
+		"<li><input name='editsubmit' class='btn_inp' type='button' onclick='saveedit("+id+")' value='{lang submit}'>"+
+		"&nbsp;&nbsp;&nbsp;<input name='cancel' class='btn_inp' type='button' onclick='closepop()' value='{lang cancel}'></li>";
+		$.dialog.box('tips', '评论修改', msg);
+	}
+	
+	function reply_comment(id){
+		var msg="<ul class='li_pading'><li><textarea id='replycomment' name='replycomment' cols='50' rows='6' ></textarea></li><!--{if $setting[checkcode] != "3"}--><li class='yzm'>验证码：<input name='code' id='code2' type='text' size='4' /><label class='m-lr8'><img id='verifycode2' src='' onclick='updateverifycode(2);' /></label><a href='javascript:updateverifycode(2);'>换一个</a></li><!--{/if}-->"+"<li><!--{if $anonymity}--><input id='replyanonymity' name='replyanonymity' type='checkbox'/>&nbsp;{lang commentAnonymity}<!--{/if}-->&nbsp;&nbsp;&nbsp;&nbsp;{lang commentLongSize}</li>"+"<li><input name='replysubmit' class='btn_inp' type='button' onclick='submitcomment("+id+")' value='{lang submit}'>"+"&nbsp;<input name='cancel' class='btn_inp' type='button' onclick='closepop()' value='{lang cancel}'></li></ul>";
+		$.dialog.box('tips', '评论回复', msg);
+		setTimeout("updateverifycode(2)",100);
+	}
+	
+	function report_comment(id){
+		var msg="<div>{lang commentReportReason}</div><textarea id='reportcomment' name='reportcomment' cols='50' rows='4' ></textarea><br/>				<input name='reportcomment' class='btn_inp' type='button' onclick='save_report("+id+")' value='{lang submit}'>&nbsp;&nbsp;&nbsp;<input name='cancel' type='button' class='btn_inp' onclick='closepop()' value='{lang cancel}'>";
+		$.dialog.box('tips', '评论举报', msg);
+	}
+	
+	function save_report(id){
+		var report=$("#reportcomment").val();
+		if(report==""){
+		    alert('{lang reportCannone}');
+		    return false;
+		}else if(bytes(report)>200){
+			alert('{lang reportLongSize}');
+			return false;
+		}
+		$.post("index.php?comment-report",{'id':id,'report':report},function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			if(message>=0){
+				$.dialog.box('tips', '评论信息', colorTip('{lang reportSucess}'));
+			}else{
+				$.dialog.box('tips', '评论信息', colorTip('{lang reportFaile}'));
+			}
+			setTimeout("closepop()",1000);
+		});
+	}
+	
+	function saveedit(id){
+		var comment=$.trim($('#editcomment').val());
+		if(comment==""){
+			alert("{lang commentCannone}");
+			return false;
+		}else if(bytes(comment)>200){
+			alert('{lang commentLongSize}');
+			return false;
+		}
+		$.ajax({
+			url: "index.php?comment-edit",
+			dataType: "xml",
+			type:"post",
+			//async:false, 
+			data: {id:id,comment:comment},
+			success: function(xml){
+				var message=xml.lastChild.firstChild.nodeValue;
+				if(message=='1'){
+					$.dialog.box('tips', '评论信息', colorTip('{lang commentEditSucc}'));
+					$('#c_'+id).html(comment);
+				}else{
+					$.dialog.box('tips', '评论信息', colorTip('{lang commentWrong}'));
+				}
+				setTimeout("closepop()",1000);
+			}
+		});
+	}
+	
+	function submitcomment(re_id){
+		var comment,anonymity;
+		if(re_id==0){
+			var com_obj=$('#comment');
+			var code=$('#code').val();
+			anonymity =$('#anonymity').attr('checked')?1:0;
+		}else{
+			var com_obj=$('#replycomment');
+			var code=$('#code2').val();
+			anonymity =$('#replyanonymity').attr('checked')?1:0;
+		}
+		comment=$.trim(com_obj.val());
+		if(comment==""){
+		    alert('{lang commentCannone}');
+		    return false;
+		}else if(bytes(comment)>200){
+			alert('{lang commentLongSize}');
+			return false;
+		}
+		var c_class=((+$('#c_num').html()) % num==0||$('#page').html()>1)?1:0;
+		$.ajax({
+			url: "index.php?comment-add-{$doc['did']}",
+			dataType: "xml",
+			type:"post",
+			//async:false, 
+			data: {comment:comment,c_class:c_class,re_id:re_id,anonymity:anonymity,code:code},
+			success: function(xml){
+				var message=xml.lastChild.firstChild.nodeValue;
+				if(message.substr(0,2)!='0;'){
+					$.dialog.box('tips', '评论提示', colorTip('{lang commentComSucess}'));
+					if(c_class){
+						$('#c_content').html(message);
+					}else{
+						move(0,message,'add');
+					}
+					$('#c_num').html(+$('#c_num').html()+1);
+					com_obj.val("");
+					updateverifycode(1);
+					$.post("index.php?hdapi-hdautosns-comment-{$doc['did']}", {comment:comment.substr(0, 40)});
+				}else{
+					$.dialog.box('tips', '评论提示',colorTip(message.substr(2)));
+				}
+				setTimeout("closepop()",1000);
+			}
+		});
+		
+		
+	}
+	
+	function move(id,message,type){
+		if(type=='add'){
+			var n=1;
+			var stand=num-1;
+			for(i=stand;i>id;i--){
+				var content = $('#li_'+(i-1)).html();
+				$('#li_'+i).html(content);
+				if(content!==''){
+					$('#li_'+i).show();
+				}else{
+					$('#li_'+i).hide();
+				}
+			}
+			$('#li_0').html(message).show();
+		}
+	}
+</script>
+
+<div id="map" class="hd_map"><a href="{WIKI_URL}">{$setting[site_name]}</a> &gt;&gt;{lang belongToCate} &gt;&gt;<label id='catenavi'><!--{loop $navigation $category}--> <a href="{url category-view-$category['cid']}" target=""> {$category['name']} </a>&nbsp;&nbsp;<!--{/loop}--></label></div>
+
+
+<div class="l w-710 o-v comment">
+
+<h1 class="title_thema bor_b-ccc" id="comment_tit"><strong class="l comment_thema" id="changename">{lang commentAbout}{$doc[title]}{lang commentTo}<span id="c_num">{$doc[comments]}</span>{lang commentUnit}</strong><a href="{url doc-view-$doc['did']}" class="r">{lang backDoc}</a></h1>
+		<!--
+		<cite><cite><span><label class="l">白色市<a href="#" target="_blank">momo</a>发表于40分钟前</label> 1楼</span>不错，去瞧瞧！！！赞！！！！</cite>
+		<span><label class="l">白色市<a href="#" target="_blank">momo</a>发表于40分钟前</label> 1楼</span>不错，去瞧瞧！！！赞！！！！</cite>
+		-->
+<div id="c_content">
+	<span id="page" style="display:none">{$page}</span>
+	<!--{loop $comments $key $comment}-->
+	<!--{if $comment!==''}-->
+	<div class="columns" id="li_{$key}">
+		<span class="col-h2" id="u_{$comment['id']}">
+		<!--{if $comment['authorid']==0 }-->{$comment['author']}<!--{else}--><a href="{url user-space-$comment['authorid']}" >{$comment['author']}</a><!--{/if}-->
+		</span>
+		<span class="more gray">{lang commentTime}<span class="gray">{$comment['time']}</span></span>
+		<div class="com_content">
+
+		{$comment[reply]}
+		<p class="m-t10" id="c_{$comment['id']}">{$comment[comment]}</p>
+		<p class="a-r">
+			<span><img src="style/default/down.gif"/><span id="op_{$comment['id']}"><a href="javascript:void(0)"  onclick="oppose_comment({$comment['id']});">{lang commentOppose}</a></span>(<span id="o_{$comment['id']}">{$comment['oppose']}</span>)</span>
+			
+			<span><img src="style/default/up.gif"/><span id="ae_{$comment['id']}"><a href="javascript:void(0)"  onclick="aegis_comment({$comment['id']});" >{lang commentAegis}</a></span>(<span id="a_{$comment['id']}">{$comment['aegis']}</span>)</span>
+			
+			<!--{if $audit_add}-->	
+			<span><img src="style/default/reply.gif"/><a href="javascript:void(0)"  onclick="reply_comment({$comment['id']});">{lang commentReply}</a></span>
+			<!--{/if}-->
+			
+			<span><img src="style/default/jubao.gif"/><a href="javascript:void(0)"  onclick="report_comment({$comment['id']});">{lang commentReport}</a></span>
+			
+			<!--{if $audit_edit}-->
+			<span><img src="style/default/ament.gif"/><a href="javascript:void(0)"  onclick="edit_comment({$comment['id']});">{lang commentEdit}</a></span>
+			<!--{/if}-->
+			
+			<!--{if $audit_delete}-->
+			<span><img src="style/default/delete.gif"/><a href="javascript:void(0)"  onclick="del_comment({$comment['id']});">{lang commentDel}</a></span>
+			<!--{/if}-->
+		  
+		</p>
+		</div>
+	</div>
+	<!--{else}-->
+	<div class="columns" id="li_{$key}" style="display:none"></div>
+	<!--{/if}-->
+	<!--{/loop}-->
+	
+	<!--{if $departstr}-->
+	<div id="fenye" class="a-r m-t10"> 
+	{$departstr}
+	</div>
+	<!--{/if}-->
+	
+</div>
+
+
+<!--{if $audit_add}-->
+<div class="columns comment">
+	<h2 class="col-h2">{lang commentForDoc}</h2>
+	<form id="formcomment" name="formcomment"  method="POST" onsubmit="javascript:return false;">
+	<ul class="col-ul">
+		<li>
+		<textarea id="comment" name="comment" rows="10" cols="95"  class="area"></textarea> 
+		<!--{if $anonymity}-->
+		<input id='anonymity' name="anonymity" type="checkbox"  />&nbsp;{lang commentAnonymity}
+		<!--{/if}-->
+		</li>
+		
+		<li class="yzm">
+		<!--{if $setting['checkcode'] != "3"}-->
+		<span>{lang verifyCode}: </span><input name="code" id="code" type="text" /><label class="m-lr8"><img id="verifycode1" src="{url user-code}" onclick="updateverifycode(1);" /></label><a href="javascript:updateverifycode(1);">{lang changeAnother}</a>
+		<!--{/if}-->&nbsp;&nbsp;&nbsp;&nbsp;
+		<span>{lang shouldNotice}: {lang commentLongSize}</span>
+		</li>
+		
+		<li>
+		<input name="button" type="button" value="{lang publishComment}" onclick="submitcomment(0)" class="btn_inp"/>
+		</li>
+		
+	</ul>
+	</form>
+	
+</div>
+<!--{/if}-->
+</div>
+
+
+<div class="r w-230">
+    <div id="block_right">{block:right/}</div>
+    
+	<div class="columns">
+	<h2 class="col-h2">{lang sameCateDoc}</h2>
+	<ul class="col-ul">
+		<!--{loop $categorydocs $key $doc}-->
+		<li><a href="{url doc-view-$doc['did']}" target="_blank">{$doc['title']}</a></li>
+		<!--{/loop}-->
+	</ul>
+	
+	</div>
+</div>
+
+{template footer}

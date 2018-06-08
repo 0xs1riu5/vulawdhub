@@ -1,0 +1,10 @@
+<div id="category" class="columns o-v bor-c_dl category" bid="{$bid}">
+	<!--{loop $data['subcategory'] $category}-->
+        <dl class="i6-ff p-b10 bor_no">
+          <dt><a href="{url category-view-$category['parent']['cid']}" >{$category['parent']['name']}</a></dt>
+          <!--{if isset($category['child'])}-->
+          <!--{loop $category['child']  $child}--><dd><a href="{url category-view-$child['cid']}">{$child['name']}</a></dd><!--{/loop}-->
+         <!--{/if}-->
+        </dl>
+	<!--{/loop}-->
+</div>

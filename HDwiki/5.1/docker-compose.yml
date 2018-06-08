@@ -1,0 +1,20 @@
+version: '2'
+services:
+
+
+  php5-app_hdwiki:
+    build: ./php-fpm
+    image: s1r1u5/hdwiki:5.1
+    restart: always
+    links: 
+        - mysql-hdwiki:db
+    ports:
+        - 8002:80
+    depends_on:
+        - mysql-hdwiki
+
+
+  mysql-hdwiki:
+      build: ./mysql
+      image: luffy/mysql_hdwiki:5.7
+

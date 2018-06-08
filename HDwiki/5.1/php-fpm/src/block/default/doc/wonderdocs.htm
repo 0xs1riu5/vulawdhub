@@ -1,0 +1,16 @@
+<div id="jcct" class="columns jcct {$data['config']['style']}" bid="{$bid}">
+<h2 class="col-h2">{lang wonderDoc}</h2>
+<a href="{url list-focus-3}"  class="more">{lang more}</a>
+<!--{if isset($data['fistwonderdoc'])}-->
+    <dl class="col-dl">
+        <dd class="l"><a href="{url doc-view-$data['fistwonderdoc']['did']}"  class="a-img"><img title="{$data['fistwonderdoc']['title']}" src="{$data['fistwonderdoc']['image']}"/></a></dd>
+        <dt class="h1 a-c bold"><a href="{url doc-view-$data['fistwonderdoc']['did']}" title="{$data['fistwonderdoc']['title']}" >{$data['fistwonderdoc']['shorttitle']}</a></dt>
+        <dd><p>{$data['fistwonderdoc']['summary']}...<a href="{url doc-view-$data['fistwonderdoc']['did']}" >{lang readFullText}&gt;&gt;</a></p></dd>
+    </dl>
+    <ul class="col-ul point font-14 link_blue ">
+        <!--{loop $data['list'] $wondoc}-->
+            <li><a href="{url doc-view-$wondoc['did']}" >{$wondoc['title']}</a>: {$wondoc['summary']}</li>
+        <!--{/loop}-->
+    </ul>
+<!--{/if}-->
+</div>

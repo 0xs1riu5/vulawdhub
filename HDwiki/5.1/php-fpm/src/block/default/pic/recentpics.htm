@@ -1,0 +1,10 @@
+<div id="block-pic-getlist-{$bid}" class="columns tpbk i6-ff {$data['config']['style']}" bid="{$bid}">
+	<h2 class="col-h2">{lang blockpic}</h2>
+	<a href="{url pic-piclist}"  class="more">{lang more}</a>
+	<!--{loop $data['list'] $picname}-->
+		<div class="jc_tj">
+			<a href="{url pic-view-{$picname['id']}-{$picname['did']}}"  class="a-img"><img title="{$picname['description']}"  src="{$picname['attachment']}"/></a>
+			<p class="a-c"><a href="{url pic-view-{$picname['id']}-{$picname['did']}}" >{$picname['description']}</a></p>
+		</div>
+	<!--{/loop}-->
+</div>

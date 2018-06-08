@@ -1,0 +1,63 @@
+{template admin_header}
+<script type="text/javascript">
+var checknull = function(){
+	if($.trim($('#website').val())==""){
+		alert("{lang msgJsNullWebName}");
+		$('#website').focus();
+		return false;
+	}
+	if($.trim($('#siteurl').val())==""){
+		alert("{lang msgJsNullWebUrl}");
+		$('#siteurl').focus();
+		return false;
+	}else if(isURL($.trim($('#siteurl').val()))==false){
+		alert("{lang msgUrlWrong}");
+		$('#siteurl').focus();
+		return false;
+	}
+	if($.trim($('#description').val())==""){
+		alert("{lang msgJsNullDesc}");
+		$('#description').focus();
+		return false;
+	}
+	if($('#description').val().length>50){
+		alert('友情链接简介不可超过50个字！');
+		$('#description').focus();
+		return false;
+	}
+	if($('#website').val().length>20){
+		alert('友情链接名称不可超过20个字！');
+		$('#website').focus();
+		return false;
+	}
+}
+var isURL=function(str_url){
+	return(/(?:https?:\/\/)?\w+\.\w+/.test(str_url));
+}
+</script>
+<p class="map">内容管理：友情链接</p>
+<p class="sec_nav">友情链接：
+<a href="index.php?admin_friendlink"><span>友情链接列表</span></a>
+<a href="index.php?admin_friendlink-add"  class="on"><span><!--{if $link['name']}-->编辑友情链接<!--{else}-->添加友情链接<!--{/if}--></span></a>
+</p>
+
+<h3 class="col-h3"><!--{if $link['name']}-->编辑友情链接<!--{else}-->添加友情链接<!--{/if}--></h3>
+<ul class="col-ul tips">
+<li class="bold">提示: </li>
+<li>hdwiki为您提供添加友情链接的功能 </li>
+<li>修改数据可能会带来前台链接显示的错乱，请慎重修改每一个链接的数据! </li>
+<li>可以通过鼠标上下拖动来实现链接的排序! </li>
+</ul>
+
+<form name="linkedit" id="linkedit" method="post" action="<!--{if !$link['name']}-->index.php?admin_friendlink-add<!--{else}-->index.php?admin_friendlink-edit<!--{/if}-->" onsubmit="return checknull();">
+<ul class="col-ul ul_li_sp m-t10">
+<li><span>友情链接名称</span><input type = 'hidden' name='id' id='id' value="{$link['id']}"/><input type='text' class="inp_txt m-r10" name='website' id="website" value="{$link['name']}" size='50' maxlength='20'><b class="red">*</b></li>
+<li><span>友情链接URL</span><input type='text' class="inp_txt m-r10" name='siteurl' id="siteurl" value="<!--{if $link['url']}-->{$link['url']}<!--{else}-->http://<!--{/if}-->" size='50'><b class="red">*</b></li>
+<li><span>友情链接简介</span><input type='text' class="inp_txt m-r10" name='description' id="description" value="{$link['description']}" size='50' maxlength='50'><b class="red">*</b></li>
+<li><span>Logo图片url：</span><input type='text' class="inp_txt m-r10" name='logourl' id="logourl" value="<!--{if $link['logo']}-->{$link['logo']}<!--{else}-->http://<!--{/if}-->" size='50'></li>
+<li><input name="linksubmit" type="submit" value="确 定"  class="inp_btn"/>
+</li>
+</ul>
+</form>
+
+{template admin_footer}

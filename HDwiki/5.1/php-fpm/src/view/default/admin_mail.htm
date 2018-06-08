@@ -1,0 +1,89 @@
+{template admin_header}
+<p class="map">全局：扩展设置</p>
+<p class="sec_nav">扩展设置：
+    <a href="index.php?admin_setting-sec" > <span>防灌水设置</span></a>
+    <a href="index.php?admin_setting-anticopy" ><span>防采集设置</span></a>
+    <a href="index.php?admin_setting-mail" class="on"><span>{lang mailConfig}</span></a>
+    <a href="index.php?admin_setting-noticemail"><span>{lang noticeMailConfig}</span></a>
+    <a href="index.php?admin_banned" ><span>IP禁止</span></a>
+    <a href="index.php?admin_setting-passport" ><span>通行证设置</span></a>
+    <a href="index.php?admin_setting-ucenter"><span>UCenter设置</span></a>
+    <a href="index.php?admin_setting-ldap"><span>LDAP设置</span></a>
+</p>
+<h3 class="col-h3">{lang mailConfig}</h3>
+
+<form method="POST" action="index.php?admin_setting-mail" >
+	<table class="table">
+		<tr>
+			<td width="300px"><span>{lang commonParameterName}</span></td>
+			<td><span>{lang commonParameterValue}</span></td>
+		</tr>
+		<tr>
+			<td><span>{lang defaultMailFrom}</span></td>
+			<td><input class="inp_txt" name="maildefault"  maxlength="50" value="{if !empty($mailconfig['maildefault'])}{$mailconfig['maildefault']}{else}{$adminemail}{/if}" /></td>
+		</tr>
+		<tr>
+			<td><span>{lang mailMethod}</span></td>
+			<td>
+				
+				<label><input class="radio" name="mailsend" value="1"{if $mailconfig['mailsend'] == 1 || empty($mailconfig['mailsend'])} checked="checked"{/if} onclick="$('#hidden1, #hidden2').hide();" type="radio"> {lang methodMail}</label><br />
+				<label><input class="radio" name="mailsend" value="2"{if $mailconfig['mailsend'] == 2} checked="checked"{/if} onclick="$('#hidden1, #hidden2').show();" type="radio"> {lang methodSMTP}</label><br />
+				<label><input class="radio" name="mailsend" value="3"{if $mailconfig['mailsend'] == 3} checked="checked"{/if} onclick="$('#hidden1').show();$('#hidden2').hide();" type="radio"> {lang methodWinSMTP}</label>
+				 
+			</td>
+		</tr>
+		<tbody id="hidden1" {if $mailconfig['mailsend'] == 1 || empty($mailconfig['mailsend'])} style="display:none"{/if}> 
+		<tr>
+			<td>{lang mailSmtpHost}</td>
+			<td><input class="inp_txt" name="mailserver" maxlength="100" value="{$mailconfig['mailserver']}" type="text" /></td>
+		</tr>
+		<tr>
+			<td >{lang mailSmtpPort}</td>
+			<td ><input class="inp_txt" name="mailport" maxlength="100" value="{$mailconfig['mailport']}" type="text" /></td>
+		</tr>
+		
+		</tbody>
+		<tbody id="hidden2"{if $mailconfig['mailsend'] == 1 || $mailconfig['mailsend'] == 3 || empty($mailconfig['mailsend'])} style="display:none"{/if}>
+		<tr>
+			<td >{lang mailSmtpAuth}</td>
+			<td >
+				<label><input type="radio" class="radio" name="mailauth"{if $mailconfig['mailauth'] == 1} checked="checked"{/if} value="1" />{lang commonYes}</label>
+				<label><input type="radio" class="radio" name="mailauth"{if $mailconfig['mailauth'] == 0} checked="checked"{/if} value="0" />{lang commonNo}</label>
+			</td>
+		</tr>
+		<tr>
+			<td >{lang mailSmtpEmail}</td>
+			<td ><input class="inp_txt" name="mailfrom"  maxlength="50" value="{$mailconfig['mailfrom']}"></td>
+		</tr>
+		<tr>
+			<td >{lang mailSmtpUser}</td>
+			<td ><input class="inp_txt" name="mailauth_username" maxlength="32" value="{$mailconfig['mailauth_username']}"></td>
+		</tr>
+		<tr>
+			<td >{lang mailSmtpPass}</td>
+			<td ><input type="password" class="inp_txt" name="mailauth_password" maxlength="32" value="{$mailconfig['mailauth_password']}"></td>
+		</tr>
+		</tbody>
+		<tr>
+			<td><span>{lang mailDelimiter}</span></td>
+			<td>
+				<label><input class="radio" name="maildelimiter"{if $mailconfig['maildelimiter'] == 1} checked="checked"{/if} value="1" type="radio"> {lang delimiterRN}</label><br />
+				<label><input class="radio" name="maildelimiter"{if $mailconfig['maildelimiter'] == 0} checked="checked"{/if} value="0" type="radio"> {lang delimiterN}</label><br />
+				<label><input class="radio" name="maildelimiter"{if $mailconfig['maildelimiter'] == 2} checked="checked"{/if} value="2" type="radio"> {lang delimiterR}</label>				 
+			</td>
+		</tr>		
+		<tr>
+			<td><span>{lang mailUsername}</span></td>
+			<td>
+				<label><input type="radio" class="radio" name="mailusername"{if $mailconfig['mailusername'] == 1} checked="checked"{/if} value="1" />{lang commonYes}</label>
+				<label><input type="radio" class="radio" name="mailusername"{if $mailconfig['mailusername'] == 0} checked="checked"{/if} value="0" />{lang commonNo}</label>
+			</td>
+		</tr>		
+		
+		<tr>
+			<td colspan="2"><input class="inp_btn" type="submit" value="{lang commonSave}" name="mailsubmit" /></td>
+		</tr>
+	</table>
+</form>
+
+{template admin_footer}

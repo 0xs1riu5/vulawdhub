@@ -1,0 +1,40 @@
+{template admin_header}
+<p class="map">站内统计：{lang siteoperationlog}</p>
+<h3 class="col-h4 m-t10">{lang siteoperationlog}</h3>
+<ul class="col-ul tips">
+<li class="bold">提示: </li>
+<li>用来记录超级管理员，词条管理员登陆网站后台以后，在网站后台进行的所有操作。</li>
+</ul>
+
+<table class="table">
+	<tr>
+		<td >$prdate{lang docmanageDoclist} <b>{$lognum}</b>{lang log_lognum}{if $lognum>$num} {lang log_pagenow}<b style="color:#FF0000">{$page}</b> {lang log_display} {$line}-{$endline}{lang log_lognum}{/if}</td>
+	</tr>
+</table>
+
+<form name="focusdoc" id="focusdoc"  method="POST">
+<table class="table">
+	<tr>
+		<td style="width:80px;">{lang commonUserName}</td>
+		<td style="width:80px;">{lang usermanageUserGroup}</td>
+		<td style="width:80px;">{lang commonIPAddress}</td>
+		<td style="width:110px;">{lang commonlogdate}</td>
+		<td style="width:180px;">{lang commonlogoperation}</td>
+		<td>{lang commonlogother}</td>
+	</tr>
+	<!--{loop $getlog $log}-->
+	<tr>
+		<td>$log[1]</td>
+		<td>$log[2]</td>
+		<td>$log[3]</td>
+		<td>$log[4]</td>
+		<td>$log[5]</td>
+		<td>$log[6]</td>
+	</tr>
+	<!--{/loop}-->
+	<tr>
+		<td colspan="6" align="left"><p class="fenye a-r"> {$departstr} </p></td>
+	</tr>
+</table>
+</form>
+{template admin_footer}

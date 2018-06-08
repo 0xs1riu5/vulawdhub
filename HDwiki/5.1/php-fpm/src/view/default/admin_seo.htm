@@ -1,0 +1,85 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	var seo_headers = $.trim($('#seo_headers').val());
+	if(seo_headers != '' && seo_headers.indexOf('<')!=0){
+		alert('{lang seoConfigTitle}');
+		$('#seo_headers').focus();
+		return false;
+	}
+}
+</script>
+<p class="map">全局：基本设置</p>
+<p class="sec_nav">基本设置：<a href="index.php?admin_channel"> <span>频道管理</span></a> <a href="index.php?admin_setting-cache"> <span>缓存设置</span></a> <a href="index.php?admin_setting-seo" class="on"><span>SEO设置</span></a> <a href="index.php?admin_setting-code" ><span>验证码</span></a> <a href="index.php?admin_setting-time" ><span>时间设置</span></a> <a href="index.php?admin_setting-cookie" ><span>COOKIE设置</span></a> <a href="index.php?admin_setting-credit" ><span>经验金币设置</span></a> <a href="index.php?admin_setting-logo" ><span>LOGO设置</span></a></p>
+<h3 class="col-h3">SEO设置</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示：</li>
+	<li>{lang seo_msg1}</li>
+	<li>{lang seo_msg2}</li>
+</ul>
+<form method="POST" action="index.php?admin_setting-seo" onSubmit="return docheck();">
+	<table class="table">
+			<td width="150px;"><span>{lang seoConfigUrl}</span></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td >{lang seoConfigUrlFormat}: {lang seoConfigExam}</td>
+			<td>
+				<select name="seo_prefix">
+				<!--{if $seoconfig['seo_type']==0}-->
+					<option value="index.php?" <!--{if $seoconfig['seo_prefix']=="index.php?"}-->selected<!--{/if}-->>index.php?</option>
+					<!--{if $servertype=="APACHE"}--><option value="?" <!--{if $seoconfig['seo_prefix']=="?"}-->selected<!--{/if}-->>?</option><!--{/if}-->
+					<!--{if $seoconfig['seo_prefix']==""}-->
+					<option value="" selected>{lang seoConfigNull}</option>
+					<!--{/if}-->
+				<!--{else}-->
+					<option value="" selected>{lang seoConfigNull}</option>
+				<!--{/if}-->
+				</select>doc-view-1
+				<select name="seo_suffix">
+					<option value="" <!--{if $seoconfig['seo_suffix']==""}-->selected<!--{/if}-->>{lang seoConfigNull}</option>
+					<option value=".htm" <!--{if $seoconfig['seo_suffix']==".htm"}-->selected<!--{/if}-->>.htm</option>
+					<option value=".html" <!--{if $seoconfig['seo_suffix']==".html"}-->selected<!--{/if}-->>.html </option>
+					<option value=".shtml" <!--{if $seoconfig['seo_suffix']==".shtml"}-->selected<!--{/if}-->>.shtml </option>
+					<option value=".tpl" <!--{if $seoconfig['seo_suffix']==".tpl"}-->selected<!--{/if}-->>.tpl </option>
+					<option value=".asp" <!--{if $seoconfig['seo_suffix']==".asp"}-->selected<!--{/if}-->>.asp </option>
+					<option value=".jsp" <!--{if $seoconfig['seo_suffix']==".jsp"}-->selected<!--{/if}-->>.jsp </option>
+					<option value=".php" <!--{if $seoconfig['seo_suffix']==".php"}-->selected<!--{/if}-->>.php </option>
+					<option value=".do" <!--{if $seoconfig['seo_suffix']==".do"}-->selected<!--{/if}-->>.do </option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td ><span>{lang seoConfigRewrite}</span></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>{lang seoConfigRewrite}</td>
+			<td><input type="radio" name="seo_type" value="1" <!--{if $seoconfig['seo_type']==1}-->checked<!--{/if}--> />{lang commonYes}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="seo_type" value="0" <!--{if $seoconfig['seo_type']==0}-->checked<!--{/if}--> />{lang commonNo}&nbsp;&nbsp;&nbsp;&nbsp;<p /></td>
+		</tr>
+		<tr>
+			<td>{lang seoConfigRewriteType}</td>
+			<td><input type="radio" name="seo_type_doc" value="1" <!--{if $seoconfig['seo_type_doc']==1}-->checked<!--{/if}--> />{lang seoConfigRewriteType1}&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="seo_type_doc" value="0" <!--{if $seoconfig['seo_type_doc']==0}-->checked<!--{/if}--> />{lang seoConfigRewriteType2}<p /></td>
+		</tr>
+		<tr>
+			<td>{lang seoConfigKeyword}:</td>
+			<td><input type="text" class="inp_txt" name="seo_title" value="{$seoconfig['seo_title']}" size="52"/></td>
+		</tr>
+		<tr>
+			<td>Meta keywords:</td>
+			<td><input type="text" class="inp_txt" name="seo_keywords" value="{$seoconfig['seo_keywords']}" size="52"/></td>
+		</tr>
+		<tr>
+			<td>Meta Description:</td>
+			<td><input type="text" class="inp_txt" name="seo_description" value="{$seoconfig['seo_description']}" size="52"/></td>
+		</tr>
+		<tr>
+			<td>{lang seoConfigHeaders}:</td>
+			<td><textarea class="textarea" name="seo_headers" id="seo_headers" style="width:300px;" rows="8" cols="47">{$seoconfig['seo_headers']}</textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input class="inp_btn" name="seosubmit" type="submit" value="{lang commonSave}"/></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

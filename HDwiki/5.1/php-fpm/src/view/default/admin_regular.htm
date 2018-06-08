@@ -1,0 +1,203 @@
+{template admin_header}
+<style>
+tr.click{background: #E3EFF9;}
+tr.grouplist{display:none}
+</style>
+<script type="text/javascript">
+var Regular = {
+	id: 0,
+	groupidlist:[],
+	data : {
+	'0':'{lang regularGroupSelect}'
+	<!--{loop $regulargrouplist $regulargroup}-->
+	,'$regulargroup[id]':'$regulargroup[title]'
+	<!--{/loop}-->
+	},
+	
+	makeTab: function(){
+		var html='', data = Regular.data;
+		this.groupidlist = [];
+		for(i in data){
+			this.groupidlist.push(i);
+			html += '<a onclick="Regular.filter('+i+')" href="javascript:;" class="">'+data[i]+'</a> ';
+		}
+		
+		$('#regulargrouptab').html(html);
+	},
+	
+	filter: function(groupid){
+		$("tr.grouplist").hide().filter('[name=group'+groupid+']').show();
+		$('#selectRegularGroup').hide();
+	},
+	
+	makeselect : function(id){
+		var html ='';
+		if (id == 'selectRegularGroup'){
+			html = '<select onchange="Regular.set(this.value)" id="selectRegularGroup" '
+				 + 'style="position:absolute;left:-100px;top:-100px;z-index:10000;">';
+		}else{
+			html = '<select onchange="Regular.filter(this.value)" id="selectTab" >';
+		}
+		
+		this.groupidlist = [];
+		for(i in this.data) {
+			this.groupidlist.push(i);
+			html += '<option value="'+i+'">'+this.data[i]+'</option>';
+		}
+		
+		html += '</select>';
+		return html;
+	},
+	
+	select_tr: function(id){
+		if (this.id != id){
+			$('#tr'+this.id).removeClass('click');
+			
+		}else if ($('#tr'+id).hasClass('click')){
+			$('#tr'+id).removeClass('click');
+			$('input[name=id]').attr('disabled',false).attr('checked',false);
+			this.id = 0;
+			return ;
+		}
+		this.id = id;
+		$('#tr'+id).toggleClass('click');
+		$('input[name=id]').attr('disabled',false).attr('checked',false);
+		$('input[value='+id+']').attr('disabled',true);
+		
+		var url = 'index.php?admin_regular-getrelation-'+id+'-both';
+		$.get(url, function(data, state){
+			data = $.trim(data);
+			
+			if ('' != data && 'OK' == data.substr(0,2)){
+				var idlist = data.substr(2).split('|');
+				var idrightlist = idlist[0].split(',');
+				var idleftlist = idlist[1].split(',');
+				for(i in idleftlist){
+					$('input[value='+idleftlist[i]+']').attr('disabled',true);
+				}
+				for(i in idrightlist){
+					$('input[value='+idrightlist[i]+']').attr('checked',true);
+				}
+			}
+		});
+	},
+	
+	setChecked: function(E){
+		if (this.id == 0)return false;
+		var leftid = this.id, rightid=E.value, action;
+		action = E.checked ? 'add':'remove';
+		var url = 'index.php?admin_regular-setrelation-'+action+'-'+leftid+'-'+rightid;
+		$.get(url, function(data, state){
+			data = $.trim(data);
+			if ('OK' != data){
+				alert(data);
+			}
+		});
+	},
+	
+	click: function(E){
+		this.id = $(E).attr('id');
+		var groupid = $(E).attr('name');
+		
+		var S = $('#selectRegularGroup');
+		var pos = $(E).offset();
+		pos.top += $(E).height()/2 - 10;
+		S.css(pos).val(groupid).show();
+	},
+	
+	set: function(groupid){
+		this.submit(this.id, groupid);
+	},
+	
+	submit: function(id, groupid){
+		$.post('index.php?admin_regular-editone', {id:id, groupid:groupid}, function(data, state){
+			if ('OK' == data){
+				var text = Regular.data[groupid];
+				$('#'+id).text(text).attr('name', groupid);
+				$('#tr'+id).attr('name', 'group'+groupid);
+				$('#selectRegularGroup').hide();
+			}else{
+				
+			}
+		});
+	}
+}
+
+$(document).ready(function(){
+	$('body').append(Regular.makeselect("selectRegularGroup"));
+	
+	$('td.grouptitle').each(function(){
+		var groupid = $(this).attr('name');
+		var text = Regular.data[groupid];
+		text = '<a href="javascript:;">'+ text+'</a>'
+		$(this).click(function(){
+			Regular.click(this);
+		});
+	});
+	
+	$('#regulargrouptab').html(Regular.makeselect("selectTab"));
+	
+	if ($("tr.grouplist").filter('[name=group0]').size() > 0){
+		Regular.filter(0);
+	}else{
+		var groupid = Regular.groupidlist[1];
+		$("#selectTab").val(groupid);
+		Regular.filter(groupid);
+	}
+	
+	
+});
+
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_regular" id="current">{lang regularMng}</a></li>
+		<li><a href="index.php?admin_regular-grouplist">{lang regularGroup}</a></li>
+		<li><a href="index.php?admin_regular-groupset">{lang regularGroupSet}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+	<td>{lang regularTip}</td>
+  </tr>
+  <tr>
+	<td height="40">{lang regularInGroup}: <span id="regulargrouptab">
+	<select><option>Loading....</option></select>
+	</span></td>
+  </tr>
+  <tr>
+    <td valign="top">
+	<form name="regularform" id="regularform" action="index.php?admin_regular-remove"  method="post" onsubmit="return docheck();">
+	  <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr class="list_title">
+          <td width="200">{lang regularName}</td>
+          <td width="260">{lang regularExpr}</td>
+		  <td width="100">{lang regularInGroup}</td>
+		  <td>{lang regularRelation}</td>
+		  <td></td>
+        </tr>
+  		<!--{loop $regularlist $regular}-->
+       	 <tr class='b grouplist' id="tr{$regular[id]}" name="group{$regular[regulargroupid]}">
+ 	      <td><a href="javascript:Regular.select_tr($regular[id]);">$regular[name]</a></td>
+          <td>$regular[regular]</td>
+		  <td class="grouptitle" id="{$regular[id]}" name="{$regular[regulargroupid]}">
+		  $regular[groupname]
+		  </td>
+		  <td><input type="checkbox" name="id" value="{$regular[id]}" onclick="return Regular.setChecked(this)"/></td>
+		  <td></td>
+        </tr>
+        <!--{/loop}-->
+      </table>
+      </form>
+      </td>
+  </tr>
+</table>
+
+{template admin_footer}

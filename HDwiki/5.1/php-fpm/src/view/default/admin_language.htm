@@ -1,0 +1,85 @@
+{template admin_header}
+<script type="text/javascript">
+function check(){
+	if(confirm('确定修改语言文件？')==false){
+		return false;
+	}else{
+		document.formlang.action='index.php?admin_language-editlang'+'-'+$('#langtype').val()+'-'+$('#langtag').val();
+		document.formlang.submit();
+	}
+}
+
+function checklang(){
+	if(!$('#langname').val() || !$('#langcon').val()){
+		alert("内容不能为空!");
+		return false;
+	}else{
+		document.formaddlang.action='index.php?admin_language-addlang';
+		document.formaddlang.submit();
+	}
+}
+</script>
+<p class="map">插件/模板：网站语言编辑</p>
+<h3 class="col-h4">网站语言编辑</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示: </li>
+	<li>模版变量名称必须是字母、数字、下划线组成，且由字母或者下划线开头。</li>
+	<li>模版变量名称不能重复。</li>
+	<li>语言文件位置在\lang\zh\，可手动进行修改。</li>
+	<li>模版变量在htm页面上的使用格式为&#123;lang abc&#125;,其中abc为变量名称</li>
+</ul>
+<form method="post" action="index.php?admin_language">
+<ul class="col-ul ul_li_sp m-t10">
+	<li><span>搜索范围</span>
+		<select name="langtype" id="langtype">
+			<option value="0" <!--{if !$langtype}-->selected="selected"<!--{/if}-->>前台语言包</option>
+			<option value="1" <!--{if $langtype==1}-->selected="selected"<!--{/if}-->>后台语言包</option>
+		</select>
+	</li>
+	<li><span>关键字</span><input name="keyword" type="text" class="inp_txt m-r10" /></li>
+	<li><input name="Submit1" type="submit" value="搜 索"  class="inp_btn"/></li>
+</ul>
+</form>
+<table class="table lang">
+<thead>
+	<tr>
+		<td style="width:240px;">模板变量名</td>
+		<td style="width:300px;">网站语言</td>
+		<td></td>
+	</tr>
+</thead>
+	<form method="post" name="formlang" action="" onsubmit="return check();">
+	<!--{loop $lang $key $value}-->
+	<tr>
+		<td>$key<input type="hidden" name="langtag" id="langtag" value="$langtag"></td>
+		<td>
+		<input name="lang[$key]" type="text" class="inp_txt" value="{eval echo htmlspecialchars($value)}" /></td>
+		<td></td>
+	</tr>
+	<!--{/loop}-->
+	<tr>
+		<td>&nbsp;</td>
+		<td colspan="2"><input name="Submit1" type="submit" value="确认修改" class="inp_btn2"/></td>
+	</tr>
+	</form>
+	<form method="post" name="formaddlang" action="" onsubmit="return checklang();">
+	<tr>
+		<td colspan="3"><label class="add">新增自定义变量</label></td>
+	</tr>
+	<tr>
+		<td>选择添加位置：
+		<select name="addlangtype">
+			<option value="0" <!--{if !$langtype}-->selected="selected"<!--{/if}-->>前台语言包</option>
+			<option value="1" <!--{if $langtype==1}-->selected="selected"<!--{/if}-->>后台语言包</option>
+		</select>
+	</td>	
+		<td><input name="langname" id="langname" type="text"  class="inp_txt2 w-210"  value="" /></td>
+		<td><input name="langcon" id="langcon" type="text"  class="inp_txt"  value="" /></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>	
+		<td colspan="2"><input name="Submit1" type="submit" value="提 交" class="inp_btn2"/></td>
+	</tr>
+	</form>
+</table>
+{template admin_footer}

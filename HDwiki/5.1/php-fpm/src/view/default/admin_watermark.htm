@@ -1,0 +1,211 @@
+{template admin_header}
+<script type="text/javascript" src="js/pickcolor.js"></script>
+<script type="text/JavaScript">
+function textareasize(obj) {
+	if(obj.scrollHeight > 90) {
+		obj.style.height = obj.scrollHeight + 'px';
+	}
+}
+function doSubmit(){
+	var img_width_small=$.trim($('#img_width_small').val());
+	img_width_small = parseInt(img_width_small);
+	if(isNaN(img_width_small)==true){
+		alert('您输入的词条小图尺寸【宽】不是一个有效数字！');
+		$('#img_width_small').focus();
+		return false;
+	}
+	var img_height_small=$.trim($('#img_height_small').val());
+	img_height_small = parseInt(img_height_small);
+	if(isNaN(img_height_small)==true){
+		alert('您输入的词条小图尺寸【高】不是一个有效数字！');
+		$('#img_height_small').focus();
+		return false;
+	}
+	var img_width_big=$.trim($('#img_width_big').val());
+	img_width_big = parseInt(img_width_big);
+	if(isNaN(img_width_big)==true){
+		alert('您输入的词条大图尺寸【宽】不是一个有效数字！');
+		$('#img_width_big').focus();
+		return false;
+	}
+	var img_height_big=$.trim($('#img_height_big').val());
+	img_height_big = parseInt(img_height_big);
+	if(isNaN(img_height_big)==true){
+		alert('您输入的词条大图尺寸【高】不是一个有效数字！');
+		$('#img_height_big').focus();
+		return false;
+	}
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<p class="map">全局：内容设置</p>
+<p class="sec_nav">内容设置： <a href="index.php?admin_setting-index"> <span>首页设置</span></a> <a href="index.php?admin_setting-listdisplay"><span>列表设置</span></a> <a href="index.php?admin_setting-watermark" class="on"><span>图片设置</span></a> <a href="index.php?admin_setting-docset" ><span>词条设置</span></a> <a href="index.php?admin_setting-search" ><span>搜索设置</span></a> <a href="index.php?admin_setting-attachment" ><span>附件设置</span></a></p>
+<h3 class="col-h3">图片设置</h3>
+<form id="waterform" method="POST" action="index.php?admin_setting-watermark" onsubmit="return doSubmit();">
+<table class="table">
+		<tr>
+			<td style="width:600px"><span>{lang auto_picture}</span>{lang auto_picture_desc}</td>
+			<td >
+				<label><input type="radio" name="setting[auto_picture]" value="1" {if $basecfginfo['auto_picture']=='1'}checked{/if}/>{lang commonYes}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[auto_picture]" value="0" {if $basecfginfo['auto_picture']=='0'}checked{/if}/>{lang commonNo}</label>
+			</td>
+		</tr>
+		<tr>
+			<td><span>词条大图尺寸</span>建议在300～600之间，默认是300*300</td>
+			<td>
+				宽 <input type="input" class="inp_txt2" id="img_width_big" name="setting[img_width_big]" value="$basecfginfo['img_width_big']" size="5" maxlength="3"/> *
+				高 <input type="input" class="inp_txt2" id="img_height_big" name="setting[img_height_big]" value="$basecfginfo['img_height_big']" size="5" maxlength="3"/>
+				像素
+			</td>
+		</tr>
+		<tr>
+			<td ><span>词条小图尺寸</span>建议在100～200之间，默认是140*140</td>
+			<td>
+				宽 <input type="input" class="inp_txt2" id="img_width_small" name="setting[img_width_small]" value="$basecfginfo['img_width_small']" size="5" maxlength="3"/> *
+				高 <input type="input" class="inp_txt2" id="img_height_small" name="setting[img_height_small]" value="$basecfginfo['img_height_small']" size="5" maxlength="3"/>
+				像素
+			</td>
+		</tr>
+	<tr>
+		<td><span>{lang water_type}</span>
+			{lang water_notice1}
+		</td>
+		<td>
+			<ul>
+				<li><input name="settingsnew[imagelib]" value="0" <!--{if $settingsnew[imagelib]=="0"}-->checked="checked"<!--{/if}--> onclick="$('#imagelibext').attr('style','display:none');" type="radio"> GD</li>
+				<li><input name="settingsnew[imagelib]" value="1" <!--{if $settingsnew[imagelib]=="1"}-->checked="checked"<!--{/if}--> onclick="$('#imagelibext').attr('style','display:');" type="radio"> ImageMagick</li>
+			</ul>
+		</td>
+	</tr>
+	<tr id="imagelibext" <!--{if $settingsnew[imagelib]!=="1"}-->style="display:none"<!--{/if}-->>
+		<td><span>{lang im_path}</span>{lang water_notice2}</td>
+		<td ><input name="settingsnew[imageimpath]" value="$settingsnew[imageimpath]" class="inp_txt" type="text"></td>
+	</tr>
+	<tr>
+	<td><span>{lang water_mark}</span>{lang water_notice3}</td>
+	<td >
+		<table>
+				<tr>
+					<td colspan="3"><input name="settingsnew[watermarkstatus]" value="0" <!--{if $settingsnew[watermarkstatus]=="0"}-->checked="checked"<!--{/if}--> type="radio">{lang no_water}</td>
+				</tr>
+				<tr>
+					<td><input name="settingsnew[watermarkstatus]" value="1" <!--{if $settingsnew[watermarkstatus]=="1"}-->checked="checked"<!--{/if}--> type="radio"> {lang top_left}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="2" <!--{if $settingsnew[watermarkstatus]=="2"}-->checked="checked"<!--{/if}--> type="radio"> {lang top_mid}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="3" <!--{if $settingsnew[watermarkstatus]=="3"}-->checked="checked"<!--{/if}--> type="radio"> {lang top_right}</td>
+				</tr>
+				<tr>
+					<td><input name="settingsnew[watermarkstatus]" value="4" <!--{if $settingsnew[watermarkstatus]=="4"}-->checked="checked"<!--{/if}--> type="radio"> {lang mid_left}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="5" <!--{if $settingsnew[watermarkstatus]=="5"}-->checked="checked"<!--{/if}--> type="radio"> {lang mid_mid}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="6" <!--{if $settingsnew[watermarkstatus]=="6"}-->checked="checked"<!--{/if}--> type="radio"> {lang mid_right}</td>
+				</tr>
+				<tr>
+					<td><input name="settingsnew[watermarkstatus]" value="7" <!--{if $settingsnew[watermarkstatus]=="7"}-->checked="checked"<!--{/if}--> type="radio"> {lang botom_left}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="8" <!--{if $settingsnew[watermarkstatus]=="8"}-->checked="checked"<!--{/if}--> type="radio"> {lang botom_mid}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="9" <!--{if $settingsnew[watermarkstatus]=="9"}-->checked="checked"<!--{/if}--> type="radio"> {lang botom_right}</td>
+				</tr>
+		</table>
+	</td>
+	</tr>
+	<tr >
+		<td><span>{lang water_pic_size}</span>{lang water_notice4}</td>
+		<td ><input name="settingsnew[watermarkminwidth]" value="$settingsnew[watermarkminwidth]" class="inp_txt2" size="8" type="text"> X <input name="settingsnew[watermarkminheight]" value="$settingsnew[watermarkminheight]" class="inp_txt2" size="8" type="text"></td>
+	</tr>
+	<tr>
+		<td><span>{lang water_pic_type}</span>{lang water_notice5}</td>
+		<td >
+			<ul>
+				<li><input name="settingsnew[watermarktype]" value="0" <!--{if $settingsnew[watermarktype]=="0"}-->checked="checked"<!--{/if}-->  onclick="$('#watermarktypeext').attr('style','display:none');" type="radio" checked="checked">{lang gif_type}</li>
+				<li><input name="settingsnew[watermarktype]" value="1" <!--{if $settingsnew[watermarktype]=="1"}-->checked="checked"<!--{/if}-->  onclick="$('#watermarktypeext').attr('style','display:none');" type="radio">{lang png_type}</li>
+				<li><input name="settingsnew[watermarktype]" value="2" <!--{if $settingsnew[watermarktype]=="2"}-->checked="checked"<!--{/if}-->  onclick="$('#watermarktypeext').attr('style','display:');" type="radio">{lang text_type}</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang water_pic_trans}</span>{lang water_notice6}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktrans]" <!--{if $settingsnew[watermarktrans] !=="0"}-->value="{$settingsnew[watermarktrans]}" <!--{else}--> value="65" <!--{/if}-->  type="text"></td>
+	</tr>
+	
+	<tr>
+		<td><span>{lang water_pic_quality}</span>{lang water_notice7}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarkquality]" <!--{if $settingsnew[watermarkquality] !=="0"}-->value="$settingsnew[watermarkquality]" <!--{else}--> value="80" <!--{/if}-->  type="text"></td>
+	</tr>
+
+	<tbody id="watermarktypeext" <!--{if $settingsnew[watermarktype]!=="2"}-->style="display:none"<!--{/if}-->>
+	<tr>
+		<td><span>{lang water_text_text}</span>{lang water_notice8}</td>
+		<td ><textarea class="textarea" rows="6" onkeyup="textareasize(this)" name="settingsnew[watermarktext][text]" id="settingsnew[watermarktext][text]" cols="50" >$settingsnew[watermarktext][text]</textarea></td>
+	</tr>
+	<tr>
+		<td><span>{lang water_text_font}</span>{lang water_notice9}</td>
+		<td>
+			<select name="settingsnew[watermarktext][fontpath]">
+			<!--{loop $ttf $value}-->
+				<option value="{$value}" <!--{if $value==$settingsnew[watermarktext][fontpath]}--> selected <!--{/if}--> >{$value}</option>
+			<!--{/loop}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang water_text_size}</span>{lang water_notice10}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktext][size]" value="$settingsnew[watermarktext][size]"  type="text"></td>
+	</tr>
+	<tr>
+		<td><b>{lang water_text_angle}</b><br/>{lang water_notice11}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktext][angle]" value="$settingsnew[watermarktext][angle]"  type="text"></td>
+	</tr>
+	</tr>
+	<tr>
+		<td><span>{lang water_text_color}</span>{lang water_notice12}</td>
+		<td >
+			<input class="inp_txt2" size="8" name="settingsnew[watermarktext][color]" id="left_framcolor" maxlength="7" value="$settingsnew[watermarktext][color]" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+			<input type="button" onclick="PickColor.init(this)" style="background-color:{$settingsnew[watermarktext][color]}" class="choose_c"/>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang water_text_shadowx}</span>{lang water_notice13}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktext][shadowx]" value="$settingsnew[watermarktext][shadowx]" type="text"></td>
+	</tr>
+	<tr>
+		<td><span>{lang water_text_shadowy}</span>{lang water_notice14}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktext][shadowy]" value="$settingsnew[watermarktext][shadowy]"  type="text"></td>
+	</tr>
+	<tr>
+		<td><span>{lang water_text_shadow_color}</span>{lang water_notice15}</td>
+		<td>
+			<input class="inp_txt2" size="8" name="settingsnew[watermarktext][shadowcolor]" id="leftitle_bgcolor" maxlength="7" value="$settingsnew[watermarktext][shadowcolor]" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+			<input type="button" onclick="PickColor.init(this)" style="background-color:{$settingsnew[watermarktext][shadowcolor]}" class="choose_c"/></td>
+	</tr>
+	<tr>
+		<td><span>{lang water_text_translatex}</span>{lang water_notice16}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktext][translatex]" value="$settingsnew[watermarktext][translatex]"  type="text"></td>
+	</tr>
+	<tr>
+		<td><span>{lang water_text_translatey}</span>{lang water_notice17}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktext][translatey]" value="$settingsnew[watermarktext][translatey]"  type="text"></td>
+	</tr>
+	<tr>
+		<td ><span>{lang water_text_skewx}</span>{lang water_notice18}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktext][skewx]" value="$settingsnew[watermarktext][skewx]"  type="text"></td>
+	</tr>
+	<tr>
+		<td ><span>{lang water_text_skewy}</span>{lang water_notice19}</td>
+		<td ><input class="inp_txt2" size="8" name="settingsnew[watermarktext][skewy]" value="$settingsnew[watermarktext][skewy]"  type="text"></td>
+	</tr>
+</tbody>
+	<tr>
+		<td colspan="2">
+		<input class="inp_btn" name="settingsubmit" value="{lang submit}" type="submit">
+		<input class="inp_btn" onclick="
+		$('#waterform').attr('action','index.php?admin_setting-preview'); 
+		$('#waterform').attr('target','_blank'); 
+		$('#waterform').submit();
+		$('#waterform').attr('action','index.php?admin_setting-watermark'); 
+		$('#waterform').attr('target',''); 
+		return false;" 
+		value="预览" type="button"> 
+		</td>
+	</tr>
+</table>
+</form>
+{template admin_footer}

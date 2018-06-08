@@ -1,0 +1,8 @@
+<div bid="{$bid}" class="columns rpct {$data['config']['style']}">
+	<h2 class="col-h2">{lang hotCommDoc}</h2>
+	<ul class="col-ul">
+		<!--{loop $data['hotcomment'] $key $doc}-->
+		<li><a href="{url doc-view-$doc['did']}" target="_blank">{$doc['title']}($doc['num'])</a></li>
+		<!--{/loop}-->
+	</ul>
+</div>

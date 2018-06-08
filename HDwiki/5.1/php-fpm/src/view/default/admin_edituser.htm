@@ -1,0 +1,36 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	var reg = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+    if( reg.test($('#email').val()) == false ){
+        alert("{lang adduserIllegalEmail}");
+        return false;
+    }
+    return true;
+}
+</script>
+<p class="map">用户管理：管理用户</p>
+<p class="sec_nav">管理用户： <a href="index.php?admin_user"> <span>用户列表</span></a> <a href="index.php?admin_user-uncheckeduser"  ><span>待审核用户</span></a> <a href="index.php?admin_user-add" ><span>添加用户</span></a> <a href="index.php?admin_user-edit-{$user[uid]}" class="on"><span>编辑用户</span></a></p>
+<h3 class="col-h3">{lang usermanageEditUser}</h3>
+
+<form action="index.php?admin_user-edit" method="post" name="userform"  onSubmit="return docheck();">
+	<ul class="col-ul ul_li_sp m-t10"><input type='hidden' name='id' value="$gift['id']"/>
+		<li><span>{lang commonUserName}</span>{$user[username]}<input type="hidden" name="uid" value="{$user[uid]}"></li>
+		<li><span>{lang commonPassword}</span><input type='password' class="inp_txt m-r10" name='password' id="password" value="" size='50' /><b class="red">*</b></li>
+		<li><span>{lang usermanageEmail}</span><input type="text" class="inp_txt m-r10" name='email' id="email" value="{$user[email]}" size='50' /><b class="red">*</b></li>
+		<li><span>{lang usermanageUserGroup}</span>
+             <select name="groupid">
+				<!--{loop $usergrouplist $usergroup}-->
+				 	<option value="{$usergroup[groupid]}" <!--{if $usergroup[groupid]==$user[groupid]}-->selected<!--{/if}--> >{$usergroup[grouptitle]}</option>
+				<!--{/loop}-->
+              </select>
+		<b class="red">*</b>
+		</li>
+		<li class="m-t10">
+            <input name="submit" class="inp_btn" type="submit" value="{lang commonOK}"/>
+            <input name="reset" class="inp_btn" type="reset" value="{lang commonReset}" />
+		</li> 
+		</li>
+	</ul>
+</form>
+{template admin_footer}

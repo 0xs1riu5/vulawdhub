@@ -1,0 +1,165 @@
+{template admin_header}
+<script type="text/javascript" src="js/ui/ui.core.js"></script>
+<script type="text/javascript" src="js/ui/ui.sortable.js"></script>
+<script type="text/javascript">
+var beginMoving=false;
+var isDrag = true;
+function doSubmit(){
+	if(confirm('{lang msgJsRefreshCatSeq}')==false){
+		return false;
+	}
+}
+
+function doEditCat(catid,pcid){
+	var catname=$("input[name=cateid\["+catid+"-"+pcid+"\]]").val();
+	window.location="index.php?admin_category-edit-"+catid+"-"+pcid;
+}
+
+function doDelCat(catid){
+	if(confirm('{lang msgJsDelCat}')==false){
+		return false;
+	}else{
+		window.location="index.php?admin_category-remove-"+catid;
+	}
+}
+
+function drag(){
+	isDrag = !isDrag;
+	if (isDrag){
+		$('#list').sortable('enable');
+		$('#switchDrag').val("{lang offSortable}");
+	}else{
+		$('#list').sortable('disable');
+		$('#switchDrag').val("{lang openSortable}");
+	}
+}
+
+$(document).ready(function() {
+	$("#list").sortable({
+		update : function () {
+			var reorderid="";
+			var numValue=$("input[name='order[]']");
+			for(var i=0;i<numValue.length;i++){
+				reorderid+=$(numValue[i]).val()+",";
+			}
+			hiddencid=$("input[name='hiddencid']").val();
+			$.post("index.php?admin_category-reorder",{order:reorderid,hiddencid:hiddencid});
+		}
+	});
+});
+</script>
+<script type="text/javascript">
+	function doSubmit(){
+		var tag=0;
+		$("input[name^='cateid']").each(function(){
+			var catname = $(this).val();
+			catname=$.trim(catname.replace(/<script(.*)>(.*)<\/script>/ig,''));
+			$(this).val(catname);
+			if(""==catname){
+				$(this).attr("style","border:1px #f30 solid;");
+				tag=1;
+			}else{
+				$(this).removeAttr("style");
+			}
+		});
+		if(tag==1){
+			$("#box-show").text('红框区域分类不能为空');
+			$("#box-show").fadeOut(100).fadeIn(100);
+			return false;
+		}else{
+			return true;
+		}
+		
+	}
+	function addInput(){
+		$('#catblock').append("<tr><td><input name=\"catname[]\" class=\"inp_txt2\" type=\"text\" size=\"20\" maxlength=\"40\" />&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"javascript:delInput(this)\">{lang commonDel}</a></td></tr>");
+	}
+
+	function delInput(obj){
+	//	j[0].removeChild(obj.parentNode);
+		$(obj).parent().parent().remove();
+	}
+</script>
+<p class="map">内容管理：分类管理</p>
+<p class="sec_nav">分类管理： <a href="index.php?admin_category-list" class="on"  > <span>{lang magManageCat}</span></a> <a href="index.php?admin_category-add"  ><span>{lang magAddCat}</span></a> <a href="index.php?admin_category-merge"  ><span>{lang magUniteCat}</span></a> </p>
+<h3 class="col-h3">{lang magManageCat}</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示: 	</li>
+	<li>可以通过鼠标上下拖动来实现分类的排序!</li>
+	<li class="m-t10"><input id="switchDrag" type="button" class="inp_btn2" value="{lang offSortable}" onclick="drag()"/></li>
+</ul>
+
+<H3 class="col-h4 m-t10">分类 : <a href="index.php?admin_category-list">{lang msgCatContents}</a> <!--{if is_array($catnavi)}--><!--{loop $catnavi $tid $tcat}-->
+	&gt;&gt; <a href="index.php?admin_category-list-{$tcat[cid]}">{$tcat[name]}</a> <!--{/loop}--><!--{/if}-->
+</H3>
+<form name="orderlist" method="POST" action="index.php?admin_category-batchedit" onsubmit="return doSubmit();">
+	<input type="hidden" name="hiddencid" value="{$pid}" />
+	<table class="table" style="margin:0px;padding:0px;">
+		<colgroup>
+			<col  style="width:160px;"></col>
+			<col  style="width:120px;"></col>
+			<col  style="width:120px;"></col>
+			<col  style="width:120px;"></col>
+			<col></col>
+		</colgroup>
+		<thead>
+		<tr>
+			<td>{lang magCatName}</td>
+			<td >{lang msgViewChildCat}</td>
+			<td>{lang magCatAdd}</td>
+			<td>{lang magCatDel}</td>
+			<td>移动分类</td>
+		</tr>
+		</thead>
+	</table>
+	<ul id="list" style="cursor: hand; cursor: pointer;margin:0px;padding:0px;">
+		{if is_array($cats)}
+		{loop $cats $cid $cat}
+		<li style="list-style:none;margin:0px;padding:0px;line-height:22px;">
+			<table class="table" style="margin:0px;padding:0px;">
+			<colgroup>
+				<col style="width:160px;"></col>
+				<col style="width:120px;"></col>
+				<col style="width:120px;"></col>
+				<col style="width:120px;"></col>
+				<col></col>
+			</colgroup>
+				<tr>
+					<td style="width:120px;"><input name="order[]" type="hidden" value="{$cat[cid]}"/>
+						<input class="inp_txt2" size="20" name="cateid[{$cat[cid]}-{$cat[pid]}]" value="{$cat[name]}"></td>
+					<td style="width:80px;"><a href="index.php?admin_category-list-{$cat[cid]}">{lang msgViewChildCat}</a></td>
+					<td style="width:80px;" ><a href="index.php?admin_category-add-{$cat[cid]}">{lang magAddChildCat}</a></td>
+					<td style="width:80px;" ><a href="#" onclick="doDelCat('{$cat[cid]}');">{lang magCatDel}</a></td>
+					<td><a href="#" onclick="doEditCat('{$cat[cid]}','{$cat[pid]}');">移动分类</a></td>
+				</tr>
+			</table>
+		</li>
+		{/loop}
+		{else}
+		<table class="table">
+			<tr>
+				<td colspan="5">{lang magHaveNoCat}<a href="index.php?admin_category-add">{lang magAddCat}</a></td>
+			</tr>
+		</table>
+		{/if}
+	</ul>
+	<table class="table" id="catblock">
+		<colgroup>
+			<col style="width:300px;"></col>
+			<col></col>
+		</colgroup>
+
+		<tr>
+			<td >
+				<input name="catname[]" class="inp_txt2" type="text" size="20" maxlength="40" value=""/>&nbsp;&nbsp;<input name="Submit1"  type="button" onclick="javascript:addInput()" value="+添加当前分类" class="inp_btn2 m-r10"/>&nbsp;&nbsp;
+			</td>
+			<td></td>
+		</tr>
+		<tfoot>
+			<tr>
+				<td colspan="2"><input name="Submit1" type="submit" value="提 交"  class="inp_btn m-r10"/><span id="box-show" align="left" style="color:red;display:inline;font-weight:normal;"></span></td>
+			</tr>
+		</tfoot>
+	</table>
+</form>
+{template admin_footer}

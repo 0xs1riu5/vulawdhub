@@ -1,0 +1,21 @@
+{template admin_header}
+<p class="map">内容管理：广告管理</p>
+<p class="sec_nav">广告管理：<a href="index.php?admin_adv-default"><span>管理广告</span></a>
+<a href="index.php?admin_adv-config" class="on"><span>设置广告</span></a>
+<a href="index.php?admin_adv-add"><span>添加广告</span></a>
+<a href="index.php?admin_adv-union"><span>加入广告联盟</span></a>
+</p>
+<h3 class="col-h3">设置广告</h3>
+
+<form action="index.php?admin_adv-config" method="post">
+	<ul class="col-ul ul_li_sp m-t10">
+		<li><span>{lang adv_config_mode}: </span>
+			<select name="advmode">
+				<option value="0" <!--{if $advmode==0}--> selected <!--{/if}-->>{lang adv_config_mode_0}</option>
+				<option value="1" <!--{if $advmode==1}--> selected <!--{/if}-->>{lang adv_config_mode_1}</option>
+			</select>
+		</li>
+		<li><input name="advsubmit" type="submit" value="确 定" class="inp_btn"/></li>
+	</ul>
+</form>
+{template admin_footer}

@@ -1,0 +1,122 @@
+{template admin_header}
+<script type="text/javascript">
+var manage = function (number){
+	if($("input[name='chkid[]']:checked").length==0){
+		alert('请至少选择一个礼品！');
+		return false;
+	}else{
+		var giftform=$("form[name='giftform']");
+		var tip=['确认删除选中的礼品?','确认设置选中礼品为过期状态?','确认设置选中礼品为可用状态?'];
+		var action=['remove','available-0','available-1'];
+		if(confirm(tip[number])==false){
+			return false;
+		}else{
+			giftform.attr("action", 'index.php?admin_gift-'+action[number]);
+			giftform.submit();
+		}
+	}
+}
+var selectAll = function(){
+	$("input[name='chkid[]']").attr('checked',$("input[name='checkbox']").attr('checked'));
+}
+$(document).ready(function(){
+	$("img").each(function(i){
+		var img = this; 
+		img.title="点击浏览大图";
+	}).click(function(){
+		var url=$(this).attr("src");
+		$.dialog.box('image', '图片浏览', 'img:'+url);
+	});
+});
+
+	
+var docheck = function (){
+	var status=true;
+	if($("#title").val().length>8){
+		alert('礼品名称不能超过8个字。请重新输入！');
+		status=false;
+	}
+	return status;
+}
+</script>
+
+<p class="map">内容管理：礼品商店</p>
+<p class="sec_nav">礼品商店：<a href="index.php?admin_gift" class="on"><span>礼品管理</span></a>
+<a href="index.php?admin_gift-add"><span> 添加礼品</span></a>
+<a href="index.php?admin_gift-price" ><span>礼品价格区间</span></a>
+<a href="index.php?admin_gift-notice"><span>礼品公告</span></a>
+<a href="index.php?admin_gift-log"><span>礼品兑换日志</span></a>
+</p>
+
+<h3 class="col-h3">礼品管理</h3>
+<form name="list" method="post" action="index.php?admin_gift-search" onsubmit="return docheck();">
+	<ul class="col-ul ul_li_sp m-t10">
+		<li><span>价格范围: </span>
+			<select name="type">
+				<option value="-1" >全部</option>
+				<!--{loop $minprice $index $price}-->
+				<option value="$index" {if $type===$index}selected{/if} >$price—$maxprice[$index] 金币</option> 
+				<!--{/loop}-->
+			</select>
+		</li>
+		<li><span>礼品名称: </span><input name="title" id="title" type="text" class="inp_txt m-r10 w-140" size="30" maxlength="8" value="{$title}" /></li>
+		<li><span>添加时间:</span><input readonly  type="text" class="inp_txt w-140" name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" /> — <input readonly type="text" class="inp_txt w-140" name="endtime"   onclick="showcalendar(event, this);" value="{$endtime}" /></li>
+		<li><input name="submit" type="submit" value="搜 索"  class="inp_btn"/></li>
+	</ul>
+</form>
+
+<h3 class="tol_table">[ 共 <b>{$total}</b> 个礼品 ]</h3>
+<form method="post" name='giftform'>
+	<table class="table w-img">
+		<thead>
+			<tr>
+				<td style="width:50px;">选择</td>
+				<td style="width:80px;">礼品图片</td>
+				<td style="width:120px;">礼品名称</td>
+				<td style="width:80px;">所需金币</td>
+				<td style="width:180px;">礼品描述</td>
+				<td style="width:80px;">更新时间</td>
+				<td style="width:60px;">是否过期 </td>
+				<td>操作</td>
+			</tr>
+		</thead>
+		<!-- {if $giftlist} -->
+		<!--{loop $giftlist $gift}-->
+		<tr>
+			<td><input type="checkbox" name="chkid[]" value="{$gift['id']}" /></td>
+			<td>
+				<a class="a-img3">
+				<!--{if file_exists($gift['image'])}-->
+					<img src="{$gift['image']}"/>
+				<!--{else}-->
+					<img src="style/default/plugin.jpg"/>
+				<!--{/if}-->
+				</a>
+			</td>
+			<td>{$gift[title]}</td>
+			<td>{$gift[credit]}</td>
+			<td>{$gift['description']}</td>
+			<td>{$gift['addtime']}</td>
+			<td><!--{if $gift[available]}-->否<!--{else}--><font class="red">是</font><!--{/if}--></td>
+			<td><a href="index.php?admin_gift-edit-$gift['id']">编辑</a></td>
+		</tr>
+		<!--{/loop}-->
+		<!-- {else} -->
+		<tr>
+			<td colspan="8">没有任何礼品！</td>
+		</tr>
+		<!-- {/if} -->
+		
+		<tr>
+			<td><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll();"><label id="tip">全选</label></td>
+			<td colspan="7">
+				<input type="button" value="删除" onclick="manage(0);" class="inp_btn2 m-r10"/>
+				<input type="button" value="设为过期" onclick="manage(1);" class="inp_btn2 m-r10"/>
+				<input type="button" value="设为可用" onclick="manage(2);" class="inp_btn2 m-r10"/>
+			</td>
+		</tr>
+		
+		<tr><td colspan="8"><p class="fenye a-r">{$departstr}</p></td></tr>
+	</table>
+</form>
+{template admin_footer}

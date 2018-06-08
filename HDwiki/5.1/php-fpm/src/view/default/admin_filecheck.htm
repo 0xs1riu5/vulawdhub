@@ -1,0 +1,35 @@
+{template admin_header}
+<p class="map">木马扫描：创建文件校验镜像</p>
+<p class="sec_nav">木马扫描：<a href="index.php?admin_safe"><span>扫描木马</span></a>
+<a href="index.php?admin_filecheck-create"class="on"><span> 创建文件校验镜像</span></a>
+<a href="index.php?admin_safe-list"><span> 上次扫描结果</span></a>
+</p>
+
+<h3 class="col-h3">创建文件校验镜像</h3>
+
+<form method="post" name='giftform' action="index.php?admin_filecheck-create">
+	<table class="table">
+		<tr>
+			<td class="bold a-r" style="width:100px; vertical-align:top;">校验范围</td>
+			<td>
+			<input type="checkbox" name="dirs[]" value="" checked /> <img src="style/default/folder.gif"> ./<br>
+		<!-- {if $dirs} -->
+			<!--{loop $dirs $dir}-->
+			<input type="checkbox" name="dirs[]" value="{$dir}" <!--{if in_array($dir, $checked_dirs)}checked{/if}-->/>  <img src="style/default/folder.gif"> ./{$dir}<br>
+			<!--{/loop}-->
+		<!-- {/if} -->
+			</td>
+		</tr>
+		<tr>
+			<td class="bold a-r">文件类型</td>
+			<td><input type="text" name="filetype" value="php|js|html">多个请用‘|’进行分隔</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" name="submit" value="开始生成" class="inp_btn2 m-r10"/>
+			</td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

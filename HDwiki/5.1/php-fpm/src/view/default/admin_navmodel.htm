@@ -1,0 +1,70 @@
+{template admin_header}
+<script type="text/javascript" src="js/calendar.js"></script>
+<p class="map">内容管理：词条管理</p>
+<p class="sec_nav">词条管理： <a href="index.php?admin_doc"> <span>管理词条</span></a> <a href="index.php?admin_focus-focuslist"  ><span>推荐词条</span></a> <a href="index.php?admin_synonym" ><span>管理同义词</span></a> <a href="index.php?admin_relation" ><span>相关词条</span></a> <a href="index.php?admin_edition"  ><span>版本评审</span></a> <a href="index.php?admin_cooperate" ><span>待完善词条</span></a> <a href="index.php?admin_nav" class="new on"><span>导航模块<label class="red">new</label></span></a></p>
+<h3 class="col-t"><span><a href="index.php?admin_nav">导航模块</a></span><span class="on"><a href="index.php?admin_navmodel">导航模块模型</a></span></h3>
+<div class="nav_model">
+<table class="table">
+	<colgroup>
+		<col style="width:180px;"></col>
+		<col style="width:140px;"></col>
+		<col style="width:120px;"></col>
+		<col></col>
+	</colgroup>
+	<thead>    
+		<tr>
+		   <td>[ 共 <b>{$navmodelnum}</b> 个导航模块模型 ]</td>
+			<td  align="right" colspan="3"><input type="button" class="inp_btn2 m-r10" name="casemanage" onClick="javascript:window.location='?admin_navmodel-add'" value="新增导航模块模型" /></td>
+		</tr>
+		<tr>
+			<td>导航模块模型名称</td>
+			<td>操作</td>
+		</tr>
+	</thead>	
+
+	<!-- {if $navmodellist != null} -->
+	<!--{loop $navmodellist $navmodel}-->
+	<tr>
+		<td><!--{eval echo htmlspecialchars($navmodel['name']);}--></td>
+		<td>
+			<!-- {if $navmodel['status'] == 2} -->
+				<a href="javascript:void(0)" modid="{$navmodel['id']}" status="1" onclick="chstate(this)"  class="m-l8" id="on_{$navmodel['id']}" title="点击开启">[已禁用]</a>
+			<!-- {else} -->
+				<a href="javascript:void(0)" modid="{$navmodel['id']}" status="2" onclick="chstate(this)" class="m-l8" id="on_{$navmodel['id']}" title="点击禁用">[已开启]</a> 
+			<!-- {/if} -->
+		</td>
+	</tr>
+	<!--{/loop}-->
+	<!-- {/if} -->
+	<!-- {if $navmodellist == null} -->
+	<tr>
+		<td colspan="4">{lang docmanageSearchMsg}</td>
+	</tr>
+	<!-- {/if} -->
+	<tr>
+		<td colspan="4"><p class="fenye a-r"> {$departstr} </p></td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">
+function chstate(obj){
+	var modid = $(obj).attr('modid');
+	var status = $(obj).attr('status');
+	if(status == 1){
+		$("#on_"+modid).text('[已开启]');
+		$("#on_"+modid).attr('title', '点击禁用');
+	}else{
+		$("#on_"+modid).text('[已禁用]');
+		$("#on_"+modid).attr('title', '点击开启');
+	}
+	$.post("index.php?admin_navmodel-status", { id: modid, status: status } );
+	status = status == 1 ? 2 : 1;
+	$("#on_"+modid).attr('status', status);
+}
+function delnav(navid){
+	if(confirm('确认删除？')){
+		location.href="index.php?admin_navmodel-del-"+navid;
+	}
+}
+</script>
+{template admin_footer} 

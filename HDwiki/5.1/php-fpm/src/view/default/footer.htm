@@ -1,0 +1,51 @@
+<!--ad start -->
+
+<!--{if isset($advlist[1])&& isset($setting[advmode]) && '1'==$setting[advmode]}-->
+<div class="ad w-950 c-b" id="advlist_1">
+{$advlist[1][code]}
+</div>
+<!--{elseif isset($advlist[1]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+<div class="ad w-950 c-b" id="advlist_1">
+</div>
+<!--{/if}-->
+
+<!--ad end -->
+<div class="c-b"></div>
+<div id="footer"  class="w-950">
+<p id="footer-p"> Copyright @ <a href="http://kaiyuan.hudong.com?hf=hdwiki_copyright_kaiyuan" target="_blank">HDWiKi</a>  V {HDWIKI_VERSION}  &copy;2005-2010 <a href="http://www.hudong.com/?hf=hdwiki_copyright_www" target="_blank" class="link_black">hudong </a> | <a href="http://kaiyuan.hudong.com/sq/site_authorize.php?siteurl={WIKI_URL}">HDwiki Licensed</a> <br/>
+<label>Processed in {$runtime} second(s), {$querynum} queries.</label>
+<!--{if !empty($setting['statcode'])}-->
+<label >
+{$setting['statcode']}
+</label>
+<!--{/if}-->
+</p>
+<span class="r gray"> {lang footerTip1}<!--{if ($setting[time_offset]>0)}-->+<!--{/if}-->{$setting[time_offset]}  {lang footerTip2} {$timenow} <a href="http://www.miibeian.gov.cn/" target="_blank" class="link_black">{$setting[site_icp]} </a></span>
+
+<ul class="link_blue r" id="nav_bot">
+	<!--{if count($channellist[3])!=0}-->
+	<!--{loop $channellist[3] $channel}-->
+	<li><a href="{$channel['url']}">{$channel['name']}</a></li>
+	<!--{/loop}-->
+	<!--{/if}-->
+
+	<li><a href="{url user-clearcookies}" >{lang clearCookies}</a></li>
+	<li><a href="index.php?doc-innerlink-{eval echo urlencode('{lang contactus}')}">{lang contactus}</a></li>
+	<li <!--{if !$setting[style_user_select]}-->class="bg_no"<!--{/if}--> ><a href="javascript:void(0);" onclick="window.scrollTo(0,0);" title="TOP">TOP</a></li>
+	<!--{if $setting[style_user_select]}-->
+		<li class="bg_no">
+		<select name="style" onchange="javascript:window.location='{WIKI_URL}/index.php?index-settheme-'+this.value">
+		<!--{loop $themelist $theme2}-->
+		<option value="{$theme2[path]}" <!--{if ($theme==$theme2[path])}-->selected<!--{/if}--> >{$theme2[name]}</option>
+		<!--{/loop}--></select>
+		</li>
+	<!--{/if}-->
+	</ul>
+</div>
+{template adv}
+<!--{if $adminlogin}--><script type="text/javascript" src="js/api.js"></script><!--{/if}-->
+<!--{if $wk_count}-->
+<script src="http://kaiyuan.hudong.com/count2/count.php?m=count&a=count&key={$wk_count[key]}&domain={$wk_count[domain]}" language="JavaScript"></script>
+<!--{/if}-->
+</body>
+</html>

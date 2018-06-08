@@ -1,0 +1,36 @@
+{template admin_header}
+<script type="text/javascript">
+	function CopyMomoCode(){
+		var momocode=document.getElementById('momo_code');
+		window.clipboardData.setData("Text",momocode.value);
+		alert("{lang momoCodeCopyTip}");
+	}
+	function ReMomoCode(){
+		location.href="index.php?admin_plugin-manage-{$pluginid}";
+	}
+</script>
+
+<p class="map">模板/插件：插件管理</p>
+<p class="sec_nav">互动摸摸：
+<a href="index.php?admin_plugin-manage-{$pluginid}" class="on"><span>{lang commonManage}</span></a>
+<a href="index.php?admin_plugin-setvar-{$pluginid}"><span>{lang commonSet}</span></a>
+<a href="index.php?admin_plugin-hook-{$pluginid}"><span>{lang commonHook}</span></a>
+</p>
+
+<h3 class="col-h3">{lang momoGenCode}</h3>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table">
+	<tr>
+		<td>
+		  <font color="red">提示：可在“设置”中对相关参数进行设置。然后再重新生成代码。</font>
+		  <br>
+		  <textarea style="width:600px;height:200px;" name="momo_code" id="momo_code" onfocus="this.select()" onmouseover="this.focus()">{$momocode}</textarea>
+		  <br>
+		  <font color="Blue">{lang momoGenCodeTip}</font>
+		  <br/><br/>
+		  <input style="width:80px;" class="btn" type="button" onclick="CopyMomoCode();" value="{lang commonCopyCode}"/>
+		  <input style="width:90px;" class="btn" type="button" onclick="ReMomoCode();" value="重新生成代码"/>
+		  <input style="width:80px;" class="btn" type="button" onclick="javascript:history.go(-1);" value="{lang commonGoBack}"/>
+		</td>
+	</tr>
+</table>
+{template admin_footer}

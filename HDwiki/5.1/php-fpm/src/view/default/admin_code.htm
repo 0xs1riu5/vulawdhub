@@ -1,0 +1,27 @@
+{template admin_header}
+<p class="map">全局：基本设置</p>
+<p class="sec_nav">基本设置：<a href="index.php?admin_channel"> <span>频道管理</span></a> <a href="index.php?admin_setting-cache"> <span>缓存设置</span></a> <a href="index.php?admin_setting-seo"><span>SEO设置</span></a> <a href="index.php?admin_setting-code" class="on"><span>验证码</span></a> <a href="index.php?admin_setting-time" ><span>时间设置</span></a> <a href="index.php?admin_setting-cookie" ><span>COOKIE设置</span></a> <a href="index.php?admin_setting-credit" ><span>经验金币设置</span></a> <a href="index.php?admin_setting-logo" ><span>LOGO设置</span></a></p>
+<h3 class="col-h3">验证码</h3>
+<form method="POST" action="index.php?admin_setting-code">
+	<table class="table">
+		<tr>
+			<td width="180px;"><span>{lang checkcode}</span>{lang checkcodeSetInfo}</td>
+			<td>
+				<label><input type="radio"  name="checkcode" value="0" {if $checkcode=='0'}checked{/if}/>{lang checkcodeNumEn}</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label><input type="radio"  name="checkcode" value="1" {if $checkcode=='1'}checked{/if}/>{lang checkcodeNum}</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label><input type="radio"  name="checkcode" value="2" {if $checkcode=='2'}checked{/if}/>{lang checkcodeEn}</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label><input type="radio"  name="checkcode" value="3" {if $checkcode=='3'}checked{/if}/>{lang checkcodeClose}</label>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input class="inp_btn" name="codesubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+				<input class="inp_btn" type="reset" value="{lang commonReset}" />
+			</td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

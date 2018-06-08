@@ -1,0 +1,119 @@
+{template admin_header}
+<p class="map" style="margin-bottom:10px;">在线文件管理</p>
+
+<table cellpadding="0" cellspacing="1" border=0 class="table_list top_manage">
+	<tr>
+	  <form method="post" name="myform" action="index.php?admin_filemanager-newdir">
+		<td class="manage_td">
+			新目录：<input type="text" name="newdir" value="" id="newdir" size="16" class="input_manage" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[\u4E00-\u9FA5]/g,''))"> 
+			<input type="hidden" name='currentdir' value="{$currentdir}">
+			<input type='hidden' name='dir' value="{$dir}">
+			<input type="submit" name="dosubmit" value="确定" class="sub_manage">
+		</td>
+	  </form>
+	  <form method="post" name="myform" action="index.php?admin_filemanager-default">
+		<td style="padding-left:5px;"> 
+			转到目录：
+			<input type="text" name="newchangedir" value="{$dir}" id="newchangedir" size="50" class="input_manage" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[\u4E00-\u9FA5]/g,''))"> 
+			<input type="submit" name="dosubmit" value="确定" class="sub_manage">
+			以/结尾，绝对路径以<font color="Blue">{$rootpath}</font>开头
+		</td>
+	   </form>
+	</tr>
+	<tr>
+		<form method="post" name="myform" action="index.php?admin_filemanager-newfile">
+			<input type="hidden" name="currentdir" value="{$currentdir}">
+			<input type="hidden" name="dir" value="{$dir}">
+			<td class="manage_td">
+				新文件：<input type="text" name="newfile" value="" id="newfile" size="16" class="input_manage"> <input type="submit" name="dosubmit" value="确定" class="sub_manage">
+			</td>
+		</form>
+		<form method="post" name="myform" enctype="multipart/form-data" action="index.php?admin_filemanager-uploadfile">
+			<td colspan="2" style="padding-left:5px;">
+				上传文件：<input type="file" name="uploadfile" id="uploadfile" size="30" class="sub_manage"> &nbsp;&nbsp;
+				覆盖已有<input type="checkbox" name="overfile"> &nbsp;
+				新文件名：<input type="text" name="newname" value="" id="newname" size="10" class="input_manage">(留空保持不变)&nbsp;&nbsp;
+				<input type="hidden" name="currentdir" value="{$currentdir}">
+				<input type="hidden" name="dir" value="{$dir}">
+				<input type="submit" name="dosubmit" value="上传" class="sub_manage">文件将上传到您当前所在目录下
+			</td>
+		</form>
+	</tr>
+</table>
+
+<br>
+
+<table cellpadding="0" cellspacing="1" class="table_list top_manage">
+	<tr>
+		<td colspan=8 class="top_manage_td">
+			当前目录：{$currentdir}&nbsp;&nbsp;{$writeable}
+			&nbsp;&nbsp;<a href="index.php?admin_filemanager-default-<!--{eval echo str_replace('.','*',$dir.'../');}-->">返回上级目录</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?admin_filemanager-default"> 返回主目录</a>
+			&nbsp;共{$dirnum}个目录，{$fnum}个文件
+		</td>
+	</tr>
+    <tr>
+        <td width="251" height=25 align=center><strong>名&nbsp;&nbsp;&nbsp;称</strong></td>
+        <td width="121" align=center><strong>大&nbsp;&nbsp;&nbsp;小</strong></td>
+        <td width="200" align=center><strong>创建时间</strong></td>
+        <td width="200" align=center><strong>修改时间</strong></td>
+        <td width="120" align=center><strong>属&nbsp;&nbsp;&nbsp;性</strong></td>
+        <td width="140" align=center><strong>管理操作</strong></td>
+    </tr>
+
+<!--{loop $dirs $dirrow}-->
+  <tr style="line-height:25px;" id="{$dirrow['name']}" onmouseout="this.style.background='#ffffff'" onmouseover="this.style.background='#e6e6ee'">
+    <td style="text-align:left">
+		&nbsp;&nbsp;<a href="index.php?admin_filemanager-default-<!--{eval echo str_replace('.','*',$dir).$dirrow['name'].'/';}-->" title="进入该文件夹">{$dirrow['name']}</a>
+	</td>
+	<td align=center>{$dirrow['size']}</td>
+	<td align=center>{$dirrow['createtime']}</td>
+	<td align=center>{$dirrow['modifytime']}</td>
+	<td align=center>
+		<a href="index.php?admin_filemanager-chmod-<!--{eval echo str_replace('.','*',$currentdir.urlencode($dirrow['name']));}-->-1-<!--{eval echo str_replace('.','*',$dir);}-->" title="点击更改目录属性">{$dirrow['dirperm']}</a>
+	</td>
+	<td align=center>
+		<a href="javascript:sureDeletedir('{$dirrow['name']}','{$dir}');">删除</a>
+		<a href="index.php?admin_filemanager-rename-<!--{eval echo str_replace('.','*',$currentdir.urlencode($dirrow['name']));}-->-1-<!--{eval echo str_replace('.','*',$dir);}-->">改名</a>
+	</td>
+</tr>
+<!--{/loop}-->
+
+<!--{loop $files $filerow}-->
+  <tr  style="line-height:25px;" id="{$filerow['name']}" onmouseout="this.style.background='#ffffff'" onmouseover="this.style.background='#e6e6ee'">
+	<td style="text-align:left">&nbsp;<a href="{$filerow['filepath']}" target="_blank">{$filerow['name']}</a></td>
+	<td align=center>{$filerow['size']} KB</td>
+	<td align=center>{$filerow['createtime']}</td>
+	<td align=center>{$filerow['modifytime']}</td>
+	<td align=center>
+		<a href="index.php?admin_filemanager-chmod-<!--{eval echo str_replace('.','*',$currentdir.urlencode($filerow['name']));}-->-1-<!--{eval echo str_replace('.','*',$dir);}-->" title="点击更改该文件属性">{$filerow['fileperm']}</a>
+	</td>
+	<td align=center>
+		 <a href="index.php?admin_filemanager-edit-<!--{eval echo str_replace('.','*',$currentdir.urlencode($filerow['name']));}-->-<!--{eval echo str_replace('.','*',$dir);}-->">编辑</a> 
+		 <a href="index.php?admin_filemanager-down-<!--{eval echo str_replace('.','*',$currentdir.urlencode($filerow['name']));}-->">下载</a>
+		 <a href="javascript:sureDeletefile('{$filerow['name']}','{$dir}');">删除</a>
+		 <a href="index.php?admin_filemanager-rename-<!--{eval echo str_replace('.','*',$currentdir.urlencode($filerow['name']));}-->-0-<!--{eval echo str_replace('.','*',$dir);}-->">改名</a>
+	</td>
+</tr>
+<!--{/loop}-->
+<table>
+{template admin_footer}
+
+<script type="text/javascript">
+		function sureDeletedir(fname,dir){
+			if(confirm('确认要删除目录：<!--{eval echo string::haddslashes($currentdir)}-->/'+fname+' 吗？删除此目录后其子目录及文件均会删除，请确认')){
+				$.post("index.php?admin_filemanager-delete", {currentdir:'<!--{eval echo string::haddslashes($currentdir)}-->/',isdir:1,fname:fname,dir:dir},function(data){
+					alert(data);
+					window.location='index.php?admin_filemanager-default';
+				});
+			}
+		}
+		function sureDeletefile(fname,dir){
+			if(confirm('确认要删除：'+fname+' 吗？删除后将无法恢复。')){
+				$.post("index.php?admin_filemanager-delete", {currentdir:'<!--{eval echo string::haddslashes($currentdir)}-->/',isdir:0,fname:fname,dir:dir},function(data){
+					alert(data);
+					window.location='index.php?admin_filemanager-default';
+				});
+			}
+		}
+</script>

@@ -1,0 +1,10 @@
+
+<div id="zjgx" class="columns zjgx o-v {$data['config']['style']}" bid="{$bid}">
+    <h2 class="col-h2">{lang recentUpdate}</h2>
+    <a href="{url list-recentupdate}" class="more">{lang more}</a>
+    <ul class="col-ul font-14 ">
+       <!--{loop $data['doclist'] $doc}-->
+            <li><a href="{url doc-view-$doc['did']}"  class="ctm" title="{$doc['title']}">{$doc['shorttitle']}</a><span>$doc['lastedit']</span></li>
+       <!--{/loop}-->
+    </ul>
+</div>

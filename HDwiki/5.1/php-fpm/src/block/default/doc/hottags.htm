@@ -1,0 +1,12 @@
+<div  class="columns i6-ff p-b8 rmbq {$data['config']['style']}" bid="{$bid}">
+	<h2 class="col-h2">热门标签</h2>
+	<ul class="col-ul list-s">
+	<!--{loop $data['hottag'] $tag}-->
+		<!--{if $tag['tagcolor']=='red'}-->
+			<li><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" class="red">{$tag['tagname']}</a></li>
+		<!--{else}-->
+			<li><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" >{$tag['tagname']}</a></li>
+	    <!--{/if}-->
+    <!--{/loop}-->
+	</ul>
+</div>

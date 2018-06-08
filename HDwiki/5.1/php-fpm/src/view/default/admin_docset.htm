@@ -1,0 +1,89 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	var sandbox_id = $.trim($("input[name*='sandbox_id']").val());
+	if (sandbox_id && !/\d+/.test(sandbox_id)){
+		alert('{lang basesandboxidMustNum}');
+		$("input[name*='sandbox_id']").focus();
+		return false;
+	}
+	var max_newdocs = parseInt($.trim($("input[name*='max_newdocs']").val()));
+	if(max_newdocs > 100 || max_newdocs < 0 ) {
+		alert('首次编辑审核数范围错误。');
+		$("input[name*='max_newdocs']").focus();
+		return false;
+	}
+}
+</script>
+<p class="map">全局：内容设置</p>
+<p class="sec_nav">内容设置： <a href="index.php?admin_setting-index"> <span>首页设置</span></a> <a href="index.php?admin_setting-listdisplay" ><span>列表设置</span></a> <a href="index.php?admin_setting-watermark" ><span>图片设置</span></a> <a href="index.php?admin_setting-docset" class="on"><span>词条设置</span></a> <a href="index.php?admin_setting-search" ><span>搜索设置</span></a> <a href="index.php?admin_setting-attachment" ><span>附件设置</span></a></p>
+<h3 class="col-h3">词条设置</h3>
+<form method="POST" action="index.php?admin_setting-docset" onsubmit="return doSubmit();">
+<table class="table">
+	<tr>
+		<td width="500px"><span>{lang commonParameterName}</span></td>
+		<td><span>{lang commonParameterValue}</span></td>
+	</tr>
+	<tr>
+		
+		<td><span>{lang sandbox_id}</span>{lang sandbox_id_desc}</td>
+		<td>
+			<input type="input" class="inp_txt" name="setting[sandbox_id]" value="$basecfginfo['sandbox_id']"/>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang baseAuditDoc}</span>{lang baseAuditDocTip}</td>
+		<td>
+			<label><input {if $basecfginfo['verify_doc'] == 1 }checked{/if} type="radio" name="setting[verify_doc]" value="1" onclick="$('#first_edit').hide();" />{lang commonYes}</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label><input {if $basecfginfo['verify_doc'] == -1 }checked{/if} type="radio" name="setting[verify_doc]" value="-1" onclick="$('#first_edit').show();" />仅首次编辑审核</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label><input {if !$basecfginfo['verify_doc'] }checked{/if} type="radio" name="setting[verify_doc]" value="0" onclick="$('#first_edit').hide();" />{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr id="first_edit" {if $basecfginfo['verify_doc'] != -1 }style="display:none;"{/if}>
+		<td><span>首次编辑审核</span>开启新注册用户第一次编辑审核，新注册用户在审核前最大编辑的词条数</td>
+		<td>
+			<input type="input" class="inp_txt" style="width: 30px;" maxlength="3" name="setting[max_newdocs]" value="{if isset($basecfginfo['max_newdocs'])}{$basecfginfo['max_newdocs']}{else}5{/if}"/>
+			0 表示不限制，100 为最大上限
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang baseSetComments}</span>{lang baseCommentsProfile}</td>
+		<td>
+			<label><input type="radio"  name="setting[comments]" value="1" {if $basecfginfo['comments']=='1'}checked{/if}/>{lang commonYes}</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[comments]" value="0" {if $basecfginfo['comments']=='0'}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang baseFilterExternal}</span>{lang baseFilterExternalTip}</td>
+		<td>
+			<label><input type="radio"  name="setting[filter_external]" value="1" {if $basecfginfo['filter_external']==='1'}checked{/if}/>{lang commonYes}</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label><input type="radio"  name="setting[filter_external]" value="0" {if $basecfginfo['filter_external']==='0'||is_null($basecfginfo['filter_external'])}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang base_createdoc}</span>{lang base_createdoc_tip}</td>
+		<td>
+			<label>
+			<input type="radio"  name="setting[base_createdoc]" value="1" {if $basecfginfo['base_createdoc']=='1'}checked{/if}/>{lang commonYes}</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[base_createdoc]" value="0" {if $basecfginfo['base_createdoc']=='0'}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr>
+		<td><span>{lang base_isReferences}</span>{lang base_isReferences_tip}</td>
+		<td>
+			<label>
+			<input type="radio"  name="setting[base_isreferences]" value="1" {if $basecfginfo['base_isreferences']=='1'}checked{/if}/>{lang commonYes}</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[base_isreferences]" value="0" {if $basecfginfo['base_isreferences']=='0'}checked{/if}/>{lang commonNo}</label>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input class="inp_btn" name="docsubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+		</td>
+	</tr>
+</table>
+</from>
+{template admin_footer}

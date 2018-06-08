@@ -1,0 +1,61 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	$.post(
+		"index.php?admin_focus-edit",
+		{did: {$focus['did']} , summary: $('#summary').val(),image: $('#image').val(),displayorder: $('#displayorder').val(),editsubmit:'true',doctype:$('#doctype').val()},
+		function(xml){
+		 // 	parent.location="index.php?admin_focus-focuslist";
+			parent.location.reload();
+		  // parent.parent.GB_hide();
+		}
+	);
+}
+</script>
+<form name="focusform">
+	<ul class="col-ul ul_li_sp m-t10">
+		<li><span>{lang focusmanageTitle}:</span>{$focus['title']}</li>
+		<li><span>{lang focusmanageTag}:</span>{$focus['tag']}</li>
+		<li><span>{lang focusmanageSum}:</span>
+			<textarea name="summary" id="summary" cols="50" rows="6">{$focus['summary']}</textarea>
+		</li>
+		<li><span>{lang doctype}:</span>
+			<select name="doctype" id="doctype">
+				<option value="0" <!--{if {$focus['type']}<=0}-->
+				selected="selected"
+				<!--{/if}-->
+				>取消类别</option>
+				<option value="1" 
+				<!--{if {$focus['type']}==1}-->
+				selected="selected"
+				<!--{/if}-->
+				>{lang focusmanage}
+				</option>
+				<option value="2" 
+				<!--{if {$focus['type']}==2}-->
+				selected="selected"
+				<!--{/if}-->
+				>{lang hotdoc}
+				</option>
+				<option value="3" 
+				<!--{if {$focus['type']}==3}-->
+				selected="selected"
+				<!--{/if}-->
+				>{lang wonderdoc}
+				</option>
+			</select>
+		</li>
+		<li><span>{lang focusmanageImg}:</span>
+			<input name="image" id="image" value="{$focus['image']}" class="inp_txt" size="40"/>
+		</li>
+		<li><span>{lang focusmanageComTime}:</span>{$focus['time']}</li>
+		<li><span>{lang focusmanageOrder}:</span>
+			<input name="displayorder" id="displayorder" type="text"  value="{$focus['displayorder']}" size="2" maxlength="4" />
+		</li>
+		<li>
+			<input name="yes" class="inp_btn" type="button" value="{lang commonOK}" onclick="docheck();"   />
+			<input name="close" class="inp_btn" type="button" value="关闭窗口" onclick="window.parent.$.dialog.close('eidt_show')" />
+		</li>
+	</ul>
+</form>
+{template admin_footer} 

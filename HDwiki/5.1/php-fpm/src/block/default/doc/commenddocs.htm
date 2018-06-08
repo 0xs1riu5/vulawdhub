@@ -1,0 +1,21 @@
+<div id="tjct" class="columns tjct i6-ff {$data['config']['style']}" bid="{$bid}">
+	<h2 class="col-h2">{lang focusDoc}</h2>
+	<a href="{url list-focus}" class="more">{lang more}</a>
+	<div>
+	<!--{loop $data['list'] $key $fistcomdoc}-->
+		<!--{if $key<3}-->
+		<div class="jc_tj">
+			<a href="{url doc-view-$fistcomdoc['did']}"  class="a-img"><img alt="{$fistcomdoc['title']}" title="{$fistcomdoc['title']}" src="{$fistcomdoc['image']}"/></a>
+			<p class="a-c"><a href="{url doc-view-$fistcomdoc['did']}"  title="{$fistcomdoc['title']}">{$fistcomdoc['shorttitle']}</a></p>
+		</div>
+		<!--{/if}-->
+	<!--{/loop}-->
+	</div>
+	<ul class="col-ul point c-b">
+		<!--{loop $data['list'] $key $commenddoc}-->
+			<!--{if $key>=3}-->
+			<li><a href="{url doc-view-$commenddoc['did']}"  title="{$commenddoc['title']}">{$commenddoc['shorttitle']}</a></li>
+			<!--{/if}-->
+		<!--{/loop}-->
+	</ul>
+</div>

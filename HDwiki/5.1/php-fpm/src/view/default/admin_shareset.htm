@@ -1,0 +1,123 @@
+{template admin_header}
+<style>
+.tip {color:#666666;}
+</style>
+<p class="map">百科联盟：分享到新知社</p>
+<p class="sec_nav">分享到新知社：
+<a href="index.php?admin_share-set" class="on"><span>分享设置</span></a>
+<a href="index.php?admin_share"><span>手动分享</span></a>
+</p>
+
+<script type="text/javascript">
+var hdapi_sharetosns=0;
+function dosubmit(FormElement){
+	var params = {'hdapi_bklm': $(":radio[name=hdapi_bklm]:checked").val()};
+	params['hdapi_sharetosns']=$(":radio[name=hdapi_sharetosns]:checked").val();
+
+	params['hdapi_autoshare_edit']=$(":checkbox[name=hdapi_autoshare_edit]").attr("checked")?'1':'0';
+	params['hdapi_autoshare_create']=$(":checkbox[name=hdapi_autoshare_create]").attr("checked")?'1':'0';
+	params['hdapi_autoshare_comment']=$(":checkbox[name=hdapi_autoshare_comment]").attr("checked")?'1':'0';
+	params['hdapi_autoshare_ding']=$(":checkbox[name=hdapi_autoshare_ding]").attr("checked")?'1':'0';
+	
+	$.ajax({
+		url:'index.php?admin_share-set',
+		type:'POST',
+		data:params,
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+			$(FormElement).find(":submit").attr('disabled', true);
+			$("#errorinfo").text('正在提交...');
+		},
+		success :function(data, state){
+			if($.trim(data) == 'OK'){
+				$('#errorinfo').html('提交成功！');
+			}else{
+				$('#errorinfo').html('服务端错误，提交失败！');
+			}
+		},
+		complete:function(response, state){
+			if (state != 'success'){
+				$('#errorinfo').html('网络连接错误，请稍候提交。');
+			}
+			$(FormElement).find(":submit").attr('disabled', false);
+		}
+	});
+	
+	return false;
+}
+
+var is_open=0;
+function checkApi(){
+	if(is_open){
+		$("#autoshare").show();
+		return;
+	}
+	var url="index.php?admin_hdapi-checkapi-"+Math.random();
+	$.get(url, function(data){
+		if(data.indexOf('isAuto') >-1 && hdapi_sharetosns){
+			is_open=1;
+			$("#autoshare").show();
+		}else{
+			$("#autoshare").hide();
+		}
+	})
+}
+</script>
+
+<h3 class="col-h3">分享设置</h3>
+<form id="form-set" action="#" method="post" target="_self" onsubmit="dosubmit(this);return false;">
+<table class="table">
+	<tr>
+		<td>
+		<span>分享到新知社</span>
+		<label><input name="hdapi_sharetosns" type="radio"  checked="checked" class="m-r10" value="1" {if $settings['hdapi_sharetosns']=='1'}checked{/if}/>开启</label>
+		<label><input name="hdapi_sharetosns" type="radio" class="m-lr10" value="0" {if $settings['hdapi_sharetosns']!='1'}checked{/if}/>关闭</label>
+		</td>
+		<td class="v-b"> 新知社，是互动百科为站长定制的一个推广自己的知识分享平台；<br />
+	    分享词条内容到新知社，能帮助站长快速建立自己站点的粉丝群，提高用户黏度，建立良好的，忠实的用户群.</td>
+	</tr>
+	<tr id="autoshare" style="display:none">
+		<td>
+		<span>分享到新知社--自动触发设置</span>
+		<label><input name="hdapi_autoshare_edit" type="checkbox" class="checkbox" value="1" {if $settings['hdapi_autoshare_edit']=='1'}checked{/if} />编辑触发</label>
+		<label><input name="hdapi_autoshare_create" type="checkbox" class="checkbox" value="1" {if $settings['hdapi_autoshare_create']=='1'}checked{/if} />创建触发</label>
+		<label><input name="hdapi_autoshare_comment" type="checkbox" class="checkbox" value="1" {if $settings['hdapi_autoshare_comment']=='1'}checked{/if} />评论触发</label>
+		<label><input name="hdapi_autoshare_ding" type="checkbox" class="checkbox" value="1" {if $settings['hdapi_autoshare_ding']=='1'}checked{/if} />顶</label>
+		</td>
+		<td class="v-b">选择自动同步到新知社的自动触发方式。</td>
+	</tr>
+	<tr>
+		<td>
+		<span>百科词条共享</span>
+		<label><input checked="checked" name="hdapi_bklm" type="radio" class="m-r10" value="1" {if $settings['hdapi_bklm']=='1'}checked{/if}/>开启</label>
+		<label><input name="hdapi_bklm" type="radio" class="m-lr10" value="0" {if $settings['hdapi_bklm']!='1'}checked{/if}/>关闭</label>
+		</td>
+		<td class="v-b">开启词条共享，一键轻松搭建网站雏形。</td>
+	</tr>
+</table>
+<p class="submit">
+<input type="submit" value="提 交"  class="inp_btn"/>
+<span class="red" id="errorinfo"></span>
+</p>
+</form>
+
+<script>
+{if $settings['hdapi_sharetosns']=='1'}
+hdapi_sharetosns=1;
+checkApi();
+{/if}
+
+$("#autoshare").prev().find(':radio').click(function(){
+	if($(this).val() == '1'){
+		hdapi_sharetosns=1;
+		//$("#autoshare").show();
+		checkApi();
+	}else{
+		hdapi_sharetosns=0;
+		$("#autoshare").hide();
+	}
+});
+
+</script>
+{template admin_footer} 

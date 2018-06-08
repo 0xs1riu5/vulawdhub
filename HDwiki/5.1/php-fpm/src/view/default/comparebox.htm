@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={WIKI_CHARSET}" />
+<title>{$navtitle} {$setting['site_name']} {$setting['seo_title']} - Powered by HDWiki!</title>
+<link href="style/default/hdwiki.css" rel="stylesheet" type="text/css" media="all"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<style>
+.LeftFrame, .RightFrame{
+	float:left;
+	width:47%;
+	height:350px;
+	border:solid 1px;
+	overflow-x:scroll;
+	overflow-y:scroll
+}
+.RightFrame{
+	float:right;
+}
+.edition ul{
+	width:320px;
+	overflow:hidden;
+}
+body{width:100%}
+#compare{width:700px;}
+</style>
+<script type="text/javascript">
+function DriveRightScroll(){
+	var RightDivObj = $('#RightScroll');
+	var LeftDivObj = $('#LeftScroll');
+	
+	if (LeftDivObj.attr("scrollTop") < (RightDivObj.attr("scrollHeight") - RightDivObj.attr("clientHeight"))){
+		RightDivObj.attr("scrollTop",LeftDivObj.attr("scrollTop"));
+		RightDivObj.attr("scrollLeft",LeftDivObj.attr("scrollLeft"));
+	}
+}
+function DriveLeftScroll(){
+	var RightDivObj = $('#RightScroll');
+	var LeftDivObj = $('#LeftScroll');
+	if (RightDivObj.attr("scrollTop") < (LeftDivObj.attr("scrollHeight") - LeftDivObj.attr("clientHeight"))){
+		LeftDivObj.attr("scrollTop",RightDivObj.attr("scrollTop"));
+		LeftDivObj.attr("scrollLeft",RightDivObj.attr("scrollLeft"));
+	}
+}
+</script>
+
+<script type = "text/javascript" src = "js/compare.js"></script>
+</head>
+<body>
+<div class="o-v" id="compare">
+	<div class="edition">
+		<ul class="l">
+			<!--{if $edition[1]['time']}-->
+			<li><b>{lang editionPre}</b> <label>{$edition[1]['time']}</label></li>
+			<li>
+			{lang commentUser}<a href="{url user-space-$edition[1]['authorid']}">{$edition[1]['author']}</a>
+			{lang worldnum}<label>{$edition[1]['words']}{lang piece}</label>
+			{lang image}<label>{$edition[1]['images']}{lang piece}</label>
+			</li>
+			<!--{else}-->
+			<li><b>{lang editionNoCompare}</b></li>
+			<!--{/if}-->
+		</ul>
+		<ul class="r">
+			<li><b>{lang editionWaitoAccred}</b>	<label>{$edition[0]['time']}</label></li>
+			<li>
+			{lang commentUser}<a href="{url user-space-$edition[0]['authorid']}">{$edition[0]['author']}</a>
+			{lang worldnum}<label>{$edition[0]['words']}{lang piece}</label>
+			{lang image}<label>{$edition[0]['images']}{lang piece}</label>
+			</li>
+		</ul>
+	</div>
+	
+	<div id="LeftScroll" class="LeftFrame" onscroll="DriveRightScroll()">
+		<span id="LeftContent" align="left">{$edition[1]['content']}</span>
+	</div>
+	<div id="RightScroll" class="RightFrame" onscroll="DriveLeftScroll()">
+		<span id="RightContent" align="left">{$edition[0]['content']}</span>
+	</div>
+	
+	<script type="text/javascript">CompareById('LeftContent', 'RightContent');</script>
+	<p class="main l mar-t8">
+	<label class="fanwei">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	{lang compareTip1}
+	<label class="dian">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	</label>
+	{lang compareTip2}
+	</p>
+</div>
+</body>
+</html>

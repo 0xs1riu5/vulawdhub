@@ -1,0 +1,215 @@
+{template header}
+<style>
+#Canvas {
+	position: relative;
+	border:2px solid #888888;
+	overflow:hidden;
+	cursor:pointer;
+}
+#bar {
+	width: 211px;
+	height: 18px;
+	background-image: url("style/default/photo/track.gif");
+	background-repeat: no-repeat;
+	position: relative;
+}
+.child {
+	width: 11px;
+	height: 16px;
+	background-image: url(style/default/photo/grip.gif);
+	background-repeat: no-repeat;
+	left: 0;
+	top:3px;
+	position: absolute;
+	left:100px;
+}
+#IconContainer {
+	position:relative;
+	left:0px;
+}
+#IconContainer img {
+	FILTER:alpha(opacity=40);
+	opacity:0.6;
+	background-color:#fff;
+}
+#ImageDragContainer {
+	border: 1px solid #ccc;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	z-index:1;
+}
+
+#editimage .headmessage {text-align:center;}
+#editimage .imageinfo {
+	width:40%;
+	float:left;
+}
+#editimage .uploadinfo { 
+	width:49%;
+	float:left;
+}
+#editimage .uploadinfo .cutimage {
+	padding-top:50px;
+	text-align:left;
+}
+.clear {clear:both;}
+</style>
+
+<script type="text/javascript" src="js/popWindow.js"></script>
+<script type="text/javascript">
+	function expand(id){
+		if(id=='usermanage'){
+			$("ul#usermanage").toggle(); 
+		}else{
+			$('ul#userpms').toggle();
+		}
+	}
+	function updateavatar() {
+		window.location.reload();
+	}
+	</script>
+<div class="hd_map"> <a href="{WIKI_URL}">{$setting['site_name']}</a> &gt; <a href="{url user-profile}">{lang selfManage}</a> &gt; {lang editImage}</div>
+<div class="r w-710 o-v m-t10 p-b10 gl_manage_main">
+<h2 class="h3 bold">{lang editImage}</h2>
+<!--{if isset($image_html)}-->
+<img src="<!--{if isset($uid_image)}-->$uid_image<!--{else}-->style/default/user.jpg<!--{/if}-->" name="userimage" width="90" id="userimage"/>
+<caption>
+	<h2>{lang config_new_avatar}</h2>
+	<p> {lang select_new_picture}</p>
+</caption>
+$image_html
+<!--{else}-->
+<div id="editimage">
+	<div class="headmessage">
+	<!--{if isset($message)}-->
+		<span style="color:#FF0000">$message</span><br />
+	<!--{/if}-->
+	</div>
+<div class="imageinfo">
+	<div class="uploadtooltip"></div>
+	<div id="Canvas" class="uploaddiv" style="width:250px;height:250px;">
+		<div id="ImageDragContainer"> <img src="{$imageview}" id='ImageDrag'> </div>
+		<div id="IconContainer"> <img src="{$imageview}" id='ImageIcon'> </div>
+	</div>
+	<div class="uploaddiv">
+		<table width="250" align="left">
+			<tr>
+				<td width="23" id="Min"><img alt="{lang editImageNarrow}" src="style/default/photo/_c.gif" onMouseOver="this.src='style/default/photo/_c.gif';" onMouseOut="this.src='style/default/photo/_h.gif';" id="moresmall" class="smallbig" /></td>
+				<td width="215">
+					<div id="bar"><div class="child"></div></div>
+				</td>
+				<td id="Max"><img alt="{lang editImageEnlarge}" src="style/default/photo/c.gif" onMouseOver="this.src='style/default/photo/c.gif';" onMouseOut="this.src='style/default/photo/h.gif';" id="morebig" class="smallbig" /></td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="uploadinfo">
+	<div>
+		<form name="profileform" id="profileform" method="post" enctype="multipart/form-data" action="{url user-editimageifeam}" target="hidden_frame">
+		<dl>
+			<dd>{lang editImageTip1}</dd>
+			<dd>{lang editImageTip2}</dd>
+			<dd>{lang editImageTip3}</dd>
+		</dl>
+		<input id="image" name="image" type="file" value="{lang view}..."/>
+		<input type="hidden" name="imageupload" value="1"  />
+		<iframe name='hidden_frame' id="hidden_frame" style="display:none;"></iframe>
+		</form>
+	</div>
+	<div class="cutimage">
+		<form ACTION="{url user-cutimage}" METHOD="POST">
+		<input name="btn_image" type="submit" value="{lang editImagesave}" class="btn-submit2">
+			<div style="display:none">
+			<input name="bigimage" type="hidden" id="bigimage" value="{$imageview}" />
+			left:
+			<input name="left" id="left" type="text" value="" />
+			<br>
+			top:
+			<input name="top" id="top" type="text" value="" />
+			<br>
+			img_x:
+			<input name="img_x" id="img_x" type="text" value="" />
+			<br>
+			img_y:
+			<input name="img_y" id="img_y" type="text" value="" />
+			<br>
+			img_w:
+			<input name="img_w" id="img_w" type="text" value="" />
+			<br>
+			img_h:
+			<input name="img_h" id="img_h" type="text" value="" />
+			<br>
+			dst_x:
+			<input name="dst_x" id="dst_x" type="text" value="" />
+			<br>
+			dst_y:
+			<input name="dst_y" id="dst_y" type="text" value="" />
+			<br>
+			dst_w:
+			<input name="dst_w" id="dst_w" type="text" value="" />
+			<br>
+			dst_h:
+			<input name="dst_h" id="dst_h" type="text" value=""/>
+			<br>
+			{lang editImageMultiple}:
+			<input name="f" id="f" type="text" value=""/>
+			<br>
+			{lang editImagewidth}:
+			<input name="width" id="width" type="text" value=""/>
+			<br>
+			{lang editImageheight}:
+			<input name="height" id="height" type="text" value=""/>
+			<br>
+			<input type="hidden" name="uploadflag" id="uploadflag" value="0"  />
+			</div>
+		</form>
+	</div>
+</div>
+<div class="clear"></div>
+</div>
+<!--{/if}-->
+</div>
+<div class="l w-230">
+	<div class="m-t10 p-b10 sidebar gl_manage">
+		<h2 class="col-h2"><span onclick="expand('usermanage');">{lang profile}</span></h2>
+		<ul id="usermanage">
+			<li><a href="{url user-profile}" target="_self"><img alt="" src="style/default/gl_manage/grzl.gif" />{lang profile}</a></li>
+			<li><a href="{url user-editprofile}" target="_self" ><img src="style/default/gl_manage/grzl_set.gif"/>{lang editProfile}</a></li>
+			<li><a href="{url user-editpass}" target="_self"><img src="style/default/gl_manage/change_pw.gif"/>{lang editPass}</a></li>
+			<li><a href="{url user-editimage}" target="_self" class="on"><img src="style/default/gl_manage/grzl_set.gif" />{lang editImage}</a></li>
+			<li><a href="{url doc-managesave}" target="_self"><img src="style/default/gl_manage/ctbccgx.gif"/>{lang manageSave}</a></li>
+			<li><a href="{url user-invite}" target="_self"><img src="style/default/gl_manage/invite.png"/>{lang regInvite}</a></li>
+		</ul>
+		<h2 class="col-h2"><span onclick="expand('userpms');">{lang shortmessage}</span></h2>
+		<ul id="userpms">
+			<li><a href="{url pms-box-inbox}" target="_self"><img alt="" src="style/default/gl_manage/sjx.gif" />{lang inbox}</a></li>
+			<li><a href="{url pms-box-outbox}" target="_self" ><img alt="" src="style/default/gl_manage/fjx.gif"/>{lang outbox}</a></li>
+			<li><a href="{url pms-sendmessage}" target="_self" ><img src="style/default/gl_manage/fdxx.gif"/>{lang sendmessage}</a></li>
+			<li><a href="{url pms-box-drafts}" target="_self"><img src="style/default/gl_manage/cgx.gif" />{lang draft}</a></li>
+			<li><a href="{url pms-blacklist}" target="_self"><img src="style/default/gl_manage/hllb.gif"/>{lang blacklist}</a></li>
+		</ul>
+	</div>
+</div>
+<div class="c-b"></div>
+<script type="text/javascript">
+	$('#userimage').attr('src',$('#userimage').attr('src')+'?'+Math.random());
+	$('#ImageIcon').attr('src',$('#ImageIcon').attr('src')+'?'+Math.random());
+	$('#ImageDrag').attr('src',$('#ImageDrag').attr('src')+'?'+Math.random());
+	$("#image").change(function(){
+		$("#profileform").submit();
+	})
+	function editimage(f1, f2, bigimage, width, height){
+		$("#ImageDragContainer").html(f1);
+		$("#IconContainer").html(f2);
+		$("#bigimage").val(bigimage);
+		$("#uploadflag").val(1);
+		window.load=run(width,height);
+	}
+	var image_run_width = '<!--{$imagesize[0]}-->';
+	var image_run_height = '<!--{$imagesize[1]}-->';
+</script>
+<script type="text/javascript" src="js/ui/ui.core.js" ></script>
+<script type="text/javascript" src="js/ui/ui.draggable.js" ></script>
+<script type="text/javascript" src="js/editimage.js" ></script>
+{template footer}

@@ -1,0 +1,84 @@
+<div id="notice" class="columns qh notice p-b8 {$data['config']['style']}"  bid="{$bid}">
+    <h2 class="col-h2 qh-h2 h3">
+    <a href="#zngg" target="_self" {if $setting[base_toplist]==1}class="on"{/if}>{lang webnotice}</a>
+    <a href="#zxdt" target="_self" {if $setting[base_toplist]==0}class="on"{/if}>{lang news}</a>
+    </h2>
+    <div id="zxdt" {if $setting[base_toplist]==1}class='none'{/if}>
+        <!--{loop $data['list'] $newslist}-->
+            <p class="col-p">{$newslist}</p>
+        <!--{/loop}-->
+    </div>
+    <div id="zngg" {if $setting['base_toplist']==0}class='none'{/if}><p class="col-p" >$setting[site_notice]</p></div>
+<script>
+function s(zxdt, delay, speed){
+	this.rotator = $("#"+zxdt);
+	this.delay = delay || 2000;
+	this.speed = speed || 30;
+	this.tid = this.tid2 = this.firstp = null;
+	this.pause = false;
+	this.num=0;
+	this.p_length=$("#zxdt p").length;
+	this.tgl=1;
+}
+s.prototype = {
+	bind:function(){
+		var o = this;
+		this.rotator.hover(function(){o.end();},function(){o.start();});
+	},
+	start:function(){
+		this.pause=false;
+		if($("#zxdt p").length==this.p_length){
+			this.firstp=$("#zxdt p:first-child");
+			this.rotator.append(this.firstp.clone());
+		}
+		var o = this;
+		this.tid = setInterval(function(){o.rotation();}, this.speed);
+	},
+	end:function(){
+		this.pause=true;
+		clearInterval(this.tid);
+		clearTimeout(this.tid2);
+	},
+	rotation:function(){
+		if(this.pause)return;
+		var o=this;
+		var firstp=$("#zxdt p:first-child");
+		this.num++;
+		this.rotator[0].scrollTop=this.num;
+		if (this.num == this.firstp[0].scrollHeight+4){
+			clearInterval(this.tid);
+			this.firstp.remove();
+			this.num = 0;
+			this.rotator[0].scrollTop = 0;
+			this.tid2 = setTimeout(function(){o.start();},this.delay);
+		}
+	},
+	toggle:function(){
+	    if(this.tgl>0){
+		this.end();
+	    }else{
+		this.start();
+	    }
+	    this.tgl*=-1;
+	}
+}
+
+$("#notice h2 a").click(function(){
+	var id = $(this).attr('href');
+	$("#zxdt, #zngg").hide();
+	$("#notice h2  a").toggleClass('on');
+	$(id).show();
+	if(scroll){
+		scroll.toggle();
+	}
+	return false;
+});
+if($("#zxdt").height()>300){
+	$("#zxdt").height(300);
+	$("#zxdt").css("overflow","hidden");
+	var scroll=new s('zxdt',2000,30);
+	scroll.bind();
+	scroll.start();
+}
+</script>
+</div>

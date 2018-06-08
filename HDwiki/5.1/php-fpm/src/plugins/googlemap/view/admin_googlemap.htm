@@ -1,0 +1,38 @@
+{template admin_header}
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">管理：
+    <a href="index.php?admin_plugin-manage-{$pluginid}" class="on"><span>插件管理</span></a>
+    <a href="index.php?admin_plugin-setvar-{$pluginid}" ><span>插件设置</span></a>
+    <a href="index.php?admin_plugin-hook-{$pluginid}"> <span>插件钩子</span> </a>
+</p>
+<style type="text/css">
+#wraper { width:600px; text-align:left; border: 1px solid #999;" }
+#wraper h2, #wraper p { margin-bottom: 25px; }
+</style>
+
+  <h3 class="col-h3">欢迎使用Google Map 2.0插件！ </h3> 
+  <br /><br />
+  <p>
+    本插件允许用户为词条添加相关标注点（可添加、可编辑）。 
+    如果词条地图尚未添加标注点，则地图API默认会通过浏览器获取用户所在地理位置，并将地图中心移动到此地离位置。
+    </p>
+	<br /><br />
+  <h4>安装说明：</h4>
+  <p><ol>
+  	<li>按照 <a href="index.php?admin_plugin-hook-{$pluginid}" >插件钩子</a> 页中的说明在相应的页面添加钩子；</li>
+  	<li>在hdwiki根目录下找到 /view/default/viewdoc.htm，在其中寻找 “&lt;div id="block_right"&gt;”，在其上添加：“{&#36;mapviewstr}”（不包含引号）；</li>
+  	<li>现在，地图应该可以正常使用了；</li>
+  </ol></p>
+  </p>
+  <p>
+  <br /><br />
+  <h4>二次开发指南：</h4>
+   <br />
+  <strong>注意</strong>：此项不建议新手操作，除非你真的知道你在做什么，否则会引起无法预知的错误。 <br />
+  
+  插件程序中地图功能与显示相关代码位于/plugins/googlemap/model/googlemap.class.php 文件的 get_map_view_str() 函数中，可参考
+  <a href="http://code.google.com/apis/maps/documentation/javascript/basics.html" target="_blank">Google Maps API v3 技术文档</a>
+  进行二次开发。欢迎你提供功能更丰富的地图插件。
+  <br />
+
+{template admin_footer}

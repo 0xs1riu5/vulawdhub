@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset={WIKI_CHARSET}">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>hdwiki 后台管理中心</title>
+<link href="style/default/admin/admin.css" rel="stylesheet" type="text/css" />
+<link href="{WIKI_URL}/js/hdeditor/skins/editor.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+
+
+.bord textarea {border:0px; width:690px;overflow:hidden; }
+#hd_container { width: 686px; }
+/* 需修改的 */
+.htmltext { height: auto; }
+.ts {color:red;}
+html{background:#F8F8F9;}
+body{max-width:none !important;min-width:auto;margin:0;font:12px/1.2 verdana,SimSun,Arial,Helvetica,'sans-serif'}
+#hd_container,.editor_left{width:95% !important;padding:0 10px;}
+#hd_container{left:190px !important;right:5% !important;width:95% !important;}
+</style>
+</head>
+<body>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+<script type="text/javascript" src="js/jquery.dialog-0.8.min.js"></script>
+<script type="text/javascript">
+	$.dialog.setConfig('base', './style/default');
+</script>
+<div class="right">
+<p class="map">内容管理：词条管理</p>
+<p class="sec_nav">词条管理： <a href="index.php?admin_doc"> <span>管理词条</span></a> <a href="index.php?admin_focus-focuslist"  ><span>推荐词条</span></a> <a href="index.php?admin_synonym" ><span>管理同义词</span></a> <a href="index.php?admin_relation" ><span>相关词条</span></a> <a href="index.php?admin_edition"  ><span>版本评审</span></a> <a href="index.php?admin_cooperate" ><span>待完善词条</span></a> <a href="index.php?admin_nav" class="new"><span>导航模块<label class="red">new</label></span></a></p>
+<h3 class="col-t"><span class="on"><a href="index.php?admin_nav">导航模块</a></span><span><a href="index.php?admin_navmodel">导航模块模型</a></span></h3>
+
+
+
+<!-- {if $step == 1} -->
+<h3 class="col-h4 m-t10"><span class="f-20">1:</span>&nbsp;添加导航模块</h3>
+<div class="add_nav_m">
+	<form method="POST" name="formdoclist" id="formdoclist" action="{if $edit == 1}index.php?admin_nav-editnav{else}index.php?admin_nav-add-2{/if}">
+	<input id="oldnavname" name="oldnavname" type="hidden" value="{$navname}"/>
+	<input id="navid" name="navid" type="hidden" value="{$navid}"/>
+	<ul class="col-ul ul_li_sp m-t10">
+		<li><span>新导航名称：</span><input id="navname" name="navname" type="text" class="inp_txt m-r10" size="30" value="{$navname}"/>为您要建立的新导航模块，起一个唯一的名字<br/><label id="v_navname" class="ts"></label></li>
+		<li><span>选择导航模块模型：</span>
+				<select name="navmodelid" onchange="getcode(this.value)">
+					<option value="0">请选择</option>
+					<!--{loop $navmodellist $navmodel}-->
+						<option value="{$navmodel['id']}"><!--{eval echo htmlspecialchars($navmodel['name']);}--></option>
+					<!--{/loop}-->
+				</select><a href="index.php?admin_navmodel" class="m-l8">管理模型</a></li>
+				<li  class="inp_radio"><span>选择导航展示位置：</span>	{if $edit==1}
+					<input type="radio" name="position" value="1" {if $position==1}checked{/if}>词条正文上面
+					<input type="radio" name="position" value="2" {if $position==2}checked{/if}>词条正文下面
+					<input type="radio" name="position" value="3" {if $position==3}checked{/if}>词条右侧上面
+					<input type="radio" name="position" value="4" {if $position==4}checked{/if}>词条右侧下面
+				{else}
+					<input type="radio" name="position" value="1" checked>词条正文上面
+					<input type="radio" name="position" value="2">词条正文下面
+					<input type="radio" name="position" value="3">词条右侧上面
+					<input type="radio" name="position" value="4">词条右侧下面				
+				{/if}</li>
+		<li><div id="hd_container">
+						<div id="position_toolbar"></div>
+					</div>
+					<div id="text" class="hd-box editor_left">
+						<textarea id="content" name="content" style="width:98%;height:400px;visibility:hidden;display:none;">
+						{$code}
+						</textarea>
+						<div id="hd_content"></div>
+		</li>
+		<li><input name="submit" type="submit" value="{if $edit == 1}完成{else}下一步{/if}" class="inp_btn" onclick="UnloadConfirm.clear()"/>	
+	</ul>	
+	</form>
+</div>	
+<script type="text/javascript" src="./js/hdeditor/hdeditor.min.js"></script>
+<script type="text/javascript" src="./js/hdeditor/hdplugin_innerlink.js"></script>
+<script type="text/javascript">
+	var g_content_id="content";
+	if (typeof g_filterExternal == 'undefined') var g_filterExternal = 0;
+	HD.show({
+		id : g_content_id,
+		minHeight:400,
+		skinType : 'editor',
+		cssPath : 'js/hdeditor/skins/content.css',
+		id_container:'hd_container',
+		id_toolbar:'hd_container',
+		position_toolbar:'position_toolbar',
+		position_content:'hd_content',
+		filterExternal:g_filterExternal,
+		items : ['undo','redo','cut','copy','paste','bold','fontstyle','justifyleft','justifymore', 'title1', 'title2', 'innerlink', 'image', 'media','table','specialchar','clean','source']
+	});
+	function getcode(id){
+		if(id == 0){
+			Pushedit('');
+			return;
+		}
+		$.ajax({
+			url:'index.php?admin_navmodel-getmodel',
+			type:'POST',
+			data:{ id: id },
+			timeout:22000,
+			dataType:'xml',
+			beforeSend:function(){
+				$('#content').html('正在请求中...请稍候!');
+			},
+			success :function(data, state){
+				Pushedit(data.lastChild.firstChild.nodeValue);
+			},
+			complete :function(response, state){
+				if (state != 'success'){
+					$('#content').html('网络连接失败，请稍候再试!');
+				}
+			}
+		});
+	}
+	function Pushedit(content){
+		HD.g[g_content_id].idocument.body.innerHTML = content;
+	}
+</script>
+<!-- {elseif $step == 2} -->
+	<form method="POST" name="formdoclist" id="formdoclist" action="index.php?admin_nav-add-3">
+	<h3 class="col-h4 m-t10"><span class="f-20">2:</span>&nbsp;编辑导航模块关联词条</h3>
+
+	<div class="add_nav_m">
+		<input type="hidden" name="navid" value="{$navid}">
+		<table class="table">
+			<tr>
+				<td colspan="2" class="inp_radio">
+					<input type="radio" name="outdoc" onclick="show('outdoc4')" checked>手动输入词条关联列表
+					<input type="radio" name="outdoc" onclick="show('outdoc3')">与分类匹配
+					<input type="radio" name="outdoc" onclick="show('outdoc1')">匹配现有热词列表
+					<input type="radio" name="outdoc" onclick="show('outdoc2')">匹配关键字
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" id="map">
+					<span id="outdoc4" class="normal">输入词条列表，该列表里面的词条将展示先前编辑导航模块。（注意：以英文"分号"隔开；）</span>
+					<span id="outdoc1" style="display:none"><input type="button" onclick="Import.hotdoc()" value="提取现有热词"class="inp_btn2"><label class="normal">该操作，将把当前热词列表，展示先前编辑的导航模块</label></span>
+					<span id="outdoc2" style="display:none">
+							<input id="tag" name="tag" type="text" class="inp_txt" size="30" value=""/>
+							<input type="button" onclick="Import.searchdoc()" value="检索" id="stopImport" class="inp_btn2"><label class="normal">该操作，将按照搜索的相关性，生成相关词列表，用于展示先前编辑的导航模块
+					</label>	</span>
+					<span id="outdoc3" style="display:none">
+						<select name="cateid" id="cateid">
+							<option value="0" >{lang commonAllCat}</option>
+							{$catstr}
+						</select>
+					<input type="button" onclick="Import.catedoc()" value="生成" id="stopImport" class="inp_btn2"><label class="normal">该操作，将把先前编辑的导航模块，匹配给某一分类下的词条，及该分类下子分类的词条。</label></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<textarea id="content" name="content" cols="166" rows="20">{$docs}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><input name="submit" type="submit" value="完成" class="inp_btn"/></td>
+			</tr>
+		</table>
+		</div>	
+	</form>
+<script type="text/javascript">
+	function show(display){
+		$("#map span").hide();
+		if(typeof(display) == "string"){
+			$("#"+display).show();
+		}
+	}
+	var Import = {
+		hotdoc : function() {
+			var url = 'index.php?admin_nav-hotdocs';
+			var tag = '';
+			Import.getdoc(url, tag);
+		},
+		searchdoc : function(){
+			var url = 'index.php?admin_nav-searchdocs';
+			var tag = $.trim($('#tag').val());
+			Import.getdoc(url, tag);		
+		},
+		catedoc : function(){
+			var url = 'index.php?admin_nav-catedoc';
+			var tag = $.trim($('#cateid').val());
+			if(tag != 0){
+				Import.getdoc(url, tag);		
+			}
+		},
+		getdoc : function(url, tag){
+			$.ajax({
+				url:url,
+				type:'POST',
+				data:{ tag: tag },
+				timeout:22000,
+				dataType:'xml',
+				beforeSend:function(){
+					$('#content').val('正在请求中...请稍候!');
+				},
+				success :function(data, state){
+					$('#content').val(data.lastChild.firstChild.nodeValue);
+				},
+				complete :function(response, state){
+					if (state != 'success'){
+						$('#content').val('网络连接失败，请稍候再试!');
+					}
+				}
+			});
+		}
+	}
+</script>
+<!-- {else} -->
+<!-- {/if} -->
+</div>
+<script type="text/javascript" src="./js/validator.js"></script>
+<script type="text/javascript">
+Validator=new Validator("formdoclist",false,null);
+{if $step == 1}
+	function v_navname(){
+		$.ajax({
+			url:'index.php?admin_nav-check',
+			type:'POST',
+			data:{ tag: $.trim($('#navname').val()) },
+			timeout:22000,
+			dataType:'xml',
+			success :function(data, state){
+				if(data.lastChild.firstChild.nodeValue == 1){
+					$('#v_navname').html("该导航名称已经存在!");
+				}
+			},
+			complete :function(response, state){
+				if (state != 'success'){
+					$('#content').val('网络连接失败，请稍候再试!');
+				}
+			}
+		});
+		return true;
+	}
+	//Validator.bind("navname",[["empty","导航名称不能为空!"],["custom","v_navname()",""]]);
+	Validator.bind("navname",[["empty","导航名称不能为空!"]]);
+{elseif $step == 2}
+{else}
+{/if}
+</script>
+{template admin_footer} 

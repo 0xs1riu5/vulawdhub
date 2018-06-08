@@ -1,0 +1,28 @@
+{template admin_header}
+<table cellpadding="0" cellspacing="1" class="table_list">
+<tr>
+  <td height=25><b>☞文件管理-更改<!--{if $isdir}-->目录<!--{else}-->文件<!--{/if}--> 属性</b></td>
+</tr>
+<tr>
+<th height=25>
+	当前<!--{if $isdir}-->目录<!--{else}-->文件<!--{/if}--> :
+	<a href="index.php?admin_fileftpmanage-default-{$thispath}"><!--{eval echo urldecode($thispath);}--></a>&nbsp;&nbsp;
+	<a href="index.php?admin_fileftpmanage-default-/">☞返回主目录</a>
+</th>
+</tr>
+<form method="post" name="myform" action="index.php?admin_fileftpmanage-chmod">
+<tr align="center">
+  <td colspan="2"><!--{eval echo basename(urldecode($thispath));}-->当前属性：{$currentperm} &nbsp;&nbsp;更改属性为：
+    <input name="chmodstr" type="text" size="10"> <font color=red>属性前不要加0</font>&nbsp;&nbsp;
+	是否应用到子文件夹<input type='radio' name='isall' value='1'>是 <input type='radio' name='isall' value='0'>否
+	<input name="currentperm" type="hidden" value="{$currentperm}">
+	<input name="thispath" type="hidden" value="{$thispath}">
+	<input name="isdir" type="hidden" value="{$isdir}">
+	<input type="submit" name="dosubmit" value="提交"></td>
+</tr>
+  <tr align="center">
+    <td colspan="2">&nbsp;</td>
+  </tr>
+</form>
+</table>
+{template admin_footer}

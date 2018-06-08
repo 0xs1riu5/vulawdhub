@@ -1,0 +1,80 @@
+{template admin_header}
+<p class="map" style="margin-bottom:10px;">在线文件管理（您开启了FTP）</p>
+<table cellpadding="0" border=0 cellspacing="1" class="table_list top_manage" width="746">
+	<tr>
+	<form method="post" name="myform" action="index.php?admin_fileftpmanage-newdir">
+		<td class="manage_td">
+			&nbsp;新目录：<input type="text" name="newdir" value="" id="newdir" size="16" class="input_manage"> <input type="hidden" name='currentdir' value="{$rootpath}"><input type="submit" name="dosubmit" value="确定" class="sub_manage">
+		</td>
+	</form>
+	<form method="post" name="myform" action="index.php?admin_fileftpmanage-default">
+		<td style="padding-left:5px;">转到目录：
+			<input type="text" name="newchangedir" value="{$rootpath}" id="newchangedir" size="50" class="input_manage"> 以 / 结尾
+			<input type="submit" name="dosubmit" value="确定" class="sub_manage">
+		</td>
+	</form>
+	</tr>
+	<tr>
+	<form method="post" name="myform" enctype="multipart/form-data" action="index.php?admin_fileftpmanage-uploadfile">
+		<td colspan="2" class="manage_td">
+			上传文件：<input type="file" name="uploadfile" id="uploadfile" size="25" class="sub_manage">
+			<input type="hidden" name="currentdir" value="{$thispath}">
+			<input type="hidden" name="updir" value="{$rootpath}">
+			<input type="submit" name="dosubmit" value="上传" class="sub_manage">
+			(文件将上传到当前所在目录：<a href="index.php?admin_fileftpmanage-default-{$rootpath}"> {$rootpath} </a>下)
+		</td>
+	</form>
+	</tr>
+</table>
+
+<br>
+
+<table cellpadding="0" border=0 cellspacing="1" class="table_list top_manage">
+	<tr>
+		<td colspan=5 class="top_manage_td">
+			当前目录：<a href="index.php?admin_fileftpmanage-default-{$rootpath}">{$rootpath}</a>&nbsp;&nbsp;&nbsp;<a href="index.php?admin_fileftpmanage-default-{$setting['FTP_PATH']}">☞返回主目录</a>
+			&nbsp;共<!--{eval echo count($dirs);}-->个目录，<!--{eval echo count($filelist);}-->个文件
+		</td>
+	</tr>
+	<tr>
+		<td width="200" height=25 align=center><strong>名称</strong></td>
+		<td width="150" align=center><strong>大小</strong></td>
+		<td width="150" align=center><strong>修改时间</strong></td>
+		<td width="88" align=center><strong>属性</strong></td>
+		<td width="150" align=center><strong>管理操作</strong></td>
+	</tr> 
+<!--{loop $dirs $dirrow}-->
+	<tr style="line-height:25px;" id="{$dirrow['name']}" onmouseout="this.style.background='#ffffff'" onmouseover="this.style.background='#e6e6ee'">
+		<td style="text-align:left">
+			&nbsp;&nbsp;<a href="index.php?admin_fileftpmanage-default-{$rootpath}-{$dirrow['name']}" title="进入该文件夹">{$dirrow['name']}</a>
+		</td>
+		<td>&nbsp;</td>
+		<td align=center>{$dirrow['date']}</td>
+		<td align=center>
+			<a href="index.php?admin_fileftpmanage-chmod-{$rootpath}-<!--{eval echo str_replace('.','*',urlencode($dirrow['name']));}-->-1-{$dirrow['permsn']}">{$dirrow['permsn']}</a>
+		</td>
+		<td align=center>
+			<a href="javascript:if(confirm('确认要删除目录：{$dirrow['name']} 吗？删除此目录后其子目录及文件均会删除，请确认！')) location='index.php?admin_fileftpmanage-rmdir-{$rootpath}-{$dirrow['name']}-1'">删除</a>
+			<a href="index.php?admin_fileftpmanage-rename-{$rootpath}-{$dirrow['name']}-1">改名</a>
+		</td>
+	</tr>
+<!--{/loop}-->
+<!--{loop $filelist $filerow}-->
+	<!--{if $filerow['name']!=""}-->
+		<tr style="line-height:25px;" id="{$filerow['name']}" onmouseout="this.style.background='#ffffff'" onmouseover="this.style.background='#e6e6ee'">
+			<td style="text-align:left">&nbsp;&nbsp;<a href="#">{$filerow['name']}</a></td>
+			<td align=center>{$filerow['size']}</td>
+			<td align=center>{$filerow['date']}</td>
+			<td align=center>
+				<a href="index.php?admin_fileftpmanage-chmod-{$rootpath}-<!--{eval echo str_replace('.','*',urlencode($filerow['name']));}-->-0-{$filerow['permsn']}">{$filerow['permsn']}</a>
+			</td>
+			<td align=center>
+				<a href="index.php?admin_fileftpmanage-download-{$rootpath}-<!--{eval echo str_replace('.','*',urlencode($filerow['name']));}-->">下载</a>
+				<a href="javascript:if(confirm('确认要删除目录：{$filerow['name']} 吗？删除此目录后其子目录及文件均会删除，请确认！')) location='index.php?admin_fileftpmanage-rmdir-{$rootpath}-<!--{eval echo str_replace('.','*',urlencode($filerow['name']));}-->-0'">删除</a>
+				<a href="index.php?admin_fileftpmanage-rename-{$rootpath}-<!--{eval echo str_replace('.','*',urlencode($filerow['name']));}-->-0">改名</a>
+			</td>
+		</tr>
+	<!--{/if}-->
+<!--{/loop}-->
+<table>
+{template admin_footer}

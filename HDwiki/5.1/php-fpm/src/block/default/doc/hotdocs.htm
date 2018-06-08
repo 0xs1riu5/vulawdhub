@@ -1,0 +1,10 @@
+<div id="reci" class="columns  reci {$data['config']['style']}" bid="{$bid}">
+	<h2 class="col-h2">{lang hotDoc}</h2>
+	<a href="{url list-focus-2}" class="more">{lang more}</a>
+	<!--{loop $data['list'] $key $hotdoc}-->
+		<dl class="col-dl <!--{if $indexcache['hotdocounts']==$key+1}-->bor_no<!--{/if}-->">
+			<dt><a href="{url doc-view-$hotdoc['did']}"  title="{$hotdoc['title']}">{$hotdoc['shorttitle']}</a></dt>
+			<dd>{$hotdoc['summary']}[<a href="{url doc-view-$hotdoc['did']}"  class="entry">{lang detail}</a>]</dd>
+		</dl>
+	<!--{/loop}-->
+</div>

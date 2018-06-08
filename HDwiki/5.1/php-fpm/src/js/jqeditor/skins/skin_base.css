@@ -1,0 +1,112 @@
+﻿/*
+*color:pink;  ALL IE
+_color:yellow; IE6/7
+*/
+
+/* public */
+
+/* skin_base.css */
+.jqeditor{}
+.jqe-content{height:350px;border:1px solid #bbb;}
+
+/* toolbar */
+.jqe-toolbar{position:relative;border:1px solid #bbb;background:#FAFAFA url(bg/toolbar-bg.png) repeat-x bottom left;}
+.jqe-toolbar-fixed {position:fixed;_position:absolute !important;top:0px;}
+.jqe-list{z-index:1000;display:inline-block;margin:0;padding:0;list-style-type:none;height:auto;width:100%;padding-bottom:3px;}
+.jqe-button{margin:4px 1px 2px;display:inline-block;width:22px;height:22px;border:1px solid transparent;_border:1px solid #CCCCCC;position:relative;float:left;}
+.jqe-icon {display:inline-block;width:22px;height:22px;float:left;font-size:12px;line-height:22px;text-align:center;text-decoration:none;overflow:hidden;color:#333;cursor:pointer;}
+.jqe-button-menu{display:inline-block;height:22px;width:11px;margin-right:-1px;background-image:url(bg/icon_mce.gif);background-position:-740px 0;border-left:1px solid transparent;_border-left:1px solid #CCCCCC;float:left;}
+.jqe-message{position:absolute;background-color:#F9F9FF;top:33px;height:28px;line-height:28px;width:500px;font-size:14px;text-align:center;border:1px dashed #C8CCFF;border-top:0;z-index:900;display:none;}
+
+.jqe-icon, .jqe-menu-icon {background-image:url(bg/icon_mce.gif);}
+
+/* toolbar - ForeColor,BackColor : selected-color */
+.ForeColor span.selected-color, .BackColor span.selected-color{position:absolute;_position:relative;top:16px;_top:-6px;left:2px;_left:0; display:block;width:18px;height:5px; overflow:hidden;}
+.ForeColor span.selected-color{background-color:blue;}
+.BackColor span.selected-color{background-color:yellow;}
+
+/* toolbar - hover #A1BADF!important 
+.jqe-button:hover{border:1px solid #A1BADF;} */
+.jqe-button-hover{background-color:#DDE1EB;}
+.jqe-button-checked {border:1px solid #A1BADF;}
+.jqe-button-hover  .jqe-button-menu {background-color:#DDE1EB;border-left:1px solid #A1BADF;}
+.jqe-button-hover  .jqe-icon{background-color:#DDE1EB;}
+
+/* toolbar - mousedown */
+.jqe-button  .mousedown{background-color:#DDE1EB;}
+
+/* toolbar - disabled */
+.jqe-list .disabled{opacity:0.3; filter:alpha(opacity=30);}
+.jqe-list .disabled a.jqe-icon:hover{background-color:#F1F1F1;}
+.jqe-list .disabled .jqe-button-menu{border-left:1px solid #F1F1F1;background-color:#F1F1F1;}
+
+/* plugin - fontsize fontname */
+li.FontSize, li.FontName, li.Preview, li.H1, li.H2, li.Source, li.AutoFormat{border:1px solid #cccccc;}
+li.jqe-button-hover{border:1px solid #009AD9;}
+
+
+/* panel */
+.jqe-panel{-moz-user-select:-moz-none;z-index:1010;display:none;position:absolute;border:2px solid #009AD9;width:600px;font-size:13px;background-color:#ffffff;left:0;top:0;}
+.jqe-panel-notitle{border:1px solid #999999;}
+.jqe-panel-title{display:block;width:100%;line-height:25px;background-color:#009AD9;text-align:left;color:white;cursor:default;}
+.jqe-panel-title strong{margin-left:10px;}
+.jqe-panel-close{position:absolute;display:inline-block;height:16px; width:16px;cursor:pointer;right:5px;top:0px;font-family:Arial Black;}
+.jqe-panel-body{padding:5px 10px;}
+.jqe-panel-button{width:100%;height:30px;background-color:#fffffe;text-align:center;}
+.jqe-panel-error{color:red;line-height:25px;display:none;text-align:left;padding:0 10px;}
+.jqe-panel-notice{color:#666666;line-height:25px;text-align:left;padding:0 10px;font-size:12px;font-weight:normal;display:none;}
+.jqe-panel form {margin:0;padding:0;}/* ie6 */
+.jqe-panel-title a, .jqe-panel-title a:hover{color:white;}
+.jqe-panel-tabs {display:block;height:25px;line-height:25px;border-bottom:1px solid #009AD9;}
+.jqe-panel-tabs a{display:inline-block;width:80px;height:21px;line-height:21px;color:#999999;margin-left:2px;margin-bottom:1px;text-align:center;background-color:#ffffff;border:1px solid #cccccc;border-bottom-width:0;cursor:pointer;}
+.jqe-panel-tabs a.jqe-panel-tabs-selected{margin-bottom:0px;border:1px solid #009AD9;border-top-width:4px;cursor:default;border-bottom-color:#ffffff;color:#666666;}
+.jqe-panel-tabs a:hover{color:#666666;}
+.jqe-panel-tabs a.jqe-panel-tabs-first{margin-left:10px;}
+
+
+/* panel - overlay */
+.jqe-panel-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#000;opacity:0.2; filter:alpha(opacity=20);z-index:1000;}
+/* menu */
+.jqe-menu{z-index:1000;display:none;position:absolute;border:1px solid #999999;width:auto;font-size:12px;background-color:#F1F1F1;left:0;top:0;padding:3px 2px 4px; font-family:Arial,'Microsoft YaHei',SimSun;}
+.jqe-menu-list{width:210px;margin:0;padding:0;list-style-type:none;line-height:24px;overflow:visible;_line-height:20px;}
+.jqe-menu-list li{height:25px;_height:20px;color:#333333;position:relative;margin:0;padding:0;}
+.jqe-menu-list li.jqe-menu-disabled , .jqe-menu-list li.jqe-menu-disabled  a{color:#999999;}
+.jqe-menu-list a{text-decoration:none;color:#000000;display:block;height:25px;_height:20px;border: 1px solid #F1F1F1;cursor:default;}
+.jqe-menu-icon, .jqe-menu-text, .jqe-shortcut-key,.jqe-menu-arrow{float:left;display:block;height:22px;_height:20px;}
+.jqe-menu-icon{height:22px;width:22px;margin-left:5px;_margin-left:2px;_height:20px;}
+.jqe-menu-noicon{background-image:none!important;}
+.jqe-menu-text{width:119px;_width:119px;padding-left:5px;overflow:hidden;}
+.jqe-shortcut-key{width:38px;font-size:12px;font-family:Arial;}
+.jqe-menu-arrow{width:12px;background:url(bg/icon_mce.gif) no-repeat -720px -38px;}
+.jqe-menu-list a.hover{background-color:#ecf1f7;border:1px solid #aecff7;z-index:1010;}
+.jqe-menu-list li.jqe-menu-separator{line-height:1px;height:1px;border-top:1px solid #CDC9C9;margin:5px 3px 3px 31px;width:auto;margin:0px;}
+.jqe-submenu{display:none;left:210px;top:-2px;}
+.jqe-menu-vertical-separator {border-right:1px solid #D3D3D3;position:absolute;left:30px;width:1px;height:98%;top:2px;}
+
+
+/* plugin - color */
+.jqe-plugin-color{border:1px solid #FFFFFF;float:left;width:24px;height:24px;background:#FFFFFF;cursor:pointer;}
+span.jqe-plugin-color:hover{background-color:#ecf1f7;border:1px solid #aecff7;}
+span.jqe-plugin-color a{border:1px solid #808080;margin:3px;float:left;width:16px;height:16px;}
+
+/* plugin - talbe */
+.jqe-plugin-table {-moz-user-select:-moz-none;background:#fff;width:260px;border-collapse:separate; text-align:center; cursor:pointer;}
+.jqe-plugin-table td {width:20px;height:16px;background:#f8f8f8; border:1px solid #ccc;line-height:16px;}
+.jqe-plugin-table td  a{display:block;text-decoration:none;cursor:pointer;height:auto;}
+.jqe-plugin-table .hover {background:#ddeafd; border:1px solid #c2d8ff}
+.jqe-plugin-table-xtrxtd {margin-left:10px;}
+
+/* plugin - tableprops */
+.jqe-plugin-tableprops{line-height:20px;}
+.jqe-plugin-tableprops-title{line-height:25px;font-weight:bold;font-size:14px;}
+.jqe-plugin-tableprops input{width:60px;}
+
+/* plugin - pasteword */
+.jqe-plugin-pasteword{height:260px;border:1px solid #c2d8ff;}
+
+/* shortcut - menu */
+.jqe-shortcut-menu{line-height:20px;color:#333;background:#E0ECFF;padding:2px 2px 2px 4px;border:1px solid #99C0FF;}
+.jqe-shortcut-menu a{color:#00c; margin:0 5px; cursor:pointer; text-decoration:none;}
+.jqe-shortcut-menu a:hover{text-decoration:underline;}
+
+

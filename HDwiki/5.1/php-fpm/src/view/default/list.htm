@@ -1,0 +1,118 @@
+{template header}
+
+<div class="hd_map">
+	<a href="{WIKI_URL}">{$setting[site_name]}</a> &gt;&gt;
+	<!--{if $type=='focus'}-->{lang focusDoc}
+	<!--{elseif $type=='hot'}-->{lang hotDoc}
+	<!--{elseif $type=='champion'}-->{lang wonderDoc}
+	<!--{elseif $type=='recentupdate'}-->{lang recentUpdate}
+	<!--{elseif $type=='popularity'}-->{lang popularity}
+	<!--{elseif $type=='weekuserlist'}-->{lang weekUserList}
+	<!--{elseif $type=='allcredit'}-->{lang allcredit}
+	<!--{else}-->{lang letterOrderView}--{$letter}
+	<!--{/if}-->
+</div>
+
+<div class="r w-710 o-v p-b10 columns bang_main">
+	<h2 class="col-h2 h3 a-r">
+	<span class="l h2" >
+			<!--{if $type=='focus'}-->{lang focusDoc}
+			<!--{elseif $type=='hot'}-->{lang hotDoc}
+			<!--{elseif $type=='champion'}-->{lang wonderDoc}
+			<!--{elseif $type=='recentupdate'}-->{lang recentUpdate}
+			<!--{elseif $type=='popularity'}-->{lang popularity}
+			<!--{elseif $type=='weekuserlist'}-->{lang weekUserList}
+			<!--{elseif $type=='allcredit'}-->{lang allcredit}
+			<!--{else}-->{lang letterOrderView}--{$letter}
+		<!--{/if}-->
+	</span>
+	<!--{if $type=='focus' ||$type=='hotdoc' || $type=='recentdoc' ||$type=='recentupdate' ||$type=='hot' ||$type=='champion' }-->
+		<a href="{url list-rss-$type}"  id="rss" ><img  class="m-r8" src="style/default/rss.gif"/></a>
+	<!--{/if}-->
+	</h2>
+	<dl class="col-dl">
+	<dt class="bold">
+		<span class="l">
+			<!--{if $type=='popularity' ||$type=='allcredit' || $type=='weekuserlist'}-->{lang userName}<!--{else}-->{lang docTitle}<!--{/if}-->
+		</span> 
+		<!--{if $type=='focus'}-->{lang focusTime}
+		  <!--{elseif $type=='hot'}-->{lang focusTime}
+		  <!--{elseif $type=='champion'}-->{lang focusTime}
+		  <!--{elseif $type=='recentupdate'}-->{lang updateTime}
+		  <!--{elseif $type=='popularity'}-->{lang viewTimes}
+		  <!--{elseif $type=='weekuserlist'}-->{lang lastWeek}{lang credit}
+		  <!--{elseif $type=='allcredit'}-->{lang creditTotal}
+		  <!--{/if}-->&nbsp;
+	</dt>
+	
+	<!--{loop $list $key $data}-->
+		<!--{if $type=='popularity'}-->
+			<dd><a href="{url user-space-$data['uid']}"  class="l">{$data['username']}</a>{$data['views']}</dd>
+			<!--{elseif $type=='allcredit' || $type=='weekuserlist'}-->
+			<dd><a href="{url user-space-$data['uid']}"  class="l">{$data['username']}</a>{$data['credit']}</dd>		
+			<!--{else}-->
+			<dd><a href="{url doc-view-$data['did']}"  class="l">{$data['title']}</a><!--{if $type=='hotdoc'}-->{$data['edits']}<!--{else}-->{$data['time']}<!--{/if}--></dd>
+		<!--{/if}-->
+	<!--{/loop}-->
+		
+	</dl>
+	<div id="fenye" class="m-t10 a-r">{$departstr}</div>
+</div>
+
+<div class="l w-230">
+	<div class="p-b10 m-t10 sidebar">
+	<ul>
+		<li><a href="{url list-focus-2}"  <!--{if $type=='hot'}-->class="on"<!--{/if}-->><img src="style/default/gl_space/hot.gif" />{lang hotDoc}</a></li>
+		<li><a href="{url list-focus-3}"  <!--{if $type=='champion'}-->class="on"<!--{/if}-->><img src="style/default/gl_space/champion.gif" />{lang wonderDoc}</a></li>
+		<li><a href="{url list-focus-1}"  <!--{if $type=='focus'}-->class="on"<!--{/if}-->><img src="style/default/gl_space/bang_tj.gif" />{lang focusDoc}</a></li>
+		<li><a href="{url list-recentupdate}"  <!--{if $type=='recentupdate'}-->class="on"<!--{/if}-->><img src="style/default/gl_space/bang_zjgx.gif"/>{lang recentUpdate}</a></li>
+		<li><a href="{url list-weekuserlist}"  <!--{if $type=='weekuserlist'}-->class="on"<!--{/if}-->><img src="style/default/gl_space/bang_szgxb.gif"/>{lang weekUserList}</a></li>
+		<li><a href="{url list-allcredit}"  <!--{if $type=='allcredit'}-->class="on"<!--{/if}-->><img  src="style/default/gl_space/bang_z.gif" />{lang allcredit}</a></li>
+		<li><a href="{url list-popularity}" <!--{if $type=='popularity'}-->class="on"<!--{/if}-->><img src="style/default/gl_space/bang_rq.gif"/>{lang popularity}</a></li>
+	</ul>
+	</div>
+    <div id="block_left">{block:left/}</div>
+<div class=" columns i6-ff p-b10">
+<h2 class="col-h2">{lang letterOrderView}</h2>
+<ul class="col-ul list-s">
+	<li><a href="{url list-letter-A}">A</a></li>
+	<li><a href="{url list-letter-B}">B</a></li>
+	<li><a href="{url list-letter-C}">C</a></li>
+	<li><a href="{url list-letter-D}">D</a></li>
+	<li><a href="{url list-letter-E}">E</a></li>
+	<li><a href="{url list-letter-F}">F</a></li>
+	<li><a href="{url list-letter-G}">G</a></li>
+	<li><a href="{url list-letter-H}">H</a></li>
+	<li><a href="{url list-letter-I}">I</a></li>
+	<li><a href="{url list-letter-J}">J</a></li>
+	<li><a href="{url list-letter-K}">K</a></li>
+	<li><a href="{url list-letter-L}">L</a></li>
+	<li><a href="{url list-letter-M}">M</a></li>
+	<li><a href="{url list-letter-N}">N</a></li>
+	<li><a href="{url list-letter-O}">O</a></li>
+	<li><a href="{url list-letter-P}">P</a></li>
+	<li><a href="{url list-letter-Q}">Q</a></li>
+	<li><a href="{url list-letter-R}">R</a></li>
+	<li><a href="{url list-letter-S}">S</a></li>
+	<li><a href="{url list-letter-T}">T</a></li>
+	<li><a href="{url list-letter-U}">U</a></li>
+	<li><a href="{url list-letter-V}">V</a></li>
+	<li><a href="{url list-letter-W}">W</a></li>
+	<li><a href="{url list-letter-X}">X</a></li>
+	<li><a href="{url list-letter-Y}">Y</a></li>
+	<li><a href="{url list-letter-Z}">Z</a></li>
+	<li><a href="{url list-letter-0}">0</a></li>
+	<li><a href="{url list-letter-1}">1</a></li>
+	<li><a href="{url list-letter-2}">2</a></li>
+	<li><a href="{url list-letter-3}">3</a></li>
+	<li><a href="{url list-letter-4}">4</a></li>
+	<li><a href="{url list-letter-5}">5</a></li>
+	<li><a href="{url list-letter-6}">6</a></li>
+	<li><a href="{url list-letter-7}">7</a></li>
+	<li><a href="{url list-letter-8}">8</a></li>
+	<li><a href="{url list-letter-9}">9</a></li>
+	<li><a href="index.php?list-letter-*" >{lang otherOrderView}</a></li>
+</ul>
+</div>
+</div>
+{template footer}

@@ -1,0 +1,9 @@
+<div  bid="{$bid}" class="columns dwsct i6-ff list2 {$data['config']['style']}">
+	<h2 class="col-h2">{lang cooperatedoc}</h2>
+	<a href="{url doc-cooperate}"  class="more">{lang more}</a>
+	<ul class="col-ul" >
+		<!--{loop $data['list'] $coopdoc}-->
+			<li><a href="{url doc-innerlink-{eval echo urlencode(string::hiconv({$coopdoc['title']}, 'utf-8'))}}"  title="{$coopdoc['title']}">{$coopdoc['shorttitle']}</a></li>
+		<!--{/loop}-->
+	</ul>
+</div>

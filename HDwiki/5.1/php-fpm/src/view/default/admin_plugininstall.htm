@@ -1,0 +1,69 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(url){
+ 	if(confirm('{lang commonOK}')){
+		window.location=url;
+	}
+}
+</script>
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">插件：
+	<a href="index.php?admin_plugin" ><span>{lang pluginMange}</span></a>
+    <a href="index.php?admin_plugin-will" class="on"><span>全部推荐插件</span></a>
+    <a href="index.php?admin_plugin-find" ><span>本地已有插件</span></a>
+</p>
+<h3 class="col-h3">全部推荐插件</h3>
+<table border="0" cellpadding="0" cellspacing="0" width="99%" class="plug_attention">
+    <tr>
+        <td  height="40" colspan="2" b><strong>{lang message_title}</strong></td>
+    </tr>
+    <tr>
+        <td colspan="2" >{lang pluginTip1}</td>
+    </tr>
+    <tr>
+        <td colspan="2" >{lang pluginTip2}</td>
+    </tr>
+    <tr>
+        <td colspan="2" >{lang pluginTip3}</td>
+    </tr>
+</table>
+
+
+<div class="navcontainer"  class="mar-t12">
+  <ul class="navlist">
+    <li><a href="index.php?admin_plugin-will-time" <!--{if $orderby=='time'}--> id="current"<!--{/if}-->>{lang attachTime}</a></li>
+    <li><a href="index.php?admin_plugin-will-install" <!--{if $orderby=='install'}--> id="current"<!--{/if}-->>{lang orderbyinstall}</a></li>
+    <li><a href="index.php?admin_plugin-will-downloads" <!--{if $orderby=='downloads'}--> id="current"<!--{/if}-->>{lang orderbydownload}</a></li>
+  </ul>
+</div>
+    
+    
+    
+    
+ <div class="model">	
+<!--{loop $remote_plugins $plugin}-->
+    <div class="model-cell"> 
+        <dl>
+            <dt><a href="{$plugin[homepage]}" target="_blank"><img src="{$setting[app_url]}{eval echo substr($plugin[image],1);}" class="plugin_img"/></a></dt>
+            <dd class="link_orange bold">{$plugin[name]}{$plugin[version]}</dd>
+            <dd>{lang pluginWriter}:{$plugin[copyright]} </dd>
+            <dd>{lang suit_edition}:HDWiki{$plugin[suit]} </dd>
+            <dd>{lang pluginInstalls}:{$plugin[install]} &nbsp;&nbsp;&nbsp;&nbsp;<a href="{$setting[app_url]}/plugin.php?action=stat&id={$plugin[appid]}" target="_blank">{lang pluginInstallSites}</a></dd>
+            <dd>{lang pluginDescript}:{$plugin[description]}</dd>
+        </dl>
+        <a class="install" href="javascript:docheck('index.php?admin_plugin-install-{$plugin[appid]}')"><b class="block">{lang pluginInstall}</b>({$plugin[downloads]})</a>
+        <b class="angle_t_l"></b>
+        <b class="angle_t_r"></b>
+        <b class="angle_b_l"></b>
+        <b class="angle_b_r"></b>
+    </div>
+
+<!--{/loop}-->
+</div>
+
+<table cellpadding="0" cellspacing="0" class="l a-r" style="width:750px;">
+<tr>
+	<td id="pagebar"><p class="fenye a-r"> {$departstr} </p></td>
+</tr>
+</table>
+{template admin_footer}

@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset={WIKI_CHARSET}"
+	http-equiv="Content-Type" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<link href="style/default/admin/admin.css" type="text/css"
+	rel="stylesheet" media="all" />
+<title>HDWIKI 后台-管理中心</title>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.dialog-0.8.js"></script>
+<script type="text/javascript" src="js/drag.js"></script>
+<style type="text/css">
+html,body,div,dl,dt,dd,ul,li,h1,h2,h3,h4,h5,h6,pre,input,p,blockquote,th,td,form{margin: 0;padding: 0;}
+ul,li,dd,dt,dl {list-style: none outside none;}
+address,caption,cite,code,dfn,th,var {font-style: normal;font-weight: normal;}
+img {border: 0 none;}
+caption,th {text-align: left;}
+table {border-collapse: collapse;empty-cells: show;}
+input,select,textarea {color: #111111;font-family: verdana, 'lucida grande', taho, 'trebuchet ms', sans-serif;font-size: 12px;}
+textarea {border: 1px solid #DBE6EF;color: #666;padding: 2px;}
+html,body {height: 100%;text-align: left;}
+#wg_toolbar {position: relative;background: url("style/default/spage_bundle.gif") repeat-x;height: 32px;padding: 0 10px;}
+.hudong_dialog h2 {font-size: 14px;color: #333;padding: 0 12px;}
+.hudong_dialog h3 {padding: 8px 0 6px;margin: 5px 12px 10px 12px;font-size: 14px;font-weight: bold;color: #666;border-bottom: 1px #ccc dashed;text-align: left;}
+.myleft {float: left;width: 120px;margin-left: 12px;display: inline;zoom:1;}
+.myleft ul li {height: 30px;line-height: 30px;margin: 0 5px 10px 0;border: 1px #ccc dashed;}
+.myleft ul li.on {background: #f0f0f0;border: 0 !important;	margin-right: 0 !important;}
+.myleft li a {font-size: 14px;font-weight: bold;color: #666;}
+.myright {_height: 300px;min-height: 300px;margin: 0 12px 0 130px;padding: 10px 0;background-color: #f0f0f0;font-size: 14px;color: #666;zoom: 1;}
+
+.myright li {float: left;display: inline;width: 105px;height: 60px;margin: 0 0 10px 10px;padding: 10px 5px;background: #aaa;color: #fff;border: 1px #ccc dashed;text-align: left;line-height: 20px;
+	cursor: pointer;word-break: break-all;word-wrap: break-word;}
+li.select {border: #f00 dashed 1px;background: #fff;color: #333 !important;}
+.btn {padding: 2px 6px;}
+.next_step {width: 100%;clear: both;margin-top: 10px;}
+.main2 {margin: 0 12px;text-align: left;}
+.main2 table {line-height: 20px;}
+.main2 table td,.main2 table th {padding: 6px 8px;}
+.main2 table th {text-align: right;}
+.sel_width {width: 100px;overflow: hidden;color: #666;}
+.ul_l_s {line-height: 22px;text-align: left;}
+.ul_l_s li {margin-left: 100px;padding: 6px 0;position: relative;}
+.ul_l_s li span {position: absolute;left: -140px;width: 135px;margin-right: 10px;top: 6px;text-align: right;}
+.inp_txt {padding-top: 3px;}
+.m-l140 {margin-left: 110px;text-align:left;}
+#first{zoom:1;}
+</style>
+<script>
+	$.dialog.setConfig('base', './style/default');
+	
+	function hd$(expression){
+		return $(expression,Fdocument);
+	}
+	
+	var Fdocument,area,space,blocks,toolbar,iframe,contents;//定义需要的几个全局变量。
+	
+	$(document).ready(function(){
+		iframe=$('#themeFrame');
+		iframe.load(function(){//iframe加载完，执行初始化操作。
+			init();
+		});
+	});
+	
+	function init(){
+		Fdocument=iframe[0].contentWindow.document;
+		var Fbody=hd$("body"), Fhtml=hd$("html");
+		Fbody.append("<style>.view{border:2px dashed #390;overflow:hidden;zoom:1;padding-bottom:8px;}#toolbar{width:105px;position:absolute;border:1px solid #f60;display:none;} .toolbar_title{height:25px;line-height:25px;width:100%;background-color:#f33;text-align:left;cursor:move;filter:alpha(opacity=80);opacity:.8;}#toolbar a{padding:0 4px;cursor:pointer;color:#FFFFFF;background-color:#000;float:right;} .draging{position:absolute;} #space{width:98%;border:2px dashed red;}</style>");
+		Fbody.append('<div id="toolbar"><div class="toolbar_title"><a name="del">删除</a><a name="edit">版块编辑</a></div></div><p id="space"></p>');
+
+		//下面是几个全局变量。
+		Action.offsetBody=Math.floor((Fhtml.width() - Fbody.width())/2);
+                if(Action.offsetBody < 0) {
+                    Action.offsetBody = 0;
+                }
+		var clockResize=0;
+		$(window).bind('resize', function(){
+			if(clockResize){clearTimeout(clockResize)}
+			clockResize=setTimeout(function(){
+				if(Fhtml.width() - Fbody.width() <=0) {
+                                    Action.offsetBody = 0;
+                                } else {
+                                    Action.offsetBody=Math.floor((Fhtml.width() - Fbody.width())/2);
+                                }
+			}, 200);
+			return false;
+		});
+		
+		space = hd$("#space").hide();//得到space，并且将其隐藏。
+		toolbar = hd$("#toolbar").hide();//得到toolbar，并且将其隐藏。
+			
+		bindblk();
+		
+		toolbar.find("a[name!=drag]").click(function(e){
+			var name=$(this).attr('name');
+			if(Action[name])Action[name]();
+			return false;
+		}).mousedown(function(){
+			return false;
+		});
+		
+		toolbar.children('div.toolbar_title').mousedown(function(e){
+			Action.drag(e);
+		});
+		
+		Action.view();
+	}//init
+
+	
+	function bindblk(){
+		area = hd$("div[id^='block_']");//所有可以添加区块的区域。
+		blocks = area.children('div');//所有区域里面的已添加的区块。
+		
+		hd$("a").click(function(){
+			return false;
+		});
+		blocks.mouseover(function(){
+			Action.showToolbar($(this));//调用showToolbar的对象（即：即将操作的block对象），做参数，传进去，其实就是页面中的某一个block。
+		})//.mouseleave(function(){
+			//toolbar.hide();
+		//});
+	}
+	
+	//这个对象主要是添加版块的一些操作。
+	var block={
+		block:'',
+		fun:'',
+		istpl:1,
+		add:function (){
+			$.dialog({
+				id:'add_block',
+				position:'center',
+				title:'添加版块',
+				width:550,
+				height:500,
+				type:'url',
+				url:"{url admin_theme-addblock-$theme}",
+				callback:function(){
+					$(".myleft li:first-child").addClass('on');//左侧第一个选中
+					$(".myright div:first-child").show();//右侧第一个选中
+				}
+			});
+		},
+		view:function(key,obj){
+			$('.on').removeClass('on');
+			$(obj).addClass('on');
+			$(".myright div").hide();
+			$("#"+key).show();
+			$.dialog.resize('add_block');
+			return false;
+		},
+		select:function(id){
+			$('.select').removeClass('select');
+			$('#'+$(id).attr('id')).addClass('select');
+		},
+		next:function(){
+			var selectblk=$('.select');
+			if(selectblk.length==0){
+				alert('还没有选择一个版块，请点击选择。');
+				return false;
+			}
+			var selectid=selectblk.attr('id').split("-");
+			this.block=selectid[0];
+			this.fun=selectid[1];
+			if(!this.fun){
+				return alert('版块id错误。');
+			}
+			Action.post("{url admin_theme-getconfig}",{block:this.block,fun:this.fun},function(xml){
+				var data=xml.getElementsByTagName("contents")[0].childNodes[0].nodeValue;//xml 格式返回的一个html代码块。
+				var option='';
+				$.each(area, function(i,n){
+					var area=$(n).attr('id');
+					option += '<option value="'+area.substring(area.indexOf('_')+1)+'">'+area+'</option>'//把本页中所有的可添加区域放到option中。
+				});
+				$("#area").html(option);
+				if(data==''){
+					data='本版块没有要设置的参数！';
+				}
+				$("#config").html(data);//得到的代码块或者信息放上来。
+				$("#first").hide();
+				$("#second").show();
+			},'xml');
+		},
+		complete:function(){
+			var argsNum=arguments.length, data;
+			if(argsNum>0){//参数大于零个，说明是通过点编辑按钮过来的。
+				var thisObj=hd$("[bid='"+arguments[0]+"']"),op_id = 'dialog_edit_block';
+				data={bid:arguments[0]};
+			}else{
+				var areaval=$("#area").val(),op_id = 'dialog_add_block';
+				data={
+					theme:"$theme",file:"$viewfile", block:this.block, fun:this.fun
+				}
+			}
+			var params=$("[name^='params']",$('#'+op_id+''));//取到所有的params开头的参数设置数组。
+			$.each(params , function(i,n){
+				var name=$(n).attr('name');
+				data[name]=$(n).val();//标记一下需要修改兼容textarea和复选框。
+			});
+			var tplC = $('#tplcontent').val();
+			data.tplcontent = Action.contents == tplC ? '' : tplC;//10-11-07新加入内容判断模板代码是否被修改。
+			
+			Action.post("{url admin_theme-savetemp}",data,function(html){
+				if(argsNum>0){//编辑
+					thisObj.replaceWith(html);
+					//alert('编辑新区块成功！');
+					$.dialog.close('edit_block');
+				}else{//添加
+					hd$('#block_'+areaval).append(html);
+					//alert('添加新区块成功！');
+					$("#first").show();
+					$("#second").hide();
+					$.dialog.close('add_block');
+					/*if($.IE6){
+						$(this).css({'height':''});
+					}*/
+				}
+				Action.confirm.set();
+				bindblk();//重新绑定页面中的可操作元素。
+			},'html');
+		},
+		viewtpl:function(){
+			if(this.istpl>0){
+				//$("#tpl").show('slow');
+				$("#tplbtn").text('隐藏编辑模板');
+				$("#tpl")[0].style.display = "inline";// = "display:inline-block";
+			}else{
+				//$("#tpl").hide('slow');
+				$("#tplbtn").text('显示编辑模板');
+				$("#tpl")[0].style.display = 'none';
+			}
+			this.istpl *= -1;
+		},
+		returntpl:function(tplfile){
+			data={tplfile:tplfile};
+			Action.post("{url admin_theme-gettpl}",data,function(html){
+				$("#tplcontent").val(html);
+			},'html');
+		},
+		save: function(){//保存拖拽后的布局
+			//得到所有区域下面的区块id。状如：{middle:"3-hd4becf605046a4",right:"1-2"}
+			//var data= '{theme_file:"{$theme}_{$viewfile}",';
+			var data={theme_file: "{$theme}-{$viewfile}"};
+			$.each(area,function(i,n){
+				var areaid=$(n).attr('id');
+				areaid=areaid.substring(areaid.indexOf('_')+1);
+				var block=$(n).children('div'), bid=[];
+				$.each(block,function(i,n){
+					bid.push($(n).attr('bid'));
+				})
+				data[areaid]= bid.join('-');
+			});
+			//保存到服务器。
+			Action.post("{url admin_theme-saveblock}", data, function(xml){
+				var message=xml.lastChild.firstChild.nodeValue;
+				if(message=='ok'){
+					alert('保存成功，到前台预览。');
+				}else{
+					alert('参数错误，保存失败.');
+				}
+				Action.confirm.clear();
+			},'xml');
+		}
+	}//block
+</script>
+
+</head>
+<body>
+<div id="wg_toolbar">
+<div class="left-bar"><span style="margin-right: 3px;"> <input
+	type="button" class="btn" value="添加版块" onclick="block.add()" /> </span> <span>
+<input type="button" class="btn" value="保存" onclick="block.save()" /> </span>
+<span> <input id="view" type="button" class="btn" value="去掉虚线框"
+	onclick="Action.view()" /> </span> <span
+	style="position: absolute; right: 10px;"> <input id="exit"
+	type="button" class="btn" value="退出" onclick="Action.exit()" /> </span> <span
+	style="color: #FFF; font-weight: bold; margin-left: 60px;">
+提示：操作完成点击保存按钮，修改方可生效。请在1024*768以上的分辨率下工作。 </span></div>
+</div>
+
+<table width="100%" height="95%" border="0" cellspacing="0"
+	cellpadding="0">
+	<tr>
+		<td height="100%"><iframe id="themeFrame" name="themeFrame"
+			width="100%" height="100%" frameborder="0" marginheight="0"
+			marginwidth="0" scrolling="yes" src="{$url}"></iframe></td>
+	</tr>
+</table>
+</body>
+</html>

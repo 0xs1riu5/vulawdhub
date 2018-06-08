@@ -1,0 +1,123 @@
+{template admin_header}
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">管理：
+    <a href="index.php?admin_plugin-manage-{$pluginid}" class="on"><span>插件管理</span></a>
+    <a href="index.php?admin_plugin-setvar-{$pluginid}" ><span>插件设置</span></a>
+    <a href="index.php?admin_plugin-hook-{$pluginid}"> <span>插件钩子</span> </a>
+</p>
+<form method="post" action="index.php?plugin-doctemplate-admin_doctemplate">
+<table border=0 class="font_size">
+		<tr>
+		  <td> 选择词条分类：</td>
+		  <td colspan=2 align=left><div id="gamemessage"></div></td>
+		</tr>
+		<tr>
+		  <td valign=top> 分类模版代码：</td>
+		  <td align=left><textarea name="ctemplate" rows=9 cols=45>{$doctemplate}</textarea></td>
+		  <td align=left valign=top>
+			 <div id="help" class="none_div">[hr] 分割线 <br>[br] 换行<br>[b] 文字加粗 [/b]<br>[h1] h1段落 [/h1]<br>[u]文字带下划线[/u]<br>[i]斜体字[/i]</div>
+		  </td>
+		</tr>
+		<tr>
+		  <td></td>
+		  <td colspan=2><input type="submit" name="suresubmit" value="确认设置"></td>
+		</tr>
+</table>
+</form>
+<br>
+<H3 class="col-h4 m-t10">分类 :: <a href="index.php?plugin-doctemplate-admin_doctemplate-default">{lang msgCatContents}</a> <!--{if is_array($catnavi)}--><!--{loop $catnavi $tid $tcat}-->
+	&gt;&gt; <a href="index.php?plugin-doctemplate-admin_doctemplate-default-{$tcat[cid]}">{$tcat[name]}</a> <!--{/loop}--><!--{/if}-->
+</H3>
+<br>
+<table width="30%" cellspacing="0" cellpadding="3"  class="list_table">
+	<tr class="top_tr">	
+		  <td class="pan_2"><b>分类名称</b></td>
+		  <td class="pan_2"><b>是否已设置</b></td>
+		  <td width="80" align="center"><b>查看子分类</b></td>
+	</tr>
+<!--{loop $cats  $i $cat}-->
+	<tr class='con_tr'>	
+		  <td class="pan_2">
+				<a href="index.php?plugin-doctemplate-admin_doctemplate-default-{$cat['cid']}"  onclick="editDocTemplate({$cat['cid']});">{$cat['name']}</a>
+		  </td>
+		  <td class="pan_2">
+				<!--{loop $isset_doctemplate $j $ctemp}--><!--{if $ctemp['cid']==$cat['cid']}--><font color=red>已设置</font><!--{/if}--><!--{/loop}-->
+		  </td>
+		  <td width="80" align="center">
+				<a href="index.php?plugin-doctemplate-admin_doctemplate-default-{$cat['cid']}"  onclick="editDocTemplate({$cat['cid']});">模版设置</a>
+		  </td>
+	</tr>
+<!--{/loop}-->
+</table>
+{template admin_footer}
+
+
+<style type="text/css">
+.top_table{margin-top:50px;line-height:30px;}
+.top_tr{border-bottom:1px solid #cccccc;font-size:12px;}
+.con_tr{border-bottom:1px solid #cccccc; line-height:30px;font-size:12px;}
+.pan_2{padding-left:20px;}
+.none_div{line-height:23px;margin-left:15px;color:#999999}
+.font_size{font-size:12px;border:1px solid #CCCCCC;line-height:18px;margin-left:8px;width:40%;}
+.font_size td{border-color:#CCCCCC;border-style:dotted;border-width:1px 0;line-height:18px;padding:8px;vertical-align:top;}
+.list_table{border:1px solid #CCCCCC;line-height:18px;margin-left:8px;width:40%;}
+
+.list_table td{border-color:#CCCCCC;border-style:dotted;border-width:1px 0;line-height:18px;padding:8px;vertical-align:top;}
+
+</style>
+<script type="text/javascript">	
+	var all_category = [$all_category];	
+	var cid = "$cid";
+	window.onload=function cattype_option(){
+		var gamemessage=document.getElementById('gamemessage');
+		var option="<select name='qcattype'  onchange='editDocTemplate(this.value);'><option value=0 selected>&nbsp;--选择分类--&nbsp;</option>";
+		for(i in all_category){
+			if(all_category[i].pid==0){
+				if(cid==all_category[i].cid)
+					option += "<option value="+all_category[i].cid+" selected>"+all_category[i].name+"</option>";
+				else
+					option += "<option value="+all_category[i].cid+">"+all_category[i].name+"</option>";
+				option+=cattype_child_option(option,all_category[i].cid,cid,1);
+			}
+		}
+		option+="</select>";
+		gamemessage.innerHTML=option;
+	}
+	function cattype_child_option(option,pid,cid,depth){
+		var all_category_js = all_category;
+		var optionthis="";
+		var rep='-';
+		for(j in all_category_js){
+			if(pid == all_category_js[j].pid){
+				if(cid == all_category_js[j].cid){
+					rep=str_repets('-',depth);
+					optionthis += "<option value='"+all_category_js[j].cid+"' selected>&nbsp;|&nbsp;"+rep+"&nbsp;"+all_category_js[j].name+"</option>";
+				}
+				else{
+					rep=str_repets('-',depth);
+					optionthis += "<option value='"+all_category_js[j].cid+"'>&nbsp;|&nbsp;"+rep+"&nbsp;"+all_category_js[j].name+"</option>";
+				}
+				optionthis += cattype_child_option(option,all_category_js[j].cid,cid,depth+2);
+			}
+		}
+		return optionthis;
+	}
+	function str_repets(str,num){
+		var string="";
+		for(n=0;n<num;n++){
+			string += str;
+		}	
+		return string;
+	}
+	function editDocTemplate(thiscid){
+		window.location="index.php?plugin-doctemplate-admin_doctemplate-default-"+thiscid;
+	}
+	function CopyMomoCode(){
+		var momocode=document.getElementById('momo_code');
+		window.clipboardData.setData("Text",momocode.value);
+		alert("{lang momoCodeCopyTip}");
+	}
+	function ReMomoCode(){
+		location.href="index.php?admin_plugin-manage-{$pluginid}";
+	}
+</script>

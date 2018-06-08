@@ -1,0 +1,89 @@
+{template header}
+<script type="text/javascript">
+	function delsubmit(){
+		var delsave=$("input[name='checkid[]']:checked");
+		if(delsave.length==0){
+			alert('{lang selectdelpms}');
+		}else{
+			if (confirm('{lang remove}')){
+				$("#form1").submit();
+			}
+		}
+		return false;
+	}
+	
+	function selectAll(){
+		$("input[name='checkid[]']").attr('checked',$("input[name='checkbox']").attr('checked'));
+	}
+	
+	function expand(id){
+		if(id=='usermanage'){
+			$("ul#usermanage").toggle(); 
+		}else{
+			$('ul#userpms').toggle();
+		}
+	}
+</script>
+<div class="hd_map">
+	<a href="{WIKI_URL}">{$setting['site_name']}</a> &gt; <a href="{url user-profile}">{lang selfManage}</a> &gt; {lang manageSave}</div>
+	
+<div class="r w-710 o-v m-t10 p-b10 gl_manage_main">
+	<h2 class="h3 bold">{lang manageSave}</h2>
+	<form  name="delform" id="form1" action="{url doc-delsave}" method="post">
+		<table width="95%" cellpadding="0" cellspacing="0" class="table l">
+			<thead class="bold">
+			<tr>
+				<td ><input name="checkbox" type="checkbox"  id="chkall" onclick="selectAll();"/></td>
+				<td >{lang saveTitle}</td>
+				<td >{lang saveType}</td>
+				<td >{lang saveTime}</td>
+				<td >{lang saveEdit}</td>
+			</tr>
+			</thead>
+			<!--{if isset($savelist)}-->
+			{loop $savelist $save}
+			<tr>
+				<td ><input name="checkid[]" type="checkbox" value="$save[aid]" /></td>
+				<td ><a href="{url doc-view-$save['did']}" target="_blank" >{$save['title']}</a></td>
+				<td ><!--{if $save['id']==-1}-->{lang saveType2}<!--{elseif $save['id']>=0 }-->{lang saveType3}<!--{else}-->{lang saveType1}<!--{/if}--></td>
+				<td >{$save['time']}</td>
+				<td ><!--{if $save['id']<0}--><a href="{url doc-edit-$save['did']-1}" target="_blank" > <!--{else}--> <a href="{url doc-editsection-{$save['did']}-{$save['id']}-1}" target="_blank"><!--{/if}-->{lang saveEdit}</a></td>
+			</tr>
+			{/loop}
+			<tr>
+				<td ><a href="#" onclick='delsubmit();'>{lang pmsdel}</a></td>
+				<td colspan="4" align="right" ><span>{lang saveTotal}{$count}</span></td>
+			</tr>
+			<!--{else}-->
+			<tr>
+				<td >&nbsp;</td>
+				<td colspan="4" >{lang saveNo}</td>
+			</tr>
+			<!--{/if}-->
+		</table>
+		<div id="fenye">{$departstr}</div>
+	</form>
+</div>
+<div class="l w-230">
+<div class="m-t10 p-b10 sidebar gl_manage">
+	<h2 class="col-h2"><span onclick="expand('usermanage');">{lang profile}</span></h2>	
+	<ul id="usermanage">
+		<li><a href="{url user-profile}" target="_self"><img alt="" src="style/default/gl_manage/grzl.gif" />{lang profile}</a></li>
+		<li><a href="{url user-editprofile}" target="_self" ><img src="style/default/gl_manage/grzl_set.gif"/>{lang editProfile}</a></li>
+		<li><a href="{url user-editpass}" target="_self"><img src="style/default/gl_manage/change_pw.gif"/>{lang editPass}</a></li>
+		<li><a href="{url user-editimage}" target="_self"><img src="style/default/gl_manage/grzl_set.gif" />{lang editImage}</a></li>
+		<li><a href="{url doc-managesave}" target="_self" class="on"><img src="style/default/gl_manage/ctbccgx.gif"/>{lang manageSave}</a></li>
+		<li><a href="{url user-invite}" target="_self"><img src="style/default/gl_manage/invite.png"/>{lang regInvite}</a></li>
+	</ul>
+	<h2 class="col-h2"><span onclick="expand('userpms');">{lang shortmessage}</span></h2>
+	<ul id="userpms">
+		<li><a href="{url pms-box-inbox}" target="_self"><img alt="" src="style/default/gl_manage/sjx.gif" />{lang inbox}</a></li>
+		<li><a href="{url pms-box-outbox}" target="_self" ><img src="style/default/gl_manage/fjx.gif"/>{lang outbox}</a></li>
+		<li><a href="{url pms-sendmessage}" target="_self" ><img src="style/default/gl_manage/fdxx.gif"/>{lang sendmessage}</a></li>
+		<li><a href="{url pms-box-drafts}" target="_self"><img src="style/default/gl_manage/cgx.gif" />{lang draft}</a></li>
+		<li><a href="{url pms-blacklist}" target="_self"><img src="style/default/gl_manage/hllb.gif"/>{lang blacklist}</a></li>
+	</ul>
+</div>
+</div>
+<div class="c-b"></div>
+{template footer}

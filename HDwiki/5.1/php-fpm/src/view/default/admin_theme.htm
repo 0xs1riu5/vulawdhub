@@ -1,0 +1,104 @@
+{template admin_header}
+<script>
+	function checknull(path){
+		if(confirm('{lang styledefaultconfirm}')==false){
+			return false;
+		}else{
+			window.location='index.php?admin_theme-setdefaultstyle-'+path.replace(/\./g,'*');
+		}
+	}
+	function add(pathname){
+		if(confirm('{lang styleaddconfirm}')==false){
+			return false;
+		}else{
+			window.location='index.php?admin_theme-add-'+pathname.replace(/\./g,'*');
+		}
+	}
+</script>
+    
+<p class="map">插件/模板：模板</p>
+<p class="sec_nav">模板：
+    <a href="index.php?admin_theme" class="on"><span>设置默认风格</span></a>
+    <a href="index.php?admin_theme-create" ><span>创建风格</span></a>
+    <a href="index.php?admin_theme-list" ><span>在线安装</span></a>
+    <a href="index.php?admin_theme-edit" ><span>模板编辑</span></a>
+</p>
+
+<!--{if $defaultstyle[name]!=''}-->
+<h3 class="col-h3">设置默认风格</h3>
+<div class="tem_style link_blue">
+    <!--{if $defaultstyle[img]!='1'}-->
+    <img alt="{$defaultstyle[name]}" src="style/default/screenshot.jpg"/>
+    <!--{else}-->
+    <img alt="{$defaultstyle[name]}" src="style/{$defaultstyle[path]}/screenshot.jpg"/>
+    <!--{/if}-->
+    <ul>
+    <li><a href="{$defaultstyle[weburl]}" target="_blank">{$defaultstyle[name]}</a> version:{$defaultstyle[version]}  BY <a href="{$defaultstyle[authorurl]}" target="_blank"> {$defaultstyle[author]}</a></li>
+    <li>{lang pluginDescript}:{$defaultstyle[desc]}</li>
+    <li>{lang focusmanageTag}:
+    <!--{loop $defaultstyle[tag] $defaulttag}-->
+        <a href="{$appurl}/template.php?action=search&tag={eval echo urlencode(string::hiconv($defaulttag,'utf-8','gbk'))}" target="_blank">{$defaulttag}</a>
+    <!--{/loop}-->
+    <!--{loop $defaultstyle[charset] $defaultcharset}-->
+        <a href="{$appurl}/template.php?action=search&tag={eval echo urlencode(string::hiconv($defaultcharset,'utf-8','gbk'))}" target="_blank">{$defaultcharset}</a>
+    <!--{/loop}-->
+    </li>
+    <li><input class="inp_btn2" name="Button1" type="button" onclick="javascript:window.location='index.php?admin_theme-editxml-{$defaultstyle[path]}-share'" value="{lang pluginShare}" /><input type="button" onclick="javascript:window.location='index.php?admin_theme-edit-{$defaultstyle[path]}';" value="{lang styleEdit}" class="inp_btn2"/></li>
+	</ul>
+</div>
+<!--{/if}-->
+
+
+        
+<!--{if $toaddlist!=null}-->
+<h3 class="col-h4 m-t10">{lang styleToAdd}</h3>
+<div class="tem_style link_blue">
+    <ul>
+        <li>
+    <!--{loop $toaddlist $style}-->
+        <a href="#" onclick="return add('{$style['ename']}')">$style['zname']($style['ename'])</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <!--{/loop}-->
+        </li>
+    </ul>
+</div>
+<!--{/if}-->
+
+
+<!--{if $stylelist!=null}-->
+<h3 class="col-h4 m-t10">可用的模版风格</h3>
+
+<!--{loop $stylelist $style}-->
+<div class="tem_style link_blue">	  		
+    <!--{if $style[img]!=1}-->
+    <img alt="{$style[name]}" class="plugin_img" src="style/default/screenshot.jpg"/>
+    <!--{else}-->
+    <img alt="{$style[name]}" class="plugin_img" src="style/{$style[path]}/screenshot.jpg"/>
+    <!--{/if}-->
+    
+	<ul>
+	<li><a href="{$style[weburl]}" target="_blank" >{$style[name]}</a>{lang pluginVersion} {$style[version]}  BY <a href="{$style[authorurl]}" target="_blank">{$style[author]}</a></li>
+	<li>描述:{$style[desc]}</li>
+    <li>{lang suit_edition}:{$style[hdversion]}</li>
+	<li>标签:<!--{loop $style[tag] $tag}--><a href="{$appurl}/template.php?action=search&tag={eval echo urlencode(string::hiconv($tag,'utf-8','gbk'))}" target="_blank">{$tag}</a> <!--{/loop}--><!--{loop $style[charset] $charset}--><a href="{$appurl}/template.php?action=search&tag={eval echo urlencode(string::hiconv($charset,'utf-8','gbk'))}" target="_blank">{$charset}</a> <!--{/loop}--></li>
+    <li>
+    <input type="button" class="inp_btn2" value="{lang pluginShare}" onclick="window.location='index.php?admin_theme-editxml-{$style[path]}-share';" class="btn_plug"/>
+    <input type="button" class="inp_btn2" value="{lang commonEdit}" onclick="window.location='index.php?admin_theme-edit-{$style[path]}'" class="btn_plug"/>
+    <input type="button" class="inp_btn2" value="{lang stylesetdefault}" onclick="checknull('{$style[path]}');" class="btn_plug"/>
+    <input type="button" class="inp_btn2" value="{lang pluginUninstall}" onclick="window.location='index.php?admin_theme-removestyle-{$style[path]}'" class="btn_plug"/>
+	</li>
+	</ul>
+</div>
+<!--{/loop}-->
+    <div id="fenye" class="link_gray">
+        {$departstr}
+    </div>
+<!--{/if}-->
+
+<dl class="col-dl">
+<dt >获取更多模板：</dt>
+<dd>您可以在HDWiki模版页面找到更多模板。要安装一个新模版，您需要用FTP软件（Fillza、FlashFXP等等）将带有.htm模板文件目录上传到百科网站目录中的 view 文件夹里，将带有图片与.css样式表的文件目录放到 style 文件夹中，将block目录下的文件目录放到 block 文件夹中，然后刷新本页就可以在这里看到新上传的模版主题了。</dd>
+</dl>
+</div>
+      
+        
+{template admin_footer}

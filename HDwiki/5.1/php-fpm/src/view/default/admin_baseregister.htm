@@ -1,0 +1,150 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	var name_min_length = $.trim($("input[name*='name_min_length']").val());
+	if ( name_min_length=='' || !/^\d+$/.test(name_min_length) || name_min_length < 1){
+		//alert('{lang baseNameMinLengthTip2}');
+		$.dialog.box('immageshow', '注意', '{lang baseNameMinLengthTip2}');
+		$("input[name*='name_min_length']").focus();
+		return false;
+	}
+	
+	var name_max_length = $.trim($("input[name*='name_max_length']").val());
+	if (name_max_length =='' || (!/^\d+$/.test(name_max_length) || name_max_length > 20)){
+		//alert('{lang baseNameMaxLengthTip2}');
+		$.dialog.box('immageshow', '注意', '{lang baseNameMaxLengthTip2}');
+		$("input[name*='name_max_length']").focus();
+		return false;
+	}
+	
+	name_min_length = parseInt(name_min_length);
+	name_max_length = parseInt(name_max_length);
+	if (name_max_length <= name_min_length){
+		//alert('{lang baseNameMaxLengthTip3}');
+		$.dialog.box('immageshow', '注意', '{lang baseNameMaxLengthTip3}');
+		$("input[name*='name_max_length']").focus();
+		return false;
+	}
+	
+	var register_least_minute = $.trim($("input[name*='register_least_minute']").val());
+	if (register_least_minute && !/^\d+$/.test(register_least_minute)){
+		//alert('{lang RegisterIpControlTip2}');
+		$.dialog.box('immageshow', '注意', '{lang RegisterIpControlTip2}');
+		$("input[name*='register_least_minute']").focus();
+		return false;
+	}
+	
+	if ( isNaN($("input[name*='inviter_credit']").val())){
+		$.dialog.box('immageshow', '注意', '{lang inviterCreditError}');
+		$("input[name*='inviter_credit']").focus();
+		return false;
+	}
+	if ( isNaN($("input[name*='invitee_credit']").val())){
+		$.dialog.box('immageshow', '注意', '{lang inviteeCreditError}');
+		$("input[name*='invitee_credit']").focus();
+		return false;
+	}
+
+	
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+
+function checkSize(itemId, noticeId){
+	var size=300-$('#'+itemId).val().length;
+	if(size<=0){
+		$('#'+itemId).val($('#'+itemId).val().substr(0,300));
+		size=0;
+	}
+	$('#'+noticeId).html('您还可以输入&nbsp;'+size+'个字符');
+	//divDance('pmssize');
+}
+</script>
+<p class="map">用户管理：{lang siteConfigRegister}</p>
+<form method="post" action="index.php?admin_setting-baseregister" onsubmit="return doSubmit();">
+<table  class="table">
+	<tr>
+		<td style="width:430px"><span>{lang commonParameterName}</span></td>
+		<td><span>{lang commonParameterValue}</span></td>
+	</tr>
+	<tr>
+		<td><span>{lang baseAllowRegister}</span>
+			{lang baseAllowRegisterTip}</td>
+		<td>
+			
+			<label><input type="radio"  name="setting[reg_status]" value="0" {if $basecfginfo['reg_status']=='0'}checked="checked"{/if} onclick="$('#close_reason').show(); $('#invite_setting').hide();" /> {lang baseRegStatus1}</label><br />
+			<label><input type="radio"  name="setting[reg_status]" value="1" {if $basecfginfo['reg_status']=='1'}checked="checked"{/if} onclick="$('#close_reason').hide(); $('#invite_setting').hide();"  /> {lang baseRegStatus2}</label><br />
+			<label><input type="radio"  name="setting[reg_status]" value="2" {if $basecfginfo['reg_status']=='2'}checked="checked"{/if} onclick="$('#close_reason').hide(); $('#invite_setting').show();"  /> {lang baseRegStatus3}</label><br />
+			<label><input type="radio"  name="setting[reg_status]" value="3" {if $basecfginfo['reg_status']=='3'}checked="checked"{/if} onclick="$('#close_reason').hide(); $('#invite_setting').show();"  /> {lang baseRegStatus4}</label>
+		</td>
+	</tr>
+	<tbody id="invite_setting"  {if $basecfginfo['reg_status']!= '2' && $basecfginfo['reg_status']!= '3'} style="display: none"{/if}>
+	<tr><td><span>{lang baseInviterCredit}</span></td><td><input class="inp_txt" name="setting[inviter_credit]"  type="text" value="{$basecfginfo['inviter_credit']}" maxlength="4" /></td></tr>
+	<tr><td><span>{lang baseInviteeCredit}</span></td><td><input class="inp_txt" name="setting[invitee_credit]"  type="text" value="{$basecfginfo['invitee_credit']}" maxlength="4" /></td></tr>
+	
+	<tr><td><span>{lang baseInviteSubject}</span></td><td><input class="inp_txt" name="setting[invite_subject]"  type="text" value="{$basecfginfo['invite_subject']}" maxlength="40" /></td></tr>
+	<tr><td><span>{lang baseInviteContent}</span>{lang baseInviteContentTip}
+	</td><td><textarea name="setting[invite_content]" class="textarea" rows="8" id="ivtContent" onkeyup="checkSize('ivtContent', 'ivtnotice');">{$basecfginfo['invite_content']}</textarea><br />
+		<span id="ivtnotice"></span>
+	</td></tr>
+	</tbody>
+	<tbody id="close_reason" {if $basecfginfo['reg_status']} style="display: none"{/if}>
+	<tr>
+		<td><span>{lang baseCloseRegister}</span></td>
+		<td><textarea name="setting[close_register_reason]" class="textarea" rows="5">{$basecfginfo['close_register_reason']}</textarea></td>
+	</tr>
+	</tbody>
+	
+	<tr>
+		<td><span>{lang baseErrorNames}</span>
+			{lang baseErrorNamesTip}</td>
+		<td><textarea name="setting[error_names]" class="textarea" rows="4">{$basecfginfo['error_names']}</textarea></td>
+	</tr>
+	<tr>
+		<td><span>{lang baseRegisterCheck}</span>{lang baseRegisterCheckTip}</td>
+		<td><label>
+				<input type="radio"  name="setting[register_check]" value="1" {if $basecfginfo['register_check']=='1'}checked{/if}/>
+				{lang commonYes}</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label>
+				<input type="radio"  name="setting[register_check]" value="0" {if $basecfginfo['register_check']=='0'}checked{/if}/>
+				{lang commonNo}</label></td>
+	</tr>
+		<td><span>{lang baseNameMinLength}</span>{lang baseNameMinLengthTip}</td>
+		<td><input class="inp_txt" name="setting[name_min_length]"  type="text"   maxlength="2" value="{$basecfginfo['name_min_length']}" /></td>
+	</tr>
+	<tr>
+		<td><span>{lang baseNameMaxLength}</span>{lang baseNameMaxLengthTip}</td>
+		<td><input class="inp_txt" name="setting[name_max_length]"  type="text"  maxlength="2" value="{$basecfginfo['name_max_length']}" /></td>
+	</tr>
+	<tr>
+		<td><span>{lang RegisterIpControl}</span>{lang RegisterIpControlTip}</td>
+		<td><input class="inp_txt" name="setting[register_least_minute]"  type="text" maxlength="4"  value="{$basecfginfo['register_least_minute']}" /></td>
+	</tr>
+	<tr><td><span>{lang baseSendWelcome}</span></td>
+		<td>
+			<label><input type="radio"  name="setting[send_welcome]" value="0" {if $basecfginfo['send_welcome']=='0'}checked="checked"{/if} onclick="$('#welcome_setting').hide();" /> {lang baseSendNoting}</label><br />
+			<label><input type="radio"  name="setting[send_welcome]" value="1" {if $basecfginfo['send_welcome']=='1'}checked="checked"{/if} onclick="$('#welcome_setting').show();"  /> {lang baseSendPM}</label><br />
+			<label><input type="radio"  name="setting[send_welcome]" value="2" {if $basecfginfo['send_welcome']=='2'}checked="checked"{/if} onclick="$('#welcome_setting').show();"  /> {lang baseSendEmail}</label><br />
+		</td>
+	</tr>
+	
+	<tbody id="welcome_setting" {if $basecfginfo['send_welcome']=='0'}style="display: none;"{/if}>
+	<tr><td><span>{lang baseWelcomeSubject}</span></td><td><input class="inp_txt" name="setting[welcome_subject]"  type="text" value="{$basecfginfo['welcome_subject']}" maxlength="35" /></td></tr>
+	<tr><td><span>{lang baseWelcomeContent}</span>{lang baseWelcomeTip}
+	</td><td><textarea name="setting[welcome_content]" class="textarea" rows="8" id="wlcContent" onkeyup="checkSize('wlcContent', 'wcnotice');">{$basecfginfo['welcome_content']}</textarea><br />
+		<span id="wcnotice"></span>
+	</td></tr>
+	</tbody>	
+	
+	<tr>
+		<td colspan="2"><input class="inp_btn" name="settingsubmit" type="submit" value="{lang commonSave}" />
+			&nbsp;&nbsp;
+			<input class="inp_btn" type="reset" value="{lang commonReset}" /></td>
+	</tr>
+
+	
+</table>
+</from>
+{template admin_footer}

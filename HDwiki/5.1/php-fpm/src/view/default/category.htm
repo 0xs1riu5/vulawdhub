@@ -1,0 +1,38 @@
+{template header}
+<div class="hd_map"> <a href="{WIKI_URL}">{$setting[site_name]}</a>&gt;&gt;<a href="{url category}"> {lang wikiCategory} </a>
+<!--{loop $category['navigation'] $key $navigation}-->&gt;&gt; 
+<!--{if $key<count($category['navigation'])-1}--><a href="{url category-view-$navigation['cid']}"> {$navigation['name']} </a><!--{else}--> {$navigation['name']} <!--{/if}-->
+<!--{/loop}-->
+</div>
+<div class="r w-710 o-v columns p-b10 cate_show">
+	<h2 class="col-h2 h3 a-r"><strong class="l h2">"{$category['name']}" {lang categoryDoc}</strong>{lang categoryHaveFront}{$count}{lang categoryHaveBack}<a href="{url doc-create-$category['cid']}" target="_blank" class="m-l8">{lang createCategoryDoc}</a></h2>
+	<!--{if count($list)>0}-->
+	<!--{loop $list $key $doc}-->
+	<dl class="col-dl">
+		<dt class="h2"><a href="{url doc-view-$doc['did']}" >{$doc['title']}</a></dt>
+		<dd class="gray ">{lang creator}:<a href="{url user-space-$doc['authorid']}" >{$doc['author']}</a>{lang createTime}:{$doc['time']}</dd>
+		<dd><span class="bold">{lang tag}:</span><!--{loop $doc['tag'] $key $tag}--> <a href="{url search-tag-$tag}" >{$tag}</a> <!--{/loop}--></dd>
+		<dd>
+		<p><span class="bold">{lang summary}:</span>{$doc['summary']}<a href="{url doc-view-$doc['did']}">[{lang readFullText}:]</a></p>
+		</dd>
+		<dd class="gray ">{lang edit}:{$doc['edits']}{lang times}| {lang view}:{$doc['views']}{lang times}</dd>
+	</dl>
+	<!--{/loop}-->
+	<!--{/if}-->
+	<div id="fenye" class="m-t10">{$departstr}</div>
+</div>
+<div class="l w-230">
+	<div class="columns category p-b10">
+	<h2 class="col-h2">{$category['name']}</h2>
+	<!--{loop $subcategory $key $parent}-->
+	<dl class="i6-ff">
+		<dt><a href="{url category-view-$parent['parent']['cid']}" >{$parent['parent']['name']}</a></dt>
+		<!--{loop $parent['child'] $value $child}-->
+		<dd><a href="{url category-view-$child['cid']}" >{$child['name']}</a></dd>
+		<!--{/loop}-->
+	</dl>
+	<!--{/loop}-->
+	</div>
+</div>
+<div class="c-b"></div>
+{template footer}

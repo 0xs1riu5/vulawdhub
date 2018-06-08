@@ -1,0 +1,37 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+function remake(){
+	$.post(
+		"index.php?admin_tag-hottag",
+		{ type: '1' },
+		function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			$('#hottag').val(message);
+		}
+		
+	);
+}
+</script>
+<p class="map">内容管理：热门标签</p>
+<ul class="col-ul tips">
+	<li class="bold">提示: 	</li>
+	<li>多个热门标签用英文“;”隔开 !</li>
+</ul>
+<form method="POST" action="index.php?admin_tag-hottag" onsubmit="return docheck();">
+	<ul class="col-ul">
+		<li>
+			<textarea cols="80" name="hottag" id="hottag" rows="12"><!--{if $hottag!=''}-->{$hottag}<!--{else}-->{lang focusmanageNoComTag}<!--{/if}-->
+</textarea>
+		</li>
+		<li class="m-t10">
+			<input name="submit" type="submit" value="{lang commonSave}"  class="inp_btn" />
+			<input name="reset" type="button" value="自动计算"  class="inp_btn"  onclick="remake()"/>
+		</li>
+	</ul>
+</form>
+{template admin_footer}

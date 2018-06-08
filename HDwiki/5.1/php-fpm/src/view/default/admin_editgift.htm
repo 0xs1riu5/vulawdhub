@@ -1,0 +1,56 @@
+{template admin_header}
+<p class="map">内容管理：礼品商店</p>
+<p class="sec_nav">礼品商店：<a href="index.php?admin_gift"><span>礼品管理</span></a>
+<a href="index.php?admin_gift-edit-{$gift['id']}" class="on"><span> 编辑礼品</span></a>
+<a href="index.php?admin_gift-price" ><span>礼品价格区间</span></a>
+<a href="index.php?admin_gift-notice"><span>礼品公告</span></a>
+<a href="index.php?admin_gift-log"><span>礼品兑换日志</span></a>
+</p>
+
+<h3 class="col-h3">编辑礼品</h3>    
+
+
+<form action="index.php?admin_gift-edit" enctype="multipart/form-data"  method="post" name="giftform" id="giftform" onsubmit="return docheck();">
+	<ul class="col-ul ul_li_sp m-t10"><input type='hidden' name='id' value="$gift['id']"/>
+		<li><span>礼品图片</span><input type='file' class="inp_file" name='giftfile' id="giftfile" size='50' ><b class="red">*</b>(礼品图片请选jpg、gif、png格式)<a class="a-img3" style="width:60px"><img src="$gift['image']" /></a><label id="v_giftfile"></label></li>
+		<li><span>礼品名称</span><input type='text' class="inp_txt m-r10" name='title' id="title" size='50' maxlength=8 value="$gift['title']"><b class="red">*</b><label id="v_title"></label></li>
+		<li><span>需要金币</span><input type='text' class="inp_txt m-r10" name='credit' id="credit" size='50' maxlength=8 value="$gift['credit']" onkeyup="this.value=this.value.replace(/\D/g,'')"><b class="red">*</b><label id="v_credit"></label></li>
+		<li><span>礼品描述</span><textarea cols="80" name='description' id="description" rows="12">$gift['description']</textarea><b class="red">*</b></li>
+
+		<li class="m-t10">注：建议填写20个字左右礼品描述,若礼品描述字数比较多,可能会影响兑换页面显示效果!</li> 
+		<li class="m-t10"><input name="submit" type="submit" value="提 交"  class="inp_btn"/></li> 
+		</li>
+	</ul>
+</form>
+<script type="text/javascript" src="js/validator.js"></script>
+<script type="text/javascript" language="javascript">
+var docheck = function (){
+	var status=true;
+	if($("#title").val().length==0){
+		alert('礼品名称不能为空。请输入！');
+		return false;
+	}
+	else if($("#title").val().length>8){
+		alert('礼品名称不能超过8个字。请重新输入！');
+		return false;
+	}
+	else if($("#credit").val().length==0){
+		alert('积分不能为空。请输入！');
+		return false;
+	}
+	else if($("#credit").val().length>8){
+		alert('积分数字不能超过8位。请重新输入！');
+		return false;
+	}
+	else if($("#description").val().length==0){
+		alert('礼品描述不能为空。请输入！');
+		return false;
+	}
+	else if($("#description").val().length>30){
+		alert('礼品描述不能超过30字');
+		return false;
+	}
+	return status;
+}
+</script>
+{template admin_footer}

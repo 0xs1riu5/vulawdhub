@@ -1,0 +1,216 @@
+{template admin_header}
+<style>
+.red_border{border:1px red solid;}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#sql_change").click(function(){
+	// slideToggle
+		$("#sql_grand").slideToggle("slow");
+		$("#sql_simple").slideToggle("slow");
+	})
+	// name
+	$("input[name='datacall[name]']").change(function(){
+		$(this).val($.trim($(this).val()));
+		name_uniqueness($(this));
+	});
+	// desc
+	$("textarea[name='datacall[desc]']").keyup(function(){
+		var desc_text = $(this).val();
+		desc_text = $(this).val().substring(0,80);
+		$(this).val(desc_text);
+	});
+	// sql
+	$("textarea[name='datacall[param][sql]']").change(function(){
+		$(this).val($.trim($(this).val()));
+		if('' == $(this).val()) {
+			$(this).addClass("red_border");
+		} else {
+			$(this).removeClass("red_border");
+		}
+	});
+	// from
+	$("textarea[name='datacall[param][from]']").change(function(){
+		$(this).val($.trim($(this).val()));
+		if('' == $(this).val()) {
+			$(this).addClass("red_border");
+		} else {
+			$(this).removeClass("red_border");
+		}
+	});
+})
+
+function name_uniqueness(obj){
+	var nameobj = obj;
+	var name = nameobj.val();
+	var name_hidden = $("input[name='datacall_hidden']").val();
+	var preg =/^[a-zA-Z]+[a-zA-Z0-9_]*$/;
+	
+	if(preg.test(name)) {
+		if(name != name_hidden) {
+			$.post("index.php?admin_datacall-operate", 
+			{ name: name, act:'nameuniqueness'  }, function(data){
+				 if(0 != data) {
+					$.dialog.box('immageshow', '注意', '调用名称已经存在，请换一个！');
+					nameobj.addClass("red_border");
+					nameobj.focus();
+					return false;
+				}else {
+					nameobj.removeClass("red_border");
+					return true;
+				}
+			});
+		} else {
+			nameobj.removeClass("red_border");
+			return true;
+		}
+		
+	} else {
+		nameobj.addClass("red_border");
+		return false;
+	}
+}
+
+function check_form(){
+	var datacall_sql = $("textarea[name='datacall[param][sql]']");
+	var datacall_from = $("textarea[name='datacall[param][from]']");
+	var datacall_name = $("input[name='datacall[name]']");
+	
+	if('' == datacall_name.val()) {
+		datacall_name.change();
+	}
+	else if('' == datacall_sql.val() && '' == datacall_from.val()){
+		datacall_sql.change();
+		datacall_from.change();
+	}
+
+	var has_err = false;
+	if(datacall_name.hasClass('red_border')) {
+		has_err = true;
+	} else {
+		if('' != datacall_sql.val()) {
+			if(datacall_sql.hasClass('red_border')) {
+				has_err = true;
+			}
+		} else {
+			if(datacall_from.hasClass('red_border')) {
+				has_err = true;
+			}
+		}
+	}
+
+	if(has_err) {
+		$.dialog.box('immageshow', '注意', '请按要求修改标红的表格！');
+		return false;
+	} else {
+		return true;
+	}
+}
+</script>
+<div>
+<p class="map">内容管理：数据调用</p>
+<p class="sec_nav">数据调用： <a href="index.php?admin_datacall"> <span>调用列表</span></a> <a href="index.php?admin_datacall-addsql"  class="on"><span>SQL调用</span></a> </p>
+<h3 class="col-h3">SQL调用</h3>
+<form method="post" name="datacall_sql" id="datacall_sql" action="{url $posturl}" onsubmit="return check_form(this.form)">
+	<table border="0" cellspacing="2" cellpadding="0" class="table">
+		<tr>
+			<td style="width: 40%;"><span>函数类别:</span>函数所属类别</td>
+			<td><select name="datacall[category]">
+					
+						{$category}
+					
+				</select></td>
+		</tr>
+		<tr>
+			<td><span>调用名称:</span>函数调用名称，只能为字母开头的字母、数字和'_'组合。请确保名称唯一。</td>
+			<td><input type="text" name="datacall[name]" value="{$datacallinfo['name']}" class="inp_txt w-140" maxlength="50" />
+				<input type="hidden" name="datacall_hidden" value="{$datacallinfo['name']}"   /></td>
+		</tr>
+		<tr>
+			<td><span>调用简单描述:</span>此处填写此调用的作用或者注意事项。此处最多存贮80个字符。</td>
+			<td><textarea name="datacall[desc]" rows="4" cols="60">{$datacallinfo['desc']}</textarea></td>
+		</tr>
+		<tr>
+			<td ><span>缓存时间:</span>调用的数据的缓存时间，缓存时间到期后，将再次查询数据库；过小的值将会对数据库造成影响，0为不使用缓存，但不建议您是设置为0，这将严重影响服务器效率；请根据数据的类型，设定一个适当的值。</td>
+			<td><input type="text" name="datacall[cachetime]" class="inp_txt w-60" value="<!--{if isset($datacallinfo['cachetime'])}-->{$datacallinfo['cachetime']}<!--{else}-->1000<!--{/if}-->" />
+				&nbsp;秒</td>
+		</tr>
+		<tr>
+			<td ><span>数据展现形式:</span>用于显示数据，可以自定义显示形式，'&#91;字段名&#93;'的形式定义显示字段，如在doc表中，&#91;title&#93;将被解析为词条标题。如果数据为多维数组，此处将被循环处理</td>
+			<td><textarea name="datacall[param][tplcode]" rows="4" cols="60"><!--{if isset($datacallinfo['param']['tplcode'])}-->{$datacallinfo['param']['tplcode']}<!--{else}--><!--{/if}-->
+</textarea></td>
+		</tr>
+		<tr>
+			<td ><span>空数据模板文件:</span>当本次调用查询的数据为空时，页面显示内容</td>
+			<td><textarea name="datacall[param][empty_tplcode]" rows="4" cols="60">{$datacallinfo['param']['empty_tplcode']}</textarea></td>
+		</tr>
+		<tr align="center">
+			<td colspan="2"><input class="inp_btn2" type="button" name="sql_change" id="sql_change" value="SQL添加 豪华版/ 简单版"  /></td>
+		</tr>
+	</table>
+	<div id="sql_simple" 
+		
+	<!--{if empty($datacallinfo['param']['sql']) }-->
+	style="display:none;"
+	<!--{/if}-->
+	>
+	<table  border="0" cellspacing="2" cellpadding="0" class="table" style="width:100%;">
+		<tr>
+			<td width="40%" ><span>SQL完整表达式:</span>此处填写SQL的完整表达式，系统将会直接执行此处SQL,请慎重并且填写完整。<br />
+				此处优先级高于豪华版</td>
+			<td><textarea name="datacall[param][sql]" rows="4" cols="60">{$datacallinfo['param']['sql']}</textarea></td>
+		</tr>
+		<tr></tr>
+	</table>
+	</div>
+	<div id="sql_grand" 
+	
+	<!--{if !empty($datacallinfo['param']['sql']) }-->
+	style="display:none;"
+	<!--{/if}-->
+	>
+	<table border="0" cellspacing="2" cellpadding="0" class="table">
+		<tr>
+			<td width="40%"><span>SQL表达式_SELECT段:</span>此处填写SQL表达式SELECT段表达式，如果使用了数个数据表和别名，则需要别名前缀，例如：m.uid,m.username</td>
+			<td><textarea name="datacall[param][select]" rows="4" cols="60">{$datacallinfo['param']['select']}</textarea></td>
+		</tr>
+		<tr>
+			<td ><span>SQL表达式_FROM段:</span>此处填写SQL表达式FROM段表达式，表示查询使用的数据表，数据库前缀可使用“&#123;DB_TABLEPRE&#125;”来标识，例如doc表，则可以是&#123;DB_TABLEPRE&#125;doc，同时也可以直接写出真是的前缀，例如：wiki_doc</td>
+			<td><textarea name="datacall[param][from]" rows="4" cols="60">{$datacallinfo['param']['from']}</textarea></td>
+		</tr>
+		<tr>
+			<td ><span>SQL表达式_WHERE段:</span>此处填写SQL表达式WHERE段表达式，数据表数据的筛选表达式</td>
+			<td><textarea name="datacall[param][where]" rows="4" cols="60">{$datacallinfo['param']['where']}</textarea></td>
+		</tr>
+		<tr>
+			<td ><span>SQL表达式_其他段:</span>此处填写SQL表达式WHERE段以后的表达式，可以写 GROUP BY 等，将衔接在WHERE段表达式后面，<u>此处不要填写ORDER BY，LIMIT表达式</u></td>
+			<td><textarea name="datacall[param][other]" rows="4" cols="60">{$datacallinfo['param']['other']}</textarea></td>
+		</tr>
+		<tr>
+			<td ><span>SQL表达式_ORDER BY段:</span>数据查询后，以某个字段作为排序的依据。例如：reviews DESC</td>
+			<td><input type="text" name="datacall[param][orderby]" class="inp_txt w-140" value="{$datacallinfo['param']['orderby']}" /></td>
+		</tr>
+		<tr>
+			<td ><span>SQL表达式_LIMIT段:</span>从数据库读取的数据量，例如：0,10</td>
+			<td><input type="text" name="datacall[param][limit]" class="inp_txt w-60" value="<!--{if isset($datacallinfo['param']['limit'])}-->{$datacallinfo['param']['limit']}<!--{else}-->0,10<!--{/if}-->" /></td>
+		</tr>
+	</table>
+	</div>
+	<!--{if isset($datacallinfo['id'])}-->
+	<center>
+		<input class="inp_btn" type="submit" onclick="return  check_form(this.form)" name="datacalledit" value="保存修改"  />
+		&nbsp;
+		<input class="inp_btn" type="reset" name="catacallreset" value="重置内容"  />
+		<input type="hidden" name="datacall[id]" value="{$datacallinfo['id']}">
+	</center>
+	<!--{else}-->
+	<center>
+		<input class="inp_btn" type="submit" name="datacallsubmit" value="添加调用"  />
+		&nbsp;
+		<input class="inp_btn" type="reset" name="catacallreset" value="重置内容"  />
+	</center>
+	<!--{/if}-->
+	<input type="hidden" name="submitflag" value="0" />
+	</div>
+</form>
+{template admin_footer}

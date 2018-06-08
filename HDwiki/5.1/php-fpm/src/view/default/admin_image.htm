@@ -1,0 +1,89 @@
+{template admin_header}
+<script type="text/javascript">
+var searchdata = "{$searchdata}".replace(/-/g, ",");
+var manage = function (number){
+	if($("input[name='chkdid[]']:checked").length==0){
+		alert('请先选择图片');
+		return false;
+	}else{
+		var imageform=$("form[name='imageform']");
+		var tip=['确认要删除图片吗?','确认要设置精华图片吗?','确认要取消精华图片吗?'];
+		var action=['remove','editimage-focus-1','editimage-focus-0'];
+		if(confirm(tip[number])==false){
+			return false;
+		}else{
+			imageform.attr("action", 'index.php?admin_image-'+action[number]+'-'+searchdata);
+			imageform.submit();
+		}
+	}
+}
+var selectAll = function (){
+	$("input[name='chkdid[]']").attr('checked',$("input[name='checkbox']").attr('checked'));
+}
+$(document).ready(function(){
+	$("img").each(function(i){
+		var img = this; 
+		img.title="点击浏览大图";
+	}).click(function(){
+		var url=$(this).attr("src");
+		$.dialog.open('image', '图片浏览', 'img:'+url);
+	});
+});
+</script>
+
+<p class="map">内容管理：图片百科</p>
+
+<div class="tpbk">
+	<form name="search" method="post" action="index.php?admin_image-default" >
+	<ul class="col-ul ul_li_sp m-t10">
+		<li><span>按词条分类: </span><select name="qcattype">
+						<option value="0" >{lang commonAllCat}</option>
+						{$catstr}
+					</select></li>
+		<li><span>按词条名: </span><input name="qtitle" type="text" class="inp_txt m-r10" value="{$qtitle}"/></li>
+		<li><span>按词条创建作者:</span><input name="qauthor" type="text" class="inp_txt m-r10" value="{$qauthor}"/></li>
+		<li><span>按词条创建时间:</span><input readonly name="qstarttime" type="text" class="inp_txt" onclick="showcalendar(event, this);" value="{$qstarttime}" /> — <input readonly name="qendtime" type="text" class="inp_txt" onclick="showcalendar(event, this);" value="{$qendtime}"/></li>
+		<li><input name="submit" type="submit" value="搜 索"  class="inp_btn"/></li>
+	</ul>
+	</form>
+	<h3 class="tol_table">[ 共 <b>{$docsum}</b> 张图片 ]</h3>
+	<form method="post" name="imageform">
+	<table class="table w-img">
+		<thead>
+			<tr>
+				<td style="width:60px;">选择</td>
+				<td style="width:100px;">图片</td>
+				<td style="width:150px;">标题</td>
+				<td style="width:80px;">大小</td>
+				<td style="width:280px;">描述</td>
+				<td>精华</td>
+			</tr>
+		</thead>
+		<!--{loop $imagewiki $image}-->	
+		<tr>
+			<td><input type="checkbox" name="chkdid[]" value="{$image['id']}" /></td>
+			<td><a class="a-img3">
+				<!--{if file_exists($image['attachment'])}-->
+					<img src="{$image['attachment']}" />
+				<!--{else}-->
+					<img src="style/default/plugin.jpg" />
+				<!--{/if}--></a>
+			</td>
+			<td>{$image[filename]}</td>
+			<td>{$image[filesize]}</td>
+			<td>{$image['description']}</td>
+			<td><!--{if $image[focus]==1}--><font class="red">{lang adv_enable}</font><!--{else}-->{lang adv_disable}<!--{/if}--></td>
+		</tr>
+		<!--{/loop}-->
+		<tr>
+			<td><label> <input name="checkbox" type="checkbox" id="chkall" onclick="selectAll();"> 全选</label></td>
+			<td colspan="5"><input name="Button1" type="button" value="放入回收站"  class="inp_btn2 m-r10" onclick="manage(0);" /><input name="Button1" type="button" value="加 精"  class="inp_btn2 m-r10" onclick="manage(1);" /><input name="Button1" type="button" value="取消加精"  class="inp_btn2" onclick="manage(2);" /></td>
+		</tr>
+		<tr>
+			<td colspan="6"><p class="fenye a-r">{$departstr}</p></td>
+		</tr>
+	</table>
+	</form>
+</div>
+
+{template admin_footer}

@@ -1,0 +1,25 @@
+{template header}
+<div id="category" class="l w-710 o-v bor-c_dl category">
+	<div class="hd_map">
+	<a href="{WIKI_URL}">{$setting[site_name]}</a> &gt;&gt;{lang wikiCategory}
+	</div>
+	<!--{loop $subcategory  $category}-->
+	<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="{url category-view-$category['parent']['cid']}" >{$category['parent']['name']}</a></dt>
+	  <!--{if isset($category['child'])}-->
+	  <!--{loop $category['child']  $child}--><dd><a href="{url category-view-$child['cid']}">{$child['name']}</a></dd><!--{/loop}-->
+	 <!--{/if}-->
+	</dl>
+	<!--{/loop}-->
+</div>
+<div class="r w-230">
+    <div id="block_right">{block:right/}</div>
+	<!--ad start -->
+	<div class="ad" id="advlist_7">
+	<!--{if isset($advlist[7]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+	{$advlist[7][code]}
+	<!--{/if}-->
+	</div>
+	<!--ad end -->	
+</div>
+{template footer}

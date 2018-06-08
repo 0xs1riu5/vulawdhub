@@ -1,0 +1,95 @@
+{template header}
+<script type="text/javascript">
+	function expand(id){
+		if(id=='usermanage'){
+			$("ul#usermanage").toggle(); 
+		}else{
+			$('ul#userpms').toggle();
+		}
+	}
+</script>
+<div class="hd_map">
+	<a href="{WIKI_URL}">{$setting['site_name']}</a> &gt; <a href="{url user-profile}">{lang selfManage}</a> &gt; {lang profile}</div>
+	
+<div class="r w-710 o-v m-t10 p-b10 gl_manage_main">
+	<h2 class="h3 bold">{lang profile}</h2>
+	<dl class="col-dl gr_info font-14 ">
+	<dd><a href="#" target="_blank" class="a-img2 l"><img id="userimage" alt="" src="<!--{if $user[image] == ''}-->style/default/user.jpg<!--{else}-->{$user[image]}<!--{/if}-->"/></a></dd>
+	<dd>{lang userName}:<!--{$user[username]}--> (<!--{if $user[gender]==1}-->{lang male}<!--{else}-->{lang female}<!--{/if}-->)</dd>
+	<dd>{lang popularity}:<span class="red"><!--{$user[views]}--></span></dd>
+	<dd>{lang creditTotal}:<span class="gray">$user[credits]</span>
+	<!--{if isset($iscredit)}--> <a href="{url user-exchange}">UC{lang checkcredits}</a><!--{/if}-->
+	</dd>
+	<dd>{lang userTitle}: <font color="{$user['color']}">{$user['grouptitle']}</font>
+			<!--{for $i=0; $i<$user['editorstar'][3]; $i++}-->
+			<img src="style/default/star_level3.gif"/>
+			<!--{/for}-->
+			<!--{for $i=0; $i<$user['editorstar'][2]; $i++}-->
+			<img src="style/default/star_level2.gif"/>
+			<!--{/for}-->
+			<!--{for $i=0; $i<$user['editorstar'][1]; $i++}-->
+			<img src="style/default/star_level1.gif"/>
+			<!--{/for}--></dd>
+	<dd>{lang location}: <span class="gray"><!--{$user[location]}--></span></dd>
+	<dd>{lang birthday}: <span class="gray"><!--{$user[birthday]}--></span></dd>
+	<dd>{lang regTime}: <span class="gray">{$user[regtime]}</span></dd>
+	</dl>
+<div class="info_other">
+	<h3 class="h2 bor_b-ccc" >{lang creditdetail}</h3>
+	<table class="mar-t8 table">
+	<thead>
+	<tr>
+		<td>{lang creditTotal}</td>
+		<td>{lang credit}</td>
+		<td>{lang gold}</td>
+		<td>{lang dailyOperate}</td>
+		<td>{lang createDoc}</td>
+		<td>{lang editDoc}</td>
+		<td>{lang removedDoc}</td>
+		<td>{lang promotion}</td>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td>{$creditDetail['creditTotal']} </td>
+		<td>{$user['credit2']} </td>
+		<td>{$user['credit1']} </td>
+		<td>{$creditDetail['dailyOperate']} </td>
+		<td>{$creditDetail['createDoc']}</td>
+		<td>{$creditDetail['editDoc']}</td>
+		<td>{$creditDetail['removedDoc']}</td>
+		<td>{eval echo $creditDetail['promotion-visit']+$creditDetail['promotion-register']}</td>
+	</tr>
+	</tbody>
+	</table>
+	<h3 class="h2 bor_b-ccc" >{lang signature}</h3>
+	<p>{$user[signature]}</p>
+</div>
+</div>
+<div class="l w-230">
+<div class="m-t10 p-b10 sidebar gl_manage">
+	<h2 class="col-h2"><span onclick="expand('usermanage');">{lang profile}</span></h2>	
+	<ul id="usermanage">
+		<li><a href="{url user-profile}" target="_self" class="on"><img alt="" src="style/default/gl_manage/grzl.gif" />{lang profile}</a></li>
+		<li><a href="{url user-editprofile}" target="_self" ><img src="style/default/gl_manage/grzl_set.gif"/>{lang editProfile}</a></li>
+		<li><a href="{url user-editpass}" target="_self"><img src="style/default/gl_manage/change_pw.gif"/>{lang editPass}</a></li>
+		<li><a href="{url user-editimage}" target="_self"><img src="style/default/gl_manage/grzl_set.gif" />{lang editImage}</a></li>
+		<li><a href="{url doc-managesave}" target="_self"><img src="style/default/gl_manage/ctbccgx.gif"/>{lang manageSave}</a></li>
+		<li><a href="{url user-invite}" target="_self"><img src="style/default/gl_manage/invite.png"/>{lang regInvite}</a></li>
+	</ul>
+	<h2 class="col-h2"><span onclick="expand('userpms');">{lang shortmessage}</span></h2>		
+	<ul id="userpms">
+		<li><a href="{url pms-box-inbox}" target="_self"><img alt="" src="style/default/gl_manage/sjx.gif" />{lang inbox}</a></li>
+		<li><a href="{url pms-box-outbox}" target="_self" ><img src="style/default/gl_manage/fjx.gif"/>{lang outbox}</a></li>
+		<li><a href="{url pms-sendmessage}" target="_self" ><img src="style/default/gl_manage/fdxx.gif"/>{lang sendmessage}</a></li>
+		<li><a href="{url pms-box-drafts}" target="_self"><img src="style/default/gl_manage/cgx.gif" />{lang draft}</a></li>
+		<li><a href="{url pms-blacklist}" target="_self"><img src="style/default/gl_manage/hllb.gif"/>{lang blacklist}</a></li>
+	</ul>
+</div>
+<div id="block_left">{block:left/}</div>
+</div>
+<div class="c-b"></div>
+<script type="text/javascript">
+	$('#userimage').attr('src',$('#userimage').attr('src')+'?'+Math.random());
+</script>
+{template footer}

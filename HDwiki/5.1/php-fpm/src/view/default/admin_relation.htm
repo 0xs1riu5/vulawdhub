@@ -1,0 +1,32 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<p class="map">内容管理：词条管理</p>
+<p class="sec_nav">词条管理： <a href="index.php?admin_doc"  > <span>管理词条</span></a> <a href="index.php?admin_focus-focuslist"  ><span>推荐词条</span></a> <a href="index.php?admin_synonym" ><span>管理同义词</span></a> <a href="index.php?admin_relation"  class="on" ><span>相关词条</span></a> <a href="index.php?admin_edition"  ><span>版本评审</span></a> <a href="index.php?admin_cooperate"  ><span>待完善词条</span></a> <a href="index.php?admin_nav" class="new"><span>导航模块<label class="red">new</label></span></a> </p>
+<h3 class="col-h3">{lang relatedtitle}</h3>
+<ul class="col-ul tips">
+	<li class="bold">提示: 	</li>
+	<li>词条名用英文“;”隔开，最多10个。</li>
+</ul>
+<form method="POST" action="index.php?admin_relation" onsubmit="return docheck();">
+	<ul class="col-ul">
+		<li><input type="checkbox" name="isrelate" id="isrelate" value="1" 
+			<!--{if $isrelate==1}-->
+			checked="checked"
+			<!--{/if}-->
+			/>{lang setrelateddoc}</li>
+		<li>
+			<textarea name="relatedoc" id="relatedoc" rows="20" cols="80"><!--{if $relatedoc!=''}-->{$relatedoc}<!--{else}-->{lang relateddocNone}<!--{/if}-->
+</textarea>
+		</li>
+		<li class="m-t10">
+			<input class="inp_btn" type="submit" value="{lang commonSave}" name="submit" />
+		</li>
+	</ul>
+</form>
+{template admin_footer} 

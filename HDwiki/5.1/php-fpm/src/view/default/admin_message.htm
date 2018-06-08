@@ -1,0 +1,18 @@
+﻿{template admin_header}
+<dl class="col-dl error">
+	<dt>{lang message_title}</dt>
+	<dd class="red">$message</dd>
+	<dd><!--{if $redirect == 'BACK'}-->
+		<a href="javascript:history.back();">{lang message_back}</a>
+		<!--{elseif $redirect}-->
+			<a href="$redirect">{lang message_redirect}</a>
+			<script type="text/javascript">
+			function redirect(url, time) {
+				setTimeout("window.location='" + url + "'", time * 1000);
+			}
+			redirect('$redirect', 3);
+			</script>
+		<!--{/if}-->
+	</dd>
+</dl>
+{template admin_footer}

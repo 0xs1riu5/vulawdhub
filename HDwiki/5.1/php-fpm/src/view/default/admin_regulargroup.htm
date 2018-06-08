@@ -1,0 +1,194 @@
+{template admin_header}
+<script type="text/javascript">
+var RegularGroup = {
+	id:'',
+	title:'',
+	click: function(E){
+		this.id = $(E).attr('id');
+		var title = $(E).text();
+		this.title = title;
+		var pos = $(E).offset();
+		$('#textGroupTitle').css(pos).val(title).show();
+		$('#textGroupId').val(this.id);
+	},
+	
+	editgroup: function (){
+		var id, title;
+		id = $('#textGroupId').val();
+		title = $('#textGroupTitle').val();
+		if (title == this.title || title == ''){
+			$('#textGroupTitle').hide();
+			return false;
+		}
+		
+		$.post('index.php?admin_regular-editgroup', {id:id, title:title, submit:'ajax'}, function(data, state){
+			if ('OK' == data){
+				$('#'+id).text(title);
+				$('#textGroupTitle').hide();
+			}else{
+				
+			}
+		});
+		
+		return false;
+	},
+	
+	addgroup: function(form){
+		var titles = $('textarea[name=titles]').val();
+		if ($.trim(titles) == ''){
+			$("#addGroupTip").html("{lang regularGroupAddTip1}");
+			return false;
+		}
+		
+		var titlelist = titles.split("\n");
+		titles = '';
+		for(i=0; i<titlelist.length; i++){
+			if ("" != titlelist[i]){
+				titles += titlelist[i]+"\n";
+			}
+		}
+		titles = titles.substr(0, titles.length - 1);
+		
+		$(form).find(':submit').attr('disabled', true);
+		
+		$.post('index.php?admin_regular-addgroup', {titles:titles, submit:'ajax'}, function(data, state){
+			if ('OK' == data){
+				$('textarea[name=titles]').val('');
+				location.reload();
+			}else{
+				$("#addGroupError").html(data);
+			}
+			
+			$(form).find(':submit').attr('disabled', false);
+		});
+		
+		return false;
+	},
+	
+	selectType: function(id_grouptype){
+		var id, grouptype;
+		id = id_grouptype.split(',');
+		grouptype = id[1];
+		id = id[0];
+		
+		$.post('index.php?admin_regular-editgroup', {id:id, type:grouptype, submit:'ajax'}, function(data, state){
+			if ('OK' != data){
+				if (0 == grouptype){
+					$(":radio[value$=1]").attr('checked', true);
+				}else{
+					$(":radio[value$=0]").attr('checked', true);
+				}
+				alert(data);
+			}
+		});
+		
+		return false;
+	},
+	
+	deleteGroup:function (id){
+		var text = $("#"+id).text();
+		if (!confirm('{lang regularGroupName}: '+text+'\n\n{lang regularGroupDelteTip}')){
+			return false;
+		}
+		$.post('index.php?admin_regular-removegroup', {id:id, submit:'ajax'}, function(data, state){
+			if ('OK' == data){
+				$('#tr_'+id).hide();
+			}else{
+				if (data == '') data = 'system error.';
+				alert(data);
+			}
+		});
+	}
+	
+}
+
+$(document).ready(function(){
+	$('.grouplist').click(function(){
+		RegularGroup.click(this);
+	});
+	
+});
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_regular">{lang regularMng}</a></li>
+		<li><a href="index.php?admin_regular-grouplist" id="current">{lang regularGroup}</a></li>
+		<li><a href="index.php?admin_regular-groupset">{lang regularGroupSet}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+	<td>{lang regularGroupTip} </td>
+  </tr>
+  <tr>
+    <td valign="top">
+	<form name="regularform1" action="index.php?admin_regular-editgroup"  method="post" onsubmit="return RegularGroup.editgroup(this)">
+	  <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr class="list_title">
+          <td></td>
+          <td>{lang regularGroupName}</td>
+		  <td>{lang commonType}</td>
+		  <td></td>
+        </tr>
+  		<!--{loop $regulargrouplist $regulargroup}-->
+       	 <tr class='b' class="tr_grouplist" id="tr_$regulargroup[id]">
+ 	      <td width="20">$regulargroup[listid].</td>
+          <td width="120"><a class="grouplist" id="$regulargroup[id]" href="javascript:;">$regulargroup[title]</a></td>
+		  <td width="120">
+		  <label><input name="type_$regulargroup[id]" type="radio" value="$regulargroup[id],0"
+			<!--{if $regulargroup[type]==0 }--> checked <!--{/if}-->
+		   onclick="RegularGroup.selectType('$regulargroup[id],0')" />{lang regularGroupType0}</label>
+		  <label><input name="type_$regulargroup[id]" type="radio" value="$regulargroup[id],1"
+			<!--{if $regulargroup[type]==1 }--> checked <!--{/if}-->
+		   onclick="RegularGroup.selectType('$regulargroup[id],1')" />{lang regularGroupType1}</label>
+		  </td>
+		  <td><a onclick="RegularGroup.deleteGroup('$regulargroup[id]')" href="javascript:;">{lang commonDel}</a></td>
+        </tr>
+        <!--{/loop}-->
+		</table>
+		<input type="text" name="id" id="textGroupId" size="20" style="display:none"/> 
+		<input type="text" name="title" id="textGroupTitle" size="15" style="position:absolute;left:-100px;top:-100px;z-index:10000;"/>
+		<input type="submit" name="submit" value="submit" style="display:none"/>
+      </form>
+      </td>
+  </tr>
+</table>
+
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="regularform2" action="index.php?admin_regular-addgroup"  method="post" onsubmit="return RegularGroup.addgroup(this)">
+	  <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr class="list_title">
+		 <td></td>
+          <td>{lang regularGroupAdd}</td>
+		  <td></td>
+        </tr>
+       	 <tr>
+		 <td></td>
+ 	      <td>{lang regularAddTip}<br /><span id="addGroupTip" style="color:red"></span></td>
+		  <td></td>
+        </tr>
+       	 <tr>
+		 <td width="20"></td>
+ 	      <td width="400"><textarea name="titles" cols="30" rows="3"></textarea></td>
+		  <td align="left" valign="top" id="addGroupError"></td>
+        </tr>
+       	 <tr>
+		 <td></td>
+ 	      <td><input type="submit" name="submit" value="{lang submit}"></td>
+		  <td></td>
+        </tr>
+		</table>
+      </form>
+      </td>
+  </tr>
+</table>
+{template admin_footer}

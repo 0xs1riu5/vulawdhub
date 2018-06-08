@@ -1,0 +1,85 @@
+{template admin_header}
+<script src="js/jquery.multiselects.js" type="text/javascript"></script>
+<script type="text/javascript"><!--
+  $(function() {
+		$("#regular_left").multiSelect("#regular_right", {trigger: "#formleft"});
+		$("#regular_right").multiSelect("#regular_left", {trigger: "#fromright"});
+  });
+// --></script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="#" id="current">{lang grouplistPowerSet}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<form action="index.php?admin_usergroup-edit" method="POST">
+<table  cellpadding="10" cellspacing="0" width="60%" align="center"  >
+  <tr>
+    <td class="padding">
+		<table width="100%"  cellspacing=0 cellpadding=5 >
+		<tr>
+		  <td class=admintitle>{lang usermanageUserGroup}:&nbsp;&nbsp;<input name="grouptitle" type="text" value="{$usergroup[grouptitle]}" /> <p /> <p /> <p /> <p /> </td>
+		</tr>
+		<tr>
+		  <td>
+		      {lang grouplistPowerTip}<br /><br />
+		     <select name="regular_left" id = "regular_left" multiple="multiple"  style="width:220px;height:400px" >
+		     <!--{loop $regularlist $regular}-->
+		      	<!--{eval $regxs=explode('|', $regular['regular']); }-->
+		      		<!--{loop $regxs $regx}-->
+		      			<!--{if !in_array($regx,$groupregulars)}-->
+							<!--{if $arrayregxs[$regular['name']] .="1"}-->
+							<!--{if $arrayregxs[$regular['name']]=="1"}-->
+								<option value="{$regular['regular']}" >{$regular['name']}</option>
+							<!--{/if}-->
+						<!--{/if}-->
+					<!--{/if}-->
+				<!--{/loop}--> 
+			<!--{/loop}-->
+		     </select>
+	    </td>
+	    <td>
+		    <input id = "formleft" type = "button" value = ">>>"/>
+		    <br/>
+		    <br/>
+		    <input id = "fromright" type = "button" value = "<<<"/>
+	    </td>
+	    <td>
+	    	{lang grouplistPower}<br /><br />
+		     <select name="regular[]" id = "regular_right" multiple="multiple"  style="width:220px;height:400px" >
+		     	<!--{loop $regularlist $regular}-->
+		      	<!--{eval $regxs=explode('|', $regular['regular']); }-->
+		      		<!--{loop $regxs $regx}-->
+		      			<!--{if in_array($regx,$groupregulars)}-->
+						<!--{if $arrayregxs[$regular['name']] .="1"}-->
+							<!--{if $arrayregxs[$regular['name']]=="1"}-->
+								<option value="{$regular['regular']}" >{$regular['name']}</option>
+							<!--{/if}-->
+						<!--{/if}-->
+					<!--{/if}-->
+				<!--{/loop}--> 
+			<!--{/loop}-->
+		     </select>
+		  </td>
+		</tr>
+		
+		</table>
+	</td>
+</tr>
+<tr>
+  <td>
+      <input name="groupid"  type="hidden" value="{$usergroup[groupid]}" />
+      <input name="default" id="default"  type="hidden" value="0" />
+      <input name="submit" class="btn" type="submit" value="{lang usergroupUpdatePower}" />&nbsp;&nbsp;&nbsp;
+      <input name="submit" class="btn" type="submit" value="{lang usergroupDefault}" onclick="javascript:document.getElementById('default').value=1;" />&nbsp;&nbsp;&nbsp;
+      <input name="cancel" class="btn" type="button" value="{lang commonCancel}" onclick="javascript:history.go(-1);" />
+  </td>
+</tr>
+</table>
+</form>
+{template admin_footer}

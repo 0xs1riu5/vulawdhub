@@ -1,0 +1,81 @@
+@charset "utf-8";
+/* CSS Document */
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,input,p,blockquote,th,td,form,p{margin:0;padding:0;}
+ol,ul,li,dd,dt,dl{ list-style:none;}
+address,caption,cite,code,dfn,em,th,var{font-style:normal;font-weight:normal;}
+img{border:0;}
+table{font-size:12px;}
+caption,th{text-align:left;}
+input,select,textarea{font-size:12px; color:#111111;font-family:'lucida grande',taho,verdana,'trebuchet ms',sans-serif;}
+textarea {padding:2px 4px;color:#666;border: 1px solid #7f9db9;}
+html{text-align:center;background:#fff;}
+body{margin:0 10px 20px; text-align:left;font:12px/1.2 宋体, Arial, Helvetica, sans-serif; position:relative;min-width: 950px;max-width: 1440px;-moz-user-select:moz-none;}
+:focus{outline:none;}
+input:hover,input:focus{outline:none;}
+/*默认蓝色转橙色链接颜色样式*/
+a,a.blue{color:#0268cd; text-decoration:none;}
+a:hover{color:#f30;text-decoration:underline;}
+.red{color:red;}
+.gray{color:#999;}
+h3,.h3{font-size:12px !important;font-weight:normal;}
+.size{font-size:14px;}
+.inp_txt{height:15px; padding:2px 6px;border:1px solid #7f9db9;}/*--用于文本输入框--*/
+.mar-bottom-10 {margin-bottom:10px}
+.pad-b-10 {padding-bottom:10px}
+/*--浮动--*/
+.l{float:left;}
+.r{float:right;}
+.a-c{text-align:center; margin:0 auto;}
+.a-l{text-align:left;}
+.a-r{text-align:right;}
+.width {width:99%}
+.block {display:block}
+/*--头部--*/
+.fixedElement {position:fixed !important;position:absolute;top: 0;}
+#nav-top{height:20px;line-height:20px;border-bottom: 1px #d5d4d4 solid; background:#f3f3f3; overflow:hidden;}
+:root #nav-top .l ,:root #nav-top .r{float:none;}
+#nav-top .l li{float:left;}
+#nav-top .l li a{margin:0 4px 0 10px;}
+#nav-top .r li{float:right;}
+#nav-top .r a{padding:0 8px;}
+/*--工具--*/
+#hd_container {padding:0 10px; height:48px; border-top:1px solid #fff;z-index:10;-moz-user-select:none;}
+.hd-toolbar-table,.pushbutton input {margin-top:8px}
+#hd_container,.hd-toolbar-table div,.hd-toolbar-table .cursor,.pushbutton input,.conserve{background:url(means_bj.jpg) repeat-x;}
+.pushbutton input {height:24px; line-height:22px;padding-bottom:4px; border:1px solid #aaa; margin-right:10px; text-align:center; background-position:0 -48px; cursor:pointer; width:48px}
+.pushbutton .conserve { background-position:0 -92px; width:60px; color:#fff; border:1px solid #4477bb}
+#editoring {padding:0 10px; line-height:40px; background:#F3F7FA;}
+.othermark {text-align:center; line-height:25px; display:block; background:#fff}
+ 
+/*--层公用样式--*/
+.hd-box {border:1px solid #ccc;}
+.hd-box h2 {background:#f3f7fa; height:30px; line-height:30px; padding:0 10px; font-size:12px}
+.hd-box div {width:100%; text-align:right}
+/*--右边--*/
+#editor_right {width:228px; position:absolute; right:0; top:65px}
+#editor_right ul{margin:10px}
+#editor_right li {padding:5px;line-height:18px;}
+#editor_right .help {background:url(dengpao.gif) no-repeat 5px 7px; padding:10px 5px 5px 25px; border-top:1px dotted #666}
+#editor_right p {background:#f3f7fa; text-align:center; display:block; padding:10px 0; border-top:1px solid #ccc}
+/*--左边--*/
+.editor_left {margin-right:240px; margin-top:10px}
+#summary,#reason,#text{overflow:hidden;zoom:1}
+#text iframe{border:0px; width:98.5%;}
+#reason textarea {width:600px;height:50px;margin-bottom:5px;}
+#reason div {text-align:left;padding:0 10px;width:96%;}
+#summary textarea{width:98.5%;border:0;}
+#reason label {margin-right:8px;}
+#reason label input {margin-right:1px;}
+
+#reference dl,#reference ul{padding:5px 10px 5px 60px; border-bottom:1px solid #ccc;line-height:20px; cursor:pointer;}
+#reference ul {padding-top:10px}
+#reference dl strong,#reference li strong {margin-left:-50px; font-weight:normal; width:50px; text-align:right; padding-right:5px; float:left}
+#reference dt {font-size:14px}
+#reference dd {color:#999}
+#reference .f8 {background:#f8f8f8}
+#reference .black{color:#333}
+#reference li .inp_txt {margin-right:10px}
+
+li.Submit, li.Abort{border:1px solid #cccccc;float:right;}
+li.Submit{background:url("means_bj.jpg") repeat-x scroll 0 -92px transparent;}
+li.Submit .jqe-icon {color:#fff;}

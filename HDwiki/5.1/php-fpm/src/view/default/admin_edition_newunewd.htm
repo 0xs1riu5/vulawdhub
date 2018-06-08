@@ -1,0 +1,102 @@
+{template admin_header}
+<script>
+function firstreview(obj) {
+	$.dialog({
+		id:'firstreview',
+		align:'left',
+		width:700,
+		height:600,
+		title:'评审用户',
+		type:'url',
+		url:obj.href,
+		styleOverlay:{backgroundColor:'#ffffff'},
+		onClose:function(){location.reload();}
+	});
+	return false;
+}
+function removeedition(edition_id) {
+	$.ajax({
+		url:"index.php?admin_edition-remove-"+Math.random(),
+		dataType:'html',
+		data:{eids:edition_id, flag:'remove'},
+		timeout:25000,
+		type: 'POST',
+		success:function(data){
+			if('OK' == data){
+				$('#edition_'+edition_id).remove();
+			}else{
+				alert('操作失败!');
+			}
+		}
+	});
+}
+
+function removedoc(doc_id) {
+	$.ajax({
+		url:"index.php?admin_doc-remove-"+Math.random(),
+		dataType:'html',
+		data:{chkdid:doc_id},
+		timeout:25000,
+		type: 'POST',
+		success:function(data){
+			$('#doc_'+doc_id).remove();
+		}
+
+	});
+}
+
+</script>
+<p class="map">内容管理：词条管理</p>
+<p class="sec_nav">词条管理：
+<a href="index.php?admin_doc" > <span>管理词条</span></a>
+<a href="index.php?admin_focus-focuslist" ><span>推荐词条</span></a>
+<a href="index.php?admin_synonym" ><span>管理同义词</span></a>
+<a href="index.php?admin_relation" ><span>相关词条</span></a>
+<a href="index.php?admin_edition" class="on"  ><span>版本评审</span></a>
+<a href="index.php?admin_cooperate" ><span>待完善词条</span></a> 
+<a href="index.php?admin_docimg"><span>词条图片批量处理</span></a>
+<a href="index.php?admin_nav" class="new"><span>导航模块<label class="red">new</label></span></a>
+</p>
+  <h3 class="col-t"><span><a href="index.php?admin_edition">版本评审</a></span><span class="on"><a href="index.php?admin_edition-newusernewdoc">首次编辑审核</a></span></h3>
+
+   <div class="synonym">
+
+    <h3 class="tol_table">{lang docmanageDoclist} <b>{$count}</b> {lang docmanageDocNum}</h3>
+    <form method="POST" name="formdoclist">
+      <table class="table">
+        <thead>
+          <tr>
+            <td style="width:100px;">{lang commonAuthor}</td>
+            <td style="width:250px;">{lang commonTitle}</td>
+            <td style="width:100px;">{lang commonCat}</td>
+            <td style="width:150px;">{lang commonCreateTime}</td>
+            <td style="width:60px;">查看</td>
+            <td>评审用户</td>
+          </tr>
+        </thead>
+		
+		<!--{if $doclist != null}-->
+		<!--{loop $doclist $doc}-->
+        <tr>
+          <!--{if $doc['groupeduser']}--><td rowspan="{$doc['groupeduser']['count']}" valign="top" class="name_r"><a href="index.php?user-space-{$doc['groupeduser']['id']}" target="_blank">{$doc['groupeduser']['username']}</a></td><!--{/if}-->
+          <td><a target="_blank" class="e" href="index.php?doc-view-{$doc['did']}" title="{$doc['title']}">{$doc['title']}</a></td>
+          <td>{eval echo htmlspecialchars($doc['category'])}</td>
+          <td>{$doc['lastedit']}</td>
+          <td class="name_r"><a href="index.php?doc-edit-{$doc['did']}" target="_blank">{lang commonEdit}</a></td>
+		  <!--{if $doc['groupeduser']}--><td rowspan="{$doc['groupeduser']['count']}" valign="top"><a href="index.php?admin_edition-firstreview-{$doc['lasteditorid']}" onclick="return firstreview(this);">{lang commonPass}</a></td><!--{/if}-->
+        </tr>
+        <!--{/loop}-->
+		<!--{else}-->
+		<tr>
+			<td colspan="6">{lang docmanageSearchMsg}</td>
+		</tr>
+		<!--{/if}-->
+       
+        <tr>
+          <td colspan="6"><p class="fenye a-r"> {$departstr} </p></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
+{template admin_footer}   

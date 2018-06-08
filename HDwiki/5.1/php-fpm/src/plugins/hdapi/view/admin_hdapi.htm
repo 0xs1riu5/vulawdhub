@@ -1,0 +1,1036 @@
+{template admin_header}
+
+<style>
+body,td{line-height:20px;}
+.hidden {display:none}
+.show {display:block}
+#submenu{display:block;width:100%;height:20px;}
+#submenu a{display:block; float:left; margin-right:20px;}
+.error{color:red;margin:0;padding:0;border:0;}
+.txt{width:150px}
+
+.bnt {padding:0 5px;font-size:12px; display: block; float:left;border:1px solid #333333;margin-right:10px}
+.bnt_blur {background-color:#DDDDDD;cursor:default;font-weight:bold;}
+.bnt_click {cursor:pointer;}
+
+</style>
+<script type="text/javascript">
+var re_email = /^[a-z0-9]([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\.][a-z]{2,3}([\.][a-z]{2,3})?$/i;
+String.prototype.Trim = function(){ 
+	return this.replace(/(^\s*)|(\s*$)/g, ""); 
+}
+function bytes(str){
+	var len=0;
+	for(var i=0;i<str.length;i++){
+		if(str.charCodeAt(i)>127){
+			len++;
+	}
+	len++;
+	}
+	return len;
+}
+function divDance(id){
+	$("#"+id).fadeOut(100).fadeIn(100);
+}
+
+function getValue(Es, name){
+	var v = Es[name].value.Trim();
+	if (v != '') v = escape(v);
+	return v;
+}
+
+function getE(id){
+	var E = document.getElementById(id);
+	if (E) return E;
+	else alert('没有找到对象id='+id+'。');
+}
+
+function setTip(id, str){
+	getE(id).innerHTML = '　'+str;
+	divDance(id);
+}
+
+function __getEs(F){
+	if (typeof (F) == 'string') F = $(F);
+	
+	var Es = F.getInputs();
+	for (i=0 ; i<Es.length; i++){
+		n = Es[i].name;
+		Es[n] = Es[i];
+	}
+	
+	return Es;
+}
+
+function getEs(F){
+	if (typeof (F) == 'string') Es = $('#'+F+' :input');
+	else Es = $(F);
+	
+	for (i=0 ; i<Es.length; i++){
+		n = Es[i].name;
+		Es[n] = Es[i];
+	}
+	
+	return Es;
+}
+
+//清除错误信息
+function clear_error(Es){
+
+	var name, action = getValue(Es, 'action');
+	setTip('form-'+action+'-error', '');
+	
+	for (i=0 ; i<Es.length; i++){
+		if (Es[i].type == 'text' || Es[i].type == 'password'){
+			name = Es[i].name;
+			setTip('form-'+action+'-'+name, '');
+		}
+	}
+}
+
+function read_info(formid){
+	var F, Es, action, params = {};
+	//F = $(formid);
+	//Es = F.elements;
+	Es = getEs(formid);
+	
+	action = Es['action'].value;
+	
+	setTip('form-'+action+'-error', '');
+	
+	//如果已经读取过，则不再进行读取
+	if (Es['sitename'].value != ''){
+		return ;
+	}
+	
+	if (action == 'update'){
+		params.action = 'readinfo';
+	} else if (action == 'register'){
+		//从安装统计那里读取信息
+		params.action = 'readinfo_fromcount';
+	}
+	
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-siteuserinfo',
+		type:'POST',
+		data:params,
+		timeout:25000,
+		dataType:'json',
+		beforeSend:function(){
+			Es['submit'].disabled = true;
+		    Es['submit'].value = '正在读取信息...';
+		},
+		success : function(data, state){
+			if(data != null){
+				//呈现返回的值到对应字段
+				Es['sitename'].value = data.siteremark;
+				Es['name'].value = data.user_name;
+				Es['qq'].value = data.user_qq;
+				Es['msn'].value = data.user_msn;
+				Es['tel'].value = data.user_phone;
+				Es['email'].value = data.email;
+				
+				Es['submit'].value = '提 交';
+				Es['submit'].disabled = false;
+			}else{
+				alert(data);
+				Es['submit'].value = '提 交';
+				setTip('form-'+action+'-error', '信息读取失败，请稍候再修改');
+			}
+		},
+		complete :function(response, state){
+			if (state == 'timeout'){
+				Es['submit'].value = '提 交';
+				setTip('form-'+action+'-error', '信息读取失败，原因可能是网络连接超时。');
+			}else if (state != 'success'){
+				Es['submit'].value = '提 交';
+				setTip('form-'+action+'-error', '信息读取失败，请稍候再试');
+			}
+		}
+	});
+}
+
+ //登录后的
+<!--{if ($is_login == 'login')}-->
+ var titles=[];
+ var finish=0;
+ var all=0;
+ var message=['已经存在，忽略！','导入成功！','获取失败'];
+ var err_times = 0;
+ var clock;
+ var is_break=true;
+ var is_stop = false;
+ function dotitles(){
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-titles',
+		type:'POST',
+		data:{ tag: $.trim($('#tag').val()) },
+		timeout:22000,
+		dataType:'xml',
+		beforeSend:function(){
+			$('#titles').val('正在请求中...请稍候!');
+		},
+		success :function(data, state){
+			$('#titles').val(data.lastChild.firstChild.nodeValue);
+		},
+		complete :function(response, state){
+			if (state != 'success'){
+				$('#titles').val('网络连接失败，请稍候再试!');
+			}
+		}
+	});
+ }
+ 
+ function resetTitles(){
+	titles = $.trim($('#titles').val());
+	if (titles == ''){
+		titles = [];
+		all=0;
+		finish=0;
+		$('#startImport').val('导入词条');
+		return $('#importTip').html('没有待导入的词条！');
+	}else{
+		titles = titles.split("；");
+		all=titles.length;
+		finish=0;
+	}
+ }
+ 
+ function stopImport(){
+	is_break = true;
+	is_stop = true;
+	titles = [];
+	$('#titles').val('');
+	$('#startImport').val('导入词条');
+ }
+ 
+ function startImport(){
+	if ($.trim($('#titles').val()) == ''){
+		return false;
+	}
+	is_stop = false;
+	is_break = !is_break;
+	if (is_break){
+		return $('#startImport').val('已经暂停，点击可继续导入');
+	}else{
+		$('#startImport').val(' 正在导入，点击可暂停 ');
+	}
+	
+	
+	if(titles.length == 0){
+		titles = $.trim($('#titles').val());
+		if (titles == ''){
+			return $('#importTip').html('没有待导入的词条！');
+		}
+		titles = titles.split("；");
+	 	finish=0;
+	 	all=titles.length;
+		if (titles.length > 0 && titles[titles.length-1] == '') {
+			all--;
+			doimport();
+		}
+	}else{
+		doimport();
+	}
+ }
+ 
+ function doimport(){
+ 	if (is_stop){
+		return;
+	}
+	if (is_break){
+		return $('#importTip').html('暂停中，可继续...');
+	}
+    if(titles.length == 0){
+		is_break=true;
+		$('#startImport').val('导入词条');
+    	$('#importTip').html('恭喜，全部导入完成！');
+		$('#titles').val('');
+    	return;
+	}
+	title=titles.shift();
+	
+	if (title == '') return doimport();
+	
+	finish++;
+	$('#startImport').val(' 正在导入，点击可暂停 ');
+	$('#importTip').html('正在导入词条 ('+finish+'/'+all+') “'+title+'”...');
+	divDance('importTip');
+	
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-import',
+		type:'POST',
+		data:{ title:title , cid: $('#cid').val() },
+		timeout:22000,
+		dataType:'xml',
+		beforeSend:function(){
+			
+		},
+		complete :function(response, state){
+			if (state == 'success'){
+				var flag=response.responseXML.lastChild.firstChild.nodeValue;
+				if(flag.length == 1){
+					$('#importTip').html('('+finish+'/'+all+') “'+title+'”  '+message[flag]);
+					$('#titles').val(titles.join("；"));
+					setTimeout("doimport()",500);
+					err_times = 0;
+				}else if (flag.substr(1,1) == '_'){
+					var info = flag.substr(2);
+					if (flag.substr(0,1) == '0'){
+						$('#importTip').html('('+finish+'/'+all+') “'+title+'”  '+ info);
+						$('#titles').val(titles.join("；"));
+						setTimeout("doimport()",1000);
+						err_times = 0;
+					}else if (flag.substr(0,1) == '1'){
+						is_break=true;
+						$('#startImport').val('导入词条');
+				    	$('#importTip').html(info);
+						$('#titles').val('');
+				    	return;
+					}
+				}else if (flag.substr(0,1) == '_'){
+					var info = flag.substr(1);
+					$('#importTip').html('('+finish+'/'+all+') “'+title+'”  '+ info);
+					$('#titles').val(titles.join("；"));
+					if(info.length < 20){
+						setTimeout("doimport()",1000);
+						err_times = 0;
+					}else{
+						$('#titles').val('');
+					}
+				}
+			}else{
+				err_times++;
+				$('#importTip').html('('+finish+'/'+all+') “'+title+'”  '+message[2]);
+				$('#titles').val(titles.join("；") +'；'+ title);
+				if (err_times<6){
+					setTimeout("doimport()", 2000);
+				}else if (err_times<12){
+					setTimeout("setClock(31)", 1000);
+				}else{
+					$('#importTip').html('由于网络原因导致多次连接中断，请其他时段再尝试导入操作。');
+					err_times = 0;
+				}
+			}
+		   
+		}
+	});
+ }
+ 
+ function setClock(x){
+	 if (x>0){
+		$('#importTip').html('由于网络原因导致连接暂时中断，'+x+' 秒之后会自动继续导入操作...');
+		x--;
+		setTimeout("setClock("+x+")", 1000);
+	}else{
+		doimport();
+	}
+ }
+ 
+ /*
+修改站长资料验证
+*/
+function check_update(F){
+	var params = {action:'updateinfo'}, Es, email, pwd, re, n;
+	
+	Es = getEs(F);
+	
+	clear_error(Es);
+	
+	action = getValue(Es, 'action');
+	sitename = getValue(Es, 'sitename');
+	name = getValue(Es, 'name');
+	tel = getValue(Es, 'tel');
+	email = getValue(Es, 'email');
+	qq = getValue(Es, 'qq');
+	msn = getValue(Es, 'msn');
+
+	if (bytes(sitename) <2 ){
+		setTip('form-'+action+'-sitename', '请输入网站名称');
+		return false;
+	}
+	if (bytes(name) <2 ){
+		setTip('form-'+action+'-name', '站长名称错误');
+		return false;
+	}
+	if (bytes(tel) <8 ){
+		setTip('form-'+action+'-tel', '联系电话错误');
+		return false;
+	}else {
+		
+	}
+	
+	re = re_email;
+	re_qq = /^\d{5,12}$/;
+	
+	if (email == '' || !re.test(email)){
+		setTip('form-'+action+'-email', '请输入有效的Email地址');
+		return false;
+	}
+	
+	if (bytes(qq) <5 && bytes(msn) < 6 ){
+		setTip('form-'+action+'-qq', 'QQ或MSN至少填写一个');
+		return false;
+	}
+	
+	if (msn != '' && !re.test(msn)){
+		setTip('form-'+action+'-msn', '请输入有效的MSN地址');
+		return false;
+	}
+	
+	if (qq != '' && !re_qq.test(qq)){
+		setTip('form-'+action+'-qq', '请输入有效的QQ号码');
+		return false;
+	}
+	
+	params.sitename = sitename;
+	params.name = name;
+	params.tel = tel;
+	params.email = email;
+	params.qq = qq;
+	params.msn = msn;
+	//提取hdwiki访问路径以及主站域名
+	if (location.href.indexOf('index.php?')){
+		params.wikiurl = location.href.split('index.php?')[0];
+		params.sitedomain = location.host;
+	}
+	
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-siteuserinfo',
+		type:'POST',
+		data:params,
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+			Es['submit'].disabled = true;
+		    Es['submit'].value = '正在提交信息...';
+		},
+		complete :function(response, state){
+			if (state == 'success'){
+				var message=response.responseText;
+				if(message == 'OK'){
+					 Es['submit'].value = '已经提交成功';
+				}else{
+					Es['submit'].disabled = false;
+					Es['submit'].value = '提 交';
+					setTip('form-'+action+'-error', '提交失败，原因可能是'+message);
+				}
+			}else{
+				Es['submit'].disabled = false;
+				Es['submit'].value = '提 交';
+				setTip('form-'+action+'-error', '由于网络连接错误，提交失败。');
+			}
+		}
+	});
+	return false;
+}
+ 
+function submitprivatedoc(form){
+	var data = $('#private_titles').val();
+	data = $.trim(data);
+	data = data.replace(/[,，]|\n{2,999}/g, "\n");
+	var params = {'titles': data};
+	//alert(data);return false;
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-privatedoc',
+		type:'POST',
+		data:params,
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+		    $(form).find(":submit").attr('disabled', true).val('正在提交...');
+		},
+		success :function(data, state){
+			$('#private_titles_tip').html('提交成功');
+		},
+		complete:function(response, state){
+			if (state != 'success'){
+				$('#private_titles_tip').html('网络连接错误，请稍候提交。');
+			}
+			$(form).find(":submit").attr('disabled', false).val(' 提 交 ');
+		}
+	});
+	
+	return false;
+}
+ 
+ function doindex(){
+	$('#hdapi-import').hide();
+	$('#hdapi-index').show();
+	$('#hdapi-ok').show();
+	$('#hdapi-info').hide();
+	$('#hdapi-privatedoc').hide();
+	$('#submenu span').removeClass('bnt_blur').filter('[name=index]').addClass('bnt bnt_blur');
+ }
+ 
+ function doinfo(){
+	$('#hdapi-index').show();
+  	$('#hdapi-info').show();
+	$('#hdapi-import').hide();
+	$('#hdapi-ok').hide();
+	$('#hdapi-privatedoc').hide();
+	$('#submenu span').removeClass('bnt_blur').filter('[name=info]').addClass('bnt bnt_blur');
+	read_info('form-update');
+ }
+ 
+ function dook(){
+  	$('#hdapi-info').hide();
+	$('#hdapi-import').hide();
+	$('#hdapi-privatedoc').hide();
+	$('#hdapi-ok').show();
+ }
+ 
+ function dodownload(){
+	$('#hdapi-import').show();
+	$('#hdapi-index').hide();
+	$('#hdapi-privatedoc').hide();
+	$('#submenu span').removeClass('bnt_blur').filter('[name=download]').addClass('bnt bnt_blur');
+ }
+ 
+ function doprivatedoc(){
+	$('#hdapi-index').hide();
+	$('#hdapi-import').hide();
+  	$('#hdapi-info').hide();
+	$('#hdapi-privatedoc').show();
+	$('#submenu span').removeClass('bnt_blur').filter('[name=privatedoc]').addClass('bnt bnt_blur');
+ }
+ 
+ <!--{elseif ($is_login == 'notstart')}-->
+ function start_hdapi(E){
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-starthdapi',
+		type:'GET',
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+			E.disabled = true;
+		    E.value = '正在提交信息...';
+		},
+		success :function(data, state){
+		   var message=data;
+		   if(message == 'OK'){
+				 location.reload();
+		   }else{
+				E.disabled = false;
+				E.value = '开启百科联盟插件';
+				setTip('starthdapi-error', message);
+			}
+		},
+		complete :function(response, state){
+			if (state != 'success'){
+				E.value = '网络连接失败，请稍候再试!';
+			}
+		}
+	});
+ }
+ 
+ <!--{else}-->
+ //登录前的
+ function doreg(){
+ 	$('#hdapi-login').hide();
+	$('#hdapi-reg').show();
+//	read_info('form-register');
+ }
+ 
+ function dologin(){
+ 	$('#hdapi-login').show();
+	$('#hdapi-reg').hide();
+ } 
+
+
+ function check_login(F){
+	var params, Es, email, pwd, re;
+	//Es = F.elements;
+	Es = getEs(F);
+	clear_error(Es);
+	
+	email = getValue(Es, 'email');
+	pwd = getValue(Es, 'pwd');
+	action = getValue(Es, 'action');
+	
+	re = re_email;
+	re_qq = /^\d{5,12}$/;
+	
+	if (email == '' || !re.test(email)){
+		setTip('form-'+action+'-email', '请输入有效的Email地址');
+		return false;
+	}
+	
+	if (bytes(pwd) <6 ){
+		setTip('form-'+action+'-pwd', '请输入密码6--16位');
+		return false;
+	}
+	params = {email:email, pwd:pwd, action:action};
+	
+	if  (action == 'register'){
+		usernick = getValue(Es, 'usernick');
+		pwd2 = getValue(Es, 'pwd2');
+		sitename = getValue(Es, 'sitename');
+		name = getValue(Es, 'name');
+		tel = getValue(Es, 'tel');
+		qq = getValue(Es, 'qq');
+		msn = getValue(Es, 'msn');
+		
+		params.usernick = usernick;
+		params.pwd2 = pwd2;
+		params.sitename = sitename;
+		params.name = name;
+		params.tel = tel;
+		params.qq = qq;
+		params.msn = msn;
+		
+		//一些注册字段的验证
+		if (pwd2 != pwd ){
+			setTip('form-'+action+'-pwd2', '确认密码错误');
+			return false;
+		}
+		if (bytes(usernick) <4 ){
+			setTip('form-'+action+'-usernick', '请输入您的昵称');
+			return false;
+		}
+		if (bytes(sitename) <2 ){
+			setTip('form-'+action+'-sitename', '请输入网站名称');
+			return false;
+		}
+		if (bytes(name) <2 ){
+			setTip('form-'+action+'-name', '站长名称错误');
+			return false;
+		}
+		if (bytes(tel) <8 ){
+			setTip('form-'+action+'-tel', '联系电话错误');
+			return false;
+		}else {
+			
+		}
+		
+		if (bytes(qq) <5 && bytes(msn) < 6 ){
+			setTip('form-'+action+'-qq', 'QQ或MSN至少填写一个');
+			return false;
+		}
+		
+		if (msn != '' && !re.test(msn)){
+			setTip('form-'+action+'-msn', '请输入有效的MSN地址');
+			return false;
+		}
+	
+		if (qq != '' && !re_qq.test(qq)){
+			setTip('form-'+action+'-qq', '请输入有效的QQ号码');
+			return false;
+		}
+	}
+
+	params.wikiurl = '';
+	//提取hdwiki访问路径以及主站域名
+	if (location.href.indexOf('index.php?')){
+		params.wikiurl = location.href.split('index.php?')[0];
+	}
+	params.sitedomain = location.host;
+	
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-login',
+		type:'POST',
+		data:params,
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+			Es['submit'].disabled = true;
+		    Es['submit'].value = '正在提交信息...';
+		},
+		success :function(data, state){
+		   var message=data;
+		   if(message == 'OK'){
+				  location.reload();
+		   }else{
+				message = message || "：网络连接失败，疑似服务器不能访问外网。";
+				Es['submit'].disabled = false;
+				Es['submit'].value = '提 交';
+				setTip('form-'+action+'-error', '提交失败，原因可能是'+message);
+		   }
+		},
+		complete :function(response, state){
+			if (state != 'success'){
+				Es['submit'].disabled = false;
+				Es['submit'].value = '提 交';
+				setTip('form-'+action+'-error', '由于网络连接错误，提交失败!');
+			}
+		}
+	});
+}
+
+var usercheck={'email':null, 'usernick':null};
+
+/*
+注册时验证email使用已经被使用
+*/
+function check_email(email){
+	var action = 'register';
+	var re, params = {};
+	
+	re = re_email;
+	email = email.Trim();
+	
+	if (email == usercheck.email){
+		return false;
+	}	
+	
+	params.email = email;
+	
+	if (email == '' || !re.test(email)){
+		setTip('form-'+action+'-email', '请输入有效的Email地址');
+		return false;
+	}
+	
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-registercheck',
+		type:'POST',
+		data:params,
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+			usercheck.email = email;
+		    setTip('form-'+action+'-email', '<font color="green">正在验证此Email是否可以使用...</font>');
+		},
+		success :function(data, state){
+		   var message=data;
+		   if(message == 'OK'){
+				setTip('form-'+action+'-email', '<font color="green">OK，可以使用</font>');
+		    }else{
+				setTip('form-'+action+'-email', message);
+			}
+		},
+		complete:function(response, state){
+			if (state != 'success'){
+				setTip('form-'+action+'-email', '网络连接错误，请稍候注册。');
+			}
+		}
+	});
+}
+
+/*
+注册时验证昵称使用已经被使用
+*/
+function check_usernick(usernick){
+	var action = 'register';
+	var re, params = {};
+	
+	usernick = usernick.Trim();
+	
+	
+	if (usernick == usercheck.usernick){
+		return false;
+	}	
+	
+	params.usernick = usernick;
+	
+	if (usernick == '' || bytes(usernick)<4 ){
+		setTip('form-'+action+'-usernick', '请输入有效的昵称');
+		return false;
+	}
+
+	
+	$.ajax({
+		url:'index.php?plugin-hdapi-admin_hdapi-registercheck',
+		type:'POST',
+		data:params,
+		timeout:20000,
+		dataType:'html',
+		beforeSend:function(){
+			usercheck.usernick = usernick;
+		    setTip('form-'+action+'-usernick', '<font color="green">正在验证此昵称是否可以使用...</font>');
+		},
+		success :function(data, state){
+		   var message=data;
+		   if(message == 'OK'){
+				setTip('form-'+action+'-usernick', '<font color="green">OK，可以使用</font>');
+		    }else{
+				setTip('form-'+action+'-usernick', '昵称已经存在，请换一个');
+			}
+		},
+		complete:function(response, state){
+			if (state != 'success'){
+				setTip('form-'+action+'-email', '网络连接错误，请稍候注册。');
+			}
+		}
+	});
+}
+<!--{/if}-->
+</script>
+
+<p class="map">插件/模板：插件</p>
+<p class="sec_nav">管理：
+    <a href="index.php?admin_plugin-manage-{$pluginid}" class="on"><span>{lang commonManage}</span></a>
+    <a href="index.php?admin_plugin-setvar-{$pluginid}" ><span>{lang commonSet}</span></a>
+    <a href="index.php?admin_plugin-hook-{$pluginid}"> <span>{lang commonHook}</span> </a>
+</p>
+
+<br>
+
+<!--{if ($is_login == 'login')}-->
+<!--{if (!empty($is_readcredit))}-->
+<div id="submenu">
+<span name="index"  onclick="doindex()" class="bnt bnt_blur">插件首页</span>
+<span name="download" onclick="dodownload()" class="bnt bnt_click">下载词条</span>
+<span name="info" onclick="doinfo()" class="bnt bnt_click">修改资料</span>
+<span name="privatedoc" onclick="doprivatedoc()" class="bnt bnt_click">词条设置</span>
+</div>
+<!--{/if}-->
+<div id="hdapi-privatedoc" class="hidden">
+<br>
+<form action="" method="post" onsubmit="return submitprivatedoc(this)">
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+	<tr>
+		<td align="left">
+		<b>设置不和互动百科进行内容同步的词条</b><br>
+		如果希望一些词条不和互动百科的内容进行同步，即当互动百科的词条发生更新后，在本站编<br>
+		辑同名词条时不自动下载互动百科的词条内容到本站编辑器，同时这些词条也不会上传到互动<br>
+		百科网站。词条之间使用换行或逗号分开即可,最多可以设置200个，当前存在{$privtetitlescount}个。
+		</td>
+	</tr>
+	 <tr>
+		<td align="left">
+<textarea id="private_titles" name="private_titles" cols="80" rows="10">{$privtetitles}</textarea>
+		</td>
+	 </tr>
+	 <tr>
+		<td align="left">
+		<input class="btn" value=" 提 交 " type="submit"/>
+		</td>
+	 </tr>
+	 <tr>
+		<td align="left" style='color:red' id="private_titles_tip"></td>
+	</tr>
+</table>
+</form>
+</div>
+
+<div id="hdapi-import" class="hidden">
+<br><div class="zhuyi">提示：
+<br>1.在获取过程当中，可能会出现网络连接超时等情况而不能正确返回内容，请等待30秒钟之后再进行尝试。
+<br>2.当正在执行导入操作时，如果点击其他菜单将自动停止导入。
+</div><br>
+<table width="100%" cellspacing="0" cellpadding="3" class="list">
+	<tr>
+		<td align="left"  ><b>按分类批量导入互动百科的词条到本站</b></td>
+	</tr>
+	<tr>
+		<td align="left"  >第一步：批量获取词条</td>
+	</tr>
+	<tr>
+		<td align="left">1、输入一个分类名称 [<font color="red">提示：</font>点此查看 
+		<a href="http://kaiyuan.hudong.com/official/doc-view-3031.html" target="_blank">互动百科分类名称</a> 
+		或 <a href="http://www.hudong.com/category/treeManage.jsp" target="_blank">互动百科分类树</a>]</td>
+    </tr>
+	 <tr align="left">
+	 	<td>
+		<input id="tag" name="tag" class="wenben" type="text" size="30" value=""/>
+		<input class="btn" value="获取" type="button"  onclick="dotitles()" />
+		</td>
+	 </tr>
+	 <tr>
+		<td align="left">2、确认你要导入的词条：<br /><font color="red">提示：</font>可以手动增删词条，只导入你想要的词条，词条间要用中文“；”号隔开</td>
+	 </tr>
+	 <tr>
+		<td align="left"><textarea id="titles" name="titles" cols="80" rows="10" onblur="resetTitles()"></textarea></td>
+	 </tr>
+	 <tr>
+		<td align="left">第二步：选择本站分类
+			<select class="box" name='cid' id='cid'>
+			{$cats}
+			</select>
+		</td>
+	 </tr>
+	 <tr>
+		<td align="center" style='color:red' id="importTip"></td>
+	</tr>
+	 <tr>
+		<td align="center">
+		<input class="btn" id="startImport" value="导入词条" type="button"  onclick="startImport()" />
+		<input class="btn" id="stopImport" value="终止导入" type="button"  onclick="stopImport()" />
+		</td>
+	 </tr>
+</table>
+</div>
+
+<div id="hdapi-index" >
+<div id="hdapi-info" class="hidden"><br />
+<form id="form-update" action="#" method="post" target="_self" onsubmit="check_update(this);return false;">
+  <table width="600" border="0">
+  	<tr>
+	<td colspan="2" >修改站长资料</td>
+    </tr>
+  	<tr>
+	<td colspan="2" height="20"><span id="form-update-error" class="error"></td>
+    </tr>
+    <tr>
+      <td width="80">网站名称：</td>
+      <td width="520">
+        <input type="text" name="sitename" class="txt" maxlength="16"/><span id="form-update-sitename" class="error"></td>
+    </tr>
+    <tr>
+      <td>站长姓名：</td>
+      <td><input type="text" name="name" class="txt" maxlength="16"/><span id="form-update-name" class="error"></td>
+    </tr>
+     <tr>
+      <td>联系电话：</td>
+      <td><input type="text" name="tel" class="txt" maxlength="30"/><span id="form-update-tel" class="error"></td>
+    </tr>
+     <tr>
+       <td>联系Email：</td>
+       <td><input type="text" name="email" class="txt" maxlength="40"/><span id="form-update-email" class="error"></td>
+     </tr>
+     <tr>
+       <td>QQ：</td>
+       <td><input type="text" name="qq" class="txt" maxlength="12"/><span id="form-update-qq" class="error"></td>
+     </tr>
+     <tr>
+       <td>MSN：</td>
+       <td><input type="text" name="msn" class="txt" maxlength="40"/><span id="form-update-msn" class="error"></td>
+     </tr>
+     <tr>
+      <td></td>
+      <td><span class="center">
+        <input type="hidden" name="action" value="update" />
+        <input name="submit" type="button" value="提 交" class="bnt" onclick="check_update('form-update')"/>
+      </span></td>
+    </tr>
+  </table>
+</form>
+</div>
+
+
+<div id="hdapi-ok" ><br />
+<!--{if (!empty($is_readcredit))}-->
+欢迎你，<b>{$name}</b> 站长，<a href="http://wiki.hudong.com/u/{$sitekey}/index" target="_blank">互动维客空间
+<!--{if ($msgcount)}--><img src="plugins/hdapi/view/msg.gif" border="0" title="有信新信息 {$msgcount} 条，请点击查看">({$msgcount})<!--{/if}--></a><br />
+  站点类型：{$site_class} <br />
+  在互动百科主站贡献：{$user_credit}个信用 <br />
+  已经兑换信用数：{$user_credit_exchange} <br />
+  还剩余信用数：{$user_credit_left} <br />
+  在互动主站创建词条：{$doc_create} <br />
+  在互动主站协作词条：{$doc_cooper} <br />
+  违规数：{$warning_count} <br /> 
+<br />
+<!--{else}-->
+<b>信息获取失败，请稍候再试。</b><br>
+出现此问题，请先确认服务器是否可以访问外网。<br />
+确认方法：<br />
+1、进入管理中心，清楚缓存；<br />
+2、点击右侧“全部推荐插件”，若不能获取到插件列表，则表示可能由于服务器安全设置等原因导PHP程序不能访问外网。<br /><br />
+注意：编辑词条如果出现异常情况，请在插件列表里面暂时停用百科联盟插件。<br />
+{$error_info}
+{$error_url}
+<br />
+<!--{/if}-->
+<b>更多疑问请咨询：</b>
+<br /><a href="http://kaiyuan.hudong.com/bbs/forumdisplay.php?fid=41" target="_blank">HDWiki论坛百科联盟频道</a> 或 QQ群：80483376
+<br /><br />当前插件版本：{$version}
+</div>
+</div>
+
+<!--{elseif ($is_login == 'notstart')}-->
+
+<div>
+<br />
+您的百科联盟插件处于关闭状态，使请先开启此插件。<br /><br />
+<input id="starthdapi" type="button" value="开启百科联盟插件" class="bnt" onclick="start_hdapi(this)"/><br />
+<br />
+<span id="starthdapi-error"></span>
+</div>
+<!--{else}-->
+
+<div id="hdapi-login">
+<form  id="form-login" action="#" method="post" target="_self" onsubmit="check_login(this);return false;">
+  <table width="600" border="0">
+  	<tr>
+        <td colspan="2">在使用本插件之前，您需要进行一次登录。登录之后您就可以从互动百科网站下载词条到本站了。
+		<br />Email和密码就是您在互动百科网站(hudong.com)注册时填写的Email和密码。
+		<br />如果您还不是互动百科网站的用户，请先进行<a href="javascript:doreg()">注册</a>。</td>
+    </tr>
+  	<tr>
+        <td colspan="2" height="20"><span id="form-login-error" class="error"></td>
+    </tr>
+    <tr>
+      <td width="80" height="50">Email：</td>
+      <td width="520">
+        <input type="text" name="email" class="txt" maxlength="50"/><span id="form-login-email" class="error"></td>
+    </tr>
+    <tr>
+      <td>密码：</td>
+      <td><input type="password" name="pwd" class="txt" maxlength="16"/><span id="form-login-pwd" class="error"></td>
+    </tr>
+    
+    <tr>
+      <td>&nbsp;</td>
+      <td height="50"><span class="center">
+		<input type="hidden" name="action" value="login" />
+        <input name="submit" type="button" value="提 交" class="bnt" onclick="check_login('form-login')"/>
+      </span></td>
+    </tr>
+	</table>
+  </form>
+</div>
+
+
+<div id="hdapi-reg" class="hidden">
+<form id="form-register" action="#" method="post" target="_self" onsubmit="check_login(this);return false;">
+  <table width="600" border="0">
+  	<tr>
+        <td colspan="2" >注册成为互动百科网站的用户，互动百科网站的词条任你下载，赶快注册吧！
+		<br />如果已经是互动百科的注册用户，请<a href="javascript:dologin()">登录</a>。
+		<br />QQ 或 MSN至少填写一个，其他项都需填写。请认真填写，尤其是联系方式！
+		</td>
+    </tr>
+  	<tr>
+        <td colspan="2" height="20"><span id="form-register-error" class="error"></td>
+    </tr>
+    <tr>
+      <td width="80">Email：</td>
+      <td width="520">
+        <input type="text" name="email" class="txt" maxlength="40" onblur="check_email(this.value)"/><span id="form-register-email" class="error"></td>
+    </tr>
+    <tr>
+      <td>密码：</td>
+      <td><input type="password" name="pwd" class="txt" maxlength="16"/><span id="form-register-pwd" class="error"></td>
+    </tr>
+    <tr>
+      <td>确认密码：</td>
+      <td><input type="password" name="pwd2"  class="txt" maxlength="16"/><span id="form-register-pwd2" class="error"></td>
+    </tr>
+    <tr>
+      <td>昵称：</td>
+      <td><input type="text" name="usernick"  class="txt" maxlength="14" onblur="check_usernick(this.value)"/><span id="form-register-usernick" class="error"></td>
+    </tr>
+   <tr>
+      <td>网站名称：</td>
+      <td>
+        <input type="text" name="sitename" class="txt" maxlength="20"/><span id="form-register-sitename" class="error"></td>
+    </tr>
+    <tr>
+      <td>站长姓名：</td>
+      <td><input type="text" name="name" class="txt" maxlength="10"/><span id="form-register-name" class="error"></td>
+    </tr>
+     <tr>
+      <td>联系电话：</td>
+      <td><input type="text" name="tel" class="txt" maxlength="30"/><span id="form-register-tel" class="error"></td>
+    </tr>
+     <tr>
+       <td>QQ：</td>
+       <td><input type="text" name="qq"  class="txt" maxlength="12"/><span id="form-register-qq" class="error"></td>
+     </tr>
+     <tr>
+       <td>MSN：</td>
+       <td><input type="text" name="msn"  class="txt" maxlength="40"/><span id="form-register-msn" class="error"></td>
+     </tr>
+    <tr>
+      <td height="50"></td>
+      <td>
+	  <input type="hidden" name="action" value="register" />
+        <input name="submit" type="button" value="提 交" class="bnt" onclick="check_login('form-register')"/></td>
+    </tr>
+	</table>
+  </form>
+</div>
+
+<!--{/if}-->
+
+{template admin_footer}

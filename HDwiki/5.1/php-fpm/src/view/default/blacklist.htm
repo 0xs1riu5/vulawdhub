@@ -1,0 +1,73 @@
+{template header}
+<script type="text/javascript" src="js/popWindow.js"></script>
+<script type="text/javascript">
+	function docheck(){
+		var blacklist=$.trim($('#blacklist').val());
+		jQuery.ajax({
+			url: "index.php?pms-blacklist",
+			cache: false,
+			dataType: "xml",
+			type:"post",
+			async:false, 
+			data: { blacklist: blacklist },
+			success: function(xml){
+				message=xml.lastChild.firstChild.nodeValue;
+				switch(message){
+					case '1':
+						$.dialog.box('pmsblacklist', '提示信息', '忽略列表已更新!');
+					break;
+					case '2':
+						$.dialog.box('pmsblacklist', '提示信息', '操作失败!');
+					break;
+				}
+				setTimeout("$.dialog.close('pmsblacklist')",2000);
+			}
+		});
+	 return false;
+}
+
+function expand(id){
+	if(id=='usermanage'){
+		$("ul#usermanage").toggle(); 
+	}else{
+		$('ul#userpms').toggle();
+	}
+}
+</script>
+
+<div class="hd_map">
+	<a href="{WIKI_URL}">{$setting[site_name]}</a> &gt; <a href="{url pms}">{lang shortmessage}</a> &gt; {lang blacklist}</div>
+<div class="r w-710 o-v m-t10 p-b10 gl_manage_main">
+	<h2 class="h3 bold">{lang blacklist}</h2>
+	<ul class="m-lr8">	
+		<li><textarea class="area" rows="6" cols="100" id="blacklist" name="blacklist">$blacklist</textarea></li>
+		<li class="m-t10">{lang ignorems1}</li>
+		<li>{lang ignorems2}</li>
+		<li>{lang ignorems3}</li>
+		<li><input name="submit" type="button" value="{lang submit}" class="btn_inp m-t8" onclick="docheck();" /></li>
+	</ul>
+</div>
+<div class="l w-230">
+<div class="m-t10 p-b10 sidebar gl_manage">
+	<h2 class="col-h2"><span onclick="expand('usermanage');">{lang selfManage}</span></h2>	
+	<ul id="usermanage">
+		<li><a href="{url user-profile}" target="_self"><img alt="" src="style/default/gl_manage/grzl.gif" />{lang profile}</a></li>
+		<li><a href="{url user-editprofile}" target="_self" ><img src="style/default/gl_manage/grzl_set.gif"/>{lang editProfile}</a></li>
+		<li><a href="{url user-editpass}" target="_self"><img src="style/default/gl_manage/change_pw.gif"/>{lang editPass}</a></li>
+		<li><a href="{url user-editimage}" target="_self"><img src="style/default/gl_manage/grzl_set.gif" />{lang editImage}</a></li>
+		<li><a href="{url doc-managesave}" target="_self"><img src="style/default/gl_manage/ctbccgx.gif"/>{lang manageSave}</a></li>
+		<li><a href="{url user-invite}" target="_self"><img src="style/default/gl_manage/invite.png"/>{lang regInvite}</a></li>
+	</ul>
+	<h2 class="col-h2"><span onclick="expand('userpms');">{lang shortmessage}</span></h2>		
+	<ul id="userpms">
+		<li><a href="{url pms-box-inbox}" target="_self"><img alt="" src="style/default/gl_manage/sjx.gif" />{lang inbox}</a></li>
+		<li><a href="{url pms-box-outbox}" target="_self"><img src="style/default/gl_manage/fjx.gif"/>{lang outbox}</a></li>
+		<li><a href="{url pms-sendmessage}" target="_self"><img src="style/default/gl_manage/fdxx.gif"/>{lang sendmessage}</a></li>
+		<li><a href="{url pms-box-drafts}" target="_self"><img src="style/default/gl_manage/cgx.gif" />{lang draft}</a></li>
+		<li><a href="{url pms-blacklist}" target="_self" class="on"><img src="style/default/gl_manage/hllb.gif"/>{lang blacklist}</a></li>
+	</ul>
+</div>
+</div>
+
+<div class="c-b"></div>
+{template footer}

@@ -1,0 +1,234 @@
+{template admin_header}
+
+<p class="map">百科联盟：修改联盟资料</p>
+</p>
+<!--{if $is_login}-->
+<a id="site_name" style="display:none;">{$site_name}</a>
+<script type="text/javascript">
+	var action='update', wikiurl, sitedomain=location.host, paths=location.pathname.split('/');
+	
+	
+	if (location.href.indexOf('index.php?') >-1){
+		wikiurl = location.href.split('index.php?')[0];
+	}else{
+		if(paths.length == 2){
+			wikiurl = location.protocol+"//"+sitedomain+'/';
+		}else if(paths.length > 2){
+			paths.pop();
+			wikiurl = location.protocol+"//"+sitedomain+paths.join('/')+'/';
+		}
+	}
+	
+	function setTip(name, msg){
+		$('#form-'+action+'-'+name).html(msg);
+	}
+	
+	function getFormData(FormElement){
+		var data={};
+		var inputs=$(FormElement).find(":input"), fields=inputs.serializeArray();
+		$.each(fields, function(i, field){
+			var type=inputs.filter('[name='+field.name+']').attr('type');
+			
+			if(/checkbox/i.test(type)){
+				if(!data[field.name]){
+					data[field.name]=field.value;
+				}else{
+					data[field.name] += ', '+field.value;
+				}
+			}else{
+				data[field.name]=field.value;
+			}
+		});
+		
+		return data;
+	}
+	
+	//读取站长信息
+	function read_info(){
+		var params = {};
+		$('error', '');
+		params.action = 'readinfo';
+		var submit=$(':submit');
+		
+		$.ajax({
+			url:'index.php?admin_hdapi-siteuserinfo',
+			type:'POST',
+			data:params,
+			timeout:25000,
+			dataType:'json',
+			beforeSend:function(){
+				submit.attr('disabled', true);
+				setTip('error', '正在读取站长信息，请稍等...');
+			},
+			success : function(data, state){
+				var site_name=$("#site_name").text();
+				if(data && typeof data == 'object' && data['success']){
+					//呈现返回的值到对应字段
+					if(data.siteremark == '百科联盟'){
+						if(site_name != "我的HDWiki"){
+							$(':text[name=siteremark]').val(site_name);
+						}
+					}else{
+						$(':text[name=siteremark]').val(data.siteremark);
+					}
+					if(data.user_name != '百科联盟'){
+						$(':text[name=name]').val(data.user_name);
+					}
+					$(':text[name=qq]').val(data.user_qq);
+					$(':text[name=msn]').val(data.user_msn);
+					$(':text[name=tel]').val(data.user_phone);
+					$(':text[name=email]').val(data.email);
+					setTip('error', '');
+					
+					if(wikiurl != data.wiki_url && wikiurl != data.wiki_url+'/'){
+						setTip('error', '百科联盟记录的网址('+data.wiki_url+
+							')和当前网址不一致，请重新提交站长信息！<br>网站地址为自动获取，无需输入，点击上面的【提交】按钮即可。'
+						);
+					}
+				}else{
+					setTip('error', '信息读取失败，请稍候再修改');
+				}
+			},
+			complete :function(xmlhttp, state){
+				if(state == "parsererror" && xmlhttp.responseText){
+					alert("数据格式错误，可能HDWiki系统文件被修改，请检查。\n"+xmlhttp.responseText);
+				}
+				
+				if (state == 'timeout'){
+					setTip('error', '信息读取失败，原因可能是网络连接超时。');
+				}else if (state != 'success'){
+					setTip('error', '信息读取失败，请稍候再试。');
+				}
+				
+				submit.attr('disabled', false);
+			}
+		});
+	}
+
+	/*
+	修改站长资料验证
+	*/
+	function check_update(FormElement){
+		var re_email = /^[a-z0-9]([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\.][a-z]{2,3}([\.][a-z]{2,3})?$/i,
+			re_qq = /^\d{5,12}$/,
+			params=getFormData(FormElement);
+		
+		$('a[id^=form-update]').text('');		
+		params.action='updateinfo';
+		
+		if (params.siteremark.length <2 ){
+			setTip('siteremark', '请输入网站名称');
+			return false;
+		}
+		
+		var sp=/[~`\!@#\$%^\*&|><\?\\'"]/;
+		if (sp.test(params.siteremark)){
+			setTip('siteremark', '网站名称当中请不要包含特殊符号[~`!@#$%^&*|&gt;&lt;\?\'"]');
+			return false;
+		}
+		
+		if (sp.test(params.name)){
+			setTip('name', '站长姓名当中请不要包含特殊符号[~`!@#$%^&*|&gt;&lt;\?\'"]');
+			return false;
+		}
+		
+		if (params.name.length <2 ){
+			setTip('name', '站长名称错误');
+			return false;
+		}
+		if (params.tel.length <8 ){
+			setTip('tel', '联系电话错误');
+			return false;
+		}else {
+			
+		}
+		
+		if (params.email == '' || !re_email.test(params.email)){
+			setTip('email', '请输入有效的Email地址');
+			return false;
+		}
+		
+		if (params.qq.length <5 && params.msn.length < 6 ){
+			setTip('qq', 'QQ或MSN至少填写一个');
+			return false;
+		}
+		
+		if (params.msn != '' && !re_email.test(params.msn)){
+			setTip('msn', '请输入有效的MSN地址');
+			return false;
+		}
+		
+		if (params.qq != '' && !re_qq.test(params.qq)){
+			setTip('qq', '请输入有效的QQ号码');
+			return false;
+		}
+		
+		//提取hdwiki访问路径以及主站域名
+		params.wikiurl = wikiurl;
+		params.sitedomain = sitedomain;
+		
+		var submit=$(':submit');
+		$.ajax({
+			url:'index.php?admin_hdapi-siteuserinfo',
+			type:'POST',
+			data:params,
+			timeout:20000,
+			dataType:'html',
+			beforeSend:function(){
+				submit.attr('disabled', true);
+				setTip('error', '正在提交信息，请稍等...');
+			},
+			complete :function(response, state){
+				if (state == 'success'){
+					var message=response.responseText;
+					if(message == 'OK'){
+						setTip('error', '提交成功!');
+					}else{
+						setTip('error', '提交失败，原因可能是'+message);
+					}
+				}else{
+					setTip('error', '由于网络连接错误，提交失败。');
+				}
+				
+				submit.attr('disabled', false);
+			}
+		});
+		return false;
+	}
+
+	$(document).ready(function(){
+		read_info();
+	});
+</script>
+<ul class="col-ul">
+<li>提示：所有项目均为必填项，QQ和MSN至少填写一个。为了方便HDWiki官方与您取得联系请填写真实资料。</li>
+</ul>
+<form id="form-update" method="post" target="_self" onsubmit="check_update(this);return false;">
+<ul class="col-ul ul_li_sp">
+	<li><span>网站名称：</span><input name="siteremark" type="text" class="inp_txt w-140" />
+	<a id="form-update-siteremark" class="red"></a></li>
+	<li><span>站长姓名：</span><input name="name" type="text" class="inp_txt w-140" />
+	<a id="form-update-name" class="red"></a></li>
+	<li><span>联系电话：</span><input name="tel" type="text" class="inp_txt w-140" />
+	<a id="form-update-tel" class="red"></a></li>
+	<li><span>联系Email：</span><input name="email" type="text" class="inp_txt w-140" />
+	<a id="form-update-email" class="red"></a></li>
+	<li><span>QQ：</span><input name="qq" type="text" class="inp_txt w-140" />
+	<a id="form-update-qq" class="red"></a></li>
+	<li><span>MSN：</span><input name="msn" type="text" class="inp_txt w-140" />
+	<a id="form-update-msn" class="red"></a></li>
+	<li>
+	<input type="hidden" name="action" value="update" />
+	<input type="submit" value="提 交"  class="inp_btn"/>
+	</li>
+	<li><a id="form-update-error" class="red"></a></li>
+</ul>
+</form>
+
+<!--{else}-->
+
+<dl class="col-dl">
+	<dt>提示：</dt>
+	<dd>您的的联盟尚未登录，请到联盟首页登录。</dd>
+</dl><!--{/if}-->
+{template admin_footer} 
