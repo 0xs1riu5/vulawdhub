@@ -1,0 +1,17 @@
+version: '2'
+services:
+  php5-app-cms:
+    build: ./php-fpm
+    image: s1r1u5/phpcms:1.0
+    restart: always
+    links: 
+        - mysql_phpcms:db
+    ports:
+        - 8002:80
+    depends_on:
+        - mysql_phpcms
+
+  mysql_phpcms:
+      build: ./mysql
+      image: s1r1u5/mysql_phpcms:5.1
+
