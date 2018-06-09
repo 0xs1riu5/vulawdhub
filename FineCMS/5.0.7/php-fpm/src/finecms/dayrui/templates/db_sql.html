@@ -1,0 +1,70 @@
+{template nheader.html}
+<div class="page-bar">
+    <ul class="page-breadcrumb mylink">
+        {$menu.link}
+
+    </ul>
+    <ul class="page-breadcrumb myname">
+        {$menu.name}
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
+            <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown" aria-expanded="false" data-hover="dropdown"> {fc_lang('操作菜单')}
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                {loop $menu.quick $t}
+                <li>
+                    <a href="{$t.url}">{$t.icon} {$t.name}</a>
+                </li>
+                {/loop}
+                <li class="divider"> </li>
+                <li>
+                    <a href="javascript:window.location.reload();">
+                        <i class="icon-refresh"></i> {fc_lang('刷新页面')}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<h3 class="page-title">
+    <small></small>
+</h3>
+
+<div class="portlet light bordered">
+    <div class="portlet-body">
+        <form action="" method="post" id="myform" name="myform">
+            <div class="form-body">
+
+                <div class="form-group row" style="margin: 0">
+                    <div class="col-md-12">
+                        <textarea class="form-control" style="height:150px" name="sql" />{$sql}</textarea>
+                    </div>
+                </div>
+            </div>
+            <table width="100%" class="table_form">
+            <tr>
+                <td>
+                    <button type="submit" name="submit" class="btn green btn-sm"> <i class="fa fa-database"></i> {fc_lang('执行SQL')}</button>
+                </td>
+            </tr>
+            {if IS_POST}
+            <tr>
+                <td>
+                {fc_lang('共执行<b>%s</b>条SQL语句', $mcount)}
+                </td>
+            </tr>
+            {if $result}
+            <tr>
+                <td>
+                <pre>{php print_r($result);}</pre>
+                </td>
+            </tr>
+            {/if}
+            {/if}
+        </table>
+        </form>
+    </div>
+</div>
+
+{template "nfooter.html"}

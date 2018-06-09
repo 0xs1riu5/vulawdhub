@@ -1,0 +1,1 @@
+a:2:{i:1;a:6:{s:2:"id";s:1:"1";s:4:"site";a:0:{}s:4:"name";s:15:"超级管理员";s:6:"system";a:0:{}s:6:"module";a:0:{}s:11:"application";a:0:{}}i:2;a:6:{s:2:"id";s:1:"2";s:4:"site";a:0:{}s:4:"name";s:15:"网站编辑员";s:6:"system";a:0:{}s:6:"module";a:0:{}s:11:"application";a:0:{}}}

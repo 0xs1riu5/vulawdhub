@@ -1,0 +1,22 @@
+version: '2'
+services:
+
+
+  php5-app_finecms507:
+    build: ./php-fpm
+    image: s1r1u5/finecms:5.0.7
+    restart: always
+    links: 
+        - mysql-finecms50:db
+    ports:
+        - 8001:80
+    depends_on:
+        - mysql-finecms50
+
+
+  mysql-finecms50:
+      build: ./mysql
+      image: s1r1u5/mysql_finecms:5.0.7
+      environment:
+        MYSQL_ROOT_PASSWORD: "123456"
+

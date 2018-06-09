@@ -1,0 +1,1 @@
+<?php exit;?>{"ucsso":"0","ucssocfg":"","register":"1","regnamerule":"","regnotallow":""}
