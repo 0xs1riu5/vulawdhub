@@ -12,6 +12,8 @@ services:
         - mysql_metinfo
 
   mysql_metinfo:
-      build: ./mysql
-      image: s1r1u5/metinfo_mysql:5.7
+    build: ./mysql
+    image: s1r1u5/metinfo_mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
 
