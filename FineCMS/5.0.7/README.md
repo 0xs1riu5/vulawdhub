@@ -23,5 +23,6 @@ http://127.0.0.1:8001/uploadfile/member/0/0x0.php
 ![](luffy4.jpeg)
 
 
-[漏洞连接](http://4o4notfound.org/index.php/archives/40/)
+
+[漏洞介绍](http://4o4notfound.org/index.php/archives/40/)
 
