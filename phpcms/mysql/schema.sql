@@ -2,7 +2,7 @@
 --
 -- Host: 10.211.55.10    Database: cms
 -- ------------------------------------------------------
--- Server version 5.5.20-log
+-- Server version	5.5.20-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -262,6 +262,3 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-02-27  8:57:29
-
-
-flush privileges;

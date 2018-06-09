@@ -1,18 +1,11 @@
 FROM mysql:5.7
 
-MAINTAINER s1riu5<s1r1u5@icloud.com>
+MAINTAINER s1riu5 <s1riu5@icloud.com> 
 
-ENV TIMEZONE Asia/Shanghai
+ENV AUTO_RUN_DIR /docker-entrypoint-initdb.d
 
+ENV INSTALL_DB_SQL schema.sql
 
-#设置免密登录
-ENV MYSQL_ALLOW_EMPTY_PASSWORD yes
+COPY ./$INSTALL_DB_SQL $AUTO_RUN_DIR/
 
-#将所需文件放到容器中
-COPY setup.sh /mysql/setup.sh
-COPY schema.sql /mysql/schema.sql
-COPY privileges.sql /mysql/privileges.sql
-
-#设置容器启动时执行的命令
-CMD ["sh", "/mysql/setup.sh"]
-
+RUN chmod a+x $AUTO_RUN_DIR/$INSTALL_DB_SQL

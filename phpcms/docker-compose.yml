@@ -12,6 +12,8 @@ services:
         - mysql_phpcms
 
   mysql_phpcms:
-      build: ./mysql
-      image: s1r1u5/mysql_phpcms:5.1
+    build: ./mysql
+    image: s1r1u5/mysql_phpcms:5.1
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
 
