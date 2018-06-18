@@ -1,0 +1,19 @@
+version: '2'
+services:
+  php5-joomla_3.4.5:
+    build: ./php-fpm
+    image: s1r1u5/joomla:3.4.5
+    restart: always
+    links: 
+        - mysql_joomla_3.4.5:db
+    ports:
+        - 8002:80
+    depends_on:
+        - mysql_joomla_3.4.5
+
+  mysql_joomla_3.4.5:
+    build: ./mysql
+    image: s1r1u5/mysql_joomla:3.4.5
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+
