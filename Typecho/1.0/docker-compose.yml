@@ -1,0 +1,19 @@
+version: '2'
+services:
+  php5-typehco_1.0:
+    build: ./php-fpm
+    image: s1r1u5/typecho:1.0
+    restart: always
+    links: 
+        - mysql_typecho_1.0:db
+    ports:
+        - 80:80
+    depends_on:
+        - mysql_typecho_1.0
+
+  mysql_typecho_1.0:
+    build: ./mysql
+    image: s1r1u5/mysql_typecho:1.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+
