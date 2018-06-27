@@ -1,0 +1,119 @@
+/**
+ * @file
+ * This file is used to style the search block.
+ */
+
+.search-form + h2 {
+  margin: 0 14px 1rem;
+}
+
+.search-block-form {
+  display: none;
+}
+
+@media screen and (min-width: 48em) {
+  .search-block-form {
+    flex: 0 1 50%;
+    order: 1;
+    display: block;
+    border-bottom: 1px solid #e6eee0;
+  }
+}
+
+.search-block-form form {
+  display: flex;
+  margin-top: 1.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.search-iconwrap {
+  flex: 0 1 30%;
+  order: 3;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+@media screen and (min-width: 48em) {
+  .search-iconwrap {
+    display: none;
+  }
+}
+
+/* Search icon for mobile */
+.search-link {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* Centres the icon when focused/hovered */
+  padding-right: 7px;
+  margin-right: -7px;
+}
+.search-link:focus,
+.search-link:hover {
+  background-color: #fff;
+  outline: 3px solid #00836d;
+}
+.search-link svg {
+  display: block;
+  width: 26px;
+  height: auto;
+}
+
+/* Search input */
+.form-type-search {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.form-search {
+  width: 20em;
+  max-width: calc(100vw - 6.25em);
+  height: auto;
+  margin: 0 -2px 0 0;
+  padding: 7px 8px 7px 32px;
+  border: 1px solid #dbdbdb;
+  border-right: none;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  line-height: normal;
+  background: url(../../../../images/svg/search.svg) no-repeat 0.5em center #fff;
+  background-size: 1.5em;
+  color: #464646;
+}
+.form-search:focus {
+  outline: none;
+  margin: 0 0 -2px -2px;
+  padding: 5px 8px 5px 32px;
+}
+
+.form-search::placeholder {
+  opacity: 1;
+}
+.form-type-search .form-search {
+  box-sizing: border-box; /* Override input[type="search"] of normalize.css */
+}
+
+/* Search submit */
+.search-block-form .form-actions {
+  margin-top: 0;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+.search-block-form .form-submit,
+.search-form .form-submit {
+  /* Take off the border radius on the left side as it bumps into the search field */
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.search-block-form .form-submit:focus,
+.search-block-form .form-submit:hover,
+.search-form .form-submit:focus,
+.search-form .form-submit:hover {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  margin: 0;
+}
