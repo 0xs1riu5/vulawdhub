@@ -1,0 +1,31 @@
+version: '2'
+services:
+
+
+  php5_app_sqli-labs:
+    build: ./php-fpm
+    image: s1r1u5/sqli-labs:1.0
+    restart: always
+    links: 
+        - mysql_sqli-labs:db
+    ports:
+        - 80:80
+    depends_on:
+        - mysql_sqli-labs
+
+
+  mysql_sqli-labs:
+      build: ./mysql
+      image: s1r1u5/mysql_sqli-labs:1.0
+      environment:
+        MYSQL_ROOT_PASSWORD: "123456"
+
+  tomcat_lab:
+      build: ./tomcat
+      image: s1r1u5/tomcat8.0
+      links: 
+        - php5_app_sqli-labs:index_url
+      ports:
+        - 8080:8080
+
+
