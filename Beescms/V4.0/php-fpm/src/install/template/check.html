@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BEES企业管理系统安装程序</title>
+<link rel="stylesheet" type="text/css" href="image/css.css" />
+<script type="text/javascript" src="image/jquery.js"></script>
+<script type="text/javascript">
+var $time=0;
+var $totaltime=5;
+$is_time=$totaltime;
+function time_go(){
+	$is_time=$is_time-1;
+	$time=$time+1;
+	$('#is_time').html($is_time);
+	if($time==$totaltime){
+		$url=$('#time_url').find('a').attr('href');
+		location.href=$url;
+	}
+	setTimeout("time_go()",1000);
+}
+</script>
+</head>
+
+<body>
+<div class="top">
+ <div class="head">
+  <div class="head_logo"><a href="http://www.beescms.com" target="_blank"><img src="image/logo.png" title="BEESCMS" border="0" /></a></div>
+  <div class="head_info"><a href="http://www.beescms.com">官方网站</a><a href="http://www.beescms.com">技术论坛</a><a href="http://www.beescms.com">使用帮助</a></div>
+  <div class="clear"></div>
+ </div>
+</div>
+<div class="contain">
+	<div class="step"></div><!--安装过程-->
+	<div class="body">
+		<p class="title">目录权限</p>
+		<ul class="ck_ul">
+		<?php
+		$check=0;
+		foreach($check_dir as $k=>$v){
+		?>
+			<li><span class="lf">【<?php echo $v;?>】文件夹</span><span class="lr">【<?php if(check_dir_write(CMS_PATH.$v)){ echo "可写";}else{echo "<label style=\"color:red\">不可写</label>";$check=1;}?>】</span></li>
+			<?php }?>
+		</ul>
+		<p class="title">系统环境</p>
+		<ul class="ck_ul">
+			<li><span class="lf">【GD】支持</span><span class="lr"><?php echo extension_loaded('gd')&&function_exists('imagecreate')?'√支持GD':'<span style="color:red">×不支持GD(与图片有关的一些功能将不能使用)</span>';?></span></li>
+			<li><span class="lf">【MySQL】支持</span><span class="lr"><?php if(extension_loaded('mysql')&&function_exists('mysql_connect')){echo '√支持Mysql';}else{echo '<span style="color:red">×不支持Mysql</span>';$check=1;}?></span></li>
+			<li><span class="lf">【PHP版本】</span><span class="lr"><?php echo PHP_VERSION;?></span></li>
+			<li><span class="lf">【操作系统】</span><span class="lr"><?php echo PHP_OS;?></span></li>
+			<li><span class="lf">【服务器】</span><span class="lr"><?php echo $_SERVER['SERVER_SOFTWARE'];?></span></li>
+			<li><span class="lf">【服务器域名】</span><span class="lr"><?php echo $_SERVER['HTTP_HOST'];?></span></li>
+			
+		</ul>
+	</div><!--内容部分-->
+	<div class="btn"><?php if($check==1){ echo"<span style=\"color:red\">安装失败</span>";}?><input type="button" value="上一步：说明" class="inp" onclick="javascript:location.href='?action=wel'" /><input type="button" value="重新检查" class="inp" onclick="javascript:location.href='?action=check'" /><input <?php if($check){ echo "style=\"display:none\" disabled=\"disabled\"";}?> type="button" value="下一步：配置系统" class="inp" onclick="javascript:location.href='?action=cmsdata'" /></div><!--按钮-->
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BEES企业管理系统安装程序</title>
+<link rel="stylesheet" type="text/css" href="image/css.css" />
+<script type="text/javascript" src="image/jquery.js"></script>
+<script type="text/javascript">
+var $time=0;
+var $totaltime=5;
+$is_time=$totaltime;
+function time_go(){
+	$is_time=$is_time-1;
+	$time=$time+1;
+	$('#is_time').html($is_time);
+	if($time==$totaltime){
+		$url=$('#time_url').find('a').attr('href');
+		location.href=$url;
+	}
+	setTimeout("time_go()",1000);
+}
+</script>
+</head>
+
+<body>
+<div class="top">
+ <div class="head">
+  <div class="head_logo"><a href="http://www.beescms.com" target="_blank"><img src="image/logo.png" title="BEESCMS" border="0" /></a></div>
+  <div class="head_info"><a href="http://www.beescms.com">官方网站</a><a href="http://www.beescms.com">技术论坛</a><a href="http://www.beescms.com">使用帮助</a></div>
+  <div class="clear"></div>
+ </div>
+</div>
+<div class="contain">
+	<div class="step"></div><!--安装过程-->
+	<form name="form1" action="?action=install" method="post">
+	<div class="body">
+	
+		<p class="title">数据库设置</p>
+		<ul class="ck_ul">
+			<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">数据库主机：</span><span class="lf"><input class="inpt" name="localhost" value="localhost"/></span></li>
+			<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">数据库名称：</span><span class="lf"><input class="inpt" name="db_name" value=""/></span></li>
+			<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">数据库用户名：</span><span class="lf"><input class="inpt" name="db_user" value="root"/></span></li>
+			<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">数据库密码：</span><span class="lf"><input class="inpt" name="db_password" value=""/></span></li>
+			<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">数据表前缀：</span><span class="lf"><input class="inpt" name="db_pre" value="bees_"/><label></label></span></li>
+			
+		</ul>
+		<p class="title">管理员账号</p>
+		<ul class="ck_ul">
+			<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">后台管理用户名：</span><span class="lf"><input class="inpt" name="admin" value="admin"/></span></li>
+			<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">后台管理密码：</span><span class="lf"><input class="inpt" name="password" value="admin"/></span></li>
+			<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">确认密码：</span><span class="lf"><input class="inpt" name="password2" value="admin"/></span></li>
+				<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">管理邮箱：</span><span class="lf"><input class="inpt" name="mail" value=""/></span></li>
+				<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">安装地址：</span><span class="lf"><input class="inpt" name="cmsself" value="<?php echo CMS_SELF;?>"/><label>一般不用修改，安装目录不正确修改该项</label></span></li>
+				<li style="padding-left:150px;"><span class="lf" style="width:100px; text-align:right">演示数据：</span><span class="lf"><input style="margin-top:5px;" name="is_data" value="1" type="checkbox" checked="checked"/><label style="color:red">如果你是第一次安装或是还不熟悉程序，建议勾选。</label></span></li>
+		</ul>
+	</div><!--内容部分-->
+	<div class="btn"><input type="button" value="上一步：检查安装环境" class="inp" onclick="javascript:location.href='?action=check'" /><input type="submit" value="开始安装" class="inp"/></div><!--按钮-->
+	</form>
+</div>
+</body>
+</html>

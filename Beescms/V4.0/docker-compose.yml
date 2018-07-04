@@ -1,0 +1,19 @@
+version: '2'
+services:
+  php5-app:
+    build: ./php-fpm
+    image: s1r1u5/beescms:4.0
+    restart: always
+    links: 
+        - mysql_beescms4:db
+    ports:
+        - 8002:80
+    depends_on:
+        - mysql_beescms4
+
+  mysql_beescms4:
+    build: ./mysql
+    image: s1r1u5/mysql_beescms:4.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+

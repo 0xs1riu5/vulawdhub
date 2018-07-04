@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BEES企业管理系统安装程序</title>
+<link rel="stylesheet" type="text/css" href="image/css.css" />
+</head>
+
+<body>
+<div class="top">
+ <div class="head">
+  <div class="head_logo"><a href="http://www.beescms.com" target="_blank"><img src="image/logo.png" title="BEESCMS" border="0" /></a></div>
+  <div class="head_info"><a href="http://www.beescms.com">官方网站</a><a href="http://www.beescms.com/bbs">技术论坛</a><a href="http://www.beescms.com/help">使用帮助</a></div>
+  <div class="clear"></div>
+ </div>
+</div>
+<div class="contain">
+	<div class="step"></div><!--安装过程-->
+	<div class="body">
+		<div class="lcs">
+			<div style="width:700px; margin:10px auto;">
+			<?php
+			echo "<p>安装中,请稍后...</p>";
+			$msg='';
+			foreach($data as $k=>$v){
+			echo empty($v[1])?"":"<p>安装【{$v[1]}】表</p>";
+			if(@mysql_query($v[0],$conn)){
+				echo empty($v[1])?"":"<p>表【{$v[1]}】安装完成</p>";
+			}else{
+				echo empty($v[1])?"":"<p style=\"color:red\">表【{$v[1]}】安装失败</p>";
+				$is_install=1;
+			}
+			}
+			unset($data);
+			if($is_install){
+				echo '<p style="color:red; font-weight:bold">部分表安装失败，请重新安装</p>';
+			}else{
+				$fp=fopen(DATA_PATH.'install.lock','w+');
+				@fwrite('beescms',$fp);
+				fclose($fp);
+				echo "<p style=\"color:green; font-weight:bold\">恭喜你,BEES CMS已经成功安装</p>";
+			}	
+			?>
+			</div>
+		</div>
+	</div><!--内容部分-->
+	<?php if(!$is_install){?>
+	<div class="btn"><input type="button" value="进入首页" class="inp" onclick="javascript:location.href='<?php echo CMS_SELF;?>'" /><input type="button" value="进入管理后台" class="inp" onclick="javascript:location.href='<?php echo CMS_SELF;?>admin/';"</div><!--按钮-->
+	<?php
+	}
+	?>
+</div>
+</body>
+</html>
