@@ -71,5 +71,5 @@ echo " ?>";
 
 
 
-[漏洞介绍](http://4o4notfound.org/index.php/archives/40/)
+[漏洞介绍](https://mp.weixin.qq.com/s?__biz=MzA3NzE2MjgwMg==&mid=2448903598&idx=1&sn=597d488c492fca52b49b0f5ddddcadb8&chksm=8b55ddf3bc2254e5135ff7f9a10cdde3ce710e32d53fb4575b02411a9b3bbe23ec26207f8196&mpshare=1&scene=23&srcid=0311KzWTeNcTSxfCLzcIRd7F#rd)
 
