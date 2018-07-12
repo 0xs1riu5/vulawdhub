@@ -1,0 +1,283 @@
+
+<?php if(in_array($type, array('at', 'com'))): ?>
+<!--消息对话框-->
+<div class="layer-content">
+  <div class="msg-box" model-node="comment_detail">
+    <dl class="top feed_list">
+      <dt class="left"><a target="_self" href="{:U('public/Profile/index', array('uid'=>$source['uid']))}"><img src="{$source.user_info.avatar_small}" /></a></dt>
+      <dd class="content">
+        <div class="ori-weibo">
+          <p class="info">
+            <space uid="source.user_info.uid">{uname}</space>：{$source.body|parse_html}
+          </p>
+          <p class="date"><a href="{$source.url}">{$source.publish_time|friendlyDate}</a></p>
+        </div>
+      </dd>
+    </dl>
+    <div id="talk_list" class="dialog-list comment_lists">
+    <volist name="talkList.data" id="vo">
+    <dl class="msg-dialog" model-node="comment_list">
+      <dt class="<?php if($mid == $vo['uid']):?>right<?php else: ?>left<?php endif;?>">
+        <a href="{:U('public/Profile/index', array('uid'=>$vo['uid']))}"><img src="{$vo.user_info.avatar_tiny}" /></a>
+      </dt>
+      <dd class="<?php if($mid == $vo['uid']):?>dialog-r<?php else: ?>dialog-l<?php endif;?>">
+        <i class="<?php if($mid == $vo['uid']):?>arrow-mes-r<?php else: ?>arrow-mes-l<?php endif;?>"></i>
+        <p class="info"><space uid="vo.user_info.uid">{uname}</space>：{$vo.content|parse_html}</p>
+        <p class="date">
+          <span class="right">
+          <?php if( ($mid == $vo['uid'] && CheckPermission('core_normal', 'comment_del')) || CheckPermission('core_admin', 'comment_del')): ?>
+          <a href="javascript:;" event-node="comment_del" event-args="comment_id={$vo.comment_id}" <?php if($vo['uid'] != $mid && CheckPermission('core_admin', 'comment_del')) { echo 'style="color:red;"'; } ?>>{:L('PUBLIC_STREAM_DELETE')}</a>
+          <?php endif; ?>
+
+          <?php if( (($vo['uid'] == $mid && CheckPermission('core_normal','comment_del')) || CheckPermission('core_admin','comment_del')) && $cancomment ): ?>
+          <i class="vline">|</i>
+          <?php endif; ?>
+          
+          <?php if($cancomment == 1): ?>
+          <a href="javascript:;" event-args='row_id={$vo.row_id}&app_uid={$vo.app_uid}&to_comment_id={$vo.comment_id}&to_uid={$vo.uid}&to_comment_uname={$vo.user_info.uname}&app_name={$app_name}&table={$table}' event-node="reply_comment" >回复</a>
+          <?php endif; ?>
+
+          </span>
+        {$vo.ctime|friendlyDate}</p>
+      </dd>
+    </dl>
+    </volist>
+  </div>
+  <eq name="cancomment" value="1">
+        <div class="msg-reply" model-node="comment_textarea">
+<!--           <div class="clearfix">
+            <div class="num textR mb5" model-node="numsLeft">可以输入<span>{$initNums|default=140}</span>个字</div>
+          </div> -->
+          <div class="input">
+            <div class="input_before" model-node="mini_editor">
+              <textarea id="comment_inputor" class="input_tips" style="width:98%;" event-node="mini_editor_textarea" model-args="t=comment"></textarea>
+              <div class="num" model-node="numsLeft">{$initNums}</div>
+            </div>
+          </div>
+          <div class="action clearfix mt5">
+            <a href="javascript:;" event-node="do_comment" event-args="row_id={$row_id}&app_uid={$app_uid}&app_row_id={$app_row_id}&app_row_table={$app_row_table}&app_name={$app_name}&table={$table}&canrepost={$canrepost}" to_comment_id="0" to_uid="0" to_comment_uname="" addtoend="1" talkbox="1" class="btn-green-small right">
+              <span>回复</span>
+            </a>
+            <div class="acts left">
+              <a href="javascript:;" event-node="comment_insert_face" class="face-block left" title="表情"> <i class="face"></i></a>
+            </div>
+              <eq name="canrepost" value="1">
+              <label><input class="checkbox" type="checkbox" name="shareFeed" value="1" />同时转发到我的分享</label>
+              </eq>
+            <div class="clear"></div>
+            <div model-node="faceDiv"></div>
+          </div>
+        </div>
+        <else />
+        <div class="nologin">您还未登录，请<a class="nologin-a" href="javascript:ui.quicklogin();">&nbsp;登录</a>&nbsp;or&nbsp;<a class="nologin-a" href="{:U('public/Register/index')}">注册</a></div>
+        </eq>
+  </div>
+</div>
+
+<?php elseif($type === 'pmsg'): ?>
+<div class="layer-content">
+  <div class="msg-box" model-node="comment_detail">
+    <h4>
+      {:L('PUBLIC_METO')}
+        <volist name="message.to" id="mb">
+        <?php if($i > 1) echo '、'; ?>
+        <a target="_self" href="{$mb['user_info']['space_url']}">{$mb['user_info']['uname']}</a>
+        {:L('PUBLIC_PRIVATE_MESSAGE')}({:L('PUBLIC_SUM_TO_TALL',array('num'=>"<strong id='message_content_count'>".$message['message_num']."</strong>"))})
+        </volist>
+    </h4>
+    <div id="talk_list" class="dialog-list comment_lists">
+    <volist name="talkList.data" id="vo">
+    <dl class="msg-dialog" model-node="comment_list">
+      <dt class="<?php if($mid == $vo['from_uid']):?>right<?php else: ?>left<?php endif;?>">
+        <a target="_self" href="{:U('public/Profile/index', array('uid'=>$vo['from_uid']))}"><img src="{$vo.user_info.avatar_tiny}" /></a>
+      </dt>      
+      <dd class="<?php if($mid == $vo['from_uid']):?>dialog-r<?php else: ?>dialog-l<?php endif;?>">
+        <i class="<?php if($mid == $vo['from_uid']):?>arrow-mes-r<?php else: ?>arrow-mes-l<?php endif;?>"></i>
+        <p class="info"><space uid="vo.user_info.uid">{uname}</space>：{$vo.content|parse_html}</p>
+        <?php if($vo['attach_type'] == 'message_image'): ?>
+        <div class="feed_img_lists">
+          <ul class="small">
+            <volist name="vo.attach_infos" id="v">
+            <li class="left"><a><img src="{:getImageUrl($v['file'], 100, 100, true)}" width="100" height="100" /></a></li>
+            </volist>
+          </ul>
+        </div>
+        <?php elseif($vo['attach_type'] == 'message_file'): ?>
+        <div class="input-content attach-file">
+          <ul class="feed_file_list">
+            <volist name="vo.attach_infos" id="v">
+            <li><a href="{:U('widget/Upload/down',array('attach_id'=>$v['attach_id']))}" class="current right" title="下载"><i class="ico-down"></i></a><i class="ico-{$v.extension}-small"></i><a href="{:U('widget/Upload/down',array('attach_id'=>$v['attach_id']))}">{$v.attach_name}</a><span class="tips">({$v.size|byte_format})</span>
+            </li>
+            </volist>
+          </ul>
+        </div>
+        <?php endif; ?>
+
+        <p class="date">
+        {$vo.mtime|friendlyDate}</p>
+      </dd>
+    </dl>
+    </volist>
+  </div>
+    <?php if(CheckPermission('core_normal','send_message')): ?>
+<!--         <dl class="msg-dialog">
+            <dt class="left"><a target="_self" href="{:U('public/Profile/index', array('uid'=>$userinfo['uid']))}"><img src="{$userinfo.avatar_tiny}" /></a></dt>
+            <dd class="dialog-l">
+               <div>
+                 {:L('PUBLIC_SENTNOTIFY_MAIL_TO')}：
+                 <volist name="message.to" id="mb">
+                 <?php if($i > 1) echo '、'; ?>
+                 <a href="{$mb['user_info']['space_url']}">{$mb['user_info']['uname']}</a>
+                 </volist>
+              </div>
+            </dd>
+        </dl> -->
+        <div class="msg-reply">
+          <div class="input" model-node="comment_textarea">
+            <div class="input_before1" model-node="mini_editor">
+              <textarea id="reply_content" class="input_tips" style="width:97%;"></textarea>
+            </div>
+            <div class="action clearfix mt5">
+              <a href="javascript:;" id="replymessage" class="btn-green-small right" onclick="doReply();"><span>回复</span></a>
+              <div class="acts">
+                <a href="javascript:;" event-node="comment_insert_face" class="face-block" title="表情"> <i class="face"></i></a>
+                <a class="image-block" href="javascript:;" title="图片"><i class="image"></i>
+                  <form style='display:inline;padding:0;margin:0;border:0;outline:none;' >
+                  <input limit="2" type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','image')" urlquery="attach_type=message_image&upload_type=image&thumb=1&width=100&height=100&cut=1" hidefocus="true">
+                  </form>
+                </a>
+                <a class="file-block" href="javascript:;" title="附件"><i class="file"></i>
+                  <form style='display:inline;padding:0;margin:0;border:0' >
+                  <input limit="2" type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','all')" urlquery="attach_type=message_file&upload_type=file" hidefocus="true">
+                  </form>
+                </a>
+              </div>
+              <div model-node="faceDiv"></div>
+            </div>
+          </div>
+        </div>
+    <?php endif; ?>
+  </div>
+</div>
+<?php endif; ?>
+
+<script type="text/javascript">
+M(document.getElementById('tsbox'));
+
+atWho($("#comment_inputor"));
+
+var replylock = 0;
+var doReply = function()
+{
+  if (replylock == 1) {
+    return;
+  }
+  var list_id = "{$message['list_id']}";
+  var reply_content = $('#reply_content').val();
+  var to = "{$message['to'][0]['member_uid']}";
+  if ('' == reply_content) {
+    ui.error("{:L('PUBLIC_COMMENT_MAIL_REQUIRED')}");   
+    return false;
+  }
+  $('#replymessage').html('回复中..');
+  var attach_ids = $.trim($('#attach_ids').val());
+  $.post("{:U('public/Message/doReply')}", {id:list_id, reply_content:reply_content, to:to, attach_ids:attach_ids}, function(res) {
+    if(res.status != '0') {
+      $('#reply_content').val('');
+      load_new_message();        
+    } else {
+      ui.error(res.data);
+    }
+    $('#replymessage').html("<span>{:L('PUBLIC_STREAM_REPLY')}</span>");
+    if("undefined" != typeof(core.uploadFile)) {
+      core.uploadFile.clean();
+      core.uploadFile.removeParentDiv();
+    }
+  },'json');
+  replylock = 1;
+  setTimeout(function () {replylock = 0; },5000);
+};
+
+var type = "{$type}";
+var id = "{$sourceId}"
+var since_id = "{$max_since_id}";
+var default_since_id = "{$sinceId + 1}";
+var to_uid = "{$toUid}";
+var max_id = "{$maxId}";
+var timeout = '';
+
+var load_new_message = function()
+{
+  clearTimeout(timeout);
+  load_more();
+  timeout = setTimeout("load_new_message()", 4000);
+};
+
+
+var load_more = function()
+{
+  var param = {type:'pmsg', id:id, since_id:since_id};
+  $.get(U('public/Index/loadMoreShowTalk'), param, function(txt){
+    if(txt.status == 1) {
+      // $('#talk_list').prepend(txt.html);
+      $('#talk_list').append(txt.html);
+      M(document.getElementById('talk_list'));
+      if(txt.since_id > 0) {
+        since_id = txt.since_id;
+      }
+      var $message_content_count = $('#message_content_count');
+      var message_content_count  = parseInt($message_content_count.html());
+      $message_content_count.html(message_content_count + txt.count);
+    }
+  }, 'json');
+};
+
+
+$(function() {
+  var check_load_more = true;
+  var n_scroll_height = 0;
+  var n_scroll_top = 0;
+  // var n_div_height = $('#talk_list').height();
+  var n_div_height = 500;
+  $('#talk_list').scroll(function() {
+    n_scroll_height = $(this)[0].scrollHeight;
+    n_scroll_top = $(this)[0].scrollTop;
+    if (n_scroll_top + n_div_height >= n_scroll_height - 20 && check_load_more) {
+      load_more_talk_list();
+    }
+  });
+
+  var load_more_talk_list = function()
+  {
+    check_load_more = false;
+    $.get(U('public/Index/loadMoreShowTalk'), {type:type, id:id, since_id:default_since_id, to_uid:to_uid, max_id:max_id}, function(res) {
+      if (res.status == 1) {
+        if (type != 'pmsg') {
+          default_since_id = res.since_id;
+        }
+        max_id = res.max_id;
+        $('#talk_list').append(res.html);
+        M(document.getElementById('talk_list'));
+        if (type == 'pmsg') {
+          if (res.max_id != 0) {
+            check_load_more = true;
+          }
+        } else {
+          check_load_more = true;
+        }
+      }
+    }, 'json');
+  }
+
+  if (type == 'pmsg') {
+    timeout = setTimeout("load_new_message()", 4000);
+  } else {
+    if (typeof timeout !== 'undefined') {
+      clearTimeout(timeout);
+    }
+  }
+});
+
+core.loadFile(THEME_URL+'/js/module.weibo.js');
+core.loadFile(THEME_URL+'/js/plugins/core.weibo.js');
+</script>

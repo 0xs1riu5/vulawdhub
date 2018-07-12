@@ -1,0 +1,119 @@
+<div id="selectUploadType" class="chanage">
+如果无法上传头像,请<a href="###" onclick="loadFileUpload()">切换成普通上传</a>
+</div>
+<div id='flashUpload' style="text-align:center;margin:30px 0 0 0"> 
+<div class='loading' id='loadFlash' style="padding-top:80px;">loading<img src='__THEME__/image/load.gif' class='load'></div>
+<embed src="__THEME__/image/face.swf" quality="high" wmode="opaque" FlashVars="uploadServerUrl={$uploadUrl}&defaultImg={$defaultImg}" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="610" height="560" ></embed>
+</div> 
+
+<!--信息设置项---头像信息-->
+<form id='noflashUpload' model-node="avatar_upload_form" enctype="multipart/form-data" action="{:U('public/Account/doSaveAvatar', array('step'=>'upload'))}" method="post" style='display:none'>
+    <dl class="form-avatar">
+        <dd>
+            <input event-node="select_file" type="file" name="Filedata" class="" />
+            <span event-node="loading" style="display:none;"><img src="__THEME__/image/load.gif" />{:L('Uploading')}</span>
+            <p>{:L('PUBLIC_UPLOAD_PHOTO_TIPS')}</p>
+        </dd>
+        <dd>
+            <div model-node="avatar_scan" class="mod-avatar">
+                <div class="cut-1"><img event-node="avatar_big" src="{$avatar.avatar_big}" width="200" /><p>200*200</p></div>
+            </div>
+        </dd>
+    </dl>
+</form>
+<form model-node="avatar_setting_form" enctype="multipart/form-data" action="{:U('public/Account/doSaveAvatar', array('step'=>'save'))}" method="post" style="display:none;">
+    <dl class="form-avatar">
+        <dd>
+            <div model-node="avatar_area" class="mod-avatar left" style="width:300px; margin-bottom:10px; border-right:1px solid #E5E5E5;"></div>
+            <div class="mod-avatar left" style="padding-left:15px;">
+                <div model-node="avatar_preview" class="left" style=" width: 200px; height: 200px; border:1px solid #B4B5AF; overflow:hidden;"></div>
+            </div>
+        </dd>
+        <dd>                                    
+            <input event-node="avatar_picurl" type="hidden" name="picurl">
+            <input event-node="avatar_picwidth" type="hidden" name="picwidth">
+            <input event-node="avatar_fullpicurl" type="hidden" name="fullpicurl">
+            <input event-node="avatar_x1" type="hidden" name="x1">
+            <input event-node="avatar_y1" type="hidden" name="y1">
+            <input event-node="avatar_x2" type="hidden" name="x2">
+            <input event-node="avatar_y2" type="hidden" name="y2">
+            <input event-node="avatar_w" type="hidden" name="w">
+            <input event-node="avatar_h" type="hidden" name="h">
+            <a event-node="avatar_save" event-args="tip={:L('PUBLIC_IMAGE_SAVE_IS')}？" class="btn-green-small" href="#"><span>{:L('PUBLIC_SAVE')}</span></a>
+            <a event-node="avatar_reset" class="btn-cancel ml10" href="#"><span>{:L('PUBLIC_CANCEL')}</span></a>
+        </dd>
+    </dl>
+</form>
+<script src="__THEME__/js/module.form.js?v20121111"></script>
+<script src="__THEME__/js/avatar/module.avatar.js?v20130423"></script>
+<script src="__THEME__/js/avatar/avatar.js?v20130423"></script>
+<script type="text/javascript">
+<php> 
+if(!empty($callback)){
+    echo 'var upload_callback = "'.$callback.'"';
+}else{
+    echo 'var upload_callback = "nocallback"';
+}
+</php>
+
+var avatar_success = function(msg){
+    ui.success('头像保存成功');
+    if(upload_callback=="nocallback"){
+        $.post(U('widget/Avatar/getflashHtml'),{},function(msg){
+             $('#flashUpload').html(msg);
+        });
+    }else{
+        setTimeout(function(){
+            eval(upload_callback+'()');
+        },2000);
+    }
+};
+var avatar_error = function(){
+    ui.error('头像保存失败');
+};
+</script>
+<SCRIPT type="text/javascript">
+<!--
+var i_flash;
+var v_flash;
+if (navigator.plugins) {
+    for (var i=0; i < navigator.plugins.length; i++) {
+        if (navigator.plugins[i].name.toLowerCase().indexOf("shockwave flash") >= 0) {
+            i_flash = true;
+            v_flash = navigator.plugins[i].description.substring(navigator.plugins[i].description.toLowerCase().lastIndexOf("flash ") + 6, navigator.plugins[i].description.length);
+        }
+    }
+}
+// -->
+</SCRIPT>
+<SCRIPT type=text/vbscript><!--
+//IE
+on error resume next
+set f = CreateObject("ShockwaveFlash.ShockwaveFlash")
+if IsObject(f) then
+i_flash = true
+v_flash = hex(f.FlashVersion())
+end if
+// -->
+</SCRIPT> 
+<SCRIPT type="text/javascript">
+<!--
+if (i_flash) {
+    loadFlashUpload();
+}else{
+    loadFileUpload();
+}
+function loadFlashUpload(){
+    $('#noflashUpload').hide();    
+    $('#loadFlash').show();
+    $('#flashUpload').show();
+    $('#loadFlash').fadeOut('1000');
+    $('#selectUploadType').html('如果无法上传头像,请<a href="###" onclick="loadFileUpload()">切换成普通上传</a>');
+}
+function loadFileUpload(){
+    $('#flashUpload').hide();
+    $('#noflashUpload').show();
+    $('#selectUploadType').html('<a href="###" onclick="loadFlashUpload()">切换回flash上传</a>');
+}
+// -->
+</SCRIPT>

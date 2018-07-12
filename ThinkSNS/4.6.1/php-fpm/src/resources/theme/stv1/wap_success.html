@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="{:APPS_URL}/w3g/_static/css/pure.css">
+    <link rel="stylesheet" href="{:APPS_URL}/w3g/_static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="{:APPS_URL}/w3g/_static/css/pureUI.css?t=1.18">
+    <link href="{:APPS_URL}/w3g/_static/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<script>
+function Jump(){
+  window.location.href = '{$jumpUrl}';
+}
+
+document.onload = setTimeout("Jump()" , {$waitSecond}* 1000);
+</script>
+<base target="_self" />
+
+<div id="container">
+<div>
+
+        <div id="header">
+                <h1>
+                    跳转提示
+                </h1>
+        </div>
+        <div id="prompt">
+          <eq name="status" value="1">
+            <div class="Prompt">
+            	<div class="Prompt-inner">
+                <p><i class="ico-ok-big"></i>{$message}</p>
+            </div>
+            </div>
+          </eq>
+          <eq name="status" value="0">
+            <div class="Prompt">
+            	<div class="Prompt-inner">
+                 <div class="box-ver"><i class="ico-error-big"></i>{$message}</div>
+              </div>
+              </div>
+          </eq>
+        </div>
+
+</div> 
+</div>
+
+</body>
+</html>

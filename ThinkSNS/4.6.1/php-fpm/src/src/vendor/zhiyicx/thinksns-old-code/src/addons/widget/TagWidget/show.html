@@ -1,0 +1,9 @@
+<neq name='tag_url' value=''>
+<volist name="tags" id="_tag">
+	<a href="{$tag_url}&tag_id={$key}" class="tag"> {$_tag} </a> &nbsp;
+</volist>
+<else />
+<volist name="tags" id="_tag">
+	{$_tag}&nbsp;
+</volist>
+</neq>

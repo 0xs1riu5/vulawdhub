@@ -1,0 +1,75 @@
+<include file="__THEME__/public_header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+
+<div id="page-wrap">
+    <div id="top-wrap" class="mb0"> <include file="_weiba_header" /> </div>
+    <div id="main-wrap">
+           <div class="app-wrap"> 
+	   	   	   <div class="mb10 clearfix">
+
+                 <include file="_right" />
+
+                 <div id="col5" class="st-index-main">
+                    <div class="st-bg">
+                        <!-- <div class="search-box mb20">
+                            <ul class="search-tab">
+                               <li class="current"><a href="">微吧</a></li>
+                               <li><a href="">帖子</a></li>
+                            </ul>
+                            <div class="search-content clearfix"><p class="left">搜索</p>
+                               <div class="search-input">
+                                <a href=""><i class="ico-search"></i></a><input type="text"><a href="" class="btn-search"><span>搜索</span></a>
+                               </div>
+                            </div>
+                        </div> -->
+                    <php>if(!$searchkey){</php>
+                        <p class="mb20">抱歉，搜索关键字不能为空</p>
+                    <php>}else{</php>
+                        <php>if(!$weibaList['data']){</php>
+                            <!-- <p class="mb20">抱歉，暂时没有与“{$searchkey}”相关的微吧</p> -->
+                            <div class="weiba-sort f9 clearfix mb20">
+                                <span class="right">搜微吧&nbsp;|&nbsp;<a href="{:U('weiba/Index/search',array('k'=>$searchkey,'type'=>2))}">搜帖子</a></span>
+                                <span class="no-result">抱歉，暂时没有与&nbsp;“<em style="color:red;">{$searchkey}</em>”&nbsp;相关的微吧</span>
+                            </div>
+                            <div class="right-box clearfix no-b">
+                                <fieldset class="inter-line"><legend class="inter-txt">热门微吧推荐</legend></fieldset>
+                              <ul>
+                                 <volist name="weiba_recommend" id="vo">
+                                    <li>
+                                        <a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><img src="{$vo.logo}"  width="50" height="50"/></a><a href="" class="name"><span>{$vo.weiba_name}</span></a>
+                                    </li>
+                                </volist>
+                               </ul>
+                            </div>
+                        <php>}else{</php>
+                            <div class="weiba-sort f9 clearfix">
+                                <span class="right">搜微吧&nbsp;|&nbsp;<a href="{:U('weiba/Index/search',array('k'=>$searchkey,'type'=>2))}">搜帖子</a></span>
+                                <span>共搜索到{$weibaList.count}个相关微吧</span>
+                            </div>
+                            <div class="weiba-list mb20 clearfix">
+                                <volist name="weibaList.data" id="vo">
+                                    <dl>
+                                         <dt><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><img src="{$vo.logo|getImageUrl=###,100,100,true}" /></a></dt>
+                                         <dd>
+                                            <div class="right"><!-- <a class="btn-cancel"><span>关注</span></a> -->{:W('FollowWeiba',array('weiba_id'=>$vo['weiba_id'],'follow_state'=>array('following'=>$follow_state[$vo['weiba_id']]['following'])))}</div>
+                                            <h4 class="name"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" class="mb10">{$vo.weiba_name}</a></p>
+                                            <p class="f3">{$vo.intro}</p>
+                                         </dd>
+                                      </dl>  
+                                </volist>
+                                <div id="page" class="page" style="">
+                                    {$weibaList.html}
+                                </div>
+                           </div> 
+                        <php>}</php>
+                    <php>}</php>
+                     </div>
+                 </div>
+           	 </div>
+          </div>
+	   </div>
+</div>
+
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,84 @@
+<include file="__THEME__/public_header" />
+    <div id="page-wrap">
+        <!--<include file='search_top' />-->
+        <div id="main-wrap">
+        	<div id="col">
+				<!--<include file='search_left' />-->
+                <include file="search_top" />
+                <div id="col8" class="st-section">
+                	<div class="">
+                        <!--<php>if(empty($data)){</php>
+                         <div class="note">{:L('PUBLIC_NO_RELATE_DATA')}</div>
+                        <php>}else{</php>
+                        <volist name='data' id='appData'>
+                            <php>
+                                $_tpl = THEME_PATH.'/'.$key.'/search.html';
+                                $this->tVar['appData'] = $appData;
+                                if(file_exists($_tpl)){
+                                    echo fetch($_tpl, $this->tVar);
+                                }</php>
+                            
+                        </volist> 
+                        <php>}</php>-->
+                        <!--右边-->
+                    <div id="col3" class="st-index-right">
+                        <div class="right-wrap">
+                            
+                             <!-- <div class="attention mb20 clearfix">
+                                <h3>与你同地区的人</h3>
+                                <php>if($sameLocationUser){</php>
+                                    <ul>
+                                      <volist name="sameLocationUser" id="vo">
+                                       <li><a href="{$vo['userInfo']['space_url']}" class="face"><img src="{$vo['userInfo']['avatar_small']}" /><span>{$vo['userInfo']['uname']|getShort=4}</span></a>{:W('FollowBtn', array('fid'=>$vo['userInfo']['uid'], 'uname'=>$vo['userInfo']['uname'], 'follow_state'=>$vo['followState'], 'type'=>'normal'))}</li>
+                                      </volist>
+                                    </ul>
+                                    <php>}else{</php>
+                                    <p>暂时还没与你同地区的人</p>
+                                    <php>}</php>
+                            </div> -->
+                            {:W('SameUser',array('type'=>3, 'limit'=>12, 'title'=>'与你同地区的人'))}
+                            {:W('SameUser',array('type'=>4, 'limit'=>12, 'title'=>'与你同标签的人'))}
+                            <!-- <div class="attention mb20 clearfix">
+                                <h3>与你同职业的人</h3>
+                                <php>if(￥sameCategoryUser){</php>
+                                    <ul>
+                                      <volist name="sameCategoryUser" id="vo">
+                                       <li><a href="{$vo['userInfo']['space_url']}" class="face"><img src="{$vo['userInfo']['avatar_small']}" /><span>{$vo['userInfo']['uname']|getShort=4}</span></a>{:W('FollowBtn', array('fid'=>$vo['userInfo']['uid'], 'uname'=>$vo['userInfo']['uname'], 'follow_state'=>$vo['followState'], 'type'=>'normal'))}</li>
+                                      </volist>
+                                    </ul>
+                                <php>}else{</php>
+                                    <p>暂时还没与你同职业的人</p>
+                                <php>}</php>
+                            </div>  -->                      
+                        </div>
+                    </div>
+                    <div id="col5" class="st-index-main">
+                    <div class="st-bg">
+                    <!--feednav-->
+                    <div class="feed-nav">
+
+                     
+        
+                    <div class="tab-title">
+    
+                    
+                    </div>
+                    </div>
+                    <!--feed list-->
+                    <php>if($searchResult.data){</php>
+                      <include file="person" />
+                    <php>}else{</php>
+                      <p>抱歉，未找到“中国武器”相关分享。建议更改关键字后重新搜索</p> 
+                    <php>}</php>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+        	</div>
+        </div>
+    </div>
+
+<include file="__THEME__/public_footer" />
+<!-- <script type="text/javascript" src="__THEME__/js/module.search.js"></script>
+<script type="text/javascript" src="__THEME__/js/home/module.home.js"></script> -->
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>

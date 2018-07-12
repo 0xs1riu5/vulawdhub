@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$GLOBALS['ts']['site']['site_name']} - 评论箱</title>
+<meta content="<neq name= '_keywords' value=''>{$_keywords}<else />{$site.site_header_keywords}</neq>" name="keywords">
+<meta content="<neq name= '_description' value=''>{$_description}<else />{$site.site_header_description}</neq>" name="description">
+<link href="__THEME__/image/favicon.ico?v={$site.sys_version}" type="image/x-icon" rel="shortcut icon">
+<!-- <link href="__THEME__/css/global.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/module.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/menu.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/form.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/jquery.atwho.css?v={$site.sys_version}" rel="stylesheet" type="text/css" /> -->
+<link href="__THEME__/css/css.php?t=css&f=global.css,module.css,menu.css,form.css,jquery.atwho.css&v={$site.sys_version}.css" rel="stylesheet" type="text/css" />
+<link href="__APP__/weiboshow.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>'
+// Js语言变量
+var LANG = new Array();
+</script>
+<php>if(!empty($langJsList)):</php>
+<volist name="langJsList" id="vo">
+<script src="{$vo}?v={$site.sys_version}"></script>
+</volist>
+<php>endif;</php>
+<!-- 
+<script src="__THEME__/js/jquery-1.7.1.min.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.form.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/common.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/core.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.common.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jwidget_1.0.0.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.atwho.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.caret.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/ui.core.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/ui.draggable.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.digg.js?v={$site.sys_version}"></script>
+-->
+<script src="__THEME__/js/js.php?t=js&f=jquery-1.7.1.min.js,jquery.form.js,common.js,core.js,module.js,module.common.js,jwidget_1.0.0.js,jquery.atwho.js,jquery.caret.js,ui.core.js,ui.draggable.js,plugins/core.comment.js,plugins/core.digg.js&v={$site.sys_version}.js"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.digg.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.common.js?v={$site.sys_version}"></script>
+
+<style type="text/css">
+.box_comment{padding:10px;}
+.box_comment dt,.box_comment dd{padding:0 0 10px 0;}
+.box_comment dt em{font-style:normal;}
+.feedBox{padding:0 10px 10px;}
+</style>
+</head>
+<body>
+	<div id="weibo_show_con" class="tblog_wrap {$style['skin']}">
+  	<b class="wrap_top"></b>
+		<div class="tblog_main">
+	    <!-- 标题栏 -->
+	    <!-- 如不显示标题栏，将这段删除 -->         
+    	<div id="weibo_title" class="tblog_header" >
+      	<h1><a href="{:U('public/Index/index')}" class="title" target="_blank">{$ts['site']['site_name']}</a></h1>
+    	</div>
+    	<!-- 标题栏 -->
+    	<php>if(empty($_SESSION['mid'])):</php>
+    	<div class="box_comment">
+				<dl class="massage_comment">
+			    <dt>&nbsp;</dt>
+			    <dd>
+			    	<div style="width: 98%;" class="message_text text comment_no_login">
+							<div class="cntBox alC" style="-moz-border-radius: 3px;-khtml-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px; padding:30px 0; color:#666666">
+								开始发言吧..	    <a href="#" onclick="javascript:quickLogin()">登陆</a>
+							</div>
+						</div>
+			    </dd>
+			    <dd>&nbsp;</dd>
+				</dl>
+			</div>
+    	<php>else:</php>
+    	<div class="box_comment" model-node="comment_textarea">
+				<dl class="massage_comment">
+    			<a name="#comment"></a>
+					<dt><em>共<span id="total_count">{$commentList.count}</span>条</em>评论</dt>
+	    			<dd model-node="mini_editor">
+	    				<textarea rows="" cols="" name="comment_content" style="padding:5px;width: 97%;_width:95%" id="comment_{$appid}" class="message_text text"></textarea>
+	    			</dd>
+	    			<dd> 
+	    				<input type="button" onclick="doAddComment()" value="确认" id="comment_commit" class="N_but right">
+	        			<span><div class="acts"><a href="javascript:;" class="face-block" event-node="comment_insert_face" title="表情"><i class="face"></i></a></div></span>
+	        			<span><label><input type="checkbox" value="1" id="with_new_weibo" class="checkbox">同时发一条分享</label></span>
+	        			<div model-node="faceDiv"></div>
+	    			</dd>
+				</dl>
+			</div>
+			<div class="feedBox">
+				<div class="comment_lists" id="comment_lists">
+					<volist name="commentList.data" id="comment">
+					<dl class="comment_list" id="comment_list">
+						<dt><a target="_blank" href="{:U('public/Profile/index', array('uid'=>$comment['uid']))}"><img width="30" height="30" src="{$comment.uid|getUserFace}" /></a></dt>
+						<dd>
+							<p class="cont"><a target="_blank" href="{:U('public/Profile/index', array('uid'=>$comment['uid']))}">{$comment.uid|getUserName}</a>：<em>{$comment.content|parse_html}<span class="time">({$comment.ctime|friendlyDate})</span></em></p>
+							<p class="info right"><span><a href="javascript:;" onclick="doDelComment({$comment.comment_id})">删除</a><i class="vline">|</i><a href="javascript:;" onclick="doreply('{$comment.uid}', '{$comment.comment_id}', '{$comment.uid|getUserName}')">回复</a></span></p>
+						</dd>
+					</dl>
+					</volist>
+				</div>
+				<div class="page">{$commentList.html}</div>
+    		<input type="hidden" id="to_uid" value="0" />
+    		<input type="hidden" id="to_comment_id" value="0" />
+			</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var weibo_nums = '<?php echo $weibo_nums; ?>';
+	
+  $("#comment_{$appid}").keyup(function(event){
+		if(event.keyCode==32 || event.keyCode==8 || event.keyCode==13){
+			checkCommentLength(this, weibo_nums);
+		}
+	}).keypress(function(){
+		checkCommentLength(this, weibo_nums);
+	}).blur(function(){
+		checkCommentLength(this, weibo_nums);
+	}).keydown(function(){
+		checkCommentLength(this, weibo_nums);
+	}).keyup(function(){
+		checkCommentLength(this, weibo_nums);
+	});
+  // shortcut('ctrl+return',	function(){doAddComment();},{'target':'comment_<?php echo $appid;?>'});
+  
+  $('#comment_lists').find('p.cont a').attr('target', '_blank');
+  $('#topcontrol').remove();
+});
+
+function checkCommentLength(obj,num){
+ 	var $obj = $(obj);
+	var str  = $obj.val();  
+	var len  = getLength(str);
+	if( len > num ){
+		$obj.val(subStr(str, num));
+	}
+};
+
+//回复评论
+function doreply(uid, comment_id, uname) {
+	$("#comment_{$appid}").val('回复@' + uname + ' ：' ).focus();
+	$('#to_uid').val(uid);
+	$('#to_comment_id').val(comment_id);
+	$("#reply_{$appid}").val(id);
+	
+	var textArea = document.getElementById("comment_{$appid}");
+	var strlength = textArea.value.length;
+	if (document.selection) { //IE
+		var rng = textArea.createTextRange();
+		rng.collapse(true);
+		rng.moveStart("character",strlength)
+	}else if (textArea.selectionStart || (textArea.selectionStart == '0')) { // Mozilla/Netscape…
+    textArea.selectionStart = strlength;
+    textArea.selectionEnd = strlength;
+  }	
+}
+
+//添加评论
+function doAddComment(){
+	var content = $("#comment_{$appid}").val();
+	if( $.trim(content) =='' ){
+		ui.error("评论内容不能为空");
+		return false;
+	}
+
+	var with_new_weibo = $('#with_new_weibo').attr('checked') ? '1' : '0';
+	var appid = "{$appid}";
+	var to_id  = $("#reply_{$appid}").val();
+	var author_uid = "{$author_uid}";
+
+	var args = {};
+	args.row_id = appid;
+	args.content = content;
+	args.to_comment_id = parseInt($('#to_comment_id').val());
+	args.to_uid = parseInt($('#to_uid').val());
+	args.with_new_weibo = with_new_weibo;
+
+	$.post(U('public/Widget/addcomment'),args,function(txt){
+		if (txt.status == 1) {
+			ui.success(txt.data);
+		} else {
+			ui.error(txt.data);
+		}
+		setTimeout(function() {
+			$("#comment_{$appid}").val('')
+			location.reload();
+		}, 1500);
+	}, 'json');
+}
+
+//删除评论
+function doDelComment(id){
+	$.post(U('public/Widget/delComment'),{id:id},function(txt){
+		if (txt.status == 1) {
+			ui.success(txt.data);
+		} else {
+			ui.error(txt.data);
+		}
+		setTimeout(function() {
+			location.reload();
+		}, 1500);
+	}, 'json');
+}
+</script>
+        	<php>endif;</php>
+        </div>
+    	
+	</div>
+</body>
+</html>

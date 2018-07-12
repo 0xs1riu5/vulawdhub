@@ -1,0 +1,40 @@
+<div class="clearfix mb30" >
+  <fieldset class="inter-line mb5">
+    <a href="javascript:;" event-node="change_related_post" rel="0" event-args="uid={$uid}&limit={$limit}" id="change_related_post" class="right"><i class="ico-refresh"></i></a>
+    <legend class="inter-txt">{$title}</legend>
+  </fieldset>
+  <ul model-node="related_ul_post" class="weiba-post-list">
+    <volist name="topic_list" id="vo">
+    <php>
+    if($key<3)
+	    {
+	    	$ii='ico-dot1';
+	    }
+    else
+	    {
+	    	$ii='ico-dot2';
+	    }
+    </php>
+      <li>
+      <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><i class="{$ii}"></i>{$vo.title|getShort=14}</a>
+      </li>
+    </volist>
+  </ul>
+</div>
+<script type="text/javascript">
+// 事件绑定
+M.addEventFns({
+    // 换一换操作
+    change_related_post: {
+        click: function() {
+            var args = M.getEventArgs(this);
+            var _model = M.getModels('related_ul_post');
+            $.post("{:U('widget/HotPost/changeRelate','app_widget=weiba')}", {uid:args.uid, limit:args.limit}, function(data) {
+                $(_model[0]).html(data);
+                M($(_model)[0]);
+            }, 'json');
+            return false ;
+        }
+    }
+});
+</script>

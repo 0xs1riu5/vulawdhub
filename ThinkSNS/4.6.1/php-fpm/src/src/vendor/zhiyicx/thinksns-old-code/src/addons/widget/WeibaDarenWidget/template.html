@@ -1,0 +1,42 @@
+<?php $refresh  = 'refresh-' . rand(1000, 99999); ?>
+<?php $userList = 'user-list' . rand(1000, 99999); ?>
+<div class="right-box clearfix">
+	<fieldset class="inter-line mb20">
+		<a class="right" id="{$refresh}">
+			<i class="ico-refresh"></i>
+		</a>
+		<legend class="inter-txt">{$title}</legend>
+	</fieldset>
+	<ul class="user-list-rec" id="{$userList}" model-node="related_ul_daren"></ul>
+</div>
+<script>
+/* # 组建方式，防止不存在jquery */
+;(function (window, $, undefind) {
+	"use strict";
+	/* 重新加载数据防范 */
+	var reload = function() {
+		$.post('{:U('widget/WeibaDaren/reload')}', {
+			limit: '{$max}',
+			uid: '{$uid}',
+			wid: '{$weibaid}'
+		}, function(data) {
+			if (data) {
+				// $('#{$userList}').html(data);
+				var _model = M.getModels('related_ul_daren');
+				$(_model[0]).html(data);
+        M($(_model)[0]);
+			};
+		}, 'html');
+	};
+
+	/* # 刷新按钮点击事件 */
+	$('#{$refresh}').on('click', function(event) {
+		event.preventDefault();
+		reload();
+	});
+
+	/* # 初始化执行 */
+	reload();
+
+})(window, jQuery || $);
+</script>

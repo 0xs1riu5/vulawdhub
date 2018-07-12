@@ -1,0 +1,14 @@
+<div class="mod-app">
+<h3 class="hd">{:L('PUBLIC_APPLICATION')}</h3>
+<ul class="app-list">
+<volist name='_userApp' id='ua'>
+<li <php> if($ua['app_name'] == APP_NAME ): </php> class="current" <php>endif;</php> >
+	<a href="{$ua['app_entry']}" class="app" id='leftApp{$ua.app_id}'>
+	<i class="arrow-current"></i><img src="{$ua.icon_url}" width='16'> 
+	{:L('PUBLIC_APPNAME_'.$ua['app_name'])}
+	</a>
+</li>
+</volist>
+</ul>
+<div class="app-add"><a href="{:U('public/App/index')}" class="app"><i class="icon ico-add"></i>{:L('PUBLIC_APP_INEX')}</a></div>
+</div>

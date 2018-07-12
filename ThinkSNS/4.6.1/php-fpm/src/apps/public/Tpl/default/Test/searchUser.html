@@ -1,0 +1,24 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px 0">
+            搜索用户：{:W('SearchUser', array('name' => 'selectUser', 'uids' => array(10000,14983),'follow'=>0,'max'=>10,'editable'=>1))}
+            </div>
+<div>
+<pre>
+调用：W('SearchUser', array('name' => 'selectUser', 'uids' => array(10000,14983),'follow'=>0,'max'=>10,'editable'=>0))
+参数说明：
+name 	存储uid的input名称
+uids	已选择的用户id集合
+follow  是否只能选择已关注的人（0表示可以选择全部用户，1表示只能选择已关注的人）
+max		最多可选择的用户个数
+editable是否可修改选择的结果，如果为0则不能选择用户，不能删除已经选择的用户
+</pre>
+</div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />
+
+

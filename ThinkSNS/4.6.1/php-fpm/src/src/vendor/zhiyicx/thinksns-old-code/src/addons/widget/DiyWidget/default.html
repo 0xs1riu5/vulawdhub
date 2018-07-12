@@ -1,0 +1,23 @@
+<div model-node = 'diy_widget' model-args='diyId={$id}'>
+<volist name='widget_list' id ='w'>
+    <php>
+        $wAttr = $w['diyattrs'];
+        $wAttr['widget_user_id'] = $widget_user_id;
+        $wAttr['widget_name']    = $w['name'];
+        $wAttr['wigdet_desc']	 = $w['wigdet_desc'];	
+        $wAttr['diyId']          = $id; 
+        if($w['appname'] != 'public'){
+            $wAttr['widget_appname'] = $w['appname'];
+        }
+    </php>
+    {:W($w['name'],$wAttr)}
+</volist>
+<style>
+.ui-state-highlight {background-color: red}
+</style>
+<div class="weight-add">
+    <a href="javascript:;" event-node='widget_add' event-args = 'widget_user_id={$widget_user_id}&diyId={$id}'>
+    <i class="ico-add"></i>{:L('PUBLIC_ADD')}</a>
+</div>
+</div>
+<script type="text/javascript" src = "__THEME__/js/module.form.js"></script>

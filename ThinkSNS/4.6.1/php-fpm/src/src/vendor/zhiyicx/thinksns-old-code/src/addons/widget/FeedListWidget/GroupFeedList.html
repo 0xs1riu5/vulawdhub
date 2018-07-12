@@ -1,0 +1,28 @@
+<div id="feed-lists" class="feed_lists clearfix">
+    <!-- <a class="notes" href="javascript:void(0)">有1条新分享</a> -->
+    
+    <eq name="type" value="channel">
+	    <eq name="channel" value="0">
+	    	<p class="mt10 center">抱歉，您还没有关注任何一个频道，立刻去<a href="{:U('channel/Index/index')}">频道</a>看看>></p>
+	    </eq>
+	</eq>
+	
+	<neq name='loadmore' value='1'>
+	<div id="page" class="page">
+		{$html}
+	</div>
+	</neq>
+</div>
+	
+<script type="text/javascript">
+var loadId = '{$lastId}';
+var maxId = '{$firstId}';
+var feedType = '{$type}';
+var loadmore = '{$loadmore}';
+var loadnew = '{$loadnew}';
+var feed_type = '{$feed_type}';
+var feed_key = '{$feed_key}';
+var fgid = '{$fgid}';
+var topic_id = '{$topic_id}';
+var gid = '{$gid}';
+</script>

@@ -1,0 +1,42 @@
+<include file="__THEME__/header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div class="st-bg">
+      <!-- <p class="weiba-location"><a href="{:U('weiba/Index/index')}">微吧</a>&nbsp;>&nbsp;<a href="{:U('weiba/Index/detail',array('weiba_id'=>$post_detail['weiba_id']))}">{$weiba_name}</a>&nbsp;>&nbsp;编辑帖子</p> -->
+      <div class="weiba-manage">
+        <form method="post" action="{:U('weiba/Index/doPostEdit')}" model-node='weiba_post_edit' name="weibaPost" onsubmit="return setcontent();">
+          <input type="hidden" value="{$post_detail['post_id']}" name="post_id" id="post_id">
+          <php>if($log){</php>
+          <input type="hidden" value="{$log}" name="log" id="log">
+          <php>}</php>
+          <dl class="form-set">
+            <dd>
+              <div class="form-tt"><font color="red"> * </font>标题</div>
+              <div class="form-row">
+                <input class="text" style="width:690px;" type="text" name="title" id="title" value="{$post_detail['title']}">
+              </div>
+            </dd>
+            <dd>
+              <div class="form-tt"><font color="red"> * </font>正文</div>
+              <div class="form-row" style="line-height:normal;"> {:W('UM', array('type'=>'weiba','contentName'=>'content','content'=>$post_detail['content'],width=>'700'))} </div>
+            </dd>
+            <dd>
+              <div class="form-tt">附件</div>
+              <div class="form-row">{:W('Upload', array('urlquery'=>'attach_type=weiba_attach','attachIds'=>$post_detail['attach']))}
+                <span style="font-size:12px; color:#888;">文件大小不能超过{$attach_update_config.attach_max_size}M，且只允许上传格式：{$attach_update_config.attach_allow_extension}</span>
+              </div>
+            </dd>
+            <dd>
+              <div class="form-tt"></div>
+              <div class="form-row"><a href="javascript:;" class="btn_b mr5" event-node="submit_btn" event-args="editor=true"><span>确定</span></a><a href="{:U('weiba/Index/postDetail',array('post_id'=>$post_detail['post_id']))}" class="btn_w"><span>取消</span></a></div>
+            </dd>
+          </dl>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 

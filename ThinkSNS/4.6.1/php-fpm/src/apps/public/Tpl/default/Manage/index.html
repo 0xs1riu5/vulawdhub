@@ -1,0 +1,21 @@
+<include file="__THEME__/public_header" />
+    <div id="page-wrap">
+        <div id="main-wrap">
+            <div id="st-index-grid" class="st-grid boxShadow">
+                <div class="mod-operate clearfix">
+                    {:W('Manage')}
+                </div>
+        	  	<div class="col-faq bd-not">
+              	<div class="main-apps clearfix">
+                	<ul>
+                		<volist name='appList' id='d'>
+                    	<li><a class="pic" href="{:U($d['app_name'].'/Manage/index')}"><img src="{$d.large_icon_url}"></a>
+                    		<a class="name" href="{:U($d['app_name'].'/Manage/index')}">{$d.app_alias}{:L('PUBLIC_MANAGEMENT')}</a></li>
+                    	</volist>
+                    </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>    
+<include file="__THEME__/public_footer" />

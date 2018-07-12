@@ -1,0 +1,161 @@
+<php>if(CheckPermission('core_normal','feed_post')):</php>
+<!-- 发布发言/发言 -->
+<div class="send_weibo diy-send-weibo" model-node="send_weibo">
+	<div model-node="post_share_ok" class="sok" style="display:none;"></div>
+	<div class="send-box">
+		<div class="input" model-node="weibo_post_box">
+			<div class="input_before" model-node="mini_editor" model-args="prompt={$prompt}">
+				<textarea id="inputor{$time}" name="at" class="input_tips" event-node="mini_editor_textarea" model-args='t=feed'>
+					<if condition="trim($topicHtml) neq ''">{$topicHtml}</if>
+				</textarea>
+				<div model-node="numsLeft" class="num">{$initNums}</div>
+			</div>
+			<div class="action clearfix" model-node='send_action'>
+				<div class="kind">
+					<div class="right release">
+						{:Addons::hook('weibo_syn_middle_publish')}
+						<a id="publish_feed" class="btn-grey-white" event-node='post_share_tools' event-args='type={$type}&app_name={$app_name}&topicHtml={$initHtml}&isrefresh={$isrefresh}' href="javascript:;"><span>发布</span></a>
+					</div>
+
+					<div class="acts">
+						<eq name="actions.face" value="true">
+							<php>if(in_array('face',$weibo_type)):</php>
+							<a event-node="insert_face" class="face-block" href="javascript:;" title="表情"> <i class="face"></i></a>
+							<php>endif;</php>
+						</eq>
+
+						<eq name="actions.at" value="true">
+							<php>if(in_array('at',$weibo_type)):</php>
+							<a event-node="insert_at" class="at-block" href="javascript:;" title="好友"> <i class="at"></i></a>
+							<php>endif;</php>
+						</eq>
+
+						<eq name="actions.image" value="true">
+							<php>if(in_array('image',$weibo_type)):</php>
+							<a image-type="flash" event-node="insert_image" class="image-block" href="javascript:;" rel="{$post_event}" title="图片"><i class="image"></i></a>
+							<div class="tips-img" style="display:none">
+								<dl>
+									<dd><i class="arrow-open"></i>jpg,png,gif,bmp,tif</dd>
+								</dl>
+							</div>
+
+							<a image-type="noflash" style="display:none;" href="javascript:void(0);" class="image-block" title="图片"><i class="image" ></i>
+							<form style='display:inline;padding:0;margin:0;border:0;outline:none;' >
+								<input type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','image')" urlquery='attach_type=feed_image&upload_type=image&thumb=1&width=100&height=100&cut=1' hidefocus="true">
+							</form>
+							</a>
+							<php>endif;</php>
+						</eq>
+
+						<eq name="actions.video" value="true">
+							<php>if(in_array('video',$weibo_type)):</php>
+							<input type="hidden" id="postvideourl" value="" />
+							<a event-node="insert_video" rel="{$post_event}" class="video-block" href="javascript:;" title="视频"><i class="video"></i></a>
+							<php>endif;</php>
+						</eq>
+
+						<eq name="actions.file" value="true">
+							<php>if(in_array('file',$weibo_type)):</php>
+							<a class="file-block" href="javascript:;" title="附件"><i class="file"></i>
+							<form style='display:inline;padding:0;margin:0;border:0' >
+								<input event-node="insert_file" type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','all')" urlquery='attach_type=feed_file&upload_type=file' hidefocus="true">
+							</form>
+							</a>
+							<php>endif;</php>
+						</eq>
+
+						<eq name="actions.topic" value="true">
+							<php>if(in_array('topic',$weibo_type)):</php>
+							<a event-node="insert_topic" class="topic-block" href="javascript:;" title="话题"><i class="topic"></i></a>
+							<php>endif;</php>
+						</eq>
+
+						<!--
+						<eq name="actions.contribute" value="true">
+							<php>if(in_array('contribute',$weibo_type) && $hasChannel):</php>
+							<a event-node="insert_contribute" class="contribute-block" href="javascript:;"><i class="contribute"></i>投稿</a>
+							<input type="hidden" autocomplete="off" value="" id="contribute" />
+							<php>endif;</php>
+						</eq>
+						-->
+
+						{:Addons::hook('home_index_middle_publish_type',array('position'=>'index'))}
+					</div>
+					<div class="clear"></div>
+					<div model-node ='faceDiv'></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<php>else:</php>
+<div class="send_weibo">
+  <div class="box-purview"><div class="nologin"><i class="ico-error"></i>您还未登录，请<a class="nologin-a" href="javascript:ui.quicklogin();">&nbsp;登录</a>&nbsp;or&nbsp;<a class="nologin-a" href="{:U('public/Register/index')}">注册</a></div></div>
+</div>
+<php>endif;</php>
+
+<script type="text/javascript">
+var initNums = '{$initNums}';
+var initHtml = '{$initHtml}';
+core.loadFile(THEME_URL+'/js/plugins/core.at.js');
+$(function (){
+	$('#change_weibo_tab').click(function (){
+		$('div[type="weibotab"]').hide();
+	});
+	if ( $('#inputor{$time}').get(0) != undefined ){
+		setTimeout(function (){
+			if ( initHtml ){
+				$('#inputor{$time}').focus();
+				$('#inputor{$time}').html(initHtml);
+			}
+		} , 300)
+	}
+	//$('#message_inputor').inputToEnd(initHtml);
+});
+setTimeout(function() {
+	atWho($('#inputor{$time}'));
+	atWho($('#message_inputor'));
+}, 1000);
+
+$(function () {
+	var whether_to_install_flash = function() {
+		var i_flash = true;
+		if ($.browser.msie) {
+			try {
+				var swf = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+			} catch(e) {
+				i_flash = false;
+			}
+		} else {
+			try {
+				var swf = navigator.plugins['Shockwave Flash'];
+				if (typeof swf === 'undefined') {
+					i_flash = false;
+				}
+			} catch(e) {
+				i_flash = false;
+			}
+		}
+
+		return i_flash;
+	}
+
+	var i_flash = whether_to_install_flash();
+	if (i_flash) {
+		$('a[image-type="noflash"]').remove();
+	} else {
+		$('a[image-type="flash"]').remove();
+		$('a[image-type="noflash"]').show();
+	}
+});
+
+/*(function() {
+	var image = $('a[event-node="insert_image"]')[0];
+	var image_textarea = $('textarea[model-node="mini_editor_textarea"]');
+	var image_a = $('a[event-node="post_share_tools"]')[0];
+	core.plugInit('multimage', image, image_textarea, image_a);
+	var url = "http://d.hiphotos.baidu.com/image/w%3D2048/sign=31cded21bb12c8fcb4f3f1cdc83b9345/ac4bd11373f0820219e90e3e49fbfbedab641bb3.jpg";
+	var imageHtml = '<li id="li_5BCBC805_0" style=""><img width="80" height="80" src="' + url + '"><a onclick="$(this).parent().remove();" href="javascript:;"><span class="del">删除</span></a></li>';
+	$('#multi_image ul').prepend(imageHtml);
+})();*/
+</script>

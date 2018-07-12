@@ -1,0 +1,28 @@
+<dl class="comment_list" id="comment_list" model-node="comment_list">        
+<dt><a href="{$userInfo.space_url}"><img width="20" height="20" src="{$userInfo.avatar_tiny}"></a></dt>        
+<dd>
+<p class="cont">
+	{$userInfo.space_link}:&nbsp;
+	<em>{$content}
+		<span class="time">（{:L('PUBLIC_JUST')}）</span>
+		<span class="handle">
+			<php>if($iscommentdel){</php>
+				<a href="javascript:void(0);" event-node="comment_del" event-args="comment_id={$comment_id}">{:L('PUBLIC_STREAM_DELETE')}</a>
+			<php>}</php>
+			<a href="javascript:void(0);" event-args='row_id={$row_id}&app_uid={$app_uid}&to_comment_id={$comment_id}&to_uid={$userInfo.uid}&to_comment_uname={$userInfo.uname}' 
+		event-node="reply_comment">{:L('PUBLIC_STREAM_REPLY')}</a>
+		</span>
+	</em>
+</p>
+<!--<p class="info right">
+	<span>
+		<php>if($iscommentdel){</php>
+		<a href="javascript:void(0);" event-node="comment_del" event-args="comment_id={$comment_id}">{:L('PUBLIC_STREAM_DELETE')}</a>
+		<i class="vline">|</i>
+		<php>}</php>
+		<a href="javascript:void(0);" event-args='row_id={$row_id}&app_uid={$app_uid}&to_comment_id={$comment_id}&to_uid={$userInfo.uid}&to_comment_uname={$userInfo.uname}' 
+	event-node="reply_comment">{:L('PUBLIC_STREAM_REPLY')}</a>
+	</span>
+</p>-->
+</dd>
+</dl>

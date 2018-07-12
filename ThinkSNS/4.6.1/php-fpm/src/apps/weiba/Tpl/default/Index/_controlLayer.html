@@ -1,0 +1,22 @@
+<div class="controlLayer">
+  <ul>
+    <li style="border-top:#d2d8e0 1px solid;"><a><i class="ico-reply-2"></i><span>回复</span></a></li>
+    <li><a><i class="ico-restore-2"></i><span>收藏</span></a></li>
+    <li><a><i class="ico-prase-2"></i><span>赞</span></a></li>
+    <li><a><i class="ico-share-2"></i><span>分享</span></a></li>
+  </ul>
+</div>
+<script>
+window.onscroll = function() {
+	var obj = $('.controlLayer');
+	//鼠标滚动超过100px以后显示
+	if($(document).scrollTop()>= 70){
+		//obj.fadeIn(500);
+		obj.css({"top":"70px"})
+		}
+	else{
+		//obj.fadeOut(500);
+		obj.css({"top":"145px"})
+		}
+    }
+</script> 

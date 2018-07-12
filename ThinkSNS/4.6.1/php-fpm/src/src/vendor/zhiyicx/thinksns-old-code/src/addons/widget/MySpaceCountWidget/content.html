@@ -1,0 +1,16 @@
+<div class="ui-state-disabled mod-person-num border" model-node='widget_box' model-args = 'widget_user_id={$widget_user_id}&widget_name=MySpaceCount&wigdet_desc={$wigdet_desc}&appname=public&diyId={$diyId}'>
+	<a href="{:U('public/Profile/following','uid='.$ts['mid'])}">
+		<h4 node-event>{:L('PUBLIC_FOLLOWING')}</h4>
+		<strong event-node ="following_count" event-args ="uid={$ts.mid}">{$ts._userData.following_count|default=0}</strong>
+	</a>
+	<a href="{:U('public/Profile/follower','uid='.$ts['mid'])}">
+		<h4>{:L('PUBLIC_FOLLOWERS')}</h4>
+		<strong event-node ="follower_count" event-args ="uid={$ts.mid}">{$ts._userData.follower_count|default=0}</strong>
+	</a>
+	<a href="{:U('public/Profile/index','uid='.$ts['mid'])}">
+		<h4>{:L('PUBLIC_WEIBO')}</h4><strong event-node ="weibo_count" event-args ="uid={$ts.mid}">{$ts._userData.weibo_count|default=0}</strong>
+	</a>
+	<a href="{:U('public/Collection/index','uid='.$ts['mid'])}">
+		<h4>{:L('PUBLIC_STREAM_LIKE')}</h4><strong event-node ="favorite_count" event-args ="uid={$ts.mid}">{$ts._userData.favorite_count|default=0}</strong>
+	</a>
+</div>

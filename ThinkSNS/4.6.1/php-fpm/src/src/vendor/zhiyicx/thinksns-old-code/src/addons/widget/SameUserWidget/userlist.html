@@ -1,0 +1,12 @@
+<ul id="sameUserList_{$type}">
+<volist name="user" id="vo">
+ <li id="user_{$vo['userInfo']['uid']}" value="{$vo['userInfo']['uid']}">
+ <a href="{$vo['userInfo']['space_url']}" class="face">
+ <img src="{$vo['userInfo']['avatar_middle']}"  uid="{$vo['userInfo']['uid']}" event-node="face_card"/></a>
+ <a href="{$vo['userInfo']['space_url']}" class="name" uid="{$vo['userInfo']['uid']}" event-node="face_card">
+ <span>{$vo['userInfo']['uname']|getShort=4}</span></a>
+ <div onclick="$(this).remove();userReplace({$vo['userInfo']['uid']},{$type})">
+ {:W('FollowBtn', array('fid'=>$vo['userInfo']['uid'], 'uname'=>$vo['userInfo']['uname'], 'follow_state'=>$vo['followState'], 'type'=>'normal'))}
+ </div></li>
+</volist>
+</ul>

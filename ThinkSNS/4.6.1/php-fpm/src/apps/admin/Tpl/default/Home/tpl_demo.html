@@ -1,0 +1,169 @@
+<include file="../Public/header" />
+<div id="container" class="so_main">
+
+<!-- START 配置项详细页面  system_data 里面某个list的数据 -->
+
+<div class="page_tit">欢迎使用  Sociax社会化沟通、协作、管理平台</div>
+<div class="form2"><h4>提示：点击标题可以折叠栏目</h4>
+
+<h3 onclick="admin.fold('app_0');"> {:L('PUBLIC_SERVER_INFO')}</h3>
+<div id="app_0">
+<dl><dt><strong>{:L('PUBLIC_CORE_VERSION')}：</strong></dt><dd>Sociax</dd></dl>
+<dl><dt><strong>{:L('PUBLIC_CORE_VERSION')}：</strong></dt><dd>Sociax</dd></dl>
+</div>
+
+<h3 onclick="admin.fold('app_1');"> {:L('PUBLIC_SERVER_INFO')}</h3>
+<div id="app_1">
+<dl><dt><strong>{:L('PUBLIC_CORE_VERSION')}：</strong></dt><dd>Sociax</dd></dl>
+<dl><dt><strong>{:L('PUBLIC_CORE_VERSION')}：</strong></dt><dd>Sociax</dd></dl>
+</div>
+</div>
+
+<!-- END 配置项详细页面  system_data 里面某个list的数据 -->
+
+<!-- START 内容详细页 -->
+  <div class="page_tit"> <span onclick="admin.fold('page_config')">{:L('PUBLIC_PAGE_CONFIGURATION')}</span>{:L('PUBLIC_EDIT_USER')}</div>
+  
+  	<div id='page_config' class = "form2 list" >
+  		<form action="{:U('admin/Index/savePageConfig')}" method="POST">
+  		<input type="hidden" name='pageKey' value="{$pageKey}" />
+  		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  			<tr>
+  				<th>字段</th>
+  				<th class="line_l">名称</th>
+  				<th class="line_l">输入类型</th>
+  				<th class="line_l">默认值\格式</th>
+  				<th class="line_l">提示信息</th>
+  				<th class="line_l">验证事件</th>
+  				<th class="line_l">操作</th>
+  			</tr>
+  			<tr>
+  				<td> <input type="hidden" name='key[]' value='name'> name</td>
+  				<td><input type="text" name='key_name[]' value='用户名' class="s-txt" /></td>
+  				<td><select name='key_type[]'>
+  					<option value='text'>文本框:input_text</option>
+  					<option value='text'>密码框:input_password</option>
+  					<option value='text'>下拉框:select</option>
+  					<option value='text'>单选框:radio</option>
+  					<option value='text'>多选框:checkbox</option>
+  					<option value='text'>日期插件:date</option>
+  					<option value='text'>文本域:textarea</option>
+  					<option value='text'>纯文字:word</option>
+  					<option value='text'>隐藏值:input_hidden</option>
+  					<option value='text'>附件上传:input_file</option>
+  				</select></td>
+  				<td><input type='text' name='key_default[]' value='默认值' class="s-txt" ></td>
+  				<td><input type='text' name='key_tishi[]' value='这里是提示信息' class="s-txt" ></td>
+  				<td><input type='text' name='key_javascript[]' value='验证事件' class="s-txt" ></td>
+  				<td><a onclick="admin.moveUp($(this))">上移</a> <a onclick="admin.moveDown($(this))">下移</a></td>
+  			</tr>
+  			<tr>
+  				<td> <input type="hidden" name='key[]' value='email' class="s-txt" > email</td>
+  				<td><input type="text" name='key_name[]' value='邮件 ' class="s-txt"  /></td>
+  				<td><select name='key_type[]'>
+  					<option value='text'>文本框:input_text</option>
+  					<option value='text'>密码框:input_password</option>
+  					<option value='text'>下拉框:select</option>
+  					<option value='text'>单选框:radio</option>
+  					<option value='text'>多选框:checkbox</option>
+  					<option value='text'>日期插件:date</option>
+  					<option value='text'>文本域:textarea</option>
+  					<option value='text'>纯文字:word</option>
+  					<option value='text'>隐藏值:input_hidden</option>
+  				</select></td>
+  				<td><input type='text' name='key_default[]' value='默认值' class="s-txt" ></td>
+  				<td><input type='text' name='key_tishi[]' value='这里是提示信息' class="s-txt" ></td>
+  				<td><input type='text' name='key_javascript[]' value='验证事件' class="s-txt" ></td>
+  				<td><a onclick="admin.moveUp($(this))">上移</a> <a onclick="admin.moveDown($(this))">下移</a></td>
+  			</tr>
+  		</table>
+  		<div class="page_btm">
+	      <input type="submit" class="btn_b" value="确定" />
+	    </div>
+	    </form>
+  	</div>
+  	
+   <form method="post" action="XXX">
+  	<input type="hidden" name="uid" value="10000" />  
+  	<div class="form2">
+    <dl class="lineD">
+      <dt>Email：</dt>
+      <dd>
+        <input name="email" id="email" type="text" value="nonant@thinksns.com">
+        <p>这里是提示</p>
+    </dl>
+	
+    <dl class="lineD">
+      <dt>密码：</dt>
+      <dd>
+        <input name="password" id="password" type="text">
+        <p>这里是提示</p>
+      </dl>
+    
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="确定" />
+    </div>
+  	</div>
+  	</form>
+
+
+<!-- END 内容详细页 -->
+
+<!-- START 内容列表页 -->
+	  
+  <div class="page_tit">广告管理</div>
+  <div class="Toolbar_inbox">
+	<a href="http://ts/index.php?app=admin&mod=Content&act=addAd" class="btn_a""><span>添加广告</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="deleteAd();"><span>删除广告</span></a>
+    <div class="page right"> <span class="current">1</span><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=2">2</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=3">3</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=4">4</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=5">5</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=1658">..1658</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=2">下一页</a></div>
+  </div>
+  <div class="list">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+    <th class="checkbox">
+        <input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+        <label for="checkbox"></label>
+    </th>
+    <th class="line_l">ID</th>
+    <th class="line_l">标题</th>
+    <th class="line_l">位置</th>
+
+    <th class="line_l">创建时间</th>
+    <th class="line_l">更新时间</th>
+    <th class="line_l">是否有效</th>
+	<th class="line_l">排序</th>
+    <th class="line_l">操作</th>
+  </tr>
+
+  <tr overstyle='on' id="16">
+        <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="16"></td>
+        <td>16</td>
+        <td>右上角广告</td>
+        <td>右上</td>
+        <td>2012-03-12 11:13</td>
+        <td>2012-03-12 11:13</td>
+
+        <td>是</td>
+        <td>
+            <a href="javascript:void(0)" class="ico_top" onclick="move('16','up');"><img src="http://ts/public/admin/images/zw_img.gif"></a>&nbsp;&nbsp;
+            <a href="javascript:void(0)" class="ico_btm" onclick="move('16','down');"><img src="http://ts/public/admin/images/zw_img.gif"></a>
+        </td>
+        <td>
+			<a href="http://ts/index.php?app=admin&mod=Content&act=editAd&id=16">编辑</a>
+			<a href="javascript:void(0);" onclick="deleteAd('16')">删除</a>
+
+		</td>
+      </tr>  
+      </table>
+  </div>
+  <div class="Toolbar_inbox">
+	<a href="http://ts/index.php?app=admin&mod=Content&act=addAd" class="btn_a""><span>添加广告</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="deleteAd();"><span>删除广告</span></a>
+    <div class="page right"> <span class="current">1</span><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=2">2</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=3">3</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=4">4</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=5">5</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=1658">..1658</a><a href="/index.php?app=admin&amp;mod=Content&amp;act=comment&amp;p=2">下一页</a></div>
+  </div>
+
+<!-- END 内容列表页 -->
+
+</div>
+<include file="../Public/footer" />

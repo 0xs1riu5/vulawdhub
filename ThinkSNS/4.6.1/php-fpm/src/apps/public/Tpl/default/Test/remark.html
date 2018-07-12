@@ -1,0 +1,23 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px 0">
+                <ul>
+                    <li>针对UID=10000的用户设置备注。{:W('Remark',array('uid'=>1000,'remark'=>'二货','showonly'=>0))}</li>
+                    <li>针对UID=10000的用户设置备注。(如没有设置备注，则不显示) {:W('Remark',array('uid'=>1000,'remark'=>'二货','showonly'=>1))}</li>
+                </ul>
+            </div>
+<div>
+<pre>
+调用：W('Remark',array('uid'=>1000,'remark'=>'二货','showonly'=>0))
+参数说明：
+uid		 目标用户的UID
+remark 	 用户已经被设置的备注名称
+showonly 是否只显示已有的备注
+</pre>
+</div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />

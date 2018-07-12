@@ -1,0 +1,11 @@
+<div id='deldepart'  class="pop-movedepart ">
+    <dt>{:L('PUBLIC_TRANSFER_USER_SUBSECTOR')}</dt>
+    
+    <dd>{:W('Department',array('tpl'=>'admin','select'=>1,'sid'=>$info['department_id'],'nosid'=>1))}</dd>
+    <dd> {:L('PUBLIC_TRANSFER_SUBSECTOR_TIPS')}</dd>
+    
+    <dd class="mt10 center">
+    <input type="button" class="btn_b mr10" value="{:L('PUBLIC_CONFIRM')}" onclick="admin.dodeldepart({$info.department_id})">
+    <input type="button" class="btn_w" value="{:L('PUBLIC_CANCEL')}" onclick="ui.box.close()">
+    </dd>
+</div>

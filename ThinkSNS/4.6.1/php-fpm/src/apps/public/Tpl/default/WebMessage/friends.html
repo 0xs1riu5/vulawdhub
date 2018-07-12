@@ -1,0 +1,162 @@
+<php>
+if($addGroupMember){
+    $btn='<a href="'.U('public/WebMessage/addGroupMember',array('roomid'=>$roomId)).'" class="disabled admin_group_room">添加成员</a>';
+    $navs='<a href="'.U('public/WebMessage/room', array('roomid'=>$roomId)).'" class="boxopenurl">返回聊天</a><a href="'.U('public/WebMessage/groupMember', array('roomid'=>$roomId)).'" class="boxopenurl">群成员('.$memberCount.')</a>';
+}else{
+    $btn='<a href="'.U('public/WebMessage/createGroupRoom').'" class="disabled admin_group_room">发起聊天</a>';
+    $navs='<a href="'.U('public/WebMessage/friends').'" class="boxopenurl current">我的好友('.$count.')</a><a href="'.U('public/WebMessage/roomList').'" class="boxopenurl">消息列表</a>';
+}
+</php>
+<?php $navs .= '<input class="medz-message-s" placeholder="输入联系人昵称">'; ?>
+<div id="set-data" data-title="{$addGroupMember?'添加群成员':'我的好友'}" data-navs='{$navs}' data-btn='{$btn}'></div>
+<div class="common">
+    <php>if($data):</php>
+    <div class="fright">
+        <input type="hidden" value="," id="checked_uids" />
+        <ul class="checked_user"></ul>
+        <ul class="first-letter">
+        <php>foreach($data as $first_letter => $users):</php>
+        <li><a href="javascript:;">{$first_letter}</a></li>
+        <php>endforeach;</php>
+        </ul>
+    </div>
+    <dl class="friends">
+      <php>foreach($data as $first_letter => $users):</php>
+      <dt id="index-{$first_letter}">{$first_letter}</dt>
+      <php>$i=0;foreach($users as $key => $val):</php>
+      <php>if($i%2==0):</php>
+      <dd class="clearfix">
+        <div class="lt" id="medz-f">
+            <div class="face"><a title="发私信" href="{:U('public/WebMessage/room', array('uid'=>$val['uid']))}" class="boxopenurl"><img src="{$val['avatar_small']}" /></a></div>
+            <div class="uname"><a title="发私信" href="{:U('public/WebMessage/room', array('uid'=>$val['uid']))}" class="boxopenurl">{$val['uname']}</a></div>
+            <div id="checkbox_user_{$val['uid']}" class="checkbox" data-uid="{$val['uid']}"></div>
+        </div>
+      <php>else:</php>
+        <div class="rt" id="medz-f">
+            <div class="face"><a title="发私信" href="{:U('public/WebMessage/room', array('uid'=>$val['uid']))}" class="boxopenurl"><img src="{$val['avatar_small']}" /></a></div>
+            <div class="uname"><a title="发私信" href="{:U('public/WebMessage/room', array('uid'=>$val['uid']))}" class="boxopenurl">{$val['uname']}</a></div>
+            <div id="checkbox_user_{$val['uid']}" class="checkbox" data-uid="{$val['uid']}"></div>
+        </div>
+      </dd>
+      <php>endif;</php>
+      <php>$i++;endforeach;</php>
+      <php>endforeach;</php>
+    </dl>
+    <php>else:</php>
+    <div class="empty-list">{$addGroupMember?'没有可以添加的好友~':'你还没有相互关注的好友哦~'}</div>
+    <php>endif;</php>
+</div>
+<script>
+(function(){
+    /* # 联系人搜索 */
+    var box = $(document).find('.msgbox-body');
+    $(document).find('.medz-message-s').on('keyup', function() {
+        var $this = $(this);
+        var text  = $this.val();
+        if (!text) {
+            box.find('#medz-f').show();
+            return false;
+        };
+        box.find('#medz-f').hide();
+        box.find('#medz-f:contains(\'' + text + '\')').show();
+        return true;
+    });
+
+    $('.boxopenurl').click(function(){
+        if(typeof core.message.openUrl == 'function'){
+            core.message.openUrl($(this).attr('href'), false);
+        }
+        return false;
+    });
+    $('dl.friends .lt,dl.friends .rt').click(function(e){
+        var tagName = e.target.nodeName;
+        if(tagName && tagName.toLowerCase() == 'a'){
+            return ;
+        }
+        //$(this).find('.checkbox').click();
+    });
+    $('.admin_group_room').click(function(){
+        if($(this).hasClass('disabled')){
+            return false;
+        }
+        $(this).addClass('disabled');
+        var val = $('#checked_uids').val();
+        val = val.replace(/(^,*)|(,*$)/g, '');
+        if(!val){
+            ui.error('请先选择成员');
+            return false;
+        }
+        $.post($(this).attr('href'), {uids:val}, function(res){
+            if(res.status && res.data){
+                core.message.openRoom('roomid='+res.data);
+            }else{
+                ui.error(res.info?res.info:'操作失败');
+            }
+            $(this).removeClass('disabled');
+        }, 'json');
+        return false;
+    });
+    $('ul.first-letter a').click(function(){
+        var first_letter = $(this).text();
+        var pos = $('#index-'+first_letter).position();
+        $('.msgbox-body').animate({scrollTop:pos.top}, 'fast');
+    });
+    $('dl.friends .checkbox').click(function(){
+        var val = $('#checked_uids').val();
+        var uid = $(this).data('uid');
+        if($(this).hasClass('checked')){
+            $(this).removeClass('checked').html('');
+            $('#checked_uids').val(val.replace(uid+',', ''));
+            $('ul.checked_user #checked_user_'+uid).remove();
+            setFrightTop();
+            if($('ul.checked_user li').length <= 0){
+                $('.admin_group_room').addClass('disabled');
+            }
+        }else{
+            $(this).addClass('checked').html('&radic;');
+            $('#checked_uids').val(val+uid+',');
+            var face = $(this).parent().find('.face img').attr('src');
+            var uname = $(this).parent().find('.uname a').text();
+            var li = $('<li id="checked_user_'+uid
+             +'" title="单击移除 '+uname+'"><a href="javascript:;"><img src="'
+             +face+'" /></a></li>').click(function(){
+                $('#checkbox_user_'+uid).click();
+            });
+            $('ul.checked_user').append(li);
+            setFrightTop();
+            $('.admin_group_room').removeClass('disabled');
+        }
+        return false;
+    });
+    setFrightTop();
+    $('.msgbox-body').unbind('scroll').scroll(function(e) {
+        var st = $(this).scrollTop();
+        var top = $('div.fright').data('top');
+        if(false === top) return;
+        $('div.fright').css('top', top+st);
+    });
+    
+    function setFrightTop(){
+        var height = $('div.fright .first-letter').height();
+        if(height < $('div.fright .checked_user').height()){
+            height = $('div.fright .checked_user').height();
+        }
+        var mainHeight = $('#msgbox-main').height();
+        var defaultTop = $('div.fright').data('default-top');
+        if(defaultTop === undefined){
+            defaultTop = parseInt($('div.fright').css('top'));
+            $('div.fright').data('default-top', defaultTop);
+        }
+        if(height+defaultTop <= mainHeight){
+            var top = defaultTop;
+        }else{
+            var top = 0;
+        }
+        $('div.fright').data('top', top>0?top:false)
+         .stop().animate({
+             top:top>0?top+$('.msgbox-body').scrollTop():0
+         }, 'fast');
+    }
+})();
+
+</script>

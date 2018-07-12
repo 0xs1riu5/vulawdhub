@@ -1,0 +1,109 @@
+
+<style>
+/*
+	Slides container
+	Important:
+	Set the width of your slides container
+	Set to display none, prevents content flash
+*/
+
+.slides_container {
+	width:570px;
+	overflow:hidden;
+	position:relative;
+	display:none;
+}
+
+/*
+	Each slide
+	Important:
+	Set the width of your slides
+	If height not specified height will be set by the slide content
+	Set to display block
+*/
+
+.slides_container div.slide {
+	width:570px;
+	height:270px;
+	display:block;
+}
+
+
+/*
+	Next/prev buttons
+*/
+
+#slides .next,#slides .prev {
+	position:absolute;
+	top:107px;
+	left:-39px;
+	width:24px;
+	height:43px;
+	display:block;
+	z-index:101;
+}
+
+#slides .next {
+	left:585px;
+}
+.caption {
+	z-index:500;
+	position:absolute;
+	bottom:-35px;
+	left:0;
+	height:30px;
+	padding:5px 20px 0 20px;
+	background:#000;
+	background:rgba(0,0,0,.5);
+	width:540px;
+	font-size:1.3em;
+	line-height:1.33;
+	color:#fff;
+	border-top:1px solid #000;
+	text-shadow:none;
+}
+</style>
+<script type="text/javascript" src="__THEME__/js/slides/slides.min.jquery.js"></script>
+<script>
+// function(example,slide){
+// 	core.plugFunc('imgshow',function(){
+
+// 	});
+// }('example','slide');
+	
+			$('#slides2').slides({
+				preload: true,
+				preloadImage: THEME_URL+'/js/slides/img/loading.gif',
+				play: 5000,
+				pause: 2500,
+				hoverPause: true,
+				animationStart: function(current){
+					$('.caption').animate({
+						bottom:-35
+					},100);
+				},
+				animationComplete: function(current){
+					$('.caption').animate({
+						bottom:0
+					},200);
+				},
+				slidesLoaded: function() {
+					$('.caption').animate({
+						bottom:0
+					},200);
+				}
+			});
+
+</script>
+<div style="width:940px">
+<div id="slides2">
+					<div class="slides_container" style="overflow: hidden; position: relative; display: block;">
+						<div class="slides_control" style="position: relative; width: 2820px; height: 270px; left: -940px;"><img width="940" height="270" alt="Photo by: Michael Silberstein Source: http://www.flickr.com/photos/michaelsilberstein/4294842946/" src="http://slidesjs.com/img/photo-1.jpg?1342085784597" style="position: absolute; top: 0px; left: 940px; z-index: 0; display: none;"><img width="940" height="270" alt="Photo by: Shubert Ciencia Source: http://www.flickr.com/photos/bigberto/2857852001/" src="http://slidesjs.com/img/photo-2.jpg" style="position: absolute; top: 0px; left: 940px; z-index: 5; display: block;"><img width="940" height="270" alt="Photo by: Ed Yourdon Source: http://www.flickr.com/photos/yourdon/4133227641/" src="http://slidesjs.com/img/photo-3.jpg" style="position: absolute; top: 0px; left: 940px; z-index: 0; display: none;"><img width="940" height="270" alt="Photo by: Lee Source: http://www.flickr.com/photos/typicalnaloboy/4151014982/" src="http://slidesjs.com/img/photo-4.jpg" style="position: absolute; top: 0px; left: 940px; z-index: 0; display: none;"></div>
+						
+						
+						
+					</div>
+					<a class="prev" href="#"><i class="icon-chevron-left icon-large"></i></a>
+					<a class="next" href="#"><i class="icon-chevron-right icon-large"></i></a>
+				<ul class="pagination"><li class=""><a href="#0">1</a></li><li class="current"><a href="#1">2</a></li><li><a href="#2">3</a></li><li><a href="#3">4</a></li></ul></div>
+</div>

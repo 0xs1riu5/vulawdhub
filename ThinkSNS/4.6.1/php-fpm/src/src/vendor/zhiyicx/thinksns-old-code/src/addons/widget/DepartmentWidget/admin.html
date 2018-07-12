@@ -1,0 +1,15 @@
+<div id='DepartmentSelect'>
+	<select pid="{$pid}" name="select_{$pid}" size="1000" style="height:200px" >
+	<php>foreach($parentList as $sk=>$sv):</php>
+     <option value="{$sk}" >{$sv}</option>
+    <php> endforeach;</php>
+	</select>
+</div>
+<script>
+core.plugInit('department','DepartmentSelect','saveDepartMent','select',{$sid},{$nosid});
+//回调函数 返回部门ID和部门显示的名称
+var saveDepartMent = function(id,departmentName){
+	$('#DepartmentSelect').attr('departmentid',id);
+	$('#DepartmentSelect').attr('departname',departmentName);
+};
+</script>

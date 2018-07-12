@@ -1,0 +1,56 @@
+<include file="__THEME__/public_header" />
+<style>
+.send_weibo{border:0;padding:0;}
+</style>
+    <div id="page-wrap">
+        <div id="feedback" class="feedback-fixed"><a href="{:U('public/Index/feedback')}" target="_blank">{:L('PUBLIC_FEEDBACK')}</a></div>
+        <div id="main-wrap">
+            <div id="st-index-grid" class="st-grid">
+                <div id="col8" class="st-section">
+                    <!--右边-->
+                    <include file="topic_right"/>
+                    <div id="col5" class="st-index-main">
+                    <div class="st-bg">
+                    <div class="diy-share">
+                    <div class="sharing-cont" style="display:block;">
+                    <div class="topic-info">
+                        <h3 class="mb20">话题: <?php echo stripslashes($topics['topic_name']);?></h3>
+                        <php>if($topics['pic']!=""){</php><img src="{$topics['pic']}" /><php>}</php>
+                        <p class="mb20"><php>if($topics['des']){</php>{$topics['des']|h}<php>}</php><php>if($topics['outlink']){</php><a href="{$topics[outlink]}" target="_blank">>>详细</a><php>}</php></p>
+                    </div>
+                    <!--发布框-->
+                    {:W('SendWeibo',array('title'=>L('PUBLIC_WEIBO_TIPS'),'initHtml'=>$initHtml))}
+                    </div>
+                    </div>
+                    <!--feednav-->
+                    <div class="feed-nav">
+                    <!--tab menu-->
+                    <div class="tab-menu">
+                        <div class="feed-group">该话题共有"<a href="###">{$topics['count']}</a>"条相关分享</div>
+                        <ul>
+                            <li class="p0"><span><a href="###" >相关分享</a></span></li>            
+                        </ul>
+                    </div>
+                    </div>
+                    <!--feed list-->
+                    {:W('FeedList',array('type'=>$type,'feed_type'=>$feed_type,'feed_key'=>$search_key,'fgid'=>t($_GET['fgid']),'topic_id'=>$topic_id))}
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+<include file="__THEME__/public_footer" />
+
+<script>
+$('ul.feed_file_list').each(function() {
+    
+    $(this).find('li').each(function(i) {
+        if(i % 2 == 0) {
+            $(this).css("background","#fafafa");
+        }
+    });
+});
+</script>
+<script type="text/javascript" src="__THEME__/js/home/module.home.js"></script>
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>

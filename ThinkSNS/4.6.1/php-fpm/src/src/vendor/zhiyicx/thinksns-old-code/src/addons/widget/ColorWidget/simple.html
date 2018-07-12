@@ -1,0 +1,19 @@
+<input class="simple_color_custom_{$name}" />
+<input type="hidden" name="{$name}" id="color_{$name}" id="form_{$name}" value="{$value}" /> 
+
+<script type="text/javascript" src="__THEME__/js/jquery.simple-color.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+	var name = '{$name}';
+	var defaultColor = $('#color_' + name).val();
+	$('.simple_color_custom_' + name).simpleColor({
+		cellWidth: 15,
+		cellHeight: 15,
+		border: '1px solid #9CB8CC',
+		displayColorCode: true,
+		boxWidth: 100,
+		inputId: 'color_' + name,
+		defaultColor: defaultColor
+	});
+});
+</script>

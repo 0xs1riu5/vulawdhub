@@ -1,0 +1,33 @@
+<div style="width:300px;padding:20px;">
+	<input type="text" name="reason" id="reason" />
+	<input class="btn_b" type="button" value="确认" onclick="submitReason();" />
+	<input class="btn_w ml10" type="button" value="取消" onclick="ui.box.close();" />
+</div>
+
+<script type="text/javascript">
+/**
+ * 发布驳回理由
+ * @return {[type]} [description]
+ */
+var submitReason = function () {
+	var reason = $.trim($('#reason').val()),
+		id = {$id};
+	if (reason === '') {
+		ui.error('请输入驳回理由');
+		return false;
+	}
+	// 提交驳回
+	$.post(U('admin/User/doVerify'), {id:id, status:-1, reason:reason}, function (res) {
+		if (res.status) {
+			ui.success('操作成功');
+			setTimeout(function () {
+				location.reload();
+			}, 1000);
+		} else {
+			ui.error('操作失败');
+			ui.box.close();
+		}
+	}, 'json');
+	return false;
+};
+</script>

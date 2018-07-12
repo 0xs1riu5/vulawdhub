@@ -1,0 +1,11 @@
+<span class="choose">
+<eq name='canChange' value='1'>
+<label id='department_show' oldDemparment='{$defaultName}' >{$defaultName}</label>
+<else />
+{$defaultName}
+</eq>
+<input type="hidden" name='{$inputName}' value='{$defaultId}' id='{$inputName}'>
+<eq name='canChange' value='1'>
+	<a href="javascript:ui.changeDepartment('{$inputName}','department_show','{$defaultId}',0,{$notop|intval})" class="btn-choose">{:L('PUBLIC_PLEASE_SELECT')}</a>
+</eq>
+</span>

@@ -1,0 +1,68 @@
+<?php foreach($list as $msg):?>
+<?php if($prevTime <= 0 || $msg['mtime']-$prevTime > 180):?>
+<li class="info">{:date('Y/m/d H:i', $msg['mtime'])}</li>
+<?php $prevTime=$msg['mtime']; endif; ?>
+<!--通知-->
+<?php if($msg['type']=='notify'):?>
+    <!-- 创建群 -->
+    <?php if($msg['notify_type'] == 'create_group_room' || $msg['notify_type'] == 'add_group_member' || $msg['notify_type'] == 'remove_group_member'){
+        $msg['data'] = ($currentUserId==$msg['from_uid']?'您':'<a href="'.getUserSpaceLink($msg['from_uid']).'" target="_blank">'.getUserName($msg['from_uid'])).'</a>';
+        $msg['data'] .= $msg['notify_type'] == 'remove_group_member'?'将':'邀请了';
+        foreach($msg['member_list'] as $val){
+            if($currentUserId != $val['uid']){
+                $msg['data'] .= '<a href="'.getUserSpaceLink($val['uid']).'" target="_blank">'.$val['uname'].'</a>;';
+            }
+        }
+        $msg['data'] = str_replace(';','、',trim($msg['data'], ';'));
+        $msg['data'] .= $msg['notify_type'] == 'remove_group_member'?'移除了群':'加入了群';
+    }elseif($msg['notify_type'] == 'quit_group_room'){
+        $msg['data'] = '<a href="'.getUserSpaceLink($msg['quit_uid']).'" target="_blank">'.$msg['quit_uname'].'</a>退出了群';
+    }elseif($msg['notify_type'] == 'set_room'){
+        $msg['data'] = '<a href="'.getUserSpaceLink($msg['from_uid']).'" target="_blank">'.getUserName($msg['from_uid']).'</a>';
+        $msg['data'] .= $msg['room_info']['title']?'修改了群名称"'.$msg['room_info']['title'].'"':'清除了群名称';
+    }?>
+    <li class="msg info" id="msgc-{$msg['message_id']}" data-msgid="{$msg['message_id']}">{$msg['data']}</li>
+<?php else:?>
+<li class="msg" id="msgc-{$msg['message_id']}" data-msgid="{$msg['message_id']}">
+    <div class="{$currentUserId==$msg['from_uid']?'right':'left'}">
+        <div class="face"><a title="{$currentUserId==$msg['from_uid']?'我':getUserName($msg['from_uid'])}" target="_blank" href="{:getUserSpaceLink($msg['from_uid'])}"><img src="{:getUserFace($msg['from_uid'])}" /></a></div>
+        <div class="content">
+            <div class="arrow"></div>
+            <?php if($msg['type'] == 'image'):?>
+            <?php $imgurl = getImageUrlByAttachId($msg['attach_id']);?>
+            <div class="image">
+                <a href="{$imgurl}" target="_blank"><img<php>if(!$isGetMessageList):</php> onload="core.message.scrollY('bottom'{$isInit?',0':''});"<php>endif;</php> src="{$imgurl}" /></a>
+            </div>
+            <?php elseif($msg['type'] == 'voice'):?>
+            <?php $len = round($msg['length'], 1); $px = $len+32>100?100:$len+32;?>
+            <div class="voice">
+                <a href="javascript:;" title="点击播放" audio_url="{:getAttachUrlByAttachId($msg['attach_id'])}" style="width:{$px}px">{$len}"</a>
+            </div>
+            <?php elseif($msg['type'] == 'card'):?>
+            <?php $uinfo = getUserInfo($msg['uid']);?>
+            <a class="card" href="{$uinfo['space_url']}" target="_blank">
+                <div class="title">好友名片</div>
+                <div class="detail">
+                    <div class="card-face"><img src="{$uinfo['avatar_small']}" /></div>
+                    <div class="card-text">
+                        <span class="uname">{$uinfo['uname']}</span><br/>{:t($uinfo['intro'])}</div>
+                </div>
+            </a>
+            <?php elseif($msg['type'] == 'position'):?>
+            <?php $imgurl = getImageUrlByAttachId($msg['attach_id']);?>
+            <div class="position">
+                <a href="{$imgurl}" target="_blank"><img<php>if(!$isGetMessageList):</php> onload="core.message.scrollY('bottom'{$isInit?',0':''});"<php>endif;</php> src="{$imgurl}" /><span>{$msg['location']?$msg['location']:'查看详情>>'}</span></a>
+            </div>
+            <?php else:?>
+            <div class="text">{:h(parse_html($msg['content']))}</div>
+            <?php endif;?>
+        </div>
+    </div>
+</li>
+<?php endif;?>
+<?php endforeach;?>
+<php>if(!$isGetMessageList):</php>
+<script type="text/javascript">
+window.msgPrevTime = '{$prevTime}';
+</script>
+<php>endif;</php>

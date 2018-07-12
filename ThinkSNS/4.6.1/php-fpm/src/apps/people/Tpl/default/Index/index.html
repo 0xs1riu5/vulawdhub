@@ -1,0 +1,64 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div class="find-type">
+      <div class="app-title clearfix mb20 border-b">
+        <h4 class="left">找伙伴</h4>
+        <div class="app-tab-menu clearfix">
+          <ul>
+            <php>if(in_array('tag',$findPeopleConfig)){</php>
+            <li> <a 
+          
+              <eq name="type" value="tag">class="current"</eq>
+              href="{:U('people/Index/index', array('type'=>'tag'))}"><i class="ico-tag"></i>按标签</a>
+              <eq name="type" value="tag"><span class="arrow-t"></span></eq>
+            </li>
+            <php>}</php>
+            <php>if(in_array('area',$findPeopleConfig)){</php>
+            <li>
+              <php>if($findPeopleConfig[0] != 'area'){</php>
+              <php>}</php>
+              <a 
+          
+              <eq name="type" value="area">class="current"</eq>
+              href="{:U('people/Index/index', array('type'=>'area'))}"><i class="ico-location"></i>按地区</a>
+              <eq name="type" value="area"><span class="arrow-t"></span></eq>
+            </li>
+            <php>}</php>
+            <php>if(in_array('verify',$findPeopleConfig)){</php>
+            <li>
+              <php>if($findPeopleConfig[0] != 'verify'){</php>
+              <php>}</php>
+              <a 
+          
+              <eq name="type" value="verify">class="current"</eq>
+              href="{:U('people/Index/index', array('type'=>'verify'))}"><i class="ico-authentication"></i>认证用户</a>
+              <eq name="type" value="verify"><span class="arrow-t"></span></eq>
+            </li>
+            <php>}</php>
+            <php>if(in_array('official',$findPeopleConfig)){</php>
+            <li>
+              <php>if($findPeopleConfig[0] != 'official'){</php>
+              <php>}</php>
+              <a <eq name="type" value="official">class="current"</eq>
+              href="{:U('people/Index/index', array('type'=>'official'))}"><i class="ico-authority"></i>官方推荐</a>
+              <eq name="type" value="official"><span class="arrow-t"></span></eq>
+            </li>
+            <php>}</php>
+          </ul>
+        </div>
+      </div>
+      <div class="clearfix"> {:W('Menu', array('cid'=>$cid,'sex'=>$sex,'area'=>$area,'verify'=>$verify,'type'=>$type, 'pid' => $pid))} </div>
+    </div>
+    <div id="col" class="st-bg clearfix">
+      <!--删除了一段代码-->
+      <php>if(in_array($type, array('verify', 'official'))):</php>
+      {:W('UserList', array('cid'=>$cid,'uids'=>$topUser,'type'=>$type,'verify'=>$verify,'pid'=>$pid))}
+      <php>else:</php>
+      {:W('UserList', array('cid'=>$cid,'sex'=>$sex,'area'=>$area,'unit'=>$unit,'verify'=>$verify,'type'=>$type))}
+      <php>endif;</php>
+
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" />

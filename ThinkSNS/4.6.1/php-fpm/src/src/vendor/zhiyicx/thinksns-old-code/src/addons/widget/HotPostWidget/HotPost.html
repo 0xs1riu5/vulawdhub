@@ -1,0 +1,13 @@
+<php>if($topic_list){</php>
+<!--热门帖子-->
+<div class="hot-topic">
+    <fieldset class="inter-line"><legend class="inter-txt">{$title}</legend><a class="right"><i class="ico-refresh"></i></a></fieldset>
+        <ul>
+        	<volist name="topic_list" id="vo">
+        		<li>
+        			<p><a href="{:U('public/Topic/index',array('k'=>urlencode($vo['topic_name'])))}">{$vo['topic_name']}</a>（{$vo['count']}）热门帖子</p>
+        		</li>
+        	</volist>
+        </ul>
+</div>
+<php>}</php>

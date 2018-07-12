@@ -1,0 +1,20 @@
+<volist name="data" id="vo">
+	<php>if($vo['display_type'] == 3):</php>
+	<div id="ad_{$vo.ad_id}" class="flashNews" <neq name="height" value="0">style="width:{$width}px;"</neq>>
+	    <volist name="vo.content" id="v">
+	        <div class="swiper-slide">
+	          <php>if($v.bannerurl){</php>
+	          <a href="{$v.bannerurl}">
+	          <php>}</php>
+	          <img src="{$v.bannerpic}" width="100%" />
+	          <php>if($v.bannerurl){</php>
+	          </a>
+	          <php>}</php>
+	        </div>
+	    </volist>
+	</div>
+	<php>else:</php>
+	<div style="<neq name="top" value="0">margin-top:{$top}px;</neq><neq name="width" value="0">width:{$width}px;overflow:hidden;</neq>">{$vo['content']}</div>
+	<php>endif;</php>
+</volist>
+

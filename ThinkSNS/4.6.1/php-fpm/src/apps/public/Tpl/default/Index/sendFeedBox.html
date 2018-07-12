@@ -1,0 +1,16 @@
+{:W('SendWeibo',array('title'=>L('PUBLIC_SENTWEIBO'),'post_event'=>'post_feed_box','initHtml'=>$initHtml,'prompt'=>'发布成功'))}
+
+<script type="text/javascript">
+var boxmodule = function() {
+	M(document.getElementById('tsbox'));
+};
+
+if("undefined" == typeof(loadmore) || loadmore == 0) {
+	var loadmore = '0';
+	var loadnew = '0';	 
+	core.loadFile(THEME_URL+'/js/module.weibo.js',boxmodule);
+} else {
+	boxmodule();
+}
+</script>
+ 

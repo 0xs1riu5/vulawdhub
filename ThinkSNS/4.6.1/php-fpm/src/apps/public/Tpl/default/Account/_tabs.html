@@ -1,0 +1,44 @@
+
+<div id="asiddsade" class="pad">
+	<!--<p><i class="ico-set"></i>帐号设置</p>-->
+	<dl class="nav-left mt10">
+		
+        <volist name="tab_list" id="tab">
+        <dd <if condition=" $tab['field_key'] eq ACTION_NAME "><php>$tabName = $tab['field_name'];</php> class="current"</if>><a href="<if condition="$tab['url']">{$tab.url}<else />{:U('public/Account/'.$tab['field_key'])}</if>">
+        {$tab.field_name}
+        </a></dd>
+        </volist>
+    </dl>
+    <dl class="nav-left mt10">
+        <volist name="tab_list_score" id="tab">
+           <dd <if condition=" $tab['field_key'] eq ACTION_NAME "><php>$tabName = $tab['field_name'];</php> class="current"</if>><a href="<if condition="$tab['url']">{$tab.url}<else />{:U('public/Account/'.$tab['field_key'])}</if>">{$tab.field_name}</a></dd>
+        </volist>
+        <!-- <dd><a href="{:U('public/Rank/weibo')}">积分排行</a></dd> -->
+    </dl>
+    <dl class="nav-left mt10">
+		
+        <volist name="tab_list_preference" id="tab">
+        <dd <if condition=" $tab['field_key'] eq ACTION_NAME "><php>$tabName = $tab['field_name'];</php> class="current"</if>><a href="<if condition="$tab['url']">{$tab.url}<else />{:U('public/Account/'.$tab['field_key'])}</if>">
+        {$tab.field_name}
+        </a></dd>
+        </volist>
+    </dl>
+
+    <dl class="nav-left mt10">
+		
+        <volist name="tab_list_security" id="tab">
+        <dd <if condition=" $tab['field_key'] eq ACTION_NAME "><php>$tabName = $tab['field_name'];</php> class="current"</if>><a href="<if condition="$tab['url']">{$tab.url}<else />{:U('public/Account/'.$tab['field_key'])}</if>">
+        {$tab.field_name}
+        </a></dd>
+        </volist>
+    </dl>
+
+    <dl class="nav-left mt10 border-no">
+        
+        <volist name="tab_list_invite" id="tab">
+        <dd <if condition=" $tab['field_key'] eq ACTION_NAME "><php>$tabName = $tab['field_name'];</php> class="current"</if>><a href="<if condition="$tab['url']">{$tab.url}<else />{:U('public/Invite/'.$tab['field_key'])}</if>">
+        {$tab.field_name}
+        </a></dd>
+        </volist>
+    </dl>
+</div>

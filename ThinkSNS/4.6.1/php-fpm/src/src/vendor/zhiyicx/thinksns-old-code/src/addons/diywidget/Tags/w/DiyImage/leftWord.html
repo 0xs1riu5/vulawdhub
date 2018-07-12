@@ -1,0 +1,31 @@
+<div class="leftslidershow ">
+    <div class="slider_top">
+    </div>
+    <div id="{$imgId}" class="contentslider">
+        <div class="wrapslider">
+            <ul id="{$imgPanel}">
+            	<php>foreach($image as $vo){</php>
+						<php>$vo = (array)$vo;</php>
+ 						 <li><a <php>if(!empty($vo['url'])){echo 'href="'.$vo['url'].'"';}</php>  target = "_blank"><img src="{$vo.path}" alt="{$vo.title}"></a></li>
+                <php>}</php>
+            </ul>
+        </div>
+    </div>
+    <ul class="pagination" id="{$imgNav}">
+        <php>foreach($image as $vo){</php>
+			<php>$vo = (array)$vo;</php>
+            <li>
+            	<a <php>if(!empty($vo['url'])){echo 'href="'.$vo['url'].'"';}</php> target="_blank">{$vo.title}</a>
+            </li>
+        <php>}</php>
+    </ul>
+</div>
+<script>
+		
+    jWidget.ui.SlideView("{$imgId}", {
+		effect:"<php>echo $effect;</php>",
+		autoPlayInterval:<php>echo intval($autoPlayInterval)*1000;</php>,
+        panelWrapper: "{$imgPanel}",
+        navWrapper: "{$imgNav}"
+    });
+</script>

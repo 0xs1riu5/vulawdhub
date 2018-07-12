@@ -1,0 +1,104 @@
+<style type="text/css">
+.qk-login-board {width: 300px;height: 400px;padding: 35px;border: none;float: left;background: #fff;}
+.qk-login-board h3{ text-align:center; font: 20px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;height:20px;line-height:20px;}
+.qk-login-info{ width:100%; padding-top:35px;min-height:450px; position:relative;}
+.qk-login-info .qk-input-outer{height:46px; border:#858585 2px solid;margin-bottom:20px; position:relative;}
+.qk-l-login{ position:absolute; z-index:1;left:50px;top:0;height:46px;font: 16px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei";line-height:46px;color:#bfbfbf;}
+.qk-login-info .qk-input-outer .qk-text{width:220px;height:46px;display:inline-block;font:16px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei";color:#888;margin-left:50px;border:none; background:none; line-height:46px;}
+.qk-ui-user,.qk-ui-loginPwd{width:25px;height:25px;width:25px;height:25px; display:block;background:url("__APP__/image/login/login_ico.png"); position:absolute;margin:12px 13px;}
+.qk-ui-user{ background-position:-125px 0;}
+.qk-ui-loginPwd{ background-position:-125px -35px;}
+.qk-login-rm{ color:#888; float:left;}
+.qk-login-rm .qk-check,.qk-login-rm .qk-check-ok{background:url(image/login/login_ico.png); vertical-align:middle;}
+.qk-login-rm .qk-check{width:18px;height:18px;background:#fff;border: 1px solid #e5e6e7;margin:0 5px 0 0; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px; display:inline-block;}
+.qk-login-rm .qk-check-ok{background-position:-128px -70px;width:18px;height:18px;display:inline-block;border: 1px solid #e5e6e7;margin:0 5px 0 0;border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;}
+.qk-login-fgetpwd{ float:right;}
+.qk-hasno-account{ margin-top:120px;border-top:#858585 1px solid; position:relative;}
+.qk-hasno-account p{ position:absolute; width:110px; text-align:center;font-size:16px;height:16px;line-height:16px; top:-8px;background:#fff;left:104px;}
+.qk-hasno-account .qk-other-but{margin-top:40px;}
+.qk-white-but{ display:inline-block;padding:10px 30px;font-size:20px;line-height:20px; border:#858585 1px solid; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;}
+.qk-arow-left,.qk-arow-right{width:12px;height:20px;display:inline-block;background:url(image/login/login_ico.png); vertical-align:middle;}
+.qk-arow-left{ background-position:-130px -101px;margin-right:5px;}
+.qk-arow-right{ background-position:-130px -133px;margin-left:5px;}
+
+.qk-login-ft-head{position: absolute;left:0px;top: 0px;text-align: center;width: 300px;}
+.qk-login-ft {position: relative;padding: 30px 0;}
+.qk-login-ft dl{padding: 0px 0px 0px 19px;}
+.qk-login-ft dd a {margin-right: 19px !important;}
+.qk-blue{color:#0096e6;}
+
+.qk-act-but{height:20px;line-height:20px; text-align:center;font-size:20px;color:#fff;border-radius:2px;-webkit-border-radius:2px;-moz-border-radius:2px; background:#0096e6;}
+.qk-submit{padding:15px;margin-top:20px;display:block;}
+.qk-mb20{margin-bottom:20px;}
+.qk-error-box{ text-align:center;width:100%;height:40px;line-height:40px;background:#f1f2f3; position:absolute; top:350px;}
+ </style>
+
+<div class="qk-login-board" id="qk-login-box">
+    <h3>{$GLOBALS['ts']['site']['site_name']}&nbsp;&nbsp;开启移动时代新社交</h3>
+      <div class="qk-login-info">
+        <div class="qk-input-outer"> <span class="qk-ui-user"></span>
+          <input type="text" name="login_email" class="qk-text" onfocus=" if(this.value=='输入邮箱、手机或用户名') this.value=''" onblur="if(this.value=='') this.value='输入邮箱、手机或用户名'" value="输入邮箱、手机或用户名"/>
+        </div>
+        <div class="qk-input-outer">
+          <span class="qk-ui-loginPwd"></span><label class="qk-l-login qk-login_password" style="color:#888;">输入密码</label>
+          <input type="password" name="login_password" class="qk-text" style=" position:absolute; z-index:100;" onfocus="$('.qk-login_password').hide()" onblur="if(this.value=='') $('.qk-login_password').show()" value=""/>
+        </div>
+        <div class="qk-mb20"><a class="qk-act-but qk-submit" id="login-submit" href="#">登录</a></div>
+        <div class="clearfix qk-mb20">  没有账号，<a class="qk-blue" href="{:U('public/Register/index')}">点击注册</a> <a href="{:U('public/Passport/findPassword')}" class="qk-login-fgetpwd blue">忘记密码？</a></div>
+        <div id="js_login_input" style="display:none" class="qk-error-box"></div>
+        <div class="qk-login-ft">
+        <div class="qk-login-ft-head">使用第三方账号登录</div>
+        <php>if(Addons::requireHooks('login_input_footer') && Addons::hook('login_input_footer')):</php>
+            {:Addons::hook('login_input_footer')}
+        <php>endif;</php>
+        </div>
+        
+      </div>
+</div>
+
+
+
+<script src="__THEME__/js/jquery.form.js" type="text/javascript"></script>
+<script type="text/javascript" src="__THEME__/js/login.js"></script>
+<script type="text/javascript">
+$('#qk-login-box input:text,#qk-login-box input:password').keypress(function(e){
+	if(e.which == 13){
+		quicksubmit();
+	}
+});
+  
+/* # 提交绑定事件 */
+$(function () {
+  $('#login-submit').on('click', function (event) {
+    event.preventDefault();
+    quicksubmit();
+  });
+});
+
+function quicksubmit(){
+  var url = '<?php echo strip_tags($url); ?>';
+	var email = $.trim($("input[name='login_email']").val());
+	var password = $.trim($("input[name='login_password']").val());
+	if ( !email ){
+		ui.error('帐号不能为空！');return false;
+	}
+	if ( !password ){
+		ui.error('密码不能为空！');return false;
+	}
+	$.post(U('public/Passport/doLogin'),{login_email:email,login_password:password},function (data){
+		if ( data.status == 1 ){
+      if(url){
+          $('#js_login_input').html('<p>'+data.info+'</p>').show();
+          location.href=url;
+      }else{
+          location.href=U('public/Index/index');
+      }
+		} else {
+	    ui.error(data.info);
+	    return false;
+    }
+	}, 'json');
+    return false;
+}
+
+</script>

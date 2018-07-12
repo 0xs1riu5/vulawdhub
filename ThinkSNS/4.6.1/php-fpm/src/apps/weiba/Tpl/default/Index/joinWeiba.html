@@ -1,0 +1,26 @@
+<dl class="pop-area">
+  <dt class="mb10">您需要关注此微吧才能发帖，确认关注吗？</dt>
+        <dd class="center" style="*padding:0 0 0 50px"><a class="btn-green-small" onclick="doJoinWeiba({$weiba_id})"><span>确定</span></a>
+        <a class="btn-cancel ml10" onclick="cancel()"><span>取消</span></a></dd>
+
+  <div class="clear"></div>
+</dl>
+
+<script type="text/javascript">
+//
+function doJoinWeiba(weiba_id){
+  $.post(U('weiba/Index/doFollowWeiba'), {weiba_id:weiba_id}, function(txt) {
+    if(1 == txt.status ) {
+        ui.success('关注成功');
+        location.href = U('weiba/Index/post')+'&weiba_id='+weiba_id;
+      } else {
+        ui.error(txt.info);
+      }
+  }, 'json');
+}
+
+// 关闭弹窗
+function cancel() {
+  ui.box.close();
+}
+</script>

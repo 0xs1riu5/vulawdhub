@@ -1,0 +1,8 @@
+<volist name="cateList" id="vo">
+    <dl class="question-class-list">
+        <dt><a href="{$cate_url}&cid={$vo.id}">{$vo.name}</a></dt>
+        <volist name="vo.child" id="v">
+            <dd><a href="{$cate_url}&cid={$v.id}">{$v.name}</a></dd>
+        </volist>
+    </dl>
+</volist>

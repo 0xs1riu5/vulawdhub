@@ -1,0 +1,137 @@
+<div id="followGroupSelector" class="group-lists">
+	<volist name="group_list" id="g">
+		<label><input <php>if(in_array($g['follow_group_id'], $check_group)){echo 'checked="checked"';}</php> type="checkbox" name="gids[]" value="{$g.follow_group_id}" onclick="setFollowGroup(this,this.value)" class="s-ck" />{$g.title}</label>
+	</volist>
+</div>
+<php>if(count($group_list) < 10):</php>
+<div id="createFollowGroup" class="quike-add">
+	<div id="openTab" class="row openTab"><a href="javascript:void(0);" onclick="createFollowGroupTab('')" ><i class="ico-add"></i>{:L('PUBLIC_CREATE_GROUP')}</a></div>
+	<div class="row" style="display:none;"><input type="text" name="followGroupTitle" value="" class="s-txt" style=" width:100px"></div>
+	<div class="row" style="display:none">
+	<a href="javascript:void(0);" onclick="createFollowGroup()" class="btn-green-small"><span>{:L('PUBLIC_CONFIRM')}</span></a>
+	<a onclick="createFollowGroupTab('close')" class="cancelTab btn-cancel"><span>{:L('PUBLIC_CANCEL')}</span></a>
+    </div>
+</div>
+<php>endif;</php>
+
+<script type="text/javascript">
+// 用户ID
+var fid = '{$fid}';
+// 分组个数
+var groupNums = '<php>echo intval(count($group_list));</php>';
+// 是否已经移出
+var isOut = true;			
+// 初始化绑定
+$(document).ready(function() {
+	<volist name="f_group_status" id="gs">
+    	$( "input[name='gids[]'][value='{$gs.gid}']" ).attr('checked', true);
+	</volist>
+
+	$('#followGroupList').attr('ison', 'yes');
+	$('#followGroupList').mouseleave(function() {
+		isOut = true;
+	});
+	$('#followGroupList').mouseover(function() {
+		isOut = false;
+	});
+	// 绑定body事件
+	$('body').click(function() {
+		if(isOut) {
+			$('#followGroupList').remove();
+		}
+	});
+});
+/**
+ * 设置关组分组
+ * @param object obj 点击DOM对象
+ * @param integer gid 分组ID
+ * @return void
+ */
+var setFollowGroup = function(obj, gid) {
+	if($(obj).attr('checked')) {
+		var add = 'add';
+	} else {
+		var add = 'delete';
+	}
+	// 设置关注分组
+	$.post(U('public/FollowGroup/setFollowGroup'), {gid:gid, fid:fid, add:add}, function(res) {
+		$('.followGroup' + fid).attr('title', res.oldTitle);
+		$('.followGroup' + fid).html(res.title + '<i class="arrow-down"></i>');
+		$('#followGroupSelector').find('label').hover(function() {
+			$(this).addClass('hover');
+		}, function() {
+			$(this).removeClass('hover');
+		});
+	}, 'json');
+};
+/**
+ * 创建关注分组按钮显示
+ * @param string action 操作类型
+ * @return void
+ */
+var createFollowGroupTab = function(action) {
+	if(action == 'close') {
+		$("input[name='followGroupTitle']").val(' ');
+		$('#createFollowGroup .row').css('display','none');
+		$('#createFollowGroup .cancelTab').css('display','none');
+		$('#createFollowGroup .openTab').css('display','block');
+        // 隐藏弹窗
+        var len = $('#followGroupSelector').find("label").length;
+        if(len >= 9) {
+            $('#open_tab').css('display','none');
+        } else {
+            $('#open_tab').css('display','inline-block');
+        }
+	} else {
+		$('#createFollowGroup .row').css('display','');
+		$('#createFollowGroup .cancelTab').css('display','');
+		$('#openTab').css('display','none');
+	}
+};
+/**
+ * 创建分组操作
+ * @return void
+ */
+var createFollowGroup = function() {
+	var title = $.trim($("input[name='followGroupTitle']").val());
+	if(groupNums >= 10){
+		ui.error('{:L('PUBLIC_GROUPNAME_CREATE_TIPES')}');
+		return false;
+	}else if(title == ''){
+		ui.error('{:L('PUBLIC_GROUPNAME_INPUT')}！');
+		return false;
+	}else if(getLength(title, false)>10){
+		ui.error('{:L('PUBLIC_GROUPNAME_NAME_TIPES')}');
+		return false;
+	}
+	$.post(U('public/FollowGroup/setGroup'),{title:title,fid:fid},function(gid) {
+	    var res = eval('('+gid+')');
+		if(res.status != 0){
+			createFollowGroupTab('close');
+			$('#followGroup').append('<a href="'+U('home/space/follow')+'&uid='+UID+'&type=following&gid='+res.info+'">'+title+'</a>');
+			$('#followGroupSelector').append('<label><input type="checkbox" class="s-ck" name="gids[]" value="'+res.info+'" onclick="setFollowGroup(this,this.value)"  checked />'+title+'</label>');
+			groupNums ++;
+			$('#followGroupSelector').find('label').hover(
+				function() {
+					$(this).addClass('hover')	
+				},
+				function() {
+					$(this).removeClass('hover');
+				}
+			);
+			if($('.followGroup'+fid).html() != '') {
+				var newTitle = title + ',...';	
+			} else {
+				var newTitle = title;
+			}
+			var end = getLength(newTitle)>6 ? '...' : '';
+			$('.followGroup'+fid).html(subStr(newTitle,6)+end+'<i class="arrow-down"></i>');
+			if(groupNums >= 10) {
+				$('#createFollowGroup').remove();
+			}
+		} else {
+			ui.error(res.info);
+		}
+	});
+};
+</script>

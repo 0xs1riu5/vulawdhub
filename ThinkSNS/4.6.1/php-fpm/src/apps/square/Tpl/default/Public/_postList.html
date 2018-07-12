@@ -1,0 +1,58 @@
+<!--热门帖子-->
+<php>if($weiba_recommend){</php>
+<div class="sq-top">
+  <h1>
+  热门帖子<span>微吧</span>
+  </h1>
+  <a href="{:U('weiba/Index/index')}" class="more">阅读更多</a> </div>
+<div class="weiba-list mb10">
+  <!-- 精彩推荐 -->
+  <div class="weiba-list-l">
+    <div class="weiba-list-l-content">
+      <div class="weiba-list-l-title">精彩推荐</div>
+      <div class="weiba-list-l-ul">
+        <!-- 第一个帖子图片 -->
+        <div class="weiba-list-l-img">
+          <a href="{:U('weiba/Index/postDetail','post_id='.$weiba_hot[0]['post_id'])}"><img src="{$weiba_hot[0]['index_img']}"/></a>
+        </div>
+        <div class="weiba-list-l-post">
+          <ul>
+          <volist name="weiba_hot" id="vo">
+            <li <if condition="$key eq 0">style="border-bottom:none;padding-bottom:0px;"<elseif condition="$key eq 5"/>border-bottom:none;</if>>
+                <a href="{:U('weiba/Index/postDetail','post_id='.$vo['post_id'])}" title="{$vo.title}"><i class="ico-dot1"></i>{$vo.title|getShort=20}</a>
+                <if condition="$key eq 0"><p>{$vo.content|getShort=40}</p></if>
+            </li>
+          </volist>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 推荐微吧 -->
+  <div class="weiba-list-r">
+    <ul class="sq-weibalist clearfix">
+    <volist name='weiba_recommend' id ='vo' offset="0" length="4">
+        <li <php>if(is_integer(($key + 1) /2)):</php>style="margin-right:0;"<php>endif;</php>>
+        <div class="weiba-list-t">
+          <div class="weiba-logo left"><a href="{:U('weiba/Index/detail','weiba_id='.$vo['weiba_id'])}"><img src="{$vo.avatar_middle}" /></a></div>
+          <div class="weiba-right">
+            <h2 class="weiba-tit"><a href="{:U('weiba/Index/detail','weiba_id='.$vo['weiba_id'])}">{$vo.weiba_name|getShort=20}</a></h2>
+            <p class="weiba-data"><span>成员:{$vo.follower_count}</span>&nbsp;&nbsp;<span>新帖:{$vo.new_count}</span></p>
+            <p class="weiba-prof">{$vo.intro|getShort=27}</p>
+          </div>
+        </div>
+        <div class="weiba-list-b">
+        <php>if($vo['post']){</php>
+          <dl>
+  	        <volist name='vo.post' id ='v'>
+  	          <dd><i class="ico-dot"></i><a href="{:U('weiba/Index/postDetail','post_id='.$v['post_id'])}" title="{$v.title}">{$v.title}</a></dd>
+  	        </volist>
+          </dl>
+        <php>}</php>
+        </div>
+      </li>
+    </volist>
+    </ul>
+  </div>
+</div>
+<php>}</php>

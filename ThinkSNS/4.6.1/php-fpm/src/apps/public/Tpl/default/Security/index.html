@@ -1,0 +1,41 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/account.css" rel="stylesheet" type="text/css" />
+    <div id="page-wrap">
+        <div id="main-wrap">
+        	<div id="page" class="page-content">
+           	  <div class="set-section">
+                <!--tab菜单-->
+                <include file="_tabs" />
+                <!--tab菜单/end-->
+                <!--信息设置项---帐号安全-->
+                <div class="item-set">
+                	<div class="set-fold"><span class="arrow-set-t"></span><h3>{:L('PUBLIC_MODIFY_PASSWORD')}</h3></div>
+                    <div class="set-item-info">
+                    <form>
+                    	<dl class="form-set form-contact">
+                        	<dd><div class="form-tt">{:L('PUBLIC_ORIGINAL_PASSWORD')}：</div><div class="form-row"><input name="s-input" type="text" class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'" /></div></dd>
+                        	<dd><div class="form-tt">{:L('PUBLIC_NEW_PASSWORD')}：</div><div class="form-row"><input name="s-input" type="text" class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'" /></div></dd>
+                        	<dd><div class="form-tt">{:L('PUBLIC_CONFIRM_PASSWORD')}：</div><div class="form-row"><input name="s-input" type="text" class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'" /></div></dd>
+                        	<dd><a href="#" class="btn-green-small f12">{:L('PUBLIC_SAVE')}</a></dd>
+                        </dl>
+                    </form>
+                    </div>
+                </div>
+                <div class="item-set">
+                	<div class="set-fold"><span class="arrow-set-t"></span><h3>{:L('PUBLIC_MODIFY_USER')}</h3></div>
+                    <div class="set-item-info">
+                    <form>
+                    	<dl class="form-set form-contact">
+                        	<dd><div class="form-tt">{:L('PUBLIC_OLD_EMAIL')}Email：</div><div class="form-row"><input name="s-input" type="text" class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'" /></div></dd>
+                        	<dd><div class="form-tt">{:L('PUBLIC_NEW_EMAIL')}Email：</div><div class="form-row"><input name="s-input" type="text" class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'" /></div></dd>
+                        	<dd><a href="#" class="btn-green-small f12">{:L('PUBLIC_SAVE')}</a></dd>
+                        </dl>
+                    </form>
+                    </div>
+                </div>
+                <!--信息设置项---帐号安全/end-->
+              </div>
+        	</div>
+        </div>
+    </div>
+<include file="__THEME__/public_footer" />

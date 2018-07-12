@@ -1,0 +1,69 @@
+ <dl class="name clearfix">
+   	<dt><a href="{$userInfo.space_url}" target="_blank"><img src="{$userInfo.avatar_middle}" /></a></dt>
+       <dd class="lh22">
+           <p style="font-size:14px;padding-bottom:6px;"><a href="{$userInfo.space_url}" target="_blank">{$userInfo.uname}</a>
+            <volist name="userInfo['groupData'][$userInfo['uid']]" id="v2">
+              <img style="width:auto;height:auto;display:inline;cursor:pointer" src="{$v2['user_group_icon_url']}" title="{$v2['user_group_name']}" />&nbsp;
+            </volist>
+            <a href="{:U('public/Account/scoredetail')}" target="_blank"><img src="{$userInfo.credit_info.level.src}" title='{$userInfo.credit_info.level.name}'></a>
+           <span>	
+           <eq name='follow_state.following' value='1'>
+        	{:W('Remark',array('uid'=>$uid,'remark'=>$remarkHash[$uid]))}
+        	</eq>
+        	</span></p>
+        	<php>if(CheckPermission('core_normal','read_data')){</php>
+          <div class="grade"><if condition="$userInfo['sex'] eq 1"><i class="ico-male"></i><else /><i class="ico-female"></i></if>&nbsp;{$userInfo['location']}</div>
+          <php>}</php>
+           <div>
+               <ul class="userdata clearfix">
+                   <li><a href="{:U('public/Profile/following',array('uid'=>$uid))}" target="_blank">{:L('PUBLIC_FOLLOWING')}</a> {$count_info.following_count|default=0}</li>
+                   <li class="vline">|</li>
+                   <li><a href="{:U('public/Profile/follower',array('uid'=>$uid))}" target="_blank">{:L('PUBLIC_FOLLOWERS')}</a> {$count_info.follower_count|default=0}</li>
+                   <li class="vline">|</li>
+                   <li><a href="{$userInfo.space_url}" target="_blank">{:L('PUBLIC_WEIBO')}</a> {$count_info.weibo_count|default=0}</li>
+               </ul>
+           </div>
+           <p class="address">{$department.title}</p>
+       </dd>
+   </dl>
+<dl class="info clearfix lh22">
+   <!-- 认证信息 start -->
+  <php>if($verifyInfo){</php>
+    <dd class="tag"><span>认证：</span>
+     <div class="tag-inner">{$verifyInfo}</div>
+    </dd>   
+  <php>}</php>
+  <!-- 认证信息  end -->
+  <php>if(CheckPermission('core_normal','read_data')){</php>
+	  <neq name='user_tag' value=''>
+    <dd class="tag"><span>标签：</span>
+      <div class="tag-inner">
+        <volist name="user_tag" id="v">
+          <a href="{:U('people/Index/index', array('cid'=>$key))}">{$v}</a>
+        </volist>
+      </div>
+    </dd>
+    </neq>
+   		<neq name='userInfo.intro' value=''>
+        <dd class="tag"><span>简介：</span>
+         <div class="tag-inner">{$userInfo['intro']|getShort=60,'...'}</div>
+        </dd>   
+    </neq>
+<php>}</php>
+</dl>
+<dl class="links">
+       <div class="right">
+        {:W('FollowBtn', array('fid'=>$uid, 'uname'=>$userInfo['uname'], 'follow_state'=>$follow_state, 'type'=>'normal'))}
+       </div>
+   	<p class="left"><span><a href="javascript:ui.sendat({$uid})">@TA</a></span> 
+   	<php>if(CheckPermission('core_normal','send_message')){</php>
+      <eq name='UserPrivacy.message' value='0'>
+      | <span><a href="javascript:ui.sendmessage({$uid}, 0)">{:L('PUBLIC_SEND_PRIVATE_MESSAGE')}</a></span>
+      </eq>
+      <php>}</php>
+   	<!-- <span class="vline">|</span><span><em class="icons ico_set"></em>
+   </span> --> </p>
+   </dl>
+<script>
+	M(document.getElementById('face_card'));
+</script>

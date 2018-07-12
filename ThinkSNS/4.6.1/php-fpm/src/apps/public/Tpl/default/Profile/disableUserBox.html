@@ -1,0 +1,65 @@
+<div class="layer-content">
+	<div class="pop-message">
+		<table class="pop table-pop">
+		  <tbody>
+		    <tr>
+			  <td class="textR">用户名：</td>
+			  <td>{$uname}</td>
+		    </tr>
+		    <tr class="mb10">
+			  <td class="textR">禁用时间：</td>
+			  <td>
+				{:W('DateSelect', array('dtype'=>'full', 'width'=>120, 'name'=>'start_time', 'id'=>'start_time', 'value'=>$disable[$type]['start_time_format']))}&nbsp;至&nbsp;{:W('DateSelect', array('dtype'=>'full', 'width'=>120, 'name'=>'end_time', 'id'=>'end_time', 'value'=>$disable[$type]['end_time_format']))}
+			  </td>
+		    </tr>
+		    <tr>
+		    	<td class="textR">&nbsp;</td>
+		    	<td>
+		    	   <a class="btn-green-small" onclick="setDisableUser()"><span>确定</span></a>
+		           <a class="btn-cancel ml10" onclick="ui.box.close()"><span>取消</span></a>
+		    	</td>
+		    </tr>
+		  </tbody>
+	    </table>	    
+	</div>
+</div>
+
+<script type="text/javascript">
+var setDisableUser = function() {
+	var uid = '<?php echo $uid; ?>';
+	if (typeof uid === 'undefined' || uid == '') {
+		ui.error('参数错误');
+		return false;
+	}
+
+	var disableItem = '<?php echo $type; ?>';
+
+	var startTime = $('#start_time').val();
+	var endTime = $('#end_time').val();
+	if (startTime == '') {
+		ui.error('请选择开始时间');
+		return false;
+	}
+	if (endTime == '') {
+		ui.error('请选择结束时间');
+		return false;
+	}
+	if (startTime > endTime) {
+		ui.error('开始时间必须小于结束时间');
+		return false;
+	}
+
+	$.post(U('public/Profile/setDisableUser'), {uid:uid, disableItem:disableItem, startTime:startTime, endTime:endTime}, function(res) {
+		if (res.status == 1) {
+			ui.success(res.info);
+			ui.box.close();
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
+		} else {
+			ui.error(res.info);
+		}
+	}, 'json');
+	return false;
+};
+</script>

@@ -1,0 +1,55 @@
+<style type="text/css">
+.mt10-w400 { margin-top: 10px;width: 400px; }
+.mg2 { margin: 2px; }
+</style>
+
+<a href="javascript:;" onclick="userCategoryBox()" class="btn-att-white left mr10"><span>添加标签</span></a>
+<input type="hidden" value="" name="user_tags" id="user_category_pop" <php>if($required):</php>event-node="input_user_tag"<php>endif;</php> />
+<div id="show_list" class="mt10 clearfix">
+	<volist name="list" id="vo">
+	<a class="btn-cancel mg2" href="javascript:;"><span>{$vo}<i class="ico-close1"></i></span></a>
+	</volist>
+</div>
+
+<script type="text/javascript">
+var userCategoryBox = function() {
+  ui.box.load(U('widget/UserCategory/show', ['selected=' + $.trim($('#user_category_pop').val())]), '添加标签');
+  return false;
+};
+
+var callbackUserCategory = function(cids, cidNames) {
+	if (typeof cids === 'undefined') {
+		return false;
+	}
+	$('#show_list').html('');
+	$('#user_category_pop').val(cids);
+
+	if ($.trim(cids) !== '') {
+		for (var i in cidNames) {
+			$('#show_list').append('<a id="user_tag_li_'+cidNames[i][0]+'" class="btn-cancel mg2" href="javascript:;"><span>' + cidNames[i][1] + '<i class="ico-close1" onclick="delUserTag('+cidNames[i][0]+')"></i></span></a>');
+		}
+	}
+};
+
+var delUserTag = function(id) {
+	if (typeof id === 'undefined') {
+		return false;
+	}
+	$('#user_tag_li_' + id).remove();
+	var cids = $('#user_category_pop').val();
+	var arr = cids.split(',');
+	var index = 0;
+	for (var i in arr) {
+		if (id == arr[i]) {
+			index = i;
+			break;
+		}
+	}
+	arr.splice(index, 1);
+	$('#user_category_pop').val(arr.join(','));
+};
+
+$(function() {
+	$('#user_category_pop').val('');
+});
+</script>

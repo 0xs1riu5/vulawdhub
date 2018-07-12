@@ -1,0 +1,62 @@
+<include file="__THEME__/admin_header" />
+<script type="text/javascript" src="__THEME__/js/tsjs.json2select.js"></script>
+<div class="so_main"><include file="_tab" />
+<div class="form2">
+<form method="post" action="{:U('square/Admin/index')}">
+<dl class="lineD">
+	<dt>频道分享列表：</dt>
+	<dd><label><input name="channel" type="radio"
+		value="1"<eq name="setting['channel']" value="1">checked</eq>>开启</label>
+	<label><input name="channel" type="radio" value="0"<eq
+		name="setting['channel']" value="0">checked</eq>>关闭</label></dd>
+</dl>
+<dl class="lineD">
+	<dt>频道分享ID：支持8个</dt>
+	<dd><input type="text" class="s-txt" style="width:350px;" name="channelid" value="{$setting['channelid']}"></dd
+</dl>
+
+<dl class="lineD">
+	<dt>微吧列表：</dt>
+	<dd><label><input name="weiba" type="radio"
+		value="1"<eq name="setting['weiba']" value="1">checked</eq>>是</label>
+	<label><input name="weiba" type="radio" value="0"<eq
+		name="setting['weiba']" value="0">checked</eq>>否</label></dd>
+</dl>
+
+<dl class="lineD">
+	<dt>微吧ID：支持6个</dt>
+	<dd><input type="text" class="s-txt"  name="weibaid" style="width:350px;"
+		value="{$setting['weibaid']}"></dd>
+</dl>
+
+
+<dl class="lineD">
+	<dt>找人模块：</dt>
+	<dd><label><input name="relateduser" type="radio"
+		value="1"<eq name="setting['relateduser']" value="1">checked</eq>>是</label>
+	<label><input name="relateduser" type="radio" value="0"<eq
+		name="setting['relateduser']" value="0">checked</eq>>否</label></dd>
+</dl>
+
+<dl class="lineD">
+	<dt>推荐认证用户ID:仅支持一个</dt>
+	<dd><input type="text" class="s-txt" name="user_recommend_uid" style="width:350px;"
+		value="{$setting['user_recommend_uid']}"></dd>
+</dl>
+
+<div class="page_btm"><input type="hidden" name="editSubmit"
+	value="1"> <input type="submit" class="btn_b" value="确定" /></div>
+</form>
+</div>
+</div>
+<script>
+	function doSwitch(i, name){
+		if (i == 0) {
+			$("."+name).css('display','none');
+		} else if (i == 1) {
+			$("."+name).css('display','block');
+		}
+	}
+	doSwitch({$setting['uploadFile']|intval}, 'uploadFile');
+</script>
+<include file="_footer" />

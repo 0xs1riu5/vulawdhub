@@ -1,0 +1,36 @@
+<div id="invite_colleague_box" class="pop-invite">
+        <form model-node="invite_colleague_form" action="{:U('public/Invite/doInvite')}" method="post" name="invite_colleague_form">
+        <dl class="pop">
+          <dd class="pad-no">
+              <div class="form-tt">{:L('PUBLIC_INVITE')}：</div>
+              <div class="form-row" id="email_input">
+              <ul>
+                  <li class="clearfix">
+                  <input type="text" event-node="email" event-args="<if condition="'appoint' eq $config['register_type']">suffix={$config['email_suffix']}</if>&success=false" checkurl="{:U('public/Register/isEmailAvailable_invite')}" autocomplete="off" name="email[]">
+                  </li>
+                  <li class="clearfix">
+                  <input type="text" event-node="email" event-args="<if condition="'appoint' eq $config['register_type']">suffix={$config['email_suffix']}</if>&success=false" checkurl="{:U('public/Register/isEmailAvailable_invite')}" autocomplete="off" name="email[]">
+                  </li>
+                  <li class="clearfix">
+                  <input type="text" event-node="email" event-args="<if condition="'appoint' eq $config['register_type']">suffix={$config['email_suffix']}</if>&success=false" checkurl="{:U('public/Register/isEmailAvailable_invite')}" autocomplete="off" name="email[]">
+                  </li>
+              </ul>
+              </div>
+          </dd>
+        	<dd>
+                <div class="form-tt">{:L('PUBLIC_CONTENT')}：</div>
+                <div class="form-row"><textarea  rows="" cols="" name="detial" class="s-textarea" onblur="this.className='s-textarea'" onfocus="this.className='s-textarea-focus'" style="*width:322px">{:L('PUBLIC_INVATE_MESSAGE',array('uname'=>$invite['uname']))}</textarea></div>
+            </dd>
+        	<dd>
+            <div class="form-tt"></div>
+            <div class="form-row actionBtn"><a class="btn-green-small" event-node="submit_btn" href="javascript:void(0);" event-args="ajax=1"><span>{:L('PUBLIC_SEND_INVITATION')}</span>
+            </a></div>
+            </dd>
+        </dl>
+        </form>
+</div>
+<script>
+M.getJS( THEME_URL + '/js/module.form.js', function(){
+	M( document.getElementById( "invite_colleague_box" ) );
+} );
+</script>

@@ -1,0 +1,20 @@
+<div class="level left">
+<img src="{$userCredit.level.src}" event-node='ico_level'>
+   <i class="ico-wallet" event-node='ico_wallet'></i>
+   <div class="layer-open experience" style='display:none' model-node='layer_level'>
+      <i class="arrow-t"></i>
+      <dl>
+          <dt></dt>
+          <dd>{:L('PUBLIC_USER_LEVEL')}：{$userCredit.level.name}</dd>
+          <dd>{:L('PUBLIC_USER_POINTS_CALCULATION',array('num'=>$userCredit['credit']['experience']['value'],'experience'=>$userCredit['creditType'][$userCredit['level']['level_type']]))}</dd>
+          <dd class="textb">{:L('PUBLI_USER_UPGRADE_TIPS',array('num'=>$userCredit['credit']['experience']['value'],'experience'=>$userCredit['creditType'][$userCredit['level']['level_type']]))}</dd>
+      </dl>
+  </div>
+  <div class="layer-open scale" style='display:none' model-node='layer_wallet'>
+        <i class="arrow-t"></i>
+        <dl>
+            <dt></dt>
+            <dd>{:L('PUBLIC_USER_POINTS_CALCULATION',array('num'=>intval($userCredit['credit']['score']['value']),'experience'=>$userCredit['creditType']['score']))}</dd>
+        </dl>
+    </div>
+</div>

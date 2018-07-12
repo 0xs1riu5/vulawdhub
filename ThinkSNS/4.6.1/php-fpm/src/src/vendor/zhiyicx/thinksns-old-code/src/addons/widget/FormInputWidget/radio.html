@@ -1,0 +1,8 @@
+<eq name='editable' value="1">
+<php>$list = explode('|',$default_value);</php>
+<volist name="list" id="v">
+	<input name="{$name}" type="radio" <php>if($value==$v){</php> checked="checked"<php>}</php> value="{$v}" /> {$v}
+</volist>
+<else />
+{$value}
+</eq>

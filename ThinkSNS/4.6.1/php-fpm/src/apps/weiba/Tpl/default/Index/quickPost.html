@@ -1,0 +1,100 @@
+<include file="__THEME__/header" />
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<!-- <script type="text/javascript" src="__THEME__/js/module.form.js"></script> -->
+<script>
+var changelock = 0;
+function changeweiba(obj){
+	if ( changelock == 1 ){
+		return;
+	}
+	changelock = 1;
+	var weibaid = $(obj).val();
+	if (weibaid==0){
+		return;
+	}
+	var weibaname = $(obj).children('option[selected="selected"]').text();
+	$('#weibainfo').text('');
+	$.post(U('weiba/Index/checkWeibaStatus'),{weibaid:weibaid},function (res){
+		if(res==1){
+			//ui.error('"'+weibaname+'"，需要关注后才能发表帖子');
+			$('#weibainfo').text('提示："'+weibaname+'"，需要关注后才能发表帖子');
+		}else if(res==2){
+			//ui.error('"'+weibaname+'"，需要管理员才能发表帖子');
+			$('#weibainfo').text('提示："'+weibaname+'"，需要管理员才能发表帖子');
+		}else if(res==3){
+			$('#weibainfo').text('提示："'+weibaname+'"，需要圈主才能发表帖子');
+		}
+		changelock = 0;
+	});
+}
+</script>
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div class="st-bg">
+      <!-- <p class="weiba-location"><a href="{:U('weiba/Index/index')}">微吧</a>&nbsp;>&nbsp;发表新帖</p> -->
+      <div class="weiba-box"> 
+        <!-- <h3>发新贴</h3> -->
+        <form method="post" action="{:U('weiba/Index/doPost')}" model-node='weiba_post' onsubmit="return setcontent();" name="weibaPost">
+          <dl class="form-set">
+            <dd>
+              <div class="form-tt"><font color="red"> * </font>选择微吧</div>
+              <div class="form-row">
+                <div class="select-area"><a id="weiba_name" name="1" href="javascript:void(0);">请选择微吧<i class="ico-arrow-down right mt15"></i></a>
+                  <input id="weiba_id" type="hidden" value="" name="weiba_id" /></div>
+                <div class="kind-list kind-1" id="kind-1" style="width:700px; border-bottom:#E2DDD5 1px solid; border-top:none;">
+                  <ul class="clearfix">
+                    <php>foreach( $list as $v ){</php>
+                    <li id="weiba_id_{$v.weiba_id}" onclick="weibaName({$v.weiba_id})">{$v['weiba_name']|getShort=8}</li>
+                    <php>}</php>
+                  </ul>
+                </div>
+              </div>
+            </dd>
+            <dd>
+              <div class="form-tt"><font color="red"> * </font>标题</div>
+              <div class="form-row">
+                <input class="text" type="text" name="title" id="title" style="width:690px;" onkeydown="if(event.keyCode==13){return false;}">
+              </div>
+            </dd>
+            <dd>
+              <div class="form-tt"><font color="red"> * </font>正文</div>
+              <div class="form-row" style="line-height:normal;">{:W('UM', array('type'=>'weiba','contentName'=>'content','content'=>'','width'=>'700','tpl'=>'weiba'))}</div>
+            </dd>
+            <dd>
+              <div class="form-tt">附件</div>
+              <div class="form-row">{:W('Upload', array('urlquery'=>'attach_type=weiba_attach'))}
+                <span style="font-size:12px; color:#888;">文件大小不能超过{$attach_update_config.attach_max_size}M，且只允许上传格式：{$attach_update_config.attach_allow_extension}</span>
+              </div>
+            </dd>
+            <dd>
+              <div class="form-tt"></div>
+              <div class="form-row"> <a href="javascript:;" class="btn_b mr5 btn-green-big" event-node="submit_btn" event-args="editor=true"><span>确定</span></a> <a href="{:U('weiba/Index/index')}" class="btn_w"><span>取消</span></a> </div>
+            </dd>
+          </dl>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+//分类标签选择	
+	$("#weiba_name").click(function(){
+			$(".kind-list").toggle();
+		})
+//如果没有可选择微吧，添加提示
+function nocircleTip(obj,tips){
+	var tipContent = ''+'<p class="f8 p20">您没有可选择的微吧，<a href="{:U('weiba/Index/weibaList',array('type'=>$_GET['type']))}"class="f-red">赶紧去加入吧！</a></p>'
+	if($(obj).length<1){
+		$(tips).html(tipContent);
+		}
+}
+nocircleTip("#kind-1 li","#kind-1");
+	
+function weibaName(weiba_id){
+  		var data = $('#weiba_id_'+weiba_id).text()+"<i class='ico-arrow-down right mt15'></i>";
+  		$('#weiba_id').val(weiba_id);
+		$(".kind-list").hide();
+  		$('#weiba_name').html(data);
+};</script> 
+<include file="__THEME__/public_footer" /> 

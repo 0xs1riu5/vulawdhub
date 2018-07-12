@@ -1,0 +1,11 @@
+<p class="weiba-location"><a href="{:U('weiba/Index/index')}">微吧</a>&nbsp;<span class="f8">></span>&nbsp;<a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}">{$weiba_name}</a>&nbsp;<span class="f8">></span>&nbsp;<span class="f-red">管理</span></p>
+ <div class="tab-menu line-b-animate" id="weiba-tab">
+<!--    <php>if($mid==$weiba_super_admin || CheckPermission('core_admin','admin_login')){</php><a href="javascript:void(0)" onclick="delWeiba({$weiba_id});" class="btn-cancel right"><span>解散微吧</span></a><php>}</php>
+-->    <ul>
+        <li <eq name="ACTION_NAME" value="index">class="current"</eq>><span><a href="{:U('weiba/Manage/index',array('weiba_id'=>$weiba_id))}">基本信息</a></span></li>
+        <li <eq name="ACTION_NAME" value="member">class="current"</eq>><span><a href="{:U('weiba/Manage/member',array('weiba_id'=>$weiba_id))}">成员管理</a></span></li>
+<!--         <li <eq name="ACTION_NAME" value="notify">class="current"</eq>><span><a href="{:U('weiba/Manage/notify',array('weiba_id'=>$weiba_id))}">公告发布</a></span></li> -->
+        <li <eq name="ACTION_NAME" value="log">class="current"</eq>><span><a href="{:U('weiba/Manage/log',array('weiba_id'=>$weiba_id))}">管理日志</a></span></li>
+    </ul>
+ </div>
+           	

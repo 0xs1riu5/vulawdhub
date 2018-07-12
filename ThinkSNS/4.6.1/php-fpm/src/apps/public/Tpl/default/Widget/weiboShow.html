@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ThinkSNS - 分享到我的分享</title>
+<meta content="<neq name= '_keywords' value=''>{$_keywords}<else />{$site.site_header_keywords}</neq>" name="keywords">
+<meta content="<neq name= '_description' value=''>{$_description}<else />{$site.site_header_description}</neq>" name="description">
+<link href="__THEME__/image/favicon.ico?v={$site.sys_version}" type="image/x-icon" rel="shortcut icon">
+<!-- <link href="__THEME__/css/global.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/module.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/menu.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/form.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/jquery.atwho.css?v={$site.sys_version}" rel="stylesheet" type="text/css" /> -->
+<link href="__THEME__/css/css.php?t=css&f=global.css,module.css,menu.css,form.css,jquery.atwho.css&v={$site.sys_version}.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="__APP__/weiboshow.css" >
+<script type="text/javascript">
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>'
+// Js语言变量
+var LANG = new Array();
+</script>
+<php>if(!empty($langJsList)):</php>
+<volist name="langJsList" id="vo">
+<script src="{$vo}?v={$site.sys_version}"></script>
+</volist>
+<php>endif;</php>
+<!-- 
+<script src="__THEME__/js/jquery-1.7.1.min.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.form.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/common.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/core.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.common.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jwidget_1.0.0.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.atwho.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.caret.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/ui.core.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/ui.draggable.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.digg.js?v={$site.sys_version}"></script>
+-->
+<script src="__THEME__/js/js.php?t=js&f=jquery-1.7.1.min.js,jquery.form.js,common.js,core.js,module.js,module.common.js,jwidget_1.0.0.js,jquery.atwho.js,jquery.caret.js,ui.core.js,ui.draggable.js,plugins/core.comment.js,plugins/core.digg.js&v={$site.sys_version}.js"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.digg.js?v={$site.sys_version}"></script>
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
+<style>
+.feed_img_lists .imgicon{cursor:default;}
+.feed_img_lists a:hover .imgicon{cursor:default;}
+.feed_list .content{font-size:12px;margin:0;}
+</style>
+</head>
+<body>
+	<div id="weibo_show_con" class="tblog_wrap {$style['skin']}" style="height:{$style['height']}px;">
+		<!-- 宽度这里控制 --> <b class="wrap_top"></b>
+		<div class="tblog_main" style="height:{:$style['height'] - 12}px;">
+			<!-- 高度这里控制 -->
+			<!-- 标题栏 -->
+			<!-- 如不显示标题栏，将这段删除 -->
+			<div id="weibo_title" class="tblog_header" >
+				<h1>
+					<a href="{:U('public/Index/index')}" class="title" target="_blank">{$ts['site']['site_name']}</a>
+				</h1>
+			</div>
+			<!-- 标题栏 -->
+			<!-- 个人信息栏 -->
+			<div class="fans_top" id="weibo_head">
+				<div class="fansphoto">
+					<space uid="uid" target="_blank">{uavatar}</space>
+				</div>
+				<ul>
+					<li>
+						<space uid="uid" target="_blank">{uname}</space>
+						<span class="gray9">{$user['location']}</span>
+					</li>
+					<php>if(!empty($_SESSION['mid']) && $_SESSION['mid'] != $fid):</php>
+					<li class="btn">
+						<div id="follow_list_{$uid}" >
+							{:W('FollowBtn', array('fid'=>$fid, 'uname'=>$uname, 'follow_state'=>$follow_state))}
+						</div>
+					</li>
+					<php>endif;</php>
+				</ul>
+			</div>
+			<div class="blog_list" id="weibo_con" >
+				<!-- 游标上箭头 -->
+				<a href="javascript:;" id="weibo_upbtn" class="bg_arrow arrow_up">
+					<img height="4" width="8" src="__APP__/image/transparent.gif" class="arrow" title="" style="display:none;">
+				</a>
+				<!-- 游标上箭头 -->
+				<div class="list_wrap" id="weibo_list_con">
+					<ul id="weibo_list">
+						<volist name="weibolist" id="weibo">
+							<li gosrc="{:U('public/Profile/feed',array('feed_id'=>$weibo['feed_id'], 'uid'=>$uid))}">
+								<dl class="feed_list">
+									<dd class="msg">
+										<a href="{:U('public/Profile/feed',array('feed_id'=>$weibo['feed_id'], 'uid'=>$uid))}" target="_blank"></a>
+										<span class="mbTxtB content" >{$weibo['body']}</span>
+									</dd>
+									<dd>
+										<span class="act wbLinkB">
+											<a href="{:U('public/Profile/feed',array('feed_id'=>$weibo['feed_id'], 'uid'=>$uid))}" target="_blank">转发({$weibo['repost_count']})</a>
+											<em>|</em>
+											<a href="{:U('public/Profile/feed',array('feed_id'=>$weibo['feed_id'], 'uid'=>$uid))}" target="_blank">评论({$weibo['comment_count']})</a>
+										</span>
+										<p class="wbLinkC">
+											<a href="{:U('public/Profile/feed',array('feed_id'=>$weibo['feed_id'], 'uid'=>$uid))}" target="_blank" >{$weibo['publish_time']|friendlyDate}</a>
+										</p>										
+									</dd>
+								</dl>
+							</li>
+						</volist>
+					</ul>
+				</div>
+				<!-- 游标下箭头 -->
+				<a href="javascript:;" id="weibo_downbtn" class="bg_arrow arrow_down">
+					<img height="4" width="8" src="__APP__/image/transparent.gif" class="arrow" title="" style="display:none;">
+				</a>
+				<!-- 游标下箭头 -->
+			</div>
+			<!-- /知识内容列表 -->
+			<!-- 分享粉丝列表 -->
+			<div class="fans_list" id="fans_list_con">
+				<h4>
+					<span>TA 的粉丝( <em><strong>{$follower.totalRows}</strong>人</em> )</span>
+					<a href="{:U('public/Profile/follower', array('uid'=>$uid))}" class="all" target="_blank">全部&gt;&gt;</a>
+				</h4>
+				<ul>
+					<volist name="follower.data" id="f">
+						<li>
+							<a class="pic" target="_blank" href="{:U('public/Profile/index', array('uid'=>$f['fid']))}">
+								<img src="{$f.fid|getUserFace}">
+							</a>
+                            <a class="name" target="_blank" href="{:U('public/Profile/index', array('uid'=>$f['fid']))}">{$f.fid|getUserName}</a>
+						</li>
+					</volist>
+				</ul>
+			</div>
+			<!-- /分享粉丝列表 -->
+		</div>
+		<b class="wrap_bottom"></b>
+	</div>
+    <script type="text/javascript">var $CONFIG = {'$uid'  : "{$uid}"};</script>
+    <script type="text/javascript" src="__APP__/weiboshow.wall.js"></script>
+    <script type="text/javascript">
+	M.addEventFns({
+	    face_card:{
+	        load:function(){
+	            //载入小名片js
+	            return true;
+	        },
+	        mouseenter:function(){
+	            return true;
+	        },
+	        mouseleave:function(){
+	            return true;
+	        },
+	        blur:function(){
+	            return true
+	        }
+	    }
+	});
+
+	$(function() {
+		$('#weibo_list').find('li[gosrc]').each(function(i, n) {
+			var url = $(this).attr('gosrc');
+			$(this).find('ul.small li').each(function(ii, nn) {
+				$(this).html($(this).find('img'));
+				$(this).attr('gosrc', url);	
+			});
+		});
+	});
+    </script>
+</body>
+</html>

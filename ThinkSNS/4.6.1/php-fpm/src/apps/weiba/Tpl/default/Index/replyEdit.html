@@ -1,0 +1,38 @@
+<include file="__THEME__/public_header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<!-- <script type="text/javascript" src="__THEME__/js/module.form.js"></script> -->
+    
+
+<div id="page-wrap">
+	   <div id="main-wrap">
+           <div class="boxShadow"> 
+	   	   	 <include file="_weiba_header" /> 
+
+	   	   	   <div class="mb10 clearfix extend">
+                <p class="pb15"><a href="{:U('weiba/Index/index')}">微吧</a>&nbsp;>&nbsp;<a href="{:U('weiba/Index/detail',array('weiba_id'=>$reply_detail['weiba_id']))}">{$weiba_name}</a>&nbsp;>&nbsp;<a href="{:U('weiba/Index/postDetail',array('post_id'=>$reply_detail['post_id']))}">{$post_title}</a></p>
+                 <div class="weiba-manage">                     
+                        <h3>编辑帖子回复</h3>
+                        <form method="post" action="{:U('weiba/Index/doReplyEdit')}" model-node='weiba_reply_edit' name="reply_edit">
+                            <input type="hidden" value="{$reply_detail['reply_id']}" name="reply_id" id="reply_id">
+                            <input type="hidden" value="{$reply_detail['post_id']}" name="post_id" id="post_id">
+                        <dl class="form-set">
+                            <dd>
+                                <div class="form-tt">回复内容</div>
+                                <div class="form-row"><div class="s-textarea" model-node="mini_editor_textarea" contenteditable="true">{$reply_detail['content']}</div></div>
+                                <textarea style="display:none;" name="content" id="content"></textarea>
+                            </dd>
+                            <dd>
+                                <div class="form-tt"></div>
+                                <div class="form-row"><a href="#" class="btn-green-small mr5" event-node="submit_btn"><span>确定</span></a><a href="" class="btn-cancel"><span>取消</span></a></div>
+                            </dd>
+                        </dl> 
+                        </form>                
+                 </div>
+           	 </div>
+          </div>
+	   </div>
+</div>
+
+<include file="__THEME__/public_footer" />

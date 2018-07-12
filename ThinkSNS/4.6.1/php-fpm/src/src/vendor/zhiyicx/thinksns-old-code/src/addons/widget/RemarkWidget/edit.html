@@ -1,0 +1,53 @@
+
+<div class="pop-create-group">
+	<dl>
+		<dt>{:L('PUBLIC_PEOPLE_REMARK')}：<input type="text" name='remark' value='{$remark}' id='remark' class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'"></dt>
+		<dd>
+		<a href="javascript:;" onclick="saveRemark()" class="btn-green-small"><span>{:L('PUBLIC_SAVE')}</span></a>
+		<a href="javascript:;" onclick='ui.box.close()' class="btn-cancel ml10"><span>{:L('PUBLIC_CANCEL')}</span></a>
+		</dd>
+	</dl>
+</div>
+<script>
+var newRemark = '';
+var fid = '{$uid}';
+//保存备注
+function  saveRemark(){
+	var remark = '';
+	// if($('#remark').val() !='' && $('#remark').val() !='设置备注'){
+		remark = $('#remark').val();
+		if(getLength(remark) > 10 ){
+			ui.error(L('PUBLIC_REMARK_CHARACTER_LIMIT'));
+			return false;
+		}
+		$.post(U('public/FollowGroup/saveRemark'),{remark:remark,fid:fid},function(msg){
+			if(msg.status == 0){
+				ui.box.close();
+				ui.error( L('PUBLIC_PRMARK_EDIT_ERROR') );
+			}else{
+				var remark = msg.data;//存储进去的remark
+				if(remark==''){
+					$('.remark_'+fid).html( L('PUBLIC_SET_PRMARK') );
+					$('.remark_'+fid).attr('remark','');
+				}else{
+					if($('.remark_'+fid)){
+						$('.remark_'+fid).html(remark);
+						$('.remark_'+fid).attr('remark',encodeURIComponent(remark));
+					}
+				}
+				if("undefined" != typeof(core.facecard) ){
+						core.facecard.deleteUser(fid);
+				}
+				ui.box.close();			
+				ui.success( L('PUBLIC_SETING_SUCCESS') );
+				
+			}
+		},'json');
+	// }else{
+	// 	ui.box.close();
+	// 	return false;
+	// }
+	
+}
+
+</script>

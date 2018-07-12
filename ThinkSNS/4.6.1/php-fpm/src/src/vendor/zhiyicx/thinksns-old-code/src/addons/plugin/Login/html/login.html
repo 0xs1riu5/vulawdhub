@@ -1,0 +1,198 @@
+<include file="__THEME__/public_header" />
+<link type="text/css" rel="stylesheet" href="{:APP_URL}/_static/login.css">
+  <div id="page-wrap">
+    <div class="reg-wrap">      
+      <!--设置账号-->
+      <div class="reg-main">
+        <neq name='config.register_type' value='closed'>
+        <div>
+        <div class="article">
+          <div class="mb30">
+            <dl class="account-links clearfix">
+              <dt class="face_img left"><img src="{$user.userface}" width="50" height="50" /></dt>
+              <dd class="left"><h4>欢迎你，<span style="color:#0096e6">{$user.uname}</span>，您的{$typeName}帐号授权成功！</h4><p style="color:#666">接下来完成简单的设置，即可用{$typeName}帐号直接登录。</p></dd>
+            </dl>
+          </div>
+          <div class="tab-menu line-b-animate clearfix" style=" margin-bottom:30px;">
+            <ul>
+              <li class="current"><span><a href="#" uri="tab-pannel-1">新帐号</a></span></li>
+              <if condition="$config['bindemail'] neq 1">
+              <li><span><a href="#" uri="tab-pannel-2">绑定已有帐号</a></span></li>
+              </if>
+            </ul>
+          </div>
+        <div style="display:none;">
+          <form method="POST" action="{:U('public/Register/doOtherStep1')}" name="ajax_direct_bind_form" id="ajax_direct_bind_form">
+            <input type="hidden" name="other_type" value="{$type}" />
+            <input type="hidden" name="oauth_token" value="{$oauth_token}" />
+            <input type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" />
+            <input type="hidden" name="other_uid" value="{$user.id}" />
+            <input type="hidden" name="other_face" value="{$user.userface}" />
+            <input type="hidden" name="other_signature" value="{$user.signature}" />
+            <input type="hidden" name="uname" value="{$user.uname}" />
+            <input type="hidden" name="avatar" value="1" />
+            <input type="hidden" name="direct" value="1" />
+            <input class="btn-register" type="submit" value="直接进入" />
+          </form>
+        </div>
+          <div id="tab-pannel-1">
+            <form model-node="normal_form" method="POST" action="{:U('public/Register/doOtherStep1')}" name="ajax_register_form" id="ajax_register_form">
+            <input type="hidden" name="other_type" value="{$type}" >
+            <input type="hidden" name="oauth_token" value="{$oauth_token}" >
+            <input type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" >
+            <input type="hidden" name="other_uid" value="{$user.id}" >
+            <input type="hidden" name="other_face" value="{$user.userface}" >
+            <input type="hidden" name="other_signature" value="{$user.signature}" >
+            <dl class="item">
+              <dd class="clearfix">
+                <div class="form-tt"><i class="text-required pr5">*</i>{:L('PUBLIC_NICKNAME')}：</div>
+                <div class="form-row">
+                  <div style="overflow:hidden;*zoom:1">
+                    <input event-node="uname" name="uname" checkurl="{:U('public/Register/isUnameAvailable')}" autocomplete="off" type="text" value="{$user.uname}" />
+                  </div>
+                </div>
+              </dd>
+              <dd class="clearfix">
+                <div class="form-tt"><i class="text-required pr5">*</i>{:L('PUBLIC_EMAIL')}：</div>
+                <div class="form-row" style="z-index:99">
+                  <input event-node="email" event-args="<if condition="'appoint' eq $config['register_type']">suffix={$config['email_suffix']}</if>" name="email" checkurl="{:U('public/Register/isEmailAvailable')}" autocomplete="off" type="text" value="" />
+                </div>
+              </dd>
+              <dd class="clearfix">
+                <div class="form-tt"><i class="text-required pr5">*</i>{:L('PUBLIC_PASSWORD')}：</div>
+                <div class="form-row">
+                    <input event-node="password" name="password" type="password" value=""/>
+                    <div model-node="password_weight" class="psw-state-empty">
+                        <div class="progress progress-green-transition"><div class="bar"></div></div>
+                        <div class="txt"><span>{:L('PUBLIC_PASSWORD_WEAK')}</span><span>{:L('PUBLIC_PASSWORD_MIDDLE')}</span><span>{:L('PUBLIC_PASSWORD_STRONG')}</span></div>
+                    </div>
+                </div>
+              </dd>
+              <dd class="clearfix">
+                <div class="form-tt"><i class="text-required pr5">*</i>{:L('PUBLIC_CONFIRM_PASSWORD')}：</div>
+                <div class="form-row">
+                  <input event-node="repassword" name="repassword" type="password" />
+                </div>
+              </dd>
+              <dd class="clearfix">
+                <div class="form-tt"><i class="text-required pr5">*</i>{:L('PUBLIC_GENDER')}：</div>
+                <div class="form-row">
+                  <label style="line-height:36px;"><input name="sex" type="radio" class="s-radio" value="1" checked="checked" event-node="radio" event-args="error={:L('PUBLIC_CHOOSE_GENDER')}" />{:L('PUBLIC_MALE')}</label>　
+                  <label><input event-node="radio" type="radio" name="sex" value="2" class="s-radio"  />{:L('PUBLIC_FEMALE')}</label>
+                </div>
+              </dd>
+              <dd class="clearfix">
+                <div class="form-tt"><i class="text-required pr5">*</i>地区：</div>
+                <div class="form-row">
+                  <div style="padding:3px 0 0 0;*height:30px;overflow:hidden;*zoom:1;">
+                  {:W('Area',array('curPro'=>0,'curCity'=>0,'area'=>0,'tpl'=>'selectArea'))}
+                  </div>
+                </div>
+              </dd>
+              <dd class="clearfix" style="display:none">
+                <div class="form-tt"><i class="text-required pr5">*</i>使用头像：</div>
+                <div class="form-row">
+                  <img src="{$user.userface}" width="50" height="50" />
+                  <br />
+                  <label><input type="radio" name="avatar" value="1" checked="checked" class="s-radio"  />是</label>
+                  <label><input type="radio" name="avatar" value="0" class="s-radio"  />否</label>
+                </div>
+              </dd>
+              <dd class="mt15">
+                <div class="form-row actionBtn">
+                  <input class="btn-register left" type="submit" value="完善资料" />  
+                  <if condition="$config['bindemail'] neq 1 AND $config['personal_open'] neq 1">
+                    <a style="float:left;margin-left:30px;line-height:30px;color:#0096e6" href="javascript:void(0);" onclick="$('#ajax_direct_bind_form').submit();">直接进去，以后再完善。</a>
+                  </if>
+                </div>
+              </dd>
+            </dl>
+          </form>
+        </div>
+        <div id="tab-pannel-2" style="display:none;">
+          <form method="POST" action="{:U('public/Register/doBindStep1')}" name="ajax_other_bind_form" id="ajax_other_bind_form" onsubmit="return ajax_bind_submit(this);">
+            <input type="hidden" name="other_type" value="{$type}" >
+            <input type="hidden" name="oauth_token" value="{$oauth_token}" >
+            <input type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" >
+            <input type="hidden" name="other_uid" value="{$user.id}" >
+            <input type="hidden" name="other_face" value="{$user.userface}" >
+            <input type="hidden" name="other_signature" value="{$user.signature}" >
+            <dl class="item">
+              <dd class="clearfix">
+                <div class="form-tt"><i class="text-required pr5">*</i>{:L('PUBLIC_EMAIL')}：</div>
+                <div class="form-row" style="z-index:99">
+                  <input event-node="input_text" name="email" type="text" value="" />
+                </div>
+              </dd>
+              <dd class="clearfix">
+                <div class="form-tt"><i class="text-required pr5">*</i>{:L('PUBLIC_PASSWORD')}：</div>
+                <div class="form-row">
+                  <input event-node="input_text" name="password" type="password" value="" />
+                </div>
+              </dd>
+              <dd class="mt15">
+                <div class="form-row actionBtn">
+                  <input class="btn-register" type="submit" value="绑定" />
+                </div>
+              </dd>
+            </dl>
+          </form>
+        </div>
+        </div>
+        <else />
+         <div class="item-find-psd"><neq name='config.register_close' value=''>{$config.register_close}</neq></div>
+        </neq>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $(function() {
+        $(".tab-menu ul > li > span > a").click(function(e) {
+            $(this).parent().parent().parent().children('li').removeClass('current');
+            $(this).parent().parent().addClass('current');
+            if ($(this).attr('uri') == 'tab-pannel-1'){
+              $('#tab-pannel-1').show();
+              $('#tab-pannel-2').hide();
+            }else{
+              $('#tab-pannel-2').show();
+              $('#tab-pannel-1').hide();
+            }
+        });
+    });
+    function ajax_bind_submit(obj){
+      var email = obj.email.value;
+      var password = obj.password.value;
+      var remember = 0;
+      if ( !email ){
+        ui.error('用户邮箱不能为空！');return false;
+      }
+      // 添加邮箱正则验证
+      var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+      if (!myreg.test(email)) {
+        ui.error('请输入正确的邮箱地址！');
+        return false;
+      }
+      if ( !password ){
+        ui.error('密码不能为空！');return false;
+      }
+      var options = {
+        dataType: "json",
+          success: function(txt) {
+            if(1 == txt.status) {
+              ui.success(txt.info);
+              if(txt.data['jumpUrl']){
+                setTimeout(function() {
+                  location.href = txt.data['jumpUrl'];
+                }, 500);
+              }
+            } else {
+              ui.error(txt.info);
+            }
+          }
+      };
+      $(obj).ajaxSubmit(options);
+      return false;
+    }
+  </script>
+<script src="__THEME__/js/module.form.js"></script>
+<include file="__THEME__/public_footer" />

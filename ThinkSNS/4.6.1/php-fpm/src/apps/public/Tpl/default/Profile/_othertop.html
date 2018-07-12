@@ -1,0 +1,65 @@
+<div class="profile-title">
+  <!--个人信息-->
+  <div class="person-profile">
+    <div class="person-info-face"> <a href="{:U('public/Profile/index', array('uid'=>$uid))}" title="{$user_info[$uid]['uname']}"><img src="{$user_info[$uid]['avatar_big']}" /></a> </div>
+    <div class="profile-info clearfix">
+      <dl class="profile-info-t">
+        <dt class="name mb10"><a href="{:U('public/Profile/index', array('uid'=>$uid))}">{$user_info[$uid]['uname']}</a>
+	        <span class="person-icon">
+	        <!--<volist name="userGroupData[$user_info[$uid]['uid']]" id="vo">
+	        <img style="width:auto;height:auto;display:inline;cursor:pointer;vertical-align:-2px;" src="{$vo['user_group_icon_url']}" title="{$vo['user_group_name']}" />&nbsp;
+	        </volist>-->
+	        <a href="{:U('public/Account/scoredetail')}" target="_blank"><img style="width:48px;height:10px;display:inline;cursor:pointer;vertical-align:0;" src="{$userCredit.level.src}" event-node='ico_level_right' /></a></span>
+        </dt>
+        <dd class="from">来自：<if condition=" $user_info[$uid]['location'] eq '' ">都不知道来自哪里的，大概来自火星吧!<else/>{$user_info[$uid]['location']}</if>
+        <if condition="$user_info[$uid]['sex'] eq 1">
+          <i class="ico-male" style="vertical-align: -2px"></i>
+          <else/>
+          <i class="ico-female" style="vertical-align: -2px"></i>
+        </if>
+        </dd>
+        <dd class="profile">简介：<if condition=" $user_info[$uid]['intro'] eq '' ">这家伙很懒，什么都没有留下!<else/>{$user_info[$uid]['intro']|getShort=100}</if>
+        </dd>
+        <dd>标签：<volist name="userTags" id="vo" empty="无">
+          <span class="interests"><a href="{:U('people/Index/index', array('cid'=>$key))}">{$vo}</a></span>
+        </volist>
+        </dd>
+        <php>if(!empty($user_info[$uid]['certInfo'])):</php>
+        <dd class="cert_info {$user_info[$uid]['certInfo']['icon']} left clearfix">认证：{$user_info[$uid]['certInfo']['info']}</dd>
+        <php>endif;</php>
+      </dl>
+    </div>
+    <if condition="$mid">
+    <div class="personal-control" id="personal-control">
+      <a class="personal-data" href="{:U('public/Profile/data',array('uid'=>$uid))}"><i class="i-personal-data"></i>个人资料</a>
+      <!-- {:W('UnionBtn', array('fid'=>$user_info[$uid]['uid'], 'uname'=>$user_info[$uid]['uname'], 'union_state'=>$union_state[$user_info[$uid]['uid']], 'isrefresh'=>1))} -->      
+      <php>if(CheckPermission('core_normal','send_message')){</php>
+      <eq name='userPrivacy.message' value='0'>
+      <a onclick="ui.sendmessage({$user_info[$uid]['uid']}, 0)" href="javascript:void(0)" event-node="postMsg" class="send-email"><i class="i-send-email"></i>发私信</a>
+      </eq>
+      <php>}</php>      
+      {:W('FollowBtn', array( 'type'=>'space', 'fid'=>$user_info[$uid]['uid'], 'uname'=>$user_info[$uid]['uname'], 'follow_state'=>$follow_state[$user_info[$uid]['uid']], 'isrefresh'=>1))}
+    </div>
+    </if>
+    </div> 
+</div>
+<!--top-tab-->
+<div class="top-tab">
+  <ul class="clearfix other-tab" id="medz-tab-box">
+  <php>$sexName = $user_info[$uid]['sex']==2 ? '她' : '他'; $top_tab = isset($_GET['tab']) ? $_GET['tab']: 'index'; $tagClass[$top_tab] = 'current';</php>
+    <li><a class="{$tagClass[index]}" href="{:U('public/Profile/index',array('uid'=>$uid))}">{$sexName}的分享</a></li>
+    <?php if($channelIfOpen) { ?>
+    <li><a class="{$tagClass['channel']}" href="{:U('public/Profile/appList',array('tab'=>'channel','type'=>'channel','uid'=>$uid))}">{$sexName}的频道</a></li>
+    <?php } ?>
+    <?php if($weibaIfOpen) { ?>
+    <li><a class="{$tagClass[weiba]}" href="{:U('public/Profile/appList',array('tab'=>'weiba','type'=>'weiba','uid'=>$uid))}">{$sexName}的微吧</a></li>
+    <?php } ?>
+    <li><a class="{$tagClass[following]}" href="{:U('public/Profile/following',array('tab'=>'following','uid'=>$uid))}">{$sexName}的关注</a></li>
+    <li><a class="{$tagClass[follower]}" href="{:U('public/Profile/follower',array('tab'=>'follower','uid'=>$uid))}">{$sexName}的粉丝</a></li>
+  </ul>
+</div>
+<script type="text/javascript">
+$(function() {
+  $('#medz-tab-box').find('li').css('width', $('#medz-tab-box').width() / $('#medz-tab-box').find('li').size());
+});
+</script>

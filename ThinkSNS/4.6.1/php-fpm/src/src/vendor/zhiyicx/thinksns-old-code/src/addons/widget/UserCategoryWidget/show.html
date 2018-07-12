@@ -1,0 +1,113 @@
+<div class="pro-content">
+	<div class="profession-title">请选择您的职业信息，每个人最多可选择<em>{$tag_num}</em>个标签，已选择<em id="selected_nums">{$nums}</em>个</div>
+	<div class="profession-type" id="user_category_list">
+		<volist name="categoryTree" id="vo">
+			<dl>
+				<dt>{$vo.title}：</dt>
+				<dd>
+					<volist name="vo.child" id="v">
+					<a rel="{$v['id']}" id="user_category_{$v['id']}" href="javascript:;" onclick="checkUserCategory(this, {$v['id']}, \'{$v['title']}\')" class="<php>if(in_array($v['id'], $selectedIds)):</php>current<php>endif;</php> btn-cancel"><span>{$v.title}</span></a>
+					</volist>
+				</dd>
+			</dl>
+		</volist>
+		<input type="hidden" value="{:implode(',', $selectedIds)}" id="user_category_ids" />
+	</div>
+	<a class="btn-register" onclick="submitUserCategory()" href="javascript:;" style="margin:0 0 0 160px;">确定</a>
+</div>
+
+<script type="text/javascript">
+var tag_num = '<?php echo $tag_num; ?>';
+var checkUserCategory = function(obj){
+	// 选中处理
+	if($(obj).hasClass('current')) {
+		$(obj).removeClass('current');
+	} else {
+		$(obj).addClass('current');
+	}
+
+	// 数据处理
+	var data = new Array();
+	$('#user_category_ids').val('');
+	$('#user_category_list').find('a').each(function() {
+		if($(this).hasClass('current')) {
+			if(data.length < tag_num){
+				data.push($(this).attr('rel'));
+			}else{
+				ui.error('每个人最多只能选择'+tag_num+'个标签');
+				$(obj).removeClass('current');
+				return false;
+			}
+		}
+	});
+
+	$('#user_category_ids').val(data.join(','));
+	$('#selected_nums').html(data.length);
+
+};
+// 初始化操作
+// $(function() {
+// 	$('#user_category_ids').val('');		//9.5注释掉
+// });
+// 添加用户与身份的关联信息
+var addUserCategory = function(obj, cid, title) {
+	var className = $(obj).attr('class');
+	if(className != 'on') {
+		var categoryIds = $('#user_category_ids').val();
+		var categoryArray = new Array();
+		if(categoryIds != '') {
+			categoryArray = categoryIds.split(',');
+			if(categoryArray.length == tag_num) {
+				ui.error('每个人最多只能选择'+tag_num+'个标签');
+				return false;
+			}
+		}
+		categoryArray.push(cid);
+		$('#user_category_ids').val(categoryArray.join(','));
+		$(obj).addClass('on');
+		$('#selected_category').css('display', '');
+		var html = '<a class="current btn-cancel" href="javascript:;" onclick="deleteUserCategory(this, ' + cid + ')"><span>' + title + '<i class="ico-close1"></i></span></a>';
+		$('#selected_category').find('dd').eq(0).append(html);
+		$('#user_category_' + cid).addClass('current');
+		setSelectedNums();
+	}
+};
+// 删除用户与身份的关联信息
+var deleteUserCategory = function(obj, cid) {
+	$('#user_category_' + cid).removeClass('current');
+	var categoryIds = $('#user_category_ids').val();
+
+	var categoryArray = new Array();
+	categoryArray = categoryIds.split(',');
+	var newCategoryArray = new Array();
+	for(i=0; i<categoryArray.length; i++) {
+		if(categoryArray[i] != cid) {
+			newCategoryArray.push(categoryArray[i]);
+		}
+	}	
+	$('#user_category_ids').val(newCategoryArray.join(','));
+	var length = $('#selected_category').find('a').length;
+	if(length == 1) {
+		$('#selected_category').css('display', 'none');
+	}
+	$(obj).remove();
+	setSelectedNums();
+};
+// 设置选中身份数目
+var setSelectedNums = function() {
+	var len = $('#selected_category').find('a').length;
+	$('#selected_nums').html();
+};
+
+var submitUserCategory = function() {
+	var cids = $.trim($('#user_category_ids').val());
+	var cidNames = [];
+	var cidArr = cids.split(',');
+	for (var i in cidArr) {
+		var tmp = [cidArr[i], $('#user_category_' + cidArr[i]).find('span').text()];
+		cidNames.push(tmp);
+	}
+	callbackUserCategory(cids, cidNames);
+	ui.box.close();
+};
+</script>

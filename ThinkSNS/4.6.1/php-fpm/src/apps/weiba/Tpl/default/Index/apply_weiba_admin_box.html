@@ -1,0 +1,41 @@
+
+<div class="pop-weiba clearfix">
+  <table width="100%">
+    <!--            <li><div class="confirm-msg f8 p20">您还没有加入该微吧！<a href="javascript:void(0);" class="mr5"><span class="btn-green-big">加入</span></a></div></li>
+-->
+    <tr>
+      <td><span class="txt">关注该微吧</span></td>
+      <td width="20%" align="right"><span>{$follow['is_complete']}</span></td>
+    </tr>
+    <eq name="weibaAdminAuditConfig.follower_open" value="1">
+      <tr>
+        <td><span class="txt">粉丝数：
+          <php>if(isset($follower['follower_count'])){</php>
+          {$follower['follower_count']|default=0}/
+          <php>}</php>
+          {$weibaAdminAuditConfig['follower']}</span></td>
+        <td width="20%" align="right"><span>{$follower['is_complete']}</span></td>
+      </tr>
+    </eq>
+    <eq name="weibaAdminAuditConfig.level_open" value="1">
+      <tr>
+        <td><span class="txt">等级：
+          <php>if(isset($level['user_level'])){</php>
+          {$level['user_level']}/
+          <php>}</php>
+          {$weibaAdminAuditConfig['level']}</span></td>
+        <td width="20%" align="right"><span>{$level['is_complete']}</span></td>
+      </tr>
+    </eq>
+    <eq name="weibaAdminAuditConfig.weiba_post_open" value="1">
+      <tr>
+        <td><span class="txt">发帖数：
+          <php>if(isset($weiba_post['user_weiba_post'])){</php>
+          {$weiba_post['user_weiba_post']|default=0}/
+          <php>}</php>
+          {$weibaAdminAuditConfig['weiba_post']}</span></td>
+        <td width="20%" align="right"><span>{$weiba_post['is_complete']}</span></td>
+      </tr>
+    </eq>
+  </table>
+</div>

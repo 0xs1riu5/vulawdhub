@@ -1,0 +1,174 @@
+<include file="admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit"><span onclick="admin.fold('page_config')">{:L('PUBLIC_PAGE_CONFIGURATION')}</span>{$pageTitle} </div>
+  	<!-- START PAGE_CONFIG -->
+  	<div id='page_config' class = "form2 list" >
+  		<div class="hd">{:L('PUBLIC_CHECH_IS')}</div>
+  		<form action="{:U('admin/Index/savePageConfig')}" method="POST">
+  		<input type="hidden" name='pageKey' value="{$pageKey}" />
+  		<input type="hidden" name='pageTitle' value="{$pageTitle}" />
+  		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  			<tr>
+  				<th>{:L('PUBLIC_SYSTEM_FIELD')}</th>
+  				<th class="line_l">{:L('PUBLIC_ADMIN_TITLE')}</th>
+  				<th class="line_l">{:L('PUBLIC_ADMIN_TYPE')}</th>
+  				<th class="line_l">{:L('PUBLIC_ADMIN_MODIFY')}</th>
+  				<th class="line_l">{:L('PUBLIC_ADMIN_INFO')}</th>
+  				<th class="line_l">{:L('PUBLIC_ADMIN_NOTHING')}</th>
+  			</tr>
+  			<volist name='pageKeyList' id='pk'>
+  			<php> 
+  			$key = $pk;
+  			$keyType = $pageKeyData['key_type'][$key];</php>
+  			<tr overstyle="on">
+  				<td> <input type="hidden" name='key[]' value='{$pk}'> {$pk}</td>
+  				<td><input type="text" name='key_name[]' value='{$pageKeyData['key_name'][$key]}' class="s-txt" /></td>
+  				<td><select name='key_type[]'>
+  					<option value='text' <eq name='keyType' value='text'> selected="selected"</eq>>{:L('PUBLIC_INPUT_TEXT')}</option>
+  					<option value='password' <eq name='keyType' value='password'> selected="selected"</eq>>{:L('PUBLIC_INPUT_PASSWORD')}</option>
+  					<option value='select' <eq name='keyType' value='select'> selected="selected"</eq>>{:L('PUBLIC_SELECT')}</option>
+  					<option value='radio' <eq name='keyType' value='radio'> selected="selected"</eq>>{:L('PUBLIC_RADIO')}</option>
+  					<option value='checkbox' <eq name='keyType' value='checkbox'> selected="selected"</eq>>{:L('PUBLIC_CHAECKBOX')}</option>
+  					<option value='date' <eq name='keyType' value='date'> selected="selected"</eq>>{:L('PUBLIC_DATE')}</option>
+  					<option value='textarea' <eq name='keyType' value='textarea'> selected="selected"</eq>>{:L('PUBLIC_TEXTAREA')}</option>
+  					<option value='word' <eq name='keyType' value='word'> selected="selected"</eq>>{:L('PUBLIC_WORD')}</option>
+  					<option value='hidden' <eq name='keyType' value='hidden'> selected="selected"</eq>>{:L('PUBLIC_INPUT_HIDDEN')}</option>
+  					<option value='file' <eq name='keyType' value='file'> selected="selected"</eq>>{:L('PUBLIC_INPUT_FILE')}</option>
+  				</select></td>
+  				<td><input type='text' name='key_default[]' value='{$pageKeyData['key_default'][$key]}' class="s-txt"></td>
+  				<td><input type='text' name='key_tishi[]' value='{$pageKeyData['key_tishi'][$key]}' class="s-txt"></td>
+  				<td><input type='text' name='key_javascript[]' value='{$pageKeyData['key_javascript'][$key]}' class="s-txt"></td>
+  				 <!--<td style="background-color:#1E325C">
+  				<a onclick="admin.moveUp($(this))" class="ico_top" title="上移"><img src="{:THEME_PUBLIC_URL}/admin/image/zw_img.gif"></a> &nbsp;&nbsp;
+  				<a onclick="admin.moveDown($(this))" class="ico_btm" title="下移"><img src="{:THEME_PUBLIC_URL}/admin/image/zw_img.gif"></a>
+  				</td> -->
+  			</tr>
+  			</volist>
+  		</table>
+  		<div class="page_btm">
+	      <input type="submit" class="btn_b" value="{:L('PUBLIC_CONFIRM')}" />
+	    </div>
+	    </form>
+  	</div>
+  	<!-- END PAGE_CONFIG -->
+  
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+  
+  <!-- START CONFIG_FORM -->
+  <php> if($pageKeyData=='null'){</php>
+  		{:L('PUBLIC_PLEASE')}<span onclick="admin.fold('page_config')">{:L('PUBLIC_PAGE_CONFIGURATION')}</span>
+  <php>}else{</php>
+  
+   <form method="POST" action="{$savePostUrl}" >
+  	<input type="hidden" name='systemdata_list' value="{$systemdata_list}" />
+  	<input type="hidden" name='systemdata_key' value="{$systemdata_key}" />  
+  	<input type="hidden" name='pageTitle' value="{$pageTitle}" />
+  	<div class="form2">
+  	<volist name='pageKeyList' id='pk'>
+  	<php> 
+  	$key = $pk;
+  	$defaultS = isset($detailData[$pk]) ? $detailData[$pk] : $pageKeyData['key_default'][$key]; 
+  	$event = $pageKeyData['key_javascript'][$key];
+  	$keyName = $pageKeyData['key_name'][$key] ? $pageKeyData['key_name'][$key] :$pk; 
+  	$keyType = $pageKeyData['key_type'][$key] ? $pageKeyData['key_type'][$key] :'text';
+  	
+  	if($keyType != 'hidden'):/*非隐藏域*/ 
+  	</php>
+    <dl class="lineD">
+      <dt>{$keyName}：</dt>
+      <dd>
+    <php>endif; /*非隐藏域*/ </php>  
+      	<php>if($keyType == 'text'):</php>
+      	<input name="{$pk}" id="form_{$pk}" type="text" value="{$defaultS}" <neq name='event' value=''> onfocus = "{$event}"</neq>  class='s-txt' style='width:200px'>
+      	<php>endif;</php>
+        
+        <php>if($keyType == 'password'):</php>
+      	<input name="{$pk}" id="form_{$pk}" type="password" value="{$defaultS}" <neq name='event' value=''> onfocus = "{$event}"</neq>  class='s-txt' style='width:200px'>
+      	<php>endif;</php>
+      	
+      	<php>
+      	if($keyType == 'select'):
+      	</php>
+      	<select name="{$pk}" id="form_{$pk}" <neq name='event' value=''> onchange = "{$event}"</neq>>
+      		<php>foreach($opt[$pk] as $sk=>$sv):</php>
+      			<option value="{$sk}" <php>if($sk == $defaultS):</php> selected="selected" <php>endif;</php>>{$sv}</option>
+      		<php> endforeach;</php>
+      	</select>
+      	<php>endif;</php>
+      	
+      	<php>
+      	if($keyType == 'radio'):
+      		$nums = count($opt[$pk]);
+      		$tempi = 1;
+      		foreach($opt[$pk] as $sk=>$sv):
+      		  $br = $nums >=6  && $tempi%3==0 ? '<br/>':'';
+      		  $tempi++; 
+      	</php>
+        <label><input type="radio" name="{$pk}" value='{$sk}' <php>if($sk == $defaultS):</php> checked="checked"<php>endif;</php> <neq name='event' value=''> onclick = "{$event}"</neq> >{$sv} </label> {$br}           		
+      	<php>endforeach; endif;</php>
+      	
+      	
+      	<php>
+      	/* checkBox 默认值是以","隔开的字符串,表示可以选多个  */
+      	if($keyType == 'checkbox'):
+      		$defaultS = !is_array($defaultS) ? explode(',',trim($defaultS,',')) : $defaultS;
+      		foreach($opt[$pk] as $sk=>$sv):
+      	</php>	
+      	<label><input type="checkbox" name="{$pk}[]" value='{$sk}' <php>if(in_array($sk,$defaultS)):</php> checked="checked"<php>endif;</php> <neq name='event' value=''> onclick = "{$event}"</neq> >{$sv} </label>
+      	<php>endforeach; endif;</php>
+      	
+      	
+      	<php>
+      	/* 日期插件 */
+      	if($keyType == 'date'):</php>
+      	<input name="{$pk}" type="text" class="text" id="form_{$pk}" value='{$defaultS}' onfocus="core.rcalendar(this,'full');" readonly="readonly" style="width:200px;" class='s-txt'/>
+      	<php>endif;</php>
+      	
+      	<php>if($keyType == 'textarea'):</php>
+      	<textarea  name="{$pk}" id="form_{$pk}" rows="10" cols="80" <neq name='event' value=''> onfocus = "{$event}"</neq>>{$defaultS}</textarea>
+      	<php>endif;</php>
+      	
+      	<php>if($keyType == 'word'):</php>
+      	<input name="{$pk}" id="form_{$pk}" type="hidden" value="{$defaultS}" class='s-txt'> 
+      	<label <neq name='event' value=''> onclick= "{$event}"</neq>> &nbsp;{$defaultS}</label>
+      	<php>endif;</php>
+      	
+      	<php>if($keyType == 'hidden'):</php>
+      	<input name="{$pk}" id="form_{$pk}" type="hidden" value="{$defaultS}">
+      	<php>endif;</php>
+      	
+      	<php>if($keyType == 'file'):</php>
+      	<input name="{$pk}" inputname="{$pk}" id="form_{$pk}" type="text" value="{$defaultS}" <neq name='event' value='' > onchange = "{$event}"</neq> class='s-txt' style='width:200px'>
+      	<php>endif;</php>
+      	
+        <php> if(!empty($pageKeyData['key_tishi'][$key])){</php>
+        <p>{$pageKeyData['key_tishi'][$key]}</p>
+        <php> }</php>
+       
+    <php>if($keyType != 'hidden'): /*非隐藏域*/</php> 
+    </dl>
+    <php>endif; /*隐藏域*/ </php>
+	</volist>
+    
+    
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="确定" />
+    </div>
+  	</div>
+  	</form>
+  	
+   <php> } </php>
+   <!-- END CONFIG_FORM -->
+</div>
+<include file="admin_footer" />

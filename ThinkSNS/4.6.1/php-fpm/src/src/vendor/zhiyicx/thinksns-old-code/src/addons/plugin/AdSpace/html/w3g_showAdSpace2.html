@@ -1,0 +1,16 @@
+<volist name="data" id="vol">
+	<php>if($vol['display_type'] == 3):</php>
+	    <script type="text/javascript">
+	        //所有的数据
+	            <volist name="vol.content" id="vo">
+	            	list['{:$i-1}'] = [];
+	            	list['{:$i-1}']['url'] = "{$vo.bannerurl}";
+	            	list['{:$i-1}']['height'] = "auto";
+	            	list['{:$i-1}']['width'] = "{$width}";
+	            	list['{:$i-1}']['img'] = "{$vo.bannerpic}";
+	            </volist>
+      	</script>
+	<php>else:</php>
+	<div style="<neq name="top" value="0">margin-top:{$top}px;</neq><neq name="width" value="0">width:{$width}px;overflow:hidden;</neq>">{$vol['content']}</div>
+	<php>endif;</php>
+</volist>

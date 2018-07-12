@@ -1,0 +1,96 @@
+<div class="person-info clearfix login-status-box">
+  <dl class="person-info-t clearfix">
+    <dt><a href="{$userInfo.space_url}"><img src="{$userInfo.avatar_big}" /></a><a href="{:U('public/Account/avatar')}" class="face">换头像</a></dt>
+    <dd>
+      <div class="name"> <a href="{$userInfo.space_url}">{$userInfo.uname}</a> 
+      </div>
+      <div class="user-grade clearfix" data-url="{:U('public/Account/scoredetail')}">
+        <span class="grade">等级: {:intval($userInfo['credit_info']['level']['level'])}</span><volist name='userCredit.credit' id='vo'><span class="grade">{$vo.alias}: {:intval($vo['value'])}</span></volist>
+      </div>
+    </dd>
+  </dl>
+  <ul class="person-info-b clearfix">
+    <li><a href="{:U('public/Profile/index',array('uid'=>$userInfo[uid]))}">分享: <h6>{$userData.weibo_count|default=0}</h6></a></li>
+    <li><a href="{:U('public/Profile/collection', array('tab'=>'collect','uid'=>$userInfo[uid]))}">收藏: <h6>{$userData.favorite_count|default=0}</h6></a></li>
+    <li><a href="{:U('public/Profile/following', array('tab'=>'following','uid'=>$userInfo[uid]))}">关注: <h6>{$userData.following_count|default=0}</h6></a></li>
+    <li><a href="{:U('public/Profile/follower', array('tab'=>'follow','uid'=>$userInfo[uid]))}">粉丝: <h6>{$userData.follower_count|default=0}<span class="new_folower_count"></span></h6></a></li>
+  </ul>
+  {:W('MedalList')} </div>
+<script type="text/javascript">
+/* # 点击等级等进入积分页面 */
+$(function() {
+	$('.user-grade').css('cursor', 'pointer')
+	                .attr('title', '点击查看我的积分')
+	                .on('click', function(event) {
+	  event.preventDefault();
+	  window.location.href = $(this).data('url');
+	});
+});
+
+// 事件监听
+M.addEventFns({
+	ico_level_right: {
+		load: function() {
+			var offset = $(this).offset();
+			var top = offset.top + 23;
+			var left = offset.left -10;
+			var html = '<div id="layer_level_right" class="layer-open experience" style="display:none;position:absolute;z-index:9;top:'+top+'px;left:'+left+'px;">\
+						<dl>\
+						<dd>{:L('PUBLIC_USER_LEVEL')}：{$userCredit.level.name}</dd>\
+						<dd>{:L('PUBLIC_USER_POINTS_CALCULATION',array('num'=>$userCredit['credit']['experience']['value'],'experience'=>$userCredit['creditType'][$userCredit['level']['level_type']]))}</dd>\
+						<dd class="textb">{:L('PUBLI_USER_UPGRADE_TIPS',array('num'=>$userCredit['level']['nextNeed'],'experience'=>$userCredit['creditType'][$userCredit['level']['level_type']]))}</dd>\
+						</dl>\
+						</div>';
+			$("body").append(html);
+
+			this._model = document.getElementById("layer_level_right");
+		},
+		mouseenter: function() {
+			var offset = $(this).offset();
+			var width = $(window).width();
+			if ($(window).width() > $(this._model).width() + offset.left) {
+				$(this._model).css('left', offset.left);
+			} else {
+				$(this._model).css('left', offset.left - $(this._model).width() + $(this).width());
+			}
+			$(this._model).css('display', 'block');
+		},
+		mouseleave: function() {
+			$(this._model).css('display', 'none');
+		}
+	},
+	ico_wallet_right: {
+		load: function() {
+			var offset = $(this).offset();
+			var top = offset.top + 23;
+			var left = offset.left - 20;
+			var html = '<div id="layer_wallet_right" class="layer-open scale" style="display:none;position:absolute;top:'+top+'px;left:'+left+'px;">\
+						<dl>\
+						<dt></dt>\
+						<dd>{:L('PUBLIC_USER_POINTS_CALCULATION',array('num'=>intval($userCredit['credit']['score']['value']),'experience'=>$userCredit['creditType']['score']))}</dd>\
+						</dl>\
+						</div>';
+			$("body").append(html);
+			this._model = document.getElementById("layer_wallet_right");
+		},
+		mouseenter: function() {
+			$(this._model).css('display', 'block');
+		},
+		mouseleave: function() {
+			$(this._model).css('display', 'none');
+		}
+	},
+	show_medal:{
+		click:function (){
+			var status = $(this).children().attr('class');
+			if ( status == 'arrow-next-page'){
+				$(this).children().attr('class','arrow-previous-page');
+				$("li[status='hide']").show();
+			} else {
+				$(this).children().attr('class','arrow-next-page');
+				$("li[status='hide']").hide();
+			}
+		}
+	}
+}); 
+</script>

@@ -1,0 +1,278 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/invite.css" rel="stylesheet" type="text/css" />
+    <div id="page-wrap">
+        <div id="main-wrap">
+            <div id="col" class="st-grid content-bg st-bg-b cc">
+              <div id="col4" class="main-left">
+                    <!--tab菜单--><include file="../Account/_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                    <div class="extend minh person-set">
+                        <div class="set-hd"><h3>{$tabName}</h3></div>
+                        <div class="invite-links">
+			              <ul>
+			                <volist name="codeList" id="vo">
+			                <li style="overflow:hidden;padding:5px 0;width:100%;">
+			                  <div class="left">
+			                    <input style="width:400px;height:30px" type="text" class="text" style="width:450px;" onfocus="this.className='text2'" onblur="this.className='text'"  name="intro[{$vo.field}]" value="{:SITE_URL}/index.php?invite={$vo.code}"/>
+			                  </div>
+			                  <div class="left ml5">
+			                    <embed width="90" height="36" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" allowscriptaccess="sameDomain" wmode="transparent" quality="high" src="__APP__/copy.swf" flashvars="txt={:SITE_URL}/index.php?invite={$vo.code}">
+			                  </div>
+			                </li>
+			                </volist>
+			              </ul>
+			            </div>
+			            <php>if($count == 0):</php>
+			            <div>你当前邀请名额已用完，<a href="javascript:;" onclick="applyInviteCode({$GLOBALS['ts']['mid']}, 'link')" class="btn-green-big" style="width:110px">领取邀请码</a></div>
+			            <php>endif;</php>
+                        <div class="invite-user-list">
+                          <php>if(empty($inviteList['data'])):</php>
+                          <p class="f9">当前无邀请好友</p>
+                          <php>else:</php>
+                          <p class="f9">已邀请好友：</p>
+                          <ul>
+                            <li><div class="w3">昵称</div><div class="w1">邮箱</div></li>
+                            <volist name="inviteList.data" id="vo">
+                            <li>
+                              <div class="w3"><a href="{$vo.space_url}" class="mr5"><img src="{$vo.avatar_small}" width="30" height="30"/></a><a href="{$vo.space_url}">{$vo.uname}</a></div>
+                              <!-- 去掉邮箱链接 -->
+                              <!-- <div class="w1 line-h"><a href="{$vo.space_url}">{$vo.email}</a></div> -->
+                              <div class="w1 line-h">{$vo.email}</div>
+                            </li>
+                            </volist>
+                          </ul>
+                          <div class="page">{$inviteList.html}</div>
+                          <php>endif;</php>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+/**
+ * 验证邮箱是否合理
+ * @param object inputId 输入邮箱内容的input对象
+ * @return object 验证邮箱对象
+ */
+var checkEmailBox = function(inputId)
+{
+  // 验证参数是否正确
+  if(typeof inputId === "undefined") {
+    return false;
+  }
+  // 返回的实例化对象
+  var that = {};
+  // 获取验证数据
+  that.getIsValid = function()
+  {
+    return isValid;
+  };
+  // 获取邮箱的值
+  that.getValue = function()
+  {
+    return $.trim($input.val());
+  };
+  // 原始数据
+  var oldVal = '';
+  // 列表Li索引
+  var indexLi = -1;
+  // 验证是否成功
+  var isValid = false;
+  // 设置JQuery对象
+  var $input = $('#'+inputId);
+  // 获取邮件后缀
+  if($.trim($input.attr('suffix')) == '') {
+    isValid = true;
+    return that;
+  }
+  var suffix = $input.attr('suffix').split(',');
+  // 下拉框对象
+  var offset = $input.offset();
+  //var width = $input.outerWidth();
+  var dropDown = '<div style="width:430px;display:none;position:absolute;left:'+offset.left+'px;top:'+(offset.top+29)+'px;" class="mod-at-wrap mod-at"><ul class="at-user-list">';
+  for(var i = 0; i < suffix.length; i++) {
+    dropDown += '<li email="'+suffix[i]+'" rel="show"><a href="javascript:;"><span></span></a></li>';
+  }
+  dropDown += '</ul></div>';
+  var $dropDown = $(dropDown);
+  $('body').append($dropDown);
+  // 输入框改变内容
+  var valChange = function()
+  {
+    var tex = $input.val();
+    var fronts = '';
+    var af = /@/;
+    var regMail = new RegExp(tex.substring(tex.indexOf('@')));
+    if(tex == '') {
+      blusDropDown();
+    } else {
+      $dropDown.show().find('li').each(function() {
+        var valAttr = $(this).attr('email');
+        if(af.test(tex)) {
+          fronts = tex.substring(tex.indexOf('@'), 0);
+          $(this).text(fronts + valAttr);
+          if(regMail.test($(this).attr('email'))) {
+            $(this).attr('rel', 'show');
+            $(this).css({position:'static', visibility:'inherit'});
+          } else {
+            $(this).attr('rel', 'hide');
+            $(this).css({position:'absolute', visibility:'hidden'});
+          }
+        } else {
+          $(this).text(tex + valAttr);
+        }
+      });
+    }
+  };
+  // 隐藏下拉框列表
+  var blusDropDown = function()
+  {
+    $dropDown.hide();
+  };
+  // 浏览器输入兼容性
+  if($.browser.msie) {
+    $input.bind('propertychange', function() {
+      $(this).val() != oldVal && valChange();
+    });
+  } else {
+    $input.bind('input', function() {
+      valChange();
+    });
+  }
+  // 选中上下移动
+  var keyChange = function(up) {
+    if(up == "up") {
+      if(indexLi == 0) {
+        indexLi = $dropDown.find('li[rel="show"]').length - 1;
+      } else {
+        indexLi--;
+      }
+    } else {
+      if(indexLi == $dropDown.find('li[rel="show"]').length - 1) {
+        indexLi = 0;
+      } else {
+        indexLi++;
+      }
+    }
+    $dropDown.find('li[rel="show"]').eq(indexLi).addClass("current").siblings().removeClass(); 
+  };
+  // 绑定按键事件
+  $input.keydown(function(event) {
+    if(event.which == 38) {
+      // 按上
+      keyChange("up");
+    } else if(event.which == 40) {
+      // 按下
+      keyChange();
+    } else if(event.which == 13) {
+      // 按回车
+      var liVal = $dropDown.find('li[rel="show"]').eq(indexLi).text();
+      $input.val(liVal);
+      $input.blur();
+      blusDropDown();
+    }
+  });
+  // 给Li绑定点击事件
+  $(document).click(function(event) {
+    if($(event.target).is('li') && typeof $(event.target).attr('email') !== 'undefined') {
+      var liVal = $(event.target).text();
+      $input.val(liVal);
+      oldVal = liVal;
+    }
+    blusDropDown();
+  });
+  // 绑定验证邮箱内容正确性
+  $input.bind('blur', function() {
+    setTimeout(function() {
+      checkEmailValue();
+    }, 300);
+  });
+  // 验证邮件正确性
+  var checkEmailValue = function() {
+    // 获取邮件内容
+    var email = $.trim($input.val());
+    if(email == '') {
+      return false;
+    }
+    // 验证邮箱是否可用
+    $.post(U('public/Invite/checkInviteEmail'), {email:email}, function(res) {
+      var icoClass = '';
+      if(res.status) {
+        icoClass = 'ico-ok';
+        res.info = '<font style="color:green;">该邮箱可以使用</font>';
+        isValid = true;
+      } else {
+        icoClass = 'ico-error';
+        isValid = false;
+      }
+      var html = '<span><b class="' + icoClass + '"></b>' + res.info + '</span>';
+      $('#prompt_box').css('display', '');
+      $('#prompt_box').html(html);
+    }, 'json');
+  };
+
+  return that;
+};
+
+var inviteEmail = checkEmailBox('check_email');
+
+/**
+ * 发送邮件邀请操作
+ */
+var doInviteEmail = function()
+{
+  if(inviteEmail.getIsValid()) {
+    // 获取邮件内容
+    var email = $('#check_email').val();
+    // 验证邮箱是否可用
+    $.post(U('public/Invite/doInvite'), {email:email}, function(res) {
+      if(res.status) {
+        ui.success(res.info);
+        return false;
+      } else {
+        ui.error(res.info);
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
+        return false;
+      }
+    }, 'json');
+  }
+  return false;
+};
+// 获取焦点
+$(function() {
+  $('#check_email').focus();
+});
+
+/**
+ * 申请邀请码操作
+ * @param integer uid 用户ID
+ * @param string type 申请邀请码类型
+ * @return void
+ */
+var applyInviteCode = function(uid, type)
+{
+  // 验证参数正确性
+  if(typeof uid === 'undefined' || typeof type === 'undefined') {
+    return false;
+  }
+  // 提交申请邀请码操作
+  $.post(U('public/Invite/applyInviteCode'), {uid:uid, type:type}, function(res) {
+    if(res.status) {
+      ui.success(res.info);
+      setTimeout(function() {
+        location.href = location.href;
+      }, 1500);
+      return false;
+    } else {
+      ui.error(res.info);
+      return false;
+    }
+  }, 'json');
+  return false;
+};
+</script>
+<include file="__THEME__/public_footer" />

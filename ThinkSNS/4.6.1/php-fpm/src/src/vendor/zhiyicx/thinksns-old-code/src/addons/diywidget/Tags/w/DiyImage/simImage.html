@@ -1,0 +1,8 @@
+<div class="diy_layout_box diy_image_model">
+	<php>
+	$title = $image->image->title;
+	$path = $image->image->path;
+	$url=$image->image->url;
+	</php>
+	<a <php>if(!empty($url)){echo 'href="'.$url.'"';}</php> title="{$title}" ><img src="{$path}"></a>
+</div>

@@ -1,0 +1,77 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/profile.css" rel="stylesheet" type="text/css" />
+    <div id="page-wrap">
+        <div id="main-wrap" style="width:840px">
+            <div id="col" class="st-grid">
+                <div class="profile-border"></div>
+                <php>if($userPrivacy['space'] != 1){</php>
+                <div class="profile-data">
+                    <div class="head">
+                        <img src="{$user_info[$uid]['avatar_middle']}"/>
+                        <p>{$user_info[$uid]['uname']}</p>
+                    </div>
+                    <div class="data">
+                        <div class="profile-datalist">
+                            <div class="title">
+                                <span>基本信息</span>
+                                <if condition="$uid eq $mid">
+                                <span class="edit"><a href="{:U('public/Account/index')}">编辑</a></span>
+                                </if>
+                                <hr/>
+                            </div>
+                            <ul class="info">
+                                <li><label class="info-l">{:L('PUBLIC_REAL_NAME')}：</label><label class="info-r">{$user_info[$uid]['uname']}</label>&nbsp;</li>
+                                <li><label class="info-l">{:L('PUBLIC_GENDER')}：</label><label class="info-r"><php>echo $user_info[$uid]['sex'] == 1 ? L('PUBLIC_MALE') : L('PUBLIC_FEMALE');</php></label>&nbsp;</li>
+                                <php>if(!empty($user_info[$uid]['intro'])){</php><li><label class="info-l">地区：</label><label class="info-r">{$user_info[$uid]['location']}</label>&nbsp;</li><php>}</php>
+                                <php>if(!empty($user_info[$uid]['intro'])){</php><li><label class="info-l">个人简介：</label><label class="info-r">{$user_info[$uid]['intro']}</label>&nbsp;</li><php>}</php>
+                                <li><label class="info-l">标签：</label>
+                                    <label class="info-r">
+                                    <volist name="userTags" id="vo">
+                                        {$vo}&nbsp;
+                                    </volist>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    <volist name='ProfileType' id='vo'>
+                        <div class="profile-datalist">
+                            <div class="title">
+                                <span>{$vo['field_name']}</span>
+                                <if condition="$uid eq $mid">
+                                    <span class="edit"><a href="{:U('public/Account/'.$vo['field_key'])}">编辑</a></span>
+                                </if>
+                                <hr/>
+                            </div>
+                            <ul class="info">
+                                <volist name='user_profile_setting' id='ups'>
+                                    <php>if(!empty($user_profile[$uid][$ups['field_id']]) && $ups['field_type'] == $vo['field_id'] && !empty($user_profile[$uid][$ups['field_id']]['field_data'])){</php>
+                                        <li>
+                                            <label class="info-l">{$ups['field_name']}：</label>
+                                            <label class="info-r">
+                                                <php> 
+                                                    $d = $user_profile[$uid][$ups['field_id']]['field_data'];
+                                                    if(!empty($d)){
+                                                        if($key == 'department') $d = trim($d,'|');
+                                                        if($key == 'work_director') $d = $user_info[$d]['space_link'];
+                                                    }
+                                                    if($ups['form_type'] == 'date') $d = date('Y-m-d',$d);
+                                                    echo $d;      
+                                                </php>
+                                            </label>
+                                            &nbsp;
+                                        </li>
+                                    <php>}</php>
+                                </volist>
+                            </ul>
+                        </div>
+                    </volist>
+                    </div>
+                </div>
+                <php>}else{</php>
+                    <p class="extend">-_-。sorry！根据对方隐私设置，您无权查看TA的主页</p>
+                <php>}</php>
+            </div>
+        </div>
+    </div>
+<include file="__THEME__/public_footer" />
+<script src="__THEME__/js/module.weibo.js"></script>

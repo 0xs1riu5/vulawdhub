@@ -1,0 +1,36 @@
+<div class="form2">
+   <form method="post"  action="{:Addons::adminUrl('config')}">
+    
+        <dl class="lineD">
+            <dt>
+                背景图片：
+            </dt>
+            <dd>
+            	<php>$upkey=1;</php>
+                <div>
+                    <div id="divup_{$upkey}" type="file" rel="{$upkey}">
+                    <input type="file" name="attach" rel="{$upkey}" onchange="admin.upload('bgimg',this)" urlquery='attach_type=feed_image&upload_type=image&thumb=1'></div>
+                   <div id='show_bgimg'>
+                    <php>if($config['bgimg'] && is_numeric($config['bgimg'])){</php>
+                      <img src="{$config['bgimg']|getImageUrlByAttachId}" class="pic-size">
+                    <php>}</php>
+                  </div>
+                   <input name="bgimg" id="form_bgimg" type="hidden" value="{$config['bgimg']}" class="s-txt" style="width:200px;" />
+                </div>
+                <php>$upkey++;</php>
+            </dd>
+        </dl>
+        <dl class="lineD">
+            <dt>邀请机制：</dt>
+            <dd>
+            <script type="text/javascript"> window._edithtml=true; </script>{:W('Editor',array('width'=>'550px','height'=>'200','contentName'=>'rule','value'=>$config['rule']))}
+            </dd>
+        </dl>
+        <div class="page_btm">
+            <dt>&nbsp;</dt>
+            <dd style="text-align:left">
+                <input type="submit" class="btn_b" value="确定" />
+            </dd>
+        </div>
+    </form>
+</div>

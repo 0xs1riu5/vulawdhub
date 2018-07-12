@@ -1,0 +1,14 @@
+ <select name='group_action'>
+ 	<option value='0'>{:L('PUBLIC_ALL_STREAM')}</option>
+	<volist name='list' id ='l'>
+		<optgroup label="{$l.info}">
+		<php>
+			foreach($l['_rule'] as $k=>$v){
+				$selected = (($key."-".$k)==$def) ? 'selected="selected"' : '';
+				echo '<option value="',$key,'-',$k,'" ',$selected,' >',$v,'</option>';
+			}
+		</php>
+		</optgroup>
+	</volist>
+	<optgroup></optgroup>
+</select>

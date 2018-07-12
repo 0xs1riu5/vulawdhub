@@ -1,0 +1,96 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/login.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+  <div class="reg-wrap"> 
+    <!--<div class="title">完善职业信息</div>-->
+    <div class="reg-main clearfix">
+      <div class="step-main">
+        <ul>
+          <li><i class="step1"></i><span>填写注册信息</span><b class="step-line"></b></li>
+          <li><i class="step2"></i><span>上传头像</span><b class="step-line"></b></li>
+          <li class="on"><i class="step3-on"></i><span>填写基本信息</span><b class="step-lineOn"></b></li>
+          <li><i class="step4"></i><span>选择感兴趣的人</span></li>
+        </ul>
+      </div>
+      <form id="ajax_register_form" action="{:U('public/Register/doStep3')}" method="post">
+        <div class="choosed-info">
+          <div class="rectangle">
+            <h2>我的性别</h2>
+            <div class="sex-area clearfix">
+              <label>
+                <input type="radio" name="sex" value="1" checked="checked"/>
+                男</label>
+              <label>
+                <input type="radio" value="2" name="sex"/>
+                女</label>
+            </div>
+          </div>
+          <div class="rectangle">
+            <h2>所在地区</h2>
+            <div class="from-area clearfix"> {:W('Areas',array('curPro'=>0,'curCity'=>0,'area'=>0,'tpl'=>'selectArea','impotid'=>'3273','impotval'=>'', 'required'=>in_array('location', $required)))} </div>
+          </div>
+          <div class="rectangle">
+            <h2>选择标签</h2>
+            <div class="mt20 clearfix mb20"> {:W('UserCategorys', array('tpl'=>'pop', 'required'=>in_array('tag', $required)))} </div>
+          </div>
+          <div class="rectangle">
+            <h2>介绍自己</h2>
+            <div class="mt20 clearfix mb20"> <textarea class="selfdescription" name="intro"></textarea></div>
+          </div>
+        </div>
+        <div> <a class="disable fr" href="javascript:;" onclick="doStep3()">下一步</a>
+        
+        <if condition="$skip != 'false'">
+        <a class="gray fl"  href="{:U('public/Register/step4')}">跳过</a>
+        </if>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" />
+<script>
+// sex:1
+// province:1989
+// city:1990
+// area:1992
+// city_ids:1989,1990,1992
+// city_names:内蒙古 呼和浩特市 回民区
+// input_city:
+// user_tags:
+// intro:
+var doStep3 = function(){
+  //性别
+  var sex = $('input:radio[name="sex"]:checked').val();
+  //地区
+  var province = $("#province option:selected").val();
+  var city = $("#city option:selected").val();
+  var area = $("#area option:selected").val();
+  var city_ids = $("input[name='city_ids']").val();
+  var city_names = $("input[name='city_names']").val();
+  var input_city = $("input[name='input_city']").val();
+  //标签
+  var user_tags = $("input[name='user_tags']").val();
+  //简介
+  var intro = $("textarea[name='intro']").val();
+  var data = {
+    sex:sex,
+    province:province,
+    city:city,
+    area:area,
+    city_ids:city_ids,
+    city_names:city_names,
+    input_city:input_city,
+    user_tags:user_tags,
+    intro:intro
+  };
+
+  $.post(U('public/Register/doStep3'),data,function(res) {
+    if(res.status == 0){
+      ui.error(res.info);
+    }else{
+      location.href = "{:U('public/Register/step4')}";
+    }
+  },'json');
+}
+</script>

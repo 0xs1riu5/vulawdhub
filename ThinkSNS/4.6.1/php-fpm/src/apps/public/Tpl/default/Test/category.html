@@ -1,0 +1,58 @@
+<include file="__THEME__/public_header" />
+<style type="text/css">
+.mod-tree-menu {
+    border-color: #B1D499 #EBEBEB #EBEBEB;
+    border-style: solid;
+    border-width: 3px 1px 1px;
+    margin: 30px 0 0;
+    padding: 10px;
+}
+.second-menu {
+    border-bottom: 1px solid #EBEBEB;
+    padding: 5px 0 5px 15px;
+}
+.ico-minus {
+    background-position: 0 -110px;
+}
+.current{color:#555555}
+</style>
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px">
+                <ul>
+                <li>示例1：{:W('Category',array('app_name'=>'support','model_name'=>'SupportCategory','method'=>'getCnCate','tpl'=>'select','id'=>0))}</li>
+                <li>示例2：{:W('Category',array('app_name'=>'support','model_name'=>'SupportCategory','method'=>'getEnCate','tpl'=>'select','id'=>4,'inputname'=>'category_en'))}</li>
+                <li>
+                    示例3,2级别展示：
+                    {:W('Category',array('app_name'=>'support','model_name'=>'SupportCategory','method'=>'getCnTree','tpl'=>'two','id'=>4,'cate_url'=>'xxxx'))}
+
+                </li>
+                <li>
+                    示例4,菜单形式展示：<br/><br/>
+                    {:W('Category',array('app_name'=>'support','model_name'=>'SupportCategory',
+                    'method'=>'getCnCate','tpl'=>'menu','id'=>4,'cate_url'=>'xxxx','pid'=>0))}
+
+                </li>
+                </ul>
+            </div>
+<div>
+    <pre>
+        调用：W('Category',array('app_name'=>'support','model_name'=>'SupportCategory','method'=>'getEnCate','tpl'=>'select','id'=>4,'inputname'=>'category_en'))
+        参数说明：具体使用请看此demo里面的源代码
+        app_name:   此分类所在的应用名称
+        model_name: 分类model名称
+        method      分类model中根据某个id获取对应分类信息的函数
+        tpl         显示模版：分select和menu两种，select为选择分类形式，menu为菜单形式
+        id          当前分类ID
+        inputname   分类存储的input字段名称，只针对tpl=select 有效
+        title       自定义点击项的名称，只针对tpl=select有效
+        cate_url    分类的URL前缀，针对tpl=menu或者tpl=two有效
+        pid         当前分类的父级ID，针对tpl=menu有效
+    </pre>
+</div>
+        </div>
+    </div>
+</div>
+
+<include file="__THEME__/public_footer" />

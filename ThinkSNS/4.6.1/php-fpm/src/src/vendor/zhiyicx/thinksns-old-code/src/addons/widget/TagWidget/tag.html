@@ -1,0 +1,274 @@
+<script src="__THEME__/js/autocomplete/jquery.autocomplete.js"></script>
+<link rel="stylesheet" href="__THEME__/js/autocomplete/jquery.autocomplete.css" />
+
+<div id="post-tag" style="width:{$width}" model-node='post_tag'>
+	  <div id="selected_tag_list" class="Tag_list02">  	
+		<div class="tag-lists">
+		    <ul class="taglist">
+	    		<volist name="tags" id="_tag">
+		        	<li id="tag_{$key}" class=""><a href="javascript:;" class="tag btn-cancel" id="tag_info_{$key}"><span>{$_tag}<i href="#" onclick="return deleteTag({$key})" class="ico-close1" title="{:L('Delete')}"></i></span></a>
+	        		<if condition="!$row_id"><input type="hidden" name="tag[]" value="{$_tag}" /></if></li>
+	    		</volist>
+		    </ul>
+		</div>
+	</div>	
+	<div class="con tag_thinkbar">
+		<div class="tag_think_input">
+			<div id="ui-search-tags">
+			  <div class="ui-fs inputsubBg" id="ui-fs-tags" style="">
+				  <input event-node="input_tags" type="text" name="{$name}" id="ts_tag_search_handle" class="{$class}"  
+				  value = "{:L('PUBLIC_TAG_TIPS')}" onfocus="if(this.value == '{:L('PUBLIC_TAG_TIPS')}')this.value='';"
+				  onblur = "if(this.value == '') this.value='{:L('PUBLIC_TAG_TIPS')}';" /> 
+					<div class="ui-fs-all" id="ui-fs-tags-all-handle" style="display:none">
+				  	<div class="top"></div>
+					</div>
+			  </div>
+	          <b id="ts_tag_flag_tip" style="left:555px;*left:545px;*top:5px"></b>
+			  <div id="ts_tag_searchhandle_tip">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<input type="hidden" name="{$name}_tags" id="ts_tag_search_value" value="<php>if(is_array($tags)){ echo implode(',', array_flip($tags));}</php>" />
+<div id="ts_tag_search_save_data" style="display:none"></div>
+<script type="text/javascript"> 
+var tag_search_data = $('#ts_tag_search_save_data');
+var tag_search_url = '{:U('public/Search/searchTag')}';
+var tag_url = '{:U('public/Search/getTag')}';
+var add_url = '{$add_url}';
+var delete_url = '{$delete_url}';
+var row_id = '{$row_id|intval}';
+var doaddTag = 0;
+
+$(function(){
+	$('#post-tag').click(function(e){
+		if(e.target.nodeName != 'A'){
+			$('#ui-fs-tags').find('input').focus();
+		}
+	})	
+});
+function search_tags()
+{
+	
+	$("#ts_tag_search_handle").autocomplete(tag_search_url, {
+	    minChars: 1,
+	    width:'{$width}',
+		max:10,
+		//listenKey:13,    //13
+	    matchContains: true,
+	    autoFill: true,
+		delay:1000,
+		selectFirst: false,
+		dataType: 'json',
+	    parse:function(data){
+		     var d=data;
+		     var rows=new Array();
+			 if( d ){
+			     for(var i=0;i<d.length;i++){
+			      	rows[rows.length]={data:d[i],value:d[i].name,result:d[i].cn,type:d[i].type}
+			     }
+			     return rows;
+			}else{
+				return '';
+			}
+	    }, 
+	    formatItem: function(data) {
+		   	return data.cn;       
+	    },
+		onselected: function(row){
+			if (true == tag_search_doselected( row.data )) {
+				doaddTag = 1;
+				addTag();
+			}
+		},
+		nosearchvalue: function(value){
+			$('.ac_results').css('display', 'none');
+		}
+	});
+	$('#ts_tag_search_handle').bind('keydown',function(e){
+		var key = e.which;
+		if(key == 13 && doaddTag == 0){
+			$('.ac_results').css('display', 'none');
+			addTag();
+			setTimeout(function(){
+				$('.ac_results').css('display', 'none');
+			},200);
+			return false;
+		}
+		
+	});
+}
+search_tags();
+
+/*
+*  方法:Array.remove(dx) 通过遍历,重构数组
+*  功能:删除数组元素.
+*  参数:dx删除元素的下标.
+*/
+Array.prototype.remove=function(dx)
+{
+    if(isNaN(dx)||dx>this.length){return false;}
+    for(var i=0,n=0;i<this.length;i++)
+    {
+        if(this[i]!=this[dx])
+        {
+            this[n++]=this[i]
+        }
+    }
+    this.length-=1
+}
+//已激活用户ID
+var hasSelectedTagId = new Array();
+//未激活用户工号
+var hasSelectedNotRegTagId = new Array();
+//已选用户组ID
+//var hasSelectedGroupId = new Array();
+
+var hasSelectedTagIds    = new Array();
+
+//var select_group_to_uids   = new Array();
+
+	<php>
+	if(is_array($tags)){
+		foreach($tags as $key => $value){
+	</php>
+		hasSelectedTagIds.push( '{$key}' );
+		hasSelectedTagId.push( '{$key}' );
+	<php>
+		}
+	}
+	</php>
+
+//选择列处理数据
+function tag_search_doselected(data){
+	if( $.inArray( data.tag_id , hasSelectedTagId ) != -1 ){
+		tag_search_ShowTip( '标签'+ subStr(data.name, 15) +'已经存在！' );
+		$("#ts_tag_search_handle").val('');
+		return false;
+	}else{
+		$("#ts_tag_search_handle").val(subStr(data.name, 15));
+		//addTag();
+		return true;
+	}
+}
+
+function addTag()
+{
+	var name = $("#ts_tag_search_handle").val();
+	var data   = '';
+	if (!name) {
+		$("#ts_tag_search_handle").focus();
+		tag_search_ShowTip('请输入标签');
+		doaddTag = 0
+		return false;
+	}
+	if (row_id && add_url) {
+		$.post(add_url, {row_id:row_id,name:name}, function(msg){
+			doaddTag = 0;
+			if(msg.status == 0){
+				$('#ts_tag_search_handle').val('');
+				ui.error(msg.info);
+				return false;
+			}else{
+				for(var i in msg.data){
+					if(i !='remove'){
+						hasSelectedTagIds.push( msg.data[i].tag_id );
+						appendTagHtml( msg.data[i]);					
+					}
+				}
+				$('#ts_tag_search_handle').val('');
+				tag_search_recombine();
+			}
+			/*
+			doaddTag = 0
+			txt = eval('(' + txt + ')');
+			if (!txt.status) {
+				ui.error(txt.info);
+				return false;
+			} else {
+				data = txt.data;
+
+				hasSelectedTagIds.push( data.tag_id );
+				tag_search_recombine();
+				appendTagHtml( data );
+				$("#ts_tag_search_handle").val('');
+			}
+			*/
+		},'json');
+	} else {
+		//自动搜索并添加标签 目前已经禁用此功能
+		return false;
+		$.post(tag_url, {name:name}, function(data){
+			doaddTag = 0
+			data = eval('(' + data + ')');
+			if (data.tag_id) {
+				if (tag_search_doselected(data)) {
+					hasSelectedTagIds.push( data.tag_id );
+					tag_search_recombine();
+					appendTagHtml( data );
+					$("#ts_tag_search_handle").val('');
+				}
+			}
+		});
+	}
+	return false;
+}
+
+//重组数据
+function tag_search_recombine(){
+	hasSelectedTagId = new Array();
+	$.merge( hasSelectedTagId , hasSelectedTagIds );
+	$.unique( hasSelectedTagId );
+	$("#ts_tag_search_value").val(hasSelectedTagId);
+}
+
+//向列表中添加项
+function appendTagHtml(data){
+	var html = '';
+	html += ' <li id="tag_'+data.tag_id+'" class="btn-cancel">\
+    <span><a href="javascript:;" class="tag" id="tag_info_'+ data.tag_id +'">' + subStr(data.name, 15) + '</a>\
+    <a href="#" onclick=\'return deleteTag('+data.tag_id+')\' class="ico-close" title="{:L('Delete')}"></a>\
+    <if condition="!$row_id"><input type="hidden" name="tag[]" value="' + subStr(data.name, 15) + '" /></if></span></li>';
+	$('#selected_tag_list').find('ul').append( html );
+}
+
+//删除某个已选项
+function deleteTag(tag_id)
+{
+	if(tag_id){
+		if (row_id && delete_url) {
+			$.post(delete_url, {row_id:row_id,tag_id:tag_id}, function(txt){
+				txt = eval('(' + txt + ')');
+				if (!txt.status) {
+					ui.error(txt.info);
+					return false;
+				} else {
+					_deleteTag(tag_id)
+				}
+			});
+		} else {
+			_deleteTag(tag_id)
+		}
+	}
+	return false;
+}
+
+function _deleteTag(tag_id)
+{
+	for(var j=0;j<hasSelectedTagIds.length;j++){
+		if(tag_id == hasSelectedTagIds[j] ){
+			hasSelectedTagIds.remove(j);
+		}
+	}
+	tag_search_recombine();
+	$("#tag_"+tag_id).fadeOut("slow",function(){
+		$(this).remove();
+	});	
+}
+
+//搜索信息提示
+function tag_search_ShowTip(html){
+	ui.error(html);
+}
+</script>

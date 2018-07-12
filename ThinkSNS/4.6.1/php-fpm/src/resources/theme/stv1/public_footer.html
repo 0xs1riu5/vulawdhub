@@ -1,0 +1,73 @@
+<div class="footer-wrap">
+  <div class="footer">
+    <div class="login-footer">
+      <div class="attend-official clearfix">
+        <dl>
+          <dt>
+            <div class="mb15">关注我们</div>
+            <a href="{$GLOBALS.ts.site.sina_weibo_link}" target="_blank" rel="nofollow me"><i class="ico-weibo"></i>加关注</a>
+            <!--<a><i class="ico-weixin"></i>加关注</a>-->
+          </dt>
+          <dd><img src="{:getAttachUrlByAttachId($GLOBALS['ts']['site']['site_qr_code'])}"></dd>
+        </dl>
+      </div>
+      <php>if(!empty($site_bottom_nav) && $site_bottom_child_nav){</php>
+      <div class="foot clearfix right">
+        <volist name="site_bottom_nav" id="nv">
+          <dl>
+            <dt><a href="{$nv.url}" target="{$nv.target}">{$nv['navi_name']}</a></dt>
+            <volist name="nv.child" id="cv">
+              <dd><a href="{$cv.url}" target="{$cv.target}">{$cv['navi_name']}</a></dd>
+            </volist>
+          </dl>
+        </volist>
+      </div>
+      <php>} else if(!empty($site_bottom_nav)) { </php>
+      <div class="foot foot1 right clearfix">
+        <volist name="site_bottom_nav" id="nv">
+          <dl>
+            <dt><a href="{$nv.url}" target="{$nv.target}">{$nv['navi_name']}</a></dt>
+          </dl>
+        </volist>
+      </div>
+      <php>}</php>
+      <div class="copy-right">
+      <p>{$GLOBALS.ts.site.site_footer_des}</p>
+      <p class="f8">Powered by <a href="http://www.thinksns.com">ThinkSNS</a>&nbsp;{$GLOBALS.ts.site.site_footer} </p>
+      </div>
+    </div>
+  </div>
+  <!--footer end--> 
+  
+</div>
+<!--page end--> 
+{:Addons::hook('public_footer')} 
+<!-- 统计代码-->
+<div id="site_analytics_code" style="display:none;"> {$site.site_analytics_code|base64_decode} </div>
+<eq name='site.site_online_count' value='1'> 
+  <script src="{:SITE_URL}/online_check.php?uid={$mid}&uname={$user.uname}&mod={:MODULE_NAME}&app={:APP_NAME}&act={:ACTION_NAME}&action=trace"></script> 
+</eq>
+<script>
+  //底部置底
+  var head_height = $("#body-bg").css("padding-top");
+  var footer_height = $(".footer-wrap").height();
+  var footer_margin_top = $(".footer-wrap").css("margin-top");
+  var content_height = $("#page-wrap").height();
+
+  var window_height = $(window).height();
+  var min_height = Number(window_height)-parseInt(head_height)-Number(footer_height)-parseInt(footer_margin_top)-1;
+  if(content_height < min_height){
+    if($("#main-wrap").length > 0){
+      $("#main-wrap").css("min-height",min_height);
+    }else{
+      $("#page-wrap").css("min-height",min_height);
+    }
+  }
+</script>
+<?php if(!empty($appJsList) && is_array($appJsList)) { ?>
+<?php foreach ($appJsList as $jsUrl) { ?>
+<script type="text/javascript" src="{:APP_PUBLIC_URL}/{$jsUrl}?v={$site.sys_version}"></script>
+<?php } ?>
+<?php } ?>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<link rel="stylesheet" href="__ROOT__/apps/weiba/_static/weiba.css" type="text/css" media="screen" charset="utf-8" />
+<div id="col3" class="st-index-right">
+  <div class="right-wrap">
+    <div class="right-list recommend-post clearfix">
+      <fieldset class="inter-line">
+        <a onclick="new_refresh();"  class="right"><i class="ico-refresh"></i></a>
+        <legend class="inter-txt">帖子推荐</legend>
+      </fieldset>
+      <div id="catelist">
+        <volist name="post_recommend_list" id="vo">
+          <dl>
+            <dt><a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">{$vo.title|getShort=20} </a></dt>
+            <dd class="f8"> 来自&nbsp;&nbsp;<a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}">{$vo.weiba|getShort=5}</a>&nbsp;&nbsp;{$vo.user.space_link}&nbsp;&nbsp;{$vo.post_time|friendlyDate=###,'Y-m-d'} </dd>
+          </dl>
+        </volist>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="col5" class="st-index-main">
+  <div class="st-bg">
+    <!-- 导航 -->
+    <div class="feed-nav clearfix border-b">
+      <div class="mod-feed-tab" id="mod-feed-tab">
+        <ul class="inner-feed-nav">
+          <php> if($_GET['feed_type']=='weiba'){ $tag['weiba'] = 'current'; }
+            elseif($_GET['feed_type']=='cweiba'){ $tag['cweiba'] = 'current'; }
+            else{ $tag['public'] = 'current'; } </php>
+          <li class="{$tag.public}"><a href="{:U('public/Profile/appList',array('tab'=>'weiba','type'=>'weiba','feed_type'=>'','uid'=>$uid))}">发表的帖子</a></li>
+          <li class="{$tag.weiba}"><a href="{:U('public/Profile/appList',array('tab'=>'weiba','type'=>'weiba','feed_type'=>'weiba','uid'=>$uid))}">加入的微吧</a></li>
+          <li class="{$tag.cweiba}"><a href="{:U('public/Profile/appList',array('tab'=>'weiba','type'=>'weiba','feed_type'=>'cweiba','uid'=>$uid))}">创建的微吧</a></li>
+        </ul>
+      </div>
+    </div>
+  <php>if($data){</php>
+  <div class="post-circle clearfix">
+    <div class="post-list">
+      <ul>
+        <volist name="data" id="vo">
+          <li>
+            <div class="post-tit"> <a class="tit" target="_blank" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">{$vo.title|getShort=14} </a>
+              <php>if($vo['top']==2){</php>
+              <i class="ico-toTop"></i>
+              <php>}</php>
+              <php>if($vo['recommend']==1){</php>
+              <i class="ico-essence"></i>
+              <php>}</php>
+              <php>if($vo['digest']==1){</php>
+              <i class="ico-essence"></i>
+              <php>}</php>
+            </div>
+            <div class="post-prof"> <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">{$vo.content|t|getShort=100}</a>
+              <if condition="count($vo['img']) neq '0'">
+                <div class="post-img clearfix">
+                  <if condition="$vo['img'][0] neq ''">
+                    <div class="f-post-img"><a class="tit" target="_blank" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><img src="{$vo['img'][0]}"/></a></div>
+                  </if>
+                  <if condition="$vo['img'][1] neq ''">
+                    <div class="f-post-img"><a class="tit" target="_blank" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><img src="{$vo['img'][1]}"/></a></div>
+                  </if>
+                  <if condition="$vo['img'][2] neq ''">
+                    <div class="f-post-img"><a class="tit" target="_blank" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><img src="{$vo['img'][2]}"/></a></div>
+                  </if>
+                </div>
+              </if>
+            </div>
+            <div class="post-info f8">
+              <div class="left"><a class="weiba-name" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><span>{$vo.weiba|getShort=5}</span></a></div>
+              <div class="right post-info-control"> <span>{$vo.post_time|friendlyDate}&nbsp;发布</span><span title="浏览"><i class="i-post-scan"></i>({$vo.read_count})</span> <span title="评论"><i class="i-post-comment"></i>({$vo.reply_count})</span>
+                <eq name="vo['digg']" value="undigg">
+                <span title="赞">
+                </eq>
+                <eq name="vo['digg']" value="digg">
+                <span title="赞">
+                </eq>
+                <i class="i-post-alike"></i>({$vo.praise})</span></div>
+            </div>
+          </li>
+        </volist>
+        <div class="page">{$html}</div>
+      </ul>
+    </div>
+  </div>
+  <php>}else{</php>
+  <dl class="feed_list" style="min-height:500px">
+  <div style="padding-top:80px;text-align:center">
+  <p class="mb10"><i class="icon-bed"></i></p>
+  <p style="color:#333">暂时没有可显示的内容哟~</p>
+  </div>
+  </dl>
+  <php>}</php>
+  </div>
+</div>
+<script type="text/javascript">
+function new_refresh() {
+    $.post(U('weiba/Index/catelist'),{fid:1}, function(data) {
+  	  $('#catelist').html(data);
+    }, 'json');
+    return false ;
+}
+
+</script> 

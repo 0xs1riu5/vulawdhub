@@ -1,0 +1,82 @@
+<include file="__THEME__/admin_header" />
+
+<div id="container" class="so_main">
+  <div class="page_tit">邮件邀请</div>
+  <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+  <div class="form2">
+    <div class="inviteMode">
+      <div class="invite-title">
+        <h4>输入邀请用户邮箱</h4>
+        <input id="check_email" class="s-txt" type="text" autocomplete="off"><a href="javascript:;" onclick="doInviteEmail();" class="btn-green-big">发送邀请</a>
+        <div id="prompt_box" class="box-ver"></div>
+      </div>
+      <!--
+      <div class="invite-user-list">
+        <h4>已邀请用户：</h4>
+        <php>if(empty($inviteList)):</php>
+        <p>当前无邀请好友</p>
+        <php>else:</php>
+        <ul>
+          <li>
+            <div class="w0">&nbsp;</div>
+            <div class="w3">昵称</div>
+            <div class="w1">邮箱</div>
+            <div class="">邀请人</div>
+           </li>
+          <volist name="inviteList.data" id="vo">
+          <li>
+            <div class="w0"><a href="{$vo.space_url}"><img src="{$vo.avatar_small}" width="30" height="30"/></a></div>
+            <div class="w3"><a href="{$vo.space_url}">{$vo.uname}</a></div>
+            <div class="w1"><a href="{$vo.space_url}">{$vo.email}</a></div>
+            <div class=""><a href="{$vo.inviteInfo.space_url}">{$vo.inviteInfo.uname}</a></div>
+          </li>
+          </volist>
+        </ul>
+        <div class="page">{$inviteList.html}</div>
+        <php>endif;</php>
+      </div>
+      -->
+  </div>
+</div>
+
+<script type="text/javascript">
+/**
+ * 发送邮件邀请
+ */
+var doInviteEmail = function()
+{
+  // 邮件内容
+  var email = $.trim($('#check_email').val());
+  // 测试邮件内容
+  if(email == '') {
+    ui.error('请填写邀请人邮箱');
+    return false;
+  }
+  // 提交邀请
+  $.post(U('admin/Config/doInvite'), {email:email}, function(res) {
+    if(res.status ) {
+      ui.success(res.info);
+      setTimeout(function() {
+        location.href = location.href;
+      }, 1500);
+      return false;
+    } else {
+      ui.error(res.info);
+      return false;
+    }
+  }, 'json');
+  return false;
+};
+</script>
+<include file="__THEME__/admin_footer" />

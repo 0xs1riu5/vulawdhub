@@ -1,0 +1,19 @@
+version: '2'
+services:
+  php5-app_thinksnsv4:
+    build: ./php-fpm
+    image: s1r1u5/thinksns:4.6.5
+    restart: always
+    links: 
+        - mysql-thinksnsv4:db
+    ports:
+        - 8001:80
+    depends_on:
+        - mysql-thinksnsv4
+
+  mysql-thinksnsv4:
+      build: ./mysql
+      image: s1r1u5/mysql_thinksns:4.6.5
+      environment:
+        MYSQL_ROOT_PASSWORD: "123456"
+

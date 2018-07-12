@@ -1,0 +1,57 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/level.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+	   <div id="main-wrap">
+	   	   	<div id="col" class="st-grid content-bg st-bg-b cc">
+                <div id="col4" class="main-left">
+                   <!--tab菜单-->
+                   <include file="_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                  <div class="extend minh person-set">
+                    <div class="tab-menu line-b-animate mb20">
+                        <ul>
+                            <li><span><a href="{:U('public/Account/scoredetail')}">我的积分</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorerule')}">积分规则</a></span></li>
+                            <li class="current"><span><a href="{:U('public/Account/scorelevel')}">积分等级</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorecharge')}">积分充值</a></span></li>
+                            <li><span><a href="{:U('public/Account/scoretransfer')}">积分转帐</a></span></li>
+                        </ul>
+                      </div>
+                    <div class="level-title">
+                      <h3>等级计算规则</h3>
+                      <p class="f14">分享等级是根据用户在站内的经验值确定的，用户可以通过做任务，发表分享，转发分享等行为积累经验值，从而提高等级。等级越高，将可以解锁更高级的任务和享有更多的特权。</p>
+                      <p class="fw">分享等级与等级图标，经验值对应表</p>
+                    </div>
+                    <div class="level-content">
+                     <table>
+                         <tbody>
+                             <tr>
+                                <th width="150">等级</th>
+                                <th width="150">等级名称</th>
+                                <th width="150">等级图标</th>
+                                <th width="150">经验值</th>
+                             </tr>
+                             <volist name="list" id="v">
+                             <tr>
+                                <td width="150">{$v.level}</td>
+                                <td width="150">{$v.name}</td>
+                                <td width="150">
+                                    <php>if(is_numeric($v['image'])):</php>
+                                    <img width="33" height="9" src="{$v['image']|getImageUrlByAttachId}" />
+                                    <php>else:</php>
+                                    <span class="ico-level{$v.level}"></span>
+                                    <php>endif;</php>
+                                </td>
+                                <td width="150">{$v.start} - {$v.end}点</td>
+                             </tr>
+                            </volist>
+                         </tbody>
+                     </table>
+                    </div>
+                  </div>
+                </div>
+           	 </div>
+	   </div>
+</div>
+<include file="__THEME__/public_footer" />

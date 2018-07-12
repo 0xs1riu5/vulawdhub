@@ -1,0 +1,47 @@
+<div>
+<neq name='inForm' value='1'>
+<FORM style='display:inline;padding:0;margin:0;border:0' enctype="multipart/form-data">
+</neq>
+ <input type="file" name="{$inputname}" inputname="{$inputname}" onchange="core.plugInit('uploadFile',this,{$callback},'{$uploadType}');" urlquery='{$urlquery}' event-node="uploadinput" >
+<neq name='inForm' value='1'>
+</FORM>
+</neq>
+</div>
+<php>if(!empty($attachInfo)){</php>
+
+<script type="text/javascript">
+M.addEventFns({
+	uploadinput:{
+		load:function(){
+			var _this = this;
+			core.plugFunc('uploadFile',function(){
+				core.uploadFile.init(_this,<php> echo $callback;</php>,'<php> echo $uploadType;</php>');
+			});
+		}
+	}	
+});
+</script>
+<php>if($uploadType == 'file'){</php>
+<div uploadcontent="file" class="input-content" >
+<ul class="weibo-file-list">
+<volist name='attachInfo' id='a'>
+<li><i class="ico-{$a.extension}-small"></i>
+	<a onclick="core.uploadFile.removeAttachId(this,'file',{$a.attach_id})" href="javascript:void(0)" class="ico-close right"></a>	
+	<a href="{:U('widget/Upload/down',array('attach_id'=>$a['attach_id']))}">{$a.name}</a><span>({$a.size|byte_format})</span></li>
+</volist>
+</ul>
+<input type="hidden" id="{$inputname}_ids" name="{$inputname}_ids" feedtype="file" value="|{$attachIds}|" class="attach_ids">
+</div>	
+<php>}else{</php>
+<div uploadcontent="image" class="input-content attach-file">
+<ul class="image-list  clearfix">
+<volist name='attachInfo' id='a'>
+<li><a href="{:U('widget/Upload/down',array('attach_id'=>$a['attach_id']))}" class="pic"><img src="{$a.src}" width="100" height="100"></a>
+<a onclick="core.uploadFile.removeAttachId(this,'image',{$a.attach_id})" href="javascript:void(0)" class="name">{:L('PUBLIC_STREAM_DELETE')}</a></li>
+</volist>
+</ul><input type="hidden" id="{$inputname}_ids" name="{$inputname}_ids" feedtype="image" value="|{$attachIds}|" class="attach_ids"></div>
+<php>}</php>
+
+<php>}</php>
+
+

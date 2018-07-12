@@ -1,0 +1,202 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<!-- <include file="_controlLayer" /> -->
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="weiba-top">
+      <div class="app-title clearfix">
+        <div class="app-tab-menu clearfix">
+          <ul>
+            <li><a href="{:U('weiba/Index/index')}" 
+              
+              
+              
+              <php>if(!$nav){</php>
+              class="current"
+              <php>}</php>
+              >微吧首页</a></li>
+            <li><a href="{:U('weiba/Index/weibaList')}" 
+              
+              
+              
+              <php>if($nav=="weibalist"){</php>
+              class="current"
+              <php>}</php>
+              >所有微吧</a>
+              <php>if($GLOBALS['ts']['mid']){</php>
+              <php>}</php>
+            </li>
+            <php>if($GLOBALS['ts']['mid']){</php>
+            <li><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFollowing'))}" 
+              <php>if($nav=="myweiba"){</php>
+              class="current"
+              <php>}</php>
+              >我的</a></li>
+            <php>}</php>
+            <php>if($nav=="weibadetail"){</php>
+            <li><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}" class="current">{$weiba_name}</a></li>
+            <php>}</php>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <include file="_postDetaiRight" />
+    <div id="col5">
+    <div class="post-circle-bg"> 
+        <!-- 微吧帖子头部 -->
+        <div class="post-list" <if condition=" $page neq '' AND $page neq '1' ">style="overflow:hidden"</if>>
+          <div class="poster-left clearfix">
+            <h class="post-tit"> <span style="vertical-align:-1px;">{$post_detail.title}</span>
+              <php>if(strstr($post_detail['content'],'<img>')){</php>
+              <i class="ico-img"></i>
+              <php>}</php>
+              <php>if($post_detail['top']==2){</php>
+              <i class="ico-toTop ml5"></i>
+              <php>}</php>
+              <php>if($post_detail['top']==1){</php>
+              <i class="ico-toTop ml5"></i>
+              <php>}</php>
+              <if condition="$post_detail['recommend'] eq 1"><i class="ico-recomen ml5"></i></if>
+              <php>if($post_detail['digest']==1){</php>
+              <i class="ico-essence ml5"></i>
+              <php>}</php>
+              <php>if($GLOBALS['ts']['mid']){</php>
+              <php>if( ( $mid==$post_detail['post_uid'] && CheckPermission('weiba_normal','weiba_edit') ) || CheckWeibaPermission( $weiba_admin , '' , 'weiba_edit' ) ){</php>
+              <a href="javascript:void(0);" onclick="$('#post_manage').toggle();$('body').bind('click', function(event) {if($(event.target).attr('id') != 'manage') $('#post_manage').css('display', 'none') });" class="right f8" id="manage">管理</a>
+              <div class="layer-list" style="position:absolute;right:0;top:20px;display:none;_right:20px;" id="post_manage">
+                <ul>
+                  <php>if( CheckWeibaPermission('',0,'weiba_global_top') ){</php>
+                  <li>
+                    <php>if($post_detail['top']==2){</php>
+                    <a style="width:75px" href="#" event-node="post_set" event-args='post_id={$post_detail['post_id']}&type=1&currentValue={$post_detail['top']}&targetValue=0'>取消全局置顶</a>
+                    <php>}else{</php>
+                    <a href="#" event-node="post_set" event-args='post_id={$post_detail['post_id']}&type=1&currentValue={$post_detail['top']}&targetValue=2'>设为全局置顶</a>
+                    <php>}</php>
+                  </li>
+                  <php>}</php>
+                  <php>if( CheckWeibaPermission ( $weiba_admin , 0 , 'weiba_top') ){</php>
+                  <li>
+                    <php>if($post_detail['top']==1){</php>
+                    <a href="#" event-node="post_set" event-args='post_id={$post_detail['post_id']}&type=1&currentValue={$post_detail['top']}&targetValue=0'>取消吧内置顶</a>
+                    <php>}else{</php>
+                    <a href="#" event-node="post_set" event-args='post_id={$post_detail['post_id']}&type=1&currentValue={$post_detail['top']}&targetValue=1'>设为吧内置顶</a>
+                    <php>}</php>
+                  </li>
+                  <php>}</php>
+                  <php>if( CheckWeibaPermission ( $weiba_admin , 0 , 'weiba_marrow') ){</php>
+                  <li>
+                    <php>if($post_detail['digest']==1){</php>
+                    <a href="#" event-node="post_set" event-args='post_id={$post_detail['post_id']}&type=2&currentValue={$post_detail['digest']}&targetValue=0'>取消精华</a>
+                    <php>}else{</php>
+                    <a href="#" event-node="post_set" event-args='post_id={$post_detail['post_id']}&type=2&currentValue={$post_detail['digest']}&targetValue=1'>设为精华</a>
+                    <php>}</php>
+                  </li>
+                  <php>}</php>
+                  <php>if( CheckWeibaPermission ( $weiba_admin , 0 , 'weiba_recommend') ){</php>
+                  <li>
+                    <php>if($post_detail['recommend']==1){</php>
+                    <a href="#" event-node="post_set" event-args='post_id={$post_detail['post_id']}&type=3&currentValue={$post_detail['recommend']}&targetValue=0'>取消推荐</a>
+                    <php>}else{</php>
+                    <a href="#" event-node="post_set" event-args='post_id={$post_detail['post_id']}&type=3&currentValue={$post_detail['recommend']}&targetValue=1'>设为推荐</a>
+                    <php>}</php>
+                  </li>
+                  <php>}</php>
+                  <php>if(CheckWeibaPermission( $weiba_admin , 0 , 'weiba_edit') || $post_detail['post_uid'] == $GLOBALS['ts']['mid'] ){</php>
+                  <li> <a href="{:U('weiba/Index/postEdit',array('post_id'=>$post_detail['post_id'],'log'=>1))}">编辑</a> </li>
+                  <php>}</php>
+                  <php>if(CheckWeibaPermission( $weiba_admin , 0 , 'weiba_del' ) || $post_detail['post_uid'] == $GLOBALS['ts']['mid'] ){</php>
+                  <li> <a href="#" event-node="post_del" event-args='post_id={$post_detail['post_id']}&weiba_id={$post_detail['weiba_id']}&log=1'>删除</a> </li>
+                  <php>}</php>
+                </ul>
+              </div>
+              <php>}</php>
+              <php>}</php>
+            </h>
+            <div class="post-info f8">
+              <div class="left"><span><a event-node="face_card" uid="{$user_info[$post_detail['post_uid']]['uid']}" href="{:U('public/Profile/index','uid='.$user_info[$post_detail['post_uid']]['uid'])}" class="name" target="_self"><img src="{$user_info[$post_detail['post_uid']]['avatar_tiny']}" width="20px" height="20px" style="border-radius:50%"/>&nbsp;{$user_info[$post_detail['post_uid']]['uname']}</a>&nbsp;&nbsp;{$post_detail.post_time|friendlyDate}&nbsp;&nbsp;发布</span></div>
+              <div class="right post-info-control"> <span title="浏览"><i class="i-post-scan"></i>({$post_detail.read_count})</span> <span title="评论"><i class="i-post-comment"></i>({$post_detail.reply_count})</span>
+                <eq name="post_detail['digg']" value="undigg">
+                <span title="赞">
+                </eq>
+                <eq name="post_detail['digg']" value="digg">
+                <span title="赞">
+                </eq>
+                <i class="i-post-alike"></i>({$post_detail.praise})</span>&nbsp;&nbsp;
+                <a href="javascript:void(0)" event-node='denounce' event-args='aid={$post_detail.post_id}&type=weiba_post&uid={$post_detail.post_uid}'>{:L('PUBLIC_STREAM_REPORT')}</a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <!--帖子信息-->
+        <div class="weiba-article postDetail" <if condition=" $page neq '' AND $page neq '1' ">style="display:none"</if>>
+          <p class="text">{$post_detail.content}</p>
+          <php>if($post_detail['attachInfo']){</php>
+          <ul class="feed_file_list mt20">
+            <volist name="post_detail.attachInfo" id="vo">
+              <li> <a href="{:U('widget/Upload/down',array('attach_id'=>$vo['attach_id']))}" class="current right" target="_blank" title="下载"><i class="ico-down"></i></a><i class="ico-{$vo.extension}-small"></i><a href="{:U('widget/Upload/down',array('attach_id'=>$vo['attach_id']))}">{$vo.attach_name}</a> <span class="tips">({$vo.size|byte_format})</span> </li>
+            </volist>
+          </ul>
+          <php>}</php>
+        </div>
+        <div class="poster-control" <if condition=" $page neq '' AND $page neq '1' ">style="display:none"</if>>
+          <div class="left"> <a class="big-post-btn" event-args="sid={$post_detail['post_id']}&stable=weiba_post&curtable=feed&curid={$post_detail['feed_id']}&initHTML=&appname=weiba&cancomment=1&feedtype=weiba_post" href="javascript:void(0)" event-node="share"><i class="i-repost" title="转发"></i>转发</a>
+            <php>if($post_detail['favorite']==1){</php>
+            <a class="big-post-btn-h" event-args="post_id={$post_detail['post_id']}&weiba_id={$post_detail['weiba_id']}&post_uid={$post_detail['post_uid']}" href="javascript:void(0)" event-node="post_unfavorite" id="favorite"><i class="i-h-store" title="取消收藏"></i>取消收藏</a>
+            <php>}else{</php>
+            <a class="big-post-btn" event-args="post_id={$post_detail['post_id']}&weiba_id={$post_detail['weiba_id']}&post_uid={$post_detail['post_uid']}" href="javascript:void(0)" event-node="post_favorite" id="favorite"><i class="i-store" title="收藏"></i>收藏</a>
+            <php>}</php>
+            <eq name="post_detail['digg']" value="undigg"> <a class="big-post-btn" title="赞" event-args="blog_id={$post_detail['post_id']}" href="javascript:void(0)" event-node="post_love"  ><i class="i-praise" title="赞"></i>赞&nbsp;<span>{$post_detail.praise}</span></a> </eq>
+            <eq name="post_detail['digg']" value="digg"> <a class="big-post-btn-h" title="已赞" event-args="blog_id={$post_detail['post_id']}" href="javascript:void(0)" event-node="post_unlove"  ><i class="i-h-praise" title="已赞"></i>已赞&nbsp;<span>{$post_detail.praise}</span></a> </eq>
+          </div>
+          <div class="right">{:W('ThirdpartyShare')}</div>
+        </div>
+      </div>
+      <div class="reply" id="reply">
+        <div  class="feed_lists">
+          <dl class="feed_list feed_comment">
+            <dd class="content">
+            <div class="clearfix pading" id="ajax_reply_list" style="border-top: #e5e6e7 1px solid; padding-top: 15px;"> {:W('WeibaReply',array('tpl'=>'detail', 'weiba_id'=>$post_detail['weiba_id'], 'post_id'=>$post_detail['post_id'], 'post_uid'=>$post_detail['post_uid'], 'feed_id'=>$post_detail['feed_id'], 'limit'=>'20', 'order'=>'DESC', 'addtoend'=>1,'type'=>$type))} </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var setype = function(post_id,type,curvalue){
+
+  };
+  function new_refresh() {
+	    $.post(U('weiba/Index/catelist'),{fid:1}, function(data) {
+	  	  $('#catelist').html(data);
+	    }, 'json');
+	    return false ;
+	}
+   function follow_user(args) {
+	      $.post(U('weiba/Index/doFollow'), {fid:args}, function(data) {
+	    	  $('#'+args ).html('<a onclick="unfollow_user('+args+')" class="btns-red mt10"><i class="ico-add"></i>已关注</a>');
+	      }, 'json');
+	      return false ;
+	}
+	
+	function unfollow_user(args) {
+		$.post(U('weiba/Index/unFollow'), {fid:args}, function(data) {
+			  $('#'+args ).html('<a onclick="follow_user('+args+')" class="btns-red mt10"><i class="ico-add"></i>关注</a>');
+		}, 'json');
+		return false ;
+	}
+  $("#comment_inputor").focus(function(){
+    $('body').keypress(function(e){
+      if(e.ctrlKey && e.which == 13 || e.which == 10) {
+        $("[event-node='do_weiba_reply']").click();
+      }
+    });
+  });
+  $("#comment_inputor").blur(function(){
+    $('body').unbind("keypress");
+  });
+</script> 
+<script src="__THEME__/js/module.weibo.js"></script> 
+<include file="__THEME__/public_footer" /> 

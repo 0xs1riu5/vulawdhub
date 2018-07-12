@@ -1,0 +1,30 @@
+<div id="container" class="mb10 channel-list clearfix"></div>
+<script type="text/javascript" src="__APP__/jquery.masonry.min.js"></script> 
+<script type="text/javascript" src="__APP__/jquery.imageloaded.min.js"></script> 
+<script type="text/javascript" src="__APP__/channel.js"></script> 
+<script type="text/javascript">
+var option = {
+	container: 'container',
+	loadcount: '{$loadCount}',
+	loadmax: '{$loadMax}',
+	loadId: '{$loadId}',
+	loadlimit: '{$loadLimit}',
+	cid: '{$cid}',
+	categoryJson: '{$categoryJson}',
+	order: '{$order}'
+};
+setTimeout(function() {
+	channel.init(option);
+}, 300);
+</script> 
+
+<!-- 
+<div class="box app-tab-menu boxShadow">
+<dl>
+<dt>
+<volist name="channelCategory" id="vo">
+<a class="btn-cancel" href="{:U('channel/Index/index', array('cid'=>$vo['channel_category_id']))}" ><span>{$vo.title}</span></a>
+</volist>
+</dt>
+</dl>
+</div> --> 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$GLOBALS['ts']['site']['site_name']} - 分享到我的分享</title>
+<meta content="<neq name= '_keywords' value=''>{$_keywords}<else />{$site.site_header_keywords}</neq>" name="keywords">
+<meta content="<neq name= '_description' value=''>{$_description}<else />{$site.site_header_description}</neq>" name="description">
+<link href="__THEME__/image/favicon.ico?v={$site.sys_version}" type="image/x-icon" rel="shortcut icon">
+<!-- <link href="__THEME__/css/global.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/module.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/menu.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/form.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/jquery.atwho.css?v={$site.sys_version}" rel="stylesheet" type="text/css" /> -->
+<link href="__THEME__/css/css.php?t=css&f=global.css,module.css,menu.css,form.css,jquery.atwho.css&v={$site.sys_version}.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="__APP__/weiboshow.css" >
+<script type="text/javascript">
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>'
+// Js语言变量
+var LANG = new Array();
+</script>
+<php>if(!empty($langJsList)):</php>
+<volist name="langJsList" id="vo">
+<script src="{$vo}?v={$site.sys_version}"></script>
+</volist>
+<php>endif;</php>
+<!-- 
+<script src="__THEME__/js/jquery-1.7.1.min.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.form.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/common.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/core.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.common.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jwidget_1.0.0.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.atwho.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.caret.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/ui.core.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/ui.draggable.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.digg.js?v={$site.sys_version}"></script>
+-->
+<script src="__THEME__/js/js.php?t=js&f=jquery-1.7.1.min.js,jquery.form.js,common.js,core.js,module.js,module.common.js,jwidget_1.0.0.js,jquery.atwho.js,jquery.caret.js,ui.core.js,ui.draggable.js,plugins/core.comment.js,plugins/core.digg.js&v={$site.sys_version}.js"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.digg.js?v={$site.sys_version}"></script>
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
+
+
+</head>
+<body>
+<div id="weibo_show_con" class="tblog_wrap {$style['skin']}">
+    <b class="wrap_top"></b>
+    <div class="tblog_main">
+        <!-- 标题栏 -->
+	    <!-- 如不显示标题栏，将这段删除 -->         
+	    <div id="weibo_title" class="tblog_header" >
+	        <h1>
+	        	<a href="{:U('public/Index/index')}" class="title" target="_blank">{$ts['site']['site_name']}</a>
+	        </h1>
+        </div>
+        <!-- 标题栏 -->
+        <form action="{:U('public/Widget/doBulkFollow')}" method="post" id="bulk_follow_form">
+	        <ul class="list_square">
+		        <volist name="user_list" id="user">
+		            <li>
+			            <div class="userPic relative">
+				            <input name="followuid[]" type="checkbox" value="{$user.uid}" class="ckbox" checked="checked" />
+				            <a class="userface" target="_blank" href="{:U('public/Profile/index', array('uid'=>$user['uid']))}" uid="{$user['uid']}" event-node="face_card">
+								<img src="{$user['avatar_small']}">
+							</a>
+			            </div>		            
+			            <div class="title">
+                            <a target="_blank" class="name" href="{:U('public/Profile/index', array('uid'=>$user['uid']))}" uid="{$user['uid']}" event-node="face_card">{$user.uid|getUserName}</a>
+		                </div>
+		            </li>
+		        </volist>
+		        <div class="c"></div>
+	        </ul>
+	        <a href="javascript:void(0)" onclick="fDoBulkFollow('#bulk_follow_form')" class="btn-att-white ml10"><span>一键关注</span></a>
+    	</form>
+    </div>
+    <b class="wrap_bottom"></b>
+</div>
+
+<script type="text/javascript">
+function fDoBulkFollow(div){
+	// 未登录状态，弹出登陆框
+	if ( ! ( '<?php echo $mid; ?>' > 0 ) ) {
+		ui.quicklogin();
+		return false;
+	}
+	if( $(div+" input[name='followuid[]']:checked").size() ==0){
+		ui.error('请选择要关注的人');
+		return '';
+	}
+	var data = [];
+	$(div+" input[name='followuid[]']:checked").each(function () {
+		data.push($(this).val());
+	});
+	var fids = data.join(',');
+	var options = {
+		data: {fids: fids},
+		success: function(txt) {
+			ui.success('关注成功');
+		} 
+	};		
+	$(div).ajaxSubmit( options );
+}
+
+$(function() {
+	$('#topcontrol').remove();
+});
+</script>
+</body>
+</html>

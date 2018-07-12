@@ -1,0 +1,45 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div class="app-title clearfix">
+      <h3 class="left">频道</h3>
+    </div>
+    <div class="find-type clearfix">
+      <div class="channel-box left"> {:W('TopMenu', array('cid'=>$cid, 'title'=>$_title, 'channelCategory'=>$channelCategory))} </div>
+    </div>
+
+    <!-- 频道banner -->
+    <div class="channel-banner clearfix" style="background:url('<eq name='channel_banner' value=''>__THEME__/image/channel_default.png<else/>{$channel_banner}</eq>') no-repeat">
+      <div class="channel-banner-button">
+        <if condition="$GLOBALS['ts']['mid']">
+        <a class="channel-button-pub"  href="javascript:;" onclick="channel.contributeBox('{$cid}')" class="ml5"><span>投稿</span></a>
+        <php>if(!empty($cid)):</php>
+          <php>if($followStatus):</php>
+          <a class="channel-button-listen" href="javascript:;" onclick="channel.upFollowStatus('{$GLOBALS['ts']['mid']}', '{$cid}', 'del', this)" class="ml10"><span><i class="ico-minus"></i>取消收听</span></a>
+          <php>else:</php>
+          <a class="channel-button-listen" href="javascript:;" onclick="channel.upFollowStatus('{$GLOBALS['ts']['mid']}', '{$cid}', 'add', this)" class="ml10"><span><i class="ico-add"></i>收听</span></a>
+          <php>endif;</php>
+        <php>endif;</php>
+        </if>
+      </div>
+      <div class="channel-banner-content">
+        <h1>{$_title}</h1>
+        <p><eq name="channel_desc" value="">管理员偷懒，连个介绍都不写！<else/>{$channel_desc}</eq></p>
+        <p>{$channel_count}个广播-{$channel_follower_count}人收听</p>
+      </div>
+    </div>
+
+    <!-- 最新or热门 -->
+    <div class="channel-neworhot">
+      <p>
+      <i class="ico-channel-type"></i>
+      <a href="{:U('channel/Index/index',array('order'=>0,'cid'=>$cid))}" <eq name="order" value="0">class="selected"</eq>>最新</a>&nbsp;or&nbsp;<a href="{:U('channel/Index/index',array('order'=>1,'cid'=>$cid))}" <eq name="order" value="1">class="selected"</eq>>热门</a>
+      </p>
+    </div>
+    <!-- 内容渲染 --> 
+    {:W('Content', array('tpl'=>$tpl,'cid'=>$cid,'channelCategory'=>$channelCategory,'order'=>$order))}
+   </div>
+</div>
+<script type="text/javascript" src="__THEME__/js/module.channel.js"></script> 
+
+<include file="__THEME__/public_footer" />

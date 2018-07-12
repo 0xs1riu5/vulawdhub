@@ -1,0 +1,10 @@
+<eq name='editable' value="1">
+<php>$list = explode('|',$default_value);</php>
+<select name="{$name}">
+	<volist name="list" id="v">
+		<option name="{$v}"<php>if($value==$v){</php> selected="selected"<php>}</php>>{$v}</option>
+	</volist>
+</select>
+<else />
+{$value}
+</eq>

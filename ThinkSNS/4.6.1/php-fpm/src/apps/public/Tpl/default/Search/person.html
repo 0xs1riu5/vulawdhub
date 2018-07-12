@@ -1,0 +1,95 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="col"> <include file="search_top" /> </div>
+    <div id="col8" class="st-section clearfix col-bg"> 
+      <!---搜人-->
+      <div class="relationship clearfix mt20">
+        <php>if($searchResult['data']){</php>
+        <volist name="searchResult['data']" id="vo">
+          <li <php>if(is_integer(($key + 1) /2)):</php>style="margin-right:0;"<php>endif;</php> model-node="following_list_item">
+            <div class="relation-left"> <a href="{$vo.space_url}"> <img title="{$vo.uname}" src="{$vo.avatar_small}" width="50"
+							height="50" /> </a>
+                             {:W('FollowBtn',
+              array('fid'=>$vo['uid'], 'uname'=>$vo['uname'],
+              'follow_state'=>$vo['followState'], 'refer'=>'following_list'))} 
+                            </div>
+            <div class="relation-right">
+              <dl class="profile-info-t">
+                <dt><a class="follow_uname" href="{$vo['space_url']}" event-node='face_card' uid="{$vo['uid']}">{$vo.uname}</a><!-- &nbsp;&nbsp;{$user_info[$vo['fid']]['auth_icon']}--></dt>
+                <dd class="from">来自：<if condition="$vo.location eq ''">都不知道来自哪里的，大概来自火星吧！<else/>{$vo.location}</if></dd>
+                <dd class="profile">简介：<if condition="$vo.intro eq ''">这家伙很懒，什么都没有留下！<else/>{$vo.intro}</if></dd>
+                <dd>兴趣：
+                  <volist name="user_tag[$vo['uid']]" id="u_t_v"> <span class="interests"
+								href="{:U('public/Search/index',array('t'=>3,'a'=>'public','k'=>$u_t_v))}">{$u_t_v}</span></volist>
+                </dd>
+              </dl>
+            </div>
+          </li>
+        </volist>
+        <php>}else{</php>
+          <div class="note">没有搜到相应信息！</div>
+        <php>}</php>
+      </div>
+      <div id="page" class="page">{$searchResult.html}</div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 
+<script>
+	var selectDate = function() {
+		var app = $('#app').val();
+		var mod = $('#mod').val();
+		var t = $('#t').val();
+		var a = $('#a').val();
+		var k = "{$keyword}";
+		var feed_type = "{$feed_type}";
+		ui.box.load(U('public/Search/selectDate') + '&app=' + app + '&mod='
+				+ mod + '&t=' + t + '&a=' + a + '&k=' + encodeURI(k)
+				+ '&feed_type=' + feed_type, '时间筛选',
+				'$("#rcalendar").css("display","none")');
+	};
+
+	/**
+	 * 时间更新效果
+	 * return void
+	 */
+	$(document).ready(
+			function() {
+				var formatTime = '';
+				$('.date').bind({
+					mouseover : function() {
+						$(this).find('em').first().hide();
+						var width = $(this).find('em').first().width();
+						$(this).find('em').last().css({
+							display : 'inline',
+							width : width
+						});
+					},
+					mouseout : function() {
+						$(this).find('em').first().show();
+						$(this).find('em').last().hide();
+					}
+				});
+
+				var wTime = parseInt("{:time()}");
+				var updateTime = function() {
+					$('.date')
+							.each(
+									function(i, n) {
+										var date = $(this).attr('date');
+										if (typeof date !== 'undefined') {
+											$(this).find('em').first().html(
+													core.weibo.friendlyDate(
+															date, wTime));
+										}
+									});
+				};
+				//updateTime();
+				setInterval(function() {
+					wTime += 10;
+					updateTime();
+				}, 10000);
+			});
+</script> 
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script> 

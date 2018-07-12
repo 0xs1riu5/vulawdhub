@@ -1,0 +1,32 @@
+<include file="__THEME__/header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<!-- <script type="text/javascript" src="__THEME__/js/module.form.js"></script> -->
+<div id="page-wrap">
+	   <div id="main-wrap">
+	   	   	   <div class="st-bg">
+                <p class="pb15"><a href="{:U('weiba/Index/index')}">微吧</a>&nbsp;>&nbsp;<a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}">{$weiba_name}</a>&nbsp;>&nbsp;<php>if($type==3){</php>申请圈主<php>}else{</php>申请小主<php>}</php></p>
+                 <div class="weiba-manage">                     
+                        <!-- <h3>发新贴</h3> -->
+                        <form method="post" action="{:U('weiba/Index/do_apply_weiba_admin')}" onkeydown="if(event.keyCode==13){return false;}" name="weibaApply" model-node='weiba_admin_apply'>
+                            <input type="hidden" value="{$weiba_id}" name="weiba_id" id="weiba_id">
+                            <input type="hidden" value="{$type}" name="type" id="type">
+                        <dl class="form-set">
+                            <dd>
+                                <div class="form-tt"><font color="red"> * </font>申请理由：</div>
+                                <div class="form-row"><textarea class="text" name="reason" style="width:610px;" rows="3"></textarea></div>
+                            </dd>
+                            <dd>
+                                <div class="form-tt"></div>
+                                <div class="form-row"><a href="#" class="btn_b mr5" event-node="submit_btn"><span>确定</span></a></div>
+                                <!-- <div class="form-row"><a href="javascript:void(0)" onclick="$('#weiba_post').submit();" class="btn-green-small mr5"><span>确定</span></a><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}" class="btn-cancel"><span>取消</span></a></div> -->
+                            </dd>
+                        </dl> 
+                        </form>                
+                 </div>
+           	 </div>
+	   </div>
+</div>
+
+<include file="__THEME__/public_footer" />

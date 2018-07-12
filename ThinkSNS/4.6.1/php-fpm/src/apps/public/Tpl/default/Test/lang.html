@@ -1,0 +1,48 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend" style="padding-top:50px;">
+            <php>
+
+                
+                    $GLOBALS['_lang']['USER_PROFILE'] = '这里是{user}的个人主页信息';
+                    $GLOBALS['_lang']['ONLY_KEY']     = '纯粹一个Key';               
+                    echo L('user_profile',array('{user}'=>'杨Yang')).L('only_key');
+            </php>
+            <script type="text/javascript">
+            /*
+                function L(key,obj){
+                         if("undefined" == typeof(lang[key])){
+                              return key;
+                         }
+                         if("object" != typeof(obj)){
+                              return lang[key];
+                         }else{
+                            for(var i in obj){
+                                lang[key] = lang[key].replace(i,obj[i]);
+                            } 
+                            return lang[key];
+                         }
+
+                    }
+                    */
+                    /*var lang = new Array();
+                    lang['KEY1'] = '单纯的key1';
+                    lang['KEY2'] = '这里是可以替换的key：某人名字叫{name},年龄是{age}';
+                    */
+                    //alert(L('KEY1'));   
+                    //alert(L('KEY2',{'{name}':'yangjs','{age}':'18'})); 
+                    alert(L('PUBLIC_TEST',{'{user}':'杨','{age}':10}));
+                    alert(L('PUBLIC_EDIT'));
+
+            </script>
+        </div>
+
+        <div>
+            模版：{:L('PUBLIC_TEST',array('user'=>'杨','age'=>10))} <br/>
+            PHP:<php> echo L('PUBLIC_TEST',array('user'=>'yang','age'=>10));</php>
+        <div>
+    </div>
+</div>
+
+<include file="__THEME__/public_footer" />

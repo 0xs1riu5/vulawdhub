@@ -1,0 +1,73 @@
+<!--=================滚动的头像列表================= -->
+<script type="text/javascript" src="__THEME__/js/easySlider1.5.js"></script>
+<script>
+$(document).ready(function(){
+	 $("#slider").easySlider({
+				prevId: 'Previous',
+				nextId: 'Next',
+				controlsShow:false,
+				firstShow: true,
+				lastShow: true,
+				vertical: false,
+				continuous: false,
+				photonum: '12',
+				movenum:'5',
+				speed:'1500'
+		});
+});
+</script>
+
+<div class="diy_layout_box" id="diy_user_slide" <php>if(!empty($tplHeight)) {</php>style="height:{$tplHeight}"<php>}</php>>
+	<notempty name="title">
+	<h3 class="tit_bg">
+		<notempty name="head_link">
+			<span class="R">
+				<php>
+				foreach($head_link as $vo) {
+					echo '<a href="' . $vo->url . '" target="_blank">' . $vo->title . '</a> ';
+				}
+				</php>
+			</span>
+		</notempty>
+		{$title}
+	</h3>
+	</notempty>
+
+	<div class="diy_roll_userPic">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="25" height="100" align="center">
+					<span id="Previous">
+						<a href="javascript:void(0)">
+							<img src="__APP__/Public/images/expert_L_icon.gif" />
+						</a>
+					</span>
+				</td>
+				<td align="center">
+					<div id="slider" style="width: 100%; overflow:hidden;">
+					<ul style="overflow:hidden;float:left;">
+						<volist name="list" id="vo">
+							<li>
+								<a target="_blank"  href="{:U('public/Profile/index','uid='.$vo['uid'])}" event-node="face_card" uid="{$vo.uid}" ><img src="{$vo['face']['avatar_middle']}" width="50" height="50" /></a> 
+								<a target="_blank"  href="{:U('public/Profile/index','uid='.$vo['uid'])}">{$vo['uname']}</a> 
+							</li>
+						</volist>
+					</ul>
+					</div>
+				</td>
+				<td width="25" align="center">
+					<span id="Next">
+						<a href="javascript:void(0)">
+							<img src="__APP__/Public/images/expert_R_icon.gif" />
+						</a>
+					</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<php>if (ACTION_NAME=='saveModel'){</php>
+<script>
+M(document.getElementById('diy_user_slide'));
+</script>
+<php>}</php>

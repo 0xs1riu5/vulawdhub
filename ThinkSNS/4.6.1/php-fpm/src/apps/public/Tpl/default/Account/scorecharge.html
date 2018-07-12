@@ -1,0 +1,116 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/level.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+	   <div id="main-wrap">
+	   	   	<div id="col" class="st-grid content-bg st-bg-b cc">
+                <div id="col4" class="main-left">
+                   <!--tab菜单-->
+                   <include file="_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                  <div class="extend minh person-set">
+                      <div class="tab-menu line-b-animate mb20">
+                        <ul>
+                            <li><span><a href="{:U('public/Account/scoredetail')}">我的积分</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorerule')}">积分规则</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorelevel')}">积分等级</a></span></li>
+                            <li class="current"><span><a href="{:U('public/Account/scorecharge')}">积分充值</a></span></li>
+                            <li><span><a href="{:U('public/Account/scoretransfer')}">积分转帐</a></span></li>
+                        </ul>
+                      </div>
+
+                      <!-- <form id="charge" name="alipayment" action="{:Addons::createAddonUrl('Alipay','alipay_to')}" method="post" target="_blank"> -->
+                      <php>if($chargeConfigs['charge_platform']):</php>
+                              <dl class="form-set mb20">
+                                 <dd>
+                                    <div class="form-tt">充值方式</div>
+                                    <div class="form-row">
+                                    <php>if(in_array('alipay', $chargeConfigs['charge_platform'])):</php>
+                                        <label style="padding-right:15px;"><input class="s-ck" type="radio" value="0" name="charge_type" style="margin-right:2px;">支付宝</label>
+                                    <php>endif;if(in_array('weixin', $chargeConfigs['charge_platform'])):</php>
+                                        <label style="padding-right:15px;"><input class="s-ck" type="radio" value="1" name="charge_type" style="margin-right:2px;">微信支付</label>
+                                    <php>endif;</php>
+                                    </div>
+                                 </dd>
+                                 <dd>
+                                    <div class="form-tt">充值金额</div>
+                                    <div class="form-row">
+                                        <label style="padding-right:15px;"><input class="s-ck" type="radio" value="10" name="charge_value" onclick="$('#charge_value_num').val('');" style="margin-right:2px;">10元</label>
+                                        <label style="padding-right:15px;"><input class="s-ck" type="radio" value="20" name="charge_value" onclick="$('#charge_value_num').val('');" style="margin-right:2px;">20元</label>
+                                        <label style="padding-right:15px;"><input class="s-ck" type="radio" value="50" name="charge_value" onclick="$('#charge_value_num').val('');" style="margin-right:2px;">50元</label>
+                                        <label style="padding-right:15px;"><input class="s-ck" type="radio" value="100" name="charge_value" onclick="$('#charge_value_num').val('');" style="margin-right:2px;">100元</label>
+                                        <label style="padding-right:0;"><input id="charge_value_num" name="charge_value_num" onfocus="$('input:radio[name=\'charge_value\']').attr('checked',false);" class="txt" type="text" style="width:72px;margin-right:2px;">元</label>
+                                    </div>
+                                 </dd>
+                                 <dd>
+                                    <div class="form-tt"></div>
+                                    <div class="form-row"><font color="red">提示：人民币1元={:abs(intval($chargeConfigs['charge_ratio']))}积分，单次最低充值1元</font></div>
+                                 </dd>
+                                 <dd>
+                                    <div class="form-tt"></div>
+                                    <div class="form-row"><a href="javascript:void(0);" onclick="scorecharge()" class="btn-green-small"><span>立即充值</span></a></div>
+                                 </dd>
+                              </dl>
+                      <php>else:</php>
+                      <div style="text-align:center; padding:30px 0;color:red">抱歉，网站暂时不支持支付平台充值！</div>
+                      <php>endif;</php>
+                     <!-- </form> -->
+                      <div class="level-content">
+                        <h3>充值记录</h3>
+                        <table>
+                          <tbody>
+                            <tr>
+                              <th width="150">流水号</th>
+                              <th width="150">充值金额</th>
+                              <th width="300">充值方式</th>
+                              <th width="150">充值时间</th>
+                              <th width="150">充值状态</th>
+                            </tr>
+                            <volist name="charge_record.data" id="vo">
+                              <tr>
+                                <td width="150">{$vo.serial_number}</td>
+                                <td width="150">{$vo.charge_value}元</td>
+                                <td width="300"><php>if($vo['charge_type']==0){ echo '支付宝'; }else{ echo '微信支付'; }</php></td>
+                                <td width="150">{$vo.ctime|friendlyDate}</td>
+                                <td width="150"><php>if($vo['status']==0){ echo '待支付'; }elseif($vo['status']==1){ echo '成功'; }else{ echo '失败'; }</php></td>
+                              </tr>
+                            </volist>
+                          </tbody>
+                        </table>
+                        <div id="page" class="page" >{$charge_record.html}</div>
+                      </div>
+                  </div>
+                </div>
+           	 </div>
+	   </div>
+</div>
+<script>
+function scorecharge(){
+    var charge_type = $('input:radio[name="charge_type"]:checked').val();
+    if (!charge_type) {
+        ui.error('请选择充值方式');
+        return false;
+    }
+    var charge_value = $.trim($('#charge_value_num').val());
+    if(charge_value==''){
+        charge_value = $.trim($('input:radio[name="charge_value"]:checked').val());
+    }
+    if(parseInt(charge_value) != charge_value){
+        ui.error('请输入正确的充值金额');
+        return false;
+    }
+    if(charge_value < 1){
+        ui.error('单次最低充值1元人民币');
+        return false;
+    }
+    $.post(U('public/Account/do_scorecharge'), {charge_type:charge_type,charge_value:charge_value}, function (res) {
+        if (res.status == 1) {
+          window.location.href = res.request_url;
+        } else {
+          ui.error(res.info);
+        }
+    }, 'json');
+    return false;
+}
+</script>
+<include file="__THEME__/public_footer" />

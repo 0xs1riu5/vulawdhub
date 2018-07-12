@@ -1,0 +1,176 @@
+<php> 
+$cancomment = intval(CheckPermission('core_normal','feed_comment')); 
+$canfeedshare = CheckPermission('core_normal','feed_share');
+$canfeeddel = CheckPermission('core_normal','feed_del');
+$adminfeeddel = CheckPermission('core_admin','feed_del');
+$canfeedreport = CheckPermission('core_normal','feed_report');
+$adminchannelrecom = CheckPermission('channel_admin','channel_recommend');
+$admintaskrecom = CheckPermission('vtask_admin','vtask_recommend');
+</php>
+<div id="col5" class="st-index-main">
+  <div id="feed-lists" class="feed_lists clearfix">
+	<php>if($data){</php>
+	<volist name="data" id ="vl">
+    <dl id="feed{$vl.feed_id}" class="feed_list" model-node="feed_list">
+      <dt class="face">
+		    <a href="{$vl['user_info']['space_url']}"><img src="{$vl['user_info']['avatar_middle']}" event-node="face_card" uid="{$vl['user_info']['uid']}"></a><php>if($vl['user_info']['group_icon_only']):</php><a href="javascript:;" title="{$vl['user_info']['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vl['user_info']['group_icon_only']['user_group_name']}" src="{$vl['user_info']['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php>
+		  </dt>
+      <dd class="content"> {:W('FeedManage',array('feed_id'=>$vl['feed_id'],'feed_uid'=>$vl['user_info']['uid']))} <em class="hover right">
+        <eq name='vl.actions.delete' value='true'> 
+          <!-- 做普通删除权限 和 管理删除权限 判断 & 只有分享可以被删除  -->
+          <php>if($vl['user_info']['uid'] == $GLOBALS['ts']['mid']){</php>
+          <a href="javascript:void(0)" event-node ='delFeed' event-args='feed_id={$vl.feed_id}&uid={$vl.user_info.uid}&isrefresh=1'>{:L('PUBLIC_STREAM_DELETE')}</a>&nbsp;&nbsp;
+          <php>}</php>
+        </eq>
+        <php>if($vl['user_info']['uid'] != $GLOBALS['ts']['mid']){</php>
+        <php>if(CheckPermission('core_normal','feed_report')){</php>
+        <a href="javascript:void(0)" event-node='denounce' event-args='aid={$vl.feed_id}&type=feed&uid={$vl.user_info.uid}'>{:L('PUBLIC_STREAM_REPORT')}</a>&nbsp;&nbsp;
+        <php>}</php>
+        <php>}</php>
+        </em>
+        <p class="hd">{$vl['user_info']['space_link']}
+	      <?php if(in_array($vl['user_info']['uid'], $followUids)): ?>
+	      {:W('Remark',array('uid'=>$vl['user_info']['uid'],'remark'=>$remarkHash[$vl['user_info']['uid']],'showonly'=>1))}
+	      <?php endif; ?>
+	    <div class="contents clearfix">{$vl.body|format=true}</div>
+	    <p class="info">
+	      <span class="right">
+	        <php>if(!empty($cancomment)):</php>
+	        <eq name='vl.actions.comment' value='true'>
+	        <a event-node="comment" href="javascript:void(0)" event-args='row_id={$vl.feed_id}&app_uid={$vl.api_source.source_user_info.uid}&app_row_id={$vl.app_row_id}&app_row_table={$vl.app_row_table}&to_comment_id=0&to_uid=0&app_name={$vl.app}&table=feed&cancomment={$cancomment}&cancomment_old={$cancomment_old}'>{:L('PUBLIC_STREAM_COMMENT')}<neq name='vl.comment_count' value='0'> ({$vl.comment_count}) </neq></a>
+	        &nbsp;&nbsp;
+	        </eq>
+	        <php>endif;</php>
+	        <php>if(!empty($canfeedshare)):</php>
+	        <eq name='vl.actions.repost' value='true'>
+	        <php>
+	        $sid = !empty($vl['app_row_id'])? $vl['app_row_id'] : $vl['feed_id'];
+	        $cancomment_old = in_array($vl['type'],$cancomment_old_type) ? 1 : 0;
+	        </php>
+	        {:W('Share',array('sid'=>$sid,'stable'=>$vl['app_row_table'],'initHTML'=>'','current_table'=>'feed','current_id'=>$vl['feed_id'],'nums'=>$vl['repost_count'],'appname'=>$vl['app'],'cancomment'=>$cancomment_old,'feed_type'=>$vl['type'],'is_repost'=>$vl['is_repost']))}
+	        &nbsp;&nbsp;
+	        </eq>
+	        <php>endif;</php>
+	        <eq name='vl.actions.favor' value='true'>
+	        {:W('Collection',array('type'=>$type,'sid'=>$vl['feed_id'],'stable'=>'feed','sapp'=>$vl['app']))}
+	        </eq>
+	        &nbsp;&nbsp;
+	
+	        {:W('Digg',array('feed_id'=>$vl['feed_id'],'digg_count'=>$vl['digg_count'],'diggArr'=>$diggArr))}
+	      </span>
+	      <span>
+	        <a class="date" date="{$vl.publish_time}" href="{:U('public/Profile/feed',array('feed_id'=>$vl['feed_id'],'uid'=>$vl['uid']))}"><em>{$vl.publish_time|friendlyDate}</em><em style="display:none;">查看详情</em></a>
+	      </span>
+	    </p>
+        <div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+      </dd>
+      <dt class="xline"></dt>
+    </dl>
+    </volist>
+	<php>}else{</php>
+	<dl class="feed_list" style="min-height:500px">
+    <div style="padding-top:80px;text-align:center">
+    <p class="mb10"><i class="icon-bed"></i></p>
+    <p style="color:#333">暂时没有可显示的内容哟~</p>
+    </div>
+  </dl>
+	<php>}</php>
+	<div class="page">{$html}</div>
+<script>
+
+function doHighlight(a,b){
+    highlightStartTag="<span style='color:red'>";
+    highlightEndTag="</span>";
+    var c="";
+    var i=-1;
+    var d=b.toLowerCase();
+    var e=a.toLowerCase();
+    while(a.length>0){
+        i=e.indexOf(d,i+1);
+        if(i<0){
+            c+=a;
+            a="";
+        }else{
+            if(a.lastIndexOf(">",i)>=a.lastIndexOf("<",i)){
+                if(e.lastIndexOf("/script>",i)>=e.lastIndexOf("<script",i)){
+                    c+=a.substring(0,i)+highlightStartTag+a.substr(i,b.length)+highlightEndTag;
+                    a=a.substr(i+b.length);e=a.toLowerCase();
+                    i=-1;
+                }
+            }
+        }
+    }
+    return c;
+};
+
+$.fn.highlight=function(z){
+    $(this).each(
+        function(){
+            if (z !== null) {
+              $(this).html(doHighlight($(this).html(),z));
+            }
+        });
+    return this;
+}
+
+$(document).ready(function(){
+  
+  $('.date').live({
+    mouseover: function() {
+      var width = $(this).find('em').first().width();
+      $(this).find('em').first().hide();
+      $(this).find('em').last().css({display:'inline-block', width: width});
+      $(this).find('em').last().css({minWidth:'50px'});
+    },
+    mouseout: function() {
+      $(this).find('em').first().show();
+      $(this).find('em').last().hide();
+    }
+  });
+
+
+
+  if(!'{$topic_id}' && '{$feed_key}'){
+  	var key3 = '{$feed_key}';
+    $('.contents').highlight(key3);
+    M($('#feed-lists')[0]);
+  }
+});
+/**
+ * 时间更新效果
+ * return void
+ */
+$(document).ready(function() {
+  var formatTime = '';
+  $('.date').bind({
+    mouseover: function() {
+      $(this).find('em').first().hide();
+      var width = $(this).find('em').first().width();
+      $(this).find('em').last().css({display:'inline', width: width});
+    },
+    mouseout: function() {
+      $(this).find('em').first().show();
+      $(this).find('em').last().hide();
+    }
+  });
+
+	var wTime = parseInt("{:time()}");
+	var updateTime = function()
+	{
+		$('.date').each(function(i, n) {
+			var date = $(this).attr('date');
+			if(typeof date !== 'undefined') {
+				$(this).find('em').first().html(core.weibo.friendlyDate(date, wTime));
+			}
+		});	
+	};
+	//updateTime();
+	setInterval(function() {
+		wTime += 10;
+		updateTime();
+	}, 10000);
+});
+
+</script>
+  </div>
+</div>

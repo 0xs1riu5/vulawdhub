@@ -1,0 +1,30 @@
+<volist name="sync" id="v">
+    <label>
+        <input type='checkbox' name='sync[]' value='{$v}' style="vertical-align:middle;" <php>if($login_bind[$v]){</php>checked=true<php>}</php> id='{$v}_sync' onclick='loginSelectSync(this)' />
+        <span>{$alias[$v]}</span>
+    </label>
+</volist>
+<script>
+//同步设置
+function loginSelectSync(o) {
+    if(o.checked) {
+        $(o).removeAttr('checked');
+        $.get( U('public/Widget/displayAddons') ,{addon:"Login",hook:"login_ajax_bind_publish_weibo",type:$(o).val(),'do':'ajax_bind'},function(txt) {
+        	if(txt == '1'){
+                $(o).attr('checked',true);
+            }else{
+				ui.box.show(txt, {title:'绑定帐号'});
+            }
+        });
+    } else {
+        $(o).attr('checked', true);
+        $.post(U('public/Widget/addonsRequest'), {
+            addon : "Login",
+            hook : "login_unbind_publish_weibo",
+            type : $(o).val()
+        }, function(txt) {
+            $(o).removeAttr('checked');
+        });
+    }
+}
+</script>

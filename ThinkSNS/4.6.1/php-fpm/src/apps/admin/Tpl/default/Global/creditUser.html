@@ -1,0 +1,96 @@
+<include file="../Public/_header" />
+<div class="so_main">
+  <div class="page_tit">积分配置</div>
+  <div class="tit_tab">
+    <ul>
+    <li><a href="{:U('admin/Global/credit')}">积分规则</a></li>
+    <li><a href="{:U('admin/Global/creditType')}">积分类型</a></li>
+    <li><a href="{:U('admin/Global/creditUser')}" class="on">设置用户积分</a></li>
+    <li><a href="{:U('admin/Global/creditLevel')}">积分等级</a></li>
+    </ul>
+    </ul>
+  </div>
+
+  <div class="form2">
+  	<form method="post" action="{:U('admin/Global/doCreditUser')}">
+
+    <dl class="lineD">
+      <dt>用户ID：</dt>
+      <dd>
+       		<input size="30" name="uId" class="txt"/> 
+			<p>根据用户ID,多个用户用英文逗号“,”隔开,若不限制ID则留空。</p>
+      </dd>
+    </dl>
+    <dl class="lineD">
+      <dt>用户所在组：</dt>
+      <dd>
+       		<select name="gId">
+            	<option value="all" selected="selected">全部</option>
+            	<!-- <option value="0" >普通用户</option> -->
+				<volist id="vo" name="grounlist">
+					 <option value="{$vo.user_group_id}">{$vo.user_group_name}</option>
+				</volist>
+            </select>
+			<p>根据用户所在组添加</p>
+      </dd>
+    </dl>
+    <dl class="lineD">
+      <dt>用户状态：</dt>
+      <dd>
+       		<select name="active">
+                <option value="all">全部</option>
+              	<option value="0">待激活</option>
+            	<option value="1">已激活</option>
+            </select>
+			<p>根据用户状态</p>
+      </dd>
+    </dl>
+    <dl class="lineD">
+      <dt>操作：</dt>
+      <dd>
+       		<input class="radio" type="radio" name="action" value="add" checked />增减
+            <input class="radio" type="radio" name="action" value="set"  />设定
+			<p>增减积分，或者直接设定积分值</p>
+      </dd>
+    </dl>
+      <volist name ="creditType" id="vo">
+    <dl class="lineD">
+      <dt>{$vo.alias}：</dt>
+      <dd>
+            <input name="{$vo.name}" class="s-txt" value="0"/>
+			<p>正为加，负为减</p>
+      </dd>
+    </dl>
+      </volist>
+    <!--<dl class="lineD">
+      <dt>操作理由：</dt>
+      <dd>
+       		<input name="info" class="txt" value="{action}{sign}了{score}分{typecn}"/><br />
+			<p>操作积分的理由</p>
+      </dd>
+    </dl>-->
+	
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="确定" onclick="return check();" />
+    </div>
+    </form>
+  </div>
+
+</div>
+<include file="../Public/_footer" />
+<script>
+	function check(){
+    var radioes = document.getElementsByName('action');
+    for(var i=0;i<radioes.length;i++)
+    {
+        if(radioes[i].checked){
+          var action = radioes[i].value;
+          action = action=='set'?'设定':'增减';
+          if( confirm('确定进行 ' + action + ' 操作？') ){
+            return true;
+          }
+          return false;
+        }
+    }
+	}
+</script>

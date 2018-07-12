@@ -1,0 +1,88 @@
+<include file="__THEME__/public_header" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="weiba-top">
+      <div class="app-title clearfix">
+        <div class="app-tab-menu clearfix">
+          <ul>
+            <li><a href="{:U('weiba/Index/index')}" 
+              
+              <php>if(!$nav){</php>
+              class="current"
+              <php>}</php>
+              >微吧首页</a></li>
+              <li><a href="{:U('weiba/Index/weibaList')}" 
+              
+              <php>if($nav=="weibalist"){</php>
+              class="current"
+              <php>}</php>
+              >所有微吧</a>
+              <php>if($GLOBALS['ts']['mid']){</php>
+              <php>}</php>
+            </li>
+            <php>if($GLOBALS['ts']['mid']){</php>
+            <li><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFollowing'))}" 
+              
+              <php>if($nav=="myweiba"){</php>
+              class="current"
+              <php>}</php>
+              >我的</a></li>
+            <php>}</php>
+            <php>if($nav=="weibadetail"){</php>
+            <li><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}" class="current">{$weiba_name}</a></li>
+            <php>}</php>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--所有微吧-->
+    <php>if($list['data']){</php>
+    <volist name="list['data']" id="vo">
+      <div class="weibaList">
+      <div class="list-type clearfix"><span class="left">{$vo.name}</span><span class="right"><i class="ico-arrow-up-list"></i></span></div>
+      <php>if($vo['list']){</php>
+      	   <ul class="clearfix">
+		      <volist name="vo['list']" id="k">
+			        <li <php>if(is_integer(($key + 1) / 3)):</php>style="border-right:none;"<php>endif;</php>>
+			          <div class="weiba-logo left"><a href="{:U('weiba/Index/detail','weiba_id='.$k['weiba_id'])}"><img src="{$k.avatar_middle}"  /></a></div>
+			          <div class="weiba-info">
+			            <h2 class="weiba-tit mb5"><a href="{:U('weiba/Index/detail','weiba_id='.$k['weiba_id'])}">{$k.weiba_name}</a></h2>
+                  <p class="weiba-prof" title="{$k.intro}">{$k.intro|getShort=###, 20, '...'}</p>
+			            <p class="weiba-data"><span>成员数：{$k.follower_count}</span>&nbsp;&nbsp;<span>今日新帖：{$k.new_count}</span></p>
+			          </div>
+			        </li>
+		      </volist>
+      	   </ul>
+      <php>}</php>
+    </div>
+    </volist>
+    <php>} else {</php>
+    <div class="weibaList">
+      <div class="list-type">目前暂无信息！<div class="right"><i class="ico-arrow-up-list"></i></div></div>
+    </div>
+    <php>}</php>
+    <div id="page" class="page" style="">{$list.html}</div>   
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 
+<script language="javascript" type="text/javascript">
+function weibaToggle(obj,cont){
+    $(obj).click(function(){
+		var flag = $(obj).attr("class")=='ico-arrow-up-list'
+		if(flag){
+			$(obj).attr("class","ico-arrow-down-list")
+			$(cont).slideUp();
+			}
+		else{
+			$(obj).attr("class","ico-arrow-up-list")
+			$(cont).slideDown();
+			}
+		})
+	}
+//var object = $(".list-type i");
+$(".list-type i").each(function(){
+	var cont = $(this).parents(".list-type").next("ul");
+	weibaToggle(this,cont);
+})
+</script>

@@ -1,0 +1,11 @@
+<span event-node="doRelatedUnion" event-args="uid={$fid}&uname={$uname}&unioning={$union_state['unioning']}&unioner={$union_state['unioner']}&refer={$refer}&isrefresh={$isrefresh}" href="{:U('public/Union/doUnion', array('fid'=>$fid))}" class="btn-att">联盟</span>
+
+<script type="text/javascript">
+M.addEventFns({
+	doRelatedUnion: {
+		click: function() {
+			union.doUnion(this);
+		}
+	}
+});
+</script>

@@ -1,0 +1,76 @@
+<include file="__THEME__/public_header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+    
+<div id="page-wrap">
+    <div id="top-wrap" class="mb0"> <include file="_weiba_header" /> </div>
+	  <div id="main-wrap">
+        <div class="app-wrap"> 
+	   	   	   <div class="mb10 clearfix">
+
+                 <include file="_right" />
+
+                 <div id="col5" class="st-index-main">
+                    <div class="weiba-box">
+                      <php>if(!$searchkey){</php>
+                        <p class="mb20">抱歉，搜索关键字不能为空</p>
+                      <php>}else{</php>
+
+                        <php>if(!$post_list['data']){</php>
+                          <!-- <p class="mb20">抱歉，暂时没有与“{$searchkey}”相关的帖子</p> -->
+                          <div class="weiba-sort f9 clearfix mb20">
+                              <span class="right"><a href="{:U('weiba/Index/search',array('k'=>$searchkey,'type'=>1))}">搜微吧</a>&nbsp;|&nbsp;搜帖子</span>
+                              <span class="no-result">抱歉，暂时没有与&nbsp;“<span style="color:red;">{$searchkey}</span>”&nbsp;相关的帖子</span>
+                          </div> 
+                          <div class="right-box clearfix no-b">
+                            <fieldset class="inter-line"><legend class="inter-txt">热门微吧推荐</legend></fieldset>
+                            <ul>
+                               <volist name="weiba_recommend" id="vo">
+                                  <li>
+                                      <a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><img src="{$vo.logo}" width="50" height="50"/></a><a href="" class="name"><span>{$vo.weiba_name}</span></a>
+                                  </li>
+                              </volist>
+                             </ul>
+                          </div>
+                        <php>}else{</php>
+                          <div class="weiba-sort f9 clearfix">
+                              <span class="right"><a href="{:U('weiba/Index/search',array('k'=>$searchkey,'type'=>1))}">搜微吧</a>&nbsp;|&nbsp;搜帖子</span>
+                              <span>共搜索到{$post_list.count}个相关帖子</span>                             
+                          </div>                
+                          <div class="hot-posts-list clearfix">
+                             <ul>
+                              <volist name="post_list.data" id="vo">
+                                  <li>
+                                     <span class="num">{$vo.reply_count}<br />回应</span>
+                                     <div class="hot-post-content">
+                                     <div class="name">
+                                        <a class="tit" target="_blank" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">{$vo.title|getShort=14}<php>if($vo['image']){</php><i class="ico-img"></i><php>}</php></a>
+                                        <php>if($vo['top']==2){</php><i class="ico-bar-top mr5">置顶</i><php>}</php>
+                                        <php>if($vo['digest']==1){</php><i class="ico-bar-fine mr5">精华</i><php>}</php>
+                                     </div>
+                                     <div class="con">
+                                      <php>if($vo['image']){</php>
+                                        <img src="{$vo['image'][0]}" <php>if(!strstr($vo['image'][0],'emoticons')){</php>width="50" height="50"<php>}</php> />
+                                      <php>}</php>
+                                        {$vo.content|t|getShort=100}
+                                     </div>
+                                     <div class="date">
+                                         <span>来自于<a class="weiba-name" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}">{$vo.weiba|getShort=5}</a>&nbsp;&nbsp;&nbsp;&nbsp;{$vo.user.space_link}&nbsp;&nbsp;&nbsp;&nbsp;{$vo.post_time|friendlyDate}</span>
+                                     </div>
+                                    </div>
+                                  </li>
+                              </volist>
+                             </ul>
+                             <div id="page" class="page" style="">{$post_list.html}</div>
+                          </div>
+                        <php>}</php>
+                    <php>}</php>
+                     </div>
+                 </div>
+           	 </div>
+        </div>
+	   </div>
+</div>
+
+<include file="__THEME__/public_footer" />

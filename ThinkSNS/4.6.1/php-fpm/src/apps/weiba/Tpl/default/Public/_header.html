@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$ts['site']['site_name']}管理后台</title>
+<link href="__APP__/admin.css" rel="stylesheet" type="text/css">
+<link href="__PUBLIC__/ts2/js/tbox/box.css" rel="stylesheet" type="text/css" />
+<script>
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var UPLOAD_URL ='{:UPLOAD_URL}';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+// Js语言变量
+var LANG = new Array();
+</script>
+<link href="__PUBLIC__/js/tbox/box.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/core.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/tbox/box.js"></script>
+<script src="__THEME__/js/module.js"></script>
+<script src="__THEME__/js/common.js"></script>
+<script src="__THEME__/js/module.common.js"></script>
+<script src="__THEME__/js/module.weibo.js"></script>
+<script type="text/javascript" src="{:APPS_URL}/admin/_static/admin.js?t=11"></script>
+<script type="text/javascript" src = "__THEME__/js/ui.core.js"></script>
+<script type="text/javascript" src = "__THEME__/js/ui.draggable.js"></script>
+<php>
+/* 非admin应用的后台js脚本统一写在  模板风格对应的app目录下的admin.js中*/
+if(APP_NAME != 'admin' && file_exists(APP_PUBLIC_PATH.'/admin.js')){
+</php>
+<script type="text/javascript" src="{:APP_PUBLIC_URL}/admin.js"></script>
+<php>}</php>
+<php>if(!empty($langJsList)) {</php>
+<volist name="langJsList" id="vo">
+<script src="{$vo}"></script>
+</volist>
+<php>}</php>
+</head>
+</head>
+<body>

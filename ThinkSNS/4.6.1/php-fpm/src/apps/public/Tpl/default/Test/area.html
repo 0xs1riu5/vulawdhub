@@ -1,0 +1,25 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px 0">
+                
+                地区选择： {:W('Area',array('curPro'=>1,'curCity'=>2,'area'=>3))}
+             <br/>
+                地区选择2： {:W('Area',array('curPro'=>1,'curCity'=>2,'area'=>3,'tpl'=>'loadCity'))}
+            </div>
+<div>
+<pre>
+调用：W('Area',array('curPro'=>1,'curCity'=>2,'area'=>3,'tpl'=>'loadCity'))
+参数说明：
+curPro 	 当前省的ID
+curCity	 当前城市的ID
+area 	 当前地区的ID
+tpl		 选用的地区选择模版
+
+</pre>
+</div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />

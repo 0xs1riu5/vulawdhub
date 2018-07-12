@@ -1,0 +1,43 @@
+<div id="plot_{$type}_{$id}" style="{$plotCls}" model-node="plotChart" model-args="id={$id}&type={$type}&title={$title}&key={$key}&value={$value}&color={$color}&show={$show}&location={$location}"></div>
+	
+<!--[if lt IE 9]><script type="text/javascript" src="__THEME__/js/jqplot/excanvas.min.js"></script><![endif]-->
+<script type="text/javascript" src="__THEME__/js/jqplot/jquery.jqplot.min.js"></script>
+
+<script type="text/javascript" src="__THEME__/js/jqplot/plugins/jqplot.pieRenderer.min.js"></script>
+
+<script type="text/javascript" src="__THEME__/js/jqplot/plugins/jqplot.pointLabels.min.js"></script>
+
+<script type="text/javascript" src="__THEME__/js/jqplot/plugins/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="__THEME__/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="__THEME__/js/jqplot/plugins/jqplot.pointLabels.min.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="__THEME__/js/jqplot/jquery.jqplot.min.css" />
+
+<script type="text/javascript" src="__THEME__/js/jqplot/chart.js"></script>
+
+<style type="text/css">
+#plot_barChart_<?php echo $id;?> .jqplot-point-label {
+  border: 1.5px solid #aaaaaa;
+  padding: 1px 3px;
+  background-color: #eeccdd;
+}
+.jqplot-target {
+	color: #FFFFFF;
+}
+</style>
+
+<script type="text/javascript">
+/*** Js监听 ***/
+M.addModelFns({
+	plotChart: {
+		load: function() {
+			var args = M.getModelArgs(this);
+			(function(){
+				var test = new plotChart();
+				test.showPlot(args);
+			})();
+		}
+	}
+});
+</script>

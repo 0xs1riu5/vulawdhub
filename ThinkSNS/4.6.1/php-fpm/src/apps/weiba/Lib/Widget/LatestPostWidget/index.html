@@ -1,0 +1,30 @@
+<div class="clearfix mb30" >
+  <fieldset class="inter-line mb5">
+    <a href="javascript:;" event-node="change_related_new_post" rel="0" event-args="uid={$uid}&max={$max}&weiba_id={$weiba_id}" id="change_related_new_post" class="right"><i class="ico-refresh"></i></a>
+    <legend class="inter-txt">{$title}</legend>
+  </fieldset>
+  <ul model-node="related_new_post" class="weiba-post-list">
+    <volist name="topic_list" id="vo">
+      <li>
+      <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><i class="ico-dot1"></i>{$vo.title|getShort=14}</a>
+      </li>
+    </volist>
+  </ul>
+</div>
+<script type="text/javascript">
+// 事件绑定
+M.addEventFns({
+    // 换一换操作
+    change_related_new_post: {
+        click: function() {
+            var args = M.getEventArgs(this);
+            var _model = M.getModels('related_new_post');
+            $.post("{:U('widget/LatestPost/changeRelate','app_widget=weiba')}", {uid:args.uid, max:args.max,weiba_id:args.weiba_id}, function(data) {
+                $(_model[0]).html(data);
+                M($(_model)[0]);
+            }, 'json');
+            return false ;
+        }
+    }
+});
+</script>

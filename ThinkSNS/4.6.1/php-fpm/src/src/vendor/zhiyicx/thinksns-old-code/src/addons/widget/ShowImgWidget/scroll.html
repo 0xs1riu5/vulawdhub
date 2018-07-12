@@ -1,0 +1,21 @@
+<div id="{$id}" class="scrollImg" style='width:{$width};height:{$height}'> 
+			<ul>
+				<volist name='imglist' id='i'>
+				<li>
+					<neq name='i.href' value=''>
+						<a href="{$i.href}" target="_blank" title='{$i.title}'><img src="{$i.src}" /></a>
+					<else /> 
+						<img src="{$i.src}" title='{$i.title}'/>
+					</neq>
+				
+				</li>
+				</volist>
+			</ul>
+		</div>
+<script type="text/javascript">
+
+core.plugFunc('imgshow',function(){
+	core.imgshow.scrollImg('<php> echo $id;</php>');    
+});
+
+</script>

@@ -1,0 +1,21 @@
+<div id="col1" class="main-left">
+    <dl class="left-menu">
+    	<dt><a href="{:U('public/Search',array('k'=>t($_GET['k'])))}"><i class="ico-minus-gray"></i>{:L('PUBLIC_ALL_WEBSITE')}</a></dt>
+    	<volist name='menuList' id='m'>
+    	<dd <php>if($curApp == $m['app_name'] && $curType==$m['type_id']){ echo 'class="current"'; } </php> >
+    	<a href="{:U('public/Search',array('k'=>t($_GET['k']),'a'=>$m['app_name'],'t'=>$m['type_id']))}" ><i class="arrow-current"></i>{:L('PUBLIC_SEARCH')}{$m.type}</a>
+    	</dd>	
+    	</volist>
+    </dl>
+
+    <php> if(!empty($data['tablist'])):</php>
+    	<dl class="child-menu">
+    	<dt>{:L('PUBLIC_ALL')}</dt>
+    	<volist name='data.tablist' id='tab'>
+    	<dd <php>if($tabkey == $tab['tabkey'] && $tabvalue==$tab['tabvalue']){ echo 'class="current"'; } </php> >
+    		<a href="{:U('public/Search',array('k'=>t($_GET['k']),'a'=>$curApp,'t'=>$curType,'tk'=>$tab['tabkey'],'tv'=>$tab['tabvalue']))}" >{$tab.tabtitle} <neq name='tab.count' value='0'>({$tab.count})</neq></a>
+    	</dd>	
+    	</volist>
+    </dl>
+    <php>endif;</php>
+</div>

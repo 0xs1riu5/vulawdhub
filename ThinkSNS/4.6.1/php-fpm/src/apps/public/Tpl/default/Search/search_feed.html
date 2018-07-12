@@ -1,0 +1,121 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="col"> <include file="search_top" /> </div>
+      <div id="col8" class="st-bg"> 
+        <!--右边--> 
+        <!--<div id="col3" class="st-index-right">
+              <div class="right-wrap">
+                  {:W('SameUser',array('type'=>3, 'limit'=>12, 'title'=>'与你同地区的人'))}
+                  {:W('SameUser',array('type'=>4, 'limit'=>12, 'title'=>'与你同标签的人'))}
+              </div>
+            </div>--> 
+        <!-- <php>if($keyword == ""){</php><div><font color="red">抱歉，搜索关键字不能为空</font></div><php>}</php> --> 
+        
+        <!--feednav-->
+        <div class="feed-nav">
+          <div class="tab-title">
+            <php>if($keyword != ""){</php>
+            <div class="left"> 
+              <!-- 所有地区<a href="">[筛选]</a><i class="vline">| --> 
+              </i>时间&nbsp;<a href="javascript:void(0);" onclick="selectDate()">[筛选]</a>
+              <php>if($Stime && $Etime){</php>
+              ({$Stime} ~ {$Etime})
+              <php>}</php>
+            </div>
+            <div class="mod-feed-tab right" id="mod-feed-tab" 
+                
+            
+            <php>if(!isset($_GET['feed_type']) && empty($_GET['feed_key'])){</php>
+            style="display:block;margin:0;"
+            <php>}</php>
+            >
+            <ul class="inner-feed-nav">
+              <li 
+                  
+              
+              <eq name='feed_type' value=''>class="current"</eq>
+              > <a href="{:U('public/Search/index',array('type'=>$type,'feed_type'=>'','k'=>$keyword,'a'=>'public','t'=>2, 'Stime'=>$Stime,'Etime'=>$Etime))}">{:L('PUBLIC_ALL_STREAM')}</a>
+              </li>
+              <li 
+                  
+              
+              <eq name='feed_type' value='post'>class="current"</eq>
+              > <a href="{:U('public/Search/index',array('type'=>$type,'feed_type'=>'post','k'=>$keyword,'a'=>'public','t'=>2, 'Stime'=>$Stime,'Etime'=>$Etime))}">{:L('PUBLIC_ORIGINAL_STREAM')}</a>
+              </li>
+              <li 
+                  
+              
+              <eq name='feed_type' value='repost'>class="current"</eq>
+              > <a href="{:U('public/Search/index',array('type'=>$type,'feed_type'=>'repost','k'=>$keyword,'a'=>'public','t'=>2,'Stime'=>$Stime, 'Etime'=>$Etime))}">{:L('PUBLIC_SHARE_STREAM')}</a>
+              </li>
+              <li 
+                  
+              
+              <eq name='feed_type' value='postimage'>class="current"</eq>
+              > <a href="{:U('public/Search/index',array('type'=>$type,'feed_type'=>'postimage','k'=>$keyword,'a'=>'public','t'=>2,'Stime'=>$Stime, 'Etime'=>$Etime))}">{:L('PUBLIC_IMAGE_STREAM')}</a>
+              </li>
+              <li 
+                  
+              
+              <eq name="feed_type" value="postvideo">class="current"</eq>
+              > <a href="{:U('public/Search/index',array('type'=>$type,'feed_type'=>'postvideo','k'=>$keyword,'a'=>'public','t'=>2,'Stime'=>$Stime, 'Etime'=>$Etime))}">视频</a>
+              </li>
+            </ul>
+          </div>
+          <php>}</php>
+        </div>
+      </div>
+      <!--feed list--> 
+      <include file="_weibo" /> </div>
+
+</div>
+</div>
+<include file="__THEME__/public_footer" /> 
+<script>
+  var selectDate = function(){
+    var app = $('#app').val();
+    var mod = $('#mod').val();
+    var t = $('#t').val();
+    var a = $('#a').val();
+    var k = "{$keyword}";
+    var feed_type = "{$feed_type}";
+    ui.box.load(U('public/Search/selectDate')+'&app='+app+'&mod='+mod+'&t='+t+'&a='+a+'&k='+encodeURI(k)+'&feed_type='+feed_type, '时间筛选','$("#rcalendar").css("display","none")');
+  };
+
+/**
+ * 时间更新效果
+ * return void
+ */
+$(document).ready(function() {
+  var formatTime = '';
+  $('.date').bind({
+    mouseover: function() {
+      $(this).find('em').first().hide();
+      var width = $(this).find('em').first().width();
+      $(this).find('em').last().css({display:'inline', width: width});
+    },
+    mouseout: function() {
+      $(this).find('em').first().show();
+      $(this).find('em').last().hide();
+    }
+  });
+
+  var wTime = parseInt("{:time()}");
+  var updateTime = function()
+  {
+    $('.date').each(function(i, n) {
+      var date = $(this).attr('date');
+      if(typeof date !== 'undefined') {
+        $(this).find('em').first().html(core.weibo.friendlyDate(date, wTime));
+      }
+    }); 
+  };
+  //updateTime();
+  setInterval(function() {
+    wTime += 10;
+    updateTime();
+  }, 10000);
+});
+</script> 
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script> 

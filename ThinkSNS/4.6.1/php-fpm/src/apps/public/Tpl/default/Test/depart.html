@@ -1,0 +1,43 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px">
+                后台选择部门wigdet：（下拉形式）
+                <div>
+                    {:W('Department',array('tpl'=>'admin','select'=>1,'sid'=>0,'nosid'=>1))}
+                </div>
+                通过input框选择部门:
+                <div>
+                     {:W('Department',array('inputName'=>'depart','canChange'=>1,'tpl'=>'input','defaultName'=>'无','defaultId'=>'0'))}
+                </div>
+                菜单形式选择部门：(可设定回调函数)
+                <div>
+                     {:W('Department',array('tpl'=>'menu','pid'=>0,'sid'=>0,'nosid'=>0,'callback'=>'contactBack'))}
+                     <script>
+                        var contactBack = function(id,name,pid){
+                            alert(id+'->'+name+'->'+pid);
+                        };
+                     </script>
+                </div>
+            
+            </div>
+<div>
+<pre>
+调用：W('Department',array('tpl'=>'input','inputName'=>'depart','canChange'=>1,'notop'=>1,'defaultName'=>'无','defaultId'=>'0','callback'=>'contactBack'))
+参数说明：
+tpl：		wigdet调用的模版 有admin(后台下拉形式)，input：表单输入形式，menu：菜单形式
+select:		是否下拉显示，目前只针对tpl=admin有效
+inputName：	表单输入的值，只针对tpl=input
+sid:		当前选择的部门ID
+nosid:		选项里面是否包括当前ID，
+canChange	是否可修改，只针对tpl=input有效
+defaultName 默认的部门名称，只针对tpl=input有效
+defaultId	默认的部门ID，只针对tpl=input有效
+callback	选择部门之后的回调函数，只针对tpl=menu有效
+</pre>
+</div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />

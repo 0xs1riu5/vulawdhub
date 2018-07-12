@@ -1,0 +1,91 @@
+<div class="<php>if($ischeck){</php>sign-in-h<php>}else{</php>sign-in<php>}</php>" id="checkdiv">
+<div class="w_signIn">
+	<span class="datetime">
+		<em class="week">{$week}</em>
+		<em class="date">{$day}</em>
+	</span>
+<div class="checkbox">
+	<!-- <span class="days"><em class="day">DAYS</em>
+	<em class="num" id="con_num_day">{$con_num}</em></span> -->
+<php>if($ischeck){</php>
+<em id="checkin" class="btn-sign btn-sign-h"><i></i><br>已签到</em>
+<div class="sign-wrap">
+	<div class="sign-info"><p>已连续签到<font id="con_num">{$con_num}</font>天</p><p>累计签到<font id="total_num">{$total_num}</font>天</p></div>
+</div>
+<php>}else{</php>
+<em href="javascript:void(0)" id="checkin" onclick="checkin()" class="btn-sign"><i></i><br>我要签到</em>
+<div class="sign-wrap">
+	<div class="sign-info"><p>已连续签到<font id="con_num">{$con_num}</font>天</p><p>累计签到<font id="total_num">{$total_num}</font>天</p></div>
+</div>
+<php>}</php>
+</div>
+</div>
+</div>
+
+<script>
+var isshow = 1;
+$(function (){
+	<php>if($ischeck){</php>
+	$('#checkdetail').hover(function (){
+		isshow = 2;
+	},function (){
+		setTimeout(function (){
+			if(isshow==1){
+				$('#checkdetail').hide();
+			}
+			isshow = 1;
+		},100);
+	});
+        $('#checkdetail').slideDown('slow');
+//	$('#checkin').hover(function (){
+//		$('#checkdetail').show();
+//	},function (){
+//		setTimeout(function (){
+//			if(isshow==1){
+//				$('#checkdetail').hide();
+//			}
+//			isshow = 1;
+//		},100);
+//	});
+	<php>}</php>
+});
+function checkin(){
+	//$('#checkinfo').html('<i></i><br>签到成功');
+	var totalnum = {$total_num} + 1;
+	$.post(U('widget/CheckIn/check_in') , {} , function (res){
+		if ( res > 0 ){
+	        $('#checkin').html('<i></i><br>签到成功');
+	        $('#checkin').attr('onclick' , '');
+	        $('#checkin').attr('class' , 'btn-sign btn-sign-h');
+	        $('#checkdiv').attr('class' , 'sign-in-h' );
+			var connum = res;
+			$('#con_num').text(connum);
+			$('#con_num_day').text(connum);
+			$('#total_num').text(totalnum);
+			$('#checkdetail').hover(function (){
+				isshow = 2;
+			},function (){
+				setTimeout(function (){
+					if(isshow==1){
+						$('#checkdetail').hide();
+					}
+					isshow = 1;
+				},100);
+			});
+                        $('#checkdetail').slideDown('slow');
+//			$('#checkin').hover(function (){
+//				$('#checkdetail').show();
+//			},function (){
+//				setTimeout(function (){
+//					if(isshow==1){
+//						$('#checkdetail').hide();
+//					}
+//					isshow = 1;
+//				},100);
+//			});
+		}else{
+                    $.ui.showMask("签到失败", true);
+                }
+	});
+}
+</script>

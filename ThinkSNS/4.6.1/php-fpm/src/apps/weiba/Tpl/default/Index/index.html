@@ -1,0 +1,199 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<div id="page-wrap" class="mb0">
+  <div id="top-wrap" class="mb0"> <include file="_weiba_header" /> </div>
+
+  <div id="main-wrap">
+    <div class="mb10 clearfix"> <include file="_right" />
+      <div id="col5" class="st-index-main">
+        <div>
+          <div class="post-item-list">
+            <ul>
+              <php>if($post_list['data']){</php>
+              <volist name="post_list['data']" id="vo">
+                <li>
+                  <div class="post-img clearfix">
+                    <div class="f-post-img"><a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><img src="{$vo['index_img']}"/></a></div>
+                  </div>
+                  <div class="post-b">
+                    <h2 class="mb15"> <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><span>{$vo.title|getShort=20}</span></a>
+                      <if condition="$vo['top'] eq 2"><i class="ico-toTop"></i></if>
+                      <if condition="$vo['recommend'] eq 1"><i class="ico-recomen"></i></if>
+                      <if condition="$vo['digest'] eq 1"><i class="ico-essence"></i></if>
+                    </h2>
+                    <p class="post-prof"><a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">{$vo.content|t|getShort=100}...</a></p>
+                    <div class="post-info f10">
+                      <div class="left"><a class="weiba-name" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><span>{$vo.weiba|getShort=5}</span></a></div>
+                      <div class="right post-info-control"> <span>{$vo.user.space_link}&nbsp;&nbsp;发布于{$vo.post_time|friendlyDate}</span> <span title="浏览"><i class="i-post-scan"></i>({$vo.read_count})</span> <span title="评论"><i class="i-post-comment"></i>({$vo.reply_count})</span>
+                        <eq name="vo['digg']" value="undigg">
+                        <span title="赞">
+                        </eq>
+                        <eq name="vo['digg']" value="digg">
+                        <span title="赞">
+                        </eq>
+                        <i class="i-post-alike"></i>({$vo.praise})</span> </div>
+                    </div>
+                  </div>
+                </li>
+              </volist>
+              <php>}</php>
+            </ul>
+          </div>
+        </div>
+        <!--推荐帖子-->
+        <div class="post-circle">
+          <div class="post-type">
+            <div class="pd20 post-type-list">
+              <ul>
+                <li><a href="{:U('weiba/Index/index',array('post_type'=>'new'))}" >推荐热帖</a> </li>
+<!--                     <li 
+                  <eq name="post_type" value="top">class="current"</eq>
+                  ><a href="{:U('weiba/Index/index',array('post_type'=>'top'))}" >我加入的</a>
+                  </li>
+                  <li 
+                  <eq name="post_type" value="hot">class="current"</eq>
+                  ><a href="{:U('weiba/Index/index',array('post_type'=>'hot'))}" >热门帖子</a>
+                  </li>
+                  <li 
+                  <eq name="post_type" value="digest">class="current"</eq> style="border-right:none;"
+                  ><a href="{:U('weiba/Index/index',array('post_type'=>'digest'))}" >精华帖子</a>
+                  </li> -->
+              </ul>
+            </div>
+            <div class="right"><span>今日发帖：{$day_count|default=0}</span><i class="vline">|</i><span>昨日发帖：{$yesday_count|default=0}</span><i class="vline">|</i><span>总帖数：{$tiezi_count|default=0}</span></div>
+            <!--<a id="quick_post" href="javascript:;" class="btn-green-big right"><span>发帖</span></a> --> 
+          </div>
+          <div class="post-list">
+            <ul>
+              <volist name="post_recommend_list" id="vo">
+                <li>
+                  <div class="weiba-c1"><img src="{$vo.user.avatar_middle}" width="50" height="50"/></div>
+                  <div class="c2 left">
+                    <h3 class="post-tit"> <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><span>{$vo.title|getShort=20}</span></a> </h3>
+                    <div class="post-info f10">
+                      <div class="left"><span>{$vo.user.space_link}/{$vo.post_time|friendlyDate}发布</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后回复{$vo.last_reply_time|friendlyDate}</div>
+                    </div>
+                  </div>
+                  <div class="c3">
+                    <div class="item mr10 ml0">
+                      <span>浏览</span>
+                      <span>{$vo.read_count}</span>
+                    </div>
+                    <div class="item mr10 ml0">
+                      <span>回复</span>
+                      <span>{$vo.reply_count}</span>
+                    </div>
+                  </div>
+                </li>
+              </volist>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" />
+<php> $canpostweiba = intval(CheckPermission('weiba_normal','weiba_post')); </php>
+<script type="text/javascript">
+var num = $(".circle-list li").length;
+if(num<5){
+	$(".pre").hide();
+	$(".next").hide();
+	}
+//console.log(num);
+FlipPage(".myCircle-list",1,".pre",".next","btn-active","btn-disabled");
+function FlipPage(liClass,num,last,next,active,disabled){
+   var tip=0;
+   var liNum=$(liClass).length;	
+   var groupNum=Math.ceil(liNum/num);
+   function imgSlider(){
+	   $(liClass).hide().slice(tip*1,(tip+1)*1).show();  
+    //如果是第一组则pre按钮无效
+    if(tip==0){
+     $(last).removeClass(active).addClass(disabled);
+     }
+     else{
+      $(last).addClass(active).removeClass(disabled);
+      }
+	//如果最后一组则next按钮无效
+    if(tip==groupNum-1){
+     $(next).removeClass(active).addClass(disabled);
+     }
+     else{
+     $(next).addClass(active).removeClass(disabled);
+     //console.log(active);
+      }
+    }
+   //上一组
+   $(last).click(function(){
+	   tip-=1;
+	   if(tip<0){
+		   tip = 0;//劫持事件
+		   return false; 
+	   }
+	   imgSlider();
+   });
+   
+   //下一组
+   $(next).click(function(){
+	   tip+=1;
+	   if(tip>(groupNum-1)){
+		   tip = groupNum-1;//劫持事件
+		   return false;
+	   }
+	   imgSlider();
+   });
+
+   $(".post-list li").click(function(){
+      var href = $(this).find("a").attr("href");
+      location.href = href;
+   });
+   $(".post-list li").hover(function(){
+      $(this).find(".item").css("background","#FFF");
+   },function(){
+      $(this).find(".item").css("background","#F7F8FA");
+   });
+}
+function digg(args) {
+    $.post(U('weiba/Index/addPostDigg'), {row_id:args}, function(res) {
+  	  if(res.status == 1){
+  		location.reload() 
+  	  }else{
+  		  alert('已赞');
+  	  }
+    }, 'json');
+    return false ;
+}
+
+function deldigg(args) {
+$.post(U('weiba/Index/delPostDigg'),{row_id:args}, function(res) {
+	  if(res.status == 1){
+	  		location.reload() 
+	  	  }else{
+	  		  alert('操作失败');
+	  	  }
+}, 'json');
+return false ;
+}
+
+$(function () {
+  var canpostweiba = "{$canpostweiba}";
+  $('#quick_post').bind('click', function () {
+    //未登录
+    if( MID == 0 ){
+      ui.quicklogin();
+      return;
+    }
+    if (canpostweiba == 1) {
+      location.href = U('weiba/Index/quickPost');
+    } else {
+      ui.error('对不起，您没有权限进行该操作！');
+    }
+    return false;
+  }); 
+//全选的实现
+$('.myCircle > .myCircle-list:first-child').attr('style','display:block');
+});
+</script> 

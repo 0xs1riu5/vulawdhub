@@ -1,0 +1,32 @@
+<!--邀请--> 
+<div class="ui-state-disabled mod-invite border" model-node='widget_box' model-args = 'widget_user_id={$widget_user_id}&widget_name=InviteFriend&wigdet_desc={$wigdet_desc}&appname=public&diyId={$diyId}'>
+	<h3 class="hd">{:L('PUBLIC_SEND_INVITATION')}</h3>
+	<div class="invite">
+	<input type="text" name="email" class="s-txt" value="{:L('PUBLIC_PLEASE_EMAIL_SNET')}" onfocus="if(this.value == '{:L('PUBLIC_PLEASE_EMAIL_SNET')}')this.value='';" onblur="if(this.value == '') this.value = '{:L('PUBLIC_PLEASE_EMAIL_SNET')}';" event-node='invate_email'>
+	<a class="btn-green-small" href="javascript:;" event-node='send_email'><span>{:L('PUBLIC_INVITE')}</span></a>
+	</div><a class="right mt10" event-node="invite_colleague" href="{:U('public/Invite/invite')}">More»</a>
+</div>
+<script type="text/javascript">
+	M.addEventFns({
+		send_email:{
+			click:function(){
+				var email = this.parentModel.childEvents['invate_email'][0].value;
+				$.post(U('public/Register/isEmailAvailable_invite'),{email:email},function(msg){
+					if(msg.status == false){
+						ui.error(msg.info);
+					}else{
+						var sendEmail = new Array();
+						sendEmail[0] = email;
+						$.post(U('public/Invite/doInvite'),{email:sendEmail},function(msg){
+							if(msg.status == true){
+								ui.success(msg.info);
+							}else{
+								ui.error(msg.info);
+							}
+						},'json');
+					}
+				},'json');
+			}
+		}
+	});
+</script>

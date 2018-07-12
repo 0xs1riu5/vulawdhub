@@ -1,0 +1,38 @@
+<include file="../Public/_header" />
+<div class="so_main">
+  <div class="page_tit">积分等级设置</div>
+  <div class="tit_tab">
+    <ul>
+    <li><a href="{:U('admin/Global/credit')}">积分规则</a></li>
+    <li><a href="{:U('admin/Global/creditType')}" >积分类型</a></li>
+    <li><a href="{:U('admin/Global/creditUser')}">设置用户积分</a></li>
+    <li><a href="{:U('admin/Global/creditLevel')}" class="on">积分等级</a></li>
+    </ul>
+  </div>
+  <div class="form2">
+    <eq name="type" value="add">
+      <form method="post" action="{:U('admin/Global/doAddCreditLevel')}">
+      <h3>添加积分等级</h3>
+  <else/>
+      <form method="post" action="{:U('admin/Global/doEditCreditLevel')}">
+      <h3>编辑积分等级</h3>
+    <input type="hidden" name="level" value="{$id}">
+  </eq>
+    <dl>
+      <dt>积分：</dt>
+      <dd><input name="start" type="text" value="{$value['start']}" class="s-txt"> - <input name="end" type="text" value="{$value['end']}" class="s-txt">
+    <!-- <p>积分 + 经验值</p> -->
+    </dl>
+    <dl class="lineD">
+      <dt>等级名称：</dt>
+      <dd><input name="name" type="text" value="{$value['name']}" class="s-txt"> *
+    <!-- <p>等级名称</p> -->
+    </dl>
+    
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="确定" />
+    </div>
+    </form>
+  </div>
+</div>
+<include file="../Public/_footer" />

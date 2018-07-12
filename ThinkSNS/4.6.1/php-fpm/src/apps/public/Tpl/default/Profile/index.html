@@ -1,0 +1,58 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div class="clearfix"> <if condition="$mid==$uid"><include file="_top"/> <else /> <include file="_othertop"/></if></div>
+    <div id="col" class="st-grid">
+      <php>if($userPrivacy['space'] != 1){</php>
+      <include file="_sidebar"/>
+      <div id="col5" class="st-index-main">
+        <div class="st-bg cc"> 
+          <div class="feed-nav clearfix border-b">
+            <div class="mod-feed-tab" id="mod-feed-tab">
+              <ul class="inner-feed-nav">
+                <li 
+                <eq name='feed_type' value=''>class="current"</eq>
+                ><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'','feed_key'=>$feed_key,'uid'=>$uid))}">全部</a>
+                </li>
+                <li 
+                <eq name='feed_type' value='post'>class="current"</eq>
+                ><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'post','feed_key'=>$feed_key,'uid'=>$uid))}">原创</a>
+                </li>
+                <li 
+                <eq name='feed_type' value='repost'>class="current"</eq>
+                ><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'repost','feed_key'=>$feed_key,'uid'=>$uid))}">转发</a>
+                </li>
+                <li 
+                <eq name='feed_type' value='postimage'>class="current"</eq>
+                ><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'postimage','feed_key'=>$feed_key,'uid'=>$uid))}">图片</a>
+                </li>
+                <li 
+                <eq name='feed_type' value='postvideo'>class="current"</eq>
+                ><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'postvideo','feed_key'=>$feed_key,'uid'=>$uid))}">视频</a>
+                </li>
+              </ul>
+              <!-- <span class="right">
+                                    <form action="{:U('public/Profile/index',array('uid'=>$uid))}" method="post" id="searchfeed">
+                                    <div class="feed-search">
+                                    <input type="hidden" name="type" value="{$type}">
+                                    <input type="hidden" name="feed_type" value="{$feed_type}">
+                                    <input class="s-txt left"  type="text" name='feed_key' value="{$feed_key}" id='feed_key'><a href="javascript:void(0)" class="ico-search left" onclick="if(getLength($('#feed_key').val())){ $('#searchfeed').submit(); return false;}"></a>
+                                    </div>
+                                    </form>
+                                </span>--> 
+            </div>
+          </div>
+          {:Addons::hook('feed_top_home')} 
+          <!--feed list--> 
+          <!-- 查看他人分享  用于伪静态 FeedList中靠$_REQUEST中的uid取得用户信息 没有$_REQUEST取自己 -->
+          <php>$_REQUEST['uid'] = $uid;</php>
+          {:W('FeedList',array('type'=>'space','feedApp'=>t($_GET['feedApp']),'feed_type'=>$feed_type,'feed_key'=>$feed_key,'loadnew'=>0))} </div>
+      </div>
+      <php>}else{</php>
+      <p class="extend">-_-。sorry！根据对方隐私设置，您无权查看TA的主页</p>
+      <php>}</php>
+    </div>
+  </div>
+</div>
+<script src="__THEME__/js/module.weibo.js"></script>
+<include file="__THEME__/public_footer" /> 

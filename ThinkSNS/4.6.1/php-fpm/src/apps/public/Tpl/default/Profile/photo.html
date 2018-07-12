@@ -1,0 +1,45 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div class="clearfix">
+      <if condition="$mid==$uid"><include file="_top"/>
+        <else />
+        <include file="_othertop"/></if>
+    </div>
+    <div id="col" class="st-grid minh"> 
+      <!--晒物-->
+      <div class="showgoods">
+        <ul class=" clearfix">
+        
+        <volist name="products.data" id="vo">
+          <li id="li_{$vo.id}">
+            <div class="goods-top"> <a href="{$vo.page_url}"><img src="{$vo.img_url.0}" /></a> <a class="goods-del" rel="{$vo.id}">删除</a> </div>
+            <div class="goods-info">
+              <div class="goods-price">￥{$vo.goods_price}</div>
+              <div class="goods-name mb20">{$vo.goods_name|getShort=14}</div>
+              <div class="f8">上传于{$vo.cTime|friendlyDate}</div>
+            </div>
+          </li>
+          </volist>
+        </ul>
+        <div id="page" class="page">{$products.html}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 
+<script src="__THEME__/js/module.weibo.js"></script>
+<script>
+$(function(){
+	$('.goods-del').click(function(){
+		if(!confirm('确认删除')) return false;
+		
+		var id = $(this).attr('rel');
+		var url = "{:U('public/Profile/photo_del')}";
+		$.post(url,{id:id},function(res){
+			if(res==0) alert('删除失败');
+			else $('#li_'+id).remove();
+		});
+	});
+});
+</script>

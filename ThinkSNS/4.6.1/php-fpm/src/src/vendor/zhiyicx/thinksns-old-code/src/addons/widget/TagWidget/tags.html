@@ -1,0 +1,187 @@
+<div class="profession-title">请选择您的个人兴趣，每个人最多可拥有<em>{$tag_num}</em>个个人兴趣，已选择<em id="selected_nums">{$nums}</em>个</div>
+<input type="hidden" name="tag_num" id="tag_num" value="{$tag_num}">
+<div class="profession-type clarfix">
+<volist name="categoryTree" id="vo">
+	<dl>
+		<dt>{$vo.title}：</dt>
+		<dd style="padding-top:6px">
+		<volist name="vo.child" id="v">
+			<php>if(!in_array($v['id'], $selectedIds)) {</php>
+			<a id="user_category_{$v['id']}" tag_name="{$v.title}" href="javascript:;" onclick="return tagsTs.add(\'{$v['title']}\', {$v['id']});" class="tag-bg<php>if(in_array($v['title'],$tags)){echo ' current';}</php>"><span>{$v.title}</span></a>
+			<php>}</php>
+		</volist>
+		</dd>
+	</dl>
+</volist>
+</div>
+<div class="profession-type clearfix">
+	<dl>
+		<dt>我的标签：</dt>
+        <!--<dd><div id="post-tag" class="tag-lists" style="width:{$width}">-->
+        <dd><div id="post-tag" class="tag-lists">
+	<div class="Tag_list02">
+		<div class="tag-lists">
+		<ul id="post_tag_list" class="taglist">
+			<volist name="tags_my" id="vo">
+			<li rel="{$key}"><a class="tag tag-bg" href="javascript:;" style="float:left;"><span>{$vo}<i class="ico-close1" title="删除" onclick="return tagsTs.deleteTag({$key})" href="#"></i></span></a></li>
+			</volist>
+		</ul>
+		</div>
+		<div id="post-tag-input-holder" class="add-tag">
+			<input class="post-tag-input" id="post_tag_input" type="text" value="{:L('PUBLIC_TAG_TIPS')}" onfocus="if(this.value == '{:L('PUBLIC_TAG_TIPS')}')this.value='';" onblur="if(this.value == '') this.value='{:L('PUBLIC_TAG_TIPS')}';" />
+		</div>
+	</div>
+        </div></dd>
+    </dl>
+</div>
+<input type="hidden" name="{$apptable}_tags" id="ts_tag_search_value" value="{$tags_my_ids}" />
+<input type="hidden" name="{$apptable}_row_id" value="{$row_id}" id="user_id" />
+
+<script type="text/javascript"> 
+// 资源ID
+var row_id = '{$row_id|intval}';
+// 应用名称
+var appname = '{$appname}';
+// 资源表名
+var apptable = '{$apptable}';
+/**
+ * 标签操作Js类
+ * @type {object}
+ */
+var tagsTs = {};
+/**
+ * 初始化标签操作
+ * @return void
+ */
+tagsTs.init = function()
+{
+	var _this = this;
+	this.hashList = {};
+	// 标签显示框触发焦点问题
+	$('#post-tag').live('click', function() {
+		$('#post_tag_input').focus();
+	});
+	// 绑定回车，逗号与删除键盘事件
+	$('#post_tag_input').keypress(function(e) {
+		if(e.which == 13 || e.which == 44) {
+			var value = $.trim($(this).val());
+			value != "" && _this.add(value);
+			$(this).val('');
+		}
+		if(e.which == 8) {
+			var value = $(this).val();
+			if(value.length == 0) {
+				var rel = $('#post_tag_list li').last().attr('rel');
+				_this.deleteTag(rel);
+			}
+		}
+	});
+	// 按键抬起效果
+	$('#post_tag_input').keyup(function(e) {
+		var value = $.trim($(this).val());
+		if(value == "") {
+			return false;
+		}
+		if(value.indexOf('，') == value.length - 1) {
+			value = value.substring(0, value.length - 1);
+			_this.add(value);
+			$(this).val('');
+		}
+		if(value.indexOf(',') == value.length - 1) {
+			$(this).val('');
+		}
+	});
+};
+/**
+ * 添加标签效果操作
+ * @param string tagName 标签名称
+ * @return void
+ */
+tagsTs.add = function(tagName, category_id)
+{	
+	var reg = /[^\u4e00-\u9fa5|\w]+/;
+	if(reg.test(tagName)) {
+		ui.error('标签名只能是汉字、字母、数字或下划线');
+		return false;
+	}
+	// 判断标签长度，控制为10个汉字
+	var tagLimit = 10;
+	if(getLength(tagName) > tagLimit) {
+		ui.error('标签长度不能超过'+tagLimit+'个汉字');
+		return false;
+	}
+	// 判断标签数目，控制为10个标签
+	var tagNums = $('#tag_num').val();
+	if($('#post_tag_list li').length >= tagNums) {
+		ui.error('最多只能设置'+tagNums+'个标签');
+		return false;
+	}
+	var _this = this;
+	if(row_id) {
+		$.post(U('widget/Tag/getTagId'), {'appname':appname, 'apptable':apptable, 'name':tagName}, function(res) {
+			var tagId = parseInt(res.data);
+			var tagArr = $('#ts_tag_search_value').val().split(',');
+			if(res.status == 1) {
+				// 验证是否重复加入标签
+				for(var i in tagArr) {
+					if(tagArr[i] == tagId) {
+						ui.error('标签已存在');
+						return false;
+					}
+				}
+				_this.hashList[tagId] = category_id;
+				// 添加标签操作
+				var html = '<li rel="'+tagId+'"><a class="tag tag-bg" href="javascript:;" style="float:left;"><span>'+tagName+'<i class="ico-close1" title="删除" onclick="return tagsTs.deleteTag('+tagId+')" href="javascript:;"></i></span></a></li>';
+				$('#post_tag_list').append(html);	
+				_this.setSelectedNums();
+			} else {
+				ui.error(res.info);
+				return false;
+			}
+			_this.updateValue(tagId);
+		}, 'json');
+	}
+};
+
+/**
+ * 更新搜索标签后的值
+ * @return void
+ */
+tagsTs.updateValue = function()
+{
+	var _this = this;
+	var value = [];
+	var tmp = {};
+	$('a[id*="user_category_"]').removeClass('current');
+	$('#post_tag_list li').each(function(i, n) {
+		var li = $(this);
+		var tagId = $(n).attr('rel'); 
+		var name = li.text();
+		value.push(tagId);
+
+		$("a[tag_name='"+name+"']").addClass('current');
+	});
+
+	$('#ts_tag_search_value').val(value.join(','));
+};
+
+/**
+ * 移除已添加标签
+ */
+tagsTs.deleteTag = function(tagId)
+{
+	$('li[rel='+tagId+']').remove();
+	this.updateValue();
+	this.setSelectedNums();
+	return false;
+};
+
+// 设置选中标签数目
+tagsTs.setSelectedNums = function() {
+	var len = $('#post_tag_list').find('li').length;
+	$('#selected_nums').html(len);
+};
+
+// 开始标签操作
+tagsTs.init();
+</script>

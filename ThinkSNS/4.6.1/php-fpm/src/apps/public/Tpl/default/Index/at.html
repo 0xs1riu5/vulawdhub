@@ -1,0 +1,149 @@
+<!--tab menu-->
+<div class="feed-nav">
+  <div class="nset-hd">
+    <h3>@我的：
+      <span
+      <eq name='tt' value=''>class="current"</eq>
+      > <a href="javascript:;" onclick="message.at('at','')">{:L('PUBLIC_ALL_STREAM')}</a>
+      </span>
+      <volist name='tab' id='t'>
+        <php>if($tabHash[$key]){</php>
+        <span 
+        <eq name='tt' value='$key'>class="current"</eq>
+        > <a href="javascript:;" onclick="message.at('at','{$key}')">{$tabHash[$key]}</a>
+        </span>
+        <php>}</php>
+      </volist>
+      <span class="close-ico right">
+        <img onclick="ui.box.close()" src="__THEME__/image/exit.png"/>
+      </span>
+    </h3>
+  </div>
+</div>
+<div class="scrollarea">
+<div class="scrollY">
+    <div class="extend-message wid">
+    
+      <!--数据列表-->
+      <input type="hidden" id="type" value="{$type}"/>
+      <input type="hidden" id="t" value="{$tt}"/>
+      <!--feed list-->
+      <div class="feed_lists" id="mfeed_lists">
+        <neq name='data' value=''>
+          <volist name='data' id='vo'>
+            <dl class="feed_list clearfix" model-node="feed_list">
+              <dt class="face">
+                <php>if($vo['source_table'] == 'comment'):</php>
+                <a href="{$vo.comment_user_info.space_url}"> <img src="{$vo.comment_user_info.avatar_middle}"  event-node="face_card" uid="{$vo.comment_user_info.uid}" width="50" height="50"></a>
+                <php>if($vo['comment_user_info']['group_icon_only']):</php><a href="javascript:;" title="{$vo['comment_user_info']['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vo['comment_user_info']['group_icon_only']['user_group_name']}" src="{$vo['comment_user_info']['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php>
+                <php>else:</php>
+                <a href="{$vo.source_user_info.space_url}"> <img src="{$vo.source_user_info.avatar_middle}"  event-node="face_card" uid="{$vo.source_user_info.uid}" width="50" height="50"></a>
+                <php>if($vo['source_user_info']['group_icon_only']):</php><a href="javascript:;" title="{$vo['source_user_info']['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vo['source_user_info']['group_icon_only']['user_group_name']}" src="{$vo['source_user_info']['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php>
+                <php>endif;</php>
+              </dt>
+              <dd class="content">
+                <p class="hd notitle {$unread_atme_count}">
+                  <php>if($vo['source_table'] == 'comment'):</php>
+                  <!-- 评论模板开始 -->
+                  <php>if($vo['sourceInfo']['app'] != 'public'):</php>
+                  {$vo.comment_user_info.space_link}
+                  {$vo.source_type}：
+                  <php>if($i <= $unread_atme_count):</php>
+                  <i class="ico-new"></i> 
+                  <php>endif;</php>
+                </p>
+                <p class="hd notitle">
+                  {$vo.source_content}
+                </p>
+                <dl class="comment comment-mes">
+                  <dd>{$vo.sourceInfo.source_user_info.space_link}:&nbsp;{$vo.sourceInfo.source_body|format=true}</dd>
+                </dl>
+                <php>else:</php>
+                {$vo.comment_user_info.space_link}
+                {$vo.source_type}：
+                <php>if($i <= $unread_atme_count):</php>
+                  <i class="ico-new"></i> 
+                  <php>endif;</php>
+                </p>
+                <p>
+                  <php>if($vo['is_audit']){echo $vo[source_content];}else{echo '内容正在审核';}</php>
+                </p>
+                <dl class="comment comment-mes">
+                  <dd>{$vo.sourceInfo.source_user_info.space_link}:&nbsp;<php>if($vo['sourceInfo']['is_audit']){ echo format($vo[sourceInfo][source_body], true);}else{echo '内容正在审核';}</php></dd>
+                </dl>
+                <php>endif;</php>
+                <!-- 评论模板结束 -->
+                <php>else:</php>
+                {$vo.source_user_info.space_link}
+                {$vo.source_type}：
+                <php>if($i <= $unread_atme_count):</php>
+                  <i class="ico-new"></i> 
+                  <php>endif;</php>
+                </p>
+                <p class="hd notitle">
+                <php>if($vo['is_audit']){ echo format($vo[source_body],ture);}else{echo '内容正在审核';}</php>
+                </p>
+                <php>endif;</php>
+                <p class="info">
+                  <php>if($vo['is_audit']){</php>
+    
+                  <span class="right">
+                  <!-- 评论 -->
+                  <php>if($vo['source_table'] != 'comment'):</php>
+                    <php>if(in_array('comment',$weibo_premission)):</php>
+                      <php> $cancomment = intval(CheckPermission('core_normal','feed_comment')); </php>
+                        &nbsp;&nbsp; <a event-node="comment" href="javascript:void(0)" event-args="row_id={$vo['widget_sid']}&app_uid={$vo['widget_suid']}&to_comment_id=0&to_uid=0&table={$vo['widget_stype']}&app_row_id={$vo['widget_sid']}&app_row_table={$vo['app_row_table']}&cancomment={$cancomment}&app_name={$vo.app}">{:L('PUBLIC_STREAM_COMMENT')}
+                        <neq name='vo.comment_count' value='0'> ({$vo.comment_count}) </neq>
+                        </a>
+                    <php>endif;</php>
+                  <php>endif;</php>
+                  <!-- 转发 -->
+                  <php>if(in_array('repost',$weibo_premission) || $vo['widget_stype'] !='feed'):</php>
+                    <php>if($vo['source_table'] == 'comment'):</php>
+                      <php>if(in_array('comment',$weibo_premission) && CheckPermission('core_normal','feed_comment') ):</php>
+                  &nbsp;&nbsp; <a href="javascript:void(0);" onclick="ui.reply({$vo['source_id']})">{:L('PUBLIC_STREAM_REPLY')}</a>
+                      <php>endif;</php>
+                    <php>else:</php>
+                      <php>if(in_array('repost',$weibo_premission) && CheckPermission('core_normal','feed_share')):</php>
+                  &nbsp;&nbsp; {:W('Share',array('sid'=>$vo['widget_share_sid'],'stable'=>$vo['app_row_table'],'current_id'=>$vo['widget_curid'],'current_table'=>$vo['widget_curtable'],'nums'=>$vo['repost_count'],'appname'=>$vo['app'],'feed_type'=>$vo['type'],'is_repost'=>$vo['is_repost']))}
+                      <php>endif;</php>
+                    <php>endif;</php>
+                  <php>endif;</php>
+                  <!-- 收藏 -->
+                  <php>if($vo['source_table'] == 'feed'):</php>
+                  &nbsp;&nbsp; {:W('Collection',array('type'=>'following','sid'=>$vo['widget_sid'],'stable'=>'feed','sapp'=>$vo['app']))}
+                  <php>endif;</php>
+                  <!-- 查看 -->
+                  &nbsp;&nbsp;<a href="{$vo.source_url}" >{:L('PUBLIC_VIEW')}</a>
+                  <!-- 赞 -->
+                  <php>if($vo['source_table'] == 'feed'):</php>
+                  &nbsp;&nbsp;{:W('Digg', array('feed_id'=>$vo['feed_id'], 'digg_count'=>$vo['digg_count'], 'diggArr'=>$diggArr))}
+                  <php>endif;</php>
+                  </span> <span><a class="date" date="{$vo.ctime}" href="{$vo.source_url}">{$vo.ctime|friendlyDate}</a><span>{$vo.from}</span></span>
+                  <php>if($vo['uid'] != $mid && $vo['source_table'] != 'comment'):</php>
+                  <php>if(CheckPermission('core_normal','feed_report')):</php>
+                  <em class="hover"> <a href="javascript:void(0)" event-node="denounce" event-args="aid={$vo['widget_sid']}&type={$vo['widget_stype']}&uid={$vo['widget_suid']}">{:L('PUBLIC_STREAM_REPORT')}</a> </em>
+                  <php>endif;</php>
+                  <php>endif;</php>
+                  <php>}</php>
+                </p>
+                <div class="infopen"><div class="trigon"></div></div>
+                <div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+              </dd>
+              <dt class="xline"></dt>
+            </dl>
+          </volist>
+          <else />
+          <div class="note">{:L('PUBLIC_NO_MENTIONS')}</div>
+        </neq>
+        <div id='page' class='page'>{$html}</div>
+      </div>
+    
+    </div>
+
+</div>
+</div>
+
+<script type="text/javascript">
+  M(document.getElementById('mfeed_lists'));
+</script> 

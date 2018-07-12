@@ -1,0 +1,77 @@
+<div class="input pop-share repeat" model-node="comment_textarea" id="reply_box">
+<div class="input_before" model-node="mini_editor">
+<textarea class="input_tips" id="mini_editor_textarea" event-node="mini_editor_textarea" hidefocus="true" style="height: 60px;width:97.5%" model-args='t=comment'></textarea>
+</div>
+<div class="acts" id="demo">
+    <a class="face-block" href="javascript:;" event-node="comment_insert_face" title="表情"><i class="face"></i></a>
+</div>
+<div class="clear"></div>
+<div model-node="faceDiv"></div>
+<div class="mt5 clearfix">
+<ul class="commoned_list">    
+<eq name='canrepost' value="1">    
+<li><label><input type="checkbox" class="checkbox" name="shareFeed" value="1">{:L('PUBLIC_SHARETO_STREAM')}</label></li>     
+</eq>
+
+</ul>           
+    
+<a href="javascript:void(0);" class="btn-green-small right" event-node="do_weiba_reply_reply" 
+event-args='' weiba_id="{$weiba_id}" post_id="{$post_id}"  post_uid="{$post_uid}" feed_id="{$feed_id}" addtoend="{$addtoend}" to_reply_id="0" to_uid="0" ><span>{:L('PUBLIC_STREAM_REPLY')}</span></a> 
+</div>
+</div>
+<script>
+
+var initNums = '{$initNums}';
+//回复评论
+function replycomment(){
+	var appname = '{$commentInfo.app}';
+	var table = '{$commentInfo.table}';
+	var appuid= {$commentInfo.app_uid};
+	var rowid = {$commentInfo.row_id};
+	var tocommentid = {$commentInfo.comment_id};
+	var touid = {$commentInfo.uid};
+	var approwid = 0;
+	var content = document.getElementById('mini_editor_textarea').value;
+	var ifsharefeed = document.getElementsByName('shareFeed')[0] == undefined ? 0 : Number(document.getElementsByName('shareFeed')[0].checked);
+	var commentold = document.getElementsByName('comment')[0] == undefined ? 0 : Number(document.getElementsByName('comment')[0].checked);
+	content = content.replace('<br>','');
+	var strlen = core.getLength(content);
+	var leftnums = initNums - strlen;
+	if(leftnums < 0 || leftnums == initNums) {
+		//ui.error(L('PUBLIC_CONCENT_TIPES'));
+		flashTextarea(document.getElementById('mini_editor_textarea'));
+		return;
+	}
+	$.post(U('widget/Comment/addcomment'),{
+		app_name:appname,
+		table_name:table,
+		app_uid:appuid,
+		row_id:rowid,
+		to_comment_id:tocommentid,
+		to_uid:touid,
+		app_row_id:approwid,
+		content:content,
+		ifShareFeed:ifsharefeed,
+		comment_old:commentold
+		},function(msg){
+			if(msg.status == "0"){
+				ui.error(msg.data);
+			}else{
+				ui.box.close();
+				ui.success( L('PUBLIC_CENTSUCCESS') );
+				if(appname == 'weiba'){
+					setTimeout("location.reload();",1000);
+				}
+			}
+		});
+}
+$(function (){
+	//M(document.getElementById('tsbox'));
+	shortcut('ctrl+return', replycomment , {target:'mini_editor_textarea'});
+	atWho($('#mini_editor_textarea'));
+	setTimeout(function (){
+		$('#mini_editor_textarea').inputToEnd('{$initHtml}');
+	},300);
+});
+M(document.getElementById('reply_box'));
+</script>

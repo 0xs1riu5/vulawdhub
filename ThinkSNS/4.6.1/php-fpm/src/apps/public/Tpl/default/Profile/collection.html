@@ -1,0 +1,87 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap"> <if condition="$mid==$uid"><include file="_top"/> <else /> <include file="_othertop"/></if>
+    <div id="col" class="st-grid"> 
+      <include file="_sidebar"/>
+      <div id="col5" class="st-index-main">
+        <!--我的收藏-->
+        <div class="st-bg cc">
+          <div class="feed-nav clearfix border-b">
+            <div class="mod-feed-tab" id="mod-feed-tab">
+              <ul class="inner-feed-nav">
+              <php> if($_GET['feed_type']=='weiba'){ $tags['weiba'] = 'current'; }
+                    else{ $tags['public'] = 'current'; }
+              </php>
+                <li class="{$tags.public}"
+                ><a href="{:U('public/Profile/collection',array('tab'=>'collect','feed_type'=>'','uid'=>$uid))}">分享</a>
+                </li>
+                <li 
+                class="{$tags.weiba}"
+                ><a  href="{:U('public/Profile/collection',array('tab'=>'collect','feed_type'=>'weiba','uid'=>$uid))}">帖子</a></li>
+              </ul>
+            </div>
+          </div>
+        <php>if($_GET['feed_type']=='weiba'){</php>
+          <php>if($weiba){</php>
+          <div class="post-circle clearfix">
+            <div class="post-list">
+              <ul>
+              <volist name="weiba" id="vo">
+                <li> 
+                  <!--	        <span class="num">{$vo.reply_count}<br />回应</span>
+    -->
+                  <div class="post-tit"> <a class="tit" target="_blank" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">{$vo.title|getShort=14}
+                    <!--<php>if($vo['image']){</php>
+                    <i class="ico-img"></i>
+                    <php>}</php>-->
+                    </a>
+                    <php>if($vo['top']==2){</php>
+                    <i class="ico-toTop"></i>
+                    <php>}</php>
+                    <php>if($vo['digest']==1){</php>
+                    <i class="ico-essence"></i>
+                    <php>}</php>
+                  </div>
+                  <div class="post-prof"> <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">{$vo.content|t|getShort=100} </a>
+                    <!-- <php>if($vo['image']){</php>
+    	            <img src="{$vo['image'][0]}" <php>if(!strstr($vo['image'][0],'emoticons')){</php><php>}</php> />
+    	          <php>}</php>-->
+                    <if condition="count($vo['img']) neq '0'">
+                      <div class="post-img clearfix">
+                        <if condition="$vo['img'][0] neq ''">
+                          <div class="f-post-img"><img src="{$vo['img'][0]}"/></div>
+                        </if>
+                        <if condition="$vo['img'][1] neq ''">
+                          <div class="f-post-img"><img src="{$vo['img'][1]}"/></div>
+                        </if>
+                        <if condition="$vo['img'][2] neq ''">
+                          <div class="f-post-img"><img src="{$vo['img'][2]}"/></div>
+                        </if>
+                      </div>
+                    </if>
+                  </div>
+                  <div class="post-info f8"> <div class="left"><a class="weiba-name" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><span>{$vo.weiba|getShort=5}</span></a></div><div class="right">{$vo.user.space_link}{$vo.post_time|friendlyDate}发布</div></div>
+                </li>
+              </volist>
+              </ul>
+            </div>
+          </div>
+          <php>} else {</php>
+          <dl class="feed_list" style="min-height:500px">
+          <div style="padding-top:80px;text-align:center">
+          <p class="mb10"><i class="icon-bed"></i></p>
+          <p style="color:#333">暂时没有可显示的内容哟~</p>
+          </div>
+          </dl>
+          <php>}</php>
+        <php>} else {</php>
+        {:Addons::hook('feed_top_home')}
+        <!--feed list--> 
+        <!-- 查看他人分享 用于伪静态 FeedList中靠$_REQUEST中的uid取得用户信息 没有$_REQUEST取自己 -->
+        <php>$_REQUEST['uid'] = $uid;</php>
+        {:W('FeedList',array('type'=>'love','feedApp'=>t($_GET['feedApp']),'feed_type'=>$feed_type,'feed_key'=>$feed_key,'loadnew'=>0))} 
+        <php>}</php></div></div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 

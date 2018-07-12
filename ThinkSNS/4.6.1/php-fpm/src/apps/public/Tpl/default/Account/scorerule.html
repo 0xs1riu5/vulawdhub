@@ -1,0 +1,53 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/level.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+	   <div id="main-wrap">
+	   	   	<div id="col" class="st-grid content-bg st-bg-b cc">
+                <div id="col4" class="main-left">
+                   <!--tab菜单-->
+                   <include file="_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                    <div class="extend minh person-set">
+                        <div class="tab-menu line-b-animate mb20">
+                        <ul>
+                            <li><span><a href="{:U('public/Account/scoredetail')}">我的积分</a></span></li>
+                            <li class="current"><span><a href="{:U('public/Account/scorerule')}">积分规则</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorelevel')}">积分等级</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorecharge')}">积分充值</a></span></li>
+                            <li><span><a href="{:U('public/Account/scoretransfer')}">积分转帐</a></span></li>
+                        </ul>
+                      </div>
+                        <div class="level-content">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th width="150">名称</th>
+                                        <th width="150">类型</th>
+                                        <th width="150">周期范围</th>
+                                        <th width="300">周期内最多奖励次数</th>
+                                        <volist name="creditType" id="ct">      
+                                            <th width="150">{$ct.alias}</th>
+                                        </volist>
+                                    </tr>
+                                    <volist name="data" id="vo">
+                                        <tr>
+                                            <td width="150">{$vo.alias}</td>
+                                            <td width="150">{$vo.type}</td>
+                                            <td width="150"><php>if($vo['cycle']=='year'){ echo '每年'; }else if($vo['cycle']=='month'){ echo '每月'; }else{ echo '每天'; }</php></td>
+                                            <td width="300">{$vo.cycle_times|default='不限次数'}</td>
+                                            <volist name="creditType" id="ct">      
+                                                <td>{$vo[$ct['name']]}</td>
+                                            </volist>
+                                        </tr>
+                                    </volist>
+                                </tbody>
+                            </table>
+                            <div class="page right">{$html}</div>
+                        </div>
+                  </div>
+                </div>
+           	 </div>
+	   </div>
+</div>
+<include file="__THEME__/public_footer" />

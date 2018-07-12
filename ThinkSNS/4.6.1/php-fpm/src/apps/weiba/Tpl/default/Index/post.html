@@ -1,0 +1,41 @@
+<include file="__THEME__/header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<!-- <script type="text/javascript" src="__THEME__/js/module.form.js"></script> -->
+
+<div id="page-wrap">
+  <div id="main-wrap">
+    <!-- <p class="weiba-location"><a href="{:U('weiba/Index/index')}">微吧</a>&nbsp;>&nbsp;<a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}">{$weiba_name}</a>&nbsp;>&nbsp;发新帖</p> -->
+    <div class="weiba-box clearfix">
+      <!-- <h3>发新贴</h3> -->
+      <form method="post" action="{:U('weiba/Index/doPost')}" model-node='weiba_post' onsubmit="return setcontent();" name="weibaPost">
+        <input type="hidden" value="{$weiba_id}" name="weiba_id" id="weiba_id">
+        <ul class="add_group">
+          <li>
+            <div class="c1"><font color="red"> * </font>标题</div>
+            <div class="c2">
+              <input class="text" style="width:690px; padding:6px 4px;" type="text" name="title" id="title" onkeydown="if(event.keyCode==13){return false;}">
+            </div>
+          </li>
+          <li>
+            <div class="c1"><font color="red"> * </font>正文</div>
+            <div class="c2" style="line-height:normal;"> {:W('UM', array('type'=>'weiba','contentName'=>'content','content'=>'','width'=>'700','tpl'=>'weiba'))} </div>
+          </li>
+          <li>
+            <div class="c1">附件</div>
+            <div class="c2">{:W('Upload', array('urlquery'=>'attach_type=weiba_attach'))}
+              <span style="font-size:12px; color:#888;">文件大小不能超过{$attach_update_config.attach_max_size}M，且只允许上传格式：{$attach_update_config.attach_allow_extension}</span>
+            </div>
+          </li>
+          <li>
+            <div class="c1"></div>
+            <div class="c2"><a href="javascript:;" class="btn_b mr5" event-node="submit_btn" event-args="editor=true"><span>确定</span></a><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}" class="btn_w"><span>取消</span></a></div>
+            <!-- <div class="form-row"><a href="javascript:void(0)" onclick="$('#weiba_post').submit();" class="btn-green-small mr5"><span>确定</span></a><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}" class="btn-cancel"><span>取消</span></a></div> --> 
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 

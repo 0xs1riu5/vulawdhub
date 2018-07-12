@@ -1,0 +1,56 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/account.css" rel="stylesheet" type="text/css" />
+    <div id="page-wrap">
+        <div id="main-wrap">
+            <div id="col" class="st-grid content-bg st-bg-b cc">
+            	<div id="col4" class="main-left">
+                    <!--tab菜单-->
+                    <include file="_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                    <div class="extend minh person-set">
+                    	<div class="set-hd"><h3>{$tabName}</h3></div>
+                        <div class="set-item-title f9"><p>被加入黑名单的用户将无法关注你，评论你和查看你的个人空间。如果你已经关注TA，也会自动解除关系。</p></div>
+                        <div class="set-item-info">
+                        <form action="{:U('public/Account/doSavePrivacy')}" method="post">
+                            <dl class="form-set form-blacklist">
+                        <div class="clearfix">{:W('SearchUser', array('name' => 'selectUser','follow'=>0,'max'=>1))}
+                        <div class="left"><a onclick="addUser()" class="btn-green-small">添加黑名单</a></div></div>                     
+                            <div class="blacklist">
+                                <br />
+                                <h4>黑名单列表</h4>
+                                {:W('Blacklist',array('tpl'=>'list'))} 
+                            <!--    <ul>
+                                    <li><a href="" class="right">移出黑名单</a>黑夜精灵 wangxx@163.com</li>
+                                    <li><a href="" class="right">移出黑名单</a>黑夜精灵 wangxx@163.com</li>
+                                    </ul>
+                            -->
+                            
+                            </div>  
+                            </dl>
+
+                        </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+  var addUser = function(){
+    var fid = $('#search_uids').val();
+    $.post(U('widget/Blacklist/addUser'),{fid:fid},function(msg){
+        if(msg.status == 0){
+            ui.error(msg.data);
+        }else{
+            ui.success(msg.data);
+            $('#search_uids').val('');
+            setTimeout("location.reload()",1000);
+            //$('#blacklists').append('<li><a href="javascript:void(0)" class="btn-grey-white right" onclick="remove(this,'+fid+')"><span>移出黑名单</span></a><span class="date">'+msg.ctime+'</span>'+msg.space_link+'&nbsp;&nbsp;'+msg.email+'</li>');
+        }
+    },'json');
+  }; 
+</script>
+<script src="__THEME__/js/module.form.js"></script>
+<include file="__THEME__/public_footer" />

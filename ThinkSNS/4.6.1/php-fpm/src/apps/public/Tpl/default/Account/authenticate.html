@@ -1,0 +1,193 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/account.css" rel="stylesheet" type="text/css" />
+
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="col" class="st-grid content-bg st-bg-b cc">
+      <div id="col4" class="main-left">
+        <!--tab菜单-->
+        <include file="_tabs" />
+      </div>
+      <style type="text/css">
+      .form-row a{color:#0096e6}
+      </style>
+      <div id="col7" class="main-right">
+        <div class="extend minh person-set">
+          <div class="set-hd"><h3>{$tabName}</h3></div>
+          <php>if($edit == 1 || !$verifyInfo){</php>
+          <div class="set-item-title f9"><font color="red"> * </font>为必填项，请放心填写，您的隐私信息将会得到保护。</div>
+          <php>}</php>
+          <div class="set-item-info">
+            <form action="{:U('public/Account/doAuthenticate')}" method="post" model-node='verify_apply'>
+              <input type="hidden" name="vtype" value="{$verifyInfo['usergroup_id']}" id="vtype">
+              <dl class="form-set form-contact">
+                <php>if($edit == 1 || !$verifyInfo){</php>
+                  <dd>
+                    <div class="form-tt"><font color="red"> * </font>认证类型：</div>
+                    <div class="form-row">
+                    <volist name='auType' id='vo'>
+                    <label><input class="s-ck" type="radio" value="{$vo.user_group_id}"<php>if(empty($checkedUGID) && (!$verifyInfo['usergroup_id'] || $vo['user_group_id']==$verifyInfo['usergroup_id'])){ $checkedUGID = $vo['user_group_id'];</php>checked="checked"<php>}</php> name="usergroup_id" onclick='changeText({$vo.user_group_id})'>{$vo.user_group_name}</label>
+                    </volist>
+                    </div>
+                  </dd>
+                  
+                  <dd id="vCate" style="<php>if(empty($options[$checkedUGID])){echo 'display:none;';}</php>">
+                    <div class="form-tt">认证分类：</div>
+                    <div class="form-row">
+                      <select name="verifiedCategory" id="verifiedCategory"><php>if(!empty($options[$checkedUGID])){echo $options[$checkedUGID];}</php></select>
+                    </div>
+                  </dd>
+
+                  <dd style="<php>if($checkedUGID != 6){ </php>display:none;<php>}</php>" id="company2">
+                    <div class="form-tt" id="company22"><font color="red"> * </font>机构名称：</div>
+                    <div class="form-row"><input name="company" class="text" id="company" value="{$verifyInfo['company']}"/></div>
+                  </dd>                
+                  <dd>
+                    <div class="form-tt" id="realname2"><font color="red"> * </font><php>if($checkedUGID == 6){</php>负责人姓名：<php>}else{</php>真实姓名：<php>}</php></div>
+                    <div class="form-row"><input name="realname" class="text" id="realname" <php>if($verifyInfo['verified'] !== ""){</php>value="{$verifyInfo['realname']}"<php>}</php> /></div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt" id="idcard2"><font color="red"> * </font>身份证号码：</div>
+                    <div class="form-row"><input name="idcard" class="text" id="idcard" <php>if($verifyInfo['verified'] !== ""){</php>value="{$verifyInfo['idcard']}"<php>}</php> /></div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt" id="phone2"><font color="red"> * </font>联系方式：</div>
+                    <div class="form-row"><input name="phone" class="text" id="phone" <php>if($verifyInfo['verified'] !== ""){</php>value="{$verifyInfo['phone']}"<php>}</php> /></div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt">认证补充：</div>
+                    <div class="form-row"><textarea rows="4" cols="73" name="reason" id="reason" class="s-textarea"><php>if($verifyInfo['verified'] !== ""){</php>{$verifyInfo['reason']}<php>}</php></textarea></div>
+                  </dd>
+                    <!-- <dd><div class="form-tt"><font color="red"> * </font>认证补充：</div><div class="form-row"><textarea rows="4" cols="73" name="info" id="info" class="s-textarea"><php>if($verifyInfo['verified'] !== ""){</php>{$verifyInfo['info']|format}<php>}</php></textarea></div></dd> -->
+                  <dd>
+                    <div class="form-tt">认证附件：</div>
+                    <div class="form-row" >{:W('Upload',array('attachIds'=>$verifyInfo['attachIds'], 'uploadType'=>'image', 'urlquery'=>'attach_type=feed_image&upload_type=image&thumb=1'))}<div style="padding:5px 0;">附件格式：{$attachOption.attach_allow_extension}；  附件大小：不超过{$attachOption.attach_max_size}M</div></div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt"></div>
+                    <div class="form-row">
+                      <a onclick="saveVerify();" href="javascript:void(0);" class="btn-green-big">提交认证</a>
+                    </div>
+                  </dd>
+                <php>}else{</php>
+                  <dd><div class="form-tt">当前状态：</div><div class="form-row">{$status}</div></dd>
+                  <dd>
+                    <div class="form-tt"><font color="red"> * </font>认证类型：</div>
+                    <div class="form-row">
+                    <volist name='auType' id='vo'>
+                    <php>if($vo['user_group_id']==$verifyInfo['usergroup_id']){</php><label>{$vo.user_group_name}</label><php>}</php>
+                    </volist>
+                    </div>
+                  </dd>
+                  <php>if($verifyInfo['category']['title']){</php>
+                  <dd>
+                    <div class="form-tt">认证分类：</div>
+                    <div class="form-row">{$verifyInfo['category']['title']}</div>
+                  </dd>
+                  <php>}</php>
+                  <dd style="<php>if($verifyInfo['usergroup_id'] != 6){</php>display:none;<php>}</php>" id="company2">
+                    <div class="form-tt"><font color="red"> * </font>机构名称：</div>
+                    <div class="form-row">{$verifyInfo['company']}</div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt" id="realname2"><font color="red"> * </font><php>if($verifyInfo['usergroup_id'] == 6){</php>负责人姓名：<php>}else{</php>真实姓名：<php>}</php></div>
+                    <div class="form-row">{$verifyInfo['realname']}</div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt" id="idcard2"><font color="red"> * </font>身份证号码：</div>
+                    <div class="form-row">{$verifyInfo['idcard']}</div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt" id="phone2"><font color="red"> * </font>联系方式：</div>
+                    <div class="form-row">{$verifyInfo['phone']}</div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt">认证补充：</div>
+                    <div class="form-row">{$verifyInfo['reason']?format($verifyInfo['reason']):'无'}</div>
+                  </dd>
+                  <php>if($verifyInfo['info']):</php>
+                  <dd>
+                    <div class="form-tt">认证资料：</div>
+                    <div class="form-row">{$verifyInfo['info']|format}</div>
+                  </dd>
+                  <php>endif;</php>
+                  <dd>
+                    <div class="form-tt">认证附件：</div>
+                    <div class="form-row"><php>if($verifyInfo['attachment']){</php>{$verifyInfo['attachment']}<php>}else{</php>无<php>}</php></div>
+                  </dd>
+                <php>}</php>
+              </dl>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="__THEME__/js/module.form.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var opts = <?php echo $option;?>;
+    $(document).ready(function(){
+        changeText($(":radio[name='usergroup_id']:checked").attr('value'));
+    });
+    var changeText = function(user_group_id){
+        if(user_group_id == 6){
+            $('#company2').css('display','');
+			$('#company22').html('<font color="red"> * </font>机构名称：');
+            $('#realname2').html('<font color="red"> * </font>负责人姓名：');
+            $('#idcard2').html('<font color="red"> * </font>身份证号码：');
+            $('#phone2').html('<font color="red"> * </font>联系方式：');
+        }else{
+            $('#company2').css('display','none');
+            $('#realname2').html('<font color="red"> * </font>真实姓名：');
+            $('#idcard2').html('<font color="red"> * </font>身份证号码：');
+            $('#phone2').html('<font color="red"> * </font>联系方式：');			
+		}
+        $('#vtype').val(user_group_id);
+		
+		var options = typeof opts[user_group_id] != 'string' ? '' : opts[user_group_id];
+		if(options == '' || !options){
+		  $("#vCate").hide();
+		} else {
+		  $("#vCate").show();
+		}
+		$("#verifiedCategory").html(options);
+    };
+    
+    var delverify = function(){
+        if(confirm('确定要注销认证吗？')){
+            $.post(U('public/Account/delverify'),{},function(txt){
+                if(txt == 1){
+                    ui.success('注销成功');
+                    setTimeout("location.reload()",'3000');
+                }else{
+                    ui.error('注销失败');
+                }
+            });
+        }
+    };
+
+    var saveVerify = function(){
+      var vtype = $('#vtype').val();
+      var company = $('#company').val();
+      var realname = $('#realname').val();
+      var idcard = $('#idcard').val();
+      var phone = $('#phone').val();
+      var reason = $('#reason').val();
+	  var info = $('#info').val();
+	  if(!reason) reason = '';
+	  if(!info) info = '';
+      var verifiedCategory = $('#verifiedCategory').val();
+      var attach_ids = $('#attach_ids').val();
+      $.post(U('public/Account/doAuthenticate'),{usergroup_id:vtype,company:company,realname:realname,idcard:idcard,phone:phone,reason:reason,info:info,verifiedCategory:verifiedCategory,attach_ids:attach_ids},function(msg){
+          if(msg == 1){
+            ui.success('申请成功，请等待审核');
+            setTimeout("location.reload()",'3000');
+          }else{
+            ui.error(msg);
+          }
+      });
+    }
+</script>
+<include file="__THEME__/public_footer" />

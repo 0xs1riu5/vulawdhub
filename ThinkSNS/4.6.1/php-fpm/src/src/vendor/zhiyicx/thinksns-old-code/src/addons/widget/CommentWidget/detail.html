@@ -1,0 +1,120 @@
+<!--评论框-->
+
+<eq name='cancomment' value="1">
+  <div class="input" model-node="comment_textarea">
+    <div class="input_before1" model-node="mini_editor">
+      <input type="hidden" id="app_detail_summary" value="{$app_detail_summary}" />
+      <textarea class="input_tips" id="comment_inputor" event-node="mini_editor_textarea" hidefocus="true"  model-args='t=comment'></textarea>
+      <div model-node="numsLeft" class="num">{$initNums}</div>
+    </div>
+    <div class="action clearfix">
+      <div class="right">
+        <eq name='canrepost' value="1">
+         <!--[if !IE]><!-->
+          <label>
+            <input type="checkbox"  name="shareFeed" value="1" class="checkbox regular-checkbox" id="shareFeed"><span for="shareFeed"></span>
+            {:L('PUBLIC_SHARETO_STREAM')}</label>
+         <!--<![endif]-->
+         <!--[if IE]>
+         <label>
+            <input type="checkbox"  name="shareFeed" value="1" class="checkbox">
+            {:L('PUBLIC_SHARETO_STREAM')}</label>
+         <![endif]-->
+        </eq>
+        <php>if($comment_origin == 1):</php>
+        <!--[if !IE]><!--><label>
+          <input type="checkbox" class="checkbox regular-checkbox" name="comment" value="1" id="comment"/>
+          <span for="comment"></span>同时评论给原文作者&nbsp;{$user_info.space_link_no}</label>
+          <!--<![endif]-->
+         <!--[if IE]>
+         <label>
+          <input type="checkbox" class="checkbox" name="comment" value="1" />
+          同时评论给原文作者&nbsp;{$user_info.space_link_no}</label>
+          <![endif]-->
+        <php>endif;</php>
+        <a class="btn-green-small" href="javascript:void(0);"  event-node="do_comment"  event-args='row_id={$row_id}&app_uid={$app_uid}&app_row_id={$app_row_id}&app_name={$app_name}&table={$table}&canrepost={$canrepost}' to_comment_id="0" to_uid="0" to_comment_uname="" addtoend='0' ><span>{:L('PUBLIC_STREAM_REPLY')}</span></a></div>
+      <div class="acts" id="acts"> <a class="face-block" href="javascript:;" event-node="comment_insert_face" title="表情"><i class="face"></i>表情</a> </div>
+      <ul class="commoned_list">
+        <!--<eq name='canrepost' value="1">
+        <li><label><input type="checkbox"  name="shareFeed" value="1" class="checkbox">{:L('PUBLIC_SHARETO_STREAM')}</label>
+    	</eq>
+      <php>if($comment_origin == 1):</php>
+        <label><input type="checkbox" class="checkbox" name="comment" value="1" />同时评论给原文作者&nbsp;{$user_info.space_link_no}</label></li>
+      <php>endif;</php>-->
+        <div class="clear"></div>
+        <div model-node="faceDiv"></div>
+      </ul>
+    </div>
+  </div>
+  <else />
+  <div class="nologin">您还未登录，请<a class="nologin-a" href="javascript:ui.quicklogin();">&nbsp;登录</a>&nbsp;or&nbsp;<a class="nologin-a" href="{:U('public/Register/index')}">注册</a></div> 
+  </eq>
+
+<!--评论列表-->
+<eq name='showlist' value="1">
+  <div class="comment_lists" id="commentlist_{$row_id}">
+    <volist name='list.data' id='vo'>
+      <dl class="comment_list" id="comment_list" model-node="comment_list">
+        <dt><a href="{$vo.user_info.space_url}"><img width="20" height="20" src="{$vo.user_info.avatar_middle}"></a></dt>
+        <dd>
+          <p class="cont"> {$vo.user_info.space_link}：<em>
+            <php>if($vo['is_audit'] || $vo['uid'] == $GLOBALS['ts']['mid']){</php>
+            {$vo.content}
+            <php>}else{</php>
+            内容正在审核
+            <php>}</php>
+            <span class="time">({$vo.ctime|friendlyDate})</span>
+            <span  class="handle">
+              <php> $isdel = 0;
+                if(($vo['uid'] == $GLOBALS['ts']['mid'] && CheckPermission('core_normal','comment_del')) || CheckPermission('core_admin','comment_del')){
+                $isdel = 1; </php>
+              <a href="javascript:void(0);" style="color:red;" event-node="comment_del" event-args="comment_id={$vo.comment_id}" 
+              <php>if($vo['user_info']['uid'] != $GLOBALS['ts']['mid'] && CheckPermission('core_admin','comment_del')){</php>
+              style="color:red;"
+              <php>}</php>
+              >{:L('PUBLIC_STREAM_DELETE')}</a>
+              <php>}</php>
+              <php>if( $isdel && $cancomment){</php>
+              <php>}</php>
+              <eq name='cancomment' value="1">
+                <a href="javascript:void(0)" event-args='row_id={$vo.row_id}&app_uid={$vo.app_uid}&to_comment_id={$vo.comment_id}&to_uid={$vo.uid}&to_comment_uname={$vo.user_info.uname}&app_name={$app_name}&table={$table}' 
+        event-node="reply_comment">{:L('PUBLIC_STREAM_REPLY')}</a>
+              </eq>
+            </span>
+            </em>
+          </p>
+         <!--  <p class="info right">
+            <span>
+              <php> $isdel = 0;
+                if(($vo['uid'] == $GLOBALS['ts']['mid'] && CheckPermission('core_normal','comment_del')) || CheckPermission('core_admin','comment_del')){
+                $isdel = 1; </php>
+              <a href="javascript:void(0);" event-node="comment_del" event-args="comment_id={$vo.comment_id}" 
+              <php>if($vo['user_info']['uid'] != $GLOBALS['ts']['mid'] && CheckPermission('core_admin','comment_del')){</php>
+              style="color:red;"
+              <php>}</php>
+              >{:L('PUBLIC_STREAM_DELETE')}</a>
+              <php>}</php>
+              <php>if( $isdel && $cancomment){</php>
+              <i class="vline">|</i>
+              <php>}</php>
+              <eq name='cancomment' value="1">
+                <a href="javascript:void(0)" event-args='row_id={$vo.row_id}&app_uid={$vo.app_uid}&to_comment_id={$vo.comment_id}&to_uid={$vo.uid}&to_comment_uname={$vo.user_info.uname}&app_name={$app_name}&table={$table}' 
+  			event-node="reply_comment">{:L('PUBLIC_STREAM_REPLY')}</a>
+              </eq>
+            </span>
+          </p> -->
+        </dd>
+      </dl>
+    </volist>
+    
+    <!--页码-->
+    <neq name='list.html' value=''>
+      <div id="page" class="page"> {$list.html} </div>
+    </neq>
+    <!--页码/end--> 
+  </div>
+</eq>
+<script>
+var initNums = '{$initNums}';
+atWho($("#comment_inputor"));
+</script>

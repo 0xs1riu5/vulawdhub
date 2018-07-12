@@ -1,0 +1,171 @@
+<include file="__THEME__/header" />
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<script>
+var UPLOAD_URL ='{:UPLOAD_URL}';
+</script>
+<style>
+.red {
+	color:red;
+}
+</style>
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div class="weiba-box clearfix"> 
+      <!--  创建微吧  -->
+      <div class="add_group_head">创建微吧</div>
+      <!-- <form name="addform" action="{:U('weiba/Index/doAdd')}" method="post" onsubmit="return group_info.check_form(this);" enctype="multipart/form-data"> -->
+      <ul class="add_group">
+        <li>
+          <div class="c1"><span class="red">*</span>微吧名称：</div>
+          <div class="c2">
+            <input name="weiba_name" value="" class="text" style="width:610px;" type="text" />
+            <span id="group_name_tips" class="cRed pr5"></span> </div>
+        </li>
+        <li>
+          <div class="c1"><span class="red">*</span>微吧logo：</div>
+          <div class="c2"> {:W('Avatars',array('avatar'=>$user_info,'defaultImg'=>$imgurl))} </div>
+        </li>
+        <li>
+          <div class="c1"><span class="red">*</span>微吧简介：</div>
+          <div class="c2">
+            <textarea id="textarea" name="intro" rows="3" style="width:610px;" class="text" ></textarea>
+          </div>
+        </li>
+        <li>
+          <div class="c1"><span class="red">*</span>发帖权限：</div>
+          <div class="c2"> 
+            <!--[if !IE]><!-->
+              <div class="mr30 left">
+                <label><input type="radio"  name="who_can_post" value="0" class="checkBox" id="checkid1" checked="checked"/>
+                <label for="checkid1" class="mb20"></label>
+                所有人均可发帖</label></div>
+              <div class="mr30 left">
+                <label><input type="radio"  name="who_can_post" value="1" class="checkBox" id="checkid2"/>
+                <label for="checkid2" class="mb20"></label>
+                仅限该微吧粉丝发帖</label></div>
+              <div class="mr30 left">
+                <label><input type="radio"  name="who_can_post" value="2" class="checkBox" id="checkid3"/>
+                <label for="checkid3" class="mb20"></label>
+                仅限微吧管理员发帖</label></div>
+              <div class="mr30 left">
+                <label><input type="radio"  name="who_can_post" value="3" class="checkBox" id="checkid4"/>
+                <label for="checkid4" class="mb20"></label>
+                仅限圈主发帖</label></div>
+                 <!--<![endif]--> 
+            <!--[if IE]> 
+                 <div class="mr30 left">
+                <label><input type="radio"  name="who_can_post" value="0" checked="checked"/>
+                所有人均可发帖</label></div>
+              <div class="mr30 left">
+                <label><input type="radio"  name="who_can_post" value="1" />
+                仅限该微吧粉丝发帖</label></div>
+              <div class="mr30 left">
+                <label><input type="radio"  name="who_can_post" value="2" />
+                仅限微吧管理员发帖</label></div>
+              <div class="mr30 left">
+                <label><input type="radio"  name="who_can_post" value="3" />
+                仅限圈主发帖</label></div>
+                 <![endif]--> 
+          </div>
+        </li>
+        <li>
+          <div class="c1">附加信息：</div>
+          <div class="c2">
+            <input name="info" value="" class="text" style="width:610px;" type="text" />
+          </div>
+        </li>
+        <li>
+          <div class="c1">地区：</div>
+          <div class="c2"> {:W('Areas',array('curPro'=>0,'curCity'=>0,'area'=>0,'tpl'=>'selectArea','impotid'=>'3273','impotval'=>'', 'required'=>in_array('location', $required)))} </div>
+        </li>
+        <li>
+          <div class="c1">标签：</div>
+          <div class="c2">
+          <div class="select-area"><a id="weiba_name" name="1" href="javascript:void(0);">请选择微吧<i class="ico-arrow-down right mt15"></i></a>
+            <input id="weiba_id" type="hidden" value="" name="weiba_id" />
+          </div>
+          <div class="kind-list kind-1" id="kind-1" style="width:740px; border-bottom:#E2DDD5 1px solid; border-top:none;">
+            <ul class="clearfix">
+              <php>foreach( $list as $v ){</php>
+              <li id="weiba_id_{$v.weiba_id}" onclick="weibaName({$v.weiba_id})">{$v['weiba_name']|getShort=8}</li>
+              <php>}</php>
+            </ul>
+            <!-- <select name="cid" id="cid">
+            <option value="0" selected="selected" >选择标签</option>
+              <volist name="weiba_cates" id="v">
+                  <option value="{$key}" <php>if($key==$weiba_detail['cid']){</php>selected="selected"<php>}</php>>{$v}</option>
+              </volist>
+            </select>--> 
+            
+          </div>
+        </li>
+        <li>
+          <div class="c1">&nbsp;</div>
+          <div class="c2">
+            <input type="hidden" name="dosubmit" value="1">
+            <input type="hidden" name="recommend" value="0">
+            <input name="button" type="submit" onclick="dosubmit()" class="btn_b" id="button" value="保存" />
+          </div>
+        </li>
+      </ul>
+      <!-- </form> --> 
+    </div>
+  </div>
+</div>
+<script>
+function noisupload(){
+	ui.error('上传LOGO还没操作完成');
+}
+function dosubmit(){
+	  var who_can_post = $("input[name='who_can_post']:checked").val();
+	  var intro = $("#textarea").val();
+	  var weiba_name = $("input[name='weiba_name']").val();
+	  var info = $("input[name='info']").val();
+	  var avatar_big = $("input[name='avatar_big']").val();
+	  var avatar_middle = $("input[name='avatar_middle']").val();
+	  var cid = $("#cid").val();
+	  var province = $("#province").val();
+	  var city = $("#city").val();
+	  var area = $("#area").val();
+	  var input_city = $("#city_input").val();
+      var post_content = {
+    		  dosubmit:1,
+    		  cid:0,
+    		  recommend:0,
+    		  who_can_post:who_can_post,
+    		  intro:intro,
+    		  info:info,
+    		  cid:cid,
+    		  province:province,
+    		  city:city,
+    		  area:area,
+    		  input_city:input_city,
+    		  weiba_name:weiba_name,
+    		  avatar_big:avatar_big,
+    		  avatar_middle:avatar_middle,
+    		  };
+	  $.post("{:U('weiba/Index/doAdd')}",post_content,function(data){
+		  data = strip_tags(data);
+		  data = eval("(" + data + ")");
+		  if(data.status==1){
+			  alert('创建成功！请等待管理员审核！');
+			  location.href = "{:U('weiba/Index/index')}";
+		  }else{
+			  alert(data.info);
+		  }
+	  })
+}
+
+//分类标签选择	
+	$("#weiba_name").click(function(){
+			$(".kind-list").toggle();
+		})
+function weibaName(weiba_id){
+  		var data = $('#weiba_id_'+weiba_id).text()+"<i class='ico-arrow-down right mt15'></i>";
+  		$('#weiba_id').val(weiba_id);
+		$(".kind-list").hide();
+  		$('#weiba_name').html(data);
+};
+</script> 
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,36 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{:L('PUBLIC_WEIBO_CONFIGURATION')}</div>
+
+
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+<div class="form">
+	<form action="{:U('admin/Config/feed')}" method='POST'>
+	<volist name='list' id='vo'>
+		<div>
+      <b>{$appHash[$key]}：</b>
+		<volist name='vo' id ='v'>
+	 <label><input name="type[]" value='{$v.type}' type="checkbox" <php>if(in_array($v['type'],$setData)){</php> checked ='checked' <php>}</php> > {$v.info} </label>
+		</volist>
+  </div>
+	</volist>
+ 
+    <div class="page_btm">
+      <input class="btn_b" value="{:L('PUBLIC_SAVE')}" name='sub' type="submit"> ({:L('PUBLIC_WEIBO_TYPE_SETTING')})
+    </div>
+	</form>
+</div>
+</div>
+<include file="__THEME__/admin_footer" />

@@ -1,0 +1,253 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/rank.css" rel="stylesheet" type="text/css" />
+<script>
+function gorank(action,type,obj,num){
+	var current = $('div[rel="'+type+'div"][current="1"]');
+	//当前页数
+	var curnum = $('#'+type+'num').text();
+	//向前
+	if ( action == 1 ){
+		curnum = parseInt(curnum) - 1;
+		if ( curnum  >= 1 ){
+			if ( curnum == 1 ){
+				$(obj).attr('class','arrow-rank-l');
+			}
+			$('#'+type+'next').attr('class','arrow-rank-r');
+			var last = $('div[rel="'+type+'div"][current="1"]').prev();
+			if ( last != undefined ){
+				$(last).attr('current',1);
+				$(current).removeAttr('current');
+				$(last).show();
+				$(current).hide();
+			}
+			$('#'+type+'num').text(curnum);
+		}
+	} else {
+		//向后翻页
+		curnum = parseInt(curnum) + 1;
+		if ( curnum <= num ){
+			if ( curnum == num ){
+				$(obj).attr('class','arrow-rank-r1');
+			}
+			$('#'+type+'last').attr('class','arrow-rank-l1');
+			var next = $('div[rel="'+type+'div"][current="1"]').next();
+			if ( next != undefined ){
+				$(next).attr('current',1);
+				$(current).removeAttr('current');
+				$(current).hide();
+				$(next).show();
+			}
+			$('#'+type+'num').text(curnum);
+		}
+	} 
+}
+function rankpost(type){
+	$.post(U('public/Rank/postRank'),{type:type},function (res){
+		if ( res == 1 ){
+			ui.success('发布成功！');
+		}
+	});
+}
+</script>
+
+<div id="page-wrap">
+  <div id="main-wrap">
+
+
+    <div class="app-title clearfix">
+      <h3 class="left">排行榜</h3>
+    </div>
+
+    <div class="find-type clearfix">
+
+        <div id="rank_nav">
+          <div class="app-tab-menu clearfix">
+            <ul>
+              <li> <a 
+                <php>if($type==2){</php>
+                class="current"
+                <php>}</php>
+                href="{:U('public/Rank/index','type=2')}">用户排行榜</a><!--<php>if($type==2){</php><span class="arrow-t"></span><php>}</php> --> 
+              </li>
+              <li> <a 
+                <php>if($type==1){</php>
+                class="current"
+                <php>}</php>
+                href="{:U('public/Rank/index')}">好友排行榜</a><!--<php>if($type==1){</php><span class="arrow-t"></span><php>}</php>  --> 
+              </li>
+              <li> <a href="{:U('public/Rank/topic')}">话题排行榜</a> </li>
+              <li> <a href="{:U('public/Rank/weibo')}">分享排行榜</a></li>
+            </ul>
+          </div>
+        </div>
+    </div>
+
+    <div class="st-bg">
+      <div class="rank-content clearfix">
+        <div class="rank-box">
+          <div class="rank-tit"> <span class="right"><i class="arrow-rank-l" id="followerlast" onclick="gorank(1,'follower',this,{$follower.ranknum})"></i><font id="followernum">{$follower.firstrank}</font>/{$follower.ranknum}<i class="arrow-rank-r<php>if($follower['ranknum']==1){</php>1<php>}</php>" id="followernext" onclick="gorank(2,'follower',this,{$follower.ranknum})"></i></span>{$typename}粉丝排行榜 </div>
+          <div class="rank-num">您在{$typename}粉丝排行榜中排名第<em>{$follower.userrank}</em>名</div>
+          <div class="rank-cate"><span class="right">粉丝数</span><span class="num">排名</span><span class="name">昵称</span></div>
+          <php>foreach ( $follower['list'] as $followerk=>$followerv ){</php>
+          <div rel="followerdiv" 
+            
+          <php>if($followerk>1){</php>
+          style="display:none;"
+          <php>}else{</php>
+          current="1"
+          <php>}</php>
+          >
+          <php>foreach ( $followerv as $fv ){</php>
+          <p class="rank-lists <php>if($mid==$fv['uid']['uid']){</php> current<php>}</php>"> <span class="right f9">{$fv.val}</span>
+            <php>if($followerk==1){</php>
+            <span class="num ico-num{$fv.rank}"></span>
+            <php>}else{</php>
+            <span class="num left">{$fv.rank}</span>
+            <php>}</php>
+            <span class="name"><a href="{$fv.uid.space_url}" class="face"><img src="{$fv.uid.avatar_small}" width="30" height="30"/></a><a href="{$fv.uid.space_url}">{$fv.uid.uname}</a></span> </p>
+          <php>}</php>
+        </div>
+        <php>}</php>
+      </div>
+      <div class="rank-box">
+        <div class="rank-tit"> <span class="right"><i class="arrow-rank-l" id="experiencelast" onclick="gorank(1,'experience',this,{$experience.ranknum})"></i><font id="experiencenum">{$experience.firstrank}</font>/{$experience.ranknum}<i class="arrow-rank-r<php>if($experience['ranknum']==1){</php>1<php>}</php>" id="experiencenext" onclick="gorank(2,'experience',this,{$experience.ranknum})"></i></span>{$typename}经验排行榜 </div>
+        <div class="rank-num">您在{$typename}经验排行榜中排名第<em>{$experience.userrank}</em>名</div>
+        <div class="rank-cate"><span class="right">经验值</span><span class="num">排名</span><span class="name">昵称</span></div>
+        <php>foreach ( $experience['list'] as $experiencek=>$experiencev ){</php>
+        <div rel="experiencediv" 
+          
+        <php>if($experiencek>1){</php>
+        style="display:none;"
+        <php>}else{</php>
+        current="1"
+        <php>}</php>
+        >
+        <php>foreach ( $experiencev as $ev ){</php>
+        <p class="rank-lists<php>if($mid==$ev['uid']['uid']){</php> current<php>}</php>"> <span class="right f9">{$ev.val}</span>
+          <php>if($experiencek==1){</php>
+          <span class="num ico-num{$ev.rank}"></span>
+          <php>}else{</php>
+          <span class="num left">{$ev.rank}</span>
+          <php>}</php>
+          <span class="name"><a href="{$ev.uid.space_url}" class="face"><img src="{$ev.uid.avatar_small}" width="30" height="30"/></a><a href="{$ev.uid.space_url}">{$ev.uid.uname}</a></span> </p>
+        <php>}</php>
+      </div>
+      <php>}</php>
+    </div>
+    <div class="rank-box no-border">
+      <div class="rank-tit"> <span class="right"><i class="arrow-rank-l" id="scorelast" onclick="gorank(1,'score',this,{$score.ranknum})"></i><font id="scorenum">{$score.firstrank}</font>/{$score.ranknum}<i class="arrow-rank-r<php>if($score['ranknum']==1){</php>1<php>}</php>" id="scorenext" onclick="gorank(2,'score',this,{$score.ranknum})"></i></span>{$typename}积分排行榜 </div>
+      <div class="rank-num">您在{$typename}积分排行榜中排名第<em>{$score.userrank}</em>名</div>
+      <div class="rank-cate"><span class="right">积分值</span><span class="num">排名</span><span class="name">昵称</span></div>
+      <php>foreach ( $score['list'] as $scorek=>$scorev ){</php>
+      <div rel="scorediv" 
+        
+      <php>if($scorek>1){</php>
+      style="display:none;"
+      <php>}else{</php>
+      current="1"
+      <php>}</php>
+      >
+      <php>foreach ( $scorev as $gv ){</php>
+      <p class="rank-lists<php>if($mid==$gv['uid']['uid']){</php> current<php>}</php>"> <span class="right f9">{$gv.val}</span>
+        <php>if($scorek==1){</php>
+        <span class="num ico-num{$gv.rank}"></span>
+        <php>}else{</php>
+        <span class="num left">{$gv.rank}</span>
+        <php>}</php>
+        <span class="name"><a href="{$gv.uid.space_url}" class="face"><img src="{$gv.uid.avatar_small}" width="30" height="30"/></a><a href="{$gv.uid.space_url}">{$gv.uid.uname}</a></span> </p>
+      <php>}</php>
+    </div>
+    <php>}</php>
+  </div>
+  <php>if( CheckTaskSwitch() ){</php>
+  <div class="rank-box">
+    <div class="rank-tit"> <span class="right"><i class="arrow-rank-l" id="medallast" onclick="gorank(1,'medal',this,{$medal.ranknum})"></i><font id="medalnum">{$medal.firstrank}</font>/{$medal.ranknum}<i class="arrow-rank-r<php>if($medal['ranknum']==1){</php>1<php>}</php>" id="medalnext" onclick="gorank(2,'medal',this,{$medal.ranknum})"></i></span>{$typename}勋章排行榜 </div>
+    <div class="rank-num">您在{$typename}勋章排行榜中排名第<em class="medal-rank">{$medal.userrank}</em>名</div>
+    <div class="rank-cate"><span class="right">勋章数</span><span class="num">排名</span><span class="name">昵称</span></div>
+    <php>foreach ( $medal['list'] as $medalk=>$medalv ){</php>
+    <div rel="medaldiv" 
+      
+    <php>if($medalk>1){</php>
+    style="display:none;"
+    <php>}else{</php>
+    current="1"
+    <php>}</php>
+    >
+    <php>foreach ( $medalv as $mv ){</php>
+    <p class="rank-lists<php>if($mid==$mv['uid']['uid']){</php> current" id="medal-rank-sel" data-rank="{$mv.rank}<php>}</php>"> <span class="right f9">{$mv.val}</span>
+      <php>if($medalk==1){</php>
+      <span class="num ico-num{$mv.rank}"></span>
+      <php>}else{</php>
+      <span class="num left">{$mv.rank}</span>
+      <php>}</php>
+      <span class="name"><a href="{$mv.uid.space_url}" class="face"><img src="{$mv.uid.avatar_small}" width="30" height="30"/></a><a href="{$mv.uid.space_url}">{$mv.uid.uname}</a></span> </p>
+    <php>}</php>
+  </div>
+  <php>}</php>
+</div>
+<div class="rank-box">
+  <div class="rank-tit"> <span class="right"><i class="arrow-rank-l" id="checkconlast" onclick="gorank(1,'checkcon',this,{$checkcon.ranknum})"></i><font id="checkconnum">{$checkcon.firstrank}</font>/{$checkcon.ranknum}<i class="arrow-rank-r<php>if($checkcon['ranknum']==1){</php>1<php>}</php>" id="checkconnext" onclick="gorank(2,'checkcon',this,{$checkcon.ranknum})"></i></span>{$typename}连续签到排行榜 </div>
+  <div class="rank-num">您在{$typename}连续签到排行榜中排名第<em class="checkcon-rank">{$checkcon.userrank}</em>名</div>
+  <div class="rank-cate"><span class="right">连续签到数</span><span class="num">排名</span><span class="name">昵称</span></div>
+  <php>foreach ( $checkcon['list'] as $checkconk=>$checkconv ){</php>
+  <div rel="checkcondiv" 
+    
+  <php>if($checkconk>1){</php>
+  style="display:none;"
+  <php>}else{</php>
+  current="1"
+  <php>}</php>
+  >
+  <php>foreach ( $checkconv as $ccv ){</php>
+  <p class="rank-lists<php>if($mid==$ccv['uid']['uid']){</php> current" id="checkcon-rank-sel" data-rank="{$ccv.rank}<php>}</php>"> <span class="right f9">{$ccv.val}</span>
+    <php>if($checkconk==1){</php>
+    <span class="num ico-num{$ccv.rank}"></span>
+    <php>}else{</php>
+    <span class="num left">{$ccv.rank}</span>
+    <php>}</php>
+    <span class="name"><a href="{$ccv.uid.space_url}" class="face"><img src="{$ccv.uid.avatar_small}" width="30" height="30"/></a><a href="{$ccv.uid.space_url}">{$ccv.uid.uname}</a></span> </p>
+  <php>}</php>
+</div>
+<php>}</php>
+</div>
+<div class="rank-box no-border">
+  <div class="rank-tit"> <span class="right"><i class="arrow-rank-l" id="checktotallast" onclick="gorank(1,'checktotal',this,{$checktotal.ranknum})"></i><font id="checktotalnum">{$checktotal.firstrank}</font>/{$checktotal.ranknum}<i class="arrow-rank-r<php>if($checktotal['ranknum']==1){</php>1<php>}</php>" id="checktotalnext" onclick="gorank(2,'checktotal',this,{$checktotal.ranknum})"></i></span>{$typename}累积签到排行榜 </div>
+  <div class="rank-num">您在{$typename}累积签到排行榜中排名第<em class="checktotal-rank">{$checktotal.userrank}</em>名</div>
+  <div class="rank-cate"><span class="right">累计签到数</span><span class="num">排名</span><span class="name">昵称</span></div>
+  <php>foreach ( $checktotal['list'] as $checktotalk=>$checktotalv ){</php>
+  <div rel="checktotaldiv" 
+  
+  <php>if($checktotalk>1){</php>
+  style="display:none;"
+  <php>}else{</php>
+  current="1"
+  <php>}</php>
+  >
+  <php>foreach ( $checktotalv as $ctv ){</php>
+  <p class="rank-lists<php>if($mid==$ctv['uid']['uid']){</php> current" id="checktotal-rank-sel" data-rank="{$ctv.rank}<php>}</php>"> <span class="right f9">{$ctv.val}</span>
+    <php>if($checktotalk==1){</php>
+    <span class="num ico-num{$ctv.rank}"></span>
+    <php>}else{</php>
+    <span class="num left">{$ctv.rank}</span>
+    <php>}</php>
+    <span class="name"><a href="{$ctv.uid.space_url}" class="face"><img src="{$ctv.uid.avatar_small}" width="30" height="30"/></a><a href="{$ctv.uid.space_url}">{$ctv.uid.uname}</a></span> </p>
+  <php>}</php>
+</div>
+<php>}</php>
+</div>
+<php>}</php>
+</div>
+<php>if($mid){</php>
+<div class="rank-forward"> <a href="javascript:rankpost({$type})" class="btn-forward-rank">转发我的{$typename}排名到分享</a></div>
+<php>}</php>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+$(function() {
+  $('.medal-rank').text($('#medal-rank-sel').data('rank'));
+  $('.checkcon-rank').text($('#checkcon-rank-sel').data('rank'));
+  $('.checktotal-rank').text($('#checktotal-rank-sel').data('rank'));
+});
+</script>
+<include file="__THEME__/public_footer" />

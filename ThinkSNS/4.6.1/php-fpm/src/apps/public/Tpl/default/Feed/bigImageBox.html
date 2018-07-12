@@ -1,0 +1,40 @@
+<div id="show_big_image" style="display:none;">
+  <div id="boxy_blackout" class="boxy-modal-blackout-big-image" style="height:100%;width:100%;opacity:0.8;z-index:999;position:fixed;_position:absolute;"></div>
+  <div id="photo_layer" class="photo-layer" style="z-index:1000;height:100%;width:100%;top:0;left:0;position:fixed;overflow:auto;_position:absolute;_top:expression(documentElement.scrollTop);_background:#fff;_opacity:1;">
+    <div id="photo_content" class="photo-content">
+      <a href="javascript:;" onclick="core.weibo.bigImageClose()" class="close"><img src="__THEME__/image/ico-close.png"></a>
+      <div class="photo-preview">
+        <div id="info_box" class="info-box"></div>
+        <div id="big_image" class="show"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+var feedId = "{$feedId}";
+var i = "{$i}";
+/**
+ * 初始化Ajax
+ * @return void
+ */
+$(function () {
+  $('#show_big_image').show();
+  // 分享信息
+  $.post(U('public/Feed/ajaxWeiboInfo'), {feedId:feedId}, function (res) {
+    if (res.status == 1) {
+      $('#info_box').html(res.data);
+    } else {
+      $('#info_box').html(res.data);
+    }
+  }, 'json');
+  // 获取大图
+  $.post(U('public/Feed/ajaxImageInfo'), {feedId:feedId, i:i}, function (res) {
+    if (res.status == 1) {
+      $('#big_image').html(res.data);
+    } else {
+      $('#big_image').html(res.data);
+    }
+  }, 'json');
+});
+</script>

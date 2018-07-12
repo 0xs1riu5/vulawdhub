@@ -1,0 +1,86 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/level.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+	   <div id="main-wrap">
+	   	   	<div id="col" class="st-grid content-bg st-bg-b cc">
+                <div id="col4" class="main-left">
+                   <!--tab菜单-->
+                   <include file="_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                  <div class="extend minh person-set">
+                      <div class="tab-menu line-b-animate mb20">
+                        <ul>
+                            <li class="current"><span><a href="{:U('public/Account/scoredetail')}">我的积分</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorerule')}">积分规则</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorelevel')}">积分等级</a></span></li>
+                            <li><span><a href="{:U('public/Account/scorecharge')}">积分充值</a></span></li>
+                            <li><span><a href="{:U('public/Account/scoretransfer')}">积分转帐</a></span></li>
+                        </ul>
+                      </div>
+                      <dl class="person-info-t clearfix">
+                         <dt><a href="{$user_info.space_url}"><img src="{$user_info.avatar_big}" width="100" height="100" /></a></dt>
+                         <dd>
+                            <div class="name">
+                               <strong><a href="{$user_info.space_url}">{$user_info.uname}</a></strong>
+                               <span class="person-icon">
+                                  <a href="{:U('public/Account/scorelevel')}"><img style="width:48px;height:10px;display:inline;cursor:pointer;vertical-align:0;" src="{$userCredit.level.src}" /></a></span>
+                            </div>            
+                           <div class="user-grade">
+                               <div class="grade mt10">
+                                    <volist name="userCredit.credit" id="vo">
+                                        <span>{$vo.alias}：{:intval($vo['value'])}点</span>
+                                    </volist>
+                                    <!-- <span>经验：100点</span><span>积分：100点<span></span>魅力：100点</span> -->
+                                </div>
+                               <div class="grade mt10"><span>用户当前等级：{$userCredit.level.name}</span><a href="{:U('public/Account/scorelevel')}">查看规则</a></div>
+                               <div class="btn mt10"><a href="{:U('public/Account/scorecharge')}" class="btn-green-small"><span>充值</span></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{:U('public/Account/scoretransfer')}" class="btn-green-small"><span>转帐</span></a></div>
+                           </div>
+                          </dd>
+                      </dl>
+                      <div class="level-content">
+                        <table>
+                         <tbody>
+                             <tr>
+                                <th width="150">操作</th>
+                                <th width="150">积分变更</th>
+                                <th width="300">详情</th>
+                                <th width="150">变更时间</th>
+                             </tr>
+                             <volist name="credit_record.data" id="vo">
+                                 <tr>
+                                    <td width="150">{$vo.action}</td>
+                                    <td width="150">{$vo.change}</td>
+                                    <!-- <td width="150">经验<font color="red">+20</font>，人气<font color="red">+30</font></td> -->
+                                    <td width="300">{$vo.des}</td>
+                                    <td width="150">{$vo.ctime|date='Y-m-d H:i:s',###}</td>
+                                 </tr>
+                            </volist>
+                             <!-- <tr>
+                                <td width="150">空间被访问</td>
+                                <td width="150">经验<font color="red">+20,</font>，人气<font color="red">+30</font></td>
+                                <td width="300">空间被访问</td>
+                                <td width="150">2013-11-27 16:18:14</td>
+                             </tr>
+                             <tr>
+                                <td width="150">评论别人</td>
+                                <td width="150">经验<font color="red">+20</font>，人气<font color="red">+30</font></td>
+                                <td width="300">评论了海虾的分享“这里显示分享内容”</td>
+                                <td width="150">2013-11-27 16:18:14</td>
+                             </tr>
+                             <tr>
+                                <td width="150">回复别人的评论</td>
+                                <td width="150">经验<font color="red">+20</font>，人气<font color="red">+30</font></td>
+                                <td width="300">回复了海虾的评论“这里显示评论的具体内容”</td>
+                                <td width="150">2013-11-27 16:18:14</td>
+                             </tr> -->
+                            </tbody>
+                         </table>
+                         <div id="page" class="page" >{$credit_record.html}</div>
+                        </div>
+                  </div>
+                </div>
+           	 </div>
+	   </div>
+</div>
+<include file="__THEME__/public_footer" />

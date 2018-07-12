@@ -1,0 +1,9 @@
+<input type="hidden" id="current" name='city_ids' value='<php> echo t($_GET['city_ids']);</php>'/>
+<input event-node="input_area" type="text" name="city" class="text" onfocus="this.className='text2'" onblur="this.className='text'" style='width:120px;' id="selectarea" readonly = "readonly" onclick="selectArea()" value="{$_GET['city']|default='选择地区'}" />
+
+<script type="text/javascript">
+function selectArea() {
+    var typevalue = $("#current").val();
+	ui.box.load(U('widget/Area/area') + '&selected=' + typevalue, L('PUBLIC_SELECT_AREA'));
+}
+</script>

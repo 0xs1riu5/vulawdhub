@@ -1,0 +1,56 @@
+<div class="choose-user left">
+    <neq name='userList' value=''>
+        <ul rel="userlist" class="user-list">
+        <volist name='userList' id='vo'>
+        <li>
+        <eq name='editable' value="1">
+        <a onclick="core.searchUser.removeUser({$vo.uid},this)" href="javascript:;" class="ico-close right"></a>
+        </eq>
+        <div class="content"><a href="{$vo.space_url}" title="{$vo.uname}">{$vo.uname}</a></div>
+        </li>
+        </volist>
+        </ul>
+    </neq>
+    <input style="display:none" name="avoidSubmitByReturn">
+    <input type="hidden" rel="uids" id="search_uids" name="{$name}" value="{$uids|implode=',', ###}" >
+    <eq name='editable' value="1">
+        <input event-node="search_user" event-args="name={$name}&uid={$uids|implode=',', ###}&defaultValue={$defaultValue}" value="{$defaultValue}" type="text" onfocus="this.className='s-txt-focus'" onblur="this.className='s-txt'" class="s-txt" name="" autocomplete="off" <php>if(count($userList) == $max && $max>0){</php> style='display:none' <php>}</php> >
+        <script type="text/javascript">
+        M.addEventFns({
+            search_user:{
+                load:function(){
+                    var obj = $(this);
+                    if("undefined" == typeof(core.searchUser)){
+                        core.plugFunc('searchUser',function(){
+                            core.searchUser.init(obj,'<php> echo $follow;</php>','<php>echo $max;</php>','','{$noself}');
+                            core.searchUser._stopUser();
+                        });
+                    }
+                },
+                click:function(){
+                    var args = M.getEventArgs(this);
+            		if(this.value == args.defaultValue){
+                        this.value = ''
+                    };
+                    var obj = $(this);
+                    core.searchUser.init(obj,'<php> echo $follow;</php>','<php>echo $max;</php>','','{$noself}');
+            	},
+                blur: function() {
+                    var args = M.getEventArgs(this);
+                    if(this.value == '' || this.value ==args.defaultValue) {
+                        this.value = args.defaultValue;
+//                        core.searchUser.inputReset();
+                    }
+                },
+                focus: function() {
+                    var args = M.getEventArgs(this);
+                    if(this.value == args.defaultValue) {
+                        this.value = '';
+                    }
+                    core.searchUser.init($(this),'<php> echo $follow;</php>','<php>echo $max;</php>','','{$noself}');
+                }
+            }
+        });
+        </script>
+    </eq>
+</div>

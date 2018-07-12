@@ -1,0 +1,23 @@
+<ul>
+	<volist name='pInfo' id='sv'>
+		<li <php> if($id == $sv['id']):</php> class="current" <php>endif;</php>>
+     	<a href="{$cate_url}&category_id={$sv['pid']}" >
+     		<neq name='sv.id' value="0"><div class="back">&laquo;{:L('PUBLIC_GO_BACK')}</div></neq>
+            <i class="ico-minus-gray"></i>{$sv['name']}
+     	</a>
+     	</li>	
+	</volist>
+    <neq name='childInfo' value=''>
+    	<li>
+            <ul>
+                <volist name='childInfo' id='sv'>
+                    <li <php> if($id == $sv['id']):</php> class="current" <php>endif;</php>>
+                        <a href="{$cate_url}&category_id={$sv['id']}" >
+                         <i class="ico-minus-gray"></i>{$sv['name']}
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+        </li>
+	</neq>
+</ul>

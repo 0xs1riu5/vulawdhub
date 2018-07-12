@@ -1,0 +1,105 @@
+<style>
+.layer-content .channel-layer .btn-cancel{width: 88px;height: 30px;line-height: 30px;font-size: 14px;}
+</style>
+
+<div class="layer-content">
+	<div class="channel-layer clearfix">
+		<div class="content" id="content">
+		<volist name="categoryList" id="vo">
+			<a href="javascript:;" rel="{$vo.channel_category_id}" onclick="checkedChannel(this);" title="{$vo.title}" class="btn-cancel<php>if(in_array($vo['channel_category_id'], $selectedChannels)):</php> current<php>endif;</php>"><span>{$vo.title|getShort=###, 4, '...'}</span></a>
+		</volist>
+        </div>
+        <div class="" style="text-align:right">
+        	<a href="javascript:;" onclick="setFeedChannel({$feedId}, {$clear});" class="btn-green-small mr5"><span>确定</span></a>
+        	<a href="javascript:;" onclick="ui.box.close();" class="btn-cancel mr10"><span>取消</span></a>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="checked_channel" value="{:implode(',', $selectedChannels)}" />
+
+<script type="text/javascript">
+var channelId = "{$channelId}";
+/**
+ * 选中频道
+ * @param object obj 操作对象
+ * @return void
+ */
+var checkedChannel = function(obj)
+{
+	// 选中处理
+	if($(obj).hasClass('current')) {
+		$(obj).removeClass('current');
+	} else {
+		$(obj).addClass('current');
+	}
+	// 数据处理
+	var data = new Array();
+	$('#checked_channel').val('');
+	$('#content').find('a').each(function() {
+		if($(this).hasClass('current')) {
+			data.push($(this).attr('rel'));
+		}
+	});
+
+	$('#checked_channel').val(data.join(','));
+};
+/**
+ * 添加频道处理
+ * @return void
+ */
+var setFeedChannel = function(feedId, clear)
+{
+	// 获取频道信息
+	var data = $.trim($('#checked_channel').val());
+	// 发送频道添加请求
+	$.post(U('channel/Manage/doAddChannel'), {feedId:feedId, data:data}, function(res) {
+		if(res.status == 0) {
+			ui.box.close();
+			ui.error(res.info);
+			return false;
+		} else {
+			// 执行变黑操作
+			if(data == '' && clear == 1) {
+				coverBlack(feedId);
+			} else {
+				var arr = data.split(',');
+				var isExist = 0;
+				for(var i in arr) {
+					if(channelId == arr[i]) {
+						isExist = 1;
+					}
+				}
+				isExist == 0 && clear == 1 && coverBlack(feedId);
+			}
+			// 提示信息
+			ui.box.close();
+			ui.success(res.info);
+			return false;
+		}
+	}, 'json');
+};
+/**
+ * 黑色掩盖
+ * @param integer feedId 分享ID
+ * @return void
+ */
+var coverBlack = function(feedId)
+{
+	if(document.getElementById('feed_'+feedId)) {
+		var $feedDiv = $('#feed_'+feedId);
+		var $div = $('<div></div>');
+		$div.addClass('boxy-modal-blackout-channel');
+		var cssStyle = {};
+		cssStyle.position = 'absolute';
+		cssStyle.top = $feedDiv.offset().top;
+		cssStyle.left = $feedDiv.offset().left;
+		cssStyle.width = $feedDiv.outerWidth();
+		cssStyle.height = $feedDiv.outerHeight() + 1;
+		$div.css(cssStyle);
+		$('body').append($div);
+	}
+	if (document.getElementById('feed' + feedId)) {
+		$('#feed' + feedId).fadeOut();
+	}
+}
+</script>

@@ -1,0 +1,26 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{:L('PUBLIC_MAILTITLE_ADMIN')}</div>
+
+
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+<div class="list"> 
+  	<label id="email_msg">
+  		{:L('PUBLIC_SEBT_EMAIL_TIPES',array('num'=>$count,'sum'=>$nums))}
+  	</label>
+    <input type="button" onclick="admin.sendEmailList()"  value="{:L('PUBLIC_CONTINUE_SEND')}" class="btn_b">
+</div>
+</div>
+<include file="__THEME__/admin_footer" />

@@ -1,0 +1,10 @@
+<?php foreach ($userList as $userData) { ?>
+<li class="mb20" style="margin-left:10px;">
+	<div class="user left">
+		<a href="{$userData['space_url']}" title="{$userData['uname']}" class="face">
+			<img src="{$userData['avatar_middle']}" alt="{$userData['uname']}" event-node="face_card" uid="{$userData['uid']}">
+		</a>
+		<a class="name mb10" href="{$userData['space_url']}" title="{$userData['uname']}">{$userData['uname']}</a>
+	</div>
+</li>
+<?php } ?>

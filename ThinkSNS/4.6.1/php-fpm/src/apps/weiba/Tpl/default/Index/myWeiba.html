@@ -1,0 +1,153 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="weiba-top">
+      <div class="app-title clearfix">
+        <div class="app-tab-menu clearfix">
+          <ul>
+            <li><a href="{:U('weiba/Index/index')}" 
+              <php>if(!$nav){</php>
+              class="current"
+              <php>}</php>
+              >微吧首页</a></li>
+            <li><a href="{:U('weiba/Index/weibaList')}" 
+              <php>if($nav=="weibalist"){</php>
+              class="current"
+              <php>}</php>
+              >所有微吧</a>
+              <php>if($GLOBALS['ts']['mid']){</php>
+              <php>}</php>
+            </li>
+            <php>if($GLOBALS['ts']['mid']){</php>
+            <li><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFollowing'))}" 
+              <php>if($nav=="myweiba"){</php>
+              class="current"
+              <php>}</php>
+              >我的</a></li>
+            <php>}</php>
+            <php>if($nav=="weibadetail"){</php>
+            <li><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}" class="current">{$weiba_name}</a></li>
+            <php>}</php>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--我的微吧帖子列表-->
+    <div class="mb10 clearfix">
+      <div id="col3" class="st-index-right">
+        <div class="right-wrap clearfix"> <a id="quick_post" href="javascript:;" class="quick_post"><i class="ico-post weiba-post"></i><span>发表帖子</span></a> 
+          <!-- 签到 -->
+          <div id="weiba-checkin"> {:W('WeibaCheckIn')}</div>
+        </div>
+        <div class="right-wrap clearfix">
+          <!--微吧推荐-->
+          <div class="mb30"> {:W('RelatedGroup',array('uid'=>$mid,'title'=>'微吧推荐','max'=>4))} </div>
+          <!--微吧右下广告-->
+          <div class="right-box mb10 clearfix ad_space_right">
+            {:Addons::hook('show_ad_space', array('place'=>'weiba_right'))}
+          </div>
+          <!--活跃用户--> 
+          {:W('WeibaDaren',array('uid'=>$mid,'weibaid'=>$weiba_id,'title'=>'活跃用户','max'=>6))} 
+        </div>
+      </div>
+      <div id="col5" class="st-index-main">
+      <div class="post-type clearfix h46">
+			<div class="tab-menu line-b-animate"> 
+				<ul>
+	                <li <eq name="type" value="myFollowing">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFollowing'))}">我关注的微吧帖子</a></span></li>
+	                <li <eq name="type" value="myWeiba">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myWeiba'))}">我关注的微吧</a></span></li>
+	                <li <eq name="type" value="myPost">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myPost'))}">我发表的</a></span></li>
+	                <li <eq name="type" value="myReply">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myReply'))}">我回复的</a></span></li>
+	                <li <eq name="type" value="myFavorite">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFavorite'))}">我收藏的</a></span></li>
+           		</ul>
+			</div>
+
+			<!--<div class=" post-type-list">
+              <ul>
+                <li <eq name="type" value="myFollowing">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFollowing'))}">我关注的微吧帖子</a></span></li>
+                <li <eq name="type" value="myWeiba">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myWeiba'))}">我关注的微吧</a></span></li>
+                <li <eq name="type" value="myPost">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myPost'))}">我发表的</a></span></li>
+                <li <eq name="type" value="myReply">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myReply'))}">我回复的</a></span></li>
+                <li <eq name="type" value="myFavorite">class="current"</eq>><span><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFavorite'))}">我收藏的</a></span></li>
+              </ul>
+            </div>
+            -->
+          </div>
+        <div class="post-circle">
+          <div class="post-list clearfix">
+            <php>if($post_list['data'] && $_GET['type']!='myWeiba'){</php>
+            <ul>
+              <volist name="post_list.data" id="vo">
+                <li>
+                  <div class="weiba-c1"><img src="{$vo.user.avatar_middle}" width="50" height="50"/></div>
+                  <div class="c2 left">
+                    <h3 class="post-tit"> <a class="tit" target="_blank" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}">{$vo.title|getShort=20}</a> </h3>
+                    <div class="post-info f8">
+                      <div class="left"><span>{$vo.user.space_link}/{$vo.post_time|friendlyDate}发布</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后回复{$vo.last_reply_time|friendlyDate}</div>
+                    </div>
+                  </div>
+                  <div class="c3">
+                    <div class="item mr10 ml0"> <span>浏览</span> <span>{$vo.read_count}</span> </div>
+                    <div class="item mr10 ml0"> <span>回复</span> <span>{$vo.reply_count}</span> </div>
+                  </div>
+                </li>
+              </volist>
+            </ul>
+            <div id="page" class="page" style="">{$post_list.html}</div>
+            <php>} else if($post_list['data'] && $_GET['type']=='myWeiba'){</php>
+              <ul>
+              <volist name="post_list.data" id="vo">
+                <li>
+                  <div class="weiba-c1"><img src="{$vo.avatar_middle}" width="50" height="50"/></div>
+                  <div class="c2 left">
+                    <h3 class="post-tit"> <a class="tit" target="_blank" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}">{$vo.weiba_name|getShort=20}</a> </h3>
+                    <div class="post-info f8">
+                      <div class="left"><span>{$vo.intro|getShort=16}...</span></div>
+                    </div>
+                  </div>
+                  <div class="c3">
+                    <div class="item mr10 ml0"> <span>成员</span> <span>{$vo.follower_count|default=0}</span> </div>
+                    <div class="item mr10 ml0"> <span>更新</span> <span>{$vo.new_count|default=0}</span> </div>
+                  </div>
+                </li>
+              </volist>
+            </ul>
+            <div id="page" class="page" style="">{$post_list.html}</div>
+            <php>}else{</php>
+             <div class="note">暂时没有相关帖子</div>
+            <php>}</php>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" />
+<php> $canpostweiba = intval(CheckPermission('weiba_normal','weiba_post')); </php>
+<script type="text/javascript">
+$(function () {
+  var canpostweiba = "{$canpostweiba}";
+  $('#quick_post').bind('click', function () {
+    //未登录
+    if( MID == 0 ){
+      ui.quicklogin();
+      return;
+    }
+    if (canpostweiba == 1) {
+      location.href = U('weiba/Index/quickPost');
+    } else {
+      ui.error('对不起，您没有权限进行该操作！');
+    }
+    return false;
+  });
+
+
+  $(".post-list li").hover(function(){
+    $(this).find(".item").css("background","#FFF");
+  },function(){
+    $(this).find(".item").css("background","#F7F8FA");
+  });
+});
+</script>

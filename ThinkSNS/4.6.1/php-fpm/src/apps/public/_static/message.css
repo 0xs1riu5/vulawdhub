@@ -1,0 +1,64 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/*消息列表*/
+.massage-main{padding:20px;background:#fff}
+.massage-main .tab-menu{margin:0 0 5px}
+.massage-main .page{margin:0 20px}
+/*.private-lists{padding:10px 0 0}*/
+.private-list{border-bottom:#eee solid 1px;margin:0;/*position:relative;*/background:#fff;padding:20px 10px;cursor:pointer;*zoom:1;/*for Ie6,Ie7*/}
+.private-list dt.face{float:left;margin:0 10px 0 0;width:50px;height:50px}
+.private-list dt.face img{-moz-border-radius:50px;-webkit-border-radius:50px;border-radius:50px;}
+.private-list dd.info{margin:0 0 0 70px;font-size:14px;line-height:22px;}
+.private-list dd.info a.right{font-size:12px;color:#0096e6;}
+.private-list dd.info img{vertical-align:middle;}
+.private-list dd.info .date span{float:right}
+.private-list .hover{ visibility:hidden;_visibility:visible;/*for Ie6*/}
+.private-list:hover .hover{visibility:visible}
+.private-list:hover, .private-lists .current{}
+.private-list .ico-new{margin:0 0 0 5px}
+.private-lists .note{text-align:center;padding:10px;}
+
+/*消息回复列表*/
+.reply-lists{padding:0 0 20px 0; background:#fff}
+.reply-lists .arrow-left{position:absolute;left:55px;top:30px}
+/*.reply-lists .my-reply .arrow-right{background-color:#fff;position:absolute;right:55px;top:30px}*/
+.reply-lists .my-reply .arrow-right{background-color:#fff;float:right;background-position:0 0;margin:10px 5px 0 0;}
+.reply-lists .my-reply dt.face{float:right; margin:0 10px 0 0;}
+.reply-lists .my-reply dd.info{margin:0 70px;background:#fff;}
+.reply-lists .my-reply dd.info .hd{ background:#fff;}
+.reply-lists .my-reply dt.face .say-arrow{background-position:-10px -2px; right:auto; left:-18px;}
+.system-list{background:#fff}
+.system-list:hover{background:#F6F6F6;cursor:pointer}
+.system-list dd.face{float:left;width:100px;padding:5px 0 0;display:none;}
+.system-list dd p.name{margin:0 0 0 40px;}
+.system-list dd a.face{float: left;}
+.system-list dd.info{margin:0 40px 0 0;overflow:hidden;_width:590px;}
+.reply-list{margin:10px 0;/*position:relative;*/}
+.reply-list dt.face{float:left;width:44px;height:44px; margin:0 0 0 10px; position:relative}
+.reply-list dt.face .say-arrow{ width:7px; height:9px; background:url(image/say-arrow.png) no-repeat -1px -2px; position:absolute;top:17px; right:-18px; z-index:1}
+.reply-list dd.info{margin:0 70px;line-height:22px;color:#535353; background:#fff; }
+.reply-list dd.info .hd{background:#FAFAFA; font-size:14px; font-weight:normal; padding:0; line-height:22px; cursor:auto;padding:10px;border:#EBEBEB solid 1px;border-radius:5px; position:relative;word-break:break-all;word-wrap:break-word;}
+
+.reply-list dd.info .date{color:#C9C9C9;padding:5px 0 0;}
+.reply-list dd.info .date span{float:right}
+.reply-list .feed_img_lists .small li, .reply-list .feed_img .small li{width:100px;height:100px;}
+
+/*消息回复区*/
+.replay-section{padding:5px 0 20px 0;border-bottom:#eee solid 1px;margin:0 0 5px; background:#fff}
+.replay-section .hd {*zoom:1; background:#fff !important; cursor:default !important; font-weight:normal !important;}
+/*.replay-section .hd span{float:right}*/
+.replay-section .hd strong{padding:0 5px;color:#0096e6;}
+.replay-section .hd a{padding:0 0 0 5px}
+
+.replay-article{padding:20px 0 0 0;*zoom:1;/*for Ie6,Ie7*/}
+.replay-article dt{padding:0 0 5px}
+.replay-article dd.info{height:50px; width:100%; overflow:hidden}
+.replay-article dd.info img,.reply-lists dt.face img{-moz-border-radius:50px;-webkit-border-radius:50px;border-radius:50px;}
+.replay-article dd .s-textarea, .replay-article dd .s-textarea-focus{height:44px;width:410px;overflow-y:auto;_float:left;/*for Ie6*/ margin-left:10px; box-shadow:none}
+.replay-article dd .btn-green-small{ width:70px; height:24px; line-height:24px; font-size:12px;}
+.replay-article dd.action{padding:10px 70px 0 10px;}
+.replay-article dd.action .btn-green{float:right}
+.replay-article dd.action .faces{float:left;background:url(../image/icon.png) no-repeat 0 0;display:inline-block;width:16px;height:16px;margin:0 10px 0 0;cursor:pointer}
+
+.moreFoot{ background:#F5F6F7;border-top: 1px solid #EBEBEB;color: #999;height: 31px;line-height: 31px;padding: 3px 0;text-align: center;}

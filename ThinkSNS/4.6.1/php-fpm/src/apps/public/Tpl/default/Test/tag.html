@@ -1,0 +1,26 @@
+<include file="__THEME__/public_header" />
+<div style="margin:50px">
+	
+	给support添加tag,supportId
+	{:W('Tag', array('width'=>'500px', 'appname'=>'support','apptable'=>'support','row_id'=>1))}
+	<br/>
+	显示标签,有链接地址
+	{:W('Tag', array('width'=>'500px', 'appname'=>'support','apptable'=>'support','row_id'=>1,'tpl'=>'show','tag_url'=>'aaa'))}
+	<br/>
+	显示标签,没有链接地址
+	{:W('Tag', array('width'=>'500px', 'appname'=>'support','apptable'=>'support','row_id'=>1,'tpl'=>'show'))}
+</div>
+<div>
+	<pre>
+		调用：W('Tag', array('width'=>'500px', 'appname'=>'support','apptable'=>'support','row_id'=>0,'tpl'=>'show','tag_url'=>'aaa','name'=>'public'))
+		参数说明：
+		width 		wigdet显示宽度
+		appname		资源对应的应用名称
+		apptable 	资源对应的表
+		row_id 		资源在资源所在表中的主键ID,为0表示该资源为新加资源，需要在资源添加,往sociax_app_tag表添加相关数据
+		tpl			显示模版，tag/show 默认是tag，如果为show表示只显示标签
+		tag_url		标签上的链接前缀，为空表示标签没有链接，只针对tpl=show有效
+		name 		输入框的input名称,标签的ID存储的隐藏域名称为 {name}_tags
+	</pre>
+</div>
+<include file="__THEME__/public_footer" />

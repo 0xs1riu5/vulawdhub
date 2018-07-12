@@ -1,0 +1,22 @@
+<!-- ================= 丰富型TAB ================= -->
+<script>
+</script>
+<div class="tab" id="{$tabId}">
+	<ul>
+		<volist name="data" id="vo">
+		<li><span><a href="#{$tabId}-{$key}" ><php>echo $vo->title;</php></a></span> </li>
+		</volist>
+	</ul>
+</div>
+<!-- 详情 -->
+<div class="diy_tab_box">
+		<volist name="data" id="vo">
+			 <div id="{$tabId}-{$key}">
+				<php>echo $vo->comment;</php>
+	    	</div>
+		</volist>
+</div>
+
+<script>
+	$('#{$tabId}').tabs();
+</script>

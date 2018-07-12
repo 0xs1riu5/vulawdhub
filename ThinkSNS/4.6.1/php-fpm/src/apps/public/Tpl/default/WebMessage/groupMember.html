@@ -1,0 +1,152 @@
+<php>
+if($room['from_uid'] == $currentUserId){
+    $btn = '<a href="'.U('public/WebMessage/removeGroupMember', array('roomid'=>$roomId)).'" class="disabled admin_group_room">移除群成员</a>';
+}else{
+    $btn = '';
+}
+</php>
+<div id="set-data" data-title="群成员({:count($members)})" data-navs='<a href="{:U('public/WebMessage/room', array('roomid'=>$roomId))}" class="boxopenurl">返回聊天</a><a href="{:U('public/WebMessage/friends', array('roomid'=>$roomId))}" class="boxopenurl">添加群成员</a><a href="{:U('public/WebMessage/quitGroupRoom', array('roomid'=>$roomId))}" id="quit_group_room">退出群</a>' data-btn='{$btn}'></div>
+<div class="common">
+    <div class="fright">
+        <input type="hidden" value="," id="checked_uids" />
+        <ul class="checked_user"></ul>
+    </div>
+    <dl class="friends">
+      <dt style="height:0"></dt>
+      <php>$i=0;foreach($members as $member):</php>
+      <php>if($i%2==0):</php>
+      <dd class="clearfix">
+        <div class="lt">
+            <div class="face"><a href="{:getUserSpaceLink($member['member_uid'])}" target="_blank"><img src="{:getUserFace($member['member_uid'])}" /></a></div>
+            <div class="uname"><a href="{:getUserSpaceLink($member['member_uid'])}" target="_blank">{:getUserName($member['member_uid'])}</a></div>
+            <php>if($room['from_uid'] == $currentUserId && $member['member_uid'] != $room['from_uid']):</php>
+            <div id="checkbox_user_{$member['member_uid']}" class="checkbox" data-uid="{$member['member_uid']}"></div>
+            <php>endif;</php>
+        </div>
+        <php>else:</php>
+        <div class="rt">
+            <div class="face"><a href="{:getUserSpaceLink($member['member_uid'])}" target="_blank"><img src="{:getUserFace($member['member_uid'])}" /></a></div>
+            <div class="uname"><a href="{:getUserSpaceLink($member['member_uid'])}" target="_blank">{:getUserName($member['member_uid'])}</a></div>
+            <php>if($room['from_uid'] == $currentUserId && $member['member_uid'] != $room['from_uid']):</php>
+            <div id="checkbox_user_{$member['member_uid']}" class="checkbox" data-uid="{$member['member_uid']}"></div>
+            <php>endif;</php>
+        </div>
+      </dd>
+      <php>endif;</php>
+      <php>$i++;endforeach;</php>
+    </dl>
+</div>
+<script>
+(function(){
+    $('.boxopenurl').click(function(){
+        if(typeof core.message.openUrl == 'function'){
+            core.message.openUrl($(this).attr('href'), false);
+        }
+        return false;
+    });
+    $('dl.friends .lt,dl.friends .rt').click(function(e){
+        var tagName = e.target.nodeName;
+        if(tagName && tagName.toLowerCase() == 'a'){
+            return ;
+        }
+        //$(this).find('.checkbox').click();
+    });
+    $('.admin_group_room').click(function(){
+        if($(this).hasClass('disabled')){
+            return false;
+        }
+        $(this).addClass('disabled');
+        var val = $('#checked_uids').val();
+        val = val.replace(/(^,*)|(,*$)/g, '');
+        if(!val){
+            ui.error('请先选择成员');
+            return false;
+        }
+        $.post($(this).attr('href'), {uids:val}, function(res){
+            if(res.status && res.data){
+                core.message.openRoom('roomid='+res.data);
+            }else{
+                ui.error(res.info?res.info:'操作失败');
+            }
+            $(this).removeClass('disabled');
+        }, 'json');
+        return false;
+    });
+    $('#quit_group_room').click(function(){
+        if(!confirm('确认退出此群？')){
+            return false;
+        }
+        $.get($(this).attr('href'), null, function(res){
+            if(res.status && res.data){
+                core.message.close();
+                core.message.taskbar.removeId('room'+res.data);
+            }else{
+                ui.error(res.info?res.info:'操作失败');
+            }
+        }, 'json');
+        return false;
+    });
+    $('ul.first-letter a').click(function(){
+        var first_letter = $(this).text();
+        var pos = $('#index-'+first_letter).position();
+        $('.msgbox-body').animate({scrollTop:pos.top}, 'fast');
+    });
+    $('dl.friends .checkbox').click(function(){
+        var val = $('#checked_uids').val();
+        var uid = $(this).data('uid');
+        if($(this).hasClass('checked')){
+            $(this).removeClass('checked').html('');
+            $('#checked_uids').val(val.replace(uid+',', ''));
+            $('ul.checked_user #checked_user_'+uid).remove();
+            setFrightTop();
+            if($('ul.checked_user li').length <= 0){
+                $('a.admin_group_room').addClass('disabled');
+            }
+        }else{
+            $(this).addClass('checked').html('&radic;');
+            $('#checked_uids').val(val+uid+',');
+            var face = $(this).parent().find('.face img').attr('src');
+            var uname = $(this).parent().find('.uname a').text();
+            var li = $('<li id="checked_user_'+uid
+             +'" title="单击移除 '+uname+'"><a href="javascript:;"><img src="'
+             +face+'" /></a></li>').click(function(){
+                $('#checkbox_user_'+uid).click();
+            });
+            $('ul.checked_user').append(li);
+            setFrightTop();
+            $('a.admin_group_room').removeClass('disabled');
+        }
+        return false;
+    });
+    setFrightTop();
+    $('.msgbox-body').unbind('scroll').scroll(function(e) {
+        var st = $(this).scrollTop();
+        var top = $('div.fright').data('top');
+        if(false === top) return;
+        $('div.fright').css('top', top+st);
+    });
+    
+    function setFrightTop(){
+        var height = $('div.fright .first-letter').height();
+        if(height < $('div.fright .checked_user').height()){
+            height = $('div.fright .checked_user').height();
+        }
+        var mainHeight = $('#msgbox-main').height();
+        var defaultTop = $('div.fright').data('default-top');
+        if(defaultTop === undefined){
+            defaultTop = parseInt($('div.fright').css('top'));
+            $('div.fright').data('default-top', defaultTop);
+        }
+        if(height+defaultTop <= mainHeight){
+            var top = defaultTop;
+        }else{
+            var top = 0;
+        }
+        $('div.fright').data('top', top>0?top:false)
+         .stop().animate({
+             top:top>0?top+$('.msgbox-body').scrollTop():0
+         }, 'fast');
+    }
+})();
+
+</script>

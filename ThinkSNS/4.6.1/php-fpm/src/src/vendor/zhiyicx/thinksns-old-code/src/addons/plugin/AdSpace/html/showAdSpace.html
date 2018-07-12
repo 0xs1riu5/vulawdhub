@@ -1,0 +1,20 @@
+<volist name="data" id="vo">
+	<php>if($vo['display_type'] == 3):</php>
+	<div id="ad_{$vo.ad_id}" class="flashNews" style="<neq name="top" value="0">margin-top:{$top}px;</neq><neq name="bottom" value="0">margin-bottom:{$bottom}px;</neq><neq name="width" value="0">width:{$width}px;<php>echo $height?'height:'.$height.'px;':'';</php>overflow:hidden;</neq>">
+		<volist name="vo.content" id="v">
+		<div <neq name="i" value="1">style="display:none;"</neq>>
+			<p><a target="_blank" href="{$v.bannerurl}"><img width="{$width}"<php>echo $height?' height="'.$height.'"':'';</php> src="{$v.bannerpic}" /></a></p>
+		</div>
+		</volist>
+		<php>if(count($vo['content']) > 1):</php>
+		<ul></ul>
+		<script type="text/javascript">
+		new fSwitchPic("ad_{$vo.ad_id}", 5000);
+		</script>
+		<php>endif;</php>
+	</div>
+	<php>else:</php>
+	<div style="<neq name="top" value="0">margin-top:{$top}px;</neq><neq name="bottom" value="0">margin-bottom:{$bottom}px;</neq><neq name="width" value="0">width:{$width}px;<php>echo $height?'height:'.$height.'px;':'';</php>overflow:hidden;</neq>">{:str_ireplace('<img','<img width="'.$width.'"'.($height?' height="'.$height.'"':''),$vo['content'])}</div>
+	<php>endif;</php>
+</volist>
+

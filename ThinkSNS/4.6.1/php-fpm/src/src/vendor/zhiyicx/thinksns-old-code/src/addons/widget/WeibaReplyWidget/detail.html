@@ -1,0 +1,123 @@
+<!-- 排序方式 -->
+<div class="weiba-sort f8 mb20"> <span class="right">排序方式：<a href="javascript:;" onclick="weiba.order.ajaxList({$weiba_id}, {$post_id}, {$post_uid}, {$feed_id}, 'digg');" 
+  <eq name="type" value="digg">class="current"</eq>
+  >赞</a><a href="javascript:;" 
+  <eq name="type" value="time">class="current"</eq>
+  onclick="weiba.order.ajaxList({$weiba_id}, {$post_id}, {$post_uid}, {$feed_id}, 'time')">回复时间</a></span> <span>共有<span id="reply_count">{$list.count}</span>条评论</span> 
+</div>
+<!--评论列表-->
+<eq name='showlist' value="1">
+<div class="weiba-com" id="commentlist_{$post_id}">
+  <volist name='list.data' id='vo' key="k">
+    <div class="list" id="item_{$vo.reply_id}">
+      <dl model-node="comment_list">
+        <dt><a href="{$vo.user_info.space_url}"><img width="50" height="50" src="{$vo.user_info.avatar_small}"></a><php>if($vo['user_info']['group_icon_only']):</php><a href="javascript:;" title="{$vo['user_info']['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vo['user_info']['group_icon_only']['user_group_name']}" src="{$vo['user_info']['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php></dt>
+        <dd>
+          <p class="cont mb5"> {$vo.user_info.space_link}
+            <span class="date">发表于&nbsp;{$vo.ctime|friendlyDate}</span><span class="floor">
+            <php>$page = isset($_REQUEST['p']) ? $_REQUEST['p'] : 1;</php>
+            {$k+(($page-1)*$limit)}
+            楼</span> </p>
+          <p class="det-c">{$vo.content}</p>
+          <?php if($vo['attach_info']['attach_type'] == 'weiba_comment_file'): ?>
+          <div class="feed_file_list mt10 mb10">
+            <ul>
+              <li> <a href="{:U('widget/Upload/down',array('attach_id'=>$vo['attach_info']['attach_id']))}" class="current right" title="下载"><i class="ico-down"></i></a> <i class="ico-{$vo.attach_info.extension}-small"></i> <a href="{:U('widget/Upload/down',array('attach_id'=>$vo['attach_info']['attach_id']))}">{$vo.attach_info.name}</a> <span class="tips">({$vo.attach_info.size|byte_format})</span> </li>
+            </ul>
+          </div>
+          <?php endif; ?>
+        </dd>
+      </dl>
+
+      <?php if($vo['attach_info']['attach_type'] == 'weiba_comment_image' || $vo['attach_info']['attach_type'] == 'feed_image'): ?>
+      <div class="feed_img_lists" style="padding-left:70px;">
+        <ul class="small" style="width:100%">
+          <li style="width:100%;height:100%"><a href="javascript:;"><img src="{$vo['attach_info']['attach_url']}"/></a></li>
+        </ul>
+      </div>
+      <?php endif; ?>
+      <p class="info textR"><span> {:W('ReplyDigg', array('row_id'=>$vo['reply_id'], 'digg_count'=>$vo['digg_count'], diggArr=>$diggArr))}<i class="vline">|</i>
+        <php> $isdel=0;
+          if( ($vo['user_info']['uid'] == $GLOBALS['ts']['mid'] && CheckPermission('weiba_normal','weiba_del_reply')) || in_array($GLOBALS['ts']['mid'],$weiba_admin) || CheckPermission('core_admin','comment_del')){</php>
+        <php>$isdel=1;</php>
+        <a href="javascript:void(0);" event-node="reply_del" event-args="reply_id={$vo.reply_id}">{:L('PUBLIC_STREAM_DELETE')}</a> 
+        <!-- <a href="{:U('weiba/Index/replyEdit',array('reply_id'=>$vo['reply_id']))}">编辑</a>
+  <i class="vline">|</i> -->
+        <php>}</php>
+        <php>if(CheckPermission('weiba_normal','weiba_reply') || !$GLOBALS['ts']['mid']){</php>
+        <eq name='cancomment' value="1">
+          <php>if($isdel){</php>
+          <i class="vline">|</i>
+          <php>}</php>
+          <a href="javascript:void(0)" event-args='weiba_id={$weiba_id}&post_id={$post_id}&post_uid={$post_uid}&to_reply_id={$vo.reply_id}&to_uid={$vo.uid}&to_comment_uname={$vo.user_info.uname}&feed_id={$feed_id}&comment_id={$vo.comment_id}&addtoend={$addtoend}' 
+    event-node="reply_reply"><i class="ico-reply"></i>{:L('PUBLIC_STREAM_REPLY')}</a> 
+          <!--  <a href="javascript:void(0)" event-args='row_id={$vo.row_id}&weiba_id={$weiba_id}&post_id={$post_id}&post_uid={$post_uid}&to_reply_id={$vo.reply_id}&to_uid={$vo.uid}&to_comment_uname={$vo.user_info.uname}&feed_id={$feed_id}' 
+    event-node="reply_reply">{:L('PUBLIC_STREAM_REPLY')}</a> --> 
+          <!-- <a href="javascript:ui.reply(1979)">{:L('PUBLIC_STREAM_REPLY')}</a> --> 
+        </eq>
+        <php>}</php>
+        </span></p>
+    </div>
+  </volist>
+</div>
+
+<!--页码-->
+<neq name='list.html' value=''>
+  <div id="page" class="page" style="padding: 10px 0px 20px 0px;"> {$list.html} </div>
+</neq>
+<!--页码/end--> 
+</eq>
+
+<!-- 评论框 -->
+<div class="send_weibo" style="border:none;padding-bottom:0px">
+  <div class="box">
+    <php>if(CheckPermission('weiba_normal','weiba_reply')){</php>
+    <!--评论框-->
+    <eq name='cancomment' value = "1">
+      <div class="input" model-node="comment_textarea">
+        <div class="input_before1" model-node="mini_editor">
+          <textarea class="input_tips" id="comment_inputor" event-node="mini_editor_textarea" hidefocus="true" model-args='t=comment'></textarea>
+          <div model-node="numsLeft" class="num">{$initNums}</div>
+        </div>
+        <div class="action clearfix" style="width:100%;display:table">
+          <div class="right" style="width:225px"> 
+            <!--[if !IE]><!-->
+            <label style="float:left;display:inline-block" class="mr5">
+              <input type="checkbox" class="checkbox regular-checkbox" name="shareFeed" value="1" id="shareFeed">
+              <span for="shareFeed"></span>
+              {:L('PUBLIC_SHARETO_STREAM')}
+            </label>
+            <!--<![endif]--> 
+            <!--[if IE]>
+            <label style="float:left;display:inline-block" class="mr5"><input type="checkbox" class="checkbox" name="shareFeed" checked="checked" value="1">{:L('PUBLIC_SHARETO_STREAM')}</label>
+            <![endif]--> 
+            <a href="javascript:void(0);" class="btn-green-small" event-node="do_weiba_reply" 
+event-args='' weiba_id="{$weiba_id}" post_id="{$post_id}"  post_uid="{$post_uid}" feed_id="{$feed_id}" addtoend="{$addtoend}" to_reply_id="0" to_uid="0" list_count={$list.count}><span>{:L('PUBLIC_STREAM_REPLY')}</span></a> </div>
+          <div class="acts"> <a class="face-block" href="javascript:;" event-node="comment_insert_face" title="表情"><i class="face"></i>表情</a> <a class="image-block" href="javascript:;" title="图片"><i class="image"></i>图片
+            <form style='display:inline;padding:0;margin:0;border:0;outline:none;' >
+              <input limit="1" type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','image')" urlquery='attach_type=weiba_comment_image&upload_type=image&thumb=1&width=590' hidefocus="true">
+            </form>
+            </a> <a class="file-block" href="javascript:;" title="附件"><i class="file"></i>附件
+            <form style='display:inline;padding:0;margin:0;border:0' >
+              <input limit="1" type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','all')" urlquery='attach_type=weiba_comment_file&upload_type=file' hidefocus="true">
+            </form>
+            </a> 
+
+            </div>
+          <div class="clear"></div>
+          <div model-node="faceDiv"></div>
+        </div>
+      </div>
+      <script>
+        var initNums = '{$initNums}';
+        //shortcut('ctrl+return', replycomment , {target:'mini_editor_textarea'});
+        setTimeout(function() {
+          atWho($("textarea#comment_inputor"));
+        }, 1000);
+      </script>
+      <else />
+      <div class="nologin">您还未登录，请<a class="nologin-a" href="javascript:ui.quicklogin();">&nbsp;登录</a>&nbsp;or&nbsp;<a class="nologin-a" href="{:U('public/Register/index')}">注册</a></div>
+    </eq>
+    <php>}</php>
+  </div>
+</div>

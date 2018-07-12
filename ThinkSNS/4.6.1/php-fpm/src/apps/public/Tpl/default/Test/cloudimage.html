@@ -1,0 +1,24 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px">
+                <form action="{:U('public/Test/doupload')}" method="POST">
+                    <div>
+                        {:W('Upload',array('uploadType'=>'image','inputname'=>'images','callback'=>'callBackDemo'))}
+                    </div>
+                    <input type="submit" name='sub' value='提交'>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //测试用的回调函数
+    var callBackDemo = function(data){
+        for(var i in data){
+            alert(i+'=>'+data[i]);
+        }
+    };
+</script>
+<include file="__THEME__/public_footer" />

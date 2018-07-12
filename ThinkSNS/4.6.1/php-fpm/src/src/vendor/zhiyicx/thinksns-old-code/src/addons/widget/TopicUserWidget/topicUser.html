@@ -1,0 +1,13 @@
+<php>if($user){</php>
+<ul id="topicUser_{$type}" class="related_ul_user take_part_in_user">
+  <volist name="topic_user" id="v1">
+    <li id="user_{$user[$v1]['uid']}" value="{$user[$v1]['uid']}"<php>if(empty($_first_user)){echo ' style="padding-top:0;"';$_first_user=true;}</php>>
+      <div class="user left"><a href="{$user[$v1]['space_url']}" class="face" event-node="face_card" uid="{$user[$v1]['uid']}"><img src="{$user[$v1]['avatar_tiny']}" /></a></div>
+      <div class="user-prof left"><a href="{$user[$v1]['space_url']}" class="name">{$user[$v1]['uname']}</a>
+      </div>
+    </li>
+  </volist>
+</ul>
+<php>}else{</php>
+<p>暂时还没有相关用户</p>
+<php>}</php>

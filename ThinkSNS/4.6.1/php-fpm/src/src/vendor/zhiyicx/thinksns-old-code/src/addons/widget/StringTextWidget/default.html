@@ -1,0 +1,33 @@
+<div id='stringText_{$inputname}' model-node='string_text' model-args='value={$value}&inputname={$inputname}'>
+	<div class="tag-lists">
+		<ul class="taglist"></ul>
+	</div>
+	<div >
+	<input event-node="stringInput" type="text"  value="" style="width:350px;"/> 
+	<input type="hidden" name='{$inputname}' event-node ='hiddenInput' value='{$value}'>	
+	</div>
+</div>
+
+<script type="text/javascript">
+(function(){
+	M.addModelFns({
+		string_text:{
+			load:function(){
+				var args = M.getModelArgs(this);
+				var stringText = new core.stringDb(this,args.inputname,args.value);	
+				stringText.init();	
+				var stringInput = this.childEvents['stringInput'][0];
+				$(stringInput).bind('keypress',function(e){
+					var keycode = e.which||e.keyCode;  
+					if(keycode == 13){
+						stringText.add($.trim($(stringInput).val()));
+						$(stringInput).val('');
+						return false;
+					}
+					return true;
+				});
+			}
+		}
+	});
+})();
+</script>

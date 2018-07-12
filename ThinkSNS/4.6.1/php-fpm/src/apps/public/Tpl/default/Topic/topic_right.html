@@ -1,0 +1,24 @@
+<div id="col3" class="st-index-right">
+    <div class="right-wrap">
+    	<!-- <div class="topic-title mb20 clearfix">
+    		<a href="" class="left"><i class="ico-topic-add"></i><span>关注该话题</span></a>
+            <a href="" class="right"><i class="ico-topic-rec"></i><span>推荐该话题</span></a>
+    	</div> -->
+        <php>if($topics['topic_user']){</php>
+            <div class="right-box mb20 clearfix">   
+                <fieldset class="inter-line mb20"><legend class="inter-txt">话题人物推荐</legend></fieldset>
+                {:W('TopicUser',array('topic_id'=>$topics['topic_id'], 'type'=>1))}    
+            </div>
+        <php>}</php>
+        <div class="right-box mb20 clearfix">
+            <fieldset class="inter-line mb20"><legend class="inter-txt">参与该话题的人</legend></fieldset>
+            {:W('TopicUser',array('topic_id'=>$topics['topic_id'], 'type'=>2, 'limit'=>8))}
+        </div>
+        <!--推荐话题-->
+        {:W('TopicList',array('type'=>1, 'limit'=>10))}
+        <!-- 话题右下 -->
+        <div style="margin-top:10px;width:230px;overflow:hidden;">
+        {:Addons::hook('show_ad_space', array('place'=>'topic_right'))}
+        </div>
+    </div>
+</div>

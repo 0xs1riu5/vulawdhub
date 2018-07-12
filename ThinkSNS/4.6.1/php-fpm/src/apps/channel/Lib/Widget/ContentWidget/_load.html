@@ -1,0 +1,118 @@
+<volist name="data" id="vo">
+    <div class="box" id="feed_{$vo.feed_id}">
+
+        <php>if($vo['type'] == 'postimage'):</php>
+        <div class="pic">
+            <ul><li><a onclick="core.weibo.showBigImage({$vo['feed_id']}, 1);" href="javascript:;"><img width="{$vo.width}" height="{$vo.height}" src="{$vo.attachInfo}" alt="{$vo.body|t}" /></a></li></ul>
+            <php>if(count($vo['attach_id']) > 1):</php>
+            <div class="pic-more" style="font-size:12px;"><a href="{:U('public/Profile/feed', array('feed_id'=>$vo['feed_id'],'uid'=>$vo['user_info']['uid']))}" target="_blank">点击查看全部图片</a></div>
+            <php>endif;</php>
+        </div>
+        <php>endif;</php>
+
+        <php>if($vo['type'] == 'postvideo'):</php>
+        <div class="pic">
+            <a href="{:U('public/Profile/feed', array('feed_id'=>$vo['feed_id'],'uid'=>$vo['user_info']['uid']))}" target="_blank"></a>
+            <ul><li><a href="{:U('public/Profile/feed', array('feed_id'=>$vo['feed_id'],'uid'=>$vo['user_info']['uid']))}"><img width="{$vo.width}" height="{$vo.height}" src="{$vo.flashimg}" alt="{$vo.body|t}" /></a></li></ul>
+        </div>
+        <php>endif;</php>
+
+        <div class="channel-list-l">
+            <div class="channel-user-conntent mb10 feed_list">
+                <?php if($vo['type'] == 'blog_post'): ?>
+	                <?php if(!empty($vo['api_source']['pic_url'])): ?>
+		                <div class="feed_img">
+		                    <a href="{$vo.api_source.source_url}"><img src="{$vo.api_source.pic_url}" width="236" height="{$vo.api_source.pic_height}"/></a>
+		                </div>
+	                <?php endif; ?>
+	                <div class="feed_txt">
+	                    <p><img src="{$vo.user_info.avatar_tiny}" height="20px" width="20px" style="border-radius:50%;margin-top:-4px"/>&nbsp;{$vo.user_info.space_link}：发表了一篇知识到<a href="{$vo.api_source.source_url}">[{$vo.api_source.category_name}]</a></p>
+	                    <h5>{$vo.api_source.title}</h5>
+	                    <p>{$vo.api_source.content|getShort=###,138,'...'}<a href="{$vo.api_source.source_url}" target="_blank" class="f-red">&nbsp;&nbsp;查看全文>></a></p>
+	                </div>
+                <?php elseif($vo['type'] == 'weiba_post'): ?>
+	                <?php if(!empty($vo['api_source']['pic_url']) && $vo['api_source']['pic_height'] != 0): ?>
+		                <div class="feed_img">
+		                    <a href="{$vo.api_source.source_url}"><img src="{$vo.api_source.pic_url}" width="236" height="{$vo.api_source.pic_height}"/></a>
+		                </div>
+	                <?php endif; ?>
+	                <div class="feed_txt">
+	                    <p><img src="{$vo.user_info.avatar_tiny}" height="20px" width="20px" style="border-radius:50%;margin-top:-4px"/>&nbsp;{$vo.user_info.space_link}：发表了一篇帖子到<a href="{$vo.api_source.weiba_url}">[{$vo.api_source.weiba_name}]</a></p>
+	                    <h5><a href="{$vo.api_source.source_url}">{$vo.api_source.title}</a></h5>
+	                    <p>{$vo.api_source.content|getShort=###,138,'...'}<a href="{$vo.api_source.source_url}" target="_blank" class="f-red">&nbsp;&nbsp;查看全文>></a></p>
+	                </div>
+                <?php elseif($vo['type'] == 'event_post'): ?>
+	                <?php if(!empty($vo['api_source']['pic_url'])): ?>
+		                <div class="feed_img">
+		                    <a href="{$vo.api_source.source_url}"><img src="{$vo.api_source.pic_url}" width="236" /></a>
+		                </div>
+	                <?php endif; ?>
+                <div class="feed_txt">
+                    <p><img src="{$vo.user_info.avatar_tiny}" height="20px" width="20px" style="border-radius:50%;margin-top:-4px"/>&nbsp;{$vo.user_info.space_link}：发起了一个活动</p>
+                    <h5>{$vo.api_source.title}</h5>
+                    <p>活动时间：{$vo.api_source.start_time|date='y-m-d H:i:s', ###}至{$vo.api_source.end_time|date='y-m-d H:i:s', ###}</p>
+                    <p>活动地点：{$vo.api_source.address}</p>
+                    <p>发起人：{$vo.api_source.source_user_info.uname}</p>
+                    <p>参与人数：({$vo.api_source.join_count})</p>
+                    <p><a href="{$vo.api_source.source_url}">查看详情>></a></p>
+                </div>
+                <?php elseif($vo['type'] == 'vote_post'): ?>
+	                <?php if(!empty($vo['api_source']['pic_url'])): ?>
+		                <div class="feed_img">
+		                    <a href="{$vo.api_source.source_url}"><img src="{$vo.api_source.pic_url}" width="236" /></a>
+		                </div>
+	                <?php endif; ?>
+                <div class="feed_txt">
+                    <p><img src="{$vo.user_info.avatar_tiny}" height="20px" width="20px" style="border-radius:50%;margin-top:-4px"/>&nbsp;{$vo.user_info.space_link}：发起了一个投票</p>
+                    <h5>{$vo.api_source.title}</h5>
+                    <volist name="vo.api_source.vote_opts" id="v" offset="0" length="4">
+                        <p><span class="square"></span>{:getShort($v['name'], 23, '...')}</p>
+                    </volist>
+                    <p>发起时间：{$vo.api_source.ctime|date='y-m-d H:i', ###}</p>
+                    <p>参与人数：({$vo.api_source.vote_num})</p>
+                    <p><a href="{$vo.api_source.source_url}">参与投票>></a></p>
+                </div>
+                <?php elseif($vo['type'] == 'photo_post'): ?>
+	                <?php if(!empty($vo['api_source']['cover_image_path'])): ?>
+		                <div class="feed_img">
+		                    <a href="{$vo.api_source.source_url}"><img src="{$vo.api_source.cover_image_path}" width="{$vo.width}" height="{$vo.height}"/></a>
+		                </div>
+	                <?php endif; ?>
+	                <div class="feed_txt">
+	                    <p><img src="{$vo.user_info.avatar_tiny}" height="20px" width="20px" style="border-radius:50%;margin-top:-4px"/>&nbsp;{$vo.user_info.space_link}：上传了{$vo.api_source.photo_upload_count}张图片到相册<a href="{$vo.api_source.album_url}">[{$vo.api_source.title}]</a></p>
+	                </div>
+                <?php else: ?>
+	                <div class="feed_txt">
+	                    <p><img src="{$vo.user_info.avatar_tiny}" height="20px" width="20px" style="border-radius:50%;margin-top:-4px"/>&nbsp;{$vo.user_info.space_link}：{$vo.body|format=true}</p>
+	                
+	                <?php if($vo['type'] == 'postfile'): ?>
+		                <ul>
+		                    <volist name="vo.attachInfo" id="v">
+		                        <li>
+		                            <i class="ico-{$v.extension}-small"></i>
+		                            <a href="{:U('widget/Upload/down',array('attach_id'=>$v['attach_id']))}" title="{$v.name}">{$v.name|getShort=###, 10, '...'}</a>
+		                        </li>
+		                    </volist>
+		                </ul>
+	                <?php endif; ?>
+                <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="channel-user-share">
+                {:W('FeedManage',array('feed_id'=>$vo['feed_id'],'feed_uid'=>$vo['user_info']['uid'],'manage_class'=>'right f9 dp-cs'))}
+			<span>
+				<php>if(in_array('repost',$weibo_premission) && CheckPermission('core_normal','feed_share')):</php>
+                <?php $vo['app_row_id'] == 0 && $vo['app_row_id'] = $vo['feed_id']; ?>
+				<a event-node="share" event-args="sid={$vo.app_row_id}&stable={$vo.app_row_table}&curtable=feed&curid={$vo.feed_id}&initHTML=&appname=public&cancomment=1" href="javascript:;"><i class="ico-forward"></i>({$vo.repost_count})</a>
+				<php>endif;</php>
+				{:W('Collection',array('sid'=>$vo['feed_id'],'stable'=>'feed','sapp'=>$vo['app'],'ico'=>'ico-favorites','tpl'=>'ico'))}
+				<php>if(in_array('comment',$weibo_premission)):</php>
+				<a href="{:U('public/Profile/feed', array('feed_id'=>$vo['feed_id'],'uid'=>$vo['user_info']['uid']))}"><i class="ico-comment"></i>({$vo.comment_count})</a>
+				<php>endif;</php>
+			</span>
+            </div>
+        </div>
+
+    </div>
+</volist>

@@ -1,0 +1,5 @@
+    <volist name="topic_list" id="vo">
+      <li>
+      <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><i class="ico-dot1"></i>{$vo.title|getShort=14}</a>
+      </li>
+    </volist>

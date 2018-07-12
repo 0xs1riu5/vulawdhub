@@ -1,0 +1,36 @@
+<div class="ui-state-disabled mod-weight border" model-node='widget_box' model-args = 'widget_user_id={$widget_user_id}&widget_name=Announcement&wigdet_desc={$wigdet_desc}&appname=public&diyId={$diyId}' >
+    <div class="setup hover">
+        <a href="javascript:void(0)" class="arrow-nav-t" event-node='widget_toggle'></a>
+        <!--<a href="javascript:void(0)" class="ico-setup-gray" event-node='widget_setup'></a>-->
+        <a href="javascript:void(0)" class="ico-close" event-node='widget_close'></a>
+    </div>
+    <h3 class="hd">{:L('PUBLIC_ANNOUNCEMENT')}</h3>
+    <div model-node="wigdet_setbox" style='display:none' class="announcement-set">
+    	<!-- start wigdet可设置内容 -->
+    	<form method='post' action='{:U('widget/Diy/set',array('diyId'=>$diyId,'widget_name'=>$widget_name,'appname'=>'public'))}'
+            model-node='wigdet_setform' >
+    	<dl>
+    		<dd>{:L('PUBLIC_SEE_MORE_NUM')}：<input type="text" name='limit' value='{$limit}' class="s-txt"></dd>
+    		<dd class="btn">
+                <a event-node="submit_btn" href="javascript:void(0)" class="btn-green-small"><span>{:L('PUBLIC_CONFIRM')}</span></a> 
+    			<a href="javascript:void(0)" event-node='widget_cancel_set' class="btn-cancel"><span>{:L('PUBLIC_CANCEL')}</span></a>
+            </dd>
+    	</dl>
+    	</form>	
+    	<!-- end wigdet可设置内容 -->
+    </div>
+    <div model-node="widget_child">
+    	<!-- start widget内部定义的 -->
+        <dl class="announcement-list">
+             <volist name='announcement' id='vo'>
+            <dd> <a href="{:U('public/Index/announcement',array('id'=>$vo['id']))}" target="_blank">{$vo.title|getShort=30,'...'}
+                <neq name='vo.attach' value=''><i class="ico-attach"></i></neq></a></dd>
+            </volist>  
+        </dl>
+        <div class="action">
+        	<a href="{:U('public/Index/announcementList')}" target="_blank">More&raquo;</a>
+        </div>
+        <!-- end widget内部定义的 -->
+    </div>
+
+</div>

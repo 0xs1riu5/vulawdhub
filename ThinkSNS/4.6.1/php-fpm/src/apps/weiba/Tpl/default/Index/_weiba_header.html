@@ -1,0 +1,16 @@
+<div id="weiba-top">  
+      <div class="app-title clearfix">
+          <div class="app-tab-menu clearfix w700" id="weiba-tab-menu">
+            <ul>
+              <li><a href="{:U('weiba/Index/index')}" <php>if(!$nav){</php> class="current"<php>}</php>>微吧首页</a></li>
+              <li><a href="{:U('weiba/Index/weibaList')}" <php>if($nav=="weibalist"){</php>class="current"<php>}</php>>所有微吧</a><php>if($GLOBALS['ts']['mid']){</php><php>}</php></li>
+              <php>if($GLOBALS['ts']['mid']){</php>
+              <li><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFollowing'))}" <php>if($nav=="myweiba"){</php>class="current"<php>}</php>>我的</a></li>
+              <php>}</php>
+              <php>if($nav=="weibadetail"){</php>
+              <li><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}" class="current">{$weiba_name}</a></li>
+              <php>}</php>
+            </ul>
+          </div>
+      </div>
+</div>

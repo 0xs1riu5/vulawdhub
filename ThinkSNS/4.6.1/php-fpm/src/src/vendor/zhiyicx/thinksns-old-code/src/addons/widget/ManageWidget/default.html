@@ -1,0 +1,57 @@
+<script>
+var list = <php> echo json_encode($list);</php>;
+var current_manage = '{$current}';
+var s = function(sobj){
+
+		var obj = $(sobj);
+
+		obj.attr('ison','yes');
+
+		if($('#manage_wrap').length >0){
+			manage_wrap = $('#manage_wrap');
+			if(manage_wrap[0].style.display == 'block'){
+				manage_wrap.hide();
+			}else{
+				manage_wrap.show();
+			}
+		}else{
+			var html = '<div class="layer-group-list" id="manage_wrap"><div class="inner"><ul>';
+
+			for(var i in list){
+				if(i != current_manage){
+					html +="<li><a href="+U(i+'/Manage/index')+">"+list[i]+"</a></li>"
+				}
+			}			
+			html +='</ul></div></div>';
+			var manage_wrap = $(html);
+			
+			var offset = obj.offset();
+
+			manage_wrap.css({'left':(offset.left-2)+'px','top':offset.top+obj.height()+10+'px','width':'120px'}).show();
+			$('body').append(manage_wrap);
+		}
+
+		var hide = function(){
+			if(obj.attr('ison') == "no"){
+				manage_wrap.hide();
+			}
+		}
+
+		manage_wrap.mouseover(function(){
+			obj.attr('ison','yes');
+			manage_wrap.show();
+		});
+		manage_wrap.mouseout(function(){
+			obj.attr('ison','no');
+			manage_wrap.hide();
+		});
+
+		obj.mouseout(function(){
+			setTimeout(hide,250);
+		});
+
+	};
+</script>
+
+<a href="javascript:void(0)" onclick="s(this)" class="select left" >{$current_title}<i class="ico-more"></i></a>
+

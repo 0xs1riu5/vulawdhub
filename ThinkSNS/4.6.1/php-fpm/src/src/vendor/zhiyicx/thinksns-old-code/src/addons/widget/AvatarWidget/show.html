@@ -1,0 +1,12 @@
+{:W('Avatar',array('avatar'=>$user_info,'defaultImg'=>$user_info['avatar_big'],'callback'=>$callback))}
+
+<script type="text/javascript">
+M(document.getElementById('tsbox'));
+
+var avatar_box_callback = function(data) {
+	$('#avatar_small_preview').attr('src', data);
+	$('#tsbox[upload="face"]').hide();
+	$('.boxy-modal-blackout').hide();
+	// ui.box.close();
+};
+</script>

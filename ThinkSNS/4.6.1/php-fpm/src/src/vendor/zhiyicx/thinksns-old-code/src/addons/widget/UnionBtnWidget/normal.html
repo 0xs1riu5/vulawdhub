@@ -1,0 +1,5 @@
+<if condition="0 eq $union_state['unioning']">
+    <a event-node="doUnion" event-args="uid={$fid}&uname={$uname}&unioning={$union_state['unioning']}&unioner={$union_state['unioner']}&refer={$refer}&isrefresh={$isrefresh}" href="{:U('public/Union/doUnion', array('fid'=>$fid))}" class="btn-cancel"></a>
+<else />
+    <a event-node="unUnion" event-args="uid={$fid}&uname={$uname}&unioning={$union_state['unioning']}&unioner={$union_state['unioner']}&refer={$refer}&isrefresh={$isrefresh}" href="{:U('public/Union/unUnion', array('fid'=>$fid))}" class="btn-cancel"></a>
+</if>

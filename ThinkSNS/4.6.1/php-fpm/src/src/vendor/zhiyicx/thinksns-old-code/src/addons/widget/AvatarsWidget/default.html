@@ -1,0 +1,119 @@
+<style>
+.uploadLogo {
+}
+.uploadLogo-area {
+	width:640px;
+	height:215px;
+	position:relative;
+}
+.uploadLogo-area .uoloadImg {
+	width:640px;
+	height:215px;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:2;
+}
+.uploadLogo-area .file {
+	width:640px;
+	height:215px;
+	position:absolute;
+	top:0;
+	left:0;
+	opacity:0;
+	filter: alpha(opacity = 0);
+	z-index:100;
+	cursor:pointer;
+}
+.uploadbtn {
+	position:absolute;
+	left:0;
+	bottom:0;
+	width:640px;
+	height:40px;
+	background:#000;
+	opacity:0.3;
+	filter:alpha(opacity = 30);
+	line-height:40px;
+	text-align:center;
+	color:#fff;
+	font-size:20px;
+	z-index:10;
+}
+</style>
+
+<div id='noflashUpload' model-node="avatar_upload_form" enctype="multipart/form-data" action="{:U('public/Account/doSaveAvatar', array('step'=>'upload'))}" method="post">
+  <dl class="uploadLogo">
+    <dd>
+      <div class="uploadLogo-area">
+        <div class="uoloadImg"><img  width="640" height="215" id="show_big" src="{$defaultImg}"></div>
+        <input event-node="select_file" type="file" name="Filedata" class="file" />
+        <a class="uploadbtn">点击上传图片</a> </div>
+      <span event-node="loading" style="display:none;"><img src="__THEME__/image/load.gif" />加载中...</span> 
+       <p>支持{$attach_allow_extension|strtoupper}格式，大小限制{$attach_max_size|default=0}M以内（上传图片宽度不宜低于640px，高度不宜低于215px）</p>
+    </dd>
+    <dd>
+      <div model-node="avatar_scan" class="mod-avatar">
+        <p class="font16">图片显示效果</p>
+        <div class="cut-1 left" style="display:none;"><img event-node="avatar_big" src="{$avatar.avatar_big}" width="640" height="215" />
+          <input id="avatar_big" type="hidden" name="avatar_big" value="{$defaultImg}">
+        </div>
+        <div class="cut-1 left ml20" style="display:none;"><img event-node="avatar_middle" src="{$avatar.avatar_big}" width="215" height="215" />
+          <input id="avatar_middle" type="hidden" name="avatar_middle" >
+        </div>
+      </div>
+    </dd>
+  </dl>
+</div>
+<form model-node="avatar_setting_form" enctype="multipart/form-data" action="{:U('public/Account/doSaveAvatars', array('step'=>'save'))}" method="post" style="display:none;">
+  <dl class="form-avatar">
+    <dd>
+      <div model-node="avatar_area" class="mod-avatar left" style="width:640px; margin-bottom:10px;"></div>
+      <div class="mod-avatar" style="padding-left:15px;"></div>
+    </dd>
+    <dd>
+      <p class="font16">图片显示效果</p>
+      <div model-node="avatar_preview" class="left" style=" width: 640px; height: 215px; border:1px solid #B4B5AF; overflow:hidden;"></div>
+      <div model-node="avatar_npreview" class="left ml20" style=" width: 215px; height: 215px; border:1px solid #B4B5AF; overflow:hidden;"></div>
+    </dd>
+    <dd>
+      <input event-node="avatar_picurl" type="hidden" name="picurl">
+      <input event-node="avatar_picwidth" type="hidden" name="picwidth">
+      <input event-node="avatar_fullpicurl" type="hidden" name="fullpicurl">
+      <input event-node="avatar_x1" type="hidden" name="x1">
+      <input event-node="avatar_y1" type="hidden" name="y1">
+      <input event-node="avatar_x2" type="hidden" name="x2">
+      <input event-node="avatar_y2" type="hidden" name="y2">
+      <input event-node="avatar_w" type="hidden" name="w">
+      <input event-node="avatar_h" type="hidden" name="h">
+      <a event-node="avatar_save" event-args="tip={:L('PUBLIC_IMAGE_SAVE_IS')}？" class="btn-green-small" href="#">{:L('PUBLIC_SAVE')}</a> <a event-node="avatar_reset" class="btn-cancel ml10" href="#">{:L('PUBLIC_CANCEL')}</a> </dd>
+  </dl>
+</form>
+<php>$time = time();</php>
+<script src="__THEME__/js/module.form.js?v{$time}"></script> 
+<script src="__THEME__/js/avatar/module.avatars.js?v{$time}"></script> 
+<script src="__THEME__/js/avatar/avatars.js?v{$time}"></script> 
+<script type="text/javascript">
+<php> 
+if(!empty($callback)){
+    echo 'var upload_callback = "'.$callback.'"';
+}else{
+    echo 'var upload_callback = "nocallback"';
+}
+</php>
+
+var avatar_success = function(msg){
+    if(upload_callback!='nocallback'){
+        ui.success('保存成功');
+        setTimeout(function(){
+            eval(upload_callback+'("'+msg.small+'")');
+        },2000);
+    }else{
+        ui.success('保存成功。');
+    }
+};
+
+var avatar_error = function(){
+    ui.error('保存失败');
+};
+</script>

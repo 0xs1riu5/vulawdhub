@@ -1,0 +1,10 @@
+<volist name="user" id="vo">
+	<li model-node="related_li" class="mb20">
+        <div class="user left">
+          <a event-node="face_card" uid="{$vo.userInfo.uid}" href="{$vo.userInfo.space_url}" title="{$vo.userInfo.uname}" class="face">
+            <img  src="{$vo.userInfo.avatar_middle}"/>
+          </a>
+          <a class="mb10 name">{$vo.userInfo.uname}</a>
+        </div>
+	</li>	
+</volist>

@@ -1,0 +1,20 @@
+<!--推荐阅读-->
+<php>if($channel){</php>
+<link rel="stylesheet" href="__APP__/channel.css" type="text/css" />
+<script type="text/javascript" src="__APP__/channel.js"></script> 
+<script type="text/javascript" src="__THEME__/js/module.channel.js"></script>
+<div class="sq-top">
+  <h1> 推荐阅读<span>频道</span> </h1>
+  <a href="{:U('channel/Index/index')}" class="more">阅读更多</a>
+</div>
+<div class="channel-list mb10" id="channel-list">
+    <volist name="channel" id="vo">
+	    <dl  <php>if(is_integer(($key + 1) / 4)):</php>style="margin-right:0;"<php>endif;</php>>	
+	    <div class="channel-item clearfix">
+	      <div class="channel-tit"><php>if($vo['img']):</php><a href="{:U('public/Profile/feed', array('feed_id'=>$vo['feed_id'],'uid'=>$vo['uid']))}" class="img"><img src="{$vo.img}" width="236" height="177" /></a><php>endif;</php><p class="content" style="{$vo['img']?'':'height:224px;'}"><a href="{:U('public/Profile/feed', array('feed_id'=>$vo['feed_id'],'uid'=>$vo['uid']))}">{$vo.content}</a></p></div>
+	      <!--<div class="channel-info clearfix"><span class="f8 left">{$vo.categoryInfo.0.title|getShort=14}</span><span class="right f8"><span title="赞数"><i class="i-post-scan"></i>{$vo.digg_count|default=0}</span><span title="评论"><i class="i-post-comment"></i>{$vo.comment_cout|default=0}</span></span></div>-->
+	    </div>
+	    </dl>
+    </volist>
+</div>
+<php>}</php>

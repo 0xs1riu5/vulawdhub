@@ -1,0 +1,19 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/account.css" rel="stylesheet" type="text/css" />
+    <div id="page-wrap">
+        <div id="main-wrap">
+            <div id="col" class="st-grid content-bg st-bg-b cc">
+            	<div id="col4" class="main-left">
+                    <!--tab菜单-->
+                    <include file="_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                    <div class="extend minh person-set" style="position:relative">
+                    	<div class="set-hd"><h3>{$tabName}</h3></div>
+                        {:W('Avatar',array('avatar'=>$user_info,'defaultImg'=>$user_info['avatar_big']))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,118 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">
+    <div class="right">
+    </div>推荐标签</div>
+
+  <div class="Toolbar_inbox">
+    <neq name="back_id" value="-1"><a href="{:U('admin/User/category')}" class="btn_a"><span>返回</span></a></neq>
+    <a href="javascript:void(0);" class="btn_a" onclick="add();"><span>添加身份</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="del();"><span>删除身份</span></a>
+  </div>
+  
+  <div class="list">
+  <table id="category_list" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th class="checkbox">
+        <input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+        <label for="checkbox"></label>
+    </th>
+    <th class="line_l">ID</th>
+    <th class="line_l">身份名称</th>
+    <th class="line_l">操作</th>
+  </tr>
+  <volist id="vo" name="userCategory">
+      <tr overstyle='on' id="category_{$vo.user_category_id}">
+        <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.user_category_id}"></td>
+        <td>{$vo.user_category_id}</td>
+        <td><div style="float:left"><span style="color:black;cursor:auto;" id="category_title_{$vo.user_category_id}">{$vo.title}</span></div></td>
+        <td>
+            <a href="javascript:void(0);" onclick="edit({$vo['user_category_id']});">编辑</a> 
+            <eq name="pid" value="0"><a href="{:U('admin/User/category',array('pid'=>$vo['user_category_id']))}">下级管理</a></eq>
+            <a href="javascript:void(0);" onclick="del({$vo['user_category_id']});">删除</a>  
+        </td>
+      </tr>
+  </volist>
+  </table>
+
+  </div>
+  <div class="Toolbar_inbox">
+    <neq name="back_id" value="-1"><a href="{:U('admin/User/category')}" class="btn_a"><span>返回</span></a></neq>
+    <a href="javascript:void(0);" class="btn_a" onclick="add();"><span>添加身份</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="del();"><span>删除身份</span></a>
+  </div>
+</div>
+
+<script type="text/javascript">
+//鼠标移动表格效果
+$(document).ready(function() {
+    $("tr[overstyle='on']").hover(
+      function() {
+        $(this).addClass("bg_hover");
+      },
+      function() {
+        $(this).removeClass("bg_hover");
+      }
+    );
+});
+// 选中操作
+function checkon(o) {
+    if(o.checked == true) {
+        $(o).parents('tr').addClass('bg_on') ;
+    } else {
+        $(o).parents('tr').removeClass('bg_on') ;
+    }
+};
+// 全选操作
+function checkAll(o) {
+    if(o.checked == true) {
+        $('input[name="checkbox"]').attr('checked','true');
+        $('tr[overstyle="on"]').addClass("bg_on");
+    } else {
+        $('input[name="checkbox"]').removeAttr('checked');
+        $('tr[overstyle="on"]').removeClass("bg_on");
+    }
+};
+// 获取已选择用户的ID数组
+function getChecked() {
+    var gids = new Array();
+    $.each($('input:checked'), function(i, n) {
+        gids.push($(n).val());
+    });
+
+    return gids;
+};
+// 添加身份
+function add() {
+    ui.box.load("{:U('admin/User/addUserCategory',array('pid'=>$pid))}", '添加身份');
+};
+// 编辑身份
+function edit(cid) {
+    ui.box.load("{:U('admin/User/editUserCategory')}&user_category_id=" + cid, '编辑身份');
+};
+// 删除地区
+function del(aid) {
+    aid = aid ? aid : getChecked();
+    aid = aid.toString();
+    if(aid == '' || getLength(aid)<1){
+      ui.error('请选择身份');
+      return false;
+    } 
+    if(confirm('确定删除选中身份？')){
+      //提交删除
+      $.post("{:U('admin/User/doDeleteUserCategory')}", {ids:aid}, function(res){
+        if(res == '1') {
+	        aid = aid.split(',');
+	        $.each(aid, function(i,n){
+	            $('#category_'+n).remove();
+	        });
+            ui.success('删除成功');
+        }else {
+        	ui.error('删除失败');
+        }
+      });
+  }
+}
+</script>
+
+<include file="__THEME__/admin_footer" />

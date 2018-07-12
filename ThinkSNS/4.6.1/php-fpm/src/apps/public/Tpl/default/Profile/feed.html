@@ -1,0 +1,190 @@
+<include file="__THEME__/public_header" />
+<style type="text/css">
+  #col5{background: #fff;}
+  .channel{display:inline-block;width:100%;text-align: center}
+  .channel_title{background: #0096e6;width: 87px;height: 40px;float: left;  text-align: center;line-height: 40px;font-size: 16px;color: #fff;  border-top: 2px solid #0096e6;border-left: 2px solid #0096e6;}
+  #feed_space{display: inline-block;margin:30px 0 10px 0;}
+  #feed_avatar{border-radius: 50%;width:60px;}
+  .feed_contents{ width: 580px;margin:15px auto 20px auto;min-height: 600px;}
+  .feed_contents .feed_content{text-align: center;line-height: 26px;}
+  .feed_content a{color:#0096e6;}
+  .feed_img_lists .big{padding: 0; background: none;border: none;}
+  .feed_img_lists .big li{margin:0 0 20px 0;}
+  .feed_img_lists .big li a{text-align: center;}
+  p.info{margin-top: 20px; border-top: 1px #eee solid; line-height: 45px; font-size:12px;}
+  p.info a:hover{color:#0096e6;}
+  p.info .digg-like{width: 17px;height: 17px;display: inline-block;background:url(__THEME__/image/index-ico.png);vertical-align: middle;background-position: -93px -221px;}
+  .feed_list .feed_content,.feed_comment .content{padding: 12px 0 0 0;}
+  .feed_lists .repeat{padding:12px 0 0 0;border: none}
+  #feed_source{padding:10px 20px 20px; background:#F7F8FA;line-height: 24px;font-size: 12px;margin-top: 15px;color:#888;}
+  p.feed_uname>a{font-size: 12px;color:#888;}
+  .feed_img_list li{position:relative;}
+  .feed_img_lists .big a.show_big_img{display:none;position:absolute;  bottom: 0;right: 0;background: #111;width: 20%;text-indent: center;color: #fff;font-size: 12px;}
+  .profile-border{border-top:#0096e6 4px solid;border-left:#0096e6 4px solid;width:100px;height:50px;position: absolute;}
+  .center{text-align:center;vertical-align:middle;display:table-cell;height:434px;width:700px}
+</style>
+<div id="page-wrap">
+    <div id="main-wrap">
+    <div id="col" class="st-grid">
+      <include file="feed_detail_sidebar"/>
+      <div id="col5" class="st-index-main">
+
+           <div class="profile-border"></div>
+           <!-- <div class="channel">
+              <div class="channel_title">胡言乱语</div>
+           </div> -->
+
+           <div class="feed_contents">
+           <div class="center">
+             <div class="channel">
+                <a id="feed_space" href="{:U('public/Profile/index', array('uid'=>$uid))}" title="{$user_info[$uid]['uname']}"><img src="{$user_info[$uid]['avatar_middle']}" id="feed_avatar"/></a>
+             </div>
+             <div class="channel">
+                <p class="feed_uname">
+                  <a href="{:U('public/Profile/index', array('uid'=>$uid))}">{$user_info[$uid]['uname']}</a>
+                </p>
+             </div>
+
+
+             <div class="feed_content">
+                <php>if($feedInfo['type'] === 'weiba_repost'):</php>
+                  <p>{$feedInfo.content_txt|replaceUrl|parse_html}</p>
+                  <div id="feed_source">
+                    <p  class="feed_uname">{$feedInfo.api_source.source_user_info.space_link}</p>
+                    <php>if($feedInfo['api_source']['source_table'] ==='weiba_post'):</php>
+                      {$feedInfo.api_source.source_content|parse_html} <a href="{$feedInfo.api_source.source_url}" title="{$feedInfo.api_source.title}">{$feedInfo.api_source.title}</a> 在 <a href="{$feedInfo.api_source.weiba_url}" title="{$feedInfo.api_source.weiba_name}">{$feedInfo.api_source.weiba_name}</a>
+                      <p>{$feedInfo.api_source.content|getShort=140}</p>
+                      <neq name="feedInfo.api_source.pic_url" value="">
+                        <div class="feed_img_lists" rel='big'>
+                          <a href="{$feedInfo.api_source.source_url}" title="点击查看帖子详情" style="cursor:default;background:#F7F8FA;">
+                            <img src="{$feedInfo.api_source.pic_url}" alt="{$feedInfo.api_source.title}" style="cursor:pointer;max-width:100%;" />
+                          </a>
+                        </div>
+                      </neq>
+                    <php>else:</php>
+                      {$feedInfo.api_source.source_content|parse_html}
+                    <php>endif;</php>
+                  </div>
+                <php>elseif($feedInfo['type'] === 'weiba_post'):</php>
+                  <div class="feed_content">
+                    <php>if($feedInfo['api_source']['source_table'] ==='weiba_post'):</php>
+                      {$feedInfo.api_source.source_content|replaceUrl|parse_html} <a href="{$feedInfo.api_source.source_url}" title="{$feedInfo.api_source.title}">{$feedInfo.api_source.title}</a> 在 <a href="{$feedInfo.api_source.weiba_url}" title="{$feedInfo.api_source.weiba_name}">{$feedInfo.api_source.weiba_name}</a>
+                      <p>{$feedInfo.api_source.content|getShort=140}</p>
+                      <neq name="feedInfo.api_source.pic_url" value="">
+                        <div class="feed_img_lists" rel='big'>
+                          <a href="{$feedInfo.api_source.source_url}" title="点击查看帖子详情" style="cursor:default;background:#F7F8FA;">
+                            <img src="{$feedInfo.api_source.pic_url}" alt="{$feedInfo.api_source.title}" style="cursor:pointer;max-width:100%;" />
+                          </a>
+                        </div>
+                      </neq>
+                    <php>else:</php>
+                      {$feedInfo.api_source.source_content|replaceUrl|parse_html}
+                    <php>endif;</php>
+                  </div>
+                <php>elseif($feedInfo['type'] === 'postimage'):</php>
+                  <p>{$feedInfo.content_txt|replaceUrl|parse_html}</p>
+                  <div class="feed_img_lists" rel='big'>
+                    <ul class="feed_img_list big" >
+                      <volist name='feedInfo.attachInfo' id='vo'>
+                        <li>
+                          <a href="javascript:;" style="cursor:default;background:#F7F8FA;">
+                            <img id="image_index_{$key}" class="show_small_img" alt="ThinkSNS4.0" src='{$vo.attach_url}' style="max-width:100%;" />
+                          </a>
+                          <a href="javascript:core.weibo.showBigImage({$feedInfo.feed_id}, {$key+1})" class="show_big_img" title="点击查看大图">查看大图</a>
+                        </li>
+                      </volist>
+                    </ul>
+                  </div>
+                <php>elseif($feedInfo['type'] === 'postvideo'):</php>
+                  <p>{$feedInfo.content_txt|replaceUrl|parse_html}</p>
+                  <div id="video_box_{$feedInfo.feed_id}" class="mt10"></div>
+                  <php>if($feedInfo['videoInfo']['video_id']){</php>
+                  <script type="text/javascript"> $("#video_box_{$feedInfo['feed_id']}").html(showFlash_upload("","{:SITE_URL.$feedInfo['videoInfo']['video_path']}", "{$feedInfo['videoInfo']['image_path']}", 528)); </script>
+                  <php>}else{</php>
+                  <script type="text/javascript"> $("#video_box_{$feedInfo['feed_id']}").html(showFlash_online("{$feedInfo['videoInfo']['host']}","{$feedInfo['videoInfo']['flashvar']}", 528)); </script>
+                  <php>}</php>
+                <php>elseif($feedInfo['type'] === 'postfile'):</php>
+                <p>{$feedInfo.content_txt|replaceUrl|parse_html}</p>
+                <ul class="feed_file_list mt10">
+                  <volist name='feedInfo.fileInfo.files' id='vo'>
+                    <li><i class="ico-{$vo.extension}-small"></i><a href="{:U('widget/Upload/down',array('attach_id'=>$vo['attach_id']))}">{$vo.name}</a> <span class="tips">({:byte_format($vo['size'])})</span></li>
+                  </volist>
+                </ul>
+                <php>elseif($feedInfo['type'] === 'repost'):</php>
+                  {$feedInfo.content_txt|replaceUrl|parse_html}
+                  <div id="feed_source">
+                    <p  class="feed_uname">{$feedInfo.api_source.source_user_info.space_link}</p>
+                    <p>{$feedInfo.api_source.feed_content|replaceUrl|parse_html}</p>
+                    <div class="feed_img_lists" rel='big'>
+                      <ul class="feed_img_list big" >
+                        <volist name='feedInfo.api_source.attach' id='vo'>
+                          <li>
+                            <a href="javascript:;" style="cursor:default;background:#F7F8FA;">
+                              <img id="image_index_{$key}" class="show_small_img" alt="ThinkSNS4.0" src='{$vo.attach_url}' style="max-width:100%;" />
+                            </a>
+                            <a href="javascript:core.weibo.showBigImage({$feedInfo.api_source.feed_id}, {$key+1})" class="show_big_img" title="点击查看大图">查看大图</a>
+                          </li>
+                        </volist>
+                      </ul>
+                    </div>
+                  </div>
+                <php>elseif($feedInfo['type'] === 'post'):</php>
+                  <p>{$feedInfo.content_txt|replaceUrl|parse_html}</p>
+                <php>endif;</php>
+            </div>
+           </div>
+
+            <p class="info">
+            <span class="right">
+              <php>if(in_array('comment',$weibo_premission)):</php>
+                <a href="javascript:void(0)" event-node="comment">{:L('PUBLIC_STREAM_COMMENT')}
+                <neq name='feedInfo.comment_count' value='0'>({$feedInfo['comment_count']})</neq></a>
+                <i class="vline">|</i> 
+                <php> endif; </php>                               
+                <php>$cancomment_old = in_array($feedInfo['type'], $cancomment_old_type) ? 1 : 0;</php>
+                <php>$cancomment = intval(CheckPermission('core_normal','feed_comment'));</php>
+                <eq name='feedInfo.actions.repost' value='true'>
+                    <php>if(CheckPermission('core_normal','feed_share') && in_array('repost',$weibo_premission)){</php>
+                          <php>$sid = !empty($feedInfo['app_row_id'])? $feedInfo['app_row_id'] : $feedInfo['feed_id'];</php>
+                            {:W('Share',array('sid'=>$sid,'stable'=>$feedInfo['app_row_table'],'initHTML'=>'','current_table'=>'feed','current_id'=>$feedInfo['feed_id'],'nums'=>$feedInfo['repost_count'],'appname'=>$feedInfo['app'],'cancomment'=>$cancomment,'feed_type'=>$feedInfo['type'],'is_repost'=>$feedInfo['is_repost']))}
+                            <i class="vline">|</i>
+                    <php>}</php>
+                </eq> 
+                <eq name='feedInfo.actions.favor' value='true'>
+                    {:W('Collection',array('type'=>'btn','sid'=>$feedInfo['feed_id'],'stable'=>'feed','sapp'=>$feedInfo['app']))}
+                </eq><i class="vline">|</i>
+                {:W('Digg', array('feed_id'=>$feedInfo['feed_id'], 'digg_count'=>$feedInfo['digg_count'], 'diggArr'=>$diggArr))}
+            </span>
+            <a class="date" href="javascript:;">{$feedInfo.publish_time|friendlyDate}</a>
+            <span>{$feedInfo['from']}</span>
+            </p>
+            <div  class="feed_lists">
+              <dl class="feed_list feed_comment">
+                <dd class="content">
+                  <div class="repeat clearfix pading">
+                      <php> $cancomment = CheckPermission('core_normal','feed_comment') && in_array('comment',$weibo_premission) ? 1: 0;</php>
+          {:W('Comment',array('tpl'=>'detail','app_row_id'=>$feedInfo['app_row_id'],'app_uid'=>$appUid,'row_id'=>$feedInfo['feed_id'],'pageHtml'=>1,'limit'=>'20','order'=>'DESC','cancomment'=>$cancomment,'cancomment_old'=>$cancomment_old,'app_name'=>$feedInfo['app']))}                                   
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function(){
+    $(".feed_img_list li").bind({
+      mouseover:function(){
+        $(this).find('.show_big_img').show();
+      },  
+      mouseout:function(){
+        $(this).find('.show_big_img').hide();
+      }
+    });
+    $(".feed_img_list li:last").css({'margin-bottom':'0'});
+  })
+</script>
+<script src="__THEME__/js/module.weibo.js"></script>
+<include file="__THEME__/public_footer" />

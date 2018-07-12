@@ -1,0 +1,218 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="{:APPS_URL}/w3g/_static/css/pure.css">
+    <link rel="stylesheet" href="{:APPS_URL}/w3g/_static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="{:APPS_URL}/w3g/_static/css/pureUI.css?t=1.18">
+    <link href="{:APPS_URL}/w3g/_static/style.css" rel="stylesheet" type="text/css" />
+
+    <script src="__THEME__/js/jquery-1.7.1.min.js?v={$site.sys_version}"></script>
+<script>
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID       = '<php> echo $mid;</php>';
+var UID       = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>'
+var ISWAP = 1;
+// Js语言变量
+var LANG = new Array();
+</script>
+<php>if(!empty($langJsList)) {</php>
+<volist name="langJsList" id="vo">
+<script src="{$vo}?v={$site.sys_version}"></script>
+</volist>
+<php>}</php>
+
+<script type="text/javascript" src="__THEME__/js/jquery.form.js?v={$site.sys_version}"></script>
+
+<style type="text/css">
+  .tab_menu li{width: 50%;}
+</style>
+</head>
+<body>
+
+  <div id="container">
+
+<div>
+        <div id="header">
+                <div id="header-buttons">
+                    <div class="header-menu-link" id="hmp-cancel">
+                        <a href="{:U('w3g/Public/login')}">取消</a>
+                    </div>
+                </div>
+                <h1 style="text-align:center;padding-left:0;">
+                    绑定账号
+                </h1>
+        </div>
+
+<div class="loginbox" STYLE="-webkit-transition:normal;transition:normal;display:block;">       
+      <!--设置账号-->
+      <div class="reg-main">
+        <neq name='config.register_type' value='closed'>
+        <div class="">
+          <div class="title">
+            <dl class="account-links clearfix">
+              <dt><img src="{$user.userface}" width="50" height="50" /></dt>
+              <dd>
+                <h4>欢迎你，{$user.uname}</h4>
+                <p>您的{$typeName}帐号授权成功！</p>
+              </dd>
+            </dl>
+          </div>
+          <div class="tab_menu mb20">
+            <ul>
+              <li class="current"><a href="javascript:;" uri="tab-pannel-1">注册新帐号</a><span></span></li>
+              <if condition="$config['bindemail'] neq 1">
+              <li><a href="javascript:;" uri="tab-pannel-2">绑定已有帐号</a><span></span></li>
+              </if>
+            </ul>
+          </div>
+
+          <div style="display:none;">
+            <form method="POST" action="{:U('public/Register/doOtherStep1')}" name="ajax_direct_bind_form" id="ajax_direct_bind_form">
+              <input type="hidden" name="other_type" value="{$type}" />
+              <input type="hidden" name="oauth_token" value="{$oauth_token}" />
+              <input type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" />
+              <input type="hidden" name="other_uid" value="{$user.id}" />
+              <input type="hidden" name="other_face" value="{$user.userface}" />
+              <input type="hidden" name="other_signature" value="{$user.signature}" />
+              <input type="hidden" name="uname" value="{$user.uname}" />
+              <input type="hidden" name="avatar" value="1" />
+              <input type="hidden" name="direct" value="1" />
+              <input class="btn-register" type="submit" value="直接进入" />
+            </form>
+          </div>
+
+          <div id="tab-pannel-1">
+            <form model-node="normal_form" method="POST" action="{:U('public/Register/doOtherStep1')}" name="ajax_register_form" id="ajax_register_form">
+            <input type="hidden" name="other_type" value="{$type}" >
+            <input type="hidden" name="oauth_token" value="{$oauth_token}" >
+            <input type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" >
+            <input type="hidden" name="other_uid" value="{$user.id}" >
+            <input type="hidden" name="other_face" value="{$user.userface}" >
+            <input type="hidden" name="other_signature" value="{$user.signature}" >
+            <dl class="item">
+              <dd>
+                    <input event-node="uname" name="uname" checkurl="{:U('public/Register/isUnameAvailable')}" autocomplete="off" type="text" value="{$user.uname}" class="text" placeholder="{:L('PUBLIC_NICKNAME')}"/>
+              </dd>
+              <dd>
+                    <input event-node="password" name="password" type="password" value="" class="text" placeholder="{:L('PUBLIC_PASSWORD')}"/>
+              </dd>
+              <dd>
+                  <input event-node="repassword" name="repassword" type="password" class="text" placeholder="{:L('PUBLIC_CONFIRM_PASSWORD')}"/>
+              </dd>
+              <dd>
+                  {:L('PUBLIC_GENDER')}：<label class="mr16"><input name="sex" type="radio" class="s-radio mr5" value="1" checked="checked" event-node="radio" event-args="error={:L('PUBLIC_CHOOSE_GENDER')}" />{:L('PUBLIC_MALE')}</label>
+                  <label><input event-node="radio" type="radio" name="sex" value="2" class="s-radio mr5"  />{:L('PUBLIC_FEMALE')}</label>
+              </dd> 
+            </dl>
+            <div class="lb_btn">
+                  <input type="hidden" name="avatar" value="1" />
+                  <a class="btn_login" href="javascript:void(0);" onclick="submit_form('ajax_register_form');return false;">完善资料</a>
+                </div>
+                <p style="text-align: center;"><if condition="$config['bindemail'] neq 1">
+                    <a href="javascript:void(0);" onclick="submit_form('ajax_direct_bind_form');return false;">直接进去，以后再完善。</a>
+                  </if></p>
+          </form>
+        </div>
+
+        <div id="tab-pannel-2" style="display:none;">
+          <form method="POST" action="{:U('public/Register/doBindStep1')}" name="ajax_other_bind_form" id="ajax_other_bind_form" onsubmit="return ajax_bind_submit(this);">
+            <input type="hidden" name="other_type" value="{$type}" >
+            <input type="hidden" name="oauth_token" value="{$oauth_token}" >
+            <input type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" >
+            <input type="hidden" name="other_uid" value="{$user.id}" >
+            <input type="hidden" name="other_face" value="{$user.userface}" >
+            <input type="hidden" name="other_signature" value="{$user.signature}" >
+            <dl>
+              <dd><input event-node="input_text" name="email" type="text" value="" class="text" placeholder="帐号"/></dd>
+              <dd><input event-node="input_text" name="password" type="password" value="" class="text" placeholder="{:L('PUBLIC_PASSWORD')}"/></dd>
+            </dl>
+            <div class="lb_btn">
+                  <a class="btn_login" href="javascript:void(0);" onclick="$('#ajax_other_bind_form').submit();">绑定</a>
+                </div>
+          </form>
+        </div>
+        </div>
+        <else />
+         <div class="item-find-psd"><neq name='config.register_close' value=''>{$config.register_close}</neq></div>
+        </neq>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $(function() {
+        $(".tab_menu ul > li > a").click(function(e) {
+            $(this).parent().parent().children('li').removeClass('current');
+            $(this).parent().addClass('current');
+            if ($(this).attr('uri') == 'tab-pannel-1'){
+              $('#tab-pannel-1').show();
+              $('#tab-pannel-2').hide();
+            }else{
+              $('#tab-pannel-2').show();
+              $('#tab-pannel-1').hide();
+            }
+        });
+    });
+    function submit_form(fid){
+      $('#'+ fid).submit();
+    }
+    function ajax_bind_submit(obj){
+      var email = obj.email.value;
+      var password = obj.password.value;
+      var remember = 0;
+      if ( !email ){
+        //ui.error('用户邮箱不能为空！');return false;
+        alert('用户名不能为空！');return false;
+      }
+      // 添加邮箱正则验证
+      var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+      if (!myreg.test(email)) {
+//        ui.error('请输入正确的邮箱地址！');
+//        return false;
+        alert('请输入正确的邮箱地址！');return false;
+      }
+      if ( !password ){
+        //ui.error('密码不能为空！');return false;
+        alert('密码不能为空！');return false;
+      }
+      var options = {
+        dataType: "json",
+          success: function(txt) {
+            if(1 == txt.status) {
+              //ui.success(txt.info);
+              console.log(txt.info);
+              if(txt.data['jumpUrl']){
+                setTimeout(function() {
+                  location.href = txt.data['jumpUrl'];
+                }, 500);
+              }
+            } else {
+              //ui.error(txt.info);
+              alert(txt.info);return false;
+            }
+          }
+      };
+      $(obj).ajaxSubmit(options);
+      return false;
+    }
+  </script>
+<!--script src="__THEME__/js/module.form.js"></script-->
+
+
+<!--footer end-->
+</div><!--page end-->
+</body>
+</html>

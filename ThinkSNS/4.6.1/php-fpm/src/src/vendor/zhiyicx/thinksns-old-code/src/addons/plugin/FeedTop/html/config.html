@@ -1,0 +1,125 @@
+<style type="text/css">
+.ico-top, .ico-btm {background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;height:14px;width:12px;}
+.ico-top, .ico-btm {display: inline-block;vertical-align: middle;}
+.ico-top {background-position: -12px 0;}
+.ico-btm {background-position: -24px 0;}
+.ico-top:hover {background-position: 0 0;}
+.ico-btm:hover {background-position: -35px 0;}
+</style>
+
+<div class="Toolbar_inbox">
+  <a href="{:Addons::adminPage('addFeedTop')}" class="btn_a"><span>添加置顶</span></a>
+</div>
+<div class="list">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th class="line_l">标题</th>
+      <th class="line_l">置顶分享ID</th>
+      <th class="line_l" width="50%">内容</th>
+      <th class="line_l">是否置顶</th>
+      <th class="line_l">创建时间</th>
+      <th class="line_l">操作</th>
+    </tr>
+    <volist name="list.data" id="vo">
+    <tr overstyle='on' id="ad_space_{$vo.id}" rel="{$vo.id}">
+      <td>{$vo.title}</td>
+	  <td>{$vo.feed_id}</td>
+      <td>{$vo.feed_info.body|format=true}</td>
+      <td><eq name="vo.status" value="0">是<else/>否</eq></td>
+      <td>{$vo.ctime|date="Y-m-d H:i",###}</td>
+      <td>
+	    <a href="{:Addons::adminPage('editFeedTop', array('id'=>$vo['id']))}">编辑</a>
+		&nbsp;
+		<php>if($vo['status'] == 1){</php>
+        <a href="javascript:;" onclick="FeedTop('{$vo.id}')">置顶</a>
+		<php>}else{</php>
+		<a href="javascript:;" onclick="delFeedTop('{$vo.id}')">取消置顶</a>
+		<php>}</php>
+		&nbsp;
+		<a href="javascript:;" onclick="del('{$vo.id}')">删除</a>
+      </td>
+    </tr>
+    </volist>
+  </table>
+</div>
+<div class="Toolbar_inbox">
+  <a href="{:Addons::adminPage('addFeedTop')}" class="btn_a"><span>添加置顶</span></a>
+</div>
+
+<script type="text/javascript">
+/**
+ * 鼠标移动表格效果
+ * @return void
+ */
+$(document).ready(function() {
+  $("tr[overstyle='on']").hover(
+    function () {
+      $(this).addClass("bg_hover");
+    },
+    function () {
+      $(this).removeClass("bg_hover");
+    }
+  );  
+});
+
+var delFeedTop = function(id)
+{
+  // 验证数据
+  if(id == '') {
+    ui.error('请选择取消置顶的分享');
+    return false;
+  }
+  // 取消置顶操作
+ $.post("{:Addons::adminUrl('doDelFeedTop')}", {id:id}, function(res) {
+      if(res.status == 1) {
+        ui.success(res.info);
+		setTimeout("location.reload()",'1000');
+      } else {
+        ui.error(res.info);
+      }
+      return false;
+    }, 'json');
+    return false;
+};
+
+var del= function(id)
+{
+  // 验证数据
+  if(id == '') {
+    ui.error('请选择即将要删除的置顶分享');
+    return false;
+  }
+  // 删除操作
+ $.post("{:Addons::adminUrl('doDel')}", {id:id}, function(res) {
+      if(res.status == 1) {
+        ui.success(res.info);
+		setTimeout("location.reload()",'1000');
+      } else {
+        ui.error(res.info);
+      }
+      return false;
+    }, 'json');
+    return false;
+};
+
+var FeedTop = function(id)
+{
+  // 验证数据
+  if(id == '') {
+    ui.error('请选择置顶的分享');
+    return false;
+  }
+  // 取消置顶操作
+ $.post("{:Addons::adminUrl('doFeedTop')}", {id:id}, function(res) {
+      if(res.status == 1) {
+        ui.success(res.info);
+		setTimeout("location.reload()",'1000');
+      } else {
+        ui.error(res.info);
+      }
+      return false;
+    }, 'json');
+    return false;
+};
+
+</script>

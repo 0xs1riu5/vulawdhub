@@ -1,0 +1,20 @@
+<div class="content-layer content-layer-class right">
+	<div class="hd">分类导航<a class="ico-close" href="#"></a></div>
+    <div class="layer-forward">
+      <div class="feed-repeat clearfix">
+        <div class="input input-class">
+            <!--分类列表-->
+            <div class="class-lists clearfix">
+                <ul>
+                  <volist name="cateList" id="vo">
+                    <li><strong>{$vo.name}</strong>
+                      <volist name="vo.child" id="v">
+                        <a href="{$cate_url}&category_id={$v.id}">{$v.name}</a>
+                      </volist>
+                  </volist> 
+                </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

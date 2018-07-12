@@ -1,0 +1,19 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+	<div id="main-wrap">
+		<div class="item-announcement">
+			<div class="hd">{:L('PUBLIC_ANNOUNCEMENT')}</div>
+			<div class="mod-announcement boxShadow">
+					<div class="mod-hot">
+					<dl>
+						<volist name="data" id="vo">
+							<dd><a href="{:U('public/Index/announcement', array('id'=>$vo['id']))}" target="_blank"><span>{$vo.mtime|friendlyDate=###,'full'}</span>{$vo['title']}<php>if($vo['hasAttach']) {</php><i class="ico ico-attach"></i><php>}</php></a></dd>		
+						</volist>
+					</dl>
+					</div>
+			</div>
+			<div id="page" class="page">{$html}</div>
+		</div>
+	</div>
+</div>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,373 @@
+<include file="__THEME__/_header" />
+<!--手机APP下载-->
+<div id="app_download">
+  <a class="app_download" href="{:U('weiba/Index/postDetail', array('post_id'=>2699))}"></a>
+</div>
+<div id="body_page" name='body_page'>
+<div id="body-bg">
+<php>$act = strtolower(APP_NAME).'_'.strtolower(MODULE_NAME); $navClass[$act]='current';$aClass[$act]='app';</php>
+<php>$act = strtolower(APP_NAME); $navClass[$act]='current';$aClass[$act]='app';</php>
+<div id="header" name="header">
+  <!-- 未登录时 -->
+  <nosession name="mid">
+    <div class="header-wrap">
+      <div class="head-bd"> 
+        <!-- logo -->
+        <div class="logo" style="background:url('{$ts.site.logo}') no-repeat;"><a href="{:SITE_URL}"></a></div>
+        <!-- logo -->
+        <div class="nav">
+          <ul>
+            <volist name='site_guest_nav' id='st'>
+            <li id="sec-nav-{$st.navi_id}" <php> if(APP_NAME == $st['app_name'] || $_GET['page'] == $st['app_name']):</php> class="current" <php>endif;</php>>
+              <a href="{$st.url}" target="{$st.target}"  <php> if(APP_NAME == $st['app_name'] || $_GET['page'] == $st['app_name']):</php> class="app" <php>endif;</php> >{$st.navi_name}</a>
+            </li>                           
+          </volist>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nosession>
+  <!-- 登录后 -->
+  <session name="mid">
+    <div class="header-wrap">
+      <div class="head-bd"> 
+        <!-- logo -->
+        <div class="logo" style="background:url('{$site.logo}') no-repeat;"><a href="{:SITE_URL}"></a></div>
+        <!-- logo -->
+        <div class="nav">
+          <ul>
+          <volist name='site_top_nav' id='st'>
+            <php>if($st['app_name'] != 'jipu'):</php>
+            <li _nav="sec-nav-{$st.navi_id}" <php> if(APP_NAME == $st['app_name'] || $_GET['page'] == $st['app_name']):</php> class="current" <php>endif;</php>>
+              <a href="{$st.url}" target="{$st.target}"  <php> if(APP_NAME == $st['app_name'] || $_GET['page'] == $st['app_name']):</php> class="app" <php>endif;</php> >{$st.navi_name}</a>
+            </li>
+            <php>else:</php>
+            <!-- 极铺带参数 -->
+            <li>
+              <a href="{$st.url}/oauth_token/{$login_token['oauth_token']}/oauth_token_secret/{$login_token['oauth_token_secret']}/uid/{$mid}" target="{$st.target}">{$st.navi_name}</a>
+            </li> 
+            <php>endif;</php>                        
+          </volist>
+          </ul>
+        </div>
+        <eq name='user.is_init' value='0'>
+          <div class="person">
+            <ul>
+              <li class="dorp-right"><a href="{:U('public/Passport/logout')}" class="app name">退出</a></li>
+              <li model-node="person" class="dorp-right"><a href="javascript:void(0);" class="app name" style="cursor:default">欢迎，{$user['uname']}</a></li>
+            </ul>
+          </div>
+          <else />
+          <div class="person">
+            <ul class="clearfix">
+              <li model-node="search" class="dorp-right"> 
+                  <a href="javascript:void(0);" class="app search-btn"><img src="__THEME__/image/ico-search.png" /></a>
+                  <!--<div class="search" model-node="drop_menu_list">-->
+                  <div class="search">
+                  <div id="mod-search" model-node="drop_search">
+                    <form name="search_feed" id="search_feed" method="get" action="{:U('public/Search/index')}">
+                      <input name="app" value="public" type="hidden"/>
+                      <input name="mod" value="Search" type="hidden"/>
+                      <input type="hidden" name="t" value="2"/>
+                      <input type="hidden" name="a" value="public"/>
+                      <dl>
+                        <dt class="clearfix">
+                          <input id="search_input" class="s-txt left"  type="text" placeholder="搜人/分享/微吧/帖子" value="" event-node="searchKey" name='k'  autocomplete="off">
+                        </dt>
+                      </dl>
+                    </form>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                       // $('#search_input').keydown(function(e) {
+                       //         if (e.keyCode == 8) {
+                       //             var len = $(this).val().length;
+                       //             if (len == 1) {
+                       //                 $(this).focus();
+                       //                 $(this).val('');
+                       //                 return false;
+                       //             }
+                       //         } else {
+                       //             var val = $(this).val();
+                       //             if (val == '搜人/分享/微吧/知识/帖子') {
+                       //                 $(this).val('');
+                       //             }
+                       //         }
+                       //     });
+                       //  var valSearchChange = function(e) {
+                       //         var ev = e || window.event;
+                       //         ev.keyCode == 8;
+                       //         alert(ev);
+                       //         var text = $('#search_input').val();
+                       //         alert(text);
+                       //         if (text == '') {
+                       //             $('#search_input').val('');
+                       //         }
+                       //     };
+                       //      浏览器的输入的兼容性
+                       //     if($.browser.msie && parseInt($.browser.version) < 9) {
+                       //         $('#search_input').bind("propertychange", function(e) {
+                       //             valSearchChange(e);
+                       //         });
+                       //     } else {
+                       //         $('#search_input').bind("input", function() {
+                       //             valSearchChange(e);
+                       //         });
+                       //     }
+                       //     var searchSubmit = function() {
+                       //         var val = $('#search_input').val();
+                       //         if (getLength(val)) {
+                       //             $('#search_feed').submit();
+                       //             return false;
+                       //         }
+                       //     };
+                </script> 
+              </li>
+              <!-- <li model-node="person" class="dorp-right"> <a href="{$user['space_url']}" class="username">{$user['uname']|getShort=6}</a> </li> -->
+              <li model-node="account" class="dorp-right"><a href="javascript:void(0);" class="app" rel="account-btn"><img rel="account-btn" src="__THEME__/image/ico-set.png" /></a>
+                <div model-node="drop_menu_list" class="dropmenu" style="opacity:0;display:none;width:100px"> <i class="arrow-mes"></i>
+                  <dl class="acc-list">
+                    <dd><a href="{:U('public/Profile/index',array('uid'=>$mid))}"><i class="ico-myhome"></i>我的主页</a></dd>
+                    <dd><a href="{:U('public/Account/index')}"><i class="ico-mysetup"></i>个人设置</a></dd>
+                    <dd><a href="{:U('public/Rank/index','type=2')}"><i class="ico-mypoints"></i>排行榜</a></dd>
+                    <php>if(CheckTaskSwitch()):</php>
+                      <dd><a href="{:U('public/Task/index')}"><i class="ico-mytask"></i>任务中心</a></dd>
+                      <dd><a href="{:U('public/Medal/index')}"><i class="ico-mymedal"></i>勋章馆</a></dd>
+                    <php>endif;</php> 
+                    <php>if(!isVerified($user['uid'])):</php>
+                    <dd><a href="{:U('public/Account/authenticate')}"><i class="ico-certification"></i>申请认证</a></dd>
+                    <php>endif;</php>
+                    <php>if(isInvite() && CheckPermission('core_normal','invite_user')):</php>
+                    <dd><a href="{:U('public/Invite/invite')}"><i class="ico-invite"></i>{:L('PUBLIC_INVITE_COLLEAGUE')}</a></dd>
+                    <php>endif;</php>
+                    
+                    <!-- <dd><a href="{:U('public/SmallTools/weiboShare')}">小工具</a></dd> --> 
+                    
+                    <!-- 个人设置菜单钩子 --> 
+                    {:Addons::hook('header_account_dropmenu')}
+                    <php>if(CheckPermission('core_admin','admin_login')){</php>
+                    <dd><a href="{:U('admin')}"><i class="ico-systemmanage"></i>{:L('PUBLIC_SYSTEM_MANAGEMENT')}</a></dd>
+                    <php>}</php>
+                    <dd class="border"><a href="{:U('public/Passport/logout')}"><i class="ico-layout"></i>{:L('PUBLIC_LOGOUT')}>></a></dd>
+                    <dd></dd>
+                  </dl>
+                </div>
+              </li>
+              <!--<li model-node="notice" class="dorp-right" style="border-right:none;"><a href="javascript:void(0);" class="app" rel="notice-btn"><img rel="notice-btn" src="__THEME__/image/ico-mes.png" /></a>
+                <div  class="dropmenu" model-node="drop_menu_list" style="height:322px;">
+                </div>
+              </li>-->
+              
+            </ul>
+          </div>
+          <php> if(MODULE_NAME !='Register'):</php>
+          <div id="message_container" class="layer-massage-box" style="display:none">
+            <ul class="message_list_container" >
+              <li rel="new_folower_count" style="display:none"><span></span>，<a href="{:U('public/Index/follower',array('uid'=>$mid))}">{:L('PUBLIC_FOLLOWERS_REMIND')}</a></li>
+              <li rel="unread_comment" style="display:none"><span></span>，<a href="{:U('public/Comment/index',array('type'=>'receive'))}">{:L('PUBLIS_MESSAGE_REMIND')}</a></li>
+              <li rel="unread_message" style="display:none"><span></span>，<a href="{:U('public/Message')}" >{:L('PUBLIS_MESSAGE_REMIND')}</a></li>
+              <li rel="unread_atme" style="display:none"><span></span>，<a href="{:U('public/Mention')}">{:L('PUBLIS_MESSAGE_REMIND')}</a></li>
+              <li rel="unread_notify" style="display:none"><span></span>，<a href="{:U('public/Message/notify')}">{:L('PUBLIS_MESSAGE_REMIND')}</a></li>
+              <li rel="unread_group_atme" style="display:none"><span></span>，<a href="{:U('group/SomeOne/index')}">{:L('PUBLIS_MESSAGE_REMIND')}</a></li>
+              <li rel="unread_group_comment" style="display:none"><span></span>，<a href="{:U('group/SomeOne/index')}">{:L('PUBLIS_MESSAGE_REMIND')}</a></li>
+            </ul>
+            <a href="javascript:void(0)" onclick="core.dropnotify.closeParentObj()" class="ico-close1"></a> </div>
+          <php>endif;</php>
+        </eq>
+      </div>
+    </div>
+    <php>if(MODULE_NAME != 'Search'):</php>
+      <div id="search"  class="mod-at-wrap search_footer" model-node='search_footer' style="display:none;z-index:-1">
+        <div class="search-wrap">
+          <div class="input">
+            <form id="search_form" action="{:U('public/Search/index')}" method="GET">
+              <div class="search-menu" model-node='search_menu' model-args='a={$curApp}&t={$curType}'> <a href="javascript:;" id='search_cur_menu'>{$curTypeName|default="全站"}<i class="ico-more"></i></a> </div>
+              <input name="app" value="public" type="hidden" />
+              <input name="mod" value="Search" type="hidden" />
+              <input name="a" value="{$curApp}" id='search_a' type="hidden"/>
+              <input name="t" value="{$curType}" id='search_t' type="hidden"/>
+              <input name="k" value="{$_GET['k']|t}" type="text" class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'" autocomplete="off">
+              <a class="btn-red left" href="javascript:void(0);" onclick="$('#search_form').submit();"><span class="ico-search"></span></a>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="mod-at-wrap" id="search_menu" ison='no' style="display:none" model-node="search_menu_ul">
+        <div class="mod-at">
+          <div class="mod-at-list">
+            <ul class="at-user-list">
+              <li onclick="core.search.doShowCurMenu(this)" a='public' t='' typename='{:L('PUBLIC_ALL_WEBSITE')}'>{:L('PUBLIC_ALL_WEBSITE')}</li>
+              <volist name='menuList' id='m'>
+                <php> if($m['app_name'] == $curApp && $m['type_id'] == $curType){
+                  $curTypeName = $m['type'];
+                  } </php>
+                <li onclick="core.search.doShowCurMenu(this)" a='{$m.app_name}' t='{$m.type_id}' typename='{$m.type}'>{$m.type}</li>
+              </volist>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <php>endif;</php>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#mod-product dd").hover(function() {
+            $(this).addClass("hover");
+        },function() {
+            $(this).removeClass("hover");
+        });
+        core.plugInit('search');
+
+        //二级导航
+        var qcloud={};
+        $("[_nav]").hover(function(){
+          var _nav = $(this).attr('_nav');
+          var _li = $("li[_nav="+_nav+"]");
+          var _menu = $('#'+_nav);
+
+          clearTimeout( qcloud[ _nav + '_timer' ] );
+
+          //边框
+          if(_li.hasClass("current") && _menu.has("ul").length) _li.find("a").css("border-bottom","none");
+
+          //箭头
+          if(_menu.has("ul").length){
+            _li.find(".arrow-mes").remove();
+            var l_width = _li.css("width");
+            var i_width = "16px";
+            var left = (parseInt(l_width)-parseInt(i_width))/2+"px";
+            // var arrow_mes = "<i class=\"arrow-mes\" style=\"top:51px;left:"+left+"\";display:none;opacity:0;></i>";
+            var arrow_mes = '<i class="arrow-mes" style="top:51px; left: ' + left + '; display:none; opacity:0;"></i>';
+            _li.append(arrow_mes);
+          }
+
+          //调整位置
+          var l_left = _li.offset().left;
+
+          //显示
+          qcloud[ _nav + '_timer' ] = setTimeout(function(){
+            if(_menu.has("ul").length){
+              _menu.find("ul").css("left",l_left+17);
+              _menu.stop(true,true).fadeIn("fast");
+              _li.find(".arrow-mes").fadeIn("fast");
+            }
+          }, 150);
+        },function(){
+          var _nav = $(this).attr('_nav');
+          var _li = $("li[_nav="+_nav+"]");
+          var _menu = $('#'+_nav);
+          clearTimeout( qcloud[ _nav + '_timer' ] );
+
+          
+          //边框
+          if(_li.hasClass("current") && _menu.has("ul").length) $("li[_nav="+_nav+"]").find("a").css("border-bottom","#0096e6 4px solid");
+          
+
+          //隐藏
+          qcloud[ _nav + '_timer' ] = setTimeout(function(){
+            _menu.stop(true,true).fadeOut("fast");
+            _li.find(".arrow-mes").fadeOut("fast");
+          }, 150);
+
+        })
+
+
+        // $(".nav ul li a").each(function(){
+        //   //判断是否有二级导航
+        //   if($(this).parent().has('ul.sec-nav-detail').length){
+        //     $(this).mouseover(function(){
+        //       //边框
+        //       if($(this).parent().hasClass("current")) $(this).css("border-bottom","none");
+        //       //箭头
+        //       var l_width = $(this).parent().css("width");
+        //       var i_width = $(this).parent().find('i').css("width");1
+        //       var left = (parseInt(l_width)-parseInt(i_width))/2+"px";
+        //       $(this).parent().find('i').css("left",left);
+        //       $(this).parent().find('i').show();
+
+        //       //二级导航
+        //       $(".sec-nav").remove();
+        //       var sec_nav = "<div class=\"sec-nav\" class=\"sec-nav\"></div>";
+        //       $("body").append(sec_nav);
+        //       _dd = $(this).parent().find("ul.sec-nav-detail").clone();
+
+        //       //获取li位置
+        //       var l_left = $(this).parent().offset().left; 
+
+        //       $(_dd).css("marginLeft",l_left);
+        //       $(".sec-nav").html(_dd);
+        //       $(".sec-nav").show();
+        //     });
+
+        //     $(this).mouseout(function(event){
+
+        //       $(".sec-nav").bind("mouseover",function(){
+        //         status = true;
+        //       });
+
+        //       setTimeout(function(){
+        //         if(status == false){
+        //           $(".sec-nav").hide();
+        //         }else{
+        //           return false;
+        //         }
+        //       },100);
+        //     });
+        //   }
+        // })
+
+
+
+    });
+    // core.plugFunc('dropnotify',function(){
+    //     setTimeout(function(){
+    //         core.dropnotify.init('message_list_container','message_container');
+    //     },320);   
+    // });
+    </script> 
+  </session>
+</div>
+
+<!-- 首页顶部广告图位置 -->
+<session name="mid">
+  <div style="width: 1000px;margin: auto">
+    {:Addons::hook('show_ad_space', array('place'=>'home_weibo_top'))}
+  </div>
+</session>
+<!--二级导航-->
+<div class="navigation-down">
+  <volist name='site_top_nav' id='st'>
+  <div class="nav-down-menu" id="sec-nav-{$st.navi_id}" _nav="sec-nav-{$st.navi_id}">
+    <div class="navigation-down-inner">
+    <if condition=" $st.child neq '' ">
+      <ul>
+      <volist name="st.child" id="stc">
+        <li><a href="{$stc.url}" target="{$stc.target}">{$stc.navi_name|getShort=6}</a></li>
+      </volist>
+      </ul>
+    </if>
+    </div>
+  </div>
+  </volist>
+</div>
+<php> //出现注册提示的页面
+  $show_register_tips = array('public/Profile','public/Topic','weiba/Index','channel/Index','public/Index','people/Index');
+  if(!$mid && in_array(APP_NAME.'/'.MODULE_NAME,$show_register_tips)){ </php>
+<php>$registerConf = model('Xdata')->get('admin_Config:register');</php>
+<!--未登录前-->
+<div class="login-no-bg">
+  <div class="login-no-box clearfix">
+    <div class="login-reg right">
+      <php>if($registerConf['register_type'] == 'open'){</php>
+      <a href="{:U('public/Register/index')}" class="btn-reg">立即注册</a>
+      <php>}</php>
+      <span>已有帐号？<a href="javascript:ui.quicklogin()">立即登录</a></span> </div>
+    <p class="left"><span>欢迎来到{$site.site_name}</span>赶紧注册与朋友们分享快乐点滴吧！</p>
+  </div>
+  <!-- 首页顶部广告图位置 -->
+  <nosession name="mid">
+    <div style="width: 1000px;margin: auto;margin-top: 20px;">
+      {:Addons::hook('show_ad_space', array('place'=>'home_weibo_top'))}
+    </div>
+  </nosession>
+</div>
+<php>}</php>

@@ -1,0 +1,38 @@
+<!--<div id="channel_nav" class="channel-type clearfix">
+    <div id="channel_selector" class="channel-selector">
+      <h4 id="channel_category_btn" class="channel-category-btn"><span>{$title|getShort=4}</span><i class="arrow-nav-b ml5"></i></h4>
+      <div class="box channel-tab-menu clearfix channel-dropbox">
+        <dl>
+          <dt>
+            <volist name="channelCategory" id="vo">
+            <a class="btn-cancel <eq name='cid' value='$vo.channel_category_id'>current</eq>" href="{:U('channel/Index/index', array('cid'=>$vo['channel_category_id']))}" ><span>{$vo.title}</span></a>
+            </volist>
+          </dt>
+        </dl>
+      </div>
+    </div>
+    <div class="ml"><span>记录：<em>{$channelCount|default=0}</em></span></div>
+
+</div>-->
+<div id="channel_nav">
+<div class="app-tab-menu clearfix">
+  <ul>
+    <volist name="channelCategory" id="vo">
+	    <li>
+	      <a class="<eq name='cid' value='$vo.channel_category_id'>current</eq>" href="{:U('channel/Index/index', array('cid'=>$vo['channel_category_id']))}" >{$vo.title|getShort=14}</a>
+	    </li>
+    </volist>
+  </ul>
+</div>
+</div>
+<!-- <div class="left p20"><span>关注：{$followingCount|default=0}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>记录：{$channelCount|default=0}</span></div>
+<div class="right p20">
+    <php>if(!empty($cid)):</php>
+    <php>if($followStatus):</php>
+    <a href="javascript:;" onclick="channel.upFollowStatus('{$GLOBALS['ts']['mid']}', '{$cid}', 'del', this)" class="btns-gray mr5"><span><i class="ico-already"></i>已关注</span></a>
+    <php>else:</php>
+    <a href="javascript:;" onclick="channel.upFollowStatus('{$GLOBALS['ts']['mid']}', '{$cid}', 'add', this)" class="btns-red mr5"><span><i class="ico-add"></i>加关注</span></a>
+    <php>endif;</php>
+    <php>endif;</php>
+</div>
+ -->

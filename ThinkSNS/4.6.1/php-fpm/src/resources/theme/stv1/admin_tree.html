@@ -1,0 +1,193 @@
+<include file="admin_header" />
+
+<style type="text/css">
+.ico_top, .ico_btm {
+    background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+    height: 14px;
+    width: 12px;
+}
+.ico_top, .ico_btm {
+    display: inline-block;
+    vertical-align: middle;
+}
+.ico_top {
+    background-position: -12px 0;
+}
+.ico_btm {
+    background-position: -24px 0;
+}
+.ico_top:hover {
+    background-position: 0 0;
+}
+.ico_btm:hover {
+    background-position: -35px 0;
+}
+</style>
+
+<div id="container" class="so_main">
+
+  <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+      <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] = $pageTab[0]['tabHash'];</php>
+      <volist name='pageTab' id='t'>
+      <li><a href="{$t.url}&tabHash={$t.tabHash}" <php>if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+      </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+  <!-- START TOOLBAR -->
+  <div class="Toolbar_inbox">
+    <a href="javascript:void(0);" class="btn_a" onclick="admin.addTreeCategory(0, '{$stable}', '{$limit}');"><span>添加一级分类</span></a>
+  </div>
+  <!-- END TOOLBAR -->
+  
+  <!-- START LIST -->
+  <div class="list">
+    <ul class="sort">
+      <li class="title">
+        <div class="line-l c1">分类名称</div>
+        <div class="line-l c2">操作</div>
+      </li>
+    </ul>
+    
+    <php>if(empty($tree)):</php>
+    <span class="textC" style="line-height:26px;display:block">{:L('PUBLIC_NO_RELATE_DATA')}!</span>
+    <php>else:</php>
+    {:showTreeCategory($tree, $stable, 0, $delParam, $level, $extra, 1, $limit)}
+    <php>endif;</php> 
+  </div>
+  <!-- END LIST -->
+  
+  <!-- START BOTTOMBAR -->
+  <div class="Toolbar_inbox">
+    <a href="javascript:void(0);" class="btn_a" onclick="admin.addTreeCategory(0, '{$stable}', '{$limit}');"><span>添加一级分类</span></a>
+  </div>
+  <!-- END BOTTOMBAR -->
+</div>
+
+<script type="text/javascript">
+/**
+ * 收起与展开效果
+ * @param integer cid 分类ID
+ * @return boolean false
+ */
+admin.foldCategory = function(cid)
+{
+  var offImg = THEME_URL + '/admin/image/off.png';
+  var onImg = THEME_URL + '/admin/image/on.png';
+  $('#sub_'+cid).toggle();
+  $img = $('#img_'+cid);
+  if($img.attr('src') == offImg) {
+    $img.attr('src', onImg);
+  } else {
+    $img.attr('src', offImg);
+  }
+  return false;
+};
+/**
+ * 移动分类位置
+ * @param integer cid 分类ID
+ * @param string type 移动类型
+ * @param string stable 所操作的数据表
+ * @return boolean false
+ */
+admin.moveTreeCategory = function(cid, type, stable)
+{
+  // 验证数据正确性
+  if(typeof cid === "undefined" || typeof type === "undefined" || typeof stable === "undefined") {
+    return false;
+  }
+  // 提交数据，修改排序位置
+  $.post(U('admin/Public/moveTreeCategory'), {cid:cid, type:type, stable:stable}, function(msg) {
+    if(msg.status == 1) {
+      ui.success(msg.data);
+      var $category = $('#' + stable + '_' + cid);
+      if (type === 'up') {
+        var size = $category.prev().size();
+        if (size > 0) {
+          var otherId = $($category.prevAll('li[id^="' + stable + '_"]')[0]).attr('id');
+          otherId = otherId.split('_').pop();
+          $target = $('#' + stable + '_' + otherId);
+          $target.before($category);
+          $('#sub_' + cid).length > 0 && $target.before($('#sub_' + cid));
+        }
+      } else if (type === 'down') {
+        var size = $category.next().size();
+        if (size > 0) {
+          var otherId = $($category.nextAll('li[id^="' + stable + '_"]')[0]).attr('id');
+          otherId = otherId.split('_').pop();
+          $target = $('#' + stable + '_' + otherId);
+          if ($('#sub_' + otherId).length > 0) {
+            $target = $('#sub_' + otherId);
+          }
+          $('#sub_' + cid).length > 0 && $target.after($('#sub_' + cid));
+          $target.after($category);
+        }
+      }
+    } else {
+      ui.error(msg.data);
+    }
+  }, 'json');
+  return false;
+};
+/**
+ * 添加子分类
+ * @parma integer cid 分类ID
+ * @param string stable 所操作的数据表
+ * @parma integer limit 字数限制
+ * @return boolean false
+ */
+admin.addTreeCategory = function(cid, stable, limit)
+{
+  if(typeof cid === "undefined" || typeof stable === "undefined") {
+    return false;
+  }
+  admin.foldCategory(cid);
+  ui.box.load(U('admin/Public/addTreeCategory')+'&cid='+cid+'&stable='+stable+'&limit='+limit, "添加分类");
+  return false;
+};
+/**
+ * 编辑分类
+ * @param integer cid 分类ID
+ * @return boolean false
+ */
+admin.upTreeCategory = function(cid, stable, limit)
+{
+  if(typeof cid === "undefined" || typeof stable === "undefined") {
+    return false;
+  }
+  ui.box.load(U('admin/Public/upTreeCategory')+'&cid='+cid+'&stable='+stable+'&limit='+limit, "编辑分类");
+  return false;
+};
+/**
+ * 删除分类
+ * @param integer cid 分类ID
+ * @return boolean false
+ */
+admin.rmTreeCategory = function(cid, stable, app, module, method)
+{
+  if(typeof cid === "undefined") {
+    return false;
+  }
+  // 删除操作
+  if(confirm("是否删除该分类？(如果是父分类，子分类也将一并删除)")) {
+    $.post(U('admin/Public/rmTreeCategory'), {cid:cid, stable:stable, _app:app, _module:module, _method:method}, function(msg) {
+      if(msg.status == 1) {
+        ui.success(msg.data);
+        location.href = location.href;
+        return false;
+      } else {
+        ui.error(msg.data);
+        return false;
+      }
+    }, 'json');
+  }
+  return false;
+};
+</script>
+
+<include file="admin_footer" />

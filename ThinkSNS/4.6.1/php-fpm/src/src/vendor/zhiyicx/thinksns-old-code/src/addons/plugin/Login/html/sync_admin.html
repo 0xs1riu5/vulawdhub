@@ -1,0 +1,55 @@
+
+  <div class="form2">
+    <form method="post" action="{:Addons::adminUrl('saveAdminConfig')}">
+      <dl class="lineD">
+        <dt>开启同步登录功能：</dt>
+        <dd>
+          <php>foreach($data as $key=>$value){</php>
+            <label><input type="checkbox" name="open[]" value="{$key}" <php>if(in_array($key,$config['open'])){</php>checked<php>}</php>/><php>echo $alias[$key]</php></label>
+          <php>}</php>
+          <br /><br />
+          <p>当开启对应的平台，在用户登录时就能看到对应的平台同步登录按钮</p>
+        </dd>
+      </dl>
+      <dl class="lineD">
+        <dt>帐号绑定：</dt>
+        <dd>
+        <label><input type="checkbox" name="bindemail" value="1" <php>if($config['bindemail']==1){</php>checked<php>}</php>/>第三方账号注册时，强制用户绑定帐号</label>
+          <br />
+          <p>强制绑定将无法通过QQ互联审核，申请QQ登录时请关闭，申请期间的帐号可以通过后台修改资料给用户补充邮箱、密码。</p>
+        </dd>
+      </dl>
+      <dl class="lineD">
+        <dt>接口验证代码：</dt>
+        <dd>
+          <textarea cols="60" rows="6" name="platformMeta">{$config['platformMeta']}</textarea>
+          <br />
+          <p>需要在Meta标签中写入验证信息时，拷贝代码到这里。</p>
+        </dd>
+      </dl>
+      <php>foreach($data as $key=>$value){</php>
+        <php>
+          $aliasName = $alias[$key];
+          $url  = $applyUrl[$key];
+          $platformKey = trim($config[$value[0]]);
+          $platformSKey = trim($config[$value[1]]);
+        </php>
+        <dl class="">
+          <dt>{$aliasName}KEY：</dt>
+          <dd>
+            <input name="{$value[0]}" type="text" value="{$platformKey}" maxlenth="100" style="width:300px" />
+          </dd>
+        </dl>
+        <dl class="lineD">
+          <dt>{$aliasName}密匙：</dt>
+          <dd>
+            <input name="{$value[1]}" type="text" value="{$platformSKey}" maxlenth="100" style="width:300px" />
+            <p>申请地址：<a href="{$url}" target="_blank">{$url}</a></p>
+          </dd>
+        </dl>
+      <php>}</php>
+      <div class="page_btm">
+        <input type="submit" class="btn_b" value="确定" />
+      </div>
+    </form>
+  </div>

@@ -1,0 +1,90 @@
+<div class="person-info clearfix">
+  <dl class="person-info-t clearfix">
+    <dt><a href="{$userInfo.space_url}"><img src="{$userInfo.avatar_big}" /></a><a href="{:U('public/Account/avatar')}" class="face">换头像</a></dt>
+    <dd>
+      <div class="name"> <a href="{$userInfo.space_url}">{$userInfo.uname}</a> </div>
+    </dd>
+  </dl>
+  <ul class="person-info-b clearfix mb20">
+    <li><a href="{:U('weiba/Index/myWeiba', array('type'=>'myWeiba'))}">关注的吧：
+		<h6>{$userData.weiba_count|default=0}</h6>
+      </a></li>
+    <li><a href="{:U('weiba/Index/myWeiba', array('type'=>'myPost'))}">发表帖子：      
+		<h6>{$userData.post_count|default=0}</h6>
+      </a></li>
+    <li><a href="{:U('weiba/Index/myWeiba', array('type'=>'myReply'))}">回复帖子：
+		<h6>{$userData.reply_count|default=0}</h6>
+      </a></li>
+    <li><a href="{:U('weiba/Index/myWeiba', array('type'=>'myFavorite'))}">收藏帖子：
+		<h6>{$userData.favorite_count|default=0}</h6>
+      </a></li>
+  </ul>
+</div>
+<script type="text/javascript">
+// 事件监听
+M.addEventFns({
+	ico_level_right: {
+		load: function() {
+			var offset = $(this).offset();
+			var top = offset.top + 23;
+			var left = offset.left -10;
+			var html = '<div id="layer_level_right" class="layer-open experience" style="display:none;position:absolute;z-index:9;top:'+top+'px;left:'+left+'px;">\
+						<dl>\
+						<dd>{:L('PUBLIC_USER_LEVEL')}：{$userCredit.level.name}</dd>\
+						<dd>{:L('PUBLIC_USER_POINTS_CALCULATION',array('num'=>$userCredit['credit']['experience']['value'],'experience'=>$userCredit['creditType'][$userCredit['level']['level_type']]))}</dd>\
+						<dd class="textb">{:L('PUBLI_USER_UPGRADE_TIPS',array('num'=>$userCredit['level']['nextNeed'],'experience'=>$userCredit['creditType'][$userCredit['level']['level_type']]))}</dd>\
+						</dl>\
+						</div>';
+			$("body").append(html);
+
+			this._model = document.getElementById("layer_level_right");
+		},
+		mouseenter: function() {
+			var offset = $(this).offset();
+			var width = $(window).width();
+			if ($(window).width() > $(this._model).width() + offset.left) {
+				$(this._model).css('left', offset.left);
+			} else {
+				$(this._model).css('left', offset.left - $(this._model).width() + $(this).width());
+			}
+			$(this._model).css('display', 'block');
+		},
+		mouseleave: function() {
+			$(this._model).css('display', 'none');
+		}
+	},
+	ico_wallet_right: {
+		load: function() {
+			var offset = $(this).offset();
+			var top = offset.top + 23;
+			var left = offset.left - 20;
+			var html = '<div id="layer_wallet_right" class="layer-open scale" style="display:none;position:absolute;top:'+top+'px;left:'+left+'px;">\
+						<dl>\
+						<dt></dt>\
+						<dd>{:L('PUBLIC_USER_POINTS_CALCULATION',array('num'=>intval($userCredit['credit']['score']['value']),'experience'=>$userCredit['creditType']['score']))}</dd>\
+						</dl>\
+						</div>';
+			$("body").append(html);
+			this._model = document.getElementById("layer_wallet_right");
+		},
+		mouseenter: function() {
+			$(this._model).css('display', 'block');
+		},
+		mouseleave: function() {
+			$(this._model).css('display', 'none');
+		}
+	},
+	show_medal:{
+		click:function (){
+			var status = $(this).children().attr('class');
+			if ( status == 'arrow-next-page'){
+				$(this).children().attr('class','arrow-previous-page');
+				$("li[status='hide']").show();
+			} else {
+				$(this).children().attr('class','arrow-next-page');
+				$("li[status='hide']").hide();
+			}
+		}
+	}
+}); 
+</script>

@@ -1,0 +1,20 @@
+<img id="avatar_small_preview" src="{$small_avatar}" <php>if($required):</php>event-node="input_face"<php>endif;</php> />
+<a href="javascript:;" class="btn-att-white" onclick="changeFace()" style="vertical-align:bottom;margin:0 0 0 5px;"><span>上传头像</span></a>
+
+<script type="text/javascript">
+var changeFace = function() {
+	if ($('#tsbox').attr('upload') == 'face') {
+		$('#tsbox[upload="face"]').show();
+		$('.boxy-modal-blackout').show();
+	} else {
+		ui.box.load(U('widget/Avatar/show'), '上传头像');
+		$('#tsbox').attr('upload', 'face');
+		$('#tsbox[upload="face"] .ico-close').unbind('click');
+		$('#tsbox[upload="face"] .ico-close').bind('click', function() {
+			$('#tsbox[upload="face"]').hide();
+			$('.boxy-modal-blackout').hide();
+		});
+	}
+	return false;
+};
+</script>

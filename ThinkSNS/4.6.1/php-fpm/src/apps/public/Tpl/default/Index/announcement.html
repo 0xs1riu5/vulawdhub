@@ -1,0 +1,22 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+	<div id="main-wrap">
+		<div class="item-announcement">
+			<div class="hd">{:L('PUBLIC_ANNOUNCEMENT')}</div>
+			<div class="mod-announcement boxShadow">
+				<h4>{$announcement.title}<span>{$announcement.mtime|friendlyDate=###,'full'}</span></h4>
+				{$announcement.content}
+				<div class="file-list">
+					<ul>
+						<php>if(!empty($announcement['attachInfo'])) {</php>
+						<volist name="announcement.attachInfo" id="vo">
+							<li><a href="{:U('widget/Upload/down', array('attach_id'=>$vo['attach_id']))}"><i class="ico-{$vo.extension}-small"></i>{$vo.name}</a><span>({$vo.size|byte_format})</span></li>
+						</volist>
+						<php>}</php>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="__THEME__/public_footer" />

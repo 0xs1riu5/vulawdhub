@@ -1,0 +1,310 @@
+<div class="pop_up">
+    <div class="pop_up_main">
+        <div class="pop_up_tab">
+            <div class="tab">
+                <a href="#" class="on">基本设置</a>
+            </div>
+        </div>
+        <div class="pop_up_box">
+            <ul class="pop_up_box_form">
+                <li>
+                    <div class="c1"> tab方向:</div>
+                    <div class="c2">
+                        <select name="u" id="style" class="param_post text">
+                            <option value="x" selected="selected">左右tab</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="c1">激活方式:</div>
+                    <div class="c2">
+                        <select name="u" id="event" class="param_post text">
+                            <option value="click" selected="selected">鼠标点击</option>
+                            <!-- <option value="mouseover">鼠标经过</option> -->
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="c1 pt5">tab成员:</div>
+                    <div class="c2">
+
+                        <ul id="diy_tabs_items">
+                        	<php>if( !empty($attr['content']) ) {</php>
+								<volist name="attr.content" id="vo">
+									<li class="tab_items{$i}">
+                                     <div class="mb5">
+		                                <label>
+		                                    标题:
+		                                </label>
+		                                <input type="text" rel="tabItemsComment{$i}" class="tabItems" value="<php>echo $vo->title;</php>"/><span><a href="javascript:void(0)" class="delTabHref ml5" rel="{$i}">删除</a></span>
+                                     </div>
+										<textarea cols="" rows="5" id="tabItemsComment{$i}" class="text" style="width:90%;"><php>echo str_replace("[@]","&",$vo->comment);</php></textarea>
+		                            </li>
+								</volist>
+								<php>$count = count($attr['content']) +1;</php>
+								 <li class="tab_items{$count}">
+                                  <div class="mb5">
+	                                <label>
+	                                    标题:
+	                                </label>
+	                                <input type="text" rel="tabItemsComment{$count}" class="tabItems" /><span><a href="javascript:void(0)" class="delTabHref ml5" rel="{$count}">删除</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="addTabHref" rel="{$count}">增加</a></span>
+                                   </div>
+									<textarea cols="" rows="5"  id="tabItemsComment{$count}" class="text" style="width:90%;"/>
+	                        	 </li>
+							<php>}else{</php>
+	                            <li class="tab_items1">
+                                  <div class="mb5">
+	                                <label>
+	                                    标题:
+	                                </label>
+	                                <input type="text" rel="tabItemsComment1" class="tabItems" /><span><a href="javascript:void(0)" class="delTabHref ml5" rel="1">删除</a></span>
+                                  </div>
+									<textarea cols="" rows="5" id="tabItemsComment1" class="text" style="width:90%;"/>
+	                            </li>
+	                            <li class="tab_items2">
+                                  <div class="mb5">
+	                                <label>
+	                                    标题:
+	                                </label>
+	                                <input type="text" class="tabItems" rel="tabItemsComment2" /><span><a href="javascript:void(0)" class="delTabHref ml5" rel="2">删除</a></span>
+                                  </div>
+									<textarea cols="" rows="5" id="tabItemsComment2"  class="text" style="width:90%;"/>
+	                            </li>
+								<li class="tab_items3">
+                                  <div class="mb5">
+	                                <label>
+	                                    标题:
+	                                </label>
+	                                <input type="text" rel="tabItemsComment3" class="tabItems" /><span><a href="javascript:void(0)" class="delTabHref ml5" rel="3">删除</a>&nbsp;&nbsp;<a href="javascript:void(0)" class="addTabHref" rel="3">增加</a></span>
+                                   </div>
+									<textarea cols="" rows="5"  id="tabItemsComment3" class="text" style="width:90%;"/>
+	                        	 </li>
+							<php>}</php>
+							 
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+	<div id="preview" class="preview_r">
+    </div>
+</div>
+<script>
+                            	var index= '{$index}';
+                            	var layout = '{$layout}';
+                            	var parentId = '{$parentId}';
+                            	var id = '{$id}';
+                            	var namespace = '{$_GET['tagName']}';
+                        		var postData = new Array();
+        						var defaultTabCount = '{$tabCount}' || 3;
+        						var tabItem = '';
+								var defaultAttr = new Array();
+                                var hasDefault = false;
+								      						
+            						<php>if(!empty($attr)){</php>
+            							hasDefault = true;
+            						<php>}</php>
+            				
+                            <volist name="attr" id="vo">
+								<php>if($key != 'content'){</php>
+            						defaultAttr["{$key}"] = "{$vo}";
+								<php>}</php>
+            				</volist>
+								
+								
+                           		$(function(){
+                                   if (hasDefault) {
+								   	$('.param_post').each(function(){
+								   		if ($(this).attr('type') == "radio") {
+								   			var name = $(this).attr('name');
+								   			if ($(this).val() == defaultAttr[name]) {
+								   				$(this).attr('checked', 'checked');
+								   				if (name == "source") {
+								   					var tempId = $(this).attr('rel');
+								   					$('#' + tempId).show();
+								   					$('#' + tempId + " textarea").focus();
+								   					$('#' + tempId + " select").focus();
+								   					$('.param_select').not($('#' + tempId)).hide();
+								   				}
+								   			}
+								   		}
+								   		else 
+								   			if ($(this).attr('type') == "checkbox") {
+								   				var name = $(this).attr('name')
+								   				
+								   				if (defaultAttr[name].indexOf(',') != -1) {
+								   					var tempArray = defaultAttr[name].split(',');
+								   					if ($.inArray($(this).val(), tempArray) != -1) {
+								   						$(this).attr('checked', 'checked');
+								   					}
+								   				}
+								   				
+								   			}
+								   			else {
+								   				if (!$(this).attr('multiple') || $(this).attr('multiple') == 'undefined') {
+								   					$(this).val(defaultAttr[$(this).attr('id')]);
+								   				}
+								   			}
+								   	});
+								   }
+									
+        							tabItem = $('#diy_tabs_items').children(':first').clone();
+    								$('.delTabHref').live('mouseup',function(){
+    									var rel = $(this).attr('rel');
+    									delTabItems(rel);
+    									return false;
+    								});
+    								$('.addTabHref').live('mouseup',function(){
+    									var rel = $(this).attr('rel');
+    									addTabItems($(this),rel);
+    									return false;
+    								});
+        						});
+  function preview(){
+                                var sendData = getPostData();
+                                $.ajax({
+                                    type: "POST",
+                                    url: SITE_URL + '/index.php?app=page&mod=Diy&act=previewModel',
+                                    data: sendData,
+                                    dataType: 'json',
+                                    success: function(result){
+                                        $('#preview').html(result.html);
+                                        var content = '<div id="diy_copyHtmlContent">\
+                                            		复制源代码:<input type="text" id="copyHtmlContent" onclick="select();" style="width:150px;" />\
+                                        		</div>'
+										var widget = '<div id="diy_copyHtmlContent">\
+                                            		复制标签:<input type="text" id="copyWidgetContent" onclick="select();" style="width:150px;" />\
+                                        		</div>'		
+                                        $('#preview').append(content);
+										$('#preview').append(widget);
+                                        $('#diy_copyHtmlContent');
+                                        $('#copyHtmlContent').val(result.html).bind('click',function(){
+											copyToClipboard(result.html);
+										});
+										$('#copyWidgetContent').val(result.widget).bind('click',function(){
+											copyToClipboard(result.widget);
+										});
+										//$('#copyHtml').click();
+                                    }
+                                });
+                            }			
+        						function delTabItems(itemCount){
+        							$('.tab_items'+itemCount).remove();
+        						}
+        						var lock = 1;
+        						function addTabItems(_this,itemCount){
+        							if (lock==0){return;}
+        							var newItem = tabItem.clone(false);
+    								var temp = _this.clone();
+        							defaultTabCount ++;
+    								_this.remove();
+    								temp.attr('rel',defaultTabCount);
+    								
+        							newItem.removeClass().addClass('tab_items'+defaultTabCount)
+    													 .find('a')
+    													 .attr('rel',defaultTabCount)
+    													 .end()
+														 .find('input')
+														 .attr('rel','tabItemsComment'+defaultTabCount).val('')
+														 .end()
+    													 .find('span')
+    													 .append('&nbsp;')
+    													 .append(temp).end()
+														 .find('textarea')
+														 .attr('id','tabItemsComment'+defaultTabCount).val('');
+        							$('#diy_tabs_items').append(newItem);
+        							lock = 0;
+        							setTimeout(function (){
+        								lock = 1;
+        							},1000)
+        						}
+        						
+        						
+                            	function savemodel(){
+            						var sendData = getPostData();
+                        			$.ajax({
+                        				type : "POST",
+                        				url  : SITE_URL + '/index.php?app=page&mod=Diy&act=saveModel',
+                        				data : sendData,
+                        				dataType : 'json',
+                        				success : function(result){
+                         					//var jsonData = eval('('+result+')');
+                            		 		frameArray[parentId][layout][index] = result['sign'];
+                            		 		 if($('#'+id).html() == null){
+                        			  		 $('#placeholder').html(result['html']);
+                            		 		 $('#placeholder')
+                            		 			.removeAttr('class')
+                            					.removeAttr('style')
+                            					.addClass('mb10')
+                            					.attr('id',id)
+                            					.attr('rel',namespace)
+        										.attr('sign', result['sign'])
+                            		 			.prepend('<div class="diy_edit"><div class="ico_edit"><a href="javascript:void(0)" onclick="updateDiyModel(\''+id+'\',\''+namespace+'\')" class="ico_diyedit" title="设置">设置</a> <a href="javascript:void(0)" class="ico_diydel" onclick="deleteDiy(\'' + id + '\')" title="删除">删除</a></div></div>');
+                    		        		 }else{
+                    		    			 	$('#'+id).html(result['html']).attr('sign', result['sign']);
+                    		    				$('#'+id).prepend('<div class="diy_edit"><div class="ico_edit"><a href="javascript:void(0)" onclick="updateDiyModel(\''+id+'\',\''+namespace+'\')" class="ico_diyedit" title="设置">设置</a> <a href="javascript:void(0)" class="ico_diydel" onclick="deleteDiy(\'' + id + '\')" title="删除">删除</a></div></div>');
+                    		    
+                    		    			 }
+                        				}
+                        			});
+                            	}
+        
+                				 					function getPostData(){
+                                                         var data = new Array();
+                                                         var result;
+                                                         var checkedName = new Array();
+    														   $('.param_post').each(function(){
+                                                                            switch ($(this).attr('type')) {
+                                                                                case "checkbox":
+                                                                                    if ($(this).attr('checked')) {
+                                                                                        var postKey = 'PARAM_' + $(this).attr('name');
+                                                                                        checkedName.push($(this).val());
+                                                                                        break;
+                                                                                    }
+                                                                                    else {
+                                                                                        return true;
+                                                                                    }
+                                                                                case "radio":
+                                                                                        if ($(this).attr('checked')) {
+                                                                                            var postKey = 'PARAM_' + $(this).attr('name');
+                                                                                        }
+                                                                                        else {
+                                                                                            return true;
+                                                                                        }
+                                                                                    data[postKey] = $(this).val();
+                                                                                    break;
+                                                                                default:
+                                                                                    var postKey = 'PARAM_' + $(this).attr('id');
+            																		 data[postKey] = $(this).val();
+                                                                            }
+                                                                        });
+																		
+																		//取得参数值
+																		var newTempArray = new Array();
+	                                                                    $('.tabItems').each(function(){
+																			 newTempArray.push({
+																				'title': $(this).val(),
+																				'comment':$('#'+$(this).attr('rel')).val().replace(/&/g, "[@]")
+																				});
+																		});
+
+                                                                        var result = 'tagName=' + namespace;
+																		for(var index in newTempArray){
+																			result += '&content['+index+'][title]='+ newTempArray[index]['title']+'&content['+index+'][comment]='+newTempArray[index]['comment'];
+																		}
+       																	for (var one in data) {
+																				result += '&' + one + '=' + data[one];
+                                                                        }    
+                											return result;
+                    									}
+            											
+            										$('.radio_select').click(function(){
+                        								if($(this).attr('checked')){
+                        									$('#'+$(this).attr('rel')).show();
+            												$('#'+$(this).attr('rel')+" textarea").focus();
+                        								}
+                        								$('.param_select').not($('#'+$(this).attr('rel'))).hide();
+                        							})
+        
+</script>

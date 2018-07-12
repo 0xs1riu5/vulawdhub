@@ -1,0 +1,84 @@
+<div class="layer-content">
+	<dl class="pop-area">
+		<dt class="mb10 clear">
+			<div class="l">用户名：</div>
+			<div class="r">{$uname}</div>
+		</dt>
+		<dt class="mb10 clear">
+			<div class="l">禁用项：</div>
+			<div class="r">
+				<label class="mr10"><input onclick="changeRadio(this)" name="disable_item" type="radio" class="radio" value="login" <eq name="type" value="login">checked</eq> />登录</label>
+				<label><input onclick="changeRadio(this)" name="disable_item" type="radio" class="radio" value="post" <eq name="type" value="post">checked</eq> />发言</label>
+			</div>
+		</dt>
+		<dt class="mb10 clear">
+			<div class="l">禁用时间：</div>
+			<div class="r">
+				{:W('DateSelect', array('dtype'=>'full', 'width'=>120, 'name'=>'start_time', 'id'=>'start_time', 'value'=>$disable[$type]['start_time_format']))}&nbsp;至&nbsp;{:W('DateSelect', array('dtype'=>'full', 'width'=>120, 'name'=>'end_time', 'id'=>'end_time', 'value'=>$disable[$type]['end_time_format']))}
+			</div>
+		</dt>
+		<dd class="clear">
+			<input type="button" class="btn_b" value="确定" onclick="setDisableUser()" />
+			<input type="button" class="btn_w ml10" value="取消" onclick="ui.box.close()" />
+		</dd>
+	</dl>
+</div>
+
+<script type="text/javascript">
+var setDisableUser = function() {
+	var uid = '<?php echo $uid; ?>';
+	if (typeof uid === 'undefined' || uid == '') {
+		ui.error('参数错误');
+		return false;
+	}
+
+	var disableItem = $('#tsbox').find('input:checked[name="disable_item"]').val();
+
+	var startTime = $('#start_time').val();
+	var endTime = $('#end_time').val();
+	if (startTime == '') {
+		ui.error('请选择开始时间');
+		return false;
+	}
+	if (endTime == '') {
+		ui.error('请选择结束时间');
+		return false;
+	}
+	if (startTime > endTime) {
+		ui.error('开始时间必须小于结束时间');
+		return false;
+	}
+
+	$.post(U('admin/User/setDisableUser'), {uid:uid, disableItem:disableItem, startTime:startTime, endTime:endTime}, function(res) {
+		if (res.status == 1) {
+			ui.success(res.info);
+			ui.box.close();
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
+		} else {
+			ui.error(res.info);
+		}
+	}, 'json');
+	return false;
+};
+
+var changeRadio = function(obj) {
+	if (typeof obj === 'undefined') {
+		return false;
+	}
+	var disableJson = $.parseJSON('<?php echo $disableJson; ?>');
+	var value = $(obj).val();
+	switch (value) {
+		case 'login':
+			$('#start_time').val(disableJson.login.start_time_format);
+			$('#end_time').val(disableJson.login.end_time_format);
+			break;
+		case 'post':
+			$('#start_time').val(disableJson.post.start_time_format);
+			$('#end_time').val(disableJson.post.end_time_format);
+			break;
+	}
+	return false;
+};
+</script>

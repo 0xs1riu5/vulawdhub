@@ -1,0 +1,33 @@
+<include file="__THEME__/header" />
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<script>
+function clearnotice() {
+	if(confirm('你确定要清空群的公告吗？')){
+		document.noticeform.announce.value = '';
+		document.noticeform.submit();
+	}
+}
+</script>
+<div class="content_holder">
+  <div class="content no_bg">
+    <div class="st-bg">
+      <include file="_tab" />
+      <div class="weiba-manage">
+        <form method="post" action="{:U('weiba/Manage/doNotify')}">
+          <input type="hidden" name="weiba_id" value="{$weiba_id}">
+          <h3>发布公告(最多可输入200个汉字)</h3>
+          <dl class="form-set">
+            <textarea rows="5" class="text mb20" style="width:986px;height:90px;overflow:auto" name="notify">{$notify}</textarea>
+            <dd>
+              <input name="button" type="submit" class="btn_b left" id="button" value="发布" />
+              <input name="button2" type="button" class="btn_w right" id="button2" value="清除" onClick="clearnotice();"/>
+            </dd>
+          </dl>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" value="0" id="user_category_id" />
+<include file="__THEME__/public_footer" />

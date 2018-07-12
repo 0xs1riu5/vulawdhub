@@ -1,0 +1,34 @@
+<eq name='blackList' value=''>
+<p>{:L('PUBLIC_HUSER_TIPES')}</p>
+<else />
+<div class="blacklists">
+	<ul class="list">
+	<volist name='blackList' id='vo'>
+	<li>
+	<!-- <a href="javascript:void(0)" class="btn-gray right" onclick="core.plugInit('blacklist',this,'list',{$vo.fid})"><span>移出黑名单</span></a> -->
+	<a href="javascript:void(0)" class="btn-green-small right" onclick="removeBlackList(this,{$vo.fid})">移出黑名</a>
+	<span class="date">{$vo.ctime|friendlyDate}</span>
+	{$vo.userInfo.space_link}&nbsp;&nbsp;{$vo.userInfo.email}
+	</li>
+	</volist>
+	</ul>
+</div>
+</eq>
+<script>
+	var removeBlackList = function(obj,fid){
+		var obj = obj;
+		$.post(
+			U('widget/Blacklist/removeUser'),
+			{fid:fid},
+			function(msg){
+				if(msg.status == 0){
+					ui.error(msg.data);
+				}else{
+					ui.success('移出成功');
+					$(obj).parent().fadeOut('slow');
+				}
+			},
+			'json'
+		);
+	};
+</script>

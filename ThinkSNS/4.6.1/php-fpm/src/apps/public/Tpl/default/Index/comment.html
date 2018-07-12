@@ -1,0 +1,195 @@
+<div class="feed-nav">
+  <div class="nset-hd">
+    <h3>评论：
+    <span <eq name='tt' value=''>class="current"</eq>>
+      <a "javascript:;" onclick="message.comment('comment','','{$stype}' )">{:L('PUBLIC_ALL_STREAM')}</a>
+    </span>
+    <volist name='tab' id='t'>
+      <php>if($tabHash[$key]){</php>
+        <span <eq name='tt' value='$key'>class="current"</eq>>
+          <a href="javascript:;" onclick="message.comment('comment','{$key}','{$stype}' )">{$tabHash[$key]}</a>
+        </span>
+      <php>}</php>
+    </volist>      
+    <span class="close-ico right" style="margin-left:10px;">
+      <img onclick="ui.box.close()" src="__THEME__/image/exit.png"/>
+    </span>
+    <if condition=" $stype eq 'receive' ">
+      <span class="right"><a href="javascript:;" onclick="message.comment('comment','','send')">{:L('PUBLIC_SEND_COMMENT')}</a></span>
+      <span class="right current"><a href="javascript:;" onclick="message.comment('comment','','receive')" class="current">{:L('PUBLIC_RECEIVE_COMMENT')}</a></span>
+      <else/>
+      <span class="right current"><a href="javascript:;" onclick="message.comment('send','','{$type}')">{:L('PUBLIC_SEND_COMMENT')}</a></span>
+      <span class="right"><a href="javascript:;" onclick="message.comment('comment','','receive')">{:L('PUBLIC_RECEIVE_COMMENT')}</a></span>
+    </if>
+    </h3>
+  </div>
+</div>
+
+<div class="scrollarea">
+<div class="scrollY">
+        <div class="extend-message wid">
+
+
+        <!--数据列表-->
+        <input type="hidden" id="type" value="{$type}"/>
+        <input type="hidden" id="t" value="{$tt}"/>
+        <input type="hidden" id="stype" value="{$stype}"/>
+        <php> $cancomment1 = intval(CheckPermission('core_normal','feed_comment')); </php>
+        <!-- 收到的评论 -->
+        <php>if($stype == 'receive'):</php>
+        <div class="feed_lists" id="mfeed-lists">
+          <neq name='list.data' value=''>
+          <volist name='list.data' id='vo'>
+          <dl class="feed_list clearfix" model-node='comment_list'>
+            <dt class="face"><a href="{$vo.user_info.space_url}"><img src="{$vo.user_info.avatar_middle}" width="50" height="50"></a><php>if($vo['user_info']['group_icon_only']):</php><a href="javascript:;" title="{$vo['user_info']['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vo['user_info']['group_icon_only']['user_group_name']}" src="{$vo['user_info']['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php></dt>
+            <dd class="content">
+              <?php $source_user_at = '@{uid='.$vo['sourceInfo']['source_user_info']['uid'].'|uname='.$vo['sourceInfo']['source_user_info']['uname'].'}：';?>
+              <php>if($vo['sourceInfo']['feedtype'] == 'post' || $vo['sourceInfo']['feedtype'] == 'weiba_post'):</php>
+              <p class="hd notitle">{$vo.user_info.space_link}评论了<php>if($i<=$unread_comment_count){</php>
+                    <i class="ico-new"></i> 
+                  <php>}</php>
+              </p>
+              <p class="hd notitle">{$vo.content}
+              </p>
+              <dl class="comment comment-mes">
+                <?php if($vo['sourceInfo']['is_del'] == 1): ?>
+                <dd>内容已被删除</dd>
+                <?php else: ?>
+                <dd>{$vo.sourceInfo.source_body|format=true}</dd>
+                <?php endif; ?>
+              </dl>
+              <php>elseif($vo['sourceInfo']['feedtype'] == 'repost'):</php>
+              <p class="hd notitle">{$vo.user_info.space_link}评论了<php>if($i<=$unread_comment_count){</php>
+                    <i class="ico-new"></i> 
+                  <php>}</php>
+              </p>
+              <p class="hd notitle">{$vo.content}//{$source_user_at|parse_html}{$vo.sourceInfo.source_body|format=true}
+              </p>
+              <php>else:</php>
+              <p class="hd notitle">{$vo.user_info.space_link}评论了<php>if($i<=$unread_comment_count){</php>
+                    <i class="ico-new"></i> 
+                  <php>}</php>
+              </p>
+              <p class="hd notitle">
+                <php>if($vo['is_audit']){</php>
+                  {$vo.content}
+                <php>}else{</php>
+                  内容正在审核
+                <php>}</php>
+              </p>
+              <php>if($vo['hasComment']):</php>
+              <dl class="comment comment-mes">
+                <?php if($vo['sourceInfo']['is_del'] == 1): ?>
+                <dd>内容已被删除</dd>
+                <?php else: ?>
+                <dd>{$vo.sourceInfo.source_body|format=true}</dd>
+                <?php endif; ?>
+              </dl>
+              <php>endif;</php>
+              <php>endif;</php>
+              <p class="info">
+                <php>if($vo['is_audit']){</php>
+                  <span class="right">
+                  <php>if(CheckPermission('core_normal','comment_del')){</php>
+                    <em class="hover">
+                      <a event-args="comment_id={$vo.comment_id}" event-node="comment_del" href="javascript:void(0);">{:L('PUBLIC_STREAM_DELETE')}</a>
+                    </em>
+                    <php>}</php>
+                    &nbsp;&nbsp;<a href="{$vo.sourceInfo.source_url}">{:L('PUBLIC_VIEW')}</a>
+                    <php>if(in_array('comment',$weibo_premission)):</php>
+                      <!-- 回复 -->
+                      &nbsp;&nbsp; <a event-node="messasge_reply_comment" href="javascript:void(0)" event-args="row_id={$vo['row_id']}&app_uid={$vo['app_uid']}&to_comment_id={$vo['comment_id']}&to_uid={$vo['to_uid']}&to_comment_uname={$vo['user_info']['uname']}&table={$vo['table']}&app_row_id={$vo['row_id']}&app_name={$vo['app']}">回复</a>
+                    <php>endif;</php>
+                  </span>
+                  <span class="date">{$vo.ctime|friendlyDate}</span>&nbsp;
+                  <span>{$vo.client_type}</span>
+                <php>}</php>
+              </p>
+              <div class="infopen"><div class="trigon"></div></div>
+              <div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+            </dd>
+            <dt class="xline"></dt>
+          </dl>
+          </volist>
+<script type="text/javascript">
+  M(document.getElementById('mfeed-lists'));
+</script> 
+          <else />
+          <div class="note">{:L('PUBLIC_COMMENTS_ISNOT')}</div>
+          </neq>
+          <div id='page' class='page'>{$list.html}</div>
+        </div>
+        
+        <php>else:</php>
+        <!-- 发出的评论 -->
+        <div class="feed_lists" id="mfeed-lists">
+          <neq name='list.data' value=''>
+          <volist name='list.data' id='vo'>
+          <dl class="feed_list"  model-node='comment_list'>
+            <dt class="face"><a href="{$vo.user_info.space_url}"><img src="{$vo.user_info.avatar_small}"></a><php>if($vo['user_info']['group_icon_only']):</php><a href="javascript:;" title="{$vo['user_info']['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vo['user_info']['group_icon_only']['user_group_name']}" src="{$vo['user_info']['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php></dt>
+            <dd class="content">
+              <?php $source_user_at = '@{uid='.$vo['sourceInfo']['source_user_info']['uid'].'|uname='.$vo['sourceInfo']['source_user_info']['uname'].'}：';?>
+              <php>if($vo['sourceInfo']['feedtype'] == 'post' || $vo['sourceInfo']['feedtype'] == 'weiba_post'):</php>
+              <p class="hd notitle"><a event-node="face_card" uid="{$vo.user_info.uid}" href="{$vo.user_info.space_url}">我</a>评论了</p>
+              <p class="hd notitle">{$vo.content}{$vo.replyInfo|parse_html}</p>
+              <dl class="comment comment-mes">
+                <!-- <dt class="arrow bgcolor_arrow"><em class="arrline">◆</em><span class="downline">◆</span></dt> -->
+                <!--<dd class="name">{$vo.sourceInfo.source_user_info.space_link}</dd>-->
+                <?php if($vo['sourceInfo']['is_del'] == 1): ?>
+                <dd>内容已被删除</dd>
+                <?php else: ?>
+                <dd><!--{$vo.sourceInfo.source_user_info.space_link}：-->{$vo.sourceInfo.source_body|format=true}</dd>
+                <?php endif; ?>
+              </dl>
+              <php>elseif($vo['sourceInfo']['feedtype'] == 'repost'):</php>
+              <p class="hd notitle"><a event-node="face_card" uid="{$vo.user_info.uid}" href="{$vo.user_info.space_url}">我</a>评论了</p>
+              <p class="hd notitle">{$vo.content}//{$source_user_at|parse_html}{$vo.sourceInfo.source_body|format=true}</p>
+              <php>else:</php>
+              <p class="hd notitle"><a event-node="face_card" uid="{$vo.user_info.uid}" href="{$vo.user_info.space_url}">我</a>评论了</p>
+              <p class="hd notitle">{$vo.content}</p>
+              <php>if($vo['hasComment']):</php>
+              <dl class="comment comment-mes">
+                <?php if($vo['sourceInfo']['is_del'] == 1): ?>
+                <dd>内容已被删除</dd>
+                <?php else: ?>
+                <dd>{$vo.sourceInfo.source_body|format=true}</dd>
+                <?php endif; ?>
+              </dl>
+              <php>endif;</php>
+              <php>endif;</php>
+              <p class="info">
+                <span class="right">
+                <php>if(CheckPermission('core_normal','comment_del')){</php>
+                  <em class="hover">
+                    <a event-args="comment_id={$vo.comment_id}" event-node="comment_del" href="javascript:void(0);">{:L('PUBLIC_STREAM_DELETE')}</a>
+                  </em>
+                  <php>}</php>
+                  <!-- 查看 -->
+                  &nbsp;&nbsp;<a href="{$vo.sourceInfo.source_url}">{:L('PUBLIC_VIEW')}</a>
+                  <php>if(in_array('comment',$weibo_premission)):</php>
+                      <!-- 回复 -->
+                      &nbsp;&nbsp; <a href="javascript:void(0)"  event-node="messasge_reply_comment" event-args="row_id={$vo['row_id']}&app_uid={$vo['app_uid']}&to_comment_id={$vo['comment_id']}&to_uid={$vo['to_uid']}&to_comment_uname={$vo['user_info']['uname']}&table={$vo['table']}&app_row_id={$vo['row_id']}&app_name={$vo['app']}">回复</a>
+                  <php>endif;</php>
+                </span>
+                <span class="date">{$vo.ctime|friendlyDate}</span>&nbsp;
+                <span>{$vo.client_type}</span>
+              </p>
+              <div class="infopen"><div class="trigon"></div></div>
+              <div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+            </dd>
+            <dt class="xline"></dt>
+          </dl>
+          </volist>
+<script type="text/javascript">
+  M(document.getElementById('mfeed-lists'));
+</script> 
+          <else />
+          <div class="note">{:L('PUBLIC_COMMENTS_ISNOT')}</div>
+          </neq>
+          <div id='page' class='page'>{$list.html}</div>
+        </div>
+
+        <php>endif;</php>
+        </div>
+</div>
+</div>

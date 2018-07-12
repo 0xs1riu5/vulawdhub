@@ -1,0 +1,63 @@
+<div class="my-medal clearfix" style="display:none;">
+<div class="my-medal-list">
+<ul>
+	<php>
+$medals= $medals;
+if(count($medals)>5){</php><a href="{:U('public/Medal/index','uid='.$uid)}"><i class="arrow-next-page right"></i></a><php>}</php>
+<volist name="medals" id="medal">
+	<li <php>if($key>4){</php>status="hide" style="display:none"<php>}</php>>
+		<a href="javascript:void(0)" rel="widget_medal" medal_id="{$key}"><img src="{$medal.small_src}" width="30" height="30"></a>
+		<div class="wrap-layer" rel="widget_medal" medal_id="{$key}" style="display:none;margin:3px 0 0 -135px;z-index:99;">
+	        <div class="content-layer">
+	        	<div class="arrow arrow-t"></div>
+		        <div class="medal-info-s clearfix">
+			       <dt><a href="{:U('public/Medal/index','type=2')}"><img src="{$medal.src}" width="100" height="100"/></a></dt>
+			       <dd><h4>{$medal.name}</h4><p>{$medal.desc}</p><p>领取时间：{$medal.ctime}</p><p><a href="{:U('public/Medal/index','uid='.$uid)}">查看<php>if($isme){</php>我<php>}else{</php>TA<php>}</php>的勋章>></a></p></dd>
+		        </div>
+	        </div>
+        </div>
+	</li>
+</volist>
+</ul>
+
+</div>
+</div>
+<script>
+var medal_delay = 0;
+$(function (){
+	$('a[rel="widget_medal"]').hover(function (){
+		clearTimeout(medal_delay);
+		var _this = $(this);
+		medal_delay = setTimeout(function (){
+			$('div[rel="widget_medal"]:visible').fadeOut();
+			var medalid = _this.attr("medal_id");
+			$('div[medal_id="'+medalid+'"]').fadeIn();
+		},200);
+	},function (){
+		clearTimeout(medal_delay);
+		var _this = $(this);
+		medal_delay = setTimeout(function (){
+			var medalid = _this.attr('medal_id');
+			$('div[medal_id="'+medalid+'"]').fadeOut();
+		},200);
+	});
+	$('div[rel="widget_medal"]').hover(function (){
+		clearTimeout(medal_delay);
+	},function (){
+		var _this = $(this);
+		medal_delay = setTimeout(function (){
+			_this.fadeOut();
+		},200);
+	});
+});
+function show_medal(obj){
+	var status = $(obj).children().attr('class');
+	if ( status == 'arrow-next-page'){
+		$(obj).children().attr('class','arrow-previous-page');
+		$("li[status='hide']").show();
+	} else {
+		$(obj).children().attr('class','arrow-next-page');
+		$("li[status='hide']").hide();
+	}
+}
+</script>

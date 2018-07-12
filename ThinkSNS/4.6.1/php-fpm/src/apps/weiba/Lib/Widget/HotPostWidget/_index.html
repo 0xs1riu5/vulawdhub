@@ -1,0 +1,15 @@
+    <volist name="topic_list" id="vo">
+    <php>
+    if($key<3)
+	    {
+	    	$ii='ico-dot1';
+	    }
+    else
+	    {
+	    	$ii='ico-dot2';
+	    }
+    </php>
+      <li>
+      <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><i class="{$ii}"></i>{$vo.title|getShort=14}</a>
+      </li>
+    </volist>

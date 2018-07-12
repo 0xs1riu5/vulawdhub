@@ -1,0 +1,366 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/account.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="col" class="st-grid content-bg st-bg-b cc">
+      <div id="col4" class="main-left">
+        <!--tab菜单-->
+        <include file="_tabs" />
+      </div>
+      <div id="col7" class="main-right">
+        <div class="extend minh person-set">
+          <div class="set-hd">
+            <h3>{$tabName}</h3>
+          </div>
+          <!--信息设置项---绑定邮箱-->
+          <div class="set-item-title">
+            <h4 >绑定邮箱</h4>
+            <php>if($bindingEmail):</php>
+              <p class="acc-info"><a href="javascript:;" onclick="binding('email', this);" class="right">重置</a><span id="binding_email_name">当前已绑定邮箱：{$email|hideContactInformation=###,'email'}</span></p>
+            <php>else:</php>
+              <p><a href="javascript:;" onclick="binding('email', this);" class="right">绑定</a>还未绑定邮箱？</p>
+            <php>endif;</php>
+          </div>
+          <div id="binding_email" class="set-item-info clearfix border-b" style="display:none;">
+            <div class="sec-left">
+              <form id="do_binding_email" action="{:U('public/Account/doBindingEmail')}" method="post">
+                <dl class="form-set form-contact">
+                  <dd>
+                    <div class="form-tt">请输入新的邮箱：</div>
+                    <div class="form-row">
+                      <input name="email" id="write_email" type="text" class="text" autocomplete='off'/>
+                    </div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt">验证码：</div>
+                    <div class="form-row">
+                      <input id="write_email_code" name="email_code" type="text" class="text" autocomplete='off' />
+                      <a href="javascript:;" id="get_email_code" onclick="send_email_msg();" email="" class="btn-cancel">
+                        <span>获取验证码</span>
+                      </a>
+                      <div class="txt-info" id="email_msg_tip" style="display:none;">验证码已发送到您的邮箱，30分钟内输入有效，请勿泄露。</div>
+                    </div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt">&nbsp;</div>
+                    <div class="form-row">
+                      <a href="javascript:;" onclick="do_binding_email();" class="btn-green-small">
+                        <span>保存</span>
+                      </a>
+                    </div>
+                  </dd>
+                </dl>
+              </form>
+            </div>
+            <div class="sec-right">
+              <ul>
+                <li>1、输入要绑定的邮箱</li>
+                <li>2、请输入验证码，需要从绑定的邮箱邮件中获取验证码</li>
+                <li>3、邮箱绑定完成</li>
+              </ul>
+            </div>
+          </div>
+          <!--信息设置项---绑定手机-->
+          <div class="set-item-title">
+            <h4 >绑定手机</h4>
+            <php>if($bindingMobile):</php>
+              <p class="acc-info"><a href="javascript:;" onclick="binding('mobile', this);" class="right">重置</a>当前已绑定手机：<span id="binding_mobile_name">{$mobile|hideContactInformation=###,'mobile'}</span></p>
+            <php>else:</php>
+              <p class="acc-info"><a href="javascript:;" onclick="binding('mobile', this);" class="right">绑定</a>还未绑定手机？</p>
+            <php>endif;</php>
+          </div>
+          <div id="binding_mobile" class="set-item-info clearfix border-b" style="display:none;">
+            <div class="sec-left">
+              <form id="do_binding_mobile" action="{:U('public/Account/doBindingMobile')}" method="post">
+                <dl class="form-set form-contact">
+                  <dd>
+                    <div class="form-tt">请输入手机号：</div>
+                    <div class="form-row">
+                      <input id="write_mobile" name="mobile" type="text" class="text" autocomplete='off'/>
+                    </div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt">验证码：</div>
+                    <div class="form-row">
+                      <input id="write_mobile_code" name="mobile_code" type="text" class="text" autocomplete='off' />
+                      <a href="javascript:;" id="get_mobile_code" mobile="" onclick="send_moblie_msg();" class="btn-cancel">
+                        <span>获取验证码</span>
+                      </a>
+                      <div class="txt-info" id="mobile_msg_tip" style="display:none;">验证码已发送到您的手机，30分钟内输入有效，请勿泄露。</div>
+                    </div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt">&nbsp;</div>
+                    <div class="form-row">
+                      <a href="javascript:;" onclick="do_binding_mobile();" class="btn-green-small">
+                        <span>保存</span>
+                      </a>
+                    </div>
+                  </dd>
+                </dl>
+              </form>
+            </div>
+            <div class="sec-right">
+              <ul>
+                <li>1、输入要绑定的手机号</li>
+                <li>2、请输入验证码，需要从绑定的手机短信中获取验证码</li>
+                <li>3、手机绑定完成</li>
+              </ul>
+            </div>
+          </div>
+
+          <!--信息设置项---修改密码-->
+          <div class="set-item-title">
+            <h4 >修改密码</h4>
+          </div>
+          <div class="set-item-info clearfix">
+            <div class="sec-left">
+              <form action="{:U('public/Account/doModifyPassword')}" method="post">
+                <dl class="form-set form-contact">
+                  <dd>
+                    <div class="form-tt"> <font color="red">*</font>
+                      {:L('PUBLIC_ORIGINAL_PASSWORD')}：
+                    </div>
+                    <div class="form-row">
+                      <input name="oldpassword" type="password" class="text" autocomplete = 'off'/>
+                    </div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt"> <font color="red">*</font>
+                      {:L('PUBLIC_NEW_PASSWORD')}：
+                    </div>
+                    <div class="form-row">
+                      <input name="password" type="password" class="text" />
+                    </div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt">
+                      <font color="red">*</font>
+                      {:L('PUBLIC_CONFIRM_PASSWORD')}：
+                    </div>
+                    <div class="form-row">
+                      <input name="repassword" type="password" class="text" />
+                    </div>
+                  </dd>
+                  <dd>
+                    <div class="form-tt">&nbsp;</div>
+                    <div class="form-row">
+                      <a event-node="submit_btn" href="#" class="btn-green-small">{:L('PUBLIC_SAVE')}</a>
+                    </div>
+                  </dd>
+                </dl>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__THEME__/js/module.form.js"></script>
+
+<script type="text/javascript">
+var binding = function(type, obj) {
+  var hash = {'email': '<?php echo $bindingEmail ? 1 : 0; ?>', 'mobile': '<?php echo $bindingMobile ? 1 : 0; ?>'};
+  var hidden = $('#binding_' + type).is(':hidden');
+  if (hidden) {
+    $('#binding_' + type).show();
+    $(obj).html('收起');
+  } else {
+    $('#binding_' + type).hide();
+    var title = parseInt(hash[type]) ? '重置' : '绑定';
+    $(obj).html(title);
+  }  
+};
+
+var lock_moblie = 0;
+var timefun_moblie = '';
+var timenum_moblie = 0;
+var send_moblie_msg = function() {
+  if (lock_moblie == 1) {
+    return false;
+  }
+  var mobile = $.trim($('#write_mobile').val());
+  if (mobile === '') {
+    ui.error('手机号不能为空');
+    return false;
+  }
+  if( !(/^[1][358]\d{9}$/.test(mobile)) ){
+    ui.error('请填写正确的11位手机号');
+    return false;
+  }
+  $.post(U('public/Register/isPhoneAvailable'), {phone:mobile}, function(res) {
+    if (res.status) {
+      if (lock_moblie == 1) {
+        return false;
+      } else {
+        timenum_moblie = 60;
+        clearInterval(timefun_moblie);
+        lock_moblie = 1;
+      }
+      $.post(U('public/Account/getCaptcha'), {type:'mobile', mobile:mobile}, function(res) {
+        if (res.status == 0) {
+          lock_moblie = 0;
+          ui.error(res.info);
+        } else {
+          $('#mobile_msg_tip').show();
+          timefun_moblie = setInterval(timeout_mobile, 1000);
+          ui.success('短信发送成功，请耐心等待');
+        }
+      },'json');
+    } else {
+      ui.error(res.info);
+    }
+  }, 'json');
+  return false;
+};
+
+var timeout_mobile = function() {
+  timenum_moblie -= 1;
+  if (timenum_moblie < 0) {
+    clearInterval(timefun_moblie);
+    timefun_moblie = '';
+    lock_moblie = 0;
+    $('#mobile_msg_tip').hide();
+    $('#get_mobile_code').find('span').text('获取验证码');
+    return;
+  }
+  $('#get_mobile_code').find('span').text('('+timenum_moblie+')获取验证码');
+};
+
+$(function() {
+  var valChange = function() {
+    $('#get_email_code').attr('email', $.trim($('#write_email').val()));
+    $('#get_mobile_code').attr('mobile', $.trim($('#write_mobile').val()));
+  };
+  // 浏览器的输入的兼容性
+  if($.browser.msie && parseInt($.browser.version) < 9) {
+      $(this).bind("propertychange", function() {
+          valChange();
+      });
+  } else {
+      $(this).bind("input", function() {
+          valChange();
+      });
+  }
+
+
+});
+
+var do_binding_mobile = function() {
+  var mobile = $.trim($('#write_mobile').val());
+  if (mobile === '') {
+    ui.error('手机号不能为空');
+    return false;
+  }
+  if( !(/^[1][358]\d{9}$/.test(mobile)) ){
+    ui.error('请填写正确的11位手机号');
+    return false;
+  }
+  var mobile_code = $.trim($('#write_mobile_code').val());
+  if (mobile_code === '' || mobile_code.length != 4) {
+    ui.error('验证码错误，请检查验证码');
+    return false;
+  }
+  var form = $('#do_binding_mobile')[0];
+  form.callback = binding_callback;
+  ajaxSubmit(form);
+};
+
+var lock_email = 0;
+var timefun_email = '';
+var timenum_email = 0;
+var send_email_msg = function() {
+  if (lock_email == 1) {
+    return false;
+  }
+  var email = $.trim($('#write_email').val());
+  if (email === '') {
+    ui.error('邮箱地址不能为空');
+    return false;
+  }
+  if( !(/[_a-zA-Z\d\-\.]+(@[_a-zA-Z\d\-\.]+\.[_a-zA-Z\d\-]+)+$/i.test(email)) ){
+    ui.error('请输入正确的邮箱地址');
+    return false;
+  }
+  $.post(U('public/Register/isEmailAvailable'), {email:email}, function(res) {
+    if (res.status) {
+      if (lock_email == 1) {
+        return false;
+      } else {
+        timenum_email = 60;
+        clearInterval(timefun_email);
+        lock_email = 1;
+      }
+      $.post(U('public/Account/getCaptcha'), {type: 'email', email:email}, function(res) {
+        if (res.status == 0) {
+          lock_email = 0;
+          ui.error(res.info);
+        } else {
+          $('#email_msg_tip').show();
+          timefun_email = setInterval(timeout_email, 1000);
+          ui.success('邮件发送成功，请耐心等待');
+        }
+      },'json');
+    } else {
+      ui.error(res.info);
+    }
+  }, 'json');
+  return false;
+};
+
+var timeout_email = function() {
+  timenum_email -= 1;
+  if (timenum_email < 0) {
+    clearInterval(timefun_email);
+    timefun_email = '';
+    lock_email = 0;
+    $('#email_msg_tip').hide();
+    $('#get_email_code').find('span').text('获取验证码');
+    return;
+  }
+  $('#get_email_code').find('span').text('('+timenum_email+')获取验证码');
+};
+
+var do_binding_email = function() {
+  var email = $.trim($('#write_email').val());
+  if (email === '') {
+    ui.error('邮箱地址不能为空');
+    return false;
+  }
+  if ( !(/[_a-zA-Z\d\-\.]+(@[_a-zA-Z\d\-\.]+\.[_a-zA-Z\d\-]+)+$/i.test(email)) ) {
+    ui.error('请输入正确的邮箱地址');
+    return false;
+  }
+  var email_code = $.trim($('#write_email_code').val());
+  if (email_code === '' || email_code.length != 4) {
+    ui.error('验证码错误，请检查验证码');
+    return false;
+  }
+  var form = $('#do_binding_email')[0];
+  form.callback = binding_callback;
+  ajaxSubmit(form);
+};
+
+var binding_callback = function(res) {
+  if (res.status == 1) {
+/*    var type = res.data.type;
+    $('#write_' + type).val('');
+    $('#write_' + type + '_code').val('');
+    if (type === 'mobile') {
+      $('#binding_' + type + '_name').html(res.data.mobile);
+    } else if (type === 'email') {
+      $('#binding_' + type + '_name').html(res.data.email);
+    }*/
+    ui.success(res.info);
+    setTimeout(function() {
+      location.reload();
+    }, 1500);
+  } else {
+    ui.error(res.info);
+  }
+};
+
+</script>
+
+<include file="__THEME__/public_footer" />

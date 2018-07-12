@@ -1,0 +1,118 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/task.css" rel="stylesheet" type="text/css" />
+<script>
+function complete_step( id , obj , tasktype , tasklevel){
+	$.post(U('public/Task/complete_step') , {id:id,tasktype:tasktype,tasklevel:tasklevel} , function (res){
+		eval("data = " + res + ";") ;
+		ui.success(data.info);
+		$('#step_'+id).html('<span class="finished"></span>');
+		if ( data.allcomplete && data.tasktype==2){
+			complete_task(tasktype,tasklevel);
+		}
+
+	})
+}
+function complete_task(type,level){
+	$.post(U('public/Task/complete_task') , {type:type,level:level} , function (res){
+		if ( res != 0){
+      ui.box.show( res );
+		}
+	})
+}
+var islock = 0;
+function gonext(type,level){
+  if ( islock == 1){
+    return;
+  }
+  islock = 1;
+	var ispost = $('#taskfeed').attr('checked');
+	if ( ispost == 'checked'){
+		$.post(U('public/Task/postTaskFeed'),{type:type,level:level},function (){
+		  location.reload();
+		});
+	} else {
+		location.reload();
+	}
+}
+</script>
+<div id="page-wrap">
+	   <div id="main-wrap">
+          <div class="boxShadow">
+              <div class="find-type">
+	   	   	   	   <div class="app-title clearfix border-b">
+                       <a href="{:U('public/Medal/index')}" class="view-link">查看我的勋章</a> 
+                       <h4 class="left">任务中心</h4>                     
+                       <div class="app-tab-menu clearfix">
+                           
+                           <ul>
+                             <li><a href="{:U('public/Task/index' , array('type'=>2))}" <php>if($task_type==2){</php>class="current"<php>}</php>>主线任务<eq name="task_type" value="2"><span class="arrow-t"></span></eq></a></li>
+                             <li><a href="{:U('public/Task/index' , array('type'=>1))}" <php>if($task_type==1){</php>class="current"<php>}</php>>每日任务<eq name="task_type" value="1"><span class="arrow-t"></span></eq></a></li>
+                             <li><a href="{:U('public/Task/customIndex')}" <php>if($task_type==3){</php>class="current"<php>}</php>>副本任务<eq name="task_type" value="3"><span class="arrow-t"></span></eq></a></li>
+                           </ul>
+                       </div>
+                   </div>
+                </div>
+	   	   	<div id="col" class="extend clearfix">
+                <php>if($task_type==2){</php>
+                <div class="task-stage">
+                   	<div class="stage{$task_level}"><span class="a">新手任务</span><span class="b">进阶任务</span><span class="c">达人任务</span><span class="d">高手任务</span><span class="e">终极任务</span></div>
+                </div>
+                <php>}</php>
+                 <div class="task-content">
+                    <div class="task-list-title clearfix">
+                       <ul class="clearfix">
+                           <li class="c1">任务名称</li>
+                           <li class="c2">积分奖励</li>
+                           <li class="c3">勋章</li>
+                           <li class="c4">状态</li>
+                        </ul>
+                    </div>
+                    <div class="task-lists">
+                    <volist name="list" id="v">
+                        <div class="task-list clearfix">
+
+                            <ul class="clearfix">
+                               <li class="c1"><h4 class="strong">{$v.step_name} </h4><p>{$v.step_desc} </p></li>
+                               <li class="c2"><span>经验值<em>+<php>echo $v['reward']->exp;</php></em>点</span><span>积分值<em>+<php>echo $v['reward']->score;</php></em>点</span></li>
+                               <li class="c3"><span><php>if ( $v['reward']->medal->name ){</php><img src="<php>echo getImageUrl( $v['reward']->medal->src);</php>" width="50" height="50"/><php>echo $v['reward']->medal->name;}else{echo '<em></em>';}</php></span></li>
+                               <li class="c4">
+                               		<php>if($v['status']){</php>
+                               			<span id="step_{$v.id}">
+                               			<php>if( $v['receive']){</php>
+											<span class="finished"></span>
+										<php>}else{</php>
+											<a href="javascript:void(0);" onclick="complete_step({$v['id']},this,{$task_type},{$task_level})"><span class="award">领取奖励</span></a>
+										<php>}</php>
+										</span>
+                               		<php>}else{</php>
+	                               		<php>if($v['action']){</php>
+	                               		<a href="{$v['action']}" target="_blank"><span class="start">去做任务</span></a>
+	                               		<php>}else{</php>
+                                      <php>if (is_null($v['progress_rate'])):</php>
+                                      
+  	                                  <span class="unfinished">未完成</span>
+                                      <php>else:</php>
+                                      <span class="finishing">完成&nbsp;{$v['progress_rate']}</span>
+                                      <php>endif;</php>
+	                               		<php>}</php>
+                               		<php>}</php>
+                               	</li>
+                            </ul>
+                        </div>
+                 	</volist>
+                 	<span id="task" class="right">
+					<php>if($iscomplete && $task_type==2){</php>
+						<php>if($receive){</php>
+						已完成{$task_name}
+						<php>}else{</php>
+						<a href="javascript:void(0)" onclick="complete_task({$task_type},{$task_level})" class="btn-cancel mt10"><span>已完成{$task_name}，领取奖励</span></a>
+						<php>}</php>
+					<php>}</php>
+					</span>
+                    </div>
+                 </div>
+           	 </div>
+          </div>
+	   </div>
+</div>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,154 @@
+<script>
+                    	var index= '{$index}';
+                    	var layout = '{$layout}';
+                    	var parentId = '{$parentId}';
+                    	var id = '{$id}';
+                    	var namespace = '{$_GET['tagName']}';
+						var defaultTpl;
+                		var postData = new Array();
+						function changStyle(_this){
+							var index = _this.val();
+							if(index !== 0){
+								$('#content').val($('#custom_'+index).html());
+							}
+						}
+						
+  function preview(){
+                                var sendData = getPostData();
+                                $.ajax({
+                                    type: "POST",
+                                    url: SITE_URL+'/index.php?app=page&mod=Diy&act=previewModel',
+                                    data: sendData,
+                                    dataType: 'json',
+                                    success: function(result){
+                                        $('#preview').html(result.html);
+                                        var content = '<div id="diy_copyHtmlContent">\
+                                            		复制源代码:<input type="text" id="copyHtmlContent" onclick="select();" style="width:150px;" />\
+                                        		</div>'
+										var widget = '<div id="diy_copyHtmlContent">\
+                                            		复制标签:<input type="text" id="copyWidgetContent" onclick="select();" style="width:150px;" />\
+                                        		</div>'		
+                                        $('#preview').append(content);
+										$('#preview').append(widget);
+                                        $('#diy_copyHtmlContent');
+                                        $('#copyHtmlContent').val(result.html).bind('click',function(){
+											copyToClipboard(result.html);
+										});
+										$('#copyWidgetContent').val(result.widget).bind('click',function(){
+											copyToClipboard(result.widget);
+										});
+										//$('#copyHtml').click();
+                                    }
+                                });
+                            }
+                    	
+                    	function savemodel(){
+    						var sendData = getPostData();
+                			$.ajax({
+                				type : "POST",
+                				url  : SITE_URL+'/index.php?app=page&mod=Diy&act=saveModel',
+                				data : sendData,
+                				dataType : 'json',
+                				success : function(result){
+                 					//var jsonData = eval('('+result+')');
+                    		 		frameArray[parentId][layout][index] = result['sign'];
+                    		 		 if($('#'+id).html() == null){
+                			  		 $('#placeholder').html(result['html']);
+                    		 		 $('#placeholder')
+                    		 			.removeAttr('class')
+                    					.removeAttr('style')
+                    					.addClass('mb10')
+                    					.attr('id',id)
+                    					.attr('rel',namespace)
+										.attr('sign', result['sign'])
+                    		 			.prepend('<div class="diy_edit"><div class="ico_edit"><a href="javascript:void(0)" onclick="updateDiyModel(\''+id+'\',\''+namespace+'\')" class="ico_diyedit" title="设置">设置</a> <a href="javascript:void(0)" class="ico_diydel" onclick="deleteDiy(\'' + id + '\')" title="删除">删除</a></div></div>');
+            		        		 }else{
+            		    			 	$('#'+id).html(result['html']).attr('sign', result['sign']);
+            		    				$('#'+id).prepend('<div class="diy_edit"><div class="ico_edit"><a href="javascript:void(0)" onclick="updateDiyModel(\''+id+'\',\''+namespace+'\')" class="ico_diyedit" title="设置">设置</a> <a href="javascript:void(0)" class="ico_diydel" onclick="deleteDiy(\'' + id + '\')" title="删除">删除</a></div></div>');
+            		    
+            		    			 }
+                				}
+                			});
+                    	}
+        				 					function getPostData(){
+        											var result;
+													var value = $('#content').val().replace(/&/g,"[@]");
+                                        			result = 'tagName='+namespace+'&PARAM_html='+value+"&PARAM_sql="+$('#PARAM_sql').val();
+													
+        											return result;
+            									}
+    											
+    										$('.radio_select').click(function(){
+                								if($(this).attr('checked')){
+                									$('#'+$(this).attr('rel')).show();
+    												$('#'+$(this).attr('rel')+" textarea").focus();
+                								}
+                								$('.param_select').not($('#'+$(this).attr('rel'))).hide();
+                							})
+						var upload_img = new Array();
+                        function attach_upload_sim_imge(info){
+                            var content = $('#content').val();
+                            //判断附件类型
+                            //判断附件类型
+                            //var imgPattern = new RegExp('^.*\.(bmp|gif|jpg|png){1}$','gi');	//图片类型匹配
+                            var imgPattern = new RegExp('^.*.(bmp|gif|jpg|png){1}$', 'gi'); //图片类型匹配
+                            if (imgPattern.test(info.name)) {
+                                var img = SITE_URL + '/data/uploads/' + info.savepath + info.savename;
+                                upload_img[info.id] = img;
+                                var imgInfo = '<img src="' + img + '"/>';
+                                $('#content').val(content + imgInfo);
+                                attachInfo = '<p><a class="attach' + info.id + '" href="javascript:void(0)" onclick="deleteAttach(' + info.id + ')">[删除]</a>&nbsp;\
+                        							 				  <a class="attach' +
+                                info.id +
+                                '" href="javascript:void(0)" onclick="addAttach(' +
+                                info.id +
+                                ')">[插入]</a>\
+                        							 				<span class="attach' +
+                                info.id +
+                                '">' +
+                                img +
+                                '</span></p>';
+                                $('#attach_upload_data').append(attachInfo);
+                            }
+                        }
+						
+						function addAttach(id){
+							var imgInfo = '<img src="' + upload_img[id] + '"/>';
+							var content = $('#content').val();
+							$('#content').val(content + imgInfo);
+						}
+
+</script>
+<div class="pop_up">
+    <div class="pop_up_main">
+        <div class="pop_up_tab">
+            <div class="tab">
+                <a href="#" class="on">基本设置</a>
+            </div>
+        </div>
+        <div class="pop_up_box">
+            <ul class="pop_up_box_form">
+                         <li>
+                    <div class="c2" style="width:460px; margin-left:8px;">
+                       <textarea  class="in_put" id="content" name="content" cols="" rows="20" style="width:450px;height:400px;overflow:auto;"  >{$html}</textarea>
+                    </div>
+                </li>
+                <li>
+                    <div class="c1">
+                    	说明：
+                    </div>
+                    <div class="c2" style="width:400px;">
+                     支持各种HTML标签
+                    </div>
+            </ul>
+        </div>
+    </div>
+    <div id="preview" class="preview_r">
+    </div>
+</div>
+
+<div style="display:none;">
+	<volist name="htmlTpl" id="vo">
+		<div id="custom_{$key}">{$vo}</div>
+	</volist>
+</div>

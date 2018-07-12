@@ -1,0 +1,54 @@
+<div id="col" class="st-grid minh"> 
+  <!--我的微吧-->
+  <div class="st-bg mb20">
+    <div class="feed-nav clearfix">
+      <div class="mod-feed-tab" id="mod-feed-tab">
+        <ul class="inner-feed-nav">
+          <li><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'','feed_key'=>$feed_key,'uid'=>$uid))}">发表的帖子</a> </li>
+          <li 
+        
+          
+          <eq name='feed_type' value=''>class="current"</eq>
+          ><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'','feed_key'=>$feed_key,'uid'=>$uid))}">加入的微吧</a>
+          <li><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'','feed_key'=>$feed_key,'uid'=>$uid))}">创建的微吧</a> </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="circle">
+    <div>
+      <ul class="circle-list clearfix" id="circle-list">
+        <li>
+          <div class="circle-pic mb20"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank"><img src="{$vo.logo}"  /></a></div>
+          <h class="circle-tit"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank">{$vo.weiba_name|getShort=12}</a><i class="ico-found"></i></h>
+          <p class="circle-data"><span>成员数{$vo.follow_count}</span>&nbsp;&nbsp;<span>今日新帖789(还没添加)</span></p>
+          <p class="circle-prof">{$vo.intro|getShort=26}...</p>
+        </li>
+        <li>
+          <div class="circle-pic mb20"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank"><img src="{$vo.logo}"  /></a></div>
+          <h class="circle-tit"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank">{$vo.weiba_name|getShort=12}</a><i class="ico-found"></i></h>
+          <p class="circle-data"><span>成员数{$vo.follow_count}</span>&nbsp;&nbsp;<span>今日新帖789(还没添加)</span></p>
+          <p class="circle-prof">{$vo.intro|getShort=26}...</p>
+        </li>
+        <li>
+          <div class="circle-pic mb20"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank"><img src="{$vo.logo}"  /></a></div>
+          <h class="circle-tit"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank">{$vo.weiba_name|getShort=12}</a><i class="ico-found"></i></h>
+          <p class="circle-data"><span>成员数{$vo.follow_count}</span>&nbsp;&nbsp;<span>今日新帖789(还没添加)</span></p>
+          <p class="circle-prof">{$vo.intro|getShort=26}...</p>
+        </li>
+        <li>
+          <div class="circle-pic mb20"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank"><img src="{$vo.logo}"  /></a></div>
+          <h class="circle-tit"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank">{$vo.weiba_name|getShort=12}</a><i class="ico-found"></i></h>
+          <p class="circle-data"><span>成员数{$vo.follow_count}</span>&nbsp;&nbsp;<span>今日新帖789(还没添加)</span></p>
+          <p class="circle-prof">{$vo.intro|getShort=26}...</p>
+        </li>
+        <li>
+          <div class="circle-pic mb20"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank"><img src="{$vo.logo}"  /></a></div>
+          <h class="circle-tit"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank">{$vo.weiba_name|getShort=12}</a><i class="ico-found"></i></h>
+          <p class="circle-data"><span>成员数{$vo.follow_count}</span>&nbsp;&nbsp;<span>今日新帖789(还没添加)</span></p>
+          <p class="circle-prof">{$vo.intro|getShort=26}...</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

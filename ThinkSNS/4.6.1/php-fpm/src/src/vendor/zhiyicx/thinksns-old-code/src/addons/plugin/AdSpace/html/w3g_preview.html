@@ -1,0 +1,77 @@
+<style>
+.device {
+	position: relative;
+}
+.swiper-container {
+	/*height: 198px;*/
+	width: 100%;
+}
+.content-slide {
+	padding: 20px;
+	color: #fff;
+}
+.title {
+	font-size: 25px;
+	margin-bottom: 10px;
+}
+.pagination {
+	position: absolute;
+	left: 0;
+	text-align: center;
+	bottom: 6px;
+	width: 100%;
+	z-index: 9;
+}
+.swiper-pagination-switch {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	background: #ccc;
+	margin: 0 3px;
+	cursor: pointer;
+}
+.swiper-active-switch {
+	background: #e21e1f;
+}
+</style>
+
+<div class="device"> <a class="arrow-left" href="#"></a> <a class="arrow-right" href="#"></a>
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <volist name="startup_ad" id="vo">
+        <div class="swiper-slide">
+          <php>if($vo['url']){</php>
+          <a href="{$vo.url}">
+          <php>}</php>
+          <img src="{$vo.img_url}" alt="{$vo.ad_name}" width="100%" />
+          <php>if($vo['url']){</php>
+          </a>
+          <php>}</php>
+        </div>
+      </volist>
+    </div>
+  </div>
+  <div class="pagination"></div>
+</div>
+<link rel="stylesheet" href="__APP__/swiper/dist/idangerous.swiper.css">
+<script src="__APP__/swiper/dist/idangerous.swiper.min.js"></script> 
+<script>
+  var mySwiper = new Swiper('.swiper-container',{
+    pagination: '.pagination',
+    loop:true,
+    grabCursor: true,
+    autoplay:3000,
+    autoResize:true,
+    resizeReInit:true,
+    calculateHeight:true,
+    paginationClickable: true
+  })
+  $('.arrow-left').on('click', function(e){
+    e.preventDefault()
+    mySwiper.swipePrev()
+  })
+  $('.arrow-right').on('click', function(e){
+    e.preventDefault()
+    mySwiper.swipeNext()
+  })
+  </script>

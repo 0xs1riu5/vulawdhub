@@ -1,0 +1,10 @@
+<div id="col3" class="right">
+	<div class="right-wrap" id="login-status">
+	<!-- 个人信息 -->
+	<php>if($mid==0){</php>
+    	{:W('VisitorLogin')}
+    <php>} else {</php>
+		{:W('UserInformation', array('uid'=>$mid, 'tpl'=>'right', 'isReturn'=>$isReturn))}
+	<php>}</php>
+    </div>
+</div>

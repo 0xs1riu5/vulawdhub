@@ -1,0 +1,65 @@
+<style>
+#channel-list .feed_img_lists{padding:0;}
+</style>
+<div class="channel-list clearfix" id="channel-list">
+    <volist name="list.data" id="vo">
+    <dl id="feed{$vo.feed_id}" class="feed_list" model-node="feed_list" <php>if(is_integer(($key + 1) / 4)):</php>style="margin-right:0;"<php>endif;</php>>
+        <div class="channel-item clearfix">
+          <div class="channel-tit">{$vo.content|format=true}</div>
+          <div class="channel-info clearfix">
+            <span class="f8 left"><a class="date" href="{:U('public/Profile/feed',array('feed_id'=>$vo['feed_id'],'uid'=>$vo['uid']))}"><em>{$vo.categoryInfo.0.title|getShort=14}</em><em style="display:none;">查看详情</em></a></span> 
+            <span class="right f8"> <span title="赞数"><i class="i-post-scan"></i>{$vo.digg_count|default=0}</span> <span title="评论"><i class="i-post-comment"></i>{$vo.comment_cout|default=0}</span> </span> </div>
+        </div>
+    </dl>
+    </volist>
+</div>
+<div class="page">{$list.html}</div>
+<script type="text/javascript" src="__APP__/channel.js"></script> 
+<script type="text/javascript" src="__THEME__/js/module.channel.js"></script> 
+<script type="text/javascript">
+/**
+ * 时间更新效果
+ * return void
+ */
+$(document).ready(function() {
+  var formatTime = '';
+  $('.date').bind({
+    mouseover: function() {
+      $(this).find('em').first().hide();
+      var width = $(this).find('em').first().width();
+      $(this).find('em').last().css({display:'inline', width: width});
+    },
+    mouseout: function() {
+      $(this).find('em').first().show();
+      $(this).find('em').last().hide();
+    }
+  });
+
+  var wTime = parseInt("{:time()}");
+  var updateTime = function()
+  {
+    $('.date').each(function(i, n) {
+      var date = $(this).attr('date');
+      if(typeof date !== 'undefined') {
+        $(this).find('em').first().html(core.weibo.friendlyDate(date, wTime));
+      }
+    }); 
+  };
+  //updateTime();
+  setInterval(function() {
+    wTime += 10;
+    updateTime();
+  }, 10000);
+});
+  
+//隐藏列表中多余图片
+$(function(){
+	$(".feed_img_lists li").css({"width":"260px","margin":"0"}).hide();
+	$(".feed_img_lists li").find("img").css({"width":"260px"});
+	$(".small").each(function(){
+		$(this).find("li").eq(0).show();
+		})
+	$(".channel-tit").find("br").remove();
+	})
+//
+</script>

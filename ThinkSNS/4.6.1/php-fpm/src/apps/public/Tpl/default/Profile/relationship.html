@@ -1,0 +1,48 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap"> <if condition="$mid==$uid"><include file="_top"/> <else /> <include file="_othertop"/></if>
+    <div id="col" class="st-grid minh col-bg" style="padding-top:20px;"> 
+    <php>if($userPrivacy['space'] != 1){</php>
+      <include file="_follow_tab" />
+      <!--我的关系-->
+      <div class="relationship clearfix"> 
+      
+      <php>if($follower_list['data']){</php>
+      
+
+        <!--关系列表-->
+        <ul class="clearfix">
+        <volist name="follower_list.data" id="vo">
+          <li>
+            <div class="relation-left"> <a href="{$user_info[$vo['fid']]['space_url']}" event-node='face_card' uid="{$vo['fid']}"><img  src="{$user_info[$vo['fid']]['avatar_big']}" /> </a><!--<a class="btns-gray">已关注</a>-->
+            {:W('UnionBtn', array('fid'=>$vo['fid'], 'uname'=>$user_info[$vo['fid']]['uname'], 'union_state'=>$union_state[$vo['fid']], 'type'=>'normal', 'isrefresh'=>1))} </div>
+            <div class="relation-right">
+              <dl class="profile-info-t">
+                <dt><a href="{$user_info[$vo['fid']]['space_url']}" event-node='face_card' uid="{$vo['fid']}">{$user_info[$vo['fid']]['uname']}</a><!--&nbsp;&nbsp;{$user_info[$vo['fid']]['auth_icon']}--></dt>
+                <dd class="from">来自：{$user_info[$vo['fid']]['location']}</dd>
+                <dd class="profile">简介：{$user_info[$vo['fid']]['intro']|getShort=100}</dd>
+                <dd>兴趣：
+                    <php>foreach($user_tag[$vo['fid']] as $t) { </php>
+                    <span class="interests">{$t}</span>
+                    <php> } </php>
+                </dd>
+              </dl>
+            </div>
+          </li>
+          </volist>
+        </ul>
+        <div id="page" class="page">{$follower_list.html}</div>
+        
+      <php>}elseif($follow_key !== '' && !is_null($follow_key)){</php>
+          <div class="loading">抱歉，暂时没有找到与 “{$follow_key}” 相关的结果</div>
+      <php>}else{</php>
+          <div class="loading">暂时没有关注TA的人</div>
+      <php>}</php>       
+      </div>
+            <php>}else{</php>
+                    <p class="extend">-_-。sorry！根据对方隐私设置，您无权查看TA的主页</p>
+            <php>}</php>       
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 

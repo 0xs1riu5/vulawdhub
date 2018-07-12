@@ -1,0 +1,15 @@
+<style>
+	#{$imgId} {width:<php>echo $width;</php>px; height:<php>echo $height;</php>px;overflow:hidden}
+</style>
+<div id="{$imgId}">
+        <ul>              
+		        <php>foreach($image as $vo){</php>
+				   <li>
+                        <php>echo '<a href="'.$vo->url.'" target = "_blank"><img width="'.$width.'" height="'.$height.'" src="'.$vo->path.'" alt="'.$vo->title.'"></a>';</php>
+                	</li>
+				<php>}</php>
+        </ul> 
+</div>
+<script>
+	jWidget.ui.SlideView("<php>echo $imgId;</php>",{effect:"<php>echo $effect;</php>",autoPlay:<php>echo $autoPlay;</php>,autoPlayInterval:<php>echo intval($autoPlayInterval)*1000;</php>});	
+</script>

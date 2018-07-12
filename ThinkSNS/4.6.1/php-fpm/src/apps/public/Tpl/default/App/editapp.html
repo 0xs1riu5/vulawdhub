@@ -1,0 +1,83 @@
+<include file="__THEME__/header" />
+<style>
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; background-color:#eef2f8 }
+</style>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-ui-1.8.6.custom.min.js"></script>
+<script>
+$(function() {
+	<volist name="ts['user_app']" id="vo">
+    <php>if(!in_array($key,$has_order)) continue;</php>
+    $( "#sortable_{$key}" ).sortable({
+        placeholder: "ui-state-highlight"
+    });
+    $( "#sortable_{$key}" ).disableSelection();
+    </volist>
+});
+function remove(appid) {
+    ui.box.load("__ROOT__/apps/myop/cp.php?op=deleteapp&appid="+appid, {title:'移除应用'});
+}
+</script>
+<div class="content_holder">
+<div class="content">
+  <div class="main no_l">
+    <div class="mainbox">
+	<div class="mainbox_C">
+      <div class="mainbox_C no_r">
+        <div class="tab-menu">
+        <a href="{:U('public/App/addapp')}" class="right lh30">添加应用</a>
+          <ul>
+            <li  class="feed_item current"><a href="{:U('public/App/editapp')}"><span>应用管理</span></a></li>
+          </ul>
+        </div>
+        <div class="app_manage">
+          <?php $app_type_alias = array('local_app'=>'我的本地应用','local_default_app'=>'默认本地应用','myop_app'=>'我的漫游应用','myop_default_app'=>'默认漫游应用'); ?>
+          <form action="{:U('public/App/doOrder')}" method="post">
+
+            <?php foreach($ts['user_app'] as $type => $apps) { ?>
+            <div class="app_manage_list" >
+              <php>if(empty($apps)) continue;</php>
+              <h3 class="lineD_btm"><strong><?php echo $app_type_alias[$type]; ?></strong></h3>
+              <ul id="sortable_{$type}">
+                <?php foreach($apps as $app) { ?>
+                <li class="lineD_btm <?php if($type != 'local_default_app') echo 'drag'; ?>">
+                  <input type="hidden" name="{$type}[]" value="{$app['app_id']}"/>
+                  <?php if($type == 'myop_app'){ ?>
+                  <span class="right ml10"> <a href="javascript:void(0);" onclick="remove('<?php echo $app['app_id'];?>');">卸载</a> </span>
+                  <?php }else if($type == 'local_app'){ ?>
+                  <span class="right ml10">
+                  <php>$url = U('public/App/uninstall',array('app_id'=>$app['app_id']));</php>
+                  <php>$alert = '卸载后将无法使用应用，重新安装后仍可以使用，您的数据不会丢失';</php>
+                  <a href="#" onclick="if(confirm('{$alert}')) location.href='{$url}';">卸载</a> </span>
+                  <?php } ?>
+                  <?php if($type == 'myop_app') { ?>
+                  <span class="right mr10"> <a href="__ROOT__/apps/myop/cp.php?my_suffix=%2Fuserapp%2FmodifyPrivacy%3FappId%3D<?php echo $app['app_id'];?>">编辑设置</a> </span> <span> <img class="alM mr5" src="http://appicon.manyou.com/icons/<?php echo $app['app_id'];?>" /> <a href="__ROOT__/apps/myop/userapp.php?id=<?php echo $app['app_id'];?>">
+                  <?php echo $app['app_alias'];?>
+                  </a> </span>
+                  <?php }else if($type == 'myop_default_app') { ?>
+                  <span> <img class="alM mr5" src="http://appicon.manyou.com/icons/<?php echo $app['app_id'];?>" /> <a href="__ROOT__/apps/myop/userapp.php?id=<?php echo $app['app_id'];?>">
+                  <?php echo $app['app_alias'];?>
+                  </a> </span>
+                  <?php }else { ?>
+                  <span> <img class="alM mr5" src="<?php echo getAppIconUrl($app['icon_url'],$app['app_name']);?>" width="16px" height="16px"/> <a href="<?php echo $app['app_entry'];?>">
+                  <?php echo $app['app_alias'];?>
+                  </a> </span>
+                  <?php } ?>
+                </li>
+                <?php } // END foreach?>
+              </ul>
+              </div>
+              <?php } // END foreach?>
+            <div>
+              <input type="submit" class="btn_b" value="保存" name="ordersubmit">  拖拽 <img src="__THEME__/images/drag.gif" /> 排列应用顺序后保存，仅针对本地应用
+            </div>
+          </form>
+        </div>
+        <div class="c"></div>
+      </div>
+    </div>
+	</div>
+    <div class="c"></div>
+  </div>
+</div>
+</div>
+<include file="__THEME__/footer" />

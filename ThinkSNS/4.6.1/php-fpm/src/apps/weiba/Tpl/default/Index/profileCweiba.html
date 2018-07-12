@@ -1,0 +1,85 @@
+<!-- 导航 -->
+<div class="feed-nav clearfix border-b">
+  <div class="mod-feed-tab" id="mod-feed-tab">
+    <ul class="inner-feed-nav">
+      <php> if($_GET['feed_type']=='weiba'){ $tag['weiba'] = 'current'; }
+        elseif($_GET['feed_type']=='cweiba'){ $tag['cweiba'] = 'current'; }
+        else{ $tag['public'] = 'current'; } </php>
+      <li class="{$tag.public}"><a href="{:U('public/Profile/appList',array('tab'=>'weiba','type'=>'weiba','feed_type'=>'','uid'=>$uid))}">发表的帖子</a></li>
+      <li class="{$tag.weiba}"><a href="{:U('public/Profile/appList',array('tab'=>'weiba','type'=>'weiba','feed_type'=>'weiba','uid'=>$uid))}">加入的微吧</a></li>
+      <li class="{$tag.cweiba}"><a href="{:U('public/Profile/appList',array('tab'=>'weiba','type'=>'weiba','feed_type'=>'cweiba','uid'=>$uid))}">创建的微吧</a></li>
+    </ul>
+  </div>
+</div>
+<link rel="stylesheet" href="__ROOT__/apps/weiba/_static/weiba.css" type="text/css" media="screen" charset="utf-8" />
+<div class="weibaList"><php>if($data){</php>
+	<ul class="clearfix">
+	    <volist name="data" id="vo">
+	    <php>
+	    if($vo['status']=='1')
+	    {
+	    $url = U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']));
+	    }else{
+	    $url ='javascript:void(0)';
+	    }
+	    </php>
+              <li <php>if(is_integer(($key + 1) / 3)):</php>style="border-right:none;"<php>endif;</php>>
+                <div class="weiba-logo left" style="position:relative;">
+                <a href="{$url}" target="_blank"><img src="{$vo.avatar_middle}"  /></a>
+                <php>if($vo['status']=='1' ){</php>
+                <php>if($vo['uid'] == $mid){</php>
+                <a  href="javascript:void(0)" onclick="delWeiba({$vo['weiba_id']});"  class="weiba-del"><span>解散微吧</span></a> 
+                <php>}</php>
+                <php>} else{</php>
+                <a  href="javascript:void(0)" class="weiba-non-checked"><span>未审核</span></a>
+                <php>}</php>
+                </div>
+                <div class="weiba-info">
+                <h2 class="weiba-tit mb5"><a href="{$url}" target="_blank">{$vo.weiba_name|getShort=12}</a><i class="ico-found"></i></h2>
+                <p class="weiba-data"><span>成员数{$vo.follower_count|default=0}</span>&nbsp;&nbsp;<span>今日新帖{$vo.new_count|default=0}</span></p>
+                <p class="weiba-prof">{$vo.intro|getShort=20}...</p>
+               </div>
+              </li>
+       </volist>
+		<div class="page">{$html}</div>
+	</ul>
+  </div>
+  <php>}else{</php>
+  <dl class="feed_list" style="min-height:500px">
+  <div style="padding-top:80px;text-align:center">
+  <p class="mb10"><i class="icon-bed"></i></p>
+  <p style="color:#333">暂时没有可显示的内容哟~</p>
+  </div>
+  </dl>
+  <php>}</php>
+<script>
+/**
+ * 解散微吧
+ * @param integer weiba_id 微吧ID
+ * @return void
+ */
+function delWeiba(weiba_id){
+	if(confirm('确定要解散此微吧吗？')){
+        $.post(U('weiba/Manage/delWeiba'),{weiba_id:weiba_id},function(msg){
+            if(msg == 1) {
+            	ui.success('解散成功');
+            	window.location.reload();
+            }else if(msg == -1){
+            	ui.error('微吧ID不能为空');
+            }else{
+            	ui.error('解散失败');
+            }
+        });
+    }
+};
+
+$(function(){
+	$(".weiba-logo").each(function(){
+		$(this).mouseover(function(){
+			$(this).find(".weiba-del").show();
+			}).mouseout(function(){
+				$(this).find(".weiba-del").hide();
+				})
+		})
+	})
+</script>

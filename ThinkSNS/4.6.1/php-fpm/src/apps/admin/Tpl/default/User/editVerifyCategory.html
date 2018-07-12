@@ -1,0 +1,53 @@
+<dl class="pop-area">
+  <dt class="mb10" style="overflow:hidden;*zoom:1;"><div class="l">认证类型：</div>
+    <div class="r"><select name="pid" id="pid">
+        <volist name="vType" id="vo">
+            <option value="{$vo.user_group_id}" <php>if($cateInfo['pid']==$vo['user_group_id']){</php>selected<php>}</php>>{$vo.user_group_name}</option>
+        </volist>
+    </select></div>
+  </dt>
+  <dt style="overflow:hidden;*zoom:1;"><div class="l">名称：</div><div class="r"><input type="text" id="title" value="{$cateInfo['title']}" class="s-txt" style="width:245px"></div></dt>
+  <dd style="text-align:center;margin:15px 0 0 ">
+        <php>if (isset($cateInfo)) {</php>
+        <input type="button" class="btn_b" onclick="editVerifyCategory()" value="确定" />
+        <php>}else {</php>
+        <input type="button" class="btn_b" onclick="addVerifyCategory()" value="确定" />
+        <php>}</php>
+        <input type="button" class="btn_w ml10" onclick="cancel()" value="取消" />
+  </dd>
+  <div class="clear"></div>
+</dl>
+
+<script type="text/javascript">
+// 添加身份
+function addVerifyCategory() {
+	var title = $.trim($('#title').val());
+	var pid   = $('#pid').val();
+	if(title == '') {
+		ui.error('请输入名称');
+		return false;
+	}
+	// 提交修改
+	$.post("{:U('admin/User/doAddVerifyCategory')}", {title:title, pid:pid}, function(msg){
+        admin.ajaxReload(msg);
+	},'json');
+};
+// 编辑地区
+function editVerifyCategory() {
+	var title = $.trim($('#title').val());
+  var pid   = $('#pid').val();
+	var user_verified_category_id = "{$cateInfo['user_verified_category_id']}";
+	
+	if(title == '') {
+        ui.error('请输入名称');
+        return false;
+    }
+	$.post("{:U('admin/User/doEditVerifyCategory')}", {user_verified_category_id:user_verified_category_id, title:title, pid:pid}, function(msg){
+		  admin.ajaxReload(msg);
+	},'json');
+}
+// 关闭弹窗
+function cancel() {
+	ui.box.close();
+}
+</script>

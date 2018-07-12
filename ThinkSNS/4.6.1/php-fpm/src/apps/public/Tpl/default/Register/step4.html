@@ -1,0 +1,99 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/login.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+  <div class="reg-wrap"> 
+    <!--<div class="title">{:L('PUBLIC_FOLLOW_THE_PEOPLE_INTERESTED')}</div>-->
+    <form id="ajax_register_form" action="{:U('public/Register/doStep4')}" method="post">
+      <div class="reg-main clearfix">
+        <div class="step-main">      
+          <ul>
+            <li><i class="step1"></i><span>填写注册信息</span><b class="step-line"></b></li>
+            <li><i class="step2"></i><span>上传头像</span><b class="step-line"></b></li>
+            <li><i class="step3"></i><span>填写基本信息</span><b class="step-line"></b></li>
+            <li class="on"><i class="step4-on"></i><span>选择感兴趣的人</span></li>
+          </ul>
+        </div>
+        <div class="choosed-info">
+          <div class="rectangle"> 
+            <!--共同兴趣爱好的人-->
+            <div class="rect">
+              <h4>共同兴趣爱好的人</h4>
+              <div class="checkAllbox">
+                <label><input type="checkbox" class="checkAll " id="check-interest-All"/>
+                <label for="check-interest-All"></label>
+                全选</label>
+              </div>
+              <div class="refresh"><a onclick="getNRelatedUser(4);" class="right">换一换</a></div>
+              <div class="rect-person">
+                <ul class="clearfix" id="user_4">
+                  <volist name="related_tag_user" id="v1" key='i'>
+                    <li>
+                      <div class="person-pic"><img src="{$v1.userInfo.avatar_middle}" height="80px" width="80px"/></div>
+                      <h class="person-nickname">{$v1.userInfo.uname|getShort=5}</h>
+                      <div class="checkbox-area">
+                        <input type="checkbox" name="fids[]" value="{$v1.userInfo.uid}" class="checkbox" id="check-box-{$i}"/>
+                        <label for="check-box-{$i}"></label>
+                      </div>
+                    </li>
+                  </volist>
+                </ul>
+              </div>
+            </div>
+            <!--来自相同地区的人-->
+            <div class="rect">
+              <h4>来自相同地区的人</h4>
+              <!--<div class="refresh"><a onclick="getNRelatedUser(3);" class="right"></a></div>-->
+              <div class="checkAllbox">
+                <label><input type="checkbox" class="checkAll " id="check-location-All"/>
+                <label for="check-location-All"></label>
+                全选</label>
+              </div>
+              <div class="refresh"><a onclick="getNRelatedUser(3);" class="right">换一换</a></div>
+              <div class="rect-person">
+                <ul class="clearfix" id="user_3">
+                  <volist name="related_city_user" id="v1" key="i">
+                    <li>
+                      <div class="person-pic"><img src="{$v1.userInfo.avatar_middle}" height="80px" width="80px"/></div>
+                      <h class="person-nickname">{$v1.userInfo.uname|getShort=5}</h>
+                      <div class="checkbox-area">
+                        <input type="checkbox" name="fids[]" value="{$v1.userInfo.uid}" class="checkbox" id="check-box-{$i+18}"/>
+                        <label for="check-box-{$i+18}"></label>
+                      </div>
+                    </li>
+                  </volist>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div> <a class="disable fr"  href="javascript:;" onclick="$('#ajax_register_form').submit();return false;" >保存进入网站</a></div>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="__THEME__/js/account/module.register.js"></script> 
+<script>
+// 事件绑定
+M.addEventFns({
+    // 换一换操作
+    change_related_group: {
+        click: function() {
+            var args = M.getEventArgs(this);
+            var _model = M.getModels('related_ul_group');
+            var rel = $('#changerelated_group').attr('rel');
+            $.post(U('widget/RelatedGroup/changeRelate'), {uid:args.uid, limit:args.limit, rel:rel}, function(data) {
+                $(_model[0]).html(data);
+                M($(_model)[0]);
+            }, 'json');
+            return false ;
+        }
+    }
+});
+function getNRelatedUser(value){
+	  var i = '#user_'+value;
+	  $.post("{:U('public/Register/getNRelatedUser')}",{type:value},function(data){
+		  $(i).html(data);
+	  })		
+}
+</script> 
+<include file="__THEME__/public_footer" />

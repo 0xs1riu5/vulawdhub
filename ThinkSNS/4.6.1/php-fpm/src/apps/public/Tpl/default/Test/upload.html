@@ -1,0 +1,42 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px">
+                <form action="{:U('public/Test/doupload')}" method="POST">
+                    <div>指定callback：(自定义回调函数)
+                        {:W('Upload',array('callback'=>'callBackDemo'))}
+                    </div>
+                    <div>不指定callback：上传图片
+                        {:W('Upload',array('uploadType'=>'image','inputname'=>'test1','attachIds'=>'376,375,374'))}
+                    </div>
+                    <div>不指定callback：上传附件
+                        {:W('Upload',array('uploadType'=>'file','inputname'=>'test2','attachIds'=>'1,2,3'))}
+                    </div>
+                    <input type="submit" name='sub' value='提交'>
+                </form> 
+            </div>
+
+<script>
+	//测试用的回调函数
+	var callBackDemo =function(data){
+		for(var i in data){
+			alert(i+'=>'+data[i]);
+		}
+	};
+</script>
+    <div>
+    <pre>
+        调用：W('Upload',array('callback'=>'callback','uploadType'=>'file','inputname'=>'inputname','urlquery'=>'a=aaa&b=bb'))
+        调用参数说明：
+        callback:上传之后的回调函数，不自定义就不要传递此参数
+        uploadType:上传类型，分file和image
+        inputname:上传组件的name
+        urlquery=>'a=aaa&b=bbb',  需要存储在附件表的一些信息，暂时可能用到的不多
+        attachIds: 已有附件ID，可以为空
+     </pre>   
+    </div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,75 @@
+<div model-node="person_profile" class="mod-person">
+    <div class="hd">
+        <if condition="$uid eq $mid">
+        <div class="hd-edit">
+        <a class="btn-green-small" href="{:U('public/Account/index')}"><span>{:L('PUBLIC_IMPROVE_PERSONAL_PROFILE')}</span></a></div>
+        </if>
+                                   
+        <h3 class="left"><span class="name" title="{$user_info[$uid]['uname']}">{$user_info[$uid]['uname']|getShort=###,10,'...'}</span>
+        
+        <php> if($mid != $uid){
+				if($follow_group_status){   
+        </php>
+        {:W('Remark',array('uid'=>$uid,'remark'=>$remarkHash[$uid]))}
+        <php>}}</php>
+        
+        </h3>
+        <include file='_level' />
+        
+         <php> if($mid != $uid){</php>
+         <div class="groupBtn">
+         	<!--<php> if(!empty($follow_group_status)){</php>
+	         {:W('FollowGroup', array('uid'=>$mid, 'fid'=>$uid, 'follow_group_status' => $follow_group_status))}
+	         <php>}</php>-->
+	        </div>
+            <div class="action">
+                <if condition="$UserPrivacy.message eq 0"><a href="javascript:ui.sendmessage({$uid})">{:L('PUBLIC_SEND_PRIVATE_MESSAGE')}</a></if>
+                <i class="vline">|</i><a href="javascript:ui.sendat({$uid})">@TA</a>
+                <php>if($follow_group_status): </php>
+                <i class="vline">|</i><a href="javascript:;" event-node='setFollowGroup' event-args='fid={$uid}'>{:L('PUBLIC_GROUPNAME_SET')}</a>
+                <php>endif;</php>
+            </div>
+         <php>}</php>
+    </div>
+    <div class="section">
+        <div class="person-rank">
+        <dl>
+          <dt>{:L('PUBLIC_REPORTING_ORG')}：</dt>
+            <if condition="$work_director_tree[2]">
+                <dd><img src="__THEME__/image/arrow-right.gif"><a href="{$user_info[$work_director_tree[2]]['space_url']}">{$user_info[$work_director_tree[2]]['uname']}</a></dd>
+                <dd><img src="__THEME__/image/arrow-right01.gif"></dd>
+            </if>
+            <if condition="$work_director_tree[1]">
+                <dd><img src="__THEME__/image/arrow-right02.gif"><img src="__THEME__/image/arrow-right.gif"><a href="{$user_info[$work_director_tree[1]]['space_url']}">{$user_info[$work_director_tree[1]]['uname']}</a></dd>
+                <dd><img src="__THEME__/image/arrow-right03.gif"></dd>
+            </if>
+          <dd><img src="__THEME__/image/arrow-right04.gif">{$user_info[$uid]['uname']}</dd>
+        </dl>
+        </div>
+        <ul model-node="person_info" class="person-info">
+            <volist name="user_profile_setting" id="u_p_s_v">
+          
+                <if condition="'input' eq $u_p_s_v['form_type']">
+                    <li><span>{:L('PUBLIC_PROFILESET_'.strtoupper($u_p_s_v['field_key']))}：</span>{$user_profile[$uid][$u_p_s_v['field_id']]['field_data']}</li>
+                <elseif condition="'date' eq $u_p_s_v['form_type']" />
+                    <li><span>{:L('PUBLIC_PROFILESET_'.strtoupper($u_p_s_v['field_key']))}：</span>{$user_profile[$uid][$u_p_s_v['field_id']]['field_data']|friendlyDate=###, 'ymd'}</li>
+                 </if>    
+                <eq name='u_p_s_v.form_type' value='selectDepart'>
+                    <li><span>{:L('PUBLIC_PROFILESET_'.strtoupper($u_p_s_v['field_key']))}：</span>
+                        <php>
+                            echo str_replace('|',' - ',trim($user_profile[$uid][$u_p_s_v['field_id']]['field_data'],'|'));
+                        </php>
+                        </li >
+                </eq>
+
+            </volist>
+
+            <li><span>{:L('PUBLIC_EMAIL')}：</span>{$user_info[$uid]['email']}</li>
+            <li><span>{:L('PUBLIC_PROFILE_TAG')}：</span><div class="tagshow"><volist name="user_tag[$uid]" id="u_t_v"><b>{$u_t_v}</b></volist></div></li>
+            <li>
+            <a href="{:U('public/Profile/data',array('uid'=>$uid))}" rel="hide">{:L('PUBLIC_MORE')}↓</a>
+            </li>
+       
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js?v=3"></script>
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="weiba-top">
+      <div class="app-title clearfix">
+        <div class="app-tab-menu clearfix">
+          <ul>
+            <li><a href="{:U('weiba/Index/index')}" 
+
+              <php>if(!$nav){</php>
+              class="current"
+              <php>}</php>
+              >微吧首页</a></li>
+            <li><a href="{:U('weiba/Index/weibaList')}" 
+              <php>if($nav=="weibalist"){</php>
+              class="current"
+              <php>}</php>
+              >所有微吧</a>
+              <php>if($GLOBALS['ts']['mid']){</php>
+              <php>}</php>
+            </li>
+            <php>if($GLOBALS['ts']['mid']){</php>
+            <li><a href="{:U('weiba/Index/myWeiba',array('type'=>'myFollowing'))}" 
+              <php>if($nav=="myweiba"){</php>
+              class="current"
+              <php>}</php>
+              >我的</a></li>
+            <php>}</php>
+            <php>if($nav=="weibadetail"){</php>
+            <li><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_id))}" class="current">{$weiba_name}</a></li>
+            <php>}</php>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="mb10 clearfix"> <include file="_detailRight" />
+      <div id="col5" class="st-index-main">
+          <div class="weiba-info clearfix">
+            <dl style="overflow:hidden">
+              <dt><img src="{$weiba_detail['avatar_middle']}" width="100" height="100" /></dt>
+              <dd style="padding-top:5px">
+                <div class="right">{:W('FollowWeiba',array('weiba_id'=>$weiba_detail['weiba_id'],'follow_state'=>array('following'=>$follow_state[$weiba_detail['weiba_id']]['following']),'isrefresh'=>1))}</div>
+                <h4> {$weiba_detail['weiba_name']}&nbsp;
+                  <php>if(in_array($mid,$weiba_admin_uids) || CheckPermission('core_admin','admin_login')){</php>
+                  <a class="manage" href="{:U('weiba/Manage/index',array('weiba_id'=>$weiba_detail['weiba_id']))}"><i class="ico-setup"></i><span>管理</span></a>
+                  <php>}</php>
+                </h4>
+                <p class="info" style="padding-top:18px">粉丝数：{$weiba_detail['follower_count']|default=0}<i class="vline">|</i>主题：{$weiba_detail['thread_count']|default=0}<i class="vline">|</i>帖子数：{$weiba_detail['tiezi_count']|default=0}</p>
+                <p class="info">
+                <volist name="weiba_admin" id="vo">
+                  <php>if($vo['level']==3){</php>吧主：<php>}</php><php>if($vo['level']==2){</php>小吧主：<php>}</php><a href="{:U('public/Profile/index','uid='.$vo['userinfo']['uid'])}" event-node="face_card" uid="{$vo.userinfo.uid}" target="_blank">{$vo.userinfo.uname}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                </volist>
+                </p>      
+                <!-- <div class="right"><a class="slide-down" id="announce-slide">微吧简介&nbsp;&nbsp;<i class="ico-arrow-down"></i></a></div>
+                <p class="announce left mt10" style="display:none;">简介：{$weiba_detail['intro']|getShort=100}</p> -->
+                <!--<p class="mb10">
+                  <php>if(!in_array($mid,$weiba_admin_uids)){</php>
+                  <php>if(CheckPermission('weiba_normal','weiba_apply_manage')){</php>
+                  <php>if($weiba_super_admin){</php>
+                  <a onclick="weiba_admin_apply({$weiba_detail['weiba_id']},2)" href="javascript:void(0)">申请小吧</a>
+                  <php>}else{</php>
+                  <a onclick="weiba_admin_apply({$weiba_detail['weiba_id']},3)" href="javascript:void(0)">申请吧主</a>
+                  <php>}</php>
+                  <php>}</php>
+                  <php>}</php>
+                </p>-->
+              </dd>
+            </dl>
+            <p class="announce left mt10">简介：{$weiba_detail['intro']|getShort=100}</p>
+          </div>
+          <div class="post-circle">
+            <div class="post-type h46">
+                <php>if($GLOBALS['ts']['mid'] && CheckPermission('weiba_normal','weiba_post') ){</php>
+                <php>if( ($weiba_detail['who_can_post']==2 && $isadmin) || 
+                  ($weiba_detail['who_can_post']==3 && $mid==$weiba_super_admin) || 
+                  ($follow_state[$weiba_detail['weiba_id']]['following'] && $weiba_detail['who_can_post']==1) || 
+                  ($weiba_detail['who_can_post']==0) || CheckPermission('core_admin','admin_login')){</php>
+                <php>}</php>
+                <php>}</php>
+
+				<div class="tab-menu line-b-animate left"> 
+					<ul>
+				        <li <php>if($type=='all'){</php>class="current"<php>}</php>><span><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_detail['weiba_id']))}">全部</a></span></li>
+				        <li <php>if($type=='digest'){</php>class="current"<php>}</php> style="border-right:none;"><span><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_detail['weiba_id'],'type'=>'digest'))}">精华</a></span></li>
+					</ul>
+				</div>
+
+				<a href="{:U('weiba/Index/post',array('weiba_id'=>$weiba_detail['weiba_id']))}" class="btn-green-big right" style="font-size:14px;font-family:微软雅黑";><span>发帖</span></a>
+			</div>
+            <div class="post-num" style="height:34px;border-bottom: #F3F3F3 1px solid;"> <span class="right">排序方式：<a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_detail['weiba_id'],'type'=>$type,'order'=>'reply_time'))}" 
+              
+              <php>if($order=='reply_time'){</php>
+              class="f-red"
+              <php>}</php>
+              >回复时间</a><i class="vline">|</i><a href="{:U('weiba/Index/detail',array('weiba_id'=>$weiba_detail['weiba_id'],'type'=>$type,'order'=>'post_time'))}" 
+              
+              <php>if($order=='post_time'){</php>
+              class="f-red"
+              <php>}</php>
+              >发帖时间</a></span><span>共有{$post_count|default=0}个帖子</span> </div>
+            <div class="post-list">
+              <ul>
+                <volist name="list['data']" id="vo">
+                  <li>
+                    <div class="weiba-c1"><img src="{$vo.image}" width="50" height="50"/></div>
+                    <div class="c2 left">
+                      <h3 class="post-tit"> <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><span>{$vo.title|getShort=20}</span></a>
+                        <if condition="$vo['top'] eq 1"><i class="ico-toTop"></i></if>
+                        <if condition="$vo['recommend'] eq 1"><i class="ico-recomen"></i></if>
+                        <if condition="$vo['digest'] eq 1"><i class="ico-essence"></i></if>
+                      </h3>
+                      <div class="post-info f10">
+                        <div class="left"><span>{$user_info[$vo['post_uid']]['space_link']}/{$vo.post_time|friendlyDate}发布</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后回复{$vo.last_reply_time|friendlyDate}</div>
+                      </div>
+                    </div>
+                    <div class="c3">
+                      <div class="item mr10 ml0"> <span>浏览</span> <span>({$vo.read_count|get_friend_num})</span> </div>
+                      <div class="item mr10 ml0"> <span>回复</span> <span>({$vo.reply_count|get_friend_num})</span> </div>
+                    </div>
+                  </li>
+                </volist>
+              </ul>
+              <div id="page" class="page" style="">{$list.html}</div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 
+<script language="javascript" type="text/javascript">
+//发布帖子
+var canpostweiba = "1";
+$('#quick_post').bind('click', function () {
+  //未登录
+  if( MID == 0 ){
+    ui.quicklogin();
+    return;
+  }
+  if (canpostweiba == 1) {
+    location.href = U('weiba/Index/quickPost');
+  } else {
+    ui.error('对不起，您没有权限进行该操作！');
+  }
+});
+//微吧公告
+$("#announce-slide").click(function(){
+	flag=$(this).children("i").attr("class")=="ico-arrow-down";
+	if(flag){
+		$(this).children("i").attr("class","ico-arrow-up")
+		$(".announce").slideDown();
+		}
+	else{
+		$(this).children("i").attr("class","ico-arrow-down");
+		$(".announce").slideUp();
+	}
+});
+$(".post-list li").click(function(){
+    var href = $(this).find("a").attr("href");
+    location.href = href;
+});
+
+
+$(".post-list li").hover(function(){
+  $(this).find(".item").css("background","#FFF");
+},function(){
+  $(this).find(".item").css("background","#F7F8FA");
+});
+
+</script>

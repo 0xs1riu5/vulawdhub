@@ -1,0 +1,14 @@
+<php> if($_GET['feed_type']=='weiba'){ $tag['weiba'] = 'current'; }
+  elseif($_GET['feed_type']=='cweiba'){ $tag['cweiba'] = 'current'; }
+  else{ $tag['public'] = 'current'; } </php>
+<!-- <if condition="$_GET['tab']=='weiba'">
+  <div class="feed-nav clearfix mb20">
+    <div id="mod-feed-tab" class="mod-feed-tab">
+      <ul class="inner-feed-nav">
+        <li class="{$tag.public}"><span><a href="{:U('public/Profile/appList',array('tab'=>$type,'type'=>$type,'feed_type'=>'','uid'=>$uid))}">发表的帖子</a></span></li>
+        <li class="{$tag.weiba}"><span><a href="{:U('public/Profile/appList',array('tab'=>$type,'type'=>$type,'feed_type'=>'weiba','uid'=>$uid))}">加入的微吧</a></span></li>
+        <li class="{$tag.cweiba}"><span><a href="{:U('public/Profile/appList',array('tab'=>$type,'type'=>$type,'feed_type'=>'cweiba','uid'=>$uid))}">创建的微吧</a></span></li>
+      </ul>
+    </div>
+  </div>
+</if> -->

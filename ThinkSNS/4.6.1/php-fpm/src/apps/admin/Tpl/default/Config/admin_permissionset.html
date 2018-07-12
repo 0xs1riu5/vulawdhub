@@ -1,0 +1,51 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{$applist.$appname}{:L('PUBLIC_SETTING_ADMIN')}</div>
+<!-- START APP 选择-->
+<!-- START APP 选择-->
+
+<div class="form">
+<div class="urse_purview list">
+	
+  <!-- START FORM TABLE-->
+  <form action="{:U('admin/Config/permissionsave')}" method="post" autocomplete="off">
+  <input type="hidden" name='user_group_id' value='{$groupInfo.user_group_id}'>
+  <div class="pb10">{:L('PUBLIC_CURRENT_USER_GROUP')} {$groupInfo.user_group_name}:</div>	
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed ">
+  <volist name='permission' id='p' >
+  <php> $app = $key;</php>
+  <php> if($groupInfo['app_name'] == 'public' || $groupInfo['app_name'] == $app):</php>
+  <tr>
+    <th width="50">{$p.info}</th>
+    <volist name='p.module' id='minfo' >
+    <th  class="line_l">{$moduleHash[$minfo['info']]}</th>
+    </volist>
+  </tr>
+  <tr>
+  <td></td>
+  <volist name='p.module' id='mrule'>
+  <php>$module = $key;</php>
+   <td  class="line_l">
+  	<volist name='mrule.rule' id='rule'>
+  	<php>$action = $key;</php>
+   	<label><input type="checkbox" name='per[{$app}][{$module}][{$action}]' value='1'
+		<php>if($grouppermission[$app][$module][$action] == 1){ echo 'checked="checked"';}</php> >{$rule}</label>
+    </volist> 
+   </td> 
+   </volist> 
+  </tr>
+  <php> endif;</php>
+  </volist>
+	</table>
+      <div class="mt10">
+        <input class="btn_b" type="submit" value="{:L('PUBLIC_SUBMIT')}">
+        </input>
+      </div>
+    </form>
+<!-- END FORM TABLE-->
+  </div>
+
+    </div>
+    </div>
+</div>
+<include file="__THEME__/admin_footer" />

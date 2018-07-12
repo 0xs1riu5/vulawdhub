@@ -1,0 +1,112 @@
+<include file="__THEME__/public_header" />
+<script type="text/javascript">
+function addDigg(feed_id){
+   $.post("{:U('public/Feed/addDigg')}", {feed_id:feed_id}, function(res){
+       if(res==1){
+	       var num = $('#digg'+feed_id).attr('rel');
+    	   num++;
+    	   $('#digg'+feed_id).html('已赞('+num+')');
+	   }else {
+	       ui.error('操作失败，如没有登录请先登录再操作');
+       }
+   });
+}
+</script>
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="st-index-grid" class="st-grid">
+      <!--左边 -->
+      <include file="__THEME__/public_left" />
+      <div id="col8" class="st-section content-bg" style="width:auto">
+        <div id="col4" class="main-left">
+          <!--tab菜单-->
+          <div id="aside" class="pad">
+            <dl class="nav-left mt10 border-no">
+              <dd><a href="{:U('public/Mention')}">@提到我的</a></dd>
+              <dd><a href="{:U('public/Comment/index',array('app_name'=>t($_GET['app_name']),'type'=>'receive'))}">收到的评论</a></dd>
+              <dd><a href="{:U('public/Comment/index',array('app_name'=>t($_GET['app_name']),'type'=>'send'))}">发出的评论</a></dd>
+              <dd><a href="{:U('public/Message')}">我的私信</a></dd>
+              <dd><a href="{:U('public/Message/notify')}">系统消息</a></dd>
+              <dd class="current"><a href="">赞</a></dd>
+            </dl>
+          </div>
+        </div>
+        <div id="col7" class="main-right">
+          <div class="extend minh person-set">
+            <!--tab menu-->
+            <div class="feed-nav">
+              <div class="set-hd"><h3>收到的赞</h3></div>
+              <div class="mod-feed-tab">
+                 <p>共2条</p>
+              </div>
+            </div>
+            <!--feed list-->
+            <div class="feed_lists">
+              <dl class="feed_list clearfix" model-node="feed_list">
+              <dt class="face">
+                <a href="{$vo.comment_user_info.space_url}">
+                  <img src="{$vo.comment_user_info.avatar_small}"  event-node="face_card" uid="{$vo.comment_user_info.uid}" width="50" height="50"></a>
+              </dt>
+              <dd class="content">
+                <p class="hd">
+                   <a href="">thinksns</a>赞了你的分享
+                </p>
+                <p class="hd"><span class="f9">对我的分享：</span>"哈哈哈"</p>
+                <p class="info">
+                  <span><a class="date" date="{$vo.ctime}" href="{$vo.source_url}">30秒前</a><span>来自网站</span></span>
+                </p>
+                <div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+              </dd>
+              </dl>
+              <dl class="feed_list clearfix" model-node="feed_list">
+              <dt class="face">
+                <a href="{$vo.comment_user_info.space_url}">
+                  <img src="{$vo.comment_user_info.avatar_small}"  event-node="face_card" uid="{$vo.comment_user_info.uid}" width="50" height="50"></a>
+              </dt>
+              <dd class="content">
+                <p class="hd">
+                   <a href="">thinksns</a>赞了你的分享
+                </p>
+                <p class="hd"><span class="f9">对我的分享：</span>"哈哈哈"</p>
+                <p class="info">
+                  <span><a class="date" date="{$vo.ctime}" href="{$vo.source_url}">30秒前</a><span>来自网站</span></span>
+                </p>
+                <div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+              </dd>
+              </dl>
+              <div class="note" style="display:none;">{:L('PUBLIC_NO_MENTIONS')}</div>
+              <div id='page' class='page'>{$html}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
+<script type="text/javascript" src="__THEME__/js/core.weibo.js"></script>
+<script type="text/javascript">
+/**
+ * 时间更新效果
+ * return void
+ */
+$(document).ready(function() {
+  var wTime = parseInt("{:time()}");
+  var updateTime = function()
+  {
+    $('.date').each(function(i, n) {
+      var date = $(this).attr('date');
+      if(typeof date !== 'undefined') {
+        $(this).html(core.weibo.friendlyDate(date, wTime));
+      }
+    }); 
+  };
+  updateTime();
+  setInterval(function() {
+    wTime += 10;
+    updateTime();
+  }, 10000);
+});
+</script>
+<include file="__THEME__/public_footer" />

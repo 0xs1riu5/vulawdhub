@@ -1,0 +1,46 @@
+<include file="__THEME__/public_header" />
+
+    <div id="page-wrap">
+        <div id="main-wrap">
+            <div id="st-index-grid" class="st-grid">
+                <div id="col8" class="st-section">
+                    <include file="__THEME__/public_right" />
+                    <div id="col5" class="st-index-main">
+                    <div class="st-bg">
+                    <!--tab menu-->
+                    <div class="feed-nav clearfix">
+                        <div class="my-feed-title">
+                        <span class="right">
+                            <form action="{:U('public/Index/myFeed')}" method="post" id="searchfeed">
+                            <div class="feed-search">
+                            <input type="hidden" name="type" value="{$type}">
+                            <input type="hidden" name="feed_type" value="{$feedType}">
+                            <input class="s-txt left"  type="text" name='feed_key' value="{$feed_key}" id='feed_key'><a href="javascript:void(0)" class="ico-search left" onclick="if(getLength($('#feed_key').val())){ $('#searchfeed').submit(); return false;}"></a>
+                            </div>
+                            </form>
+                        </span>
+                            <h4>我的分享(共<span event-node="weibo_count" event-args="uid={$GLOBALS['ts']['mid']}" id="follow_count">{$feedCount|default=0}</span>条)</h4>                           
+                        </div>
+                        <div class="mod-feed-tab mt10" id="mod-feed-tab">
+                            <ul class="inner-feed-nav">
+                                <li <eq name='feedType' value=''>class="current"</eq>><a href="{:U('public/Index/myFeed', array('feed_type'=>'','feed_key'=>$feed_key))}">全部</a></li>
+                                <li <eq name='feedType' value='post'>class="current"</eq>><a href="{:U('public/Index/myFeed', array('feed_type'=>'post','feed_key'=>$feed_key))}">原创</a></li>
+                                <li <eq name='feedType' value='repost'>class="current"</eq>><a href="{:U('public/Index/myFeed', array('feed_type'=>'repost','feed_key'=>$feed_key))}">转发</a></li>
+                                <li <eq name='feedType' value='postimage'>class="current"</eq>><a href="{:U('public/Index/myFeed', array('feed_type'=>'postimage','feed_key'=>$feed_key))}">图片</a></li>
+                                <li <eq name='feedType' value='postvideo'>class="current"</eq>><a href="{:U('public/Index/myFeed', array('feed_type'=>'postvideo','feed_key'=>$feed_key))}">视频</a></li>
+                            </ul>
+                            </div>
+                    </div>
+
+                    <div class="sperson-feedlist" >
+                        {:W('FeedList',array('type'=>'space','feedApp'=>t($_GET['feedApp']),'feed_type'=>$feedType,'feed_key'=>$feed_key,'loadnew'=>0))}
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
+<include file="__THEME__/public_footer" />

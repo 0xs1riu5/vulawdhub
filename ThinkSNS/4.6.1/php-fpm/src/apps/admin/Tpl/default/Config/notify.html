@@ -1,0 +1,51 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{:L('PUBLIC_MAILTITLE_ADMIN')}</div>
+
+
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+<div class="list">
+  <form action="{:U('admin/Config/saveNotifyNode')}" method='POST'>
+  <input type="hidden" name="tabhash" value="{$_REQUEST['tabHash']}"/>
+  <input type="hidden" name="type" value="{$type}" />
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <th class="line_l" width="20%">{:L('PUBLIC_POINT_NAME')}</th>
+        <th class="line_l" width="10%">{:L('PUBLIC_POINT_DETAIL')}</th>
+        <th class="line_l" width="10%">{:L('PUBLIC_APP_TO')}</th>
+        <th class="line_l">{:L('PUBLIC_SENTTYPE')}</th>
+        <th class="line_l">{:L('PUBLIC_OPERATION')}</th>
+      </tr>
+    <volist name='nodeList' id='vo'>
+    <tr>
+       <td>{$vo.node}</td>
+       <td>{$vo.nodeinfo}</td>
+       <td>{$vo.appname}</td>
+       <td>
+        <input type="hidden" name="sendType[{$vo['node']}][type]" value="{$vo['node']}">
+        <label><input type='checkbox' name="sendType[{$vo['node']}][send_email]"  value='1' <eq name='vo.send_email' value='1'>checked='checked'</eq>>{:L('PUBLIC_SNED_EMAIL')}</label> 
+        <label><input type='checkbox' name="sendType[{$vo['node']}][send_message]" value='1' <eq name='vo.send_message' value='1'>checked='checked'</eq>>{:L('PUBLIC_SEND_SYSTEM_MESSAGE')}</label></td> 
+        <td><a href="{:U('admin/Config/notifytpl',array('node'=>$vo['node'],'tabHash'=>'notifytpl','redirectTabHash'=>$_REQUEST['tabHash'],'type'=>$type))}">{:L('PUBLIC_EDIT_TPL')}</a>&nbsp;&nbsp;&nbsp;<a href="{:U('admin/Config/delNotifyNode',array('node'=>$vo['node']))}">删除</a></td>
+    </tr>  
+    </volist>
+  </table>
+    
+    <div class="page_btm">
+      <input class="btn_b" value="{:L('PUBLIC_SAVE')}" name='sub' type="submit">
+    </div>
+  </form>
+</div>
+</div>
+<include file="__THEME__/admin_footer" />

@@ -1,0 +1,21 @@
+<!--只显示两级 -->
+<div class="mod-tree-menu">
+<dl class="tree-menu">
+	<dt>{:L('PUBLIC_ALL_CATEGORIES')}</dt>
+    <volist name='cateList' id='c'>
+    <dd>
+        <a href="{$cate_url}&category_id={$c.id}"><i class="ico-minus"></i>{$c.name}</a>
+        
+       <!--<neq name='c.child' value=''>-->
+       <if condition="$c['child']">
+    	<ul class="second-menu">
+            <volist name='c.child' id='cc'>
+        	<li <eq name='cc.id' value='$id'>class="current"</eq>><a href="{$cate_url}&category_id={$cc.id}"><i class="arrow-thinRb"></i>{$cc.name}</a></li>
+        	</volist>
+        </ul>
+       </if>
+        <!--</neq>-->
+    </dd>
+    </volist>
+</dl>
+</div>

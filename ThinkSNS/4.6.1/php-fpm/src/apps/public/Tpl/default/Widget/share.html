@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>分享到我的分享 - {$GLOBALS['ts']['site']['site_name']}</title>
+<meta content="<neq name= '_keywords' value=''>{$_keywords}<else />{$site.site_header_keywords}</neq>" name="keywords">
+<meta content="<neq name= '_description' value=''>{$_description}<else />{$site.site_header_description}</neq>" name="description">
+<link href="__THEME__/image/favicon.ico?v={$site.sys_version}" type="image/x-icon" rel="shortcut icon">
+<!-- <link href="__THEME__/css/global.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/module.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/menu.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/form.css?v={$site.sys_version}" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/jquery.atwho.css?v={$site.sys_version}" rel="stylesheet" type="text/css" /> -->
+<link href="__THEME__/css/css.php?t=css&f=global.css,module.css,menu.css,form.css,jquery.atwho.css&v={$site.sys_version}.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>'
+// Js语言变量
+var LANG = new Array();
+</script>
+<php>if(!empty($langJsList)):</php>
+<volist name="langJsList" id="vo">
+<script src="{$vo}?v={$site.sys_version}"></script>
+</volist>
+<php>endif;</php>
+<!-- 
+<script src="__THEME__/js/jquery-1.7.1.min.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.form.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/common.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/core.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/module.common.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jwidget_1.0.0.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.atwho.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/jquery.caret.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/ui.core.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/ui.draggable.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.digg.js?v={$site.sys_version}"></script>
+-->
+<script src="__THEME__/js/js.php?t=js&f=jquery-1.7.1.min.js,jquery.form.js,common.js,core.js,module.js,module.common.js,jwidget_1.0.0.js,jquery.atwho.js,jquery.caret.js,ui.core.js,ui.draggable.js,plugins/core.comment.js,plugins/core.digg.js&v={$site.sys_version}.js"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/plugins/core.digg.js?v={$site.sys_version}"></script>
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
+
+<style type="text/css">
+.body_bg {
+    padding: 57px 0 0;
+}
+body {
+  color: #666666;
+  font: 12px Arial,Helvetica,sans-serif,Simsun;
+  text-align: center;
+  background: none;
+}
+.wrap_share {
+    margin: 60px auto 0;
+    text-align: left;
+    width: 560px;
+}
+.wrap_share .box_shareFile {
+    background:#FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 15px 30px;
+    margin-top: 5px;
+}
+.send_weibo .sok{text-align:center;}
+.send_weibo .sok p.ppb {
+    font-family: "Microsoft Yahei";
+    font-size: 24px;
+    line-height: 38px;
+    padding: 10px;
+}
+.send_weibo .sok p.pp {
+    font-size: 14px;
+    padding: 10px;
+}
+.send_weibo .sok p.pp span {
+    color: #888888;
+    padding: 0 10px;
+}
+
+</style>
+</head>
+<body class="body_bg">
+	<div class="div_body">
+	<!--分享框-->
+    <div class="wrap_share">
+    	<div class="tit mb10 clearfix">
+      <php>$url = "http://".$_SERVER ['HTTP_HOST'].$_SERVER['PHP_SELF']."?".$_SERVER['QUERY_STRING']; $url = base64_encode($url);</php>
+			<session name="mid"><span class="right">你正在使用<em>{:getUserSpace($mid)}</em> 帐号</span></session>
+			<nosession name="mid"><span class="right"><a href="javascript:quickLogin('{$url}')">登录</a> | <a href="{:U('public/Register/index')}">注册</a></span></nosession>
+			<div class="logo_min left" <php>if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE 6.0') !== false):</php>style="_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='{$site.logo}', sizingMethod='crop');_background:none;"<php>else:</php>style="background:url({$site.logo}) no-repeat;"<php>endif;</php>><a href="{:SITE_URL}"></a></div>
+		</div>
+		<div class="box_shareFile clearfix">
+		{:W('SendWeibo', array('title'=>'分享到我的分享，顺便说点什么吧', 'initHtml'=>$content, 'tpl'=>'WidgetShare', 'actions'=>$actions, 'post_event'=>'post_share_tools'))}
+		</div>
+    <!-- <div class="mt10 ml10"><a href="{:U('public/SmallTools/weiboShare')}" target="_blank">获取分享代码</a></div> -->
+  </div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  $('#topcontrol').remove();
+});
+</script>
+</body>
+</html>

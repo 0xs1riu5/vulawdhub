@@ -1,0 +1,62 @@
+<!DOCTYPE html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="{$site.site_header_keywords}" name="keywords">
+<meta content="{$site.site_header_description}" name="description">
+<title> {$site.site_name} - {$site.site_slogan}</title>
+<link href="favicon.ico" rel="shortcut icon">
+<link href="favicon.ico" rel="shortcut icon">
+<link href="__THEME__/css/global.css" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/module.css" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/menu.css" rel="stylesheet" type="text/css" />
+<link href="__THEME__/css/form.css" rel="stylesheet" type="text/css" />
+<php>if(!empty($appCssList)):</php>
+<volist name='appCssList' id='cl'>
+<link href="{:APP_PUBLIC_URL}/{$cl}?v={$site.sys_version}" rel="stylesheet" type="text/css"/>
+</volist>
+<php>endif;</php>
+<script>
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  = '{$site.word_nums}';
+</script>
+<script src="__THEME__/js/jquery.js"></script>
+<script src="__THEME__/js/core.js"></script>
+<script src="__THEME__/js/module.js"></script>
+<script src="__THEME__/js/common.js"></script>
+<script src="__THEME__/js/module.common.js"></script>
+</head>
+<body>
+<div id="body_page" name='body_page'>
+    <div id="header" name="header">
+		<session name="mid">
+        <div class="header-wrap">
+        	<div class="head-bd">
+                <div class="logo"><a href="{:U('public')}"><img src="{$site.logo}"></a></div>
+        	</div>
+        </div>
+		</session>
+		<script>
+
+		</script>
+    </div><!--header end-->
+        <div id="page-wrap">
+        <div id="main-wrap">
+            <eq name="site_closed" value="0">
+                <div class="opps"><p>{$message}</p>
+                    <div class="tips"><a href="{:U('public')}">返回首页>></a></div>
+                </div>
+            <else/>
+               <div class="opps">
+                    <div class="tips"><a href="{:U('public')}">返回首页>></a></div>
+                </div>
+            </eq>
+
+        </div>
+    </div>
+<include file="__THEME__/public_footer" />

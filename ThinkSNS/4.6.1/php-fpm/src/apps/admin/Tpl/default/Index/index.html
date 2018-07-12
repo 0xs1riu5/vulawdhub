@@ -1,0 +1,263 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="__APP__/admin_header.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{$site.site_name} - {$site.site_slogan}</title>
+<script type="text/javascript" src="__THEME__/js/jquery.js"></script>
+<script type="text/javascript">
+var SITE_URL ='<php> echo SITE_URL;</php>';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+/* 按下F5时仅刷新iframe页面 */
+function inactiveF5(e) {
+	e=window.event||e;
+	var key = e.keyCode;
+	if (key == 116){
+		parent.MainIframe.location.reload();
+		if(document.all) {
+			e.keyCode = 0;
+			e.returnValue = false;
+		}else {
+			e.cancelBubble = true;
+			e.preventDefault();
+		}
+	}
+}
+
+function nof5() {
+    return ;
+	if(window.frames&&window.frames[0]) {
+		window.frames[0].focus();
+		for (var i_tem = 0; i_tem < window.frames.length; i_tem++) {
+			if (document.all) {
+				window.frames[i_tem].document.onkeydown = new Function("var e=window.frames[" + i_tem + "].event; if(e.keyCode==116){parent.MainIframe.location.reload();e.keyCode = 0;e.returnValue = false;};");
+			}else {
+				window.frames[i_tem].onkeypress = new Function("e", "if(e.keyCode==116){parent.MainIframe.location.reload();e.cancelBubble = true;e.preventDefault();}");
+			}
+		} //END for()
+	} //END if()
+}
+//模拟ts U函数 需要预先定义JS全局变量 SITE_URL 和 APPNAME
+
+var U =function(url,params){
+	var website = SITE_URL+'/index.php';
+	url = url.split('/');
+	if(url[0]=='' || url[0]=='@')
+		url[0] = APPNAME;
+	if (!url[1])
+		url[1] = 'Index';
+	if (!url[2])
+		url[2] = 'index';
+	website = website+'?app='+url[0]+'&mod='+url[1]+'&act='+url[2];
+	if(params){
+		params = params.join('&');
+		website = website + '&' + params;
+	}
+	return website;
+};
+
+function refresh() {
+	parent.MainIframe.location.reload();
+}
+
+function addTonav(name,url){
+	var appname = url.split('/');
+	$('.main-nav .nav').append('<a href="#" onclick="gotoApp(this,\''+url+'\')" appname="'+appname[0]+'">'+name+'</a>');
+	$.post(U('admin/Home/addNav'),{appname:appname[0],url:url},function(){});
+}
+
+function removeFromNav(app){
+	$('.main-nav a').each(function(i, a){
+		if($(a).attr('appname') == app){
+			$(a).remove();
+			$.post(U('admin/Home/removeNav'),{appname:app},function(){});
+		}
+	});
+}
+
+function gotoApp(obj,url){
+	
+	switchChannel('apps');
+
+	$('.main-nav').find('a').removeClass('on');
+
+	$(obj).addClass('on');
+
+	obj.className = 'on';
+
+	parent.MainIframe.location = U(url);
+
+}
+
+document.onkeydown=inactiveF5;
+
+</script>
+
+<script type="text/javascript">
+	var current_channel   = null;
+	var current_menu_root = null;
+	var current_menu_sub  = null;
+	var viewed_channel	  = new Array();
+	
+	$(document).ready(function(){
+		switchChannel('index');
+	});
+	
+	//切换频道（即头部的tab）
+	function switchChannel(channel) {
+		//if(current_channel == channel) return false;
+		$('.main-nav').find('a').removeClass('on');
+
+		$('#channel_'+current_channel).removeClass('on');
+		$('#channel_'+channel).addClass('on');
+		
+		$('#root_'+current_channel).css('display', 'none');
+		$('#root_'+channel).css('display', 'block');
+		
+		var tmp_menulist = $('#root_'+channel).find('a');
+		tmp_menulist.each(function(i, n) {
+			// 防止重复点击ROOT菜单
+			// if( i == 0 && $.inArray($(n).attr('id'), viewed_channel) == -1 ) {
+			// 	$(n).click();
+			// 	viewed_channel.push($(n).attr('id'));
+			// }
+			if ( i == 0 ) {
+				$(n).click();
+			}
+		});
+
+		current_channel = channel;
+	}
+	
+	function switch_sub_menu(sub, url) {
+		if(current_menu_sub) {
+			$('#menu_'+current_menu_sub).attr('class', '');
+		}
+		$('#menu_'+sub).attr('class', 'on');
+		current_menu_sub = sub;
+		
+		parent.MainIframe.location = url;
+	}
+	
+	
+</script>
+
+</head>
+<body style="margin:0; padding:0;" onLoad="nof5()">
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  	<tr>
+		<!-- 左侧导航 -->
+	  	<td width="150px" height='100%' valign="top" id="LeftMenu" rowspan="2">
+	  		<div class="LeftMenu">
+          	<a id="root_{$iterator}" class="title" href="{:U('admin/Index/index')}" onClick="switch_root_menu('{$iterator}');" hidefocus="true" style="outline:none;">管理中心</a>
+			<php>
+			  $iterator = 1;
+			  $home_url = '';
+			</php>
+	  		<!-- 第一级菜单，即大频道 -->
+	  		<php>foreach($menu as $menu_1_name => $menu_2) {</php>
+		      	<ul class="MenuList" id="root_{$menu_1_name}" <neq name="menu_1_name" value="index">style="display:none;"</neq>>
+		      	<!-- 第二级菜单 -->
+		      	<php>foreach($menu_2 as $menu_2_name => $menu_3) {</php>
+			        <li class="treemenu">
+			          <ul id="tree_{$iterator}" class="submenu">
+			          	<!-- <li>
+			          		<a id="root_{$iterator}" class="actuator" href="javascript:void(0)" onClick="switch_root_menu('{$iterator}');" hidefocus="true" style="outline:none;">{$menu_2_name}</a>
+			          	</li> -->
+			            <php>++ $iterator;</php>
+			          	<!-- 第三级菜单 -->
+			          	<php>foreach($menu_3 as $menu_3_name => $menu_3_url) {</php>
+	                        <php>$home_url = empty($home_url) ? $menu_3_url : $home_url;</php>
+			            	<li><a id="menu_{$iterator}" href="javascript:void(0)" onClick="switch_sub_menu('{$iterator}', '{$menu_3_url}');" class="submenuA" hidefocus="true" style="outline:none;">{$menu_3_name|getShort=10}</a></li>
+							<php>++ $iterator;</php>
+						<php>}</php>
+			          </ul>
+			        </li>
+				<php>}</php>
+		      	</ul>
+			<php>}</php>
+			</div>
+		</td>
+
+    	<!-- 右侧顶部导航 -->
+		<td height="60px">
+			<div class="header">
+			    <div class="main-nav">
+			    	<div class="nav">
+				    	<volist name="channel" id="vo">
+				    		<a id="channel_{$key}" <eq name="key" value="index">class="on"</eq> href="javascript:void(0)" onclick="switchChannel('{$key}');" hidefocus="true" style="outline:none;">{$vo}</a>
+				    	</volist>
+				    	<volist name='nav' id ='vo'>
+				    		<a href="#" onclick="gotoApp(this,'{$vo[url]}')" appname="{$vo.appname}">{$vo.name}</a>
+				    	</volist>	
+			    	</div>
+				    <div class="nav-sub">
+				    	<a style="padding:0px;" href="{:U('public/Account/index')}"><img src="{$user.avatar_tiny}"/></a>
+				    	<a href="{:U('public/Index/index')}" target="_blank">{:L('SYSTEM_BACK_TO_FRONT')}</a>
+						<a href="javascript:void(0);" onClick="refresh();">{:L('SYSTEM_REFRESH')}</a>
+				    	<a href="{:U('admin/Public/logout')}">{:L('PUBLIC_LOGOUT')}</a>
+				    	<br>
+				    	<div id="TopTime"></div>
+				    </div>
+				</div>                   
+			</div>
+		</td>
+	</tr>
+	
+	<!-- 右侧iframe内容 -->
+	<tr>
+		<td>
+			<div class="main">
+				<div class="main-content">
+					<iframe id="frame_content" onload="nof5()" id="MainIframe" name="MainIframe" scrolling="no"  width="100%" frameborder="0" noresize>
+					</iframe>
+					<script type="text/javascript">
+				    function reinitIframe(){
+				    	var iframe = document.getElementById("frame_content");
+				    	var LeftMenu = $("#LeftMenu");
+				    	var window_height = $(window).height();
+				    	var lm_height = LeftMenu.height();
+				    	try{
+						    var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+				    		iframe.height =  dHeight;
+				    		if((window_height - dHeight - 120) > 0){
+				    			$(".LeftMenu").height(window_height);
+				    		}else{
+				    			$(".LeftMenu").height(dHeight + 120);
+				    		}
+				    	}catch (ex){}
+				    }
+				    window.setInterval("reinitIframe()", 200);
+				    </script>
+				</div>
+			</div>
+		</td>
+	</tr>
+
+</table>
+<script type="text/javascript">
+$(function() {
+	var upgrade = function() {
+		var upgrade = $('#LeftMenu').find('li').find('a:contains(在线升级)');
+		upgrade.css('position', 'relative');
+		upgrade.html(upgrade.text() + '<span></span>');
+		upgrade.find('span').css({
+			"color"            : "#f00",
+			"background-color" : "#f00",
+			"width"            : "6px",
+			"height"           : "6px",
+			"display"          : "inline-block",
+			"border-radius"    : "10px",
+			"overflow"         : "hidden",
+			"position"         : "absolute",
+			"top"              : "0",
+			"margin"           : "15px 0 0 2px"
+		});
+	}
+
+	$.get('{:U('admin/Upgrade/ajxjCheck')}', function(data) {
+		data.status == 2 && upgrade();
+	}, 'json');
+});
+</script>
+</body>
+</html>

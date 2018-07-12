@@ -1,0 +1,25 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px">
+                <ul>
+                <li>收藏动态，动态ID=1 {:W('Collection',array('sid'=>1,'stable'=>'feed','sapp'=>'public','tpl'=>'simple'))}</li>
+                <li>收藏support，supportID=1 {:W('Collection',array('sid'=>1,'stable'=>'support','sapp'=>'support'))}</li>
+            </ul>
+            </div>
+<div>
+    <pre>
+        调用：W('Collection',array('sid'=>1,'stable'=>'feed','sapp'=>'public','tpl'=>'simple'))
+        参数说明：
+        sid:资源ID
+        stable:资源所在的表
+        sapp:资源所在的应用
+        tpl:simple（收藏，已收藏 有统计数）、btn（收藏、取消收藏）
+    </pre>
+</div>
+        </div>
+    </div>
+</div>
+
+<include file="__THEME__/public_footer" />

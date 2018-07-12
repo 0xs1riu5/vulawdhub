@@ -1,0 +1,56 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{:L('PUBLIC_MAILTITLE_ADMIN')} - {$nodeInfo.nodeinfo}</div>
+
+
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+<div class="list">
+  <form action="{:U('admin/Config/saveConfigData')}" method='POST'>
+    <input type="hidden" class="s-txt" value="admin_Config" name="systemdata_list">
+    <input type="hidden" class="s-txt" value="{$systemdata_key}" name="systemdata_key">
+    <input type="hidden" class="s-txt" value="编辑SEO" name="pageTitle">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+      
+      <tr>
+          <td width="100px">页面名称：</td>
+          <td><label>{$name}</label></td>
+          <input type="hidden" class="s-txt" value="{$name}" name="name">
+      </tr>
+      <tr>
+          <td width="100px">标题：</td>
+          <td><input id="form_title" class="s-txt" type="text" style="width:200px" value="{$title}" name="title"></td>
+      </tr>
+      <tr>
+          <td>关键字：</td>
+          <td><input type="text" style="width:200px" class="s-txt" value="{$keywords}" id="form_keywords" name="keywords"></td>
+      </tr>
+      <tr>
+          <td>页面描述：</td>
+          <td><textarea cols="80" rows="10" id="form_des" name="des">{$des}</textarea></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+          <td><p>{$note}</p></td>
+      </tr>
+  </table>
+    
+    <div class="page_btm">
+      <input name="node" value='{$nodeInfo.node}' type='hidden'>
+      <input class="btn_b" value="{:L('PUBLIC_SAVE')}" name='sub' type="submit">
+    </div>
+  </form>
+</div>
+</div>
+<include file="__THEME__/admin_footer" />

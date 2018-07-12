@@ -1,0 +1,25 @@
+<div id="col3" class="st-index-right">
+	
+	<!-- 个人信息 -->
+	<session name="mid">
+        <div class="right-wrap">
+    	   {:W('UserInformation', array('uid'=>$mid, 'tpl'=>'right', 'isReturn'=>$isReturn))}
+        </div>
+    </session>
+    <!-- 签到 -->
+	{:W('CheckIn')}
+	<!-- 插件位 -->
+    <div class="right-wrap">
+    {:W('RelatedUser', array('title'=>'可能感兴趣的人', 'limit'=>3, 'max'=> 3))}
+    </div>
+    <div class="right-wrap">
+    {:W('TopicList',array('type'=>1, 'limit'=>5))}<!--推荐话题-->
+    </div>
+	<!-- 插件位 -->
+    <!-- 首页右下广告位 -->
+    <div class="right-wrap">
+    <fieldset class="inter-line" style="padding-bottom:20px;"><legend class="inter-txt">推荐</legend></fieldset>
+	<!--{:W('ShowAds')}-->
+    {:Addons::hook('show_ad_space', array('place'=>'home_right_bottom'))}
+    </div>
+</div>

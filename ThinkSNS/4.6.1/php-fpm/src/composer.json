@@ -1,0 +1,101 @@
+{
+    "name": "medz/thinksns",
+    "type": "project",
+    "description": "A extensable social networing system.",
+    "keywords": ["sns", "think", "ts", "thinksns", "t4", "ts4"],
+    "homepage": "http://www.thinksns.com",
+    "license": "Private",
+    "license-url": "./LICENSE",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "智艺创想",
+            "homepage": "http://www.zhiyicx.com",
+            "role": "Development company"
+        },
+        {
+            "name": "The ThinkSNS Team",
+            "email": "support@zhishisoft.com",
+            "homepage": "http://www.thinksns.com",
+            "role": "R & D team"
+        },
+        {
+            "name": "Bin Qiao",
+            "homepage": "http://demo.thinksns.com/ts4/index.php?app=public&mod=Profile&act=index&uid=32179",
+            "role": "Developer"
+        },
+        {
+            "name": "while",
+            "homepage": "http://demo.thinksns.com/ts4/index.php?app=public&mod=Profile&act=index&uid=32521",
+            "role": "Developer"
+        },
+        {
+            "name": "Seven Du",
+            "email": "lovevipdsw@outlook.com",
+            "homepage": "http://medz.cn",
+            "role": "Developer"
+        },
+        {
+            "name": "陈然",
+            "email": "396147081@qq.com",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "medz/vendor-pack-pinyin",
+                "version": "dev-master",
+                "dist": {
+                    "url": "https://github.com/jifei/Pinyin/archive/master.zip",
+                    "type": "zip"
+                },
+                "autoload": {
+                    "classmap": ["Pinyin.php"]
+                }
+            }
+        }
+    ],
+    "require": {
+        "php": ">=5.3.12",
+        "ext-curl": "*",
+        "ext-gd": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-mcrypt": "*",
+        "ext-zlib": "*",
+        "ext-zip": "*",
+        "medz/vendor-pack-pinyin": "@dev",
+        "medz/filesystem": "~1.0",
+        "medz/emoji-format": "^1.0",
+        "symfony/polyfill-mbstring": "~1.0",
+        "illuminate/database": "4.1.*",
+        "jpush/jpush": "^3.4",
+        "zhiyicx/thinksns-old-code": "^1.0",
+        "zhiyicx/thinksns-theme-stv1": "^1.0"
+    },
+    "config": {
+        "vendor-dir": "src/vendor/",
+        "preferred-install": "dist"
+    },
+    "autoload": {
+        "classmap": [
+            "src/Ts.php"
+        ],
+        "psr-4": {
+            "Ts\\": "src/"
+        }
+    },
+    "support": {
+        "email": "support@zhishisoft.com",
+        "forum": "http://demo.thinksns.com",
+        "source": "https://github.com/medz/thinksns.git"
+    },
+    "suggest":{
+        "medz/vendor-pack-pinyin": "This is a converted Chinese characters spelling library.",
+        "medz/filesystem": "Medz Filesystem Component.",
+        "symfony/polyfill-mbstring": "This component provides a partial, native PHP implementation for the[Mbstring](http://php.net/mbstring) extension."
+    }
+}

@@ -1,0 +1,317 @@
+<div id="pic_one" class="pic-one">
+	<php>if($feedInfo['type'] == 'postvideo'){</php>
+	<div class="video_box" id="video_box_{$feedInfo['feed_id']}"></div>
+	<script type="text/javascript"> $("#video_box_{$feedInfo['feed_id']}").html(showFlash_online("{$feedInfo['host']}","{$feedInfo['flashvar']}",660)); </script>
+    <php>}else{</php>
+	<img id="show_image" src="{$attach[$iShow - 1]['attach_url']}" style="display:none;">
+    <php>if(count($attach)>1){</php>
+        <div class="arrow-next"></div><div class="arrow-pre"></div>
+    <php>}</php>
+    <php>}</php>
+</div>
+<div id="pic_all" class="pic-all" style="display:none">
+	<ul>
+		<volist name="attach" id="vo">
+		<li><a href="javascript:;" key="{$i - 1}" class="click_image <eq name='i' value='$iShow'>current</eq>"><img src="{$vo.attach_small}" width="50" height="50"></a></li>
+		</volist>
+	</ul>
+</div>
+<php>if($feedInfo['type'] != 'postvideo'){</php>
+<div class="rotate-btn">
+	<a target="_blank" id="view_original" href="{$attach[$iShow - 1]['attach_url']}"><i class="ico-view-big"></i>查看原图</a>
+	<a id="revolvingLeft" href="javascript:;"><i class="ico-rotate-l"></i>左旋转</a>
+	<a id="revolvingRight" href="javascript:;"><i class="ico-rotate-r"></i>右旋转</a>
+</div>
+<php>}</php>
+<script type="text/javascript" src="__THEME__/js/jquery.rotate.js"></script>
+<script type="text/javascript">
+// 防止IE下使用resize事件，假死状态
+(function ($) {
+  $.fn.wresize = function (f) {
+    version = '1.1';
+    wresize = {fired: false, width: 0};
+
+    function resizeOnce () {
+      if ($.browser.msie) {
+        if (!wresize.fired) {
+          wresize.fired = true;
+        } else {
+          var version = parseInt($.browser.version, 10);
+          wresize.fired = false;
+          if (version < 7) {
+            return false;
+          } else if (version == 7) {
+            //a vertical resize is fired once, an horizontal resize twice
+            var width = $( window ).width();
+            if (width != wresize.width) {
+              wresize.width = width;
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    }
+
+    function handleWResize (e) {
+      if (resizeOnce()) {
+        return f.apply(this, [e]);
+      }
+    }
+
+    this.each(function () {
+      if (this == window) {
+        $(this).resize(handleWResize);
+      } else {
+        $(this).resize(f);
+      }
+    });
+
+    return this;
+  };
+})(jQuery); 
+
+
+/**
+ * 自动调整图片窗口大小
+ * @return void
+ */
+var imageSize = (function (imagesJson, index) {
+	var $displayarea = $('#photo_content'),
+		$photo = $('#big_image'),
+		$list  = $('#info_box'),
+		$bigList  = $('#big_list'),
+		$image    = $('#show_image'),
+		$blackout = $('#boxy_blackout'),
+		$one = $('#pic_one'),
+		$all = $('#pic_all'),
+		aw = $all.find('li').length * 56,
+		ii = index - 1 || 0,
+		leftVal  = 0,
+		rightVal = 0,
+		images   = $.parseJSON(imagesJson);
+
+	/**
+	 * 重新设置窗体的高度
+	 * @return void
+	 */
+	var setDisplayArea = function (imageIndex, rotateVal) {
+    	$image = $('#show_image');
+		ii = imageIndex;
+		rotateVal = rotateVal || 0;
+		var direction = Math.abs(rotateVal / 90 % 4);
+		var directionBool = (direction === 0 || direction === 2) ? true : false;
+		var width = 660, height = 495;
+		if(images.length) {
+			if (directionBool) {
+				width = images[imageIndex].width;
+				height = images[imageIndex].height;
+			} else {
+				width = images[imageIndex].height;
+				height = images[imageIndex].width;
+			}
+		}
+		// 浏览器可是的宽度
+		var fixedWdith = 1000;
+		var ww = fixedWdith; //$(window).width(fixedWdith);
+		var mw = fixedWdith;
+		// 浏览器可视的高度
+		var wh = $(window).height();
+		// 重新设置浏览器可视宽度
+		$displayarea.width(fixedWdith); 
+		$photo.width(fixedWdith - 300);
+		// 重新设置浏览器可视高度
+		$displayarea.height(wh*0.9);
+		$photo.height(wh * 0.9);
+		$list.height(wh * 0.9);
+
+		// 图片原始宽度
+		var iw = width;
+		// 图片原始高度
+		var ih = height;
+		// 重置图片宽高
+		if (iw > $photo.width() - 50) {
+			ih = ih * ($photo.width() - 50) / iw;
+			iw = $photo.width() - 50;
+		}
+		/*if (!directionBool && ih > $photo.width() - 50) {
+		  iw = ($photo.width() - 50) / iw;
+		  ih = $photo.width() - 50;
+		}*/
+		iw = parseInt(iw);
+		ih = parseInt(ih);
+		if (ih > $photo.height() - 110) {
+			$displayarea.height(ih + 110);
+			$photo.height(ih + 110);
+			$list.height(ih + 110);
+			$bigList.height(ih + 110 - 40);
+		} else {
+			$bigList.height(wh * 0.9 - 40);
+		}
+		// 图片定位
+		if (directionBool) {
+			$image.css({'width':iw, 'height':ih, 'margin-left':($photo.width() - iw) / 2, 'margin-top':($photo.height() - ih - 50) / 2});
+		} else {
+			$image.css({'width':ih, 'height':iw, 'margin-left':($photo.width() - ih) / 2, 'margin-top':($photo.height() - iw - 50) / 2});
+		}
+		var top = ($(window).height()-$displayarea.height())/2;
+		$displayarea.stop().animate({
+			top:top > 12 ? top : 12,
+			opacity : 1
+		}, 200, 'swing');
+		$image.show();
+			// 绑定左右换图鼠标事件
+		$photo.mousemove(function (e) {
+		  var xx = e.clientX || 0;
+		  var start  = ($(window).width()-fixedWdith)/2;
+		  var end    = start + $one.width();
+		  var middle = start + ($one.width() * 0.25);
+		  // 右边
+		  if (xx < middle) {
+			$one.addClass('pre');
+			$one.removeClass('next');
+		  } else {
+			// 左边
+			$one.addClass('next');
+			$one.removeClass('pre');
+		  }
+		});
+		// 定位缩略图
+		var allLeft = ($one.width() - aw) / 2;
+		$all.css({left:allLeft});
+		$all.show();
+	}
+
+	// 初始化设置图片高度
+	setDisplayArea(ii);
+
+  /**
+   * 鼠标定位左右，用于左右切换，块状区域
+   * @return void
+   */
+  $one.bind('click', function () {
+    // 获取当前选中index
+    var _index = 0;
+    $('a.click_image').each(function () {
+      if ($(this).hasClass('current')) {
+        _index = parseInt($(this).attr('key'));
+      }
+    });
+    var clickIndex = 0;
+    // 获取需要转换的index
+    if ($one.hasClass('pre')) {
+      clickIndex = _index - 1;
+    } else if ($one.hasClass('next')) {
+      clickIndex = _index + 1;
+    } else {
+      return false;
+    }
+    // 循环功能
+    if (clickIndex < 0) {
+      clickIndex = $('a.click_image').length - 1;
+    } else if (clickIndex > $('a.click_image').length - 1) {
+      clickIndex = 0;
+    }
+    // 点击事件
+    if (clickIndex >= 0 && clickIndex <= $('.click_image').length - 1) {
+      $('.click_image').removeClass('current');
+      $('a[key="'+clickIndex+'"]').addClass('current');
+      $one.html('<img id="show_image" src="' + images[clickIndex].attach_url + '" style="display:none;"><php>if(count($attach)>1){</php><div class="arrow-next"></div><div class="arrow-pre"></div><php>}</php>');
+      viewOriginalHref(images[clickIndex].attach_url);
+      unsetRotateVal();
+      setDisplayArea(clickIndex);
+    }
+  });
+
+  /**
+   * 缩略图点击事件绑定
+   * @return void
+   */
+  $('.click_image').bind('click', function () {
+    $('.click_image').removeClass('current');
+    $(this).addClass('current');
+    var clickIndex = $(this).attr('key');
+    $one.html('<img id="show_image" src="' + images[clickIndex].attach_url + '" style="display:none;"><php>if(count($attach)>1){</php><div class="arrow-next"></div><div class="arrow-pre"></div><php>}</php>');
+    viewOriginalHref(images[clickIndex].attach_url);
+    unsetRotateVal();
+    setDisplayArea(clickIndex);
+  });
+
+  /**
+   * 查看原图链接事件绑定
+   * @param string src 原图片地址
+   * @return void
+   */
+  var viewOriginalHref = function (src) {
+    $('#view_original').attr('href', src);
+  };
+
+  /**
+   * 绑定图片左旋转事件
+   * @return void
+   */
+  $('#revolvingLeft').bind('click', function () {
+    leftVal++;
+    var rval = getRotateVal();
+    setDisplayArea(ii, rval);
+    var mt = $('#show_image').css('margin-top');
+    var ml = $('#show_image').css('margin-left');
+    var css = {
+      'margin-top': mt,
+      'margin-left': ml
+    }
+    $('#show_image').rotate(rval);
+    $('#show_image').css(css);
+  });
+
+  /**
+   * 绑定图片右旋转事件
+   * @return void
+   */
+  $('#revolvingRight').bind('click', function () {
+    rightVal++;
+    var rval = getRotateVal();
+    setDisplayArea(ii, rval);
+    var mt = $('#show_image').css('margin-top');
+    var ml = $('#show_image').css('margin-left');
+    var css = {
+      'margin-top': mt,
+      'margin-left': ml
+    }
+    $('#show_image').rotate(rval);
+    $('#show_image').css(css);
+  });
+
+  /**
+   * 获取偏转的角度值
+   * @return integer 偏转的角度值
+   */
+  var getRotateVal = function () {
+    return parseInt((rightVal - leftVal) * 90);
+  }
+
+  /**
+   * 重置偏转值
+   * @return void
+   */
+  var unsetRotateVal = function () {
+  	leftVal = 0;
+  	rightVal = 0;
+  }
+
+  // 窗体外点击事件绑定，用于取消弹窗窗口
+  $('body').bind('click',function(event){
+    var obj = "undefined" != typeof(event.srcElement) ? event.srcElement : event.target;
+    if($(obj).attr('id') =='photo_layer'){
+      core.weibo.bigImageClose();
+    }
+  });
+
+  // 绑定窗口大小改变事件
+  $(window).wresize(function () {
+    var rval = getRotateVal();
+    setDisplayArea(ii, rval);
+  });
+
+}('{$images}', '{$iShow}'));
+</script>

@@ -1,0 +1,46 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/login.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+  <div class="reg-wrap"> 
+    <!--注册步骤-->
+    <div class="article article-avatar st-bg">
+      <div class="reg-main clearfix">
+        <div class="step-main">
+          <ul>
+            <li><i class="step1"></i><span>填写注册信息</span><b class="step-line"></b></li>
+            <li class="on"><i class="step2-on"></i><span>上传头像</span><b class="step-lineOn"></b></li>
+            <li><i class="step3"></i><span>填写基本信息</span><b class="step-line"></b></li>
+            <li><i class="step4"></i><span>选择感兴趣的人</span></li>
+          </ul>
+        </div>
+       
+        <div class="portrait-area">
+        <php>$user_info = model('User')->getUserInfo($GLOBALS['ts']['mid']);</php>
+          <div class="port-upload-area">
+            {:W('Avatar',array('avatar'=>$user_info,'defaultImg'=>$user_info['avatar_big']))}
+          </div>
+          <div class="mt20">
+            <a class="disable fr" href="javascript:;" onclick="doStep2()">确定进入下一步</a>
+            <if condition="$skip != 'false'">
+            <a class="gray fl" href="{:U('public/Register/step3')}">跳过</a> 
+            </if>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="__THEME__/js/module.form.js"></script>
+<include file="__THEME__/public_footer" />
+<script>
+var doStep2 = function(){
+    $.post(U('public/Register/doStep2'), function(res) {
+      if (res.status == 0) {
+        ui.error(res.info);
+      } else {
+        location.href = "{:U('public/Register/step3')}";
+      }
+    },'json');
+}
+</script>

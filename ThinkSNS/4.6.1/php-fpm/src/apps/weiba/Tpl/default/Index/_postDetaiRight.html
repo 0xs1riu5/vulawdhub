@@ -1,0 +1,17 @@
+<div id="col3" class="st-index-right">
+  <if condition=" $GLOBALS['ts']['mid'] neq 0 ">
+    <!-- <div class="right-wrap"> {:W('WeibaUserInformation', array('uid'=>$mid, 'tpl'=>'right', 'isReturn'=>$isReturn))} </div> -->
+  </if>
+  <div class="right-wrap"> 
+    <!--该作者其他帖子-->
+    {:W('OtherPost',array('uid'=>$mid,'title'=>'该作者其它帖子','post_id'=>intval($_GET['post_id']),'max'=>4))} 
+    <!--最新帖子--> 
+    {:W('LatestPost',array('uid'=>$mid,'title'=>'最新帖子','weiba_id'=>$weiba_id,'max'=>4))} 
+    <!--微吧推荐-->
+    <div class="mb20"> {:W('RelatedGroup',array('uid'=>$mid,'title'=>'微吧推荐','max'=>3))} </div>
+    <!--微吧右下广告-->
+    <div class="right-box mb10 clearfix ad_space_right">
+      {:Addons::hook('show_ad_space', array('place'=>'weiba_right'))}
+    </div>
+    {:W('WeibaDaren',array('uid'=>$mid,'weibaid'=>$weiba_id,'title'=>'活跃用户','max'=>3))} </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="pop-weight">
+    <dl class="weight-list">
+        <volist name='list' id='vo'>
+
+        <php>
+           
+        if(in_array($vo['appname'].':'.$vo['name'],$selected)){ 
+           $style = "style='display:none'";
+           $class = "class='selected'";
+        }else{
+            $style = $class = '';
+        }</php>
+
+        <dd {$class} model-node='widget_select_dd' model-args='target={$vo.appname}:{$vo.name}'>
+                <div class="top"><i class="ico-ok-big"></i></div>
+                <div class="mask"></div>
+                <div class="face">
+                    <img src="__THEME__/{$vo.appname}/image/widget/{$vo.name}.png" width="32px" height="32px"/>
+                </div>
+                <div class="content">
+                        <p>{$vo.desc}</p>
+                        <p><a href="javascript:;" event-node='widget_select_add' {$style}>{:L('PUBLIC_CLICK_ADD')}</a></p>
+                </div>
+        </dd>
+        </volist>
+    </dl>
+    <div class="btn">
+        <input type='hidden' id='wSelected' value ='{:implode(',',$selected)}' >
+        <a href="javascript:;" event-node='widget_doadd' class="btn-green-small mr10" event-args='diyId={$diyId}'><span>{:L('PUBLIC_SAVE')}</span></a>
+        <a href="javascript:ui.box.close();" class="btn-cancel"><span>{:L('PUBLIC_CANCEL')}</span></a></div>
+</div>
+<script type="text/javascript">
+    M.addModelFns({
+         widget_select_dd:{
+            click:function(){
+                var args = M.getModelArgs(this);
+                var curId = $('#wSelected').val();
+                var arr = curId.split(',');
+                var wadd = function(t){
+                     $('#wSelected').val(curId+','+t);
+                };
+                var wdel = function(t){
+                     var val = new Array();
+                     for(var i in arr){
+                         if(arr[i] != t && arr[i] !='' && "string" == typeof(arr[i])){
+                            val[i] = arr[i];
+                         }
+                     }
+                     $('#wSelected').val(val.join(','));
+                };
+                if($(this).hasClass('selected')){
+                    $(this).removeClass('selected');
+                    $(this.childEvents['widget_select_add'][0]).show();
+                    wdel(args.target);
+                }else{
+                    $(this).addClass('selected');
+                    $(this.childEvents['widget_select_add'][0]).hide();
+                    wadd(args.target);
+                }
+            }
+         }   
+    }).addEventFns({
+        widget_doadd:{
+            click:function(){
+                var selected = $('#wSelected').val();
+                var args = M.getEventArgs(this);
+                core.widget.doadd(args.diyId,selected);
+            }
+        }
+    });
+    M(document.getElementById('tsbox'));
+</script>

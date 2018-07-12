@@ -1,0 +1,76 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+<!-- START TAB框 -->
+  
+<div class="tit_tab">
+  <ul>
+  <!-- <li><a href="{:U('admin/Home/visitorCount',array('type'=>'today'))}" <eq name='type' value='today'> class = "on"</eq>>{:L('PUBLIC_TODAY')}</a></li>
+  <li><a href="{:U('admin/Home/visitorCount',array('type'=>'yesterday'))}" <eq name='type' value='yesterday'> class = "on"</eq>>{:L('PUBLIC_YESTERDAY')}</a></li> -->
+  <li><a href="{:U('admin/Home/visitorCount',array('type'=>'week'))}" <eq name='type' value='week'> class = "on"</eq>>{:L('PUBLIC_LAST_SEVEN_DAYS')}</a></li>
+  <li><a href="{:U('admin/Home/visitorCount',array('type'=>'30d'))}" <eq name='type' value='30d'> class = "on"</eq>>{:L('PUBLIC_LAST_THIRTY_DAYS')}</a></li>
+  <li><a href="{:U('admin/Home/visitorCount',array('type'=>'month'))}" <eq name='type' value='month'> class = "on"</eq>>{:L('PUBLIC_THIS_MONTH')}</a></li>
+  <li>
+  <form method ='GET' action="{:U('admin/Home/visitorCount')}">
+  <input type="hidden" name='app' value='admin'>
+  <input type="hidden" name='mod' value='Home'>
+  <input type="hidden" name='act' value='visitorCount'>
+  <input style="margin-top:4px" type="text" readonly="readonly" onfocus="core.rcalendar(this,'Y-m-d');" value="{$_GET.start_day}" id="start_day" class="s-txt" name="start_day">
+  -
+   <input style="margin-top:4px" type="text" readonly="readonly" onfocus="core.rcalendar(this,'Y-m-d');" value="{$_GET.end_day}" id="end_day" class="s-txt" name="end_day">
+   <input style="margin-top:4px" type="submit" value="{:L('PUBLIC_SYSTEM_FIND')}" class="btn_b">
+  </form>
+  </li>
+  </ul>
+</div>
+
+<!-- END TAB框 -->
+
+  
+  <!-- START LIST -->
+  <div class="list" id='list' style="clear:both;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>{:L('PUBLIC_STATISTICAL_TIME')}</th>
+    <th class="line_l">{:L('PUBLIC_VIEWS_PV')}</th>
+    <th class="line_l">{:L('PUBLIC_INDEPENDENT_VISITORS')}</th>
+    <th class="line_l">{:L('PUBLIC_PER_CAPITA_VIEWS')}</th>
+    <th class="line_l">{:L('PUBLIC_MAXIMUM_ONLINE_SAME_TIME')}</th>
+    <th class="line_l">{:L('PUBLIC_MAXIMUM_ONLINE_TIME')}</th>
+  </tr>
+  <php>if(empty($data)){</php>
+  <tr><td colspan='100' align="center">{:L('SSC_NO_RELATE_DATA')}</td></tr>
+  <php>}else{</php>
+ 
+  <php>$value[0][] = $value[1][] = $value[2][] = 0;</php> 
+  <volist name='data' id='vo'>  
+  <php> 
+    $user = $vo['total_users']+$vo['total_guests'];
+    $value[0][] = $vo['total_pageviews'];
+    $value[1][] = $user;
+    $value[2][] = round($vo['total_pageviews']/$user,2);
+    $ticks[] = $vo['day'];
+  </php>
+  <tr overstyle="on" >
+  <td>{$vo.day}</td>
+  <td>{$vo.total_pageviews}</td>
+  <td>{$user}</td>
+  <td><php> echo round($vo['total_pageviews']/$user,2);</php></td>
+  <td>{$vo.most_online_users}</td>
+  <td> {:date('H:i',$vo['most_online_time']-1800)} - {:date('H:i',$vo['most_online_time'])}</td>
+  </tr>	
+  </volist>
+  <php>}</php>
+
+  </table>
+  </div>
+  <!-- END LIST -->
+  <php> 
+    if($type !='today' && $type !='yesterday'){
+  </php>
+  <div >
+    {:W('Plot',array('tpl'=>'zx','type'=>'zx','value'=>$value,'title'=>$type,'ticks'=>$ticks))}
+  </div> 
+  <php>}</php>
+  
+</div>
+<include file="__THEME__/admin_footer" />

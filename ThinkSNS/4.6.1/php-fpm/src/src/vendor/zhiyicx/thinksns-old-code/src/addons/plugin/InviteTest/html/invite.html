@@ -1,0 +1,175 @@
+  <!-------- 搜索 -------->
+  <div id="searchUser_div" <neq name="type" value="searchUser">style="display:none;"</neq>>
+  	<div class="page_tit">搜索列表 [ <a href="javascript:void(0);" onclick="searchUser();">隐藏</a> ]</div>
+	
+	<div class="form2">
+	<form method="post">
+	 
+    <dl class="lineD">
+      <dt>用户：</dt>
+      <dd>
+        {:W('SearchUser', array('uids'=>$defaultS, 'name'=>'user','follow'=>0, 'noself'=>0, 'max'=>0))}
+      </dd>
+    </dl>
+	
+   
+    
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="确定" />
+    </div>
+	</form>
+  </div>
+  </div>
+  
+  <!-------- 列表 -------->
+  <div class="Toolbar_inbox">
+  	<div class="page right">{$data.html}</div>
+	<a style="display:none" href="javascript:void(0);" class="btn_a" onclick="searchUser();"><span class="searchUser_action"><neq name="type" value="searchUser">搜索列表<else/>隐藏搜索</neq></span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="c.del()"><span>删除</span></a>
+  </div>
+  <div class="list">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th style="width:30px;">
+		<input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+    	<label for="checkbox"></label>
+	</th>
+    <th class="line_l" style="width:40px;">ID</th>
+    <th class="line_l">邀请码</th>
+    <th class="line_l">已绑用户</th>
+    <th class="line_l">使用时间</th>
+    <th class="line_l">操作</th>
+  </tr>
+  <volist id="vo" name="data.data">
+	  <tr overstyle='on' id="invite_test_{$vo['id']}">
+	    <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.id}"></td>
+	    <td>{$vo.id}</td>
+        <td>{$vo.code}</td>
+        <td>{:getUserSpace($vo['uid'], '', '_blank')}</td>
+        <td>{:friendlyDate($vo['utime'])}</td>
+	    <td><a href="javascript:void(0)"  onclick="c.set({$vo.id}, {$vo.is_disable})" style="{$vo['is_disable']?'color:red;':''}">{$vo['is_disable']?'启用':'禁用'}</a>　<a href="javascript:void(0)" onclick="c.del({$vo.id})">删除</a></td>
+	  </tr>
+  </volist>
+  </table>
+  </div>
+   <div class="Toolbar_inbox">
+  	<div class="page right">{$data.html}</div>
+     <a href="javascript:void(0);" class="btn_a" onclick="c.del()"><span>删除</span></a>
+  </div>
+<script>
+	//鼠标移动表格效果
+	$(document).ready(function(){
+		$("tr[overstyle='on']").hover(
+		  function () {
+		    $(this).addClass("bg_hover");
+		  },
+		  function () {
+		    $(this).removeClass("bg_hover");
+		  }
+		);
+	});
+
+	//搜索用户
+	var isSearchHidden = <neq name="type" value="searchUser">1<else/>0</neq>;
+	function searchUser() {
+		if(isSearchHidden == 1) {
+			$("#searchUser_div").slideDown("fast");
+			$(".searchUser_action").html("搜索完毕");
+			isSearchHidden = 0;
+		}else {
+			$("#searchUser_div").slideUp("fast");
+			$(".searchUser_action").html("搜索用户");
+			isSearchHidden = 1;
+		}
+	}
+
+	
+function getChecked() {
+    var ids = new Array();
+    $.each($('table input:checked'), function(i, n){
+        ids.push( $(n).val() );
+    });
+    return ids;
+}
+
+function checkon(o){
+    if( o.checked == true ){
+        $(o).parents('tr').addClass('bg_on') ;
+    }else{
+        $(o).parents('tr').removeClass('bg_on') ;
+    }
+}
+
+function checkAll(o){
+    if( o.checked == true ){
+        $('input[name="checkbox"]').attr('checked','true');
+        $('tr[overstyle="on"]').addClass("bg_on");
+    }else{
+        $('input[name="checkbox"]').removeAttr('checked');
+        $('tr[overstyle="on"]').removeClass("bg_on");
+    }
+}
+
+
+var ctrl = function(name){
+    this.elements = document.getElementsByName('id[]');
+    this.length = this.elements.length;
+}
+ctrl.prototype = {
+    reverse:function(){
+    for(i=0;i<this.length;i++){
+        this.elements[i].checked= !this.elements[i].checked;
+    }
+    },
+all:function(){
+for(i=0;i<this.length;i++){
+  this.elements[i].checked = true;
+}
+},
+unAll:function(){
+  for(i=0;i<this.length;i++){
+    this.elements[i].checked = false;
+  }
+},
+toggle:function(obj){
+   this[obj.checked ? 'all' : 'unAll']();
+ },
+ 
+ 
+ del:function(id){
+	var id = id ? id : getChecked();
+	id = id.toString();
+	if(id=='' || id==0) return ;
+	if( confirm("是否删除") ){
+      var url="{:Addons::adminUrl('invite')}"; 
+	  $.post( url,{id:id, isdel:1},function(text ){
+		  if( text == 1 ){
+			  ui.success( "删除成功" );
+			  var id_list = id.split( ',' );   
+			  for (var j=0 ; j< id_list.length ; j++   ){
+				  $('#invite_test_'+id_list[j]).remove(); 
+			  }
+		  }else if( text == 2 ){
+			  ui.success( "删除成功" );
+			  $('#invite_test_'+id).remove();
+		  }else{
+			  ui.error( "删除失败" );
+		  }
+	  });
+    }
+ },
+
+ set:function(id, status){
+	var id = id ? id : getChecked();
+	id = id.toString();
+	if(id=='' || id==0) return ;
+    var url="{:Addons::adminUrl('invite')}"; 
+    $.post( url,{id:id, status:status, isset:1},function(text){
+	    window.location.reload();
+    });
+ }
+  
+}
+	var c = new ctrl();
+</script>
+<include file="../Public/_footer" />

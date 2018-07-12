@@ -1,0 +1,65 @@
+<include file="__THEME__/public_header" />
+
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="col" class="st-grid content-bg st-bg-b cc">
+      <div id="col4" class="main-left">
+        <!--tab菜单-->
+        <include file="_tabs" />
+      </div>
+      <div id="col7" class="main-right">
+        <div class="extend minh person-set">
+          <div class="set-hd"><h3>{$tabName}</h3></div>
+          <!--信息设置项 基本信息-->
+          <form action="{:U('public/Account/doSaveProfile')}" method="post" model-node='account_save'>
+            <dl class="form-set">
+              <dd>
+                <div class="form-tt"><font color="red"> * </font>{:L('PUBLIC_LOGIN_EMAIL')}：</div>
+                <div class="form-row">{$user_info['email']}</div>
+              </dd>
+              <dd>
+                <div class="form-tt"><font color="red"> * </font>{:L('PUBLIC_NICKNAME')}：</div>
+                <div class="form-row">
+                  <input event-node="uname" event-args="old_name={$user_info['uname']}" name="uname" checkurl="{:U('public/Register/isUnameAvailable')}" autocomplete="off" type="text" value="{$user_info['uname']}" />
+                </div>
+                <input type="hidden" name="old_name" value="{$user_info['uname']}" />
+              </dd>
+              <dd>
+                <div class="form-tt"><font color="red"> * </font>{:L('PUBLIC_GENDER')}：</div>
+                <div class="form-row">
+                  <label><input name="sex" type="radio" value="1" class="s-ck" <if condition="1 eq $user_info['sex']">checked="checked"</if> />{:L('PUBLIC_MALE')}</label>
+                  <label><input name="sex" type="radio" value="2" class="s-ck" <if condition="2 eq $user_info['sex']">checked="checked"</if> />{:L('PUBLIC_FEMALE')}</label>
+                </div>
+              </dd>
+              <dd>
+                <div class="form-tt"><font color="red"> * </font>地区：</div>
+                <div class="form-row">
+                  {:W('Areas',array('curPro'=>$user_info['province'],'curCity'=>$user_info['city'],'area'=>$user_info['area'],'impotid'=>'3273','impotval'=>$user_info['input_city'],'city_names'=>$user_info['location'],'tpl'=>'selectArea'))}</div>
+              </dd>
+              <dd>
+                <div class="form-tt"> 个人简介：</div>
+                <div class="form-row">
+                  <textarea class="s-textarea" name="intro">{$user_info['intro']}</textarea>
+                </div>
+              </dd>
+              <dd>
+                <div class="form-tt"></div>
+                <div class="form-row">
+                  <a event-node="submit_btn" href="#" class="btn-green-big mt20">{:L('PUBLIC_SAVE')}</a>
+                </div>
+                <input type="text" style="display:none">
+              </dd>
+            </dl>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__THEME__/js/module.form.js"></script>
+<script type="text/javascript">
+var editUserCategory = function(){
+    ui.box.load("{:U('public/Account/editUserCategory')}", '修改身份');
+};
+</script>
+<include file="__THEME__/public_footer" />

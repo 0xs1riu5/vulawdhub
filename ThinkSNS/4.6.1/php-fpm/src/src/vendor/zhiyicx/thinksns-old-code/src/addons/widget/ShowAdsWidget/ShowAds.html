@@ -1,0 +1,12 @@
+<div class="right-box clearfix">
+  <fieldset class="inter-line mb20">
+    <legend class="inter-txt">热门活动</legend>
+  </fieldset>
+  <ul class="adslist">
+    <volist name="user" id="vo">
+		<li><a href="{:U('event/Index/eventDetail','id='.$vo['id'].'&uid='.$vo['uid'])}"><img src="{$vo.coverId|getImageUrlByAttachId}" /></a></li>	
+	</volist>
+  </ul>
+</div>
+
+<script src="__APP__/login.js" type="text/javascript"></script> 

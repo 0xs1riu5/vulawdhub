@@ -1,0 +1,40 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/account.css" rel="stylesheet" type="text/css" />
+    <div id="page-wrap">
+        <div id="main-wrap">
+            <div id="col" class="st-grid content-bg st-bg-b cc">
+            	<div id="col4" class="main-left">
+                    <!--tab菜单-->
+                    <include file="_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                    <div class="extend minh person-set">
+                    	<div class="set-hd"><h3>{$tabName}</h3></div>
+                        <form action="{:U('public/Account/doSaveProfile')}" method="post">
+                            <dl class="form-set form-work">
+                                <volist name="user_profile_setting[ACTION_NAME]['child']" id="u_p_s_v">
+                                    <dd>
+                                        <div class="form-tt"><eq name='u_p_s_v.required' value='1'><font color="red"> * </font></eq>
+                                            {$u_p_s_v['field_name']}：
+                                        </div>
+                                        <div class="form-row">
+                                            {:W('FormInput', array_merge($u_p_s_v, array('type' => $u_p_s_v['form_type'], 'name' => $u_p_s_v['field_key'], 'default_value' => $u_p_s_v['form_default_value'], 'value' => $user_profile[$u_p_s_v['field_id']]['field_data'],'canChange'=>0,'editable'=>$u_p_s_v['editable'])))}
+                                            
+                                        </div>
+                                    </dd>
+                                </volist>
+                                <dd><div class="form-tt">&nbsp;</div>
+                                <php>if(!empty($user_profile_setting[ACTION_NAME]['child'])):</php>
+                                <div class="form-row"><a event-node="submit_btn" href="#" class="btn-green-big">{:L('PUBLIC_SAVE')}</a></div>
+                                <php>endif;</php>
+                                <input type="hidden" name="cid" value="{$cid}" />
+                                </dd>
+                            </dl>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="__THEME__/js/module.form.js"></script>
+<include file="__THEME__/public_footer" />

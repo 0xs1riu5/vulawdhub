@@ -1,0 +1,80 @@
+<php>
+</php>
+<div id="set-data" data-title="消息列表" data-navs='<a href="{:U('public/WebMessage/friends')}" class="boxopenurl">我的好友</a><a href="{:U('public/WebMessage/roomList')}" class="boxopenurl current">消息列表({$list.count})</a>' data-btn='<a href="javascript:;" class="clear_message" data-roomid="all">清除全部</a>'></div>
+<div class="common" id="room-list">
+    <php>if($list['data']):</php>
+    <ul class="room-list">
+      <php>foreach($list['data'] as $key => $val):</php>
+      <php>
+        $roomUrl  = U('public/WebMessage/room', array('roomid'=>$val['list_id']));
+        $spaceUrl = 'javascript:;';
+        $roomImg  = '__THEME__/image/message/group.png';
+        if($val['type'] == 1){
+            $_uid = intval(trim(str_replace('_'.$currentUserId.'_', '_', '_'.$val['min_max'].'_'), '_'));
+            $_user = getUserInfo($_uid);
+            $spaceUrl = $_user['space_url'];
+            $roomImg  = $_user['avatar_small'];
+        }
+        
+      </php>
+      <li href="{$roomUrl}">
+        <div class="face"><a href="{$spaceUrl}"><img src="{$roomImg}" /><php>if($val['msg_new']>0):</php><i>···</i><php>endif;</php></a></div>
+        <div class="clear"><a href="javascript:;" class="clear_message" data-roomid="{$val['list_id']}">清除</a></div>
+        <php>if($val['last_message']):</php>
+        <div class="detail">
+          <div class="uname"><a href="{$spaceUrl}">{:getUserName($val['last_message']['from_uid'])}</a><span>{:friendlyDate($val['last_message']['mtime'])}</span></div>
+          <div class="content{$val['last_message']['type']!='text'?' hight':''}">{:getShort(t($val['last_message']['content']), 25, '...')}</div>
+        </div>
+        <php>else:</php>
+        <div class="detail">没有消息记录~</div>
+        <php>endif;</php>
+      </li>
+      <php>endforeach;</php>
+    </ul>
+    <div class="pagelist">{$list.html}</div>
+    <php>else:</php>
+    <div class="empty-list">这儿什么也没有~</div>
+    <php>endif;</php>
+</div>
+<script>
+(function(){
+    var requrl = "{:t($_SERVER['REQUEST_URI'])}";
+    $('.boxopenurl,.pagelist a').click(function(){
+        if(typeof core.message.openUrl == 'function'){
+            core.message.openUrl($(this).attr('href'), false);
+        }
+        return false;
+    });
+    $('ul.room-list li').click(function(e){
+        var tagName = e.target.nodeName;
+        if(tagName && tagName.toLowerCase() == 'a'){
+            var href = $(e.target).attr('href');
+            if(href && href.indexOf('javascript') != 0){
+                return ;
+            }
+        }
+        core.message.openUrl($(this).attr('href'), false);
+    });
+    $('a.clear_message').click(function(){
+        var roomid = $(this).data('roomid');
+        if(roomid == 'all' && !confirm('确认清除全部？')){
+            return false;
+        }
+        var data = {roomid:roomid};
+        $.get(U('public/WebMessage/clearMessage'), data, function(res){
+            if(res.status){
+                if(roomid == 'all'){
+                    core.message.taskbar.clear('users');
+                }else{
+                    core.message.taskbar.removeId('room'+roomid);
+                }
+                core.message.openUrl(requrl, false);
+            }else{
+                ui.error('操作失败');
+            }
+        }, 'json');
+        return false;
+    });
+})();
+
+</script>

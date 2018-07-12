@@ -1,0 +1,117 @@
+<include file="__THEME__/public_header" />
+<script src="__THEME__/js/module.weibo.js?v={$site.sys_version}"></script>
+<div id="page-wrap">
+  <div id="main-wrap">
+    <if condition="$mid==$uid"><include file="_top"/>
+      <else />
+      <include file="_othertop"/>
+    </if>
+    <div id="col" class="st-grid col-bg cc" style="padding-top:20px;">
+      <div class="st-bg cc">
+        <php>if($userPrivacy['space'] != 1){</php>
+        <if condition="$mid==$uid">
+        <!-- 导航 -->
+        <div class="feed-nav clearfix border-b">
+          <div class="mod-feed-tab" id="mod-feed-tab">
+            <span class="right" style="line-height:44px"><a class="btn-att-green mr5" href="javascript:;" event-node="addFollowgroup"><i class="ico-add-white"></i>创建分组</a><a class="btn-att-green" href="javascript:;" event-node="editFollowgroup">管理分组</a> </span>
+            <ul class="inner-feed-nav">
+              <volist name="groupList" id="vo" offset="0" length="$groupNums"> 
+                <li <eq name="gid" value="$vo['gid']">class="current"</eq>>
+                  <a title="{$vo['title']}" href="{:U('public/Profile/following', array('tab'=>'following','uid'=>$mid,'gid'=>$vo['gid'],'follow_key'=>$follow_key))}">{$vo['title'] | htmlspecialchars_decode}</a>
+                </li>
+              </volist>
+              <php>if($gid && !in_array($gid, array_slice($groupList_ids,0,5))):</php>
+              <li class="current"><a title="{$gTitle}" href="{:U('public/Profile/following', array('uid'=>$mid,'gid'=>$gid,'follow_key'=>$follow_key))}">{$gTitle}</a></li>
+              <php>endif;</php>
+              <php>if(count($groupList) > $groupNums + 1):</php>
+              <li><a href="javascript:;" event-node="more_follow_group">更多</a></li>
+              <php>endif;</php>
+            </ul>
+          </div>
+        </div>
+        </if>
+        <!--我的关系-->
+        <div class="relationship clearfix">
+          <php>if($following_list['data']){</php>
+          
+          <!--关系列表-->
+          <ul class="clearfix">
+            <volist name="following_list.data" id="vo">
+              <li <php>if(is_integer(($key + 1) /2)):</php>class="marginrightzero"<php>endif;</php>>
+                <div class="relation-left"> 
+                  <!--头像-->
+                  <a href="{$user_info[$vo['fid']]['space_url']}" event-node='face_card' uid="{$vo['fid']}"><img  src="{$user_info[$vo['fid']]['avatar_big']}" /> </a>
+                  <!--用户组图标-->
+                  <php>if($user_info[$vo['fid']]['group_icon_only']):</php>
+                  <a href="javascript:;" title="{$user_info[$vo['fid']]['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$user_info[$vo['fid']]['group_icon_only']['user_group_name']}" src="{$user_info[$vo['fid']]['group_icon_only']['user_group_icon_url']}" ></a>
+                  <php>endif;</php>
+                  <!--<a class="btns-gray">已关注</a>--> 
+                  {:W('FollowBtn', array('fid'=>$vo['fid'], 'uname'=>$user_info[$vo['fid']]['uname'], 'refer'=> '', 'follow_state'=>$follow_state[$vo['fid']], 'type'=>'normal', 'isrefresh'=>1))} 
+
+                  </div>
+                <div class="relation-right"> 
+                  <if condition="$mid && $mid eq $uid">
+                   {:W('FollowGroup', array('uid'=>$uid, 'fid'=>$vo['fid'], 'follow_group_status' => $follow_group_status[$vo['fid']], 'tpl'=>'btn'))}
+                   </if>            
+                
+                  <dl class="profile-info-t">
+                    <dt><a href="{$user_info[$vo['fid']]['space_url']}" event-node='face_card' uid="{$vo['fid']}">{$user_info[$vo['fid']]['uname']}</a><!--&nbsp;&nbsp;{$user_info[$vo['fid']]['auth_icon']}--></dt>
+                    <dd class="from">来自：<if condition=" $user_info[$vo['fid']]['location'] eq '' ">都不知道来自哪里的，大概来自火星吧!<else/>{$user_info[$vo['fid']]['location']|getShort=100}</if></dd>
+                    <dd class="profile">简介：<if condition=" $user_info[$vo['fid']]['intro'] eq '' ">这家伙很懒，什么都没留下!<else/>{$user_info[$vo['fid']]['intro']|getShort=100}</if></dd>
+                    <dd>标签：
+                      <php>foreach($user_tag[$vo['fid']] as $t) { </php>
+                      <span class="interests">{$t}</span>
+                      <php> } </php>
+                    </dd>
+                  </dl>
+                </div>
+              </li>
+            </volist>
+          </ul>
+          <div id="page" class="page">{$following_list.html}</div>
+          <php>}elseif($follow_key !== '' && !is_null($follow_key)){</php>
+          <div class="loading">抱歉，暂时没有找到与 “{$follow_key}” 相关的结果</div>
+          <php>}else{</php>
+          <div class="loading">暂时没有关注TA的人</div>
+          <php>}</php>
+        </div>
+        <php>}else{</php>
+        <p class="extend">-_-。sorry！根据对方隐私设置，您无权查看TA的主页</p>
+        <php>}</php>
+      </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+// 事件监听
+M.addEventFns({
+  more_follow_group: {
+    load: function() {
+      var offset = $(this).offset();
+      var top = offset.top + 30;
+      var left = offset.left;
+      var list = "";
+          <volist name="groupList" id="vo" offset="$groupNums">
+          <php>if($gid != $vo['gid']):</php>
+            <php>if($i !== 1 || !in_array($gid, $topGroup)):</php>
+              list += '<li><a title="{$vo['title'] | addslashes | htmlspecialchars_decode}" href="{:U('public/Profile/following', array('gid'=>$vo['gid'],'follow_key'=>$follow_key, 'uid'=> $mid, 'tab'=>'following'))}">{$vo['title'] |  addslashes | htmlspecialchars_decode}</a></li>';
+            <php>endif;</php>
+          <php> endif;</php>
+          </volist>
+      var html = '<div id="more_follow_group" class="layer-list" style="display:none;position:absolute;top:'+top+'px;left:'+left+'px;">\
+            <ul>'+list+'</ul>\
+                </div>';
+      $("body").append(html);
+    },
+    click: function() {
+      if($('#more_follow_group').css('display') == 'none') {
+        $('#more_follow_group').css('display', '');
+      } else {
+        $('#more_follow_group').css('display', 'none');
+      }
+    }
+  }
+});
+
+</script>
+<include file="__THEME__/public_footer" />

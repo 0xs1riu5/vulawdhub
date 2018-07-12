@@ -1,0 +1,45 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{$pageTitle}</div>
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+<div class="form">
+<div class="urse_purview list">
+	<form action="{:U('admin/Config/savecredit')}" method="post">
+	<table class="tab_popedom" width="100%" cellpadding="0" cellspacing="0"	border="0">
+		<tr>
+			<th>{:L('PUBLIC_LEVEL')}</th>
+			<th>{:L('PUBLIC_LEVEL_NAME')}</th>
+			<th>{:L('PUBLIC_LEVEL_ICON')}</th>
+			<th>{:L('PUBLIC_EXPERIENCE')}</th>
+			<th>{:L('PUBLIC_OPERATION')}</th>
+    	</tr>
+    	<volist name='list' id='vo'>
+    	<tr>
+    		<td>{$vo.level}</td>
+    		<td>{$vo.name}</td>
+    		<td><img src="__THEME__/image/level/{$vo.image}"></td>
+    		<td>{$vo.start} <neq name='vo.end' value=''> - {$vo.end}</neq></td>
+    		<td><a href="{:U('admin/Config/setCreditLevel',array('level'=>$vo['level']))}">{:L('PUBLIC_EDIT')}</a></td>
+    	</tr>
+    	</volist>
+	</table>
+	</form>
+	
+    </div>
+
+    </div>
+    </div>
+</div>
+<include file="__THEME__/admin_footer" />

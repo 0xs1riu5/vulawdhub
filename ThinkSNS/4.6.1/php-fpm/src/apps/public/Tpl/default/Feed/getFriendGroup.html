@@ -1,0 +1,36 @@
+<div id="friendchoose" class="friend clearfix">
+<ul id='groups' class="groups">
+<volist name="groups" id="g">
+<li id="g_{$g.gid}" onclick="showgroup('group{$g.gid}',this,{$g.gid});" style="cursor:pointer" <php>if($key==0){</php>class="current"<php>}</php>><i class="ico-at-group mr5"></i>{$Key}{$g.title}</li>
+</volist>
+</ul>
+<div id="groupusers" class="groupusers">
+<php>foreach( $groupusers as $k=>$gu){</php>
+<ul id="{$k}">
+	<php>foreach($gu as $u){</php>
+		<li onclick="core.at.insertUser('{$u.uname}')"><a href="javascript:void(0);"><img alt="{$u.uname}" src="{$u.avatar_small}">{$u.uname}</a></li>
+	<php>}</php>
+</ul>
+<php>}</php>
+</div>
+</div>
+<!-- <a class="btn-green-small" style="float:right:marign:0;border:0">确定</a> -->
+<script>
+function showgroup(gname,obj,gid){
+	if ( $('#'+gname+' > li').html() == null ){
+		$('#groupusers').append('<img src="'+ THEME_URL+'/image/load.gif" id="loadimg" class="alM">');
+		$.post(U('public/Feed/changGroup'),{gid:gid},function (res){
+			$('#loadimg').remove();
+			if ( res ){
+				$('#groupusers').append(res);
+			}
+		});
+	}
+	
+	$('#'+gname).show();
+	$('#g_'+gname).addClass('current');
+	$('#groups li').removeClass('current');
+	$(obj).addClass('current');
+	$('#groupusers ul[id!="'+gname+'"]').hide();
+}
+</script>

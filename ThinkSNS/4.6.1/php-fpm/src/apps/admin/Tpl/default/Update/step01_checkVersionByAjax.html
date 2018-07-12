@@ -1,0 +1,25 @@
+<div id="listInfo">
+   <div class="content">
+   	<php> if(empty($list)) { </php>
+       <h3 style="padding-left:0px;">你当前版本已经是最新版本，不需要升级</h3>
+       <php> } else {  </php>
+	    <h3>检测到有以下 <php>echo count($list); </php> 个新的版本可以升级，您可以选择自动升级或者下载升级包手工升级&nbsp;&nbsp;&nbsp;<a href="{:U('admin/Update/upateAll')}" title="一键自动升级全部升级包">一键升级</a></h3>
+	<ul>
+       <volist name='list' id='vo'>     
+	   <li class="color"><span class="right"> 
+	   <php>if($nowkey==$key) { </php>
+         <a href="javascript:void(0)" onclick="isDownBefore('{$vo.package}','{$key}')" class="btn_b">升级</a><a href="{:C('TS_UPDATE_URL')}/{$vo.package}" class="hand">下载</a>
+		 <php>}else{</php>
+         <a href="javascript:void(0)" onclick="needUpateOther('{$nowtitle}')" class="btn_b">升级</a><a href="javascript:void(0)" onclick="needUpateOther('{$nowtitle}')" class="hand">下载</a>
+		 <php> }　</php>
+		 
+		 </span>{$vo.title}
+		 
+          </li>
+       </volist>	
+	<php> }  </php>
+	 </ul>
+	</div>
+</div>
+</div>
+

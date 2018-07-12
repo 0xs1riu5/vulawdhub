@@ -1,0 +1,44 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{:L('PUBLIC_MAILTITLE_ADMIN')} - {$nodeInfo.nodeinfo}</div>
+
+
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+<div class="list">
+  <form action="{:U('admin/Config/saveNotifyTpl')}" method='POST'>
+    <input type="hidden" name="tabhash" value="{$_REQUEST['redirectTabHash']}"/>
+    <input type="hidden" name="type" value="{$type}" />
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    
+      <volist name='langType' id='vo'>
+      <tr>
+          <td width="100px">{:L('PUBLIC_TITLES')} ({$vo})：</td>
+          <td><textarea style="width:500px;height:60px;" name='lang[{$lang['title']['key']}][{$vo}]'>{$lang['title'][$vo]}</textarea></td>
+      </td>
+      <tr>
+          <td>{:L('PUBLIC_INVITE_CONTENT')}({$vo})：</td>
+          <td><textarea style="width:500px;height:60px;" name='lang[{$lang['content']['key']}][{$vo}]'>{$lang['content'][$vo]}</textarea></td>
+      </td>
+      </volist>
+  </table>
+    
+    <div class="page_btm">
+      <input name="node" value='{$nodeInfo.node}' type='hidden'>
+      <input class="btn_b" value="{:L('PUBLIC_SAVE')}" name='sub' type="submit">
+    </div>
+  </form>
+</div>
+</div>
+<include file="__THEME__/admin_footer" />

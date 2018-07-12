@@ -1,0 +1,15 @@
+<span id='{$diggId}{$feed_id}' rel='{$digg_count}'>
+<php>if(!isset($diggArr[$feed_id])):</php>
+   	<a href="javascript:;" onclick="core.digg.addDigg({$feed_id})"><i class="digg-like"></i>
+   		<php>if(!empty($digg_count)){</php>
+   			({$digg_count})
+   		<php>}</php>
+   	</a>
+<php>else:</php>
+   <a href="javascript:;" onclick="core.digg.delDigg({$feed_id})" class="<php>if(!empty($digg_count)){echo ' digg-like-yes';}</php>"><i class="digg-like"></i>
+   		<php>if(!empty($digg_count)){</php>
+   			({$digg_count})
+   		<php>}</php>
+   </a>
+<php>endif;</php>
+</span>

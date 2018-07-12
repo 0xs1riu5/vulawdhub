@@ -1,0 +1,41 @@
+<php>
+	if(!empty($onload)){
+</php>
+<script type="text/javascript">
+/**
+ * 初始化对象
+ */
+//表格样式
+$(document).ready(function(){
+    <php> foreach($onload as $v){ echo $v,';';}</php>
+});
+</script>
+<php>}</php>
+
+<php>if(ACTION_NAME == 'feed'):</php>
+<script type="text/javascript">
+core.loadFile(THEME_URL+'/js/plugins/core.weibo.js', function () {
+	setTimeout(function () {
+        // 重写方法
+        core.weibo.showBigImage = function (a, b) {
+            var $parent = $('#tr' + a).find('div[model-node="feed_list"]');
+            $parent.find('div').each(function () {
+                var relVal = $(this).attr('rel');
+                if (relVal == 'small') {
+                    $(this).hide();
+                } else if (relVal == 'big') {
+                    $(this).show();
+                }
+            });
+        };
+	}, 1000);
+});
+</script>
+<php>endif;</php>
+<?php if(!empty($appJsList) && is_array($appJsList)) { ?>
+<?php foreach ($appJsList as $jsUrl) { ?>
+<script type="text/javascript" src="{:APP_PUBLIC_URL}/{$jsUrl}?v={$site.sys_version}"></script>
+<?php } ?>
+<?php } ?>
+</body>
+</html>

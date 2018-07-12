@@ -1,0 +1,90 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="col"> <include file="search_top" /> </div>
+      <div id="col8" class="knowledge col-bg  minh"> 
+      <!--搜知识-->
+      <div class="post-list">
+       <php>if($searchResult['data']){</php>
+			    <ul>
+			    <volist id="vo" name="searchResult['data']">
+			      <li class="clearfix">
+			        <div class="knowledge-left"><img src="__THEME__/image/knowledge-bg.png" /></div>
+			        <div class="knowledge-right">
+			          <h class="post-tit"> 
+			          <a href="{:U('blog/Index/show',array('id'=>$vo['id'], 'mid'=>$vo['uid']))}"><span>{$vo.title|getShort=12}</span></a> 
+			          <eq name="vo['isHot']" value="1"><i class="ico-essence"></i></eq> 
+			          <!-- <i class="ico-toTop"></i>--> 
+			          </h>
+			          <div class="post-prof">{$vo['content']|getShort=280}.....</div>
+			          <div class="post-info f8">
+			            <div class="left"><span>分类：{$vo.category_title}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>{$vo.uid|getUserName}&nbsp;发表于&nbsp;{$vo.cTime|friendlyDate=###,'full'}</span></div>
+			            <div class="right post-info-control"> 
+			            <span title="浏览"><i class="i-post-scan"></i>({$vo.readCount})</span> 
+			            <span title="评论"><i class="i-post-comment"></i>({$vo.commentCount})</span> 
+			            <eq name="vo['digg']" value="undigg"><span title="赞"></eq>
+			            <eq name="vo['digg']" value="digg"><span title="赞"></eq>
+			            <i class="i-post-alike"></i>({$vo.praise})</span>
+			            </div>
+			          </div>
+			        </div>
+			      </li>
+			    </volist>
+			    </ul>
+                <php>}else{</php>
+				<div class="note">没有搜到相应信息！</div>
+				<php>}</php>
+                </div>
+			    <div id="page" class="page"> {$searchResult.html} </div>
+      </div>
+
+</div>
+</div>
+<include file="__THEME__/public_footer" /> 
+<script>
+  var selectDate = function(){
+    var app = $('#app').val();
+    var mod = $('#mod').val();
+    var t = $('#t').val();
+    var a = $('#a').val();
+    var k = "{$keyword}";
+    var feed_type = "{$feed_type}";
+    ui.box.load(U('public/Search/selectDate')+'&app='+app+'&mod='+mod+'&t='+t+'&a='+a+'&k='+encodeURI(k)+'&feed_type='+feed_type, '时间筛选','$("#rcalendar").css("display","none")');
+  };
+
+/**
+ * 时间更新效果
+ * return void
+ */
+$(document).ready(function() {
+  var formatTime = '';
+  $('.date').bind({
+    mouseover: function() {
+      $(this).find('em').first().hide();
+      var width = $(this).find('em').first().width();
+      $(this).find('em').last().css({display:'inline', width: width});
+    },
+    mouseout: function() {
+      $(this).find('em').first().show();
+      $(this).find('em').last().hide();
+    }
+  });
+
+  var wTime = parseInt("{:time()}");
+  var updateTime = function()
+  {
+    $('.date').each(function(i, n) {
+      var date = $(this).attr('date');
+      if(typeof date !== 'undefined') {
+        $(this).find('em').first().html(core.weibo.friendlyDate(date, wTime));
+      }
+    }); 
+  };
+  //updateTime();
+  setInterval(function() {
+    wTime += 10;
+    updateTime();
+  }, 10000);
+});
+</script> 
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script> 

@@ -1,0 +1,98 @@
+<div model-node="weiba_reply_reply" id="reply_box" class="input pop-share repeat">
+	<div class="feed-repeat" model-node="comment_textarea">
+		<div class="input_before" model-node="mini_editor">
+			<textarea class="input_tips" id="mini_editor_textarea" event-node="mini_editor_textarea" hidefocus="true" style="height: 60px;width:98.5%;word-break:break-all;" model-args='t=comment'></textarea>
+			<div model-node="numsLeft" class="num">{$initNums}</div>
+		</div>
+		<div class="clear"></div>
+		<div model-node="faceDiv"></div>
+		<div class="mt5 clearfix">
+			<a href="javascript:replycomment();" class="btn-green-small right"><span>{:L('PUBLIC_STREAM_REPLY')}</span></a>
+			<div class="acts" id="demo">
+		       <a class="face-block" href="javascript:;" event-node="comment_insert_face" title="表情"><i class="face"></i></a>
+		    </div>
+			<ul class="commoned_list">    
+				<eq name='canrepost' value="1">    
+				<li>
+                <!--[if !IE]><!--><label><input type="checkbox" class="checkbox regular-checkbox" name="shareFeed" value="1" id="shareFeed"><span for="shareFeed"></span>{:L('PUBLIC_SHARETO_STREAM')}</label>
+                <!--<![endif]-->
+                <!--[if IE]>
+                <label><input type="checkbox" class="checkbox" name="shareFeed" value="1">{:L('PUBLIC_SHARETO_STREAM')}</label>
+                <![endif]-->     
+				</eq>
+				<php>if($feedtype == 'repost' && $cancomment == 1):</php> 
+                <!--[if !IE]><!-->
+				<label><input type="checkbox" class="checkbox regular-checkbox" name="comment" value="1" id="comment"><span for="comment"></span>同时评论给原文作者&nbsp;{$user_info.space_link_no}</label>
+                <!--<![endif]-->
+                <!--[if IE]>
+                <label><input type="checkbox" class="checkbox" name="comment" value="1">同时评论给原文作者&nbsp;{$user_info.space_link_no}</label>
+                <![endif]-->
+                </li>
+			    <php>endif;</php>
+		</ul>           
+		</div>
+	</div>
+</div>
+<script>
+
+var initNums = '{$initNums}';
+//回复评论
+function replycomment(){
+	if ( this.noreply == 1 ){
+		return;
+	}else{
+		this.noreply = 1;
+	}
+	var _this = this;
+	setTimeout(function (){
+		_this.noreply = 0;
+	},5000);
+	var addtoend = '{addtoend}';
+	var weiba_id = '{$weiba_id}';
+	var post_id = '{$post_id}';
+	var post_uid= '{$post_uid}';
+	var to_reply_id = '{$to_reply_id}';
+	var to_uid = '{$to_uid}';
+	var feed_id = '{$feed_id}';
+	var content = document.getElementById('mini_editor_textarea').value;
+
+	var ifShareFeed = document.getElementsByName('shareFeed')[0] == undefined ? 0 : Number(document.getElementsByName('shareFeed')[0].checked);
+
+	content = content.replace('<br>','');
+	var strlen = core.getLength(content);
+	var leftnums = initNums - strlen;
+	if(leftnums < 0 || leftnums == initNums) {
+		flashTextarea(document.getElementById('mini_editor_textarea'));
+		return;
+	}
+	$(_this).html('<span>回复中...</span>');
+	//alert($('.comment_lists').eq(0).html());exit;
+	$.post(U('widget/WeibaReply/addReply'),{widget_appname:'weiba',weiba_id:weiba_id,post_id:post_id,post_uid:post_uid,to_reply_id:to_reply_id,to_uid:to_uid,feed_id:feed_id,content:content,ifShareFeed:ifShareFeed},function(msg){
+				if(msg.status == "0"){
+					ui.error(msg.data);
+				}else{
+					ui.box.close();
+					ui.success('评论成功');
+					if(addtoend == 1){
+						$('#commentlist_'+post_id).append(msg.data);
+					}else{
+						$('#commentlist_'+post_id).prepend(msg.data);
+					}
+				}
+				addComment = false;
+	},'json');
+}
+$(function (){
+	shortcut('ctrl+return', replycomment , {target:'mini_editor_textarea'});
+	atWho($('#mini_editor_textarea'));
+	setTimeout(function (){
+		$('#mini_editor_textarea').inputToEnd('{$initHtml}');
+	},300);
+});
+M.addModelFns({
+	weiba_reply_reply: {
+
+	}
+});
+M(document.getElementById('reply_box'));
+</script>

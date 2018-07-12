@@ -1,0 +1,11 @@
+<if condition="0 eq $follow_state['following']">
+    <a event-node="doFollowWeiba" event-args="weiba_id={$weiba_id}&following={$follow_state['following']}&isrefresh=0" href="{:U('weiba/Index/doFollowWeiba', array('weiba_id'=>$weiba_id))}"></a>
+<else />
+    <a event-node="unFollowWeiba" event-args="weiba_id={$weiba_id}&following={$follow_state['following']}&isrefresh=0" href="{:U('weiba/Index/unFollowWeiba', array('weiba_id'=>$weiba_id))}"></a>
+</if>
+
+
+<!-- <span class="btn-green-big"><i class="ico-add"></i>加关注</span><span class="btn-add-h"><i class="ico-add-h"></i>已关注<i class="vline">|</i><a href="">取消</a></span><span>更多<i class="arrow-down-big"></i></span> -->
+
+
+

@@ -1,0 +1,82 @@
+<include file="__THEME__/header" />
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<div class="content_holder">
+  <div class="content no_bg"> 
+    <include file="_tab" />
+    <div class="weiba-manage">
+      <div class="mod-feed-tab mb20">
+        <ul class="inner-feed-nav">
+          <li 
+          <eq name="on" value="all">class="current"</eq>
+          ><a href="{:U('weiba/Manage/log',array('weiba_id'=>$weiba_id))}">全部</a>
+          </li>
+          <li 
+          <eq name="on" value="setting">class="current"</eq>
+          ><a href="{:U('weiba/Manage/log',array('weiba_id'=>$weiba_id,'type'=>'setting'))}">基本信息管理</a>
+          </li>
+          <li 
+          <eq name="on" value="member">class="current"</eq>
+          ><a href="{:U('weiba/Manage/log',array('weiba_id'=>$weiba_id,'type'=>'member'))}">成员管理</a>
+          </li>
+<!--           <li 
+          <eq name="on" value="notify">class="current"</eq>
+          ><a href="{:U('weiba/Manage/log',array('weiba_id'=>$weiba_id,'type'=>'notify'))}">公告管理</a>
+          </li> -->
+          <li 
+          <eq name="on" value="posts">class="current"</eq>
+          ><a href="{:U('weiba/Manage/log',array('weiba_id'=>$weiba_id,'type'=>'posts'))}">帖子管理</a>
+          </li>
+        </ul>
+      </div>
+      <form>
+        <dl class="blog clearfix">
+          <volist name="logList.data" id="vo">
+            <dd>
+              <div class="form-tt"><img width="50px" height="50px" src="{$user_info[$vo['uid']]['avatar_small']}" /></div>
+              <div class="form-row">
+                <p class="f9">{$vo.ctime|friendlyDate}</p>
+                <p>{$vo.content}</p>
+              </div>
+            </dd>
+          </volist>
+        </dl>
+      </form>
+      <div id="page" class="page" style="">{$logList.html}</div>
+    </div>
+  </div>
+</div>
+<input type="hidden" value="0" id="user_category_id" />
+<include file="__THEME__/public_footer" />
+<script type="text/javascript">
+M.addModelFns({
+  club_list: {
+    load: function() {
+      $(this).find("li").each(function(i, n) {
+        if(i != 0 && (i + 1) % 5 == 0) {
+          $(this).css('margin-right', 0);
+        }
+      });
+    }
+  }
+});
+
+// 认证用户组用户筛选
+M.addEventFns({
+  authenticate: {
+    click: function() {
+      var checked = $(this).attr('checked');
+      var url = U('club/Index/index');
+      if(checked) {
+        url += '&cid=' + $('#user_category_id').val() + '&authenticate=1';
+        // 刷新页面，显示数据
+        window.location.href = url;
+      } else {
+        url += '&cid=' + $('#user_category_id').val() + '&authenticate=0';
+        // 刷新页面，显示数据
+        window.location.href = url;
+      }
+    }
+  }
+});
+</script>

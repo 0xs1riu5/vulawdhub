@@ -1,0 +1,56 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{:L('PUBLIC_SYSTEM_POINT_RULE')}</div>
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+<div class="form">
+<div class="urse_purview list">
+	<php> if(empty($list)){</php>
+	<div style="text-align:center">{$applist[$appname]}({$appname}) {:L('PUBLIC_INTEGRAL_CONFIGURATION')} </div>
+	<php> }else{ </php>
+	<form action="{:U('admin/'.MODULE_NAME.'/savecredit')}" method="post">
+	<table class="tab_popedom" width="100%" cellpadding="0" cellspacing="0"	border="0">
+		<tr>
+			<th>{:L('PUBLIC_APPLICATION')}</th>
+			<th class="line_l">{:L('PUBLIC_ACTION_NAME')}</th>
+			<th class="line_l">{:L('PUBLIC_ACTION_ALIAS')}</th>
+      <volist name='typelist' id='t'>
+        <th class="line_l">{$t}</th>
+      </volist> 
+		</tr>
+		<volist id="vo" name="list">
+			<php> $type = $key;</php>
+			<volist name='vo' id ='vv'>
+			<tr>
+			<td>{$type}</td>
+			<td>{$vv.action}</td>
+			<td>{$vv.info}</td>
+			<php>foreach($typelist as $k=>$v):</php>
+			<td align="left">
+			<input name="creditSet[{$type}][{$vv.action}][{$k}]" type="text" size="2"  maxlength="3" value="{$vv[$k]}" /></td>
+			<php>endforeach;</php>
+			</tr>
+      </volist>
+			
+		</volist>
+	</table>
+	 <div class="mt10"><input class="btn_b" type="submit" value="{:L('PUBLIC_SUBMIT')}"></input></div>
+	</form>
+	<php> } </php>
+    </div>
+
+    </div>
+    </div>
+</div>
+<include file="__THEME__/admin_footer" />

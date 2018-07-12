@@ -1,0 +1,22 @@
+<php>if($topic_list){</php>
+<!--推荐话题-->
+<div class="hot-topic">
+        <fieldset class="inter-line"><legend class="inter-txt">{$title}</legend><a href="{:U('public/Topic/topic_list')}" class="right" style="font-size:12px;margin-top:-18px;">更多</a></fieldset>
+        <ul>
+        	<volist name="topic_list" id="vo">
+        		<li>
+        			<p><a href="{:U('public/Topic/index',array('k'=>urlencode($vo['topic_name'])))}">{$vo['topic_name']}</a>（{$vo['count']}）</p>
+        		</li>
+        	</volist>
+        </ul>
+</div>
+<php>}</php>
+<script>
+/*$('.hot-topic .ico-refresh').click(function(){
+	var url = "{:U('widget/TopicList/refresh')}";
+	var obj = $(this).parent().parent().parent().find('ul');
+	$.post(url,{id:1},function(html){
+		obj.html(html);
+	});	
+});*/
+</script>

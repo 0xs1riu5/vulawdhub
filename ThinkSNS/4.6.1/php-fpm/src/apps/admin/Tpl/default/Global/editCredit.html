@@ -1,0 +1,77 @@
+<include file="../Public/_header" />
+<div class="so_main">
+  <div class="page_tit">积分设置</div>
+  <div class="tit_tab">
+    <ul>
+    <li><a href="{:U('admin/Global/credit')}" class="on">积分规则</a></li>
+    <li><a href="{:U('admin/Global/creditType')}">积分类型</a></li>
+    <li><a href="{:U('admin/Global/creditUser')}">设置用户积分</a></li>
+    <li><a href="{:U('admin/Global/creditLevel')}">积分等级</a></li>
+    </ul>
+  </div>  <div class="form2">
+  	<eq name="type" value="add">
+	  	<form method="post" action="{:U('admin/Global/doAddCredit')}">
+	    <h3>添加积分规则</h3>
+	<else/>
+	  	<form method="post" action="{:U('admin/Global/doEditCredit')}">
+	    <h3>编辑积分规则</h3>
+		<input type="hidden" name="id" value="{$credit['id']}">
+	</eq>
+    <dl class="lineD">
+      <dt>名称：</dt>
+      <dd><input name="name" type="text" value="{$credit['name']}" class="s-txt"> *
+	  <p>英文名，保持唯一。推荐使用“应用_动作”，如“blog_add”</p>
+    </dl>
+    <dl class="lineD">
+      <dt>别名：</dt>
+      <dd><input name="alias" type="text" value="{$credit['alias']}" class="s-txt">
+	  <p>如“发表知识”</p>
+    </dl>
+    <dl class="lineD">
+      <dt>类型：</dt>
+      <dd><input name="type" type="text" value="{$credit['type']}" class="s-txt"><p>如“blog”</p></dd>
+    </dl>
+    <dl class="lineD">
+      <dt>周期范围：</dt>
+      <dd>
+        <select name="cycle">
+          <option value="day" <php>if($credit['cycle']=='day') echo "selected";</php> >每天</option>
+          <option value="month" <php>if($credit['cycle']=='month') echo "selected";</php> >每月</option>
+          <option value="year" <php>if($credit['cycle']=='year') echo "selected";</php> >每年</option>
+        </select>
+      </dd>
+    </dl>
+    <dl class="lineD">
+      <dt>周期内最多奖励次数：</dt>
+      <dd><input name="cycle_times" type="text" value="{$credit['cycle_times']}" class="s-txt"><p>0或空为“不限次数”</p></dd>
+    </dl>
+    <dl class="lineD">
+      <dt>描述：</dt>
+      <dd>
+        <input name="des" type="text" value="{$credit['des']}" class="s-txt">
+        <p>{user}:用户、{content}:内容</p>
+      </dd>
+    </dl>
+	<!--
+    <dl class="lineD">
+      <dt>模板名称：</dt>
+      <dd>
+        <input name="info" type="text" value="">
+		<p>{sign}:增加or减少、{action}:动作名、{alias}:别名、{score}:增减量</p>
+    </dl>
+	-->    
+    <volist name="creditType" id="ct">  
+        <dl class="lineD">
+          <dt>{$ct.alias}增量：</dt>
+          <dd>
+            <input name="{$ct.name}" type="text" value="{$credit[$ct['name']]|intval}" class="s-txt"> *
+            <p>正数为增加，负数为减少</p>
+        </dl>
+    </volist>
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="确定" />
+    </div>
+    </form>
+  </div>
+</div>
+<include file="../Public/_footer" />

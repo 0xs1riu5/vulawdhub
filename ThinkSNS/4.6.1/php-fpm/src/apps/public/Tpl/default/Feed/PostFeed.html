@@ -1,0 +1,63 @@
+<dt class="face">
+	<a title="{$user_info.uname}" href="{$user_info.space_url}"><img src="{$user_info.avatar_middle}" /></a><php>if($user_info['group_icon_only']['user_group_icon_url']):</php><a href="javascript:;" title="{$user_info['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$user_info['group_icon_only']['user_group_name']}" src="{$user_info['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php>
+</dt>
+<dd class="content">
+	{:W('FeedManage',array('feed_id'=>$feed_id,'feed_uid'=>$uid))}
+	<em class="hover right">
+		<eq name='actions.delete' value='true'>
+			<a href="javascript:void(0)" event-node ='delFeed' event-args='feed_id={$feed_id}&uid={$uid}'>{:L('PUBLIC_STREAM_DELETE')}</a>&nbsp;&nbsp;
+	    </eq>
+	</em>
+	<p class="hd">{$title}</p>
+	
+	<div class="contents clearfix"><neq name="body" value="">{$body|format=true}</neq></div>
+	<p class="info">
+		<span class="right">
+        
+			<php>if(in_array('comment',$weibo_premission)):</php>
+			<eq name='actions.comment' value='true'>
+			<php>$cancomment_old = empty($app_row_id) ? 0 : 1;</php>
+			<php> $cancomment = intval(CheckPermission('core_normal','feed_comment')); </php>
+			<a event-node="comment" href="javascript:void(0)" event-args='row_id={$feed_id}&app_uid={$uid}&to_comment_id=0&to_uid=0&app_name={$app}&table=feed&app_row_id={$app_row_id}&app_row_table={$app_row_table}&cancomment={$cancomment}&cancomment_old={$cancomment_old}'>{:L('PUBLIC_STREAM_COMMENT')}</a>
+			</eq>
+			<php>endif;</php>
+            <php>if(in_array('repost',$weibo_premission)):</php>
+			<i class="vline">|</i>
+			<eq name='actions.repost' value='true'>
+			<php>if(CheckPermission('core_normal','feed_share')){</php>
+			<php>$sid = !empty($app_row_id)? $app_row_id : $feed_id;</php>
+			{:W('Share',array('sid'=>$sid,'stable'=>$app_row_table,'initHTML'=>'','current_table'=>'feed','current_id'=>$feed_id,'nums'=>$repost_count,'appname'=>$app,'is_repost'=>$is_repost,'enode'=>'open_share'))}
+			<php>}</php>
+			</eq>
+			<php>endif;</php>
+			<eq name='actions.favor' value='true'>
+			<i class="vline">|</i>
+			{:W('Collection',array('sid'=>$feed_id,'stable'=>'feed','sapp'=>$app))}
+			</eq><i class="vline">|</i>
+            {:W('Digg', array('feed_id'=>$feed_id, 'digg_count'=>0, 'diggArr'=>array()))}
+		</span>
+		<span>
+			<a class="date" date="{:time()}" href="{:U('public/Profile/feed', array('feed_id'=>$feed_id, 'uid'=>$uid))}">
+			<em>刚刚</em><em style="display:none;">查看详情</em>
+			</a>
+			<span>{$from}</span>
+			<php>if(CheckPermission('core_normal','feed_del')){</php>
+			<php>}</php>
+		</span>
+	</p>
+    <div class="infopen"><div class="trigon"></div></div>
+    <div class="forward_box">
+    	<div class="bdsharebuttonbox share_feedlist clearfix" data-tag="share_feedlist">
+            <a href="javascript:;" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+            <a href="javascript:;" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+            <a href="javascript:;" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+            <a href="javascript:;" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+            <a href="javascript:;" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+            <a href="javascript:;" class="bds_douban" data-cmd="douban" title="分享到豆瓣网">豆瓣网</a>
+            {:W('Share',array('sid'=>$sid,'stable'=>$app_row_table,'initHTML'=>'','current_table'=>'feed','current_id'=>$feed_id,'nums'=>$repost_count,'appname'=>$app,'is_repost'=>$is_repost, 'text'=>'我的主页', 'title'=> '分享到我的主页', 'class'=>'repost'))}
+            <a href="javascript:;" class="bds_count" data-cmd="count"></a>
+        </div>
+    </div>
+	<div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+</dd>
+<dt class="xline"></dt>

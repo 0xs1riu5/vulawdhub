@@ -1,0 +1,58 @@
+<div id="col3" class="st-index-right">
+  <div class="right-wrap">
+    <div class="right-box clearfix"><!--个人资料-->
+      <fieldset>
+        <legend class="inter-txt"><php>echo $sexName?$sexName.'的':' ';</php>成就</legend>
+      </fieldset>
+      <php>$profile = $user_info[$uid]; $profile['medals'] = array_slice($profile['medals'], 0, 3);</php>
+      <div class="userinfo clearfix mb20" id="jump-score" data-url="{:U('public/Account/scoredetail')}">
+        <php>foreach($profile['credit_info']['credit'] as $k=>$vo) { </php>
+        <span class="left">{$vo.alias}:{$vo.value}</span>
+        <php> } </php>
+      </div>
+      <ul>
+        <volist name="profile.medals" id="vo">
+          <li style="padding-right:12px;"><img  src="{$vo.src}" width="50" height="50"/></li>
+        </volist>
+        <li><a href="{:U('public/Medal/index')}"><img src="__APP__/image/task/medal-more.png" width="50" height="50" /></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="right-wrap">
+    <div class="right-box clearfix" model-node="related_list">
+      <fieldset class="inter-line mb20">
+        <span class="right" id="feed_img_count">0张</span>
+        <legend class="inter-txt">分享配图</legend>
+        <input type="hidden" id="feed_max_id" value="0">
+        <input type="hidden" id="feed_min_id" value="0">
+      </fieldset>
+      <div id="feed_img_list"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+function get_feed_img(type){
+	var max_id = type==0 ? $('#feed_min_id').val() : $('#feed_max_id').val();
+	var url = "{:U('public/Profile/get_feed_img')}";
+	var uid = "{$uid}";
+	$.post(url,{max_id:max_id,type:type,uid:uid},function(res){
+		res=JSON.parse(res);
+		
+		$('#feed_max_id').val(res.max_id);
+		$('#feed_min_id').val(res.min_id);
+		$('#feed_img_list').html(res.html);
+		$('#feed_img_count').html(res.count+'张');
+	});
+}
+$(function(){
+	$('#feed_min_id').val(0) ;
+	$('#feed_max_id').val(0);
+	get_feed_img(1);
+});
+$(function() {
+  $('#jump-score').css('cursor', 'pointer').on('click', function (event) {
+    event.preventDefault();
+    window.location.href = $(this).data('url');
+  });
+});
+</script>

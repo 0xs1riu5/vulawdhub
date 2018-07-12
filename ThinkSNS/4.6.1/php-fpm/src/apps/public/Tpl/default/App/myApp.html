@@ -1,0 +1,53 @@
+<include file="__THEME__/public_header" />
+     <div id="page-wrap">
+        <div id="main-wrap">
+        	<div id="st-index-grid" class="st-grid">
+            	<!--左边 -->
+                <include file="__THEME__/public_left" />
+                <div class="st-section">
+                    <div class="extend border boxShadow minh">
+                        <!--title-->
+                        <div class="app-tit app-border">
+                           <a class="right" href="{:U('public/Index/index')}">{:L('PUBLIC_BACKTO_HOMEPAGE')}»</a>
+                           <h3>{:L('PUBLIC_APPLIST')}</h3>
+                        </div>
+                        <!--tab menu-->
+                        <div class="mod-menu-app">
+                            <div class="tab-menu-app left">
+                                <ul>
+                                    <li><a href="{:U('public/App/index')}">{:L('PUBLIC_ALL_STREAM')}</a></li>
+                                    <li class="current"><a href="{:U('public/App/myApp')}">{:L('PUBLIC_INSTALLED_APP')}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--applist-->
+                            <div class="app-lists pt10" id="app-lists">
+                        	<volist name='list.data' id='ld'>
+                        		<dl class="app-list clearfix" id='app{$ld.app_id}'>
+                            	<dt><img src="{$ld.large_icon_url}"></dt>
+                                <dd>
+                                	<p class="title">{$ld.app_alias}</p>
+                                	<p>
+                                	{:L('PUBLIC_APPUSE_CALCULATION',array('num'=>"<strong class='num' event-node='app_used' event-args='app_id=".$ld['app_id']."'>".intval($ld['used'])."</strong>"))}
+									</p>
+                                	<p>{$ld.description}</p>
+                                	<p>
+                                	<a href="javascript:;" class="btn-gray right" event-node='uninstall_app' event-args='app_id={$ld.app_id}&app_alias={$ld.app_alias}'><span>{:L('PUBLIC_APP_STOP')}</span></a>
+                                	{$ld.company_name|default=L('PUBLIC_COMPANY')}
+                                	</p>
+                                </dd>
+                            </dl>
+                        	</volist>
+                        </div>
+                        <!--页码-->
+                        <div class="page" id="page">
+                         {$list.html}
+                        </div>
+                        <!--页码/end-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+<include file="__THEME__/public_footer" />
+<script type="text/javascript" src="__THEME__/public/module.public.js"></script>

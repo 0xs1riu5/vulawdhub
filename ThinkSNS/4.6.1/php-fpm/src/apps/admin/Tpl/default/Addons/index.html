@@ -1,0 +1,91 @@
+<include file="__THEME__/admin_header" />
+<script type="text/javascript">
+// 鼠标移动表格效果
+$(document).ready(function(){
+    $("tr[overstyle='on']").hover(
+      function () {
+        $(this).addClass("bg_hover");
+      },
+      function () {
+        $(this).removeClass("bg_hover");
+      }
+    );
+});
+
+function move(id, direction) {
+	var baseid  = direction == 'up' ? $('#'+id).prev().attr('id') : $('#'+id).next().attr('id');
+    if(!baseid) {
+        direction == 'up' ? ui.error(L('PUBLIC_ALREADY_TOP')) : ui.error('{:L('PUBLIC_LAST')}');
+    }else {
+        $.post("{:U('admin/Plugin/doMedalOrder')}", {id:id, baseid:baseid}, function(res){
+            if(res == '1') {
+                //交换位置
+                direction == 'up' ? $('#'+id).insertBefore('#'+baseid) : $("#"+id).insertAfter('#'+baseid);
+                ui.success('{:L('PUBLIC_SAVE_SUCCESS')}');
+            }else {
+                ui.error('{:L('PUBLIC_SAVE_FAIL')}');
+            }
+        });
+    }
+}
+</script>
+
+<div class="so_main">
+<php>foreach($list as $type=>$value) {</php>
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th class="line_l">{:L('PUBLIC_PLUGIN_NAME')}</th>
+            <th class="line_l">{:L('PUBLIC_PROSEN')}</th>    
+            <th class="line_l">{:L('PUBLIC_VERSION_NUM')}</th>
+            <th class="line_l">{:L('PUBLIC_DESCRIPTION')}</th>
+            <th class="line_l">{:L('PUBLIC_OPERATION')}</th>
+        </tr>
+        <php>if(empty($value['data'])) {</php>
+        <tr>
+            <td>{:L('PUBLIC_NO_MORE')}{$value['name']}</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <php>}</php>
+        <volist id="vo" name="value.data">
+        <tr overstyle='on' id="{$vo['name']}">
+            <td>{$vo['pluginName']}</td>
+            <td>{$vo['author']}<php>if(isset($vo['site'])):</php><br /><a href="{$vo['site']}">{$vo['site']}</a><php>endif;</php></td>
+            <td>{$vo['version']}</td>
+            <td>{$vo['info']}</td>
+            <td>
+                <php>if($type == "valid"){</php>
+             	<php>
+    	        $uninstall_href = U('admin/Addons/stopAddon',array('addonId'=>$vo['addonId']));
+    	        $uninstall_alert_1 = '确定停用该插件?';
+    	        </php>
+                <a href="javascript:void(0);" onclick="if(confirm('{$uninstall_alert_1}')) location.href='{$uninstall_href}';return false;">停用</a>
+                <php>}else{</php>
+                <php>
+                $install_href = U('admin/Addons/startAddon',array('name'=>$vo['name'],'is_weixin'=>intval($_GET['is_weixin'])));
+                if($vo['sqlfile']){
+                	$install_alert_1 = '初次启用该插件时将会进行sql操作，且无法恢复，强烈建议您备份数据库后再启用，确定继续?';
+                }else{
+                	$install_alert_1 = '确定启用该插件？';
+                }
+                </php>
+                <a href="javascript:void(0);" onclick="if(confirm('{$install_alert_1}')) location.href='{$install_href}';return false;">启用</a>
+                <php>}</php>
+                <php>if($vo['admin'] && $type == "valid"){</php>
+                <php>
+                $href = U('admin/Addons/admin',array('pluginid'=>$vo['addonId'],'is_weixin'=>intval($_GET['is_weixin'])));
+                </php>
+                &nbsp;-&nbsp;<a href="javascript:void(0);" onclick="location.href='{$href}';return false;">{:L('PUBLIC_MANAGEMENT')}</a>
+                <php>}</php>
+            </td>
+        </tr>
+        </volist>
+    </table>
+    </div>
+<php>}</php>
+</div>
+
+<include file="__THEME__/admin_footer" />

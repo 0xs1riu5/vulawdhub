@@ -1,0 +1,71 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap"> <if condition="$mid==$uid"><include file="_top"/> <else /> <include file="_othertop"/></if>
+    <div id="col" class="st-grid minh col-bg cc" style="padding-top:20px;"> 
+    <php>if($userPrivacy['space'] != 1){</php>
+      <if condition="$mid==$uid"></if>
+      <!--我的关系-->
+      <div class="relationship clearfix"> 
+      
+      <php>if($follower_list['data']){</php>
+      
+
+        <!--关系列表-->
+        <ul clearfix>
+        <volist name="follower_list.data" id="vo">
+          <li <php>if(is_integer(($key + 1) /2)):</php>style="margin-right:0;"<php>endif;</php>>
+            <div class="relation-left">
+              <a href="{$user_info[$vo['fid']]['space_url']}" event-node='face_card' uid="{$vo['fid']}"><img  src="{$user_info[$vo['fid']]['avatar_big']}" /></a>
+              <!--用户组图标-->
+              <php>if($user_info[$vo['fid']]['group_icon_only']):</php>
+              <a href="javascript:;" title="{$user_info[$vo['fid']]['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$user_info[$vo['fid']]['group_icon_only']['user_group_name']}" src="{$user_info[$vo['fid']]['group_icon_only']['user_group_icon_url']}" ></a>
+              <php>endif;</php>
+              <!--<a class="btns-gray">已关注</a>-->
+              {:W('FollowBtn', array('fid'=>$vo['fid'], 'uname'=>$user_info[$vo['fid']]['uname'], 'follow_state'=>$follow_state[$vo['fid']], 'type'=>'normal', 'isrefresh'=>1))} 
+            </div>
+            <div class="relation-right">
+              <dl class="profile-info-t">
+                <dt><a href="{$user_info[$vo['fid']]['space_url']}" event-node='face_card' uid="{$vo['fid']}">{$user_info[$vo['fid']]['uname']}</a><!--&nbsp;&nbsp;{$user_info[$vo['fid']]['auth_icon']}--></dt>
+                <dd class="from">来自：
+                <?php 
+                if($user_info[$vo['fid']]['location'] == ''){
+                  echo "都不知道来自哪里的，大概来自火星吧！";
+                }else{
+                  echo $user_info[$vo['fid']]['location'];
+                }
+                ?>
+                </dd>
+                <dd class="profile">简介：
+                <?php 
+                if($user_info[$vo['fid']]['intro'] == ''){
+                  echo "这家伙很懒，什么都没有留下！";
+                }else{
+                  echo getShort($user_info[$vo['fid']]['intro'],100);
+                }
+                ?>
+                </dd>
+                <dd>标签：
+                    <php>foreach($user_tag[$vo['fid']] as $t) { </php>
+                    <span class="interests">{$t}</span>
+                    <php> } </php>
+                </dd>
+              </dl>
+            </div>
+          </li>
+          </volist>
+        </ul>
+        <div id="page" class="page">{$follower_list.html}</div>
+        
+      <php>}elseif($follow_key !== '' && !is_null($follow_key)){</php>
+          <div class="loading">抱歉，暂时没有找到与 “{$follow_key}” 相关的结果</div>
+      <php>}else{</php>
+          <div class="loading">暂时没有关注TA的人</div>
+      <php>}</php>       
+      </div>
+    <php>}else{</php>
+            <p class="extend">-_-。sorry！根据对方隐私设置，您无权查看TA的主页</p>
+    <php>}</php>       
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 

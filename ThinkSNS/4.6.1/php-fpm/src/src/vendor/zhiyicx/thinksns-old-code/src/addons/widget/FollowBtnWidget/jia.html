@@ -1,0 +1,8 @@
+<session name="mid">
+	<if condition="0 eq $follow_state['following']">
+	    <a event-node="newDoFollow" event-args="uid={$fid}&uname={$uname}&following={$follow_state['following']}&follower={$follow_state['follower']}&refer={$refer}&isrefresh=1" href="{:U('public/Follow/doFollow', array('fid'=>$fid))}" class="right"><i class="ico-add-people"></i></a>   
+	</if>
+</session>
+<nosession name="mid">
+	<a href="javascript:quickLogin();" class="right"><i class="ico-add-people"></i></a>  
+</nosession>

@@ -1,0 +1,35 @@
+<include file="__THEME__/public_header" />
+<link href="__THEME__/css/mobile.css" rel="stylesheet" type="text/css" />
+<div class="mb-content">
+	<div class="mb-inner" >
+		<php>
+			$imglist[] = array('link'=>'','src'=>THEME_PUBLIC_URL.'/image/mb-img01.jpg','title'=>'');
+			$imglist[] = array('link'=>'','src'=>THEME_PUBLIC_URL.'/image/mb-img02.jpg','title'=>'');
+		</php>
+		{:W('ShowImg',array('tpl'=>'scroll','imglist'=>$imglist))}
+        <!--<div class="scrollContent">
+        	<ul>
+            	<li><img src="__THEME__/image/mb-bgimg01.png"></li>
+            </ul>
+        </div>-->
+		<div class="inner-btn">
+			<div class="btns-dl">
+				<a href="#" class="btn-dl btn-iphone">
+					<span class="icon-box">
+						<i class="im ico-mb"></i>
+						<i class="im ico-iphone"></i>
+					</span>
+					<span class="btn-txt">iphone</span>
+				</a>
+				<a href="#" class="btn-dl btn-android">
+					<span class="icon-box">
+						<i class="im ico-mb"></i>
+						<i class="im ico-android"></i>
+					</span>
+					<span class="btn-txt">android</span>		
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="__THEME__/public_footer" />

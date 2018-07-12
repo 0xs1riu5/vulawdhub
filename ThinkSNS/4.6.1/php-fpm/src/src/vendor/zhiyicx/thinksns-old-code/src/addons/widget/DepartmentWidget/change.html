@@ -1,0 +1,29 @@
+<div class="pop-department">
+<div id='DepartmentSelect'>
+	<select pid="{$pid}" name="select_{$pid}" size="1000" >
+	<php>foreach($parentList as $sk=>$sv):</php>
+     <option value="{$sk}" >{$sv}</option>
+    <php> endforeach;</php>
+	</select>
+</div>
+ <dd class="textC mt10">
+    <a class="btn-green-small mr10" onclick="ui.box.close();"><span>{:L('PUBLIC_CONFIRM')}</span></a>
+    <a class="btn-cancel" onclick="cancel();"><span>{:L('PUBLIC_CANCEL')}</span></a>
+ </dd>
+</div>
+<script>
+core.plugInit('department','DepartmentSelect','saveDepartMent','select','{$sid}','{$nosid}','{$notop}');
+//回调函数 返回部门ID和部门显示的名称
+
+var saveDepartMent = function(id,departmentName){
+	$('#<php> echo $hid;</php>').val(id);
+	$('#<php> echo $showName;</php>').html(departmentName);
+};
+
+var cancel = function(){
+	$('#<php> echo $hid;</php>').val('');
+	var oldDemparment = $('#<php> echo $showName;</php>').attr('oldDemparment');
+	$('#<php> echo $showName;</php>').html(oldDemparment);	
+	ui.box.close();
+}
+</script>

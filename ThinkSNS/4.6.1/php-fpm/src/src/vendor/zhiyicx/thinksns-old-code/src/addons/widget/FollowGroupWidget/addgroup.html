@@ -1,0 +1,31 @@
+<script>
+	var global_group = {group_name:'',group_id:''};
+	var doaddGroup = function(){
+		var groupname = $('#add_groupname').val();
+		var nums = 10;
+		if(getLength(groupname) > nums ){
+			ui.error('分组名称不能超过' + nums + '个汉字长度');
+			return false;
+		}
+		$.post(U('widget/FollowGroup/doaddGroup'), {groupname:groupname}, function(msg) {
+			if(msg.status =='0') {
+				ui.error(msg.data);
+			} else {
+				global_group.group_name  = groupname;
+				global_group.group_id   = msg.data;
+				ui.box.close();
+				ui.success(L('PUBLIC_ADD_SUCCESS'));
+				setTimeout(function() {
+					location.href = U('public/Profile/following') + '&gid=' + msg.data;
+				}, 1500);
+			}
+		},'json');
+	};
+</script>
+<div class="pop-create-group">
+    <dl>
+        <dt>{:L('PUBLIC_GROUP_NAME')}：<input type="text" name='groupname' id='add_groupname' class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'" ></dt>
+        <dd><a  href="javascript:;" onclick="doaddGroup()" class="btn-green-small mr5"><span>{:L('PUBLIC_CONFIRM')}</span></a><a href="javascript:;" onclick="ui.box.close()" class="btn-cancel" style="height: 30px;line-height: 30px; width:80px; font-size: 14px;"><span>{:L('PUBLIC_CANCEL')}</span></a></dd>
+        <span id='addgroup_msg'></span>
+    </dl>
+</div>

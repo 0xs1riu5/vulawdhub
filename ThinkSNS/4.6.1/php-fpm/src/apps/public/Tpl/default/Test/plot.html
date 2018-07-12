@@ -1,0 +1,62 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px 0">
+
+                <?php
+                    $pWidth = 200;
+                    $pHeight = 200;
+                    $key = array('你', '我', '他', '她', '它');
+                    $value1 = array(10, 10, 10, 40, 30);
+                    $value2 = array(14, 21, 12, 44, 30);
+                    $value3 = array(10, 10, 10, 134, 30);
+                    $value4 = array(99, 21, 121, 41, 30);
+                    $color = array('#FF3333', '#CC9933', '#9933CC', '#3366FF', '#009900');
+                    $show1 = true;
+                    $show2 = false; 
+                ?>
+                {:W('Plot', array('type'=>'pieChart', 'id'=>'1', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value1, 'color'=>$color, 'show'=>$show1))}                
+                {:W('Plot', array('type'=>'pieChart', 'id'=>'2', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value2, 'color'=>$color, 'show'=>$show1))}                
+                {:W('Plot', array('type'=>'pieChart', 'id'=>'3', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value3, 'color'=>$color, 'show'=>$show1))}
+                {:W('Plot', array('type'=>'pieChart', 'id'=>'4', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value4, 'color'=>$color, 'show'=>$show2))}
+
+                <?php
+                    $pWidth = 400;
+                    $pHeight = 200;
+                    $title = '折线图演示';
+                    $value1 = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+                    $value2 = array(10, 9, 8, 7, 6, 5, 4, 2, 2, 1);
+                    $value3 = array(11, 23, 35, 45, 51, 67, 77, 81, 92, 10);
+                    $value4 = array('t'=>1, 'tt'=>22, 'ttt'=>3, 'ss'=>42, 'sss'=>5, 's'=>63, 'a'=>7, 'aa'=>82, 'aaa'=>9, 'x'=>100);
+                ?>
+                {:W('Plot', array('type'=>'pointLabelsChart', id=>'1', title=>$title.' - 1', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'value'=>$value1))}
+                {:W('Plot', array('type'=>'pointLabelsChart', id=>'2', title=>$title.' - 2', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'value'=>$value2))}
+                {:W('Plot', array('type'=>'pointLabelsChart', id=>'3', title=>$title.' - 3', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'value'=>$value3))}
+                {:W('Plot', array('type'=>'pointLabelsChart', id=>'4', title=>$title.' - 4', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'value'=>$value4))}
+
+                <?php
+                    $pWidth = 400;
+                    $pHeight = 200;
+                    $title = '柱状图演示';
+                    $key = array('一', '二', '三', '四', '五', '六', '七', '八', '九', '十');
+                    $value1 = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+                    $value2 = array(10, 9, 8, 7, 6, 5, 4, 2, 2, 1);
+                    $value3 = array(11, 23, 35, 45, 51, 67, 77, 81, 92, 10);
+                    $value4 = array(1, 22, 3, 42, 5, 63, 7, 82, 9, 100);
+                ?>
+                {:W('Plot', array('type'=>'barChart', id=>'1', title=>$title.' - 1', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value1))}
+                {:W('Plot', array('type'=>'barChart', id=>'2', title=>$title.' - 2', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value2))}
+                {:W('Plot', array('type'=>'barChart', id=>'3', title=>$title.' - 3', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value3))}
+                {:W('Plot', array('type'=>'barChart', id=>'4', title=>$title.' - 4', 'pWidth'=>$pWidth, 'pHeight'=>$pHeight, 'key'=>$key, 'value'=>$value4))}
+
+            </div>
+			<div>
+				<pre>
+
+				</pre>
+			</div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />

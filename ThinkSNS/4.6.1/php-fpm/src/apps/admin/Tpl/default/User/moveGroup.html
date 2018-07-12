@@ -1,0 +1,15 @@
+<div  id='movegroup' class="pop-movegroup">
+<dl>
+    <dt>{:L('PUBLIC_SELECT_USERGROUP')}:</dt>
+    <dd>
+        <volist name='user_group' id ='vo'>
+        <label><input type="checkbox" value='{$key}' name='user_group[]'>{$vo}</label>
+        </volist>
+    </dd>
+    <dd class="center">
+        <input type="hidden" id='uid' value="{$_GET['uid']|intval}">
+        <input type="button" class="btn_b mr10" value="{:L('PUBLIC_CONFIRM')}" onclick="admin.domoveUsergroup()">
+        <input type="button" class="btn_w" value="{:L('PUBLIC_CANCEL')}" onclick="ui.box.close()">
+    </dd>
+</dl>
+ </div>

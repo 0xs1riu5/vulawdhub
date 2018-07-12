@@ -1,0 +1,43 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px">
+                <ul>
+                <li>分享小名片，用户ID：14983 {:W('Share',array('sid'=>14983,'stable'=>'contact','appname'=>'contact','nums'=>'10','initHTML'=>'这里是默认的话'))}</li>
+            </ul>
+            </div>
+<div>
+	<pre>
+		调用：W('Share',array('sid'=>14983,'stable'=>'contact','appname'=>'contact','nums'=>10,'initHTML'=>'这里是默认的话'))
+		参数说明：
+		sid:资源ID,如分享小名片就是对应用户的用户ID，分享分享就是分享的ID
+		stable:资源所在的表，如小名片就是contact表，分享就是feed表
+		appname:资源所在的应用
+		nums:就是该资源被分享的次数
+		initHTML:默认的内容
+		<hr/>
+		分享功能需要PHP端配合，下面是分享功能的具体实现：
+		当分享某个应用的内容时，只需要在该应用内容的model中获取单条资源函数内返回一个叫shareHtml的字段。
+		shareHtml将需要的分享的内容整合成html格式，可以直接在分享弹窗中显示
+
+		注：--- 资源获取规则 ---
+		如获取contact表中的资源信息，则contact model中的函数为 getcontactInfo($row_id,$forApi)
+
+		举例：分享通讯录名片功能的实现
+		第一步：后台添加分享的动态类型节点
+		第二步：前台调用分享wigdet，
+		{:W('Share',array('sid'=>$sid,'stable'=>$stable))}
+		其中$sid为通讯录中用户的uid,$stable=>contact  --注意：$stable不一定是指定一张表，简单的说，他应该是指向一个model
+		如contact
+
+		第三步：写好getcontactInfo($row_id,$forApi=false)方法
+		其中row_id就是一个用户的uid，$forApi表示返回结果是否提供给api使用
+
+
+	</pre>
+</div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />

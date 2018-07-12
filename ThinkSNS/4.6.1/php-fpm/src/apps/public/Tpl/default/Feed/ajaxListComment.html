@@ -1,0 +1,59 @@
+<php>
+$iscommentdel = CheckPermission('core_normal','comment_del');
+$iscommentadmindel = CheckPermission('core_admin','comment_del');
+$cancomment = intval(CheckPermission('core_normal','feed_comment')); 
+</php>
+<volist name="list.data" id="vo">
+<dl class="comment_list" id="comment_list" id="comment_list_{$vo.comment_id}">
+	<dt><a href="{$vo.user_info.space_url}"><img src="{$vo.user_info.avatar_tiny}" width="30" height="30"/></a></dt>
+	<dd>
+		<p class="cont">{$vo.user_info.space_link}：<em><php>if($vo['is_audit'] || $vo['uid'] == $GLOBALS['ts']['mid']):</php>{$vo.content|parse_html}<php>else:</php>内容正在审核<php>endif;</php><span class="time">{$vo.ctime|friendlyDate}</span><span class="handle">
+				<php>if(($vo['uid'] == $GLOBALS['ts']['mid'] && $iscommentdel ) || $iscommentadmindel):</php>
+				<a href="javascript:;" onclick="deleteComment({$vo.comment_id});">删除</a>
+				<php>if($cancomment == 1):</php>
+				&nbsp;
+				<php>endif;</php>
+				<php>endif;</php>
+				<php>if($cancomment == 1):</php>
+				<a href="javascript:;" onclick="replyComment('{$vo.user_info.uname}', {$vo.user_info.uid}, {$vo.comment_id});">回复</a>
+				<php>endif;</php>
+			</span></em></p>
+	</dd>
+</dl>
+</volist>
+<input type="hidden" id="to_comment_id" value="0" />
+<input type="hidden" id="to_uid" value="0" />
+
+<script type="text/javascript">
+/**
+ * 删除分享评论
+ * @return void
+ */
+var deleteComment = function (commentId) {
+	// 淡化效果
+	$('#comment_list_' + commentId).fadeOut();
+	// 删除操作
+	if (typeof core.comment === 'undefined') {
+		core.plugFunc('comment', function () {
+			core.comment.delComment(commentId);
+		});
+	} else {
+		core.comment.delComment(commentId);
+	}
+};
+/**
+ * 回复评论操作
+ * @param string uname 回复用户名称
+ * @return void
+ */
+var replyComment = function (uname, uid, commentId) {
+	if (typeof uname === 'undefined' || typeof uid === 'undefined' || typeof commentId === 'undefined') {
+		return false;
+	}
+	$('#mini_editor_textarea').focus();
+	$('#mini_editor_textarea').val('回复@' + uname + ' ：');
+	$('#to_uid').val(uid);
+	$('#to_comment_id').val(commentId);
+	valChange();
+};
+</script>

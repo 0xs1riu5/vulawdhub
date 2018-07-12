@@ -1,0 +1,34 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div style="margin:50px">
+                    动态ID为72的动态的评论调用：
+            
+                  {:W('Comment',array('tpl'=>'detail','row_id'=>72,'order'=>'DESC','app_uid'=>'14983','cancomment'=>1,'cancomment_old'=>0,'showlist'=>1,'canrepost'=>1))}
+            </div>
+<div>
+	<pre>
+		调用：W('Comment',array('tpl'=>'detail','row_id'=>72,'order'=>'DESC','app_uid'=>'14983','cancomment'=>1,'cancomment_old'=>0,'showlist'=>1,'canrepost'=>1))
+		参数说明：
+		-- 可以不用传入的参数  ---
+		cancomment 			//是否可以评论  默认为1,由应用中判断好权限之后传入给wigdet
+    	canrepost  			//是否允许转发  默认为1,应用开发的时候根据应用需求设置1、0
+    	cancomment_old		//是否可以评论给原作者 默认为1,应用开发时统一使用0
+		showlist            //是否显示评论列表 默认为1
+		limit 				//每页显示的评论条数 默认为10
+		order 				//评论的排序，默认为ASC 表示从早到晚,应用中一般是DESC
+
+		-- 应用开发时，下面的参数 必须传入 ---
+		tpl 	 			//显示模版 默认为comment，一般使用detail表示详细资源页面的评论
+		app_name			//评论对象所在的应用， 默认为public，应用中调用的时候，属于什么应用就写什么
+		table   			//评论对象所在的表	，	默认为feed
+		row_id   			//评论对象所在的表的ID，
+		app_uid				//评论的对象的作者ID，
+	</pre>
+</div>
+        </div>
+    </div>
+</div>
+
+<include file="__THEME__/public_footer" />

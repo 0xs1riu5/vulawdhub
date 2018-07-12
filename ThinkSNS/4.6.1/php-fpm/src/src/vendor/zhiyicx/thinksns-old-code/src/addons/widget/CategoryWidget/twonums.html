@@ -1,0 +1,9 @@
+<volist name="cateList" id="vo">
+<dl class="ask-class-list">
+    <dt class="bd-hvb"><h3>{$vo.name}</h3></dt>
+    <dd <eq name="cid" value="$vo.id">class="current"</eq>><a href="{$cate_url}&cid={$vo.id}">全部<span>({$vo.count})</span></a></dd>
+    <volist name="vo.child" id="v">
+        <dd <eq name="cid" value="$v.id">class="current"</eq>><a href="{$cate_url}&cid={$v.id}">{$v.name}<span>({$v.count})</span></a></dd>   
+    </volist>
+</dl>
+</volist>

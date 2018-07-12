@@ -1,0 +1,17 @@
+<div id="set-data" data-title="系统消息"></div>
+<div class="common">
+    <ul class="notice">
+      <volist name="list.data" id="vo">
+      <li {$vo['is_read']==1?'':' class="unread"'}>{$vo.body}({:friendlyDate($vo['ctime'])})</li>
+      </volist>
+    </ul>
+    <div class="pagelist">{$list.html}</div>
+</div>
+<script>
+$('.pagelist a').click(function(){
+    if(typeof core.message.openUrl == 'function'){
+        core.message.openUrl($(this).attr('href'), false);
+    }
+    return false;
+});
+</script>

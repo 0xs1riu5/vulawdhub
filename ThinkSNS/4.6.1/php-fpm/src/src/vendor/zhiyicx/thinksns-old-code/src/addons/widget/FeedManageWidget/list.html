@@ -1,0 +1,23 @@
+<div id="weibo_admin_box" class="layer-list" style="display:none;z-index:1;">
+	<ul>
+    	<php> if($feed_recommend == 1 && $is_recommend){ </php>
+        <li><a href="javascript:;" onclick="feed_recommend('{$feed_id}', 0);">取消推荐</a></li>
+        <php>}elseif($feed_recommend == 1){</php>
+        <li><a href="javascript:;" onclick="feed_recommend('{$feed_id}', 1);">推荐动态</a></li>
+		<php>}</php>
+
+		<php>if($feed_del){</php>
+		<li><a href="javascript:void(0)" event-node ='delFeed' event-args='feed_id={$feed_id}&uid={$uid}'>删除动态</a></li>
+		<php>}</php>
+
+		<php>if($channel_recommend == 1):</php>
+		<li><a href="javascript:;" onclick="getAdminBox('{$feed_id}', '{$channel_id}', '{$clear}');">推荐到频道</a></li>
+		<php>endif;</php>
+		<php>if($vtask_recommend == 1):</php>
+		<li><a href="javascript:;" onclick="addToVtask('{$feed_id}');">添加到事务</a></li>
+		<php>endif;</php>
+		<php>if($feed_del == 1):</php>
+		<php>endif;</php>
+		{:Addons::hook('feed_manage_li', array('feed_id'=>$feed_id, 'uid'=>$uid))}
+	</ul>
+</div>

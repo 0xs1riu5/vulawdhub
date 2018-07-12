@@ -1,0 +1,49 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+	<div class="page_tit">{:L('PUBLIC_PERMISSION_GROUP_CONFIGURATION')}</div>
+  
+  <!-- START LIST -->
+  <div class="form2">
+
+
+    <!-- 用户组基本权限 -->
+        <div class="urse_purview list">
+      <form action="{:U('admin/Config/permissiongroup')}" method="post">
+  
+<table class="tab_popedom" width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed">
+
+  <!-- 用户组基本权限 -->
+  <tr>
+    <th style="width:30px">{:L('PUBLIC_OPERATION')}</th>
+    <th class="line_l">{:L('PUBLIC_USER_GROUP')}</th>
+<volist id="vo" name="applist">
+  <th class="line_l"><input class="mr1 hAll" name="{$key}" rel="{$key}" type="checkbox" value="{$key}" />{$vo}</th>
+</volist>
+      
+      </tr>
+
+<volist id="group" name="userGroup">
+    <tr>
+    <td><input width="2%"  height="30" class="mr_1 vAll" name="gid" rel="{$group.user_group_id}"
+      type="checkbox" value="" /></td>
+    <td align="left" style="padding-left:5px;">{$group.user_group_name}</td>
+    
+<volist id="vo" name="applist" k='kk'>
+                <td><input
+      class="mr1 {$key} gid_{$group.user_group_id}" name="permission[{$key}][{$group.user_group_id}]"  
+      <php>if(in_array( $group['user_group_id'] , $savepermission[$key] ) ){</php> checked <php>}</php> type="checkbox" value=1 /></td>
+</volist>
+    
+      </tr>
+</volist>
+  
+    </table>
+        <div class="mt10">
+          <input class="btn_b" type="submit" value="{:L('PUBLIC_SUBMIT')}">
+          </input>
+        </div>
+      </form>
+  <!-- END LIST -->
+  
+</div>
+<include file="__THEME__/admin_footer" />

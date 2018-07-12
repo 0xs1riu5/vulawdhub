@@ -1,0 +1,51 @@
+<form action="{:U('public/Search/index')}" name="Search" id="Search" method="get" onsubmit="return checkTime();">
+	<input name="app" value="public" type="hidden" id="app"/>
+    <input name="mod" value="Search" type="hidden" id="mod"/>
+    <input type="hidden" name="t" value="{$curType}" id="t"/>
+	<input type="hidden" name="a" value="public" id="a"/>
+	<input type="hidden" name="k" value="{$k}" id="k"/>
+	<input type="hidden" name="feed_type" value="{$feed_type}" id="k"/>
+	<div class="pop-message">
+		<table class="pop table-pop">
+    <tbody><tr><td class="textR" style="width:150px;">开始时间：</td><td>{:W('DateSelect',array('name'=>'Stime','class'=>'text','id'=>'Stime','value'=>'','dtype'=>'full'))}</td></tr>
+	<tr><td class="textR" style="width:150px;">结束时间：</td><td>{:W('DateSelect',array('name'=>'Etime','class'=>'text','id'=>'Etime','value'=>'','dtype'=>'full'))}</td></tr>
+	<td></td><td><a class="btn-green-small" href="javascript:void(0)" onclick="$('#Search').submit();return false;"><span>确定</span></a>
+	<a class="btn-cancel ml10" onclick="cancel()" href="javascript:;"><span>取消</span></a></td></tr></tbody>
+	   </table>
+    </div>
+</form>
+<script>
+// 关闭弹窗
+function cancel() {
+	ui.box.close();
+}
+
+var checkTime =function(){
+	var Stime = $('#Stime').val();
+	var Etime = $('#Etime').val();
+/* 	if(Stime == ""){
+		ui.error("开始时间不能为空");
+		return false;
+	}
+	if(Etime == ""){
+		ui.error("结束时间不能为空");
+		return false;
+	} */
+	var new_Stime = Stime.replace(/:/g,'-');
+	new_Stime = new_Stime.replace(/ /g,'-');
+	var arr = new_Stime.split("-");
+	var Sdatum = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+	var StimeStamp = Sdatum.getTime()/1000;
+
+	var new_Etime = Etime.replace(/:/g,'-');
+	new_Etime = new_Etime.replace(/ /g,'-');
+	var arr = new_Etime.split("-");
+	var Edatum = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+	var EtimeStamp = Edatum.getTime()/1000;
+	if(StimeStamp > EtimeStamp){
+		ui.error("结束时间不得早于开始时间");
+		return false;
+	}
+	return true;
+}
+</script>

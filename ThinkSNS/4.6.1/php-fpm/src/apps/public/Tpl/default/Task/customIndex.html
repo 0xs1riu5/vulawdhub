@@ -1,0 +1,112 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/task.css" rel="stylesheet" type="text/css" />
+<script>
+var islock = 0;
+function complete( id , obj){
+	$.post(U('public/Task/completeCustom') , {id:id} , function (res){
+		if ( res == 0 ){
+			ui.error('未完成该任务');
+		} else if( res == 2 ){
+			ui.error('不能重复领取');
+		}else if ( res == 3){
+			ui.error('已领完');
+		}else{
+			ui.box.show( res );
+			$('#step_'+id).html('<span class="finished"></span>');
+		}
+	})
+}
+function postfeed(id){
+	if ( islock == 1 ){
+		return;
+	}
+	islock = 1;
+	var ispost = $('#taskfeed').attr('checked');
+	if ( ispost == 'checked'){
+		$.post(U('public/Task/postTaskFeedCustom'),{id:id},function (){
+			ui.box.close();
+		});
+	} else {
+		ui.box.close();
+	}
+}
+</script>
+<div id="page-wrap">
+	   <div id="main-wrap">
+          <div class="boxShadow">
+          	    <div class="find-type">
+	   	   	   	   <div class="app-title clearfix border-b">
+                       <a href="{:U('public/Medal/index')}" class="view-link">查看我的勋章</a> 
+                       <h4 class="left">任务中心</h4>                     
+                       <div class="app-tab-menu clearfix">
+                           
+                           <ul class="clearfix">
+                             <li><a href="{:U('public/Task/index' , array('type'=>2))}">主线任务</a></li>
+                             <li><a href="{:U('public/Task/index' , array('type'=>1))}">每日任务</a></li>
+                             <li><a href="{:U('public/Task/customIndex')}" class="current">副本任务<span class="arrow-t"></span></a></li>
+                           </ul>
+                       </div>
+                   </div>
+                </div>
+	   	   	<div id="col" class="extend clearfix">
+                 <div class="task-content">
+                    <div class="task-list-title clearfix">
+                       <ul class="clearfix">
+                           <!--<li class="c0">&nbsp;</li>-->
+                           <li class="c10">任务名称</li>
+                           <li class="c11">条件</li>
+                           <li class="c2 c12">积分奖励</li>
+                           <li class="c3 c13">勋章</li>
+                           <li class="c4">状态</li>
+                        </ul>
+                    </div>
+                    <div class="task-lists">
+                    <volist name="list" id="v">
+                        <div class="task-list clearfix">
+
+                            <ul class="clearfix">
+                               <!--<li class="c0">{$key+1}.</li>-->
+                               <li class="c10"><h4 class="strong">{$v.task_name} </h4><p>{$v.task_desc} </p></li>
+                               <li class="c11">
+                               <volist name="v.cons" id="c">
+                               <span <php>if($c['status']){</php>class="f3"<php>}</php>>{$key+1}. {$c.desc}<i <php>if($c['status']){</php>class="ico-task-ok"<php>}</php>></i></span>
+                               </volist>
+                                <php>if($v['surplus']){</php>
+                               <span class="f3">{$v['surplus']}</span>
+                               <php>}</php>
+                               </li>
+                               <li class="c2 c12"><span>经验值<em>+<php>echo $v['reward']->exp;</php></em>点</span><span>积分值<em>+<php>echo $v['reward']->score;</php></em>点</span></li>
+                               <li class="c3 c13"><span><php>if ( $v['reward']->medal->name ){</php><img src="<php>echo getImageUrl($v['reward']->medal->src);</php>" width="50" height="50"/><php>echo $v['reward']->medal->name;}else{echo '';}</php></span></li>
+                               <li class="c4 c14">
+                               <php>if($v['status'] == 'ing'){</php>
+	                               <php>if($v['isfull']){</php>
+	                               			<span class="unfinished">已领完</span>
+	                               <php>}else{</php>
+	                               		<php>if($v['iscomplete']){</php>
+	                               			<span id="step_{$v.id}">
+	                               			<php>if( $v['receive']){</php>
+												<span class="finished"></span>
+											<php>}else{</php>
+												<a href="javascript:void(0);" onclick="complete({$v['id']},this)"><span class="award">领取奖励</span></a>
+											<php>}</php>
+											</span>
+	                               		<php>}else{</php>
+	                               		<span class="unfinished">未完成</span>
+	                               		<php>}</php>
+	                               	<php>}</php>
+	                             <php>}else if($v['status'] == 'coming'){</php>
+	                             	<span class="start">即将开始</span>
+	                             <php>}else{</php>
+	                             	<span class="unfinished">已过期</span>
+	                             <php>}</php>
+                               	</li>
+                            </ul>
+                        </div>
+                 	</volist>
+                    </div>
+                 </div>
+           	 </div>
+          </div>
+	   </div>
+</div>
+<include file="__THEME__/public_footer" />

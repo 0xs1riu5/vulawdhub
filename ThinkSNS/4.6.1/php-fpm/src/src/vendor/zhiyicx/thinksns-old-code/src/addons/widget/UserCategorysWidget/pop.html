@@ -1,0 +1,66 @@
+<style type="text/css">
+.mt10-w400 { margin-top: 10px;width: 400px; }
+.mg2 { margin: 2px; }
+#user_category_list dt{width:50px;}
+</style>
+
+<div class="profession-type" id="user_category_list">
+		<volist name="categoryTree" id="vo">
+			<dl>
+				<dt>{$vo.title}：</dt>
+				<dd>
+					<volist name="vo.child" id="v">
+					<a rel="{$v['id']}" id="user_category_{$v['id']}" href="javascript:;" onclick="checkUserCategory(this, {$v['id']}, \'{$v['title']}\')" class="<php>if(in_array($v['id'], $selectedIds)):</php>current<php>endif;</php> tag-bg"><span>{$v.title}</span></a>
+					</volist>
+				</dd>
+			</dl>
+		</volist>
+		<input type="hidden" value="" id="user_category_ids" />
+</div>
+
+
+<input type="hidden" value="" name="user_tags" id="user_category_pop" <php>if($required):</php>event-node="input_user_tag"<php>endif;</php> />
+<php>$config = model('Xdata')->get('admin_Config:register');
+        $tag_num = $config['tag_num'] ? : 5;</php>
+<script type="text/javascript">
+var tag_num = '<?php echo $tag_num; ?>';
+var checkUserCategory = function(obj){
+	// 选中处理
+	if($(obj).hasClass('current')) {
+		$(obj).removeClass('current');
+	} else {
+		$(obj).addClass('current');
+	}
+
+	// 数据处理
+	var data = new Array();
+	$('#user_category_ids').val('');
+	$('#user_category_list').find('a').each(function() {
+		if($(this).hasClass('current')) {
+			if(data.length < tag_num){
+				data.push($(this).attr('rel'));
+			}else{
+				ui.error('每个人最多只能选择'+tag_num+'个标签');
+				$(obj).removeClass('current');
+				return false;
+			}
+		}
+	});
+
+	$('#user_category_ids').val(data.join(','));
+	$('#selected_nums').html(data.length);
+	var cids = $.trim($('#user_category_ids').val());
+	$('#user_category_pop').val(cids);
+
+};
+
+// 设置选中身份数目
+var setSelectedNums = function() {
+	var len = $('#selected_category').find('a').length;
+	$('#selected_nums').html();
+};
+$(function() {
+	$('#user_category_ids').val($.trim($('#user_category_pop').val()));
+	$('#user_category_pop').val('');
+});
+</script>

@@ -1,0 +1,13 @@
+<div class="find-type-list clearfix">
+  <ul>
+<!--    <li class="first">官方推荐</li>-->
+    <li>
+      <div class="find-nav"><a href="{:U('people/Index/index', array('cid'=>0,'type'=>$type))}" class="<eq name='cid' value='0'>current</eq>">全部</a></div>
+    </li>
+    <volist name="menu" id="vo">
+    <li>
+      <div class="find-nav"><a href="{:U('people/Index/index', array('cid'=>$vo['id'],'type'=>$type))}" class="<eq name='cid' value='$vo.id'>current</eq>">{$vo.title}</a></div>
+    </li>
+    </volist>
+  </ul>
+</div>

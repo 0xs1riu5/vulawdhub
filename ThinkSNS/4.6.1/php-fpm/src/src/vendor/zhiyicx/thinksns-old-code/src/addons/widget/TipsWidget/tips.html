@@ -1,0 +1,19 @@
+<php>if($whetherExec) {</php>
+<a event-node="tipsExec" event-args="sid={$sid}&stable={$stable}&type={$type}&text={$displayText}&count={$count}&uid={$uid}&callback={$callback}">{$displayText}({$count})</a>
+<php>} else {</php>
+<span style="color:#BBBBBB;cursor:default;">{$displayText}({$count})</span>
+<php>}</php>
+
+<script type="text/javascript">
+M.addEventFns({
+	tipsExec: {
+		click:function(){
+			var args = M.getEventArgs(this);
+			var _this = this;
+			core.plugFunc('tips',function(){
+				core.tips.dotip(_this,args);	
+			});	
+		}
+	}
+});
+</script>

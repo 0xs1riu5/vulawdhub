@@ -1,0 +1,72 @@
+<div id="col3" class="st-index-right"> 
+
+
+
+	<php>if($mid!=0){</php>
+  <div class="right-wrap">
+    <!--用户信息-->
+    {:W('WeibaUserInformation', array('uid'=>$mid, 'tpl'=>'right', 'isReturn'=>$isReturn))}
+    <!--关注的吧-->
+    <div class="right-box clearfix" >
+      <div class="f8 mb15 left wid50">关注的吧</div>
+      <php>if($is_open == 1){</php>
+      <div class="mb15 right wid50 txtr"><a href="javascript:;" onclick="apply_weiba()" class="f8"><i class="ico-add"></i>申请吧</a></div>
+      <php>}</php>
+      <ul class="rect-circle">
+      <volist name="mylist" id="vo">
+        <li <php>if($key%2!=0){</php>style="margin-right:0;"<php>}</php>> <a href="{:U('weiba/Index/detail','weiba_id='.$vo['weiba_id'])}">{$vo['weiba_name']}</a> </li>
+      </volist>
+      </ul>
+    </div>
+  </div> 
+  <php>}</php>
+  
+  <div class="right-wrap clearfix"> <a id="quick_post" href="javascript:;" class="quick_post"><i class="ico-post weiba-post"></i><span>发表帖子</span></a> 
+    <!-- 签到 -->
+    <div id="weiba-checkin"> {:W('WeibaCheckIn')}</div>
+  </div>
+  <div class="right-wrap clearfix">
+    <!--微吧推荐-->
+    <div class="mb30"> {:W('RelatedGroup',array('uid'=>$mid,'title'=>'微吧推荐','max'=>4))} </div>
+    <!--微吧右下广告-->
+    <div class="right-box mb10 clearfix ad_space_right">
+      {:Addons::hook('show_ad_space', array('place'=>'weiba_right'))}
+    </div>
+    <!--活跃用户-->
+    {:W('WeibaDaren',array('uid'=>$mid,'weibaid'=>$weiba_id,'title'=>'活跃用户','max'=>3))} 
+  </div>
+</div>
+<script type="text/javascript">
+// 事件绑定
+M.addEventFns({
+    // 换一换操作
+    change_related_user: {
+        click: function() {
+            var args = M.getEventArgs(this);
+            var _model = M.getModels('related_ul_user');
+            $.post(U('weiba/Index/changeRelate'), {uid:args.uid, limit:args.limit}, function(data) {
+                $(_model[0]).html(data);
+                M($(_model)[0]);
+            }, 'json');
+            return false ;
+        }
+    }
+});
+
+function follow_user(args) {
+	      $.post(U('weiba/Index/doFollow'), {fid:args}, function(data) {
+	    	  $('#'+args ).html('<a href="#" class="btns-red"><i class="ico-add"></i>已关注</a>');
+	      }, 'json');
+	      return false ;
+}
+
+function new_refresh() {
+	var p = $('#catelist').attr('rel');
+    $.post(U('weiba/Index/catelist'),{p:p}, function(data) {
+  	  $('#catelist').html(data);
+  	  $('#catelist').attr('rel',(parseInt(p)+1));
+    }, 'json');
+    return false ;
+}
+
+</script> 

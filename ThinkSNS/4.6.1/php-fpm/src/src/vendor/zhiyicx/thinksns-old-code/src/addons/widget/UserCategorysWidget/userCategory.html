@@ -1,0 +1,19 @@
+<div class="club-tab-menu clearfix">
+    <dl>
+        <dt>
+            <a class="<php>if(empty($cid)):</php>current<php>endif;</php> mr10" href="{$url}"><span>全部</span></a>
+            <volist name="categoryTree" id="vo">
+            <a class="<eq name="cid" value="$vo['id']">current</eq> mr10" href="{$url}&cid={$vo['id']}"><span>{$vo.title}</span></a>    
+            </volist>
+        </dt>
+    </dl>    
+</div>
+<php>if(!empty($cid)):</php>
+<div class="club-type">
+        <a class="first">{$categoryTree[$cid]['title']}:</a>
+            <a <php>if(empty($childCid)):</php>class="current"<php>endif;</php> href="{$url}&cid={$cid}">全部</a>
+        <volist name="categoryTree[$cid]['child']" id="vo">
+            <a <eq name="childCid" value="$vo['id']">class="current"</eq> href="{$url}&cid={$vo['id']}">{$vo.title}</a>
+        </volist>
+</div>
+<php>endif;</php>

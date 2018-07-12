@@ -1,0 +1,93 @@
+<style type="text/css">
+.flashNews ul li a:hover, .flashNews ul li a.sel, .flashNews ul {
+    background-image: url("../image/iconbg.png");
+    vertical-align: middle;
+}
+.flashNews {
+    margin: 0 0 20px;
+    position: relative;
+}
+.flashNews ul {
+    background-position: right -651px;
+    bottom: 0;
+    font-family: Verdana;
+    font-size: 12px;
+    height: 21px;
+    padding-left: 100px;
+    padding-right: 5px;
+    padding-top: 4px;
+    position: absolute;
+    right: 0;
+}
+.login-bg .flashNews {
+    margin: 0;
+}
+.login-bg .flashNews ul {
+    right: 300px;
+}
+.flashNews ul li {
+    float: left;
+    height: 17px;
+    line-height: 17px;
+    margin: 2px 2px 0;
+    text-align: center;
+    width: 17px;
+}
+.lineS_btm .flashNews ul li a {
+    color: #FFFFFF;
+    display: block;
+    font-family: Tahoma;
+    height: 18px;
+    width: 17px;
+}
+.flashNews ul li a {
+    color: #FFFFFF;
+    display: block;
+    font-family: Tahoma;
+    height: 18px;
+    width: 17px;
+}
+.flashNews ul li a:hover, .flashNews ul li a.sel {
+    background-position: -238px -285px;
+    color: #FFFFFF;
+    text-decoration: none;
+    width: 17px;
+}
+.firstNews ul {
+    height: auto;
+    margin: 0 0 0 12px;
+    overflow: hidden;
+    width: 410px;
+}
+.firstNews ul li {
+    background: url("../img/pic.gif") no-repeat scroll -298px -141px rgba(0, 0, 0, 0);
+    font-size: 14px;
+    height: 22px;
+    line-height: 22px;
+    overflow: hidden;
+    position: relative;
+    text-indent: 10px;
+    width: 410px;
+}
+.flashNews p a {
+    display: block;
+}
+</style>
+
+<div id="ad_preview" class="flashNews" style="width:300px;">
+<volist name="content" id="v">
+	<div <neq name="i" value="1">style="display:none;"</neq>>
+	<p>
+		<a target="_blank" href="{$v.bannerurl}">
+			<img width="300" height="300" src="{$v.bannerpic}" />
+		</a>
+	</p>
+	</div>
+</volist>
+<php>if(count($content) > 1):</php>
+<ul></ul>
+<script type="text/javascript">
+new fSwitchPic("ad_preview");
+</script>
+<php>endif;</php>
+</div>

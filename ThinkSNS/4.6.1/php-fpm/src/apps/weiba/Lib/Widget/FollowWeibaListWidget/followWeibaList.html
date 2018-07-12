@@ -1,0 +1,28 @@
+       <php>if(isset($nweibaList)){</php>
+       <volist name="nweibaList" id="v">
+	      <div class="myCircle-list">
+	        <ul class="circle-list">
+		        <volist name="v" id="vo">
+		          <li>
+		            <div class="circle-pic mb20"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank"><img src="{$vo.logo}"  /></a></div>
+		            <h class="circle-tit"><a href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}" target="_blank">{$vo.weiba_name|getShort=12}</a><i class="ico-found"></i></h>
+		            <p class="circle-data"><span>成员数{$vo.follow_count}</span>&nbsp;&nbsp;<span>今日新帖789(还没添加)</span></p>
+		            <p class="circle-prof">{$vo.intro|getShort=26}...</p>
+		          </li>
+		        </volist>
+	        </ul>
+	      </div>
+      </volist>
+      <php>}else{</php>
+	   <div class="right-box clearfix">
+	     <fieldset class="inter-line"><a class="right">共{$weibaListCount|default=0}个</a><legend class="inter-txt">我关注的微吧</legend></fieldset>
+	     <ul>
+	        <volist name="weibaList" id="vo">
+	            <li>
+	                <a class="" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><img src="{$vo.logo}" width="50" height="50" /></a>
+	                <a class="name" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><span>{$vo.weiba_name}</span></a>
+	            </li>
+	        </volist>
+	   </ul>
+	   </div>
+	 <php>}</php>

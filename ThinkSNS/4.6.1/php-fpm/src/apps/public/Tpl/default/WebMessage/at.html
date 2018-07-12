@@ -1,0 +1,105 @@
+<div id="set-data" data-title="At我的"></div>
+<div class="common">
+	<?php if ($list['data'] && is_array($list['data'])) { ?>
+	<ul class="comment feed_list msgatme">
+		<?php foreach ($list['data'] as $atData) { ?>
+		<?php isset($atData['sourceInfo']) && $atData = $atData['sourceInfo']; ?>
+		<li>
+			<div class="face">
+				<a href="{$atData['source_user_info']['space_url']}" target="_blank" event-node="face_card" uid="{$atData['source_user_info']['uid']}">
+					<img src="{$atData['source_user_info']['avatar_small']}">
+				</a>
+			</div>
+			<div class="detail">
+				<div class="name"><a href="{$atData.source_user_info.space_url}" event-node="face_card" uid="{$atData['source_user_info']['uid']}">{$atData.source_user_info.uname}</a><span>{$atData.ctime|friendlyDate}</span></div>
+				<div class="ct">
+					<?php if ($atData['is_del']) { ?>
+					内容已经删除
+					<?php } else if ($atData['is_audit']) { ?>
+					{$atData['source_body']}
+					<?php } else { ?>
+					内容正在审核
+					<?php } ?>
+				</div>
+			</div>
+			<div class="buttons">
+				<?php $id = uniqid(); ?>
+				<a id="comment" href="#" data-id="reply-{$atData['feed_id']}-{$id}">评论</a>
+			</div>
+			<div class="reply" id="reply-{$atData['feed_id']}-{$id}">
+	          <form>
+	          	<input type="text" class="text" value="">
+	            <input type="submit" class="sbmt" value="评论" args="row_id={$atData['feed_id']}&app_uid={$atData['uid']}&app_row_id={$atData['app_row_id']}&app_row_table={$atData['app_row_table']}&app_name={$atData['app']}&table_name={$atData['source_table']}&to_comment_id=0&to_uid=0">
+	            <a href="javascript:;" class="face-icon" event-node="comment_insert_face"></a>
+	          </form>
+	        <div class="face_parent_div"></div>
+	      </div>
+		</li>
+		<?php } ?>
+	</ul>
+	<div class="pagelist">{$list.html}</div>
+	<?php } else { ?>
+	<div class="empty-list">还没有人@你哦！</div>
+	<?php } ?>
+</div>
+<script>
+$(function() {
+	/* # 分页翻页事件 */
+	$('.pagelist').on('click', 'a', function (event) {
+		event.preventDefault();
+		if (typeof core.message.openUrl == 'function') {
+			core.message.openUrl($(this).attr('href'), false);
+		};
+		return false;
+	});
+	/* # 点击box弹出回复框 */
+	$('.msgatme').on('click', 'li>div.buttons>a#comment', function (event) {
+		event.preventDefault();
+		var $this = $(this);
+		if ($this.data('show') == 0 || !$this.data('show')) {
+			$this.data('show', 1);
+			$('.msgatme').find('.reply').slideUp('fast');
+			$('#' + $this.data('id')).slideDown('fast');
+		} else {
+			$this.data('show', 0);
+			$('#' + $this.data('id')).slideUp('fast');
+		};
+		$this = null;
+	});
+	/* # 表情插入 */
+	$('.comment').on('click', 'a[event-node="comment_insert_face"]', function (event) {
+		event.preventDefault();
+		var form = $(this).parents('form');
+    var input = form.find('input:text:first');
+    var parent = form.next();
+    core.plugInit('face', this, input, parent);
+    form = input = parent = null;
+	});
+	/* # 评论 */
+	$('ul.comment').on('click', '.reply>form>.sbmt', function (event) {
+		event.preventDefault();
+		var $this = $(this),
+				input = $this.prev(),
+				val   = $.trim(input.val());
+		if (!val) {
+			input.focus();
+			return false;
+		};
+		var args = $this.attr('args');
+		args += '&content=' + encodeURIComponent(val);
+		$.post(U('widget/Comment/addcomment'), args, function(data) {
+			if (data.status == 1) {
+				input.val();
+				input.parents('li').find('div.buttons>a#comment').click();
+				ui.success('评论成功');
+			} else {
+				if (typeof data.data == 'string') {
+					ui.error(data.data);
+				} else {
+					ui.error('评论失败')
+				};
+			};
+		}, 'json');
+	});
+});
+</script>

@@ -1,0 +1,89 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">链接邀请</div>
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+  <div class="from2">
+    <div class="inviteMode">
+      <div class="invite-title"><h4>每个邀请码可以邀请1个用户</h4></div>
+      <div class="invite-links clearfix">
+      	<a href="javascript:;" onclick="getInviteCode()">点击获取邀请码</a>
+        <ul id="code_list">
+          <volist name="codeList.data" id="vo">
+          <li>
+            <div class="left">
+              <input type="text"  class="text" style="width:450px;" onfocus="this.className='text2'" onblur="this.className='text'"  name="intro[{$vo.field}]" value="{:SITE_URL}/index.php?invite={$vo.code}"/>
+            </div>
+            <div class="left ml10">
+              <php>if($vo['is_used'] == 1):</php>
+              <span>已使用</span>
+              <php>else:</php>
+              <embed width="62" height="24" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" allowscriptaccess="sameDomain" wmode="transparent" quality="high" src="__APP__/copy.swf" flashvars="txt={:SITE_URL}/index.php?invite={$vo.code}">
+              <php>endif;</php>
+            </div>
+          </li>
+          </volist>
+        </ul>
+      </div>
+      <div class="Toolbar_inbox"><div class="page">{$codeList.html}</div></div>
+      <!--
+      <div class="invite-user-list">
+        <h4>已邀请用户：</h4>
+        <php>if(empty($inviteList)):</php>
+        <p>当前无邀请好友</p>
+        <php>else:</php>
+        <ul>
+          <li>
+            <div class="w0">&nbsp;</div>
+            <div class="w3">昵称</div>
+            <div class="w1">邮箱</div>
+          </li>
+          <volist name="inviteList.data" id="vo">
+          <li>
+            <div class="w0"><a href="{$vo.space_url}"><img src="{$vo.avatar_small}" width="30" height="30"/></a></div>
+            <div class="w3"><a href="{$vo.space_url}">{$vo.uname}</a></div>
+            <div class="w1">{$vo.email}</div>
+          </li>
+          </volist>
+        </ul>
+        <div class="page">{$inviteList.html}</div>
+        <php>endif;</php>
+      </div>
+      -->
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+/**
+ * 点击获取邀请码
+ * @return void
+ */
+var getInviteCode = function()
+{
+	// 获取邀请码操作
+	$.post(U('admin/Config/getInviteCode'), {}, function(res) {
+		if(res.status == 1) {
+			ui.success(res.info);
+			setTimeout(function() {
+				location.href = location.href;
+			}, 1500);
+			return false;
+		} else {
+			ui.error(res.info);
+			return false;
+		}
+	}, 'json');
+};
+</script>
+<include file="__THEME__/admin_footer" />

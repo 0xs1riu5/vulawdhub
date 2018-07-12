@@ -1,0 +1,18 @@
+<div class="pop-department">
+<div id='category_box' model-node='category_box'>
+	<volist name='select' id='s' >
+	<select id='pid_{$key}' size="1000" onchange="core.category.changeCate(this,this.value)">
+		<volist name='s' id='_s'>
+			<option value='{$key}' 
+			<eq name='key' value='$id'>selected="selected"</eq>
+			<php>if(in_array($key,$pids)):</php> selected="selected" <php>endif;</php>
+			>{$_s}</option>
+		</volist>
+	</select>
+	</volist>
+</div>
+ <dd class="textC mt10">
+    <a class="btn-green-small mr10" onclick="core.category.select('category_box');"><span>{:L('PUBLIC_CONFIRM')}</span></a>
+    <a class="btn-cancel" onclick="ui.box.close();"><span>{:L('PUBLIC_CANCEL')}</span></a>
+ </dd>
+</div>

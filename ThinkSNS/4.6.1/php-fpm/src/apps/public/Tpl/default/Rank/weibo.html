@@ -1,0 +1,183 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/rank.css" rel="stylesheet" type="text/css" />
+
+<div id="page-wrap">
+  <div id="main-wrap">
+
+    <div class="app-title clearfix">
+      <h3 class="left">排行榜</h3>
+    </div>
+
+
+    <div class="find-type clearfix">
+
+        <div id="rank_nav">
+          <div class="app-tab-menu clearfix">
+            <ul>
+              <li> <a href="{:U('public/Rank/index','type=2')}">用户排行榜</a> </li>
+              <li> <a href="{:U('public/Rank/index')}">好友排行榜</a> </li>
+              <li> <a href="{:U('public/Rank/topic')}">话题排行榜</a> </li>
+              <li> <a class="current" href="{:U('public/Rank/weibo')}">分享排行榜</a></li>
+            </ul>
+          </div>
+        </div>
+    </div>
+
+
+    <!---->
+    <div class="clearfix">
+      <div id="col3" class="st-index-right">
+        <div class="right-wrap">
+          <div class="right-list rank-box2 mb20">
+            <fieldset class="inter-line">
+              <legend class="inter-txt">热门话题榜</legend>
+            </fieldset>
+            <ul>
+              <volist name="tlright" id="v">
+                <li> <i class="ico-num ico-num{$key+1}"></i> <a href="{:U('public/Topic/index',array('k'=>urlencode($v['topic_name'])))}" target="_blank">{$v.topic_name}</a> </li>
+              </volist>
+            </ul>
+          </div>
+          <div class="right-list rank-box2">
+            <fieldset class="inter-line">
+              <legend class="inter-txt">粉丝排行榜</legend>
+            </fieldset>
+            <ul>
+              <volist name="flright" id="v">
+                <li> <i class="ico-num ico-num{$key+1}"></i> <a href="{:U('public/Profile/index',array('uid'=>$v['uid']))}" target="_blank">{$v.uname}</a> </li>
+              </volist>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="col5" class="st-index-main">
+        <div class="st-bg">
+          <div class="feed-nav"> 
+            <!--<div class="tab-menu line-b-animate">-->
+            <div id="mod-feed-tab" class="mod-feed-tab">
+              <ul class="inner-feed-nav">
+                <li 
+                  
+                <php>if(!$order){</php>
+                class="current"
+                <php>}</php>
+                ><span><a href="{:U('public/Rank/weibo')}" >最多评论</a></span>
+                </li>
+                <li 
+                  
+                <php>if($order==2){</php>
+                class="current"
+                <php>}</php>
+                ><span><a href="{:U('public/Rank/weibo',array('order'=>2))}" >最多转发</a></span>
+                </li>
+                <li 
+                  
+                <php>if($order==3){</php>
+                class="current"
+                <php>}</php>
+                ><span><a href="{:U('public/Rank/weibo',array('order'=>3))}" >最多赞</a></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div id="feed-lists" class="feed_lists clearfix">
+            <php> $cancomment = intval(CheckPermission('core_normal','feed_comment')); </php>
+            <volist name='data' id ='vl'>
+              <php> $cancomment_old = empty($vl['app_row_id'])  ? 0 : 1; </php>
+              <dl class="feed_list"  id ='feed{$vl.feed_id}' model-node='feed_list'>
+                <dt class="face"> <a href="{$vl['user_info']['space_url']}"><img src="{$vl['user_info']['avatar_middle']}"  event-node="face_card" uid='{$vl['user_info']['uid']}'></a></dt>
+                <dd class="content"> {:W('FeedManage',array('feed_id'=>$vl['feed_id'],'feed_uid'=>$vl['user_info']['uid']))} <em class="hover right">
+                  <eq name='vl.actions.delete' value='true'> 
+                    <!-- 做普通删除权限 和 管理删除权限 判断 & 只有分享可以被删除  -->
+                    <php>if(($vl['user_info']['uid'] == $GLOBALS['ts']['mid'] && CheckPermission('core_normal','feed_del')) || CheckPermission('core_admin','feed_del')){</php>
+                    <a href="javascript:void(0)" event-node ='delFeed' event-args='feed_id={$vl.feed_id}&uid={$vl.user_info.uid}'>{:L('PUBLIC_STREAM_DELETE')}</a>&nbsp;&nbsp;
+                    <php>}</php>
+                  </eq>
+                  <php>if($vl['user_info']['uid'] != $GLOBALS['ts']['mid']){</php>
+                  <php>if(CheckPermission('core_normal','feed_report')){</php>
+                  <a href="javascript:void(0)" event-node='denounce' event-args='aid={$vl.feed_id}&type=feed&uid={$vl.user_info.uid}'>{:L('PUBLIC_STREAM_REPORT')}</a>&nbsp;&nbsp;
+                  <php>}</php>
+                  <php>}</php>
+                  </em>
+                  <eq name='vl.is_del' value='0'>
+                    <p class="hd">{$vl.title}
+                      <volist name="vl['GroupData'][$vl['uid']]" id="v2"> <img style="width:auto;height:auto;display:inline;cursor:pointer;" src="{$v2['user_group_icon_url']}" title="{$v2['user_group_name']}" />&nbsp; </volist>
+                      <php> if(in_array($vl['user_info']['uid'],$followUids)){</php>
+                      {:W('Remark',array('uid'=>$vl['user_info']['uid'],'remark'=>$remarkHash[$vl['user_info']['uid']],'showonly'=>1))}
+                      <php>}</php>
+                      <php>if(!empty($vl['body'])){</php>
+                      <php>}</php>
+                    </p>
+                    <div class="contents clearfix">{$vl.body|format=true}</div>
+                    <p class="info"> <span class="right"> {:W('Digg', array('feed_id'=>$vl['feed_id'], 'digg_count'=>$vl['digg_count'], 'diggArr'=>$diggArr))} &nbsp;&nbsp;
+                      <php>if(in_array('repost',$weibo_premission)):</php>
+                      <eq name='vl.actions.repost' value='true'>
+                        <php>if(CheckPermission('core_normal','feed_share')){</php>
+                        <php> $sid = !empty($vl['app_row_id'])? $vl['app_row_id'] : $vl['feed_id'];
+                          $cancomment_old = in_array($vl['type'],$cancomment_old_type) ? 1 : 0; </php>
+                        {:W('Share',array('sid'=>$sid,'stable'=>$vl['app_row_table'],'initHTML'=>'','current_table'=>'feed','current_id'=>$vl['feed_id'],'nums'=>$vl['repost_count'],'appname'=>$vl['app'],'cancomment'=>$cancomment_old,'feed_type'=>$vl['type'],'is_repost'=>$vl['is_repost']))} &nbsp;&nbsp;
+                        <php>}</php>
+                      </eq>
+                      <php>endif;</php>
+                      <eq name='vl.actions.favor' value='true'> {:W('Collection',array('type'=>$type,'sid'=>$vl['feed_id'],'stable'=>'feed','sapp'=>$vl['app']))} </eq>
+                      <php>if(in_array('comment',$weibo_premission)):</php>
+                      <eq name='vl.actions.comment' value='true'> &nbsp;&nbsp; <a event-node="comment" href="javascript:void(0)" event-args='row_id={$vl.feed_id}&app_uid={$vl.uid}&app_row_id={$vl.app_row_id}&app_row_table={$vl.app_row_table}&to_comment_id=0&to_uid=0&app_name={$vl.app}&table=feed&cancomment={$cancomment}&cancomment_old={$cancomment_old}'>{:L('PUBLIC_STREAM_COMMENT')}
+                        <neq name='vl.comment_count' value='0'> ({$vl.comment_count}) </neq>
+                        </a> </eq>
+                      <php>endif;</php>
+                      </span> <span> <a class="date" date="{$vl.publish_time}" href="{:U('public/Profile/feed',array('feed_id'=>$vl['feed_id'],'uid'=>$vl['uid']))}"><em>{$vl.publish_time|friendlyDate}</em><em style="display:none;">查看详情</em></a> <span>{$vl['from']}</span> </span> </p>
+                    <div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+                    <else />
+                    <p>{:L('PUBLIC_INFO_ALREADY_DELETE_TIPS')}</p>
+                    <p class="info">
+                      <eq name='vl.actions.favor' value='true'> {:W('Collection',array('type'=>$type,'sid'=>$vl['feed_id'],'stable'=>'feed','sapp'=>$vl['app']))} </eq>
+                    </p>
+                  </eq>
+                </dd>
+              </dl>
+            </volist>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+/**
+ * 时间更新效果
+ * return void
+ */
+$(document).ready(function() {
+  var formatTime = '';
+  $('.date').bind({
+    mouseover: function() {
+      $(this).find('em').first().hide();
+      var width = $(this).find('em').first().width();
+      $(this).find('em').last().css({display:'inline', width: width});
+    },
+    mouseout: function() {
+      $(this).find('em').first().show();
+      $(this).find('em').last().hide();
+    }
+  });
+
+  var wTime = parseInt("{:time()}");
+  var updateTime = function()
+  {
+    $('.date').each(function(i, n) {
+      var date = $(this).attr('date');
+      if(typeof date !== 'undefined') {
+        $(this).find('em').first().html(core.weibo.friendlyDate(date, wTime));
+      }
+    }); 
+  };
+  //updateTime();
+  setInterval(function() {
+    wTime += 10;
+    updateTime();
+  }, 10000);
+});
+
+</script> 
+<include file="__THEME__/public_footer" /> 
+<script src="__THEME__/js/module.weibo.js"></script>

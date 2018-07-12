@@ -1,0 +1,5 @@
+<if condition="0 eq $follow_state['following']">
+    <span class="dofollow1 ts-listen" data="{$fid}" data-listen="weibo-dofollow-{$fid}"><font class="followboxicon" title="关注"></font></span>
+<else />
+    <span class="unfollow1 ts-listen" data="{$fid}" data-listen="weibo-unfollow-{$fid}"><font class="followboxicon followed" title="取消"></font></span>
+</if>

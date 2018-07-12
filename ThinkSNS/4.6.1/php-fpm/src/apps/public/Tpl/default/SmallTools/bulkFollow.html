@@ -1,0 +1,226 @@
+<include file="__THEME__/public_header" />
+<link type="text/css" rel="stylesheet" href="__APP__/weiboshow.css" >
+<div id="page-wrap">
+	<div id="main-wrap">
+		<!-- 内容 begin  -->
+		<div class="clearfix">
+			<!-- 右侧内容 begin  -->
+			<div class="st-bg">
+				<div class="mainbox_appC no_r">
+					<div class="tab-menu line-b-animate clearfix">
+						<include file="./_toolTab" />
+					</div>
+					<!-- 切换标签 end  -->
+					<div class="mainbox_C_C">
+						<div class="setItems">
+							<div class="side_basicPreview">
+								<h4>效果预览</h4>
+								<div id="weiboshow"></div>
+							</div>
+							<div class="side_basicSet">
+								<h4>基本设置</h4>
+								<div class="box_basicSet">
+									<dl class="list_setSize">
+										<dt>设置尺寸</dt>
+										<dd>
+											宽
+											<input id="width" type="text" style="width:50px"  class="ml5 mr5"/>
+											px
+										</dd>
+										<dd>
+											<span id="wh_error">宽度190-1024px</span>
+										</dd>
+										<dd>
+											<label>
+												<input id="autowidth" type="checkbox" style="vertical-align:middle" />
+												宽度自动适应
+											</label>
+										</dd>
+									</dl>
+									<h4 class="mt10">外观方案</h4>
+									<ul id="template_skins" class="list_showSkin clearfix">
+										<li class="on">
+											<a href="javascript:;" class="skin01"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin02"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin03"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin04"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin05"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin06"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin07"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin08"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin09"></a>
+										</li>
+										<li>
+											<a href="javascript:;" class="skin10"></a>
+										</li>
+									</ul>
+									<dl class="list_setSize">
+										<dt>选择推荐的分享人物</dt>
+										<dd style="margin-bottom:5px">{:W('SelectFriends',array('uid'=>$_GET['uid']))}</dd>
+									</dl>
+								</div>
+								<h4 class="mt10">设置完成,获得嵌入代码:</h4>
+								<div class="box_Embed_code">
+									<textarea id="input_copyhtml" name="" cols="" rows="3" style="width:99%;max-width:99%;min-width:99%;*width:97%;height:170px;max-height:170px;min-height:100px;_width:500px;" class="text"></textarea>
+									<div class="mt10">
+										<input id="copy" type="button" value="复制代码" class="btn_w mr5" style="vertical-align:middle" />
+										请将代码添加到您的网站
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="c"></div>
+				</div>
+			</div>
+			<!-- 右侧内容 end  -->
+			<div class="c"></div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var bulkFollow = {
+	setting:{
+		width:'380',
+		skin:'skin01',
+		uids: '<?php echo $mid; ?>'
+	},
+	autowidth: 1,
+	HTML:'<iframe id="ThinkSNSBulkFollowFrame" src="" scrolling="no" frameborder="0" width="$WIDTH$" '
+	     + 'onload="var frame=this;setTimeout(function(){ThinkSNSBulkFollowFrameAuto(frame);}, 1);"></iframe>'
+		 + '<script type="text/javascript">'
+		 + '(function(){'
+		 + 'var url = "' + U('public/Widget/bulkFollow') +  '$QUERY$";'
+		 + 'var frame = document.getElementById("ThinkSNSBulkFollowFrame");'
+		 + 'frame.src=url;'
+		 + '})();'
+		 + 'function ThinkSNSBulkFollowFrameAuto(frame){'
+		 + 'frame.height=(frame.Document?frame.Document.body.scrollHeight:frame.contentDocument.body.offsetHeight);'
+		 + '}'
+		 + '<\/script>',
+	code:function(){
+		var $input_copyhtml = $('#input_copyhtml');
+		var query = '';
+
+		this.setting.width = 1 == this.autowidth ? '0' : this.setting.width;
+		$.each(this.setting, function(i, n){
+			query += '&' + i + '=' + n;
+		});
+
+		var html = this.HTML.replace('$WIDTH$', 1 == this.autowidth ? '100%' : this.setting.width)
+					.replace('$QUERY$', query);
+
+		$input_copyhtml.val(html);
+		$('#weiboshow').html(html);
+	},
+	init:function(){
+		$(document).ready(function(){
+			var $width = $('#width');
+			var $autowidth = $('#autowidth');
+			var $template_skins = $('#template_skins');
+			var dUserIds = document.getElementById( "ui_fri_ids" );
+			$width.val(bulkFollow.setting.width);
+			bulkFollow._autowidth();
+			bulkFollow.code();
+
+			// 监听
+			$width.blur(function(){
+				if (this.value < 190 || this.value > 1024 || true == isNaN(this.value)) {
+					this.value = isNaN(this.value) ? bulkFollow.setting.width : (this.value < 190 ? 190 : 1024);
+					$('#wh_error').attr('class', 'warning');
+				} else {
+					$('#wh_error').removeAttr('class', 'warning');
+				}
+				if (this.value == bulkFollow.setting.width) {
+					return ;
+				}
+				bulkFollow.setting.width = this.value;
+				bulkFollow.code();
+			});
+			$autowidth.click(function(){
+				bulkFollow.autowidth = true == this.checked ? 1 : 0;
+				bulkFollow._autowidth();
+				bulkFollow.code();
+			});
+			$template_skins.click(function(o){
+				var $target = $(o.target);
+				if (undefined != $target.attr('href') && '' != $target.attr('href')) {
+					bulkFollow.setting.skin = $target.attr('class');
+					$('li', $template_skins).removeClass('on');
+					$target.parent().attr('class', 'on');
+					bulkFollow.code();
+				}
+			});
+			// 监听推荐用户
+			var fGetUserIds = function( e ) {
+				e = e || window.event;
+				var target = e.target || e.srcElement;
+				bulkFollow.setting.uids = target.value;
+				bulkFollow.code();
+			};
+			if ( document.addEventListener ) {
+				setInterval( (function() {
+					var sValue = "";
+					return function() {
+						var dUserIds = document.getElementById( "ui_fri_ids" ),
+							sCurrentValue = dUserIds.value;
+
+						if (sCurrentValue != sValue) {
+							sValue = sCurrentValue;
+							bulkFollow.setting.uids = sValue;
+							bulkFollow.code();
+						}
+					};
+				})(), 200 );
+			} else {
+				dUserIds.attachEvent( "onpropertychange", fGetUserIds );
+			}
+			dUserIds = null;
+
+			$('#input_copyhtml').click(function(){
+				$(this).select();
+			});
+			$('#copy').click(function(){
+				if (false == copy_clip(document.getElementById('input_copyhtml').value)) {
+					$('#input_copyhtml').select();
+				}
+				return false;
+			});
+		});
+	},
+	_autowidth:function()
+	{
+		var $autowidth = $('#autowidth');
+		var $width = $('#width');
+		if (1 == this.autowidth) {
+			$autowidth.attr('checked','checked');
+			$width.attr('disabled', 'disabled');
+		} else {
+			$autowidth.removeAttr('checked');
+			$width.removeAttr('disabled');
+			this.setting.width = $width.val();
+		}
+	}
+};
+bulkFollow.init();
+</script>
+
+<include file="__THEME__/public_footer" />

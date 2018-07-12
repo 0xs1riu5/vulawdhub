@@ -1,0 +1,38 @@
+<php>
+    $navs = '';
+    foreach($types as $k => $v){
+        $navs .= '<a href="'.U('public/WebMessage/zan',array('type'=>$k,'ismy'=>(int)$ismy)).'" class="boxopenurl'.($type==$k?' current':'').'">'.$v.'</a>';
+    }
+    $btn = '<a href="'.U('public/WebMessage/zan').'" class="link boxopenurl'.(!$ismy?' current':'').'">收到的赞</a><a href="'.U('public/WebMessage/zan', array('ismy'=>1)).'" class="link boxopenurl'.($ismy?' current':'').'">发出的赞</a>';
+</php>
+<div id="set-data" data-title="点赞" data-navs='{$navs}' data-btn='{$btn}'></div>
+<div class="common">
+    <php>if($list['data']):</php>
+    <ul class="comment">
+      <volist name='list.data' id='vo'>
+      <li>
+        <div class="face"><a href="{$vo.space}"><img src="{$vo.face}" /><php>if(!$ismy && $i <= $unreadCount[$type]):</php><i></i><php>endif;</php></a></div>
+        <div class="detail">
+          <div class="name"><a href="{$vo.space}">{$vo.uname}</a><span>{$vo.ctime|friendlyDate}</span></div>
+          <div class="ctzan {$ismy?'click_zan':''}" data-id="{$vo.data_id}" data-type="{$vo.data_type}"><i></i></div>
+        </div>
+        <div class="link"><a href="{$vo['source_url']?$vo['source_url']:'javascript:;'}"><php>if($vo['source_image']):</php><img src="{$vo.source_image}" /><php>if($vo['source_isvideo']):</php><i></i><php>endif;</php><php>else:echo $vo['source_content'];endif;</php></a></div>
+      </li>
+      </volist>
+    </ul>
+    <div class="pagelist">{$list.html}</div>
+    <php>else:</php>
+    <div class="empty-list">{$ismy?'你还没有点过赞哦~':'你还没有收到点赞哦~'}</div>
+    <php>endif;</php>
+</div>
+<script>
+(function(){
+    core.message.setMessageNumber('zan', '{$surplusCount}');
+})();
+$('.boxopenurl,.pagelist a').click(function(){
+    if(typeof core.message.openUrl == 'function'){
+        core.message.openUrl($(this).attr('href'), false);
+    }
+    return false;
+});
+</script>

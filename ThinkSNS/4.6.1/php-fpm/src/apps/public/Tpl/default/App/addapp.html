@@ -1,0 +1,33 @@
+<include file="__THEME__/header" />
+<div class="content_holder">
+<div class="content"><!-- 内容 begin  --> 
+  <div class="no_l">
+	<div class="st-bg bg p20">
+          <div class="tab-menu">
+            <ul>
+              <li class="feed_item current"><a href="{:U('public/App/addapp')}"><span>本地应用</span></a></li>
+              <php>if($ts['site']['my_status']) {</php>
+              <li  class="feed_item "><a href="__ROOT__/apps/myop/myop.php?my_suffix=%2Fapp%2Flist"><span>漫游平台</span></a></li>
+              <php>}</php>
+            </ul>
+          </div>
+          <div class="add_app">
+          <volist name="data" id="vo">
+          <dl class="add_app_list">
+            <php>if(empty($vo['large_icon_url'])) $vo['large_icon_url'] = $vo['icon_url'];</php>
+            <dt><img src="{$vo['large_icon_url']}" width="50px" height="50px"/></dt>
+            <dd>
+                <a href="{$vo['app_entry']}" class="btn-att-white right"><span>立即进入</span></a>
+                <h3><a href="{$vo['app_entry']}">{$vo['app_alias']}</a></h3>
+                <p style="margin-right:100px;">{$vo['description']}</p>
+            </dd>
+           </dl>
+           </volist>
+        </div>
+          <div class="page">{$html}</div>
+    </div>
+  </div>
+  <div class="c"></div>
+</div>
+</div>
+<include file="__THEME__/public_footer" /> 

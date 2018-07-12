@@ -1,0 +1,139 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap">
+        <div class="clearfix">
+                <if condition="$mid==$uid"><include file="_top"/> <else /> <include file="_othertop"/></if> 
+                <!--<div class="app-tab-menu clearfix">
+                                                      
+                    <dl>
+                        <dt><a href="{:U('public/Profile/index',array('type'=>$type,'feed_type'=>'','uid'=>$uid))}" class="current">分享</a><a href="{:U('public/Profile/data',array('uid'=>$uid))}">资料</a></dt>
+                    </dl>
+                </div>-->
+        </div>
+        <div id="col" class="minh">
+            <php>if($userPrivacy['space'] != 1){</php>
+            <include file="_sidebar"/>
+
+                <div id="col5" class="st-index-main">
+                <div class="st-bg cc">
+                    <!--feed list-->
+                    <div class="feed_lists">
+                        <!--feed list-->
+                        <dl class="feed_list feed_list_hover detail">
+                            <dd class="content" id="feed{$feedInfo.feed_id}">
+                              <div class="contents clearfix">
+                              <p class="hd">
+                                {:W('FeedManage',array('feed_id'=>$feedInfo['feed_id'],'feed_uid'=>$feedInfo['uid'],'isrefresh'=>1))}
+                                <em class="hover right">
+                                  <php>if($feedInfo['uid'] != $GLOBALS['ts']['mid']){</php>
+                                  <php>if(CheckPermission('core_normal','feed_report')){</php>
+                                  <a href="javascript:void(0)" event-node='denounce' event-args='aid={$feedInfo.feed_id}&type=feed&uid={$feedInfo.uid}'>{:L('PUBLIC_STREAM_REPORT')}</a><i class="vline">|</i>
+                                  <php>}</php>
+                                  <php>}</php>
+                                  
+                                  <eq name='feedInfo.actions.delete' value='true'>
+                                  <!-- 做普通删除权限 和 管理删除权限 判断 & 只有分享可以被删除  -->
+                                  <php>if(($feedInfo['uid'] == $GLOBALS['ts']['mid'] && CheckPermission('core_normal','feed_del')) || CheckPermission('core_admin','feed_del')){</php>
+                                  <a href="javascript:void(0)" event-node ='delFeed' event-args='feed_id={$feedInfo.feed_id}&uid={$feedInfo.uid}&isrefresh=1'>{:L('PUBLIC_STREAM_DELETE')}</a><i class="vline">|</i>
+                                  <php>}</php>
+                                  </eq>
+                                </em>
+                              </p>
+                                <php>if($feedInfo['type'] === 'postimage'):</php>
+                                {$feedInfo['image_body']|parse_html}
+                                <div class="feed_img_lists" rel='big'>
+                                  <ul class="feed_img_list big" >
+                                    <volist name='feedInfo.attachInfo' id='vo'>
+                                      <li title='{$vo.attach_url}'>
+                                        <p class="img-ope">
+                                          <a href="javascript:;" onclick="revolving('left', {$key})"><i class="ico-turn-l"></i>向左转</a>
+                                          <a href="javascript:;" onclick="revolving('right', {$key})"><i class="ico-turn-r"></i>向右转</a>
+                                          <a href="{$vo.attach_url}" target="_blank"><i class="ico-show-big"></i>查看原图</a></p>
+                                        <a href="javascript:;" style="cursor:default;"><img id="image_index_{$key}" src='{$vo.attach_middle}' style="max-width:100%;" /></a>
+                                      </li>
+                                    </volist>
+                                  </ul>
+                                </div>
+                                <php>else:</php>
+                                {$feedInfo.body|format=true}
+                                <php>endif;</php>
+                                </div>
+                                <p class="info">
+                                <span class="right">
+                                <php>if(in_array('comment',$weibo_premission)):</php>
+                                    <a href="javascript:void(0)" event-node="comment">{:L('PUBLIC_STREAM_COMMENT')}
+                                    <neq name='feedInfo.comment_count' value='0'>({$feedInfo['comment_count']})</neq></a>
+                                  	<i class="vline">|</i> 
+                                  	<php> endif; </php>                               
+                                    <php>$cancomment_old = in_array($feedInfo['type'], $cancomment_old_type) ? 1 : 0;</php>
+                                    <php>$cancomment = intval(CheckPermission('core_normal','feed_comment'));</php>
+                                    <eq name='feedInfo.actions.repost' value='true'>
+                                        <php>if(CheckPermission('core_normal','feed_share') && in_array('repost',$weibo_premission)){</php>
+                                              <php>$sid = !empty($feedInfo['app_row_id'])? $feedInfo['app_row_id'] : $feedInfo['feed_id'];</php>
+                                                {:W('Share',array('sid'=>$sid,'stable'=>$feedInfo['app_row_table'],'initHTML'=>'','current_table'=>'feed','current_id'=>$feedInfo['feed_id'],'nums'=>$feedInfo['repost_count'],'appname'=>$feedInfo['app'],'cancomment'=>$cancomment,'feed_type'=>$feedInfo['type'],'is_repost'=>$feedInfo['is_repost']))}
+                                                <i class="vline">|</i>
+                                        <php>}</php>
+                                    </eq> 
+                                    <eq name='feedInfo.actions.favor' value='true'>
+                                        {:W('Collection',array('type'=>'btn','sid'=>$feedInfo['feed_id'],'stable'=>'feed','sapp'=>$feedInfo['app']))}
+                                    </eq><i class="vline">|</i>
+                                    {:W('Digg', array('feed_id'=>$feedInfo['feed_id'], 'digg_count'=>$feedInfo['digg_count'], 'diggArr'=>$diggArr))}
+                                </span>
+                            <a class="date" href="javascript:;">{$feedInfo.publish_time|friendlyDate}</a>
+                            <span>{$feedInfo['from']}</span>
+                              </p>
+                              <div class="praise-detail-list clearfix" style="display:none">
+                                <i class="arrow arrow-t"></i>
+                                <ul>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a><a href="" class="ico-close1"></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                   <li><a href=""><img src="{$user_info[$uid]['avatar_big']}" width="30" height="30"/></a></li>
+                                </ul>
+                                <div class="praise-page">
+                                    <a href=""> < </a>
+                                    <a href=""> > </a>
+                                </div>
+                              </div>
+                              <p class="border">
+                                	<!--<i class="arrow arrow-t"></i>-->
+                              </p>
+                            </dd>
+                        </dl>
+                    </div>
+                    <!--feed list-->
+
+					<div  class="feed_lists">
+						<dl class="feed_list feed_comment">
+							<dd class="content">
+                <div class="repeat clearfix pading">
+                    <php> $cancomment = CheckPermission('core_normal','feed_comment') && in_array('comment',$weibo_premission) ? 1: 0;</php>
+        {:W('Comment',array('tpl'=>'detail','app_row_id'=>$feedInfo['app_row_id'],'app_uid'=>$appUid,'row_id'=>$feedInfo['feed_id'],'pageHtml'=>1,'limit'=>'20','order'=>'DESC','cancomment'=>$cancomment,'cancomment_old'=>$cancomment_old,'app_name'=>$feedInfo['app']))}                                   
+                </div>
+							</dd>
+						</dl>
+					</div>
+                    </div>
+                 </div>
+            <php>}else{</php>
+                   <p class="extend"> -_-。sorry！根据对方隐私设置，您无权查看TA的分享</p>
+            <php>}</php>
+        </div>
+    </div>
+</div>
+
+<script src="__THEME__/js/module.weibo.js"></script>
+
+<include file="__THEME__/public_footer" />

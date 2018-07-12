@@ -1,0 +1,249 @@
+<php>
+if($room['type'] == 2){
+    $navs = '<a href="'.U('public/WebMessage/groupMember', array('roomid'=>$roomId)).'" class="boxopenurl">群成员('.$room['member_num'].')</a>';
+}else{
+    $navs = '';
+}
+</php>
+<div id="set-data" data-title="{$title}" data-navs='{$navs}' data-footer='<div class="msg-inputs"><div class="face_box"></div><form id="msg-form" method="post" enctype="multipart/form-data" action="" target="send_msg_frame"><input type="text" id="message_input" placeholder="输入完成按回车键发送" /><a href="javascript:;" id="face_input" class="btns"><i></i>表情</a><a href="javascript:;" id="img_input" class="btns"><i></i>图片</a><input type="file" id="file_input" name="file" class="btns" /></form></div>' data-btn='<a href="{:U('public/WebMessage/friends')}" class="boxopenurl">联系人</a>' data-scrolly="bottom" data-scrollytime="0"></div>
+<iframe name="send_msg_frame" id="send_msg_frame" style="display:none"></iframe>
+<div class="common">
+    <ul class="msg-list"><php>if($isMore):</php><li class="more"><a href="javascript:;" id="view_more">查看更多消息</a></li><php>endif;</php>{$list}</ul>
+</div>
+
+<script>
+setTimeout(function(){
+    var room_id = '{$roomId}';
+    var uid = '{$curentUid}';
+    var uname = '{:getUserName($curentUid)}';
+    var uface = '{:getUserFace($curentUid)}';
+    var uspace = '{:getUserSpaceLink($curentUid)}';
+    var pullMessageTime = 3.5;// 消息拉取的间隔时间，单位秒
+    var pullMessageLock = false;
+    var lastMessageId = '{$lastMessageId}';
+
+
+    /**
+     * [setInputPos description]
+     *
+     * @author Seven Du <lovevipdsw@outlook.com>
+     * @datetime 2016-05-05T14:21:49+0800
+     * @homepage http://medz.cn
+     */
+    var setInputPos = function setInputPos()
+    {
+        var inputWidth = $('#msgbox-main .msgbox-footer').width();
+        var bodyWidth = $('#msgbox-main .msgbox-body .common').outerWidth(true);
+        if(inputWidth > bodyWidth){
+            $('#msg-form').css({
+                'margin-left':(bodyWidth-inputWidth)/2,
+                'margin-right':(inputWidth-bodyWidth)/2
+            });
+        }else{
+            $('#msg-form').css({
+                'margin-left':0,
+                'margin-right':0
+            });
+        }
+    };
+
+    $('.boxopenurl').click(function(){
+        if(typeof core.message.openUrl == 'function'){
+            core.message.openUrl($(this).attr('href'), false);
+        }
+        return false;
+    });
+    $('a#view_more').click(function(){
+        if(pullMessageLock){
+            return false;
+        }
+        pullMessageLock = true;
+        $(this).hide();
+        var li = $('ul.msg-list li.msg:first');
+        if(li.length < 1 || !li.data('msgid')){
+            return false;
+        }
+        var commom = $('#msgbox-main .msgbox-body .common');
+        var height = commom.outerHeight(true);
+        var args = {roomid:room_id,msgid:li.data('msgid')};
+        $.get(U('public/WebMessage/getMsgList'), args, function(res){
+            if(res && res.data){
+                var data = $(res.data);
+                data.find('.voice a').click(function(){
+                    playAudio(this);
+                });
+                $('ul.msg-list li.more').after(data);
+                height = commom.outerHeight(true)-height;
+                data.find('.image img,.position img').load(function(e) {
+                    core.message.scrollY(height, 0);
+                });
+                $('a#view_more').show();
+                core.message.scrollY(height, 0);
+                pullMessageLock = false;
+                setInputPos();
+            }
+        }, 'json');
+        return false;
+    });
+    $('#msg-form').submit(function(e) {
+        //正在拉取消息或发送消息，则等待发送
+        if(pullMessageLock) {
+            setTimeout(function(){
+                $('#msg-form').submit();
+            }, 100);
+            return false;
+        }
+        pullMessageLock = true;
+        if($('#file_input').val()){
+            return true;
+        }
+        var val = $.trim($('#message_input').val());
+        if(!val){
+            $('#message_input').focus();
+            return false;
+        }else{
+            $('#message_input').val('');
+        }
+        var post = {room_id:room_id, content:val, msgid:lastMessageId};
+        if(window.msgPrevTime){
+            post.msgPrevTime = window.msgPrevTime;
+        }
+        $.post(U('public/WebMessage/sendText'), post, function(res){
+            if(res.status){
+                var data = $(res.data);
+                data.find('.voice a').click(function(){
+                    playAudio(this);
+                });
+                if(res.info > lastMessageId){
+                    lastMessageId = res.info;
+                }
+                $('ul.msg-list').append(data);
+                core.message.scrollY('bottom');
+            }else{
+                ui.error(res.info?res.info:'发送失败');
+            }
+            pullMessageLock = false;
+            setInputPos();
+        }, 'json');
+        return false;
+    });
+    $('#file_input,#message_input').bind('click focus', function(e) {
+        $('#file_input').val('');
+        $('#msg-form').attr('action', 'javascript:;');
+    });
+    $('#file_input').change(function(){
+        var id = Math.round(Math.random()*100000);
+        var action = U('public/WebMessage/sendImage')+'&room_id='+room_id+'&id='+id;
+        if(window.msgPrevTime){
+            action += '&msgPrevTime='+window.msgPrevTime;
+        }
+        $('ul.msg-list').append('<li class="msg" id="img_'+id+'"><div class="right"><div class="face"><a target="_blank" href="'+uspace+'"><img src="'+uface+'" /></a></div><div class="content"><div class="text"><img src="__THEME__/image/loading.gif" />&nbsp;图片发送中...</div></div></div></li>');
+        core.message.scrollY('bottom');
+        $('#msg-form').attr('action', action).submit();
+    });
+    $('#face_input').click(function(){
+        $('#file_input').val('');
+        $('#msg-form').attr('action', 'javascript:;');
+        var form = $(this).parents('form');
+        var input = $('#message_input');
+        var parent = form.prev();
+        core.plugInit('face',this,input,parent);
+    });
+    var audio = null;
+    $('.voice a').click(function(){
+        playAudio(this);
+    });
+    window.sendImageCallback = function(res){
+        if(res.status){
+            var data = $(res.data);
+            data.each(function(index, element) {
+                if($(element).data('msgid')){
+                    if($('#msgc-'+$(element).data('msgid')).length){
+                        $('#msgc-'+$(element).data('msgid')).remove();
+                    }
+                }
+            });
+            data.replaceAll('#img_'+res.id);
+            if(res.info > lastMessageId){
+                lastMessageId = res.info;
+            }
+            core.message.scrollY('bottom');
+        }else{
+            $('#img_'+res.id).remove();
+            ui.error(res.info?res.info:'发送失败');
+        }
+        pullMessageLock = false;
+        setInputPos();
+    }
+    
+    var playAudio = function(a){
+        var _this = $(a);
+        try{
+            if(_this.hasClass('play')){
+                if(audio){
+                    audio.pause();
+                    audio = null;
+                }
+            }else{
+                if(audio){
+                    audio.pause();
+                    audio = null;
+                }
+                audio = document.createElement('AUDIO');
+                if(!audio) return;
+                audio.setAttribute('src', _this.attr('audio_url'));
+                audio.setAttribute('autoplay', 'autoplay');
+                audio.onplay = function(){
+                    _this.addClass('play');
+                }
+                audio.onended = function(){
+                    _this.removeClass('play');
+                }
+                audio.onpause = function(){
+                    _this.removeClass('play');
+                }
+            }
+        }catch(e){
+            ui.error("播放异常，请使用高版本浏览器！");
+        }
+    }
+
+    
+
+    var pullMessage = function(){
+        if(pullMessageLock){
+            return false;
+        }
+        pullMessageLock = true;
+        var args = {roomid:room_id, msgid: lastMessageId};
+        if(window.msgPrevTime){
+            args.msgPrevTime = window.msgPrevTime;
+        }
+        $.get(U('public/WebMessage/pullMessage'), args, function(res){
+            if(res.status && res.data){
+                var data = $(res.data);
+                data.find('.voice a').click(function(){
+                    playAudio(this);
+                });
+                $('ul.msg-list').append(data);
+                if(res.info > lastMessageId){
+                    lastMessageId = res.info;
+                }
+                core.message.scrollY('bottom');
+                setInputPos();
+            }
+            pullMessageLock = false;
+        }, 'json');
+    }
+
+    if(window.msgInterval){
+        clearInterval(window.msgInterval);
+    }
+    window.msgInterval = setInterval(function(){pullMessage();}, pullMessageTime*1000);
+    core.message.onclose(function(){
+        clearInterval(window.msgInterval);
+        window.sendImageCallback = pullMessage = playAudio = lastMessageId = pullMessageLock = pullMessageTime = uspace = uface = uname = uid = room_id = setInputPos = null;
+    });
+    setInputPos();
+}, 50);
+</script>

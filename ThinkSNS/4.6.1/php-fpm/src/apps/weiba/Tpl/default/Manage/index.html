@@ -1,0 +1,139 @@
+<include file="__THEME__/header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<script>
+var UPLOAD_URL ='{:UPLOAD_URL}';
+</script>    
+<div class="content_holder">
+	   <div class="content no_bg">
+            <div class="mno_l"> 
+                <include file="_tab" />
+                 <div class="weiba-manage">
+                   <div class="boxL" style="width:100%;">                    
+                    <!-- <form method="post" action="{:U('weiba/Manage/doWeibaEdit')}" id="weibaInfo"> -->
+                        <input type="hidden" name="weiba_id" value="{$weiba_detail['weiba_id']}" id="weiba_id">
+                        <input type="hidden" name="cid" value="{$weiba_detail['cid']}" id="weiba_id">
+                        <ul class="add_group">
+                            <li>
+                                <div class="c1"><font color="red"> * </font>微吧名称：</div>
+                                <div class="c2">
+                                <input type="text" class="text" style="width:610px;" name="weiba_name" value="{$weiba_detail['weiba_name']}" id="weiba_name">
+                                <span id="group_name_tips" class="cRed pr5"></span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="c1"><font color="red"> * </font>logo：</div>
+                                <!-- <div class="c2"><span class="left mr10"><img src=""/></span><span>更换微吧头像:<br />{:W('Upload',array('attachIds'=>$weiba_detail['logo'], 'uploadType'=>'image'))}</span></div> -->
+                                <div class="c2" style="cursor:pointer;">
+                                    {:W('Avatar',array('avatar'=>$user_info,'defaultImg'=>$weiba_detail['avatar_big'],'tpl'=>'weiba'))}
+                               </div>
+                            </li>
+                            <li>
+                                <div class="c1"><font color="red"> * </font>简介：</div>
+                                <div class="c2"><textarea  class="text" rows="3" style="width:610px; overflow:auto;" name="intro" id="intro">{$weiba_detail['intro']}</textarea><br /></div>
+                            </li>
+                            <li>
+                                <div class="c1">发帖权限：</div>
+                                <div class="c2">
+                                <div class="mr30 left"><input type="radio"  value="0" name="who_can_post" <eq name="weiba_detail['who_can_post']" value="0">checked</eq> class="checkBox" id="checkid1"/><label for="checkid1" class="mb20"></label>所有人均可发帖</div>
+				                <div class="mr30 left"><input type="radio"  value="1" name="who_can_post" <eq name="weiba_detail['who_can_post']" value="1">checked</eq> class="checkBox" id="checkid2"/><label for="checkid2" class="mb20"></label>仅限该吧粉丝发帖</div>
+				                <div class="mr30 left"><input type="radio"  value="2" name="who_can_post" <eq name="weiba_detail['who_can_post']" value="2">checked</eq> class="checkBox" id="checkid3"/><label for="checkid3" class="mb20"></label>仅限该吧管理员发帖</div>
+				                <div class="mr30 left"><input type="radio"  value="3" name="who_can_post" <eq name="weiba_detail['who_can_post']" value="3">checked</eq> class="checkBox" id="checkid4"/><label for="checkid4" class="mb20"></label>仅限该吧吧主发帖</div>
+                            </li>
+				          <li>
+				            <div class="c1">分类：</div>
+				            <div class="c2">
+				            <select name="cid" id="cid">
+				              <option value="0" >选择分类</option>
+				              <volist name="weiba_cates" id="v">
+				                  <option value="{$key}" <php>if($key==$weiba_detail['cid']){</php>selected="selected"<php>}</php>>{$v}</option>
+				              </volist>
+				            </select>
+				            </div>
+				          </li>
+                            <li>
+                                <div class="c1"></div>
+                                <div class="c2">
+                                    <a href="javascript:void(0);" class="btn_b"  onclick="dosubmit()">确定</a>
+                                </div>
+                            </li>
+                      </ul>
+                    <!-- </form> -->
+                 </div>  
+                </div>    
+               </div>
+               <div class="c"></div>
+            </div>
+	   </div>
+</div>
+<include file="__THEME__/public_footer" />
+<script>
+function dosubmit(){
+		var who_can_post = $("input[name='who_can_post']:checked").val();
+		var intro = $("#intro").val();
+		var weiba_name = $("input[name='weiba_name']").val();
+		//var logo = $("input[name='logo']").val();
+		var avatar_big = $("img[event-node='avatar_big']").attr('src');
+		var avatar_middle = $("img[event-node='avatar_middle']").attr('src');
+		var cid = $("#cid").val();
+		if(typeof(weiba_name) == "undefined"){
+		  ui.error('微吧名称不能为空');
+		  return false;
+		}
+		if(typeof(intro) == "undefined"){
+		  ui.error('微吧简介不能为空');
+		  return false;
+		}
+		if(typeof(who_can_post) == "undefined"){
+		  ui.error('发帖权限不能为空');
+		  return false;
+		}
+		if(typeof(avatar_big) == "undefined"){
+		  ui.error('微吧LOGO不能为空');
+		  return false;
+		}
+		if(cid == 0){
+		  ui.error('请选择微吧分类');
+		  return false;
+		}
+		if(typeof(avatar_middle) == "undefined"){
+			var post_content = {
+				  dosubmit:1,
+				  recommend:0,
+				  who_can_post:who_can_post,
+				  intro:intro,
+				  //info:info,
+				  cid:cid,
+				  weiba_name:weiba_name,
+				  //logo:logo,
+				  avatar_big:avatar_big,
+				  };
+		}else{
+			var post_content = {
+				  dosubmit:1,
+				  recommend:0,
+				  who_can_post:who_can_post,
+				  intro:intro,
+				  //info:info,
+				  cid:cid,
+				  weiba_name:weiba_name,
+				  //logo:logo,
+				  avatar_big:avatar_big,
+				  avatar_middle:avatar_middle,
+				  };
+		}
+		$.post("{:U('weiba/Manage/doWeibaEdit','weiba_id='.$_GET['weiba_id'])}",post_content,function(data){
+		  data = strip_tags(data);
+		  data = eval("(" + data + ")");
+		  if(data.status==1){
+		  	ui.success('保存成功');
+		  	setTimeout(function() {
+               location.href = "{:U('weiba/Index/weibaList')}";
+            }, 1000);
+		  }else{
+		  	ui.error(data.info);
+		  }
+		})
+}
+</script>

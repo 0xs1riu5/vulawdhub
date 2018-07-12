@@ -1,0 +1,274 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="feedback" class="feedback-fixed">
+    <a href="{:U('public/Index/feedback')}" target="_blank">{:L('PUBLIC_FEEDBACK')}</a>
+  </div>
+  <div id="main-wrap">
+    <div id="st-index-grid">
+      <!--左边 -->
+      <include file="__THEME__/public_left" />
+      <div id="col8" class="st-section">
+        <!--右边-->
+        <include file="__THEME__/public_right" />
+        <div id="col5" class="st-index-main">
+          {:Addons::hook('home_index_left_top')}
+          <div> 
+            <!-- 发布框 分享 文章微吧 -->
+            <div class="diy-share">
+              <ul class="diy-share-cont" id="medz-share-box" <eq name="user.is_fixed" value="1">style="display:none;"</eq>>
+                <li> <a href="javascript:void(0);" class="sharing"> <i class="i-sharing"></i><span>分享</span> </a>
+                  <p>快速分享文字、图片、视频</p>
+                </li>
+                <?php if($weibaIfOpen) { ?>
+                <li> <a href="javascript:void(0);" class="circle"> <i class="i-circle"></i><span>微吧</span> </a>
+                  <p>在自己关注的微吧分享内容</p>
+                </li>
+                <?php } ?>
+                <?php if($channelIfOpen) { ?>
+                <li style="border-right:none;"> <a href="javascript:void(0);" class="article"> <i class="i-article"></i><span>频道</span> </a>
+                  <p>在频道里发布感兴趣的内容</p>
+                </li>
+                <?php } ?>
+              </ul>
+
+              <!--分享-->
+              <div class="sharing-cont post" <eq name="user.is_fixed" value="1">style="display:block;"</eq>>
+                <div class="title">
+                  <i class="ico-sharing"></i>
+                  <span>发布分享</span>
+                  <a href="javascript:void(0);" class="cancel-share btn-cancel right" title="取消">取消</a>
+                  <if condition="$GLOBALS['ts']['mid'] != 0">
+                    <eq name="user.is_fixed" value="1">
+                    <a href="javascript:;" class="right font12 mr10 f9" title="取消锁定" onclick="fixed({$user['is_fixed']},this)">取消锁定</a>
+                    <else/>
+                    <a href="javascript:;" class="right font12 mr10 f9" title="锁定" onclick="fixed({$user['is_fixed']},this)">锁定</a>
+                    </eq>
+                  </if>
+                </div>
+                {:W('SendWeibo',array('title'=>$title, 'topicHtml'=>$initHtml))} 
+              </div>
+              <!--微吧-->
+              <div class="circle-cont clearfix post">
+                <form id="weiba_form" action="{:U('weiba/Index/doPost','post_type=index')}" method="post" enctype="multipart/form-data" model-node='event_post'>
+                <div class="title">
+                  <i class="ico-circle"></i><span>发布微吧帖子</span>
+                  <a href="javascript:void(0);" class="cancel-share btn-cancel right" title="取消">取消</a>
+                </div>
+                <div>
+                  <div class="share-kind">
+                    <ul>
+                      <li><a id="weiba_name" name="1" href="javascript:void(0);">选择微吧<i class="ico-arrow-down right mt15"></i></a></li>
+                      <input id="weiba_id" type="hidden" value="" name="weiba_id" />
+                    </ul>
+                    <div class="input-title">
+                      <input type="text" name="title" value="输入微吧标题" style="width:467px;" onfocus="if(this.value=='输入微吧标题') this.value = ''" onblur="if(this.value=='') this.value = '输入微吧标题'"/>
+                    </div>
+                  </div>
+                  <div class="kind-list kind-1" id="kind-1">
+                    <ul class="clearfix">
+                    <php>foreach( $weiba_category as $v ){</php>
+                    <li id="weiba_id_{$v.weiba_id}" onclick="weibaName({$v.weiba_id})">{$v['weiba_name']|getShort=8}</li>
+                    <php>}</php>
+                    </ul>
+                  </div>
+                </div>
+                <if condition=" $GLOBALS['ts']['mid'] != 0 ">
+                  {:W('UM', array('type'=>'weiba','contentName'=>'content','content'=>'',width=>'656',height=>'290'))}
+                  <input type="hidden" value="0" name="private" />
+                  <div class="mt15"> 
+                  <input name='button' type="submit" class="btn-green-big right" style="margin-left:140px;" event-node="submit_btn" value="发布" editor="true"/></div>
+                  </form>
+                <else/>
+                <!--没有登录-->
+                <div class="send_weibo">
+                  <div class="box-purview"><div class="nologin"><i class="ico-error"></i>您还未登录，请<a class="nologin-a" href="javascript:ui.quicklogin();">&nbsp;登录</a>&nbsp;or&nbsp;<a class="nologin-a" href="{:U('public/Register/index')}">注册</a></div></div>
+                </div>
+                </if>
+              </div>
+              <!--频道-->
+              <div class="article-cont clearfix post">
+                <div class="title"><i class="ico-article"></i><span>发布频道</span><a href="javascript:void(0);" class="cancel-share btn-cancel right" title="取消">取消</a> </div>
+                <div>
+                  <div class="share-kind">
+                    <ul>
+                      <li><a id="blog_fname" name="1" href="javascript:void(0);" id="level-one"><span>频道</span><i class="ico-arrow-down right mt15"></i></a></li>
+                   </ul>
+                  </div>
+                  <div class="kind-list kind-1">
+                    <ul class="clearfix">
+                    <php>foreach( $channel_category as $value ){</php>
+                    <li id="blog_id_{$value['channel_category_id']}" onclick="getcid({$value['channel_category_id']})">{$value['title']|getShort=8}</li>
+                    <php>}</php>
+                    </ul>
+                  </div>
+                </div>
+                <input type="hidden" autocomplete="off" value="" id="contribute" />
+                {:W('SendWeibo',array('title'=>$title,'tpl'=>'channel','channel'=>'channel','initHtml'=>$initHtml,'prompt'=>$prompt,'actions'=>$actions))}
+                
+        <script type="text/javascript">
+				var boxmodule = function() {
+					M(document.getElementById('tsbox'));
+				};
+				
+				if("undefined" == typeof(loadmore) || loadmore == 0) {
+					var loadmore = '0';
+					var loadnew = '0';	 
+					core.loadFile(THEME_URL+'/js/module.weibo.js',boxmodule);
+				} else {
+					boxmodule();
+				}
+				</script>
+              </div>
+            </div>
+            {:Addons::hook('show_ad_space', array('place'=>'home_middle'))}
+            <!--feednav-->
+            <div class="st-bg">
+              <div class="tab-menu line-b-animate"> 
+              <php>$nowClass[$type] = 'current';</php>
+                <ul>
+                  <li class="{$nowClass['all']}"><span><a href="{:U('public/Index/index',array('type'=>'all'))}">全部</a></span></li>
+                  <li class="{$nowClass['following']}"><span><a href="{:U('public/Index/index',array('type'=>'following'))}">关注</a></span></li>
+                  <if condition="$isChannelOpen"><li class="{$nowClass['channel']}"><span><a href="{:U('public/Index/index',array('type'=>'channel'))}">频道</a></span></li></if>
+                  <?php if($weibaIfOpen) { ?>
+                  <li class="{$nowClass['weiba']}"><span><a href="{:U('public/Index/index',array('type'=>'weiba'))}">帖子</a></span></li>
+                  <?php } ?>
+                  <li class="{$nowClass['recommend']}"><span><a href="{:U('public/Index/index',array('type'=>'recommend'))}">推荐</a></span></li>
+                </ul>
+              </div>
+              <!--<div class="feed-nav clearfix"> 
+                <div class="mod-feed-tab" id="mod-feed-tab">
+                  <ul class="inner-feed-nav">
+                    <li 
+                    
+                    <eq name='feed_type' value=''>class="current"</eq>
+                    > <a href="{:U('public/Index/index',array('type'=>$type,'feed_type'=>''))}">{:L('PUBLIC_ALL_STREAM')}</a>
+                    </li>
+                    <li 
+                    
+                    <eq name='feed_type' value='post'>class="current"</eq>
+                    > <a href="{:U('public/Index/index',array('type'=>$type,'feed_type'=>'post'))}">{:L('PUBLIC_ORIGINAL_STREAM')}</a>
+                    </li>
+                    <li 
+                    
+                    <eq name='feed_type' value='repost'>class="current"</eq>
+                    > <a href="{:U('public/Index/index',array('type'=>$type,'feed_type'=>'repost'))}">{:L('PUBLIC_SHARE_STREAM')}</a>
+                    </li>
+                    <li 
+                    
+                    <eq name='feed_type' value='postimage'>class="current"</eq>
+                    > <a href="{:U('public/Index/index',array('type'=>$type,'feed_type'=>'postimage'))}">{:L('PUBLIC_IMAGE_STREAM')}</a>
+                    </li>
+                    <li 
+                    
+                    <eq name="feed_type" value="postvideo">class="current"</eq>
+                    > <a href="{:U('public/Index/index',array('type'=>$type,'feed_type'=>'postvideo'))}">视频</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>-->
+              {:Addons::hook('home_index_left_feedtop')}
+              <!--feed list-->
+              {:W('FeedList',array('type'=>$type,'feed_type'=>$feed_type,'feed_key'=>$feed_key,'fgid'=>t($_GET['fgid'])))}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="layer-channel-group-list" style="display:none" model-node="layer_channel_group_list">
+  <div class="inner">
+    <ul>
+      <li><a href="{:U('public/Index/index',array('type'=>'channel'))}">我关注的频道</a></li>
+      <volist name='channelGroup' id ='f'>
+      <li>
+        <a href="{:U('public/Index/index',array('type'=>'channel','fgid'=>$f['channel_category_id']))}" class="group_title" gid="{$f['channel_category_id']}">{$f.title}</a>
+      </li>
+      </volist>
+    </ul>
+  </div>
+</div>
+
+<script type="text/javascript">
+//分享页面自动收缩
+$(".diy-share-cont li").each(function(){
+$(this).click(function(){
+	$(".diy-share-cont").slideUp("fast");
+	var ids = $(this).find("a").attr("class");
+	$("."+ids+"-cont").show();
+})
+
+//取消当前
+$(".cancel-share").click(function(){
+  $(this).parents().find(".post").hide();
+  $(".kind-list").hide();//关闭当前下拉选项
+  $(".diy-share-cont").slideDown("fast");
+  $("#contribute").val('');
+  })
+})
+	
+function getcid (cid){
+	var sdata = $('#blog_id_'+cid).text()+"<i class='ico-arrow-down right mt15'></i>";
+	$('#blog_fid').val(cid);
+	$('#blog_fname').html(sdata);
+	$(".kind-1").hide();
+	$('#contribute').val(cid);
+};
+
+function setcid (cid){
+	var sdata = $('#blog_'+cid).text()+"<i class='ico-arrow-down right mt15'></i>";
+	$('#blog_id').val(cid);
+	$(".kind-2").hide();//当前级别隐藏
+	$('#blog_name').html(sdata);
+};
+
+function weibaName(weiba_id){
+	var data = $('#weiba_id_'+weiba_id).text()+"<i class='ico-arrow-down right mt15'></i>";
+	$('#weiba_id').val(weiba_id);
+	$(".kind-1").hide();//当前级别隐藏
+	$('#weiba_name').html(data);
+};
+
+//如果没有可选择微吧，添加提示
+function nocircleTip(obj,tips){
+	var tipContent = ''+'<p class="f8 p20">您没有可选择的微吧，<a href="{:U('weiba/Index/weibaList',array('type'=>$type))}"class="f-red">赶紧去加入吧！</a></p>'
+	if($(obj).length<1){
+		$(tips).html(tipContent);
+	}
+}
+//锁定，取消锁定
+function fixed(fixed,_this){
+  var url = "{:U('public/Index/fixed')}";
+  var text = fixed == 1 ? "锁定" : "取消锁定";
+  var _fixed = fixed == 1 ? 0 : 1;
+  $.post(url,{fixed:fixed},function(res){
+    if(res.status){
+      $(_this).text(text);
+      $(_this).attr("onclick","fixed("+_fixed+",this)");
+    }else{
+      $(_this).text(text);
+      $(_this).attr("onclick","fixed("+_fixed+",this)");
+    }
+  },'json');
+}
+nocircleTip("#kind-1 li","#kind-1");
+//分类标签选择		
+$(".share-kind li a").each(function(){
+	var index = $(this).attr("name");
+    var currentKind = $(".kind-" + index);
+	$(this).click(function(){
+		currentKind.siblings(".kind-list").hide();
+		currentKind.toggle();
+	});
+})
+</script> 
+<script type="text/javascript" src="__THEME__/js/home/module.home.js"></script>
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('#medz-share-box').find('li').last().css('border-right', 'none');
+  $('#medz-share-box').find('li').css('width', (700 - 1 - $('#medz-share-box').find('li').size()) / $('#medz-share-box').find('li').size());
+});
+</script>
+
+<include file="__THEME__/public_footer" />

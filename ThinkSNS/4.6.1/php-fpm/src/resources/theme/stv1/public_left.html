@@ -1,0 +1,23 @@
+<div id="col1" class="st-index-left">
+<div class="left-wrap">
+<!--个人信息-->
+<div class="mod-person">
+<a href="{:U('public/Profile/index',array('uid'=>$mid))}" class="face"><img src="{$user.avatar_small}" width="48" /></a>
+<a href="{:U('public/Profile/index',array('uid'=>$mid))}"><span class="name">{$user.uname}</span></a>
+</div>
+<!--左导航菜单-->
+<div class="mod-sub-nav">
+<ul class="basic-list">
+	<li <php> if(MODULE_NAME =='Index' && APP_NAME=='public'){</php> class="current"<php>}</php> ><a href="{:U('public/Index/index')}" class="app"><i class="arrow-current"></i><i class="icon ico-home"></i>{:L('PUBLIC_MY_HOME')}</a></li>
+	<li <php> if(MODULE_NAME =='Mention'){</php> class="current"<php>}</php>><a href="{:U('public/Mention')}" class="app"><i class="arrow-current"></i><i class="icon ico-at"></i>{:L('PUBLIC_MY_MENTIONS')}</a></li>
+	<li <php> if(MODULE_NAME =='Comment'){</php> class="current"<php>}</php>><a href="{:U('public/Comment')}" class="app"><i class="arrow-current"></i><i class="icon ico-comment"></i>{:L('PUBLIC_MY_COMMENTS')}</a></li>
+	<li <php> if(MODULE_NAME =='Collection'){</php> class="current"<php>}</php>><a href="{:U('public/Collection')}" class="app"><i class="arrow-current"></i><i class="icon ico-favorites"></i>{:L('PUBLIC_MY_FAVORITES')}</a></li>
+	<li><a target="_blank" href="{:U('public/Profile/index',array('uid'=>$uid))}" class="app"><i class="arrow-current"></i><i class="icon ico-wbo"></i>{:L('PUBLIC_MY_WEIBO')}</a></li>		
+	<li><a target="_blank" href="{:U('public/Profile/data',array('uid'=>$uid))}" class="app"><i class="arrow-current"></i><i class="icon ico-record"></i>{:L('PUBLIC_MY_PROFILE')}</a></li>
+
+</ul>
+</div>
+<!--应用-->
+<include file="__THEME__/public_app_list" />
+</div>
+</div>

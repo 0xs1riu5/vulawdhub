@@ -1,0 +1,8 @@
+<!-- <volist name="Group.data" id="vo">
+  <li class="mb20">
+        <h>{$vo.weiba_name}</h>
+   </li>
+</volist> -->
+<volist name="Group.data" id="vo">
+<li <php>if($key%2!=0){</php>style="margin-right:0;"<php>}</php>> <a href="{:U('weiba/Index/detail','weiba_id='.$vo['weiba_id'])}">{$vo['weiba_name']}</a> </li>
+</volist>

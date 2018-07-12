@@ -1,0 +1,45 @@
+<div id="feed-lists" class="feed_lists clearfix">
+    <!-- <a class="notes" href="javascript:void(0)">有1条新分享</a> -->
+    <div class="post-list">
+	   <ul>
+          <!-- <volist name="post_recommend_list" id="vo"> -->
+            <li>
+              <div class="c1"><img src="{$vo.user.avatar_small}" width="50" height="50"/></div>
+              <div class="c2 left">
+                <h3 class="post-tit"> <a href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><span>{$vo.title|getShort=14}</span></a> </h3>
+                <div class="post-info f8">
+                  <div class="left"><span>{$vo.user.space_link}/{$vo.post_time|friendlyDate}发布</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后回复{$vo.last_reply_time|friendlyDate}</div>
+                </div>
+              </div>
+              <div class="c3">
+                <div class="item">
+                  <span>浏览</span>
+                  <span>{$vo.read_count}</span>
+                </div>
+                <div class="item">
+                  <span>回复</span>
+                  <span>{$vo.reply_count}</span>
+                </div>
+              </div>
+            </li>
+          <!-- </volist> -->
+	   </ul>
+	</div>
+
+	<neq name='loadmore' value='1'>
+	<div id="page" class="page">{$html}</div>
+	</neq>
+</div>
+	
+<script type="text/javascript">
+var firstId = '{$firstId}';
+var loadId = '{$lastId}';
+var maxId = '{$firstId}';
+var feedType = '{$type}';
+var loadmore = '{$loadmore}';
+var loadnew = '{$loadnew}';
+var feed_type = '{$feed_type}';
+var feed_key = '{$feed_key}';
+var fgid = '{$fgid}';
+var topic_id = '{$topic_id}';
+</script>

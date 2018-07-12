@@ -1,0 +1,57 @@
+<div class="list" id="item_{$reply_id}">
+    <dl model-node="comment_list">
+        <dt><a href="{$userInfo.space_url}"><img width="50" height="50" src="{$userInfo.avatar_small}"></a><php>if($userInfo['group_icon_only']):</php><a href="javascript:;" title="{$userInfo['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$userInfo['group_icon_only']['user_group_name']}" src="{$userInfo['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php></dt>
+        <dd>
+            <p class="cont mb10">{$userInfo.space_link}
+            <span class="date">发表于&nbsp;&nbsp;{:L('PUBLIC_JUST')}</span><span class="floor"><em id="floor_{$reply_id}"></em>楼</span></p>
+            <p class="det-c">{$content}</p>
+            <?php if($attach_info['attach_type'] == 'weiba_comment_file'): ?>
+            <div class="feed_file_list mt10 mb10">
+                <ul>
+                    <li>
+                        <a href="{:U('widget/Upload/down',array('attach_id'=>$attach_info['attach_id']))}" class="current right" title="下载"><i class="ico-down"></i></a>
+                        <i class="ico-{$attach_info.extension}-small"></i>
+                        <a href="{:U('widget/Upload/down',array('attach_id'=>$attach_info['attach_id']))}">{$attach_info.name}</a>
+                        <span class="tips">({$attach_info.size|byte_format})</span>
+                    </li>
+                </ul>
+            </div>
+            <?php endif; ?>
+        </dd>
+    </dl>
+
+    <?php if($attach_info['attach_type'] == 'weiba_comment_image' || $attach_info['attach_type'] == 'feed_image'): ?>
+    <div class="feed_img_lists" style="padding-left:70px;">
+        <ul class="small" style="width:100%">
+            <li style="width:100%;height:100%;"><a href="{$attach_info['attach_url']}"><img src="{$attach_info['attach_url']}"/></a></li>
+        </ul>
+    </div>
+    <?php endif; ?>
+
+    <p class="info textR">
+        <span>
+            {:W('ReplyDigg', array('row_id'=>$reply_id, 'digg_count'=>0, diggArr=>array() ))}<i class="vline">|</i>
+            <?php $isdel = 0; ?>
+            <?php if( ($vo['user_info']['uid'] == $GLOBALS['ts']['mid'] && CheckPermission('weiba_normal','weiba_del_reply')) || in_array($GLOBALS['ts']['mid'],$weiba_admin) || CheckPermission('core_admin','comment_del')): ?>
+            <?php $isdel = 1; ?>
+            <a href="javascript:;" event-node="reply_del" event-args="reply_id={$reply_id}">{:L('PUBLIC_STREAM_DELETE')}</a>
+            <?php endif; ?>
+            <?php if(CheckPermission('weiba_normal','weiba_reply')): ?>
+            <eq name="cancomment" value="1">
+                <?php if($isdel): ?><i class="vline">|</i><?php endif; ?>
+                <a href="javascript:" event-args="weiba_id={$weiba_id}&post_id={$post_id}&post_uid={$post_uid}&to_reply_id={$reply_id}&to_uid={$uid}&to_comment_uname={$userInfo.uname}&feed_id={$feed_id}&comment_id={$comment_id}&addtoend={$addtoend}" event-node="reply_reply">{:L('PUBLIC_STREAM_REPLY')}</a>
+            </eq>
+            <?php endif; ?>
+        </span>
+    </p>
+</div>
+
+<script type="text/javascript">
+M(document.getElementById('reply_box'));
+$(function () {
+    var _floor = "{$list_count}";
+	var reply_id = "{$reply_id}";
+    $("a[event-node='do_weiba_reply']").attr("list_count",parseInt(_floor)+1);
+	$('#floor_'+reply_id).html(parseInt(_floor)+1);
+});
+</script>

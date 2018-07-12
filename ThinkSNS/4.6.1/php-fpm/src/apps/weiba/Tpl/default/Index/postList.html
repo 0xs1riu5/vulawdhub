@@ -1,0 +1,44 @@
+<include file="__THEME__/public_header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+    
+<include file="_weiba_header" />
+<div id="page-wrap">
+	   <div id="main-wrap">
+        <div class="app-wrap"> 	   	   	  
+           <!-- 微吧帖子中部 -->            
+	   	   	   <div class="mb10 clearfix">
+
+                 <include file="_right" />
+
+                 <div id="col5" class="st-index-main">
+                    <div>
+                        <!--{:Addons::hook('show_ad_space', array('place'=>'weiba_post_top'))}-->
+                        <div class="weiba-sort f9 clearfix">
+                            <span>共有{$postList.count}个帖子</span>
+                        </div>
+                        <div class="hot-posts-list clearfix">
+                           <ul>
+                            <volist name="postList.data" id="vo">
+                             <li>
+                                <span class="num"><i class="arrow-weiba"></i>{$vo.reply_count}</span>
+                                <div class="hot-post-content">
+                                  <div class="name"><a target="_blank" href="{:U('weiba/Index/postDetail',array('post_id'=>$vo['post_id']))}"><span style="vertical-align:-2px;">{$vo.title}</span><php>if(strstr($vo['content'],'<img')){</php><i class="ico-img"></i><php>}</php><php>if($vo['top']==2){</php><i class="ico-bar-top ml5">置顶</i><php>}</php><php>if($vo['digest']==1){</php><i class="ico-bar-fine ml5">精华</i><php>}</php></a></div>
+                                  <div class="con">
+                                  </div>
+                                  <div class="date"><span>来自{$vo.weiba}&nbsp;&nbsp;&nbsp;&nbsp;{$user_info[$vo['post_uid']]['space_link']}&nbsp;&nbsp;&nbsp;&nbsp;{$vo.post_time|friendlyDate}</span></div>
+                                </div>
+                             </li>
+                            </volist>
+                           </ul>
+                           <div id="page" class="page" style="">{$postList.html}</div>
+                        </div>
+                     </div>
+                 </div>
+           	 </div>
+        </div>
+	   </div>
+</div>
+
+<include file="__THEME__/public_footer" />

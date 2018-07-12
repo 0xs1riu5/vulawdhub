@@ -1,0 +1,140 @@
+<include file="__THEME__/admin_header" />
+
+<div id="container" class="so_main">
+    <div class="page_tit">
+        <div class="right">
+            <neq name="back_id" value="-1"><a href="{:U('channel/Admin/index', array('pid'=>$back_id))}" class="btn_a"><span>返回</span></a></neq>
+        </div>
+        {$pageTitle}
+    </div>
+
+    <php>if(!empty($pageTab)):</php>
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+
+    <div class="Toolbar_inbox">
+        <a href="javascript:void(0);" class="btn_a" onclick="add();"><span>添加分类</span></a>
+        <a href="javascript:void(0);" class="btn_a" onclick="del();"><span>删除分类</span></a>
+    </div>
+
+    <div class="list">
+        <table id="category_list" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th style="width:30px;">
+                <input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+                <label for="checkbox"></label>
+            </th>
+            <th class="line_l">ID</th>
+            <th class="line_l">分类名称</th>
+            <th class="line_l">操作</th>
+        </tr>
+
+        <volist id="vo" name="category">
+        <tr overstyle='on' id="category_{$vo.channel_category_id}">
+            <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.channel_category_id}"></td>
+            <td>{$vo.channel_category_id}</td>
+            <td><div style="float:left">{$vo.title}</div></td>
+            <td>
+                <a href="javascript:void(0);" onclick="edit({$vo['channel_category_id']});">编辑</a> 
+                <a href="javascript:void(0);" onclick="del({$vo['channel_category_id']});">删除</a>  
+            </td>
+        </tr>
+        </volist>
+        </table>
+    </div>
+
+    <div class="Toolbar_inbox">
+        <neq name="back_id" value="-1"><a href="{:U('channel/Admin/index', array('pid'=>$back_id))}" class="btn_a"><span>返回</span></a></neq>
+        <a href="javascript:void(0);" class="btn_a" onclick="add();"><span>添加分类</span></a>
+        <a href="javascript:void(0);" class="btn_a" onclick="del();"><span>删除分类</span></a>
+    </div>
+</div>
+
+<script type="text/javascript">
+// 鼠标移动表格效果
+$(document).ready(function() {
+    $("tr[overstyle='on']").hover(
+        function() {
+            $(this).addClass("bg_hover");
+        },
+        function() {
+            $(this).removeClass("bg_hover");
+        }
+    );
+});
+// 选中单个
+var checkon = function(o)
+{
+    if(o.checked == true) {
+        $(o).parents('tr').addClass('bg_on');
+    } else {
+        $(o).parents('tr').removeClass('bg_on');
+    }
+};
+// 全选操作
+var checkAll = function(o)
+{
+    if(o.checked == true) {
+        $('input[name="checkbox"]').attr('checked', 'true');
+        $('tr[overstyle="on"]').addClass("bg_on");
+    } else {
+        $('input[name="checkbox"]').removeAttr('checked');
+        $('tr[overstyle="on"]').removeClass("bg_on");
+    }
+};
+// 获取已选择的checked
+var getChecked = function() {
+    var gids = new Array();
+    $.each($('input:checked'), function(i, n) {
+        gids.push($(n).val());
+    });
+    return gids;
+};
+// 添加分类
+var add = function()
+{
+    ui.box.load("{:U('channel/Admin/addCategory',array('pid'=>$pid))}", '添加分类');
+};
+// 编辑分类
+var edit = function(cid)
+{
+    ui.box.load("{:U('channel/Admin/editCategory')}&cid="+cid, '编辑分类');
+};
+// 删除分类
+var del = function(aid)
+{
+    aid = aid ? aid : getChecked();
+    aid = aid.toString();
+    // 验证数据
+    if(aid == '' || getLength(aid) < 1) {
+        ui.error('请选择分类');
+        return false;
+    }
+    // 删除操作
+    if(confirm('确定删除选中分类？')) {
+        // 提交删除
+        $.post("{:U('channel/Admin/doDeleteCategory')}", {cids:aid}, function(res) {
+            if(res.status == 1) {
+                aid = aid.split(',');
+                $.each(aid, function(i, n) {
+                    $('#category_' + n).remove();
+                });
+                ui.success('删除成功');
+                return false;
+            } else {
+                ui.error('删除失败');
+                return false;
+            }
+        }, 'json');
+    }
+};
+</script>
+
+<include file="__THEME__/admin_footer" />

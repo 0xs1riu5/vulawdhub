@@ -1,0 +1,119 @@
+<div class="tab-menu border-b mb20" id="relationship-tab"> 
+  <!--<div class="arrange">
+		<php>
+			$listclass = !empty($_GET['show']) ? 'ico-list-gray' : 'ico-list';
+			$arrayclass = !empty($_GET['show']) ? 'ico-array' : 'ico-array-gray';
+		</php>
+		<php>if(ACTION_NAME == 'following'){</php>
+		<a href="{:U('public/Profile/following', array('uid'=>$uid))}" class="{$listclass}"></a>
+		<a href="{:U('public/Profile/following', array('uid'=>$uid,'show'=>'big'))}" class="{$arrayclass}"></a>
+		<php>}else{</php>
+		<a href="{:U('public/Profile/follower', array('uid'=>$uid))}" class="{$listclass}"></a>
+		<a href="{:U('public/Profile/follower', array('uid'=>$uid,'show'=>'big'))}" class="{$arrayclass}"></a>
+		<php>}</php>
+		</div>--> 
+  <span class="right">
+  <php>$action = ACTION_NAME;</php>
+  <!-- <form action="{$action}" method="post" id="searchfollow"> -->
+  <div class="feed-search">
+    <input class="s-txt left"  type="text" name='follow_key' value="{$follow_key}" id='follow_key'>
+    <a href="javascript:;" class="ico-search left" onclick="doSearchKey('{$action}')" id="follow_key_btn"></a> </div>
+  <!-- </form> --> 
+  </span>
+  <ul>
+    <li 
+    
+    
+    
+    <if condition="'following' eq ACTION_NAME">class="current"</if>
+    ><span><a href="{:U('public/Profile/following', array('tab'=>'follow','uid'=>$uid))}">{:L('PUBLIC_FOLLOWING')}</a></span>
+    </li>
+    <li 
+    
+    
+    
+    <if condition="'follower' eq ACTION_NAME">class="current"</if>
+    ><span><a href="{:U('public/Profile/follower', array('tab'=>'follow','uid'=>$uid))}">{:L('PUBLIC_FOLLOWERS')}</a></span>
+    </li>
+    <li 
+    
+    
+    
+    <if condition="'relationship' eq ACTION_NAME">class="current"</if>
+    ><span><a href="{:U('public/Profile/relationship', array('tab'=>'follow','uid'=>$uid))}">联盟</a></span>
+    </li>
+  </ul>
+</div>
+<script type="text/javascript">
+/**
+ * 高亮Js
+ * @param  {[type]} a [description]
+ * @param  {[type]} b [description]
+ * @return {[type]}   [description]
+ */
+var doHighlight = function (a, b) {
+    highlightStartTag = "<span style='color:red;font-size:14px'>";
+    highlightEndTag = "</span>";
+    var c = "";
+    var i = -1;
+    var d = b.toLowerCase();
+    var e = a.toLowerCase();
+    while (a.length > 0) {
+        i = e.indexOf(d, i + 1);
+        if (i < 0) {
+            c += a;
+            a = "";
+        } else {
+            if (a.lastIndexOf(">", i) >= a.lastIndexOf("<", i)) {
+                if(e.lastIndexOf("/script>",i)>=e.lastIndexOf("<script",i)){
+                    c+=a.substring(0,i)+highlightStartTag+a.substr(i,b.length)+highlightEndTag;
+                    a=a.substr(i+b.length);e=a.toLowerCase();
+                    i=-1;
+                }
+            }
+        }
+    }
+    return c;
+};
+/**
+ * 添加Jquery方法
+ * @param  {[type]} z [description]
+ * @return {[type]}   [description]
+ */
+$.fn.highlight=function(z){
+    $(this).each(
+        function(){
+            if (z !== null) {
+                $(this).html(doHighlight($(this).html(),z))
+            }
+        });
+    return this;
+}
+/**
+ * 绑定高亮
+ * @return {[type]} [description]
+ */
+$(document).ready(function(){
+	var key3 = $.parseJSON('{$jsonKey}');
+	$('.follow_uname').highlight(key3);
+	
+	 $("#follow_key").keydown(function(e){ 
+		  var curKey = e.which; 
+		  if(curKey == 13){ 
+			  $("#follow_key_btn").click(); 
+			  return false; 
+		  } 
+	  });
+}); 
+
+var doSearchKey = function (action) {
+    if (action === 'following') {
+        location.href = U('public/Profile/following') + '&tab=follow&follow_key=' + $.trim($('#follow_key').val());
+    } else if (action === 'follower') {
+        location.href = U('public/Profile/follower') + '&tab=follow&follow_key=' + $.trim($('#follow_key').val());        
+    }else{
+		location.href = U('public/Profile/relationship') + '&tab=follow&follow_key=' + $.trim($('#follow_key').val());  
+	}
+    return false;
+}
+</script>

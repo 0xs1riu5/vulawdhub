@@ -1,0 +1,196 @@
+<include file="__THEME__/public_header" />
+
+<div id="page-wrap" class="cc">
+<include file="Profile/_top"/> 
+    <div id="main-wrap">
+    	<div id="st-index-grid" class="st-grid">
+        	<!--左边 -->
+            <include file="__THEME__/public_left" />
+            <div id="col8" class="st-section">
+            	<include file="__THEME__/public_right" />
+                <div id="col5" class="st-index-main">
+                <div class="st-bg">
+				<!--tab menu-->
+                <div class="feed-nav">
+				    <div class="my-feed-title">
+				    	<span class="right">
+                            <form action="{:U('public/Collection/index')}" method="post" id="searchcollection">
+                            <div class="feed-search">
+                            <input class="s-txt left"  type="text" name='collection_key' value="{$collection_key}" id='collection_key'><a href="javascript:void(0)" class="ico-search left" onclick="if(getLength($('#collection_key').val())){ $('#searchcollection').submit(); return false;}"></a>
+                            </div>
+                            </form>
+                        </span>
+                        <h4 class="left">我的收藏(共<span id="follow_count" event-node="favorite_count" event-args="uid={$mid}">{$favoriteCount|default=0}</span>条)</h4>
+                    </div>
+                </div>
+				<!--feed list-->
+				<div class="feed_lists" >
+				<php>if(!empty($data)):</php>
+					<volist name='data' id ='vl'>
+						<dl class="feed_list" id ='feed{$vl.source_id}'  model-node='coll_list' >
+						<dt class="face">
+						<a href="{$vl['source_user_info']['space_url']}"><img src="{$vl['source_user_info']['avatar_small']}"></a></dt>
+						<dd class="content">
+							<p class="hd"><space uid="vl.source_user_info.uid">{uname}</space></p>
+							<div class="contents clearfix">
+								<eq name="vl.is_del" value="0">{$vl.source_data.body|format=true}</eq>
+								<eq name="vl.is_del" value="1"><span style="color:red;">（提示：原分享已被删除，你可以取消收藏）</span></eq></div>
+							<p class="info">
+							<span class="right">{:W('Collection',array('type'=>'collection','sid'=>$vl['source_id'],'stable'=>$vl['source_table_name'],'sapp'=>$vl['source_app']))}
+
+							&nbsp;&nbsp;
+							<php>if($vl['is_del'] == 1):</php>
+							<a href="javascript:;" style="color:gray;cursor:default;">{:L('PUBLIC_VIEW')}</a>
+							<php>else:</php>
+							<a href="{$vl.source_url}" target="_blank">{:L('PUBLIC_VIEW')}</a>
+							<php>endif;</php>
+
+							<php>if(in_array('repost',$weibo_premission) || $vl['source_table_name'] !='feed'):</php>
+
+							<php>if(CheckPermission('core_normal','feed_share')){</php>
+								&nbsp;&nbsp;
+								<php>if($vl['is_del'] == 1):</php>
+								<a href="javascript:;" style="color:gray;cursor:default;">转发</a>
+								<php>else:</php>
+								<php>if($vl['is_repost'] == '1'):</php>
+								{:W('Share',array('sid'=>$vl['app_row_id'],'current_id'=>$vl['source_id'],'stable'=>$vl['app_row_table'],'current_table'=>$vl['source_table_name'],'initHTML'=>'','appname'=>$vl['source_app'],'is_repost'=>$vl['is_repost']))}
+								<php>else:</php>
+								{:W('Share',array('sid'=>$vl['app_row_id'],'stable'=>$vl['app_row_table'],'initHTML'=>'','current_table'=>'feed','current_id'=>$vl['feed_id'],'appname'=>$vl['app'],'feed_type'=>$vl['type'],'is_repost'=>$vl['is_repost']))}
+								<php>endif;</php>
+								<php>endif;</php>
+							<php>}</php>
+							<php>endif;</php>
+							
+							<php>if(in_array('comment',$weibo_premission) || $vl['source_table_name'] !='feed'):</php>
+							<eq name='vl.actions.comment' value='true'>
+								&nbsp;&nbsp;
+								<a event-node="comment" href="javascript:void(0)" event-args='row_id={$vl.feed_id}&app_uid={$vl.uid}&app_row_id={$vl.app_row_id}&app_row_table={$vl.app_row_table}&to_comment_id=0&to_uid=0&app={$vl.source_app}&table={$vl.source_table_name}'>{:L('PUBLIC_STREAM_COMMENT')}
+								 <neq name='vl.comment_count' value='0'>({$vl.comment_count})</neq></a>
+							</eq>
+							<php>endif;</php></span>
+
+							<php>if($vl['is_del'] == 1):</php>
+							<a class="date" href="javascript:;" style="color:gray;cursor:default;">{$vl.publish_time|friendlyDate}</a></p>
+							<php>else:</php>
+							<a class="date" href="{$vl.source_url}"><em>{$vl.publish_time|friendlyDate}</em><em style="display:none;">查看详情</em></a></p>
+							<php>endif;</php>
+							<div model-node="comment_detail" class="repeat clearfix" style="display:none;"></div>
+						</dd>
+						</dl>
+					</volist>
+					<php>elseif($collection_key !== '' && !is_null($collection_key)):</php>
+					<div class="loading">抱歉，暂时没有找到与 “{$collection_key}” 相关的结果</div>
+					<php>else:</php>
+					<div class="loading">{:L('PUBLIC_FAVORITE_ISNOT')}</div>
+					<php>endif;</php>
+					<neq name='html' value=''>
+					<div id="page" class="page">
+						{$html}
+					</div>
+					</neq>
+					</div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+/**
+ * 高亮Js
+ * @param  {[type]} a [description]
+ * @param  {[type]} b [description]
+ * @return {[type]}   [description]
+ */
+var doHighlight = function (a, b) {
+    highlightStartTag = "<span style='color:red;font-size:14px'>";
+    highlightEndTag = "</span>";
+    var c = "";
+    var i = -1;
+    var d = b.toLowerCase();
+    var e = a.toLowerCase();
+    while (a.length > 0) {
+        i = e.indexOf(d, i + 1);
+        if (i < 0) {
+            c += a;
+            a = "";
+        } else {
+            if (a.lastIndexOf(">", i) >= a.lastIndexOf("<", i)) {
+                if(e.lastIndexOf("/script>",i)>=e.lastIndexOf("<script",i)){
+                    c+=a.substring(0,i)+highlightStartTag+a.substr(i,b.length)+highlightEndTag;
+                    a=a.substr(i+b.length);e=a.toLowerCase();
+                    i=-1;
+                }
+            }
+        }
+    }
+    return c;
+};
+/**
+ * 添加Jquery方法
+ * @param  {[type]} z [description]
+ * @return {[type]}   [description]
+ */
+$.fn.highlight=function(z){
+    $(this).each(
+        function(){
+        	if (z !== null) {
+            	$(this).html(doHighlight($(this).html(),z))	
+        	}
+        });
+    return this;
+}
+/**
+ * 绑定高亮
+ * @return {[type]} [description]
+ */
+$(document).ready(function(){
+	var jsonKey = '<?php echo $jsonKey; ?>';
+	if(jsonKey != '') {
+		var key3 = $.parseJSON('{$jsonKey}');
+		if (typeof key3 !== 'undefined') {
+			$('.content').highlight(key3);
+		}
+	}
+}); 
+
+/**
+ * 时间更新效果
+ * return void
+ */
+$(document).ready(function() {
+  var formatTime = '';
+  $('.date').bind({
+    mouseover: function() {
+      $(this).find('em').first().hide();
+      var width = $(this).find('em').first().width();
+      $(this).find('em').last().css({display:'inline', width: width});
+    },
+    mouseout: function() {
+      $(this).find('em').first().show();
+      $(this).find('em').last().hide();
+    }
+  });
+
+	var wTime = parseInt("{:time()}");
+	var updateTime = function()
+	{
+		$('.date').each(function(i, n) {
+			var date = $(this).attr('date');
+			if(typeof date !== 'undefined') {
+				$(this).find('em').first().html(core.weibo.friendlyDate(date, wTime));
+			}
+		});	
+	};
+	//updateTime();
+	setInterval(function() {
+		wTime += 10;
+		updateTime();
+	}, 10000);
+});
+
+</script>
+
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
+<include file="__THEME__/public_footer" />

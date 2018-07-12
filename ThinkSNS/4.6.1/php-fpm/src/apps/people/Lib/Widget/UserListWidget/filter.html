@@ -1,0 +1,29 @@
+<div class="mod-user clearfix">
+    <php>if(empty($userList['data'])):</php>
+    <p>暂时没有相关用户</p>
+    <php>else:</php>
+    <volist name="userList.data" id="vo">
+    <dl <php>if(is_integer(($key + 1) / 5)):</php>class="no-margin"<php>endif;</php>>
+        <dt><a href="{$vo.space_url}"><img uid="{$vo.uid}" src="{$vo.avatar_big}" width="180" height="180" /></a><php>if($vo['group_icon_only']):</php><a href="javascript:;" title="{$vo['group_icon_only']['user_group_name']}" class="group_icon_only"><img alt="{$vo['group_icon_only']['user_group_name']}" src="{$vo['group_icon_only']['user_group_icon_url']}" ></a><php>endif;</php> </dt>
+        <dd class="clearfix">
+            <p class="name"><a href="{$vo.space_url}" event-node="face_card" uid="{$vo.uid}" class="left">{$vo.uname}</a>
+            <php>if($GLOBALS['ts']['mid'] != $vo['uid']):</php>
+            {:W('FollowBtn', array('fid'=>$vo['uid'], 'type'=>'jia', 'uname'=>$vo['uname'], 'follow_state'=>$vo['follow_state']))}
+            <php>endif;</php>
+            </p>
+            <p class="tags">
+            <volist name="vo.user_tag" id="v">
+            <span><a href="{:U('people/Index/index', array('cid'=>$key,'sex'=>$sex,'area'=>$area,'verify'=>$verify,'type'=>$type))}">{$v}</a></span>
+            </volist></p>
+            <div class="people-info">
+              <div class="item"><h6>分享</h6><span>{$vo.userdata.weibo_count|default=0}</span></div>
+              <div class="item"><h6>关注</h6><span>{$vo.userdata.following_count|default=0}</span></div>
+              <div class="item" style="margin-right:0;"><h6>粉丝</h6><span event-node="follower_count" event-args="uid={$vo.uid}">{$vo.userdata.follower_count|default=0}</span></div>
+            </div>
+            
+        </dd>
+    </dl>
+    </volist>
+    <php>endif;</php>
+</div>
+<div class="page">{$userList.html}</div>

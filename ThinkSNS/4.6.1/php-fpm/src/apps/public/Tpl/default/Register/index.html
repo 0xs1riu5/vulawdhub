@@ -1,0 +1,262 @@
+<include file="__THEME__/public_header" />
+<style>
+.captcha-tips {
+	padding:3px 0 0 0;
+*height:30px;
+	overflow:hidden;
+*zoom:1;
+}
+.s-txt{
+  padding:0px;
+}
+</style>
+<div id="page-wrap">
+  <div class="reg-wrap">
+    <div class="reg-tab-menu">
+      <ul>
+      <?php if(in_array($config['account_type'], array('all', 'email'))) { ?>
+        <li><a href="{:U('public/Register/index','t=email')}<php>if($_GET['invite']){</php>&invite={:t($_GET['invite'])}<php> } </php>" 
+          
+          <php>if($_GET['t']!='phone'){</php>
+          class="cur"
+          <php>}</php>
+          >邮箱注册</a></li>
+      <?php } ?>
+      <?php if(in_array($config['account_type'], array('all', 'phone'))) { ?>
+        <li><a href="{:U('public/Register/index','t=phone')}<php>if($_GET['invite']){</php>&invite={:t($_GET['invite'])}<php> } </php>"
+          
+          <php>if($_GET['t']=='phone'){</php>
+          class="cur"
+          <php>}</php>
+          >手机注册</a></li>
+      <?php } ?>
+      </ul>
+    </div>
+    <div class="reg-main">
+      <neq name='config.register_type' value='closed'>
+        <form model-node="normal_form" method="POST" action="{:U('public/Register/doStep1')}" name="ajax_register_form" id="ajax_register_form">
+          <input type="hidden" name="invate" value="{$is_invite}" />
+          <input type="hidden" name="invate_key" value="{$invite_code}" />
+          <input type="hidden" value="{$type}" name="regType" />
+          <div class="article st-bg">
+            <!--注册步骤-->
+            <div class="step-main">
+              <ul>
+                <li class="on"><i class="step1-on"></i><span>填写注册信息</span>
+                <!--若后台开启"是否完善资料"选项-->
+                <if condition="$config['personal_open'] eq 1">
+                <b class="step-lineOn"></b></li>
+                <li><i class="step2"></i><span>上传头像</span><b class="step-line"></b></li>
+                <li><i class="step3"></i><span>填写基本信息</span><b class="step-line"></b></li>
+                <li><i class="step4"></i><span>选择感兴趣的人</span></li>
+                </if>
+              </ul>
+            </div>
+            <php>if($is_invite):</php>
+            <div class="reg-user-info">
+              <img src="{$inviteInfo.avatar_small}" width="30" height="30"/>
+              <p>Hi，我是{$inviteInfo.uname}，邀请你加入这里，随时分享我的最新动态。</p>
+            </div>
+            <php>endif;</php> 
+            <php>if($type === 'email' && (('email' == $account_type) || ('all' == $account_type))):</php>
+            <!--邮箱注册-->
+            <div class="base-info" id="base-info-email">
+              <div class="info-list clearfix"> <span class="input-outer"><i class="ui-mail"></i></span>
+                <input event-node="email" event-args="suffix={$config['email_suffix']}" placeholder="输入常用邮箱" name="email" checkurl="{:U('public/Register/isEmailAvailable')}" autocomplete="off" type="text" value=""  class="left" />
+              </div>
+              <div class="info-list clearfix"> <span class="input-outer"> <i class="ui-nickname"></i></span>
+                <input event-node="uname" placeholder="设置昵称：限2-10个字" name="uname" checkurl="{:U('public/Register/isUnameAvailable')}" autocomplete="off" type="text" value="" />
+              </div>
+              <div class="info-list clearfix"> <span class="input-outer"> <i class="ui-password"></i></span>
+                <input  name="password" type="password" class="text" style=" position:absolute; z-index:100;left:51px;" placeholder="设置密码：限6-15个字符，区分大小写" value="" />
+              </div>
+              <div class="info-list clearfix"> <span class="input-outer"> <i class="ui-password"></i></span>
+                <input name="repassword" type="password" class="text" style=" position:absolute; z-index:100;left:51px;" placeholder="再次输入密码" value="" />
+              </div>
+            </div>
+            <php>elseif($type === 'phone' && (('phone' == $account_type) || ('all' == $account_type))):</php>
+            <!--手机注册-->
+            <div class="base-info" id="base-info-phone">
+              <div class="info-list clearfix"> <span class="input-outer"> <i class="ui-phone"></i></span>
+                <input id="phone" event-node="phone" placeholder="输入手机号码" name="phone" checkurl="{:U('public/Register/isPhoneAvailable')}" autocomplete="off" type="text" value="" />
+              </div>
+              <div class="info-list clearfix">
+                <span class="input-outer"> <i class="ui-regCode"></i></span>
+                <input class="s-txt" style="width: 325px;" id="image-code" placeholder="图形验证码">
+                <img id="image-code-button" style="margin-left: 5px;width: 120px;height: 50px;cursor: pointer;" src="__ROOT__/public/captcha.php" data-url="__ROOT__/public/captcha.php?time=%d" title="刷新验证码">
+                <script type="text/javascript">
+                  $('#image-code-button').on('click', function(event) {
+                    event.preventDefault();
+                    var time = (new Date()).getTime()
+                    var src  = $(this).data('url').replace(/\%d/ig, time);
+                    $(this).attr('src', src);
+                  });
+                </script>
+              </div>
+              <div class="info-list clearfix">
+                <span class="input-outer"> <i class="ui-regCode"></i></span><input name="regCode" type="text" id="regCode" placeholder="输入手机验证码" tel="" event-node="input_reg_code" checkurl="{:U('public/Register/isRegCodeAvailable')}" class="s-txt" style="width:325px;" />
+                <a id="reg_msg" href="javascript:;" onclick="regMsg()" style="height:33px;line-height:33px;"><span>获取短信验证码</span></a>
+                <div class="captcha-tips"> </div>
+                <div class="txt-info" id="reg_msg_tip" style="display:none;">验证码已发送到您的手机，30分钟内输入有效，请勿泄露。</div>
+              </div>
+              <div class="info-list clearfix"> <span class="input-outer"> <i class="ui-nickname"></i></span>
+                <input event-node="uname" placeholder="设置昵称：限2-10个字" name="uname" checkurl="{:U('public/Register/isUnameAvailable')}" autocomplete="off" type="text" value="" />
+              </div>
+              <div class="info-list clearfix"> <span class="input-outer"> <i class="ui-password"></i></span>
+                <input  name="password" type="password" class="text" style=" position:absolute; z-index:100;left:51px;" placeholder="设置密码：限6-15个字符，区分大小写" value="" />
+              </div>
+              <div class="info-list clearfix"> <span class="input-outer"> <i class="ui-password"></i></span>
+                <input name="repassword" type="password" class="text" style=" position:absolute; z-index:100;left:51px;" placeholder="再次输入密码" value="" />
+              </div>
+            </div>
+            <php>endif;</php>
+            <div><a class="next" href="javascript:;" onclick="reigsterSubmit()">下一步</a></div>
+          </div>
+        </form>
+        <else />
+        <div class="item-find-psd">
+          <neq name='config.register_close' value=''>{$config.register_close}</neq>
+        </div>
+      </neq>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var change_verify = function() {
+	var date = new Date();
+	var ttime = date.getTime();
+	var url = SITE_URL+'/public/captcha.php';
+	$('#verifyimg').attr('src',url+'?'+ttime);
+};
+
+var lock = 0;
+var timefun = '';
+var timenum = 0;
+var regMsg = function() {
+	var phone = $.trim($('#phone').val());
+	if (phone === '') {
+		ui.error('手机号不能为空');
+		return false;
+	}
+	if( !(/^[1][358]\d{9}$/.test(phone)) ){
+		ui.error('请填写正确的11位手机号');
+		return false;
+	}
+	if (lock == 1) {
+		return false;
+	} else {
+		timenum = 60;
+		clearInterval(timefun);
+		lock = 1;
+	}
+	$.post(U('public/Register/sendReigterCode'), {phone:phone, verify: $('#image-code').val()}, function(res) {
+		if (res.status == 0) {
+			lock = 0;
+			ui.error(res.data);
+		} else {
+			$('#reg_msg_tip').show();
+			timefun = setInterval(timeout, 1000);
+			ui.success('短信发送成功，请耐心等待');
+		}
+	},'json');
+}
+var timeout = function() {
+	timenum -= 1;
+	if (timenum < 0) {
+		clearInterval(timefun);
+		timefun = '';
+		lock = 0;
+		$('#reg_msg_tip').hide();
+		$('#reg_msg').find('span').text('获取短信验证码');
+		return;
+	}
+	$('#reg_msg').find('span').text('('+timenum+')获取短信验证码');
+}
+
+var reigsterSubmit = function() {
+	setTimeout(function() {
+		$('#ajax_register_form').submit();
+		return false;
+	}, 600);
+};
+
+$(function() {
+	var valChange = function() {
+		$('#regCode').attr('tel', $.trim($('#phone').val()));
+	};
+	// 浏览器的输入的兼容性
+    if($.browser.msie && parseInt($.browser.version) < 9) {
+        $(this).bind("propertychange", function() {
+            valChange();
+        });
+    } else {
+        $(this).bind("input", function() {
+            valChange();
+        });
+    }
+    $("input[type='password']").focus(function(event) {
+      $(this).removeClass('s-txt').addClass('s-txt-focus');
+    });
+    $("input[type='password']").blur(function(event) {
+      $(this).addClass('s-txt').removeClass('s-txt-focus');
+    });
+    
+    //回车自动提交
+    $('body').keypress(function(event){
+        if(event.which==13){
+          // $('#ajax_login_form').submit();
+          reigsterSubmit();
+        }
+    });
+})
+
+var PlaceHolder = {
+    _support: (function() {
+        return 'placeholder' in document.createElement('input');
+    })(),
+
+    //提示文字的样式，需要在页面中其他位置定义
+    className: 's-txt',
+
+    init: function() {
+        if (!PlaceHolder._support) {
+            //未对textarea处理，需要的自己加上
+            var inputs = document.getElementsByTagName('input');
+            PlaceHolder.create(inputs);
+        }
+    },
+
+    create: function(inputs) {
+        var input;
+        if (!inputs.length) {
+            inputs = [inputs];
+        }
+        for (var i = 0, length = inputs.length; i <length; i++) {
+            input = inputs[i];
+            if (!PlaceHolder._support && input.attributes && input.attributes.placeholder) {
+                PlaceHolder._setValue(input);
+                input.addEventListener('focus', function(e) {
+                    if (this.value === this.attributes.placeholder.nodeValue) {
+                        this.value = '';
+                        this.className = '';
+                    }
+                }, false);
+                input.addEventListener('blur', function(e) {
+                    if (this.value === '') {
+                        PlaceHolder._setValue(this);
+                    }
+                }, false);
+            }
+        }
+    },
+
+    _setValue: function(input) {
+        input.value = input.attributes.placeholder.nodeValue;
+        input.className = PlaceHolder.className;
+    }
+};
+PlaceHolder.init();
+
+</script> 
+<script type="text/javascript" src="__THEME__/js/module.form.js"></script> 
+<include file="__THEME__/public_footer" />

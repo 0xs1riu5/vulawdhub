@@ -1,0 +1,10 @@
+<div class="medal-info clearfix">
+	<dt><img src="{$medal.share_card}" width="100" height="100"/></dt>
+    <dd>
+    	<h4>{$medal.name}</h4>
+    	<p>{$medal.desc}</p>
+    	<php>if($medal['ctime']){</php><p>领取时间：{$medal.ctime}<p>
+		<a href="javascript:flaunt({$medal.id});" class="btn-green-big">炫耀一下</a>
+		<php>}</php>
+    </dd>
+</div>

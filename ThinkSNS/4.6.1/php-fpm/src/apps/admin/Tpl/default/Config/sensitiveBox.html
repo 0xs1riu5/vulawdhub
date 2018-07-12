@@ -1,0 +1,88 @@
+<div class="layer-content">
+	<dl class="pop-area">
+		<dt class="mb10">
+			<div class="l">不良词语：</div>
+			<div class="r"><input type="text" name="word" value="{$word}" /></div>
+		</dt>
+		<dt class="mb10">
+			<div class="l">过滤动作：</div>
+			<div class="r">
+				<select name="type" onchange="changeType(this)" name="type">
+					<option value="1" <eq name="type" value="1">selected</eq>>禁止关键词</option>
+					<option value="2" <eq name="type" value="2">selected</eq>>审核关键词</option>
+					<option value="3" <eq name="type" value="3">selected</eq>>替换关键词</option>
+				</select>
+			</div>
+		</dt>
+		<dt id="replace_div" class="mb10" <neq name="type" value="3">style="display:none;"</neq>>
+			<div class="l">替换词语：</div>
+			<div class="r">
+				<input type="text" name="replace" value="{$replace}" />
+			</div>
+		</dt>
+		<dt class="mb10">
+			<div class="l">词语分类：</div>
+			<div class="r">
+				<select name="cid">
+					<volist name="categoryList" id="vo">
+					<option value="{$vo.sensitive_category_id}" <eq name="vo.sensitive_category_id" value="$sensitive_category_id">selected</eq>>{$vo.title}</option>
+					</volist>
+				</select>
+			</div>
+		</dt>
+		<dd>
+			<input type="button" class="btn_b" value="确定" onclick="doPost()" />
+			<input type="button" class="btn_w ml10" value="取消" onclick="ui.box.close()" />
+		</dd>
+	</dl>
+</div>
+
+<script type="text/javascript">
+var changeType = function(obj) {
+	var value = $(obj).find('option:selected').val();
+	if (value == 3) {
+		$('#replace_div').show();
+	} else {
+		$('#replace_div').hide();
+	}
+	return false;
+};
+
+var doPost = function() {
+	var word = $.trim($('#tsbox').find('input[name="word"]').val());
+	if (word === '') {
+		ui.error('请填写不良词语');
+		return false;
+	}
+
+	var type = parseInt($('#tsbox').find('select[name="type"]').find('option:selected').val());
+
+	var replace = $.trim($('#tsbox').find('input[name="replace"]').val());
+	if (type === 3 && replace === '') {
+		ui.error('请填写替换词语');
+		return false;
+	}
+
+	var cid = parseInt($('#tsbox').find('select[name="cid"]').find('option:selected').val());
+
+	var args = {};
+	args.word = word;
+	args.type = type;
+	args.replace = replace;
+	args.cid = cid;
+	args.id = '<?php $id = isset($id) ? intval($id) : 0; echo $id; ?>';
+
+	$.post(U('admin/Config/doSetSensitive'), args, function(res) {
+		if (res.status == 1) {
+			ui.box.close();
+			ui.success(res.info);
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
+		} else {
+			ui.error(res.info);
+		}
+	}, 'json');
+	return false;
+};
+</script>

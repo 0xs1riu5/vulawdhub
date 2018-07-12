@@ -1,0 +1,61 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/rank.css" rel="stylesheet" type="text/css" />
+
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div class="app-title clearfix">
+      <h3 class="left">排行榜</h3>
+    </div>
+
+    <div class="find-type clearfix">
+
+        <div id="rank_nav">
+          <div class="app-tab-menu clearfix">
+            <ul>
+              <li> <a href="{:U('public/Rank/index','type=2')}">用户排行榜</a> </li>
+              <li> <a href="{:U('public/Rank/index')}">好友排行榜</a> </li>
+              <li> <a class="current" href="{:U('public/Rank/topic')}">话题排行榜</a> </li>
+              <li> <a href="{:U('public/Rank/weibo')}">分享排行榜</a></li>
+            </ul>
+          </div>
+        </div>
+    </div>
+
+    <div class="st-bg">
+      <div class="rank-content clearfix">
+        <div class="rank-box">
+          <div class="rank-tit"> 今日话题榜 </div>
+          <div class="rank-cate"><span class="right">分享数</span><span class="num">排名</span><span class="name">话题</span></div>
+          <php>foreach ( $today as $k=>$v ){</php>
+          <div>
+            <p class="rank-lists"> <span class="right f9">{$v.count}</span>
+              <span class="num ico-num{$k+1}"></span><span class="name">
+                <a href="{:U('public/Topic/index',array('k'=>urlencode($v['topic_name'])))}" target="_blank">{$v.topic_name|getShort=16}</a>
+              </span>
+              </p>
+          </div>
+          <php>}</php>
+        </div>
+        <div class="rank-box">
+          <div class="rank-tit"> 一周话题榜 </div>
+          <div class="rank-cate"><span class="right">分享数</span><span class="num">排名</span><span class="name">话题</span></div>
+          <php>foreach ( $week as $k=>$v ){</php>
+          <div>
+            <p class="rank-lists"> <span class="right f9">{$v.count}</span><span class="num ico-num{$k+1}"></span><span class="name"><a href="{:U('public/Topic/index',array('k'=>urlencode($v['topic_name'])))}" target="_blank">{$v.topic_name|getShort=16}</a></span> </p>
+          </div>
+          <php>}</php>
+        </div>
+        <div class="rank-box no-border">
+          <div class="rank-tit"> 本月话题榜 </div>
+          <div class="rank-cate"><span class="right">分享数</span><span class="num">排名</span><span class="name">话题</span></div>
+          <php>foreach ( $month as $k=>$v ){</php>
+          <div>
+            <p class="rank-lists"> <span class="right f9">{$v.count}</span><span class="num ico-num{$k+1}"></span><span class="name"><a href="{:U('public/Topic/index',array('k'=>urlencode($v['topic_name'])))}" target="_blank">{$v.topic_name|getShort=16}</a></span> </p>
+          </div>
+          <php>}</php>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" />

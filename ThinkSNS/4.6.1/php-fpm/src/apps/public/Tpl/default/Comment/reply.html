@@ -1,0 +1,90 @@
+<div class="input pop-share repeat" model-node="comment_textarea" id="reply_box">
+  <div model-node="reply_model" class="feed-repeat">
+    <div class="input_before mb5" model-node="mini_editor">
+      <textarea class="input_tips" event-node="mini_editor_textarea" id="mini_editor_textarea" hidefocus="true" style="height: 60px;width:98.5%" model-args='t=comment'></textarea>
+      <div model-node="numsLeft" class="num">{$initNums}</div>
+    </div>
+    <div class="clearfix">
+      <div><a href="javascript:replycomment();" id="replycomment" class="btn-green-small right">{:L('PUBLIC_STREAM_REPLY')}</a></div>
+      <div class="acts"><a class="face-block" href="javascript:;" event-node="comment_insert_face" title="表情"><i class="face"></i></a></div>
+      <eq name='canrepost' value="1"> 
+        <!--[if !IE]><!--> 
+        <label><input type="checkbox" class="checkbox regular-checkbox" name="shareFeed" value="1" id="shareFeed"><span for="shareFeed"></span>{:L('PUBLIC_SHARETO_STREAM')}</label>
+        <!--<![endif]--> 
+        <!--[if IE]>  
+        <label><input type="checkbox" class="checkbox" name="shareFeed" value="1">{:L('PUBLIC_SHARETO_STREAM')}</label>
+        <![endif]--> 
+      </eq>
+      <php>if($feedtype == 'repost' && $cancomment == 1):</php>
+      <!--[if !IE]><!--> 
+      <label><input type="checkbox" class="checkbox regular-checkbox" name="comment" value="1" id="comment"><span for="comment"></span>同时评论给原文作者</label>
+      <!--<![endif]--> 
+      <!--[if IE]>
+      <label><input type="checkbox" class="checkbox" name="comment" value="1">同时评论给原文作者&nbsp;{$user_info.space_link_no}</label>
+      <![endif]-->
+      <php>endif;</php>
+      <div class="clear"></div>
+      <div model-node="faceDiv"></div>
+    </div>
+  </div>
+</div>
+<script>
+
+var initNums = '{$initNums}';
+var replylock = 0;
+//回复评论
+function replycomment(){
+	if ( replylock == 1 ){
+		return;
+	}
+	var appname = '{$commentInfo.app}';
+	var table = '{$commentInfo.table}';
+	var appuid= {$commentInfo.app_uid};
+	var rowid = {$commentInfo.row_id};
+	var tocommentid = {$commentInfo.comment_id};
+	var touid = {$commentInfo.uid};
+	var approwid = 0;
+	var content = document.getElementById('mini_editor_textarea').value;
+	var ifsharefeed = document.getElementsByName('shareFeed')[0] == undefined ? 0 : Number(document.getElementsByName('shareFeed')[0].checked);
+	var commentold = document.getElementsByName('comment')[0] == undefined ? 0 : Number(document.getElementsByName('comment')[0].checked);
+	content = content.replace('<br>','');
+	var strlen = core.getLength(content);
+	var leftnums = initNums - strlen;
+	if(leftnums < 0 || leftnums == initNums) {
+		//ui.error(L('PUBLIC_CONCENT_TIPES'));
+		flashTextarea(document.getElementById('mini_editor_textarea'));
+		return;
+	}
+	$('#replycomment').html('回复中..');
+	$.post(U('widget/Comment/addcomment'),{
+		app_name:appname,
+		table_name:table,
+		app_uid:appuid,
+		row_id:rowid,
+		to_comment_id:tocommentid,
+		to_uid:touid,
+		app_row_id:approwid,
+		content:content,
+		ifShareFeed:ifsharefeed,
+		comment_old:commentold
+		},function(msg){
+			if(msg.status == "0"){
+				ui.error(msg.data);
+			}else{
+				ui.box.close();
+				ui.success( L('PUBLIC_CENTSUCCESS') );
+			}
+			$('#replycomment').html('<span>回复</span>');
+		});
+	replylock = 1;
+}
+$(function (){
+	//M(document.getElementById('tsbox'));
+	shortcut('ctrl+return', replycomment , {target:'mini_editor_textarea'});
+	atWho($('#mini_editor_textarea'));
+	setTimeout(function (){
+		$('#mini_editor_textarea').inputToEnd('{$initHtml}');
+	},300);
+});
+M(document.getElementById('tsbox'));
+</script>

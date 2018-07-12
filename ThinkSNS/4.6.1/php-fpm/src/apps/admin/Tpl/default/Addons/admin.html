@@ -1,0 +1,26 @@
+<if condition="$isAjax">
+	{:Addons::addonsHook($name,$page)}
+<else />
+	<include file="__THEME__/admin_header" />
+	<div class="so_main">
+		<if condition="$menu">
+			<if condition="is_array($menu)">
+				<div class="tit_tab">
+				  	<ul>
+				  	<volist id="vo" name="menu">
+				  		<php>if(is_array($vo)):</php>
+						<li><a href="{:Addons::adminPage($key, $vo['param'])}" <php>if($page == $key || $_GET['tabhash'] == $key){</php>class="on"<php>}</php> >{$vo.content}</a></li>
+				  		<php>else:</php>
+						<li><a href="{:Addons::adminPage($key)}" <php>if($page == $key || $_GET['tabhash'] == $key){</php>class="on"<php>}</php> >{$vo}</a></li>
+				  		<php>endif;</php>
+				  	</volist>
+				    </ul>
+				</div>
+			</if>
+			{:Addons::addonsHook($name,$page,array(),true)}
+		<else />
+			<span>{:L('PUBLIC_PANEL_NOEXIST')}</span>
+		</if>
+	</div>
+	<include file="__THEME__/admin_footer" />
+</if>

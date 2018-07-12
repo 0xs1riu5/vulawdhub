@@ -1,0 +1,48 @@
+<dl id="createFollowGroup2" class="pop_add_group">
+	<dt>
+        <if condition="$gid">{:L('PUBLIC_GROUPNAME_EDIT')}：<else />{:L('PUBLIC_CREATE_GROUP')}：</if><input type="text" name="followGroupTitle" value="{$title}" class="text" style="width:280px;" />
+    </dt>
+	<dd>
+        <input type="button" onclick="createFollowGroup()" class="btn_b" value="{:L('PUBLIC_CONFIRM')}" />
+        <input type="button" onclick="ui.box.close()" class="btn_w" value="{:L('PUBLIC_CANCEL')}" />
+    </dd>
+</dl>
+<script>
+function createFollowGroup(title){
+	var title = $("input[name='followGroupTitle']").val();
+	title = $.trim(title);
+	if(title == ''){
+		ui.error('{:L('PUBLIC_GROUPNAME_INPUT')}！');
+		return false;
+	}else if(getLength(title, false)>10){
+		ui.error('{:L('PUBLIC_GROUPNAME_NAME_TIPES')}');
+		return false;
+	}
+	<if condition="$gid">
+		var gid = '{$gid}';
+		$.post(U('public/FollowGroup/setGroup'),{title:title,gid:gid},function(res){
+			res = eval('(' + res + ')');
+			var status = res.status;
+			var gid = res.info;
+			if(status != 0){
+				$('#current_follow_group').html(title);
+				ui.box.close();
+			}else{
+				ui.error('{:L('PUBLIC_GROUP_ALREADY_EXIST')}');
+			}
+		});
+	<else />
+		$.post(U('public/FollowGroup/setGroup'),{title:title},function(res){
+			res = eval('(' + res + ')');
+			var status = res.status;
+			var gid = res.info;
+			if(status != 0){
+				var url = window.location.href.match(/space/) ? U('home/space/follow') + '&gid=' + gid + '&type=following&uid=' + UID : U('home/User/index') + '&follow_gid=' + gid;
+				location.href=url;
+			}else{
+				ui.error('{:L('PUBLIC_GROUP_ALREADY_EXIST')}');
+			}
+		});		
+	</if>
+}
+</script>

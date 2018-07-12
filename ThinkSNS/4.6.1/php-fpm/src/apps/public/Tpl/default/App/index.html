@@ -1,0 +1,61 @@
+<include file="__THEME__/public_header" />
+    <div id="page-wrap">
+        <div id="main-wrap">
+        	<div id="st-index-grid" class="st-grid">
+            	<!--左边 -->
+                <include file="__THEME__/public_left" />
+                <div id="col8" class="st-section">
+                    <div class="extend border boxShadow minh">
+                        <!--title-->
+                        <div class="app-tit app-border">
+                           <a class="right" href="{:U('public/Index/index')}">{:L('PUBLIC_BACKTO_HOMEPAGE')}»</a>
+                           <h3>{:L('PUBLIC_APPLIST')}</h3>
+                        </div>
+                        <!--tab menu-->
+                        <!--
+                        <div class="mod-menu-app">
+                            <div class="tab-menu-app left">
+                                <ul>
+                                    <li class="current"><a href="{:U('public/App/index')}">全部</a></li>
+                                    <li><a href="{:U('public/App/myApp')}">已安装</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        -->
+                        <!--applist-->
+                        <div class="apps-lists pt10" id="app-lists">
+                        	<volist name='list.data' id='ld'>
+                        		<dl class="apps-list clearfix" id='app{$ld.app_id}'>
+                            	<dt><img src="{$ld.large_icon_url}"><span>{$ld.app_alias}</span></dt>
+                                <dd>
+                                	<p class="title">
+                                        {:L('PUBLIC_APPNAME_'.$ld['app_name'])} 
+                                    </p>
+                                	<p>
+                                	{:L('PUBLIC_APPUSE_CALCULATION',array('num'=>"<strong class='num' event-node='app_used' event-args='app_id=".$ld['app_id']."'>".intval($ld['used'])."</strong>"))}
+                                	</p>
+                                
+                                	<p>
+                                	<php>if(in_array($ld['app_id'],$installIds)){</php>
+                                		<a class="btn-cancel right"  href="javascript:;" event-node='uninstall_app' event-args='app_id={$ld.app_id}&app_alias={$ld.app_alias}'><span><i class="ico-minus-gray"></i>{:L('PUBLIC_APP_REMOVE')}</span></a>
+                                	<php>}else{</php>
+                                		<a class="btn-green-small right" href="javascript:;" event-node='install_app' event-args='app_id={$ld.app_id}&app_alias={$ld.app_alias}'><span><i class="ico-add"></i>{:L('PUBLIC_APP_INEX')}</span></a>
+                                	<php>}</php>
+                                	</p>
+
+                                </dd>
+                            </dl>
+                        	</volist>
+                        </div>
+                        <!--页码-->
+                        <div class="page" id="page">
+                         {$list.html}
+                        </div>
+                        <!--页码/end-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+<include file="__THEME__/public_footer" />
+<script type="text/javascript" src="__THEME__/js/app/module.app.js"></script>

@@ -1,0 +1,44 @@
+<style>
+	/* === 底部数字轮播开始 === */
+#{$imgId} {overflow:hidden;position:relative}
+.slidershow_downNum_nav {position:absolute;right:5px;bottom:5px;}
+.slidershow_downNum_nav li {float: left;color: #09F;text-align: center;line-height: 16px;width: 16px;height: 16px;font-family: Arial;font-size: 12px;cursor: pointer;overflow: hidden;margin: 3px 1px;border: 2px solid #09F;background-color: #fff;}
+.slidershow_downNum_nav li.on {color: #fff;line-height: 21px;width: 21px;height: 21px;font-size: 16px;margin: 0 1px;border: 0;background-color:#09F;font-weight: bold; }
+.slidershow_downNum_nav li.on a{color:#fff; text-decoration:none;}
+</style>
+<div class="slidershow_downNum image_height_box" id="{$imgId}">
+     <ul id="{$imgPanel}">
+            	<php>foreach($image as $vo){</php>
+                    <li>
+                    	<php>if(!empty($vo->url))
+							{
+								echo '<a href="'.$vo->url.'" target = "_blank"><img src="'.$vo->path.'" alt="'.$vo->title.'" rel="weixinhon"></a>';
+							}else{
+								echo '<a target = "_blank"><img src="'.$vo->path.'" alt="'.$vo->title.'"></a>';
+							}
+						</php>
+                    </li>
+                <php>}</php>
+            </ul>
+    <ul class="slidershow_downNum_nav">
+    	<php>$imageCount = 0;</php>
+        <php>foreach($image as $vo){</php>
+		<php>$imageCount ++;</php>
+            <li>
+            	<php>if(!empty($vo->url))
+					{
+						echo '<a href="'.$vo->url.'" target="_blank">'.$imageCount.'</a>';
+					}else{
+						echo '<a target="_blank">'.$imageCount.'</a>';
+					}
+				</php>
+            </li>
+        <php>}</php>
+    </ul>
+</div>
+<script>
+	jWidget.ui.SlideView("{$imgId}", {
+		effect:"<php>echo $effect;</php>",
+		autoPlayInterval:<php>echo intval($autoPlayInterval)*1000;</php>
+		});
+</script>

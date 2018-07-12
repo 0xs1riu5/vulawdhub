@@ -1,0 +1,177 @@
+<include file="../Public/_header" />
+<div class="so_main">
+  <!-- 搜索 -->
+  <div id="searchUser_div" <neq name="type" value="searchUser">style="display:none;"</neq>>
+    <div class="page_tit">搜索用户 [ <a href="javascript:void(0);" onclick="searchUser();">隐藏</a> ]</div>
+    
+    <div class="form2">
+    <form method="post" action="{:U('admin/Tool/inviteRecord')}">
+    <php>if($type != 'searchUser') $uid = '';</php>
+    <dl class="">
+      <dt>用户ID：</dt>
+      <dd>
+        <input name="uid" id="uid" type="text" value="{$uid}">
+        <p>用户ID,多个时使用英文的","分割</p>
+      </dd>
+    </dl>
+    
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="确定" />
+    </div>
+    </form>
+  </div>
+  </div>
+  
+  <!-------- 统计列表 -------->
+  <div class="page_tit">邀请统计</div>
+  <div class="Toolbar_inbox">
+    <div class="page right">{$html}</div>
+    <a href="javascript:void(0);" class="btn_a" onclick="searchUser();">
+        <span class="searchUser_action"><neq name="type" value="searchUser">搜索<else/>搜索完毕</neq></span>
+    </a>
+  </div>
+  <div class="list">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th class="checkbox">&nbsp;</th>
+    <th class="line_l">用户ID</th>
+    <th class="line_l">用户</th>
+    <th class="line_l">邀请计数</th>
+    <th class="line_l">操作</th>
+  </tr>
+  <volist id="vo" name="data">
+      <tr overstyle='on' id="user_{$vo['uid']}">
+        <td>&nbsp;</td>
+        <td>{$vo.uid}</td>
+        <td>
+            <div style="float:left;margin-right:10px;border:1px solid #8098A8;height:30px;padding:1px;width:30px;""><img src="{$vo.uid|getUserFace='s'}" width="30"></div>
+            <div style="float:left">{$vo.uid|getUserName}</div>
+        </td>
+        <td>{$vo.count}</td>
+        <td><a href="{:U('admin/Tool/invitedUser', array('uid'=>$vo['uid']))}">查看全部</a></td>
+      </tr>
+  </volist>
+  </table>
+  </div>
+  
+  <div class="Toolbar_inbox">
+    <div class="page right">{$html}</div>
+    <a href="javascript:void(0);" class="btn_a" onclick="searchUser();">
+        <span class="searchUser_action"><neq name="type" value="searchUser">搜索<else/>搜索完毕</neq></span>
+    </a>
+  </div>
+</div>
+
+<script>
+    //鼠标移动表格效果
+    $(document).ready(function(){
+        $("tr[overstyle='on']").hover(
+          function () {
+            $(this).addClass("bg_hover");
+          },
+          function () {
+            $(this).removeClass("bg_hover");
+          }
+        );
+    });
+    
+    function checkon(o){
+        if( o.checked == true ){
+            $(o).parents('tr').addClass('bg_on') ;
+        }else{
+            $(o).parents('tr').removeClass('bg_on') ;
+        }
+    }
+    
+    function checkAll(o){
+        if( o.checked == true ){
+            $('input[name="checkbox"]').attr('checked','true');
+            $('tr[overstyle="on"]').addClass("bg_on");
+        }else{
+            $('input[name="checkbox"]').removeAttr('checked');
+            $('tr[overstyle="on"]').removeClass("bg_on");
+        }
+    }
+
+    //获取已选择用户的ID数组
+    function getChecked() {
+        var uids = new Array();
+        $.each($('table input:checked'), function(i, n){
+            uids.push( $(n).val() );
+        });
+        return uids;
+    }
+
+    //转移部门
+    function changeDepartment(uids) {
+        var uids = uids ? uids : getChecked();
+        uids = uids.toString();
+        if(!uids) {
+            ui.error('请先选择用户');
+            return false;
+        }
+
+        if(!confirm('转移成功后，已选择用户原来的部门信息将被覆盖，确定继续？')) return false;
+        
+        ui.box.load("{:U('admin/User/changeDepartment')}&uids="+uids, {title:'转移部门'});
+    }
+    
+    //转移用户组
+    function changeUserGroup(uids) {
+        var uids = uids ? uids : getChecked();
+        uids = uids.toString();
+        if(!uids) {
+            ui.error('请先选择用户');
+            return false;
+        }
+
+        if(!confirm('转移成功后，已选择用户原来的用户组信息将被覆盖，确定继续？')) return false;
+        
+        ui.box.load("{:U('admin/User/changeUserGroup')}&uids="+uids, {title:'转移用户组'});
+    }
+    
+    //删除用户
+    function deleteUser(uid) {
+        uid = uid ? uid : getChecked();
+        uid = uid.toString();
+        if(uid == '' || !confirm('删除成功后将无法恢复，确认继续？')) return false;
+        
+        $.post("{:U('admin/User/doDeleteUser')}", {uid:uid}, function(res){
+            if(res == '1') {
+                uid = uid.split(',');
+                for(i = 0; i < uid.length; i++) {
+                    $('#user_'+uid[i]).remove();
+                }
+                ui.success('保存成功');
+            }else {
+                ui.error('保存失败');
+            }
+        });
+    }
+    
+    //搜索用户
+    var isSearchHidden = <neq name="type" value="searchUser">1<else/>0</neq>;
+    function searchUser() {
+        if(isSearchHidden == 1) {
+            $("#searchUser_div").slideDown("fast");
+            $(".searchUser_action").html("搜索完毕");
+            isSearchHidden = 0;
+        }else {
+            $("#searchUser_div").slideUp("fast");
+            $(".searchUser_action").html("搜索");
+            isSearchHidden = 1;
+        }
+    }
+    
+    function folder(type, _this) {
+        $('#search_'+type).slideToggle('fast');
+        if ($(_this).html() == '展开') {
+            $(_this).html('收起');
+        }else {
+            $(_this).html('展开');
+        }
+        
+    }
+</script>
+
+<include file="../Public/_footer" />

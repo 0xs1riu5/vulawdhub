@@ -1,0 +1,45 @@
+<div class="diy_layout_box" id="diy_user_down" <php>if(!empty($tplHeight)) {</php>style="height:{$tplHeight}"<php>}</php>>
+  
+	<notempty name="title">
+	<h3 class="tit_bg">
+		<notempty name="head_link">
+			<span class="R">
+				<php>
+				foreach($head_link as $vo) {
+					echo '<a href="' . $vo->url . '" target="_blank">' . $vo->title . '</a> ';
+				}
+				</php>
+			</span>
+		</notempty>
+		{$title}
+	</h3>
+	</notempty>
+
+  <ul class="diy_group_list">
+   <volist name="list" id="vo">
+      <li>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td width="60"><span class="headpic50"> 
+					<a href="{:U('public/Profile/index','uid='.$vo['uid'])}" target="_blank" event-node="face_card" uid="{$vo.uid}" >
+						<img height="45" width="45" src="{$vo['face']['avatar_middle']}"/>
+					</a>
+				</span></td>
+				<td>
+					<h4><a href="{:U('public/Profile/index','uid='.$vo['uid'])}" target="_blank">{$vo['uname']}</a></h4>
+					<!-- 前两篇博文 -->
+					<p class="cl06 lh18" style="clear: both;">粉丝数：{$vo['followercount']}</p>
+				</td>
+				<td style="text-align:center;">{:W('FollowBtn', array('fid'=>$vo['uid'], 'uname'=>$vo['uname'], 'follow_state'=>$vo['follow']))}</td>
+			  </tr>
+        </table>
+      </li>
+      </volist>
+  </ul>
+  <div class="C"></div>
+</div>
+<php>if (ACTION_NAME=='saveModel'){</php>
+<script>
+M(document.getElementById('diy_user_down'));
+</script>
+<php>}</php>

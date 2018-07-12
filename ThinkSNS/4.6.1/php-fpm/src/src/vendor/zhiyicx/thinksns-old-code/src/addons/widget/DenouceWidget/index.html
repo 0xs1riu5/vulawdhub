@@ -1,0 +1,30 @@
+<div class="pop-report">
+<div class="report-hd">
+    <h4>{:L('PUBLIC_REPORT_TIPES')}</h4><!--"{$source.source_user_info.space_link}"-->
+    <p>{:L('PUBLIC_REPORT_INFO_IS')}：</p>
+</div>
+    <input type="hidden" id="denouce_from" value="{$type}" >
+    <input type="hidden" id="denouce_aid" value="{$aid}" >
+    <input type="hidden" id="denouce_uid" value="{$uid}" >
+    <input type="hidden" id="denouce_fuid" value="{$fuid}" >
+    <input type="hidden" id="denouce_source_url" value='{$source.source_url}'>
+<div class="report-content">
+    <div class="clearfix">
+        <div>
+            <div class="face"><img src='{$source.source_user_info.avatar_middle}' width="20" height="20px"></div>
+            <div class="info" id="denouce_content">
+            <p class="pb10">{$source.source_user_info.space_link}</p>
+            {$source.source_content|parse_html}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="report-confirm">
+	<p>{:L('PUBLIC_REPORT_MORE')}：<span class="textb">（{:L('PUBLIC_SELECT_TIPES')}）</span></p>
+	<textarea id="denouce_reason" class="s-textarea mt10"  onblur="this.className='s-textarea'" onfocus="this.className='s-textarea-focus'"></textarea>
+</div>
+<div class="report-btn">
+    <p class="textL">{:L('PUBLIC_PLEASE_USERINFO_SECRET')}</p>
+    <p class="mt10"><a class="btn-green-small mr10" onclick="core.denouce.post();"><span>{:L('PUBLIC_CONFIRM')}</span></a><a class="btn-cancel"  onclick="ui.box.close();"><span>{:L('PUBLIC_CANCEL')}</span></a></p>
+    </div>
+</div>

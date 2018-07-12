@@ -1,0 +1,22 @@
+<link href="__APP__/login.css" rel="stylesheet" type="text/css" />
+{:W('UserCategory', array('uid'=>$mid,'tpl'=>'pop'))}
+<a class="btn-green-big" onclick="doEditUserCategory()" style="margin:0 0 15px 135px;"><span>确定</span></a>
+
+<script type="text/javascript">
+    var doEditUserCategory = function(){
+        var userCategoryIds = $('#user_category_ids').val();
+            userCategoryIds = $.trim(userCategoryIds);
+            if(userCategoryIds == '') {
+                ui.error('请选择您的职业信息');
+                return false;
+            }
+            $.post(U('public/Account/doEditUserCategory'), {user_category_ids:userCategoryIds}, function(msg) {
+                if(msg.status) {
+                    ui.success('修改成功');
+                    ui.box.close();
+                    $('#userCategory').html(msg.data);
+                }
+            }, 'json');
+    };
+</script>
+

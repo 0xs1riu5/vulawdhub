@@ -1,0 +1,65 @@
+<script type="text/javascript" src="__PUBLIC__/js/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/swfupload/handlers.js"></script>
+<php>
+    $temp = explode(',',$allow_exts);
+    foreach($temp as $value){
+        $exts[] = "*.".$value;
+    }
+    $exts = implode(';',$exts);
+    $size = str_replace('MB',' MB',$allow_size);
+</php>
+<script type="text/javascript">
+        var swfu<?php echo $rand;?>;
+        $(document).ready(function(){
+                  swfu<?php echo $rand;?> = new SWFUpload({
+                // Backend settings
+                // Backend settings
+                upload_url: "{:U('public/Attach/ajaxUpload')}",
+                post_params: {'type':"<?php echo $type; ?>",'token':"<?php echo jiami($token); ?>",'exts':"<?php echo jiami($allow_exts); ?>",'size':"<?php echo jiami($allow_size); ?>","PHPSESSID": "<?php echo session_id(); ?>"},
+                file_post_name: "file",
+
+                // Flash file settings
+                file_size_limit : "<?php echo $size;?>",
+                file_types : "<?php echo $exts;?>",         // or you could use something like: "*.doc;*.wpd;*.pdf",
+                file_upload_limit : 0,
+                file_queue_limit : 1,
+
+                // Event handler settings
+                file_dialog_start_handler: fileDialogStart,
+                file_queued_handler : fileQueued,
+                file_queue_error_handler : fileQueueError,
+                file_dialog_complete_handler : fileDialogComplete,
+                
+                //upload_start_handler : uploadStart,   // I could do some client/JavaScript validation here, but I don't need to.
+                //swfupload_preload_handler : preLoad,
+               // swfupload_load_failed_handler : loadFailed,
+                upload_progress_handler : uploadProgress,
+                upload_error_handler : uploadError,
+                upload_success_handler : uploadSuccess,
+                upload_complete_handler : <?php echo ($callback == 'attach_upload_success')?'uploadComplete':$callback; ?>,
+                // Button Settings
+                button_image_url : "__PUBLIC__/js/swfupload/xxxx.png",
+                button_placeholder_id : "spanButtonPlaceholder<?php echo $rand; ?>",
+                button_placeholder: 'Set',
+                button_width: 61,
+                button_height: 22,
+                
+                // Flash Settings
+                flash_url : "__PUBLIC__/js/swfupload/swfupload.swf",
+                flash9_url : "__PUBLIC__/js/swfupload/swfupload_fp9.swf",
+
+                custom_settings : {
+                    upload_successful : false,
+                    hidden_target:"attachList<?php echo $rand;?>",
+                    success_target:'upload_success<?php echo $rand; ?>'
+                },
+                // Debug settings
+                debug: false
+            });
+        });
+</script>
+<div class="left text_file_diwei" id="upload_list">
+    <span id="spanButtonPlaceholder<?php echo $rand; ?>" style="vertical-align:middle"></span>
+    <span id="upload_success<?php echo $rand; ?>" style="display:none;vertical-align:middle"><b class="ico_cue_ok"></b>上传成功</span>
+    <input type="hidden" id="attachList<?php echo $rand;?>" name="attachList[<?php echo $rand; ?>]" />
+</div>

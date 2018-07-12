@@ -1,0 +1,80 @@
+<dl class="pop-area">
+    <dt>名称：<input type="text" id="title" value="{$category['title']}" class="s-txt" style="width:245px"></dt>
+    <dd style="text-align:center;margin:15px 0 0">
+        <php>if (isset($category)) {</php>
+        <input type="button" class="btn_b" onclick="editCategory()" value="确定" />
+        <php>}else {</php>
+        <input type="button" class="btn_b" onclick="addCategory()" value="确定" />
+        <php>}</php>
+        <input type="button" class="btn_w ml10" onclick="cancel()" value="取消" />
+    </dd>
+    <div class="clear"></div>
+</dl>
+
+<script type="text/javascript">
+// 添加分类
+var addCategory = function()
+{
+    var title = $.trim($('#title').val());
+    var pid = "{$pid}";
+    // 表单数据验证
+    if(title == '') {
+        ui.error('请输入名称');
+        return false;
+    }
+    // 提交添加表单
+    $.post("{:U('channel/Admin/doAddCategory')}", {title: title, pid: pid}, function(res) {
+        if(res.status == 0) {
+            ui.error(res.info);
+            return false;
+        } else {
+            var html = '<tr id="category_'+res.data+'" overstyle="on" class="">\
+                        <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="'+res.data+'"></td>\
+                        <td>'+res.data+'</td>\
+                        <td><div style="float:left"><span id="category_title_'+res.data+'">'+title+'</span></div></td>\
+                        <td>\
+                        <a onclick="edit('+res.data+');" href="javascript:void(0);">编辑</a>\
+                        <a onclick="del('+res.data+');" href="javascript:void(0);">删除</a>\
+                        </td></tr>';
+            $('#category_list').append(html);
+            ui.success(res.info);
+            ui.box.close();
+        }
+    }, 'json');
+};
+
+// 编辑分类
+var editCategory = function()
+{
+    var title = $.trim($('#title').val());
+    var cid = "{$category['channel_category_id']}";
+    // 判断是否为空
+    if(title == '') {
+        ui.error('请输入名称');
+        return false;
+    }
+    // 判断是否修改
+    if(title == "{$category['title']}") {
+        ui.error('名称无变化，未提交修改');
+        ui.box.close();
+        return false;
+    }
+    // 判断是否重名
+    $.post("{:U('channel/Admin/doEditCategory')}", {cid:cid, title:title}, function(res) {
+        if(res.status == 0) {
+            ui.error('保存失败');
+            return false;
+        } else {
+            $('#category_title_'+cid).html(title);
+            ui.success('保存成功');
+            ui.box.close();
+            return false;
+        }
+    }, 'json');
+};
+// 关闭弹窗
+var cancel = function()
+{
+	ui.box.close();
+};
+</script>

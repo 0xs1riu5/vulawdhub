@@ -1,0 +1,203 @@
+<include file="__THEME__/public_header" />
+
+<div id="page-wrap">
+	<div class="reg-wrap">
+      <div class="reg-main">
+      <div class="article st-bg">
+		<div class="title">{:L('PUBLIC_ACCOUNT_REGISTER_CONGRATULATIONS_TIPS')}</div>
+		<div id="step3_box" class="search-find">
+            <!--<div style="font-size:20px;text-align:center;padding:20px 0 20px 0"><i class="ico-ok"></i>注册成功</div>-->
+            <div class="mt15"><p style="font-size:16px">激活邮件已发送至{$email}，请立即登录邮箱激活帐号</p></div>
+            <div class="mt15">
+            	<span style="color:#B8B7B7">若您长时间未收到激活邮件，可点击&nbsp;“<a event-node="resend_activation_email" href="{:U('public/Register/resendActivationEmail', array('uid'=>$uid))}" style="font-size:12px">重新发送</a>”&nbsp;或&nbsp;“<a href="javascript:;" onclick="showChangeEmailBox();" style="font-size:12px">更换邮箱激活</a>”</span>
+            </div>
+            <div class="mt15" id="show_box" style="display:none;">
+                <span style="font-size:16px;float:left;line-height:36px">请输入您新的邮箱：</span>
+                <input id="change_email_input" type="text" suffix="{$config['email_suffix']}" class="s-txt" />
+                <a class="btn-green-big" checkurl="{:U('public/Register/changeActivationEmail', array('uid'=>$uid))}" href="javascript:;" event-node="change_activation_email"><span>确定</span></a>
+            </div>
+            <div class="box-ver" style="padding: 0px 0px 0px 110px;display:none;" id="prompt_box"></div>
+        </div>
+      </div>
+     </div>  
+	</div>
+</div>
+
+<script src="__THEME__/js/account/module.register.js"></script>
+<script type="text/javascript">
+var inviteEmail;
+/**
+ * 显示更改激活邮箱地址
+ * @return void
+ */
+var showChangeEmailBox = function()
+{
+    $('#show_box').show();
+    $('#change_email_input').focus();
+    inviteEmail = checkEmailBox('change_email_input');
+    M(document.getElementById('show_box'));
+}
+/**
+ * 验证邮箱正确性
+ * @return object
+ */
+var checkEmailBox = function(inputId)
+{
+  // 验证参数是否正确
+  if(typeof inputId === "undefined") {
+    return false;
+  }
+  // 返回的实例化对象
+  var that = {};
+  // 获取验证数据
+  that.getIsValid = function()
+  {
+    return isValid;
+  };
+  // 获取邮箱的值
+  that.getValue = function()
+  {
+    return $.trim($input.val());
+  };
+  // 原始数据
+  var oldVal = '';
+  // 列表Li索引
+  var indexLi = -1;
+  // 验证是否成功
+  var isValid = false;
+  // 设置JQuery对象
+  var $input = $('#'+inputId);
+  // 获取邮件后缀
+  if($.trim($input.attr('suffix')) == '') {
+    isValid = true;
+    return that;
+  }
+  var suffix = $input.attr('suffix').split(',');
+  // 下拉框对象
+  var offset = $input.offset();
+  var dropDown = '<div style="width:410px;display:none;position:absolute;left:'+offset.left+'px;top:'+(offset.top+29)+'px;" class="mod-at-wrap mod-at"><ul class="at-user-list">';
+  for(var i = 0; i < suffix.length; i++) {
+    dropDown += '<li email="'+suffix[i]+'" rel="show"><a href="javascript:;"><span></span></a></li>';
+  }
+  dropDown += '</ul></div>';
+  var $dropDown = $(dropDown);
+  $('body').append($dropDown);
+  // 输入框改变内容
+  var valChange = function()
+  {
+    var tex = $input.val();
+    var fronts = '';
+    var af = /@/;
+    var regMail = new RegExp(tex.substring(tex.indexOf('@')));
+    if(tex == '') {
+      blusDropDown();
+    } else {
+      $dropDown.show().find('li').each(function() {
+        var valAttr = $(this).attr('email');
+        if(af.test(tex)) {
+          fronts = tex.substring(tex.indexOf('@'), 0);
+          $(this).text(fronts + valAttr);
+          if(regMail.test($(this).attr('email'))) {
+            $(this).attr('rel', 'show');
+            $(this).css({position:'static', visibility:'inherit'});
+          } else {
+            $(this).attr('rel', 'hide');
+            $(this).css({position:'absolute', visibility:'hidden'});
+          }
+        } else {
+          $(this).text(tex + valAttr);
+        }
+      });
+    }
+  };
+  // 隐藏下拉框列表
+  var blusDropDown = function()
+  {
+    $dropDown.hide();
+  };
+  // 浏览器输入兼容性
+  if($.browser.msie) {
+    $input.bind('propertychange', function() {
+      $(this).val() != oldVal && valChange();
+    });
+  } else {
+    $input.bind('input', function() {
+      valChange();
+    });
+  }
+  // 选中上下移动
+  var keyChange = function(up) {
+    if(up == "up") {
+      if(indexLi == 0) {
+        indexLi = $dropDown.find('li[rel="show"]').length - 1;
+      } else {
+        indexLi--;
+      }
+    } else {
+      if(indexLi == $dropDown.find('li[rel="show"]').length - 1) {
+        indexLi = 0;
+      } else {
+        indexLi++;
+      }
+    }
+    $dropDown.find('li[rel="show"]').eq(indexLi).addClass("current").siblings().removeClass(); 
+  };
+  // 绑定按键事件
+  $input.keydown(function(event) {
+    if(event.which == 38) {
+      // 按上
+      keyChange("up");
+    } else if(event.which == 40) {
+      // 按下
+      keyChange();
+    } else if(event.which == 13) {
+      // 按回车
+      var liVal = $dropDown.find('li[rel="show"]').eq(indexLi).text();
+      $input.val(liVal);
+      $input.blur();
+      blusDropDown();
+    }
+  });
+  // 给Li绑定点击事件
+  $(document).click(function(event) {
+    if($(event.target).is('li') && typeof $(event.target).attr('email') !== 'undefined') {
+      var liVal = $(event.target).text();
+      $input.val(liVal);
+      oldVal = liVal;
+    }
+    blusDropDown();
+  });
+  // 绑定验证邮箱内容正确性
+  $input.bind('blur', function() {
+    setTimeout(function() {
+      checkEmailValue();
+    }, 300);
+  });
+  // 验证邮件正确性
+  var checkEmailValue = function() {
+    // 获取邮件内容
+    var email = $.trim($input.val());
+    if(email == '') {
+      return false;
+    }
+    // 验证邮箱是否可用
+    $.post(U('public/Register/isEmailAvailable'), {email:email}, function(res) {
+      var icoClass = '';
+      if(res.status) {
+        icoClass = 'ico-ok';
+        res.info = '<font style="color:green;">该邮箱可以使用</font>';
+        isValid = true;
+      } else {
+        icoClass = 'ico-error';
+        isValid = false;
+      }
+      var html = '<span><b class="' + icoClass + '"></b>' + res.info + '</span>';
+      $('#prompt_box').css('display', '');
+      $('#prompt_box').html(html);
+    }, 'json');
+  };
+
+  return that;
+};
+</script>
+<include file="__THEME__/public_footer" />

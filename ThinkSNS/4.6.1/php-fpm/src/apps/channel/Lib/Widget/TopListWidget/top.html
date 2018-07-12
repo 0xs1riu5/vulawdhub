@@ -1,0 +1,14 @@
+<div class="right-list rank-box1">
+  <fieldset class="inter-line"><legend class="inter-txt">用户贡献榜</legend></fieldset>
+  <volist name="list" id="vo">
+      <ul>
+        <li>
+            <i class="ico-num ico-num{$i}"></i>
+             <dl>
+                <dt><a href="{$vo.space_url}"><img src="{$vo.avatar_small}" width="30" height="30" /></a></dt>
+                <dd><p><space uid="vo.uid">{uname}</space></p><p>投稿数：{$vo.count|default=0}</p></dd>
+             </dl>
+        </li>
+       </ul>
+    </volist>
+</div>

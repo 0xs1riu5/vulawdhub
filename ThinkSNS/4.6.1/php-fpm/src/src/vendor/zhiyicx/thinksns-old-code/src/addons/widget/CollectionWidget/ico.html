@@ -1,0 +1,5 @@
+<eq name='coll' value=''>
+<a href="javascript:;" onclick="core.plugInit('collection',this,'{$type}','{$sid}','{$stable}','{$sapp}', 1)" rel="add"><i class="{$ico}"></i>(<label class='count_{$stable}_{$sid}'>{$count|default=0}</label>)</a>
+<else />
+<a href="javascript:;" onclick="core.plugInit('collection',this,'{$type}','{$sid}','{$stable}','{$sapp}', 1)" rel="remove"><i class="{$ico} current"></i>(<label class='count_{$stable}_{$sid}'>{$count|default=0}</label>)</a>
+</eq>

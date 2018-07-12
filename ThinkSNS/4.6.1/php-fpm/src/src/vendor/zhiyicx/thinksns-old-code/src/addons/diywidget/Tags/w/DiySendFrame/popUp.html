@@ -1,0 +1,125 @@
+<div class="pop_up">
+    <div class="pop_up_main">
+        <div class="pop_up_tab">
+            <div class="tab attrSetTab">
+                <a href="javascript:void(0)" rel="diy_baseSet" class="on">基本设置</a>
+            </div>
+        </div>
+        <div class="pop_up_box">
+            <ul class="pop_up_box_form" id="diy_baseSet">
+                <li>
+                    <div class="c1">
+                        标题：
+                    </div>
+                    <div class="c2">
+                        <input id="title" value="" class="param_post text"/>
+                    </div>
+                    </li>
+                                    <li>
+                    <div class="c1">
+                        默认内容：
+                    </div>
+                    <div class="c2">
+                        <input id="initHtml" value="" class="param_post text"/>
+                    </div>
+                    </li>
+            </ul>
+        </div>
+    </div>
+    <div id="preview" class="preview_r">
+    	
+    </div>
+</div>
+<script>
+                                	var index= '{$index}';
+                                	var layout = '{$layout}';
+                                	var parentId = '{$parentId}';
+                                	var id = '{$id}';
+                                	var namespace = '{$_GET['tagName']}';
+                                    var postData = new Array();
+                                    var defaultAttr = new Array();
+                                    var hasDefault = false;
+                                    var sign = "{$_GET['sign']}"
+                                    var tplData = new Array();
+                                    var defaultlinkCount = '{$tabCount}' || 2;
+                                    var linkItem = '';
+            						<php>if(!empty($attr)){</php>
+            							hasDefault = true;
+            						<php>}</php>
+            				
+                            <volist name="attr" id="vo">
+								<php>if($key == 'head_link'){</php>
+									defaultAttr["{$key}"] = {$vo};
+								<php>}else{</php>
+            						defaultAttr["{$key}"] = "{$vo}";
+								<php>}</php>
+            				</volist>
+            				
+            		
+            				
+                            $(function(){
+                            	if (hasDefault) {
+                                    $('.param_post').each(function(){
+            								if( !$(this).attr('multiple') || $(this).attr('multiple') == 'undefined'){
+            									$(this).val(defaultAttr[$(this).attr('id')]);
+            								}
+                                    });
+                               }
+                    });
+    				
+
+   function preview(){
+                                var sendData = getPostData();
+                                $.ajax({
+                                    type: "POST",
+                                    url: SITE_URL + '/index.php?app=page&mod=Diy&act=previewModel',
+                                    data: sendData,
+                                    dataType: 'json',
+                                    success: function(result){
+                                        $('#preview').html(result.html);
+										M(document.getElementById('preview'));
+										//$('#copyHtml').click();
+                                    }
+                                });
+                            }
+                                	
+                            function savemodel(){
+                                var sendData = getPostData();
+                                $.ajax({
+                                    type: "POST",
+                                    url: SITE_URL + '/index.php?app=page&mod=Diy&act=saveModel',
+                                    data: sendData,
+                                    dataType: 'json',
+                                    success: function(result){
+                                        //var jsonData = eval('('+result+')');
+                                        frameArray[parentId][layout][index] = result['sign'];
+                                        if ($('#' + id).html() == null) {
+                                            $('#placeholder').html(result['html']);
+                                            $('#placeholder').removeAttr('class').removeAttr('style').addClass('mb10').attr('id', id).attr('rel', namespace).attr('sign', result['sign']).prepend('<div class="diy_edit"><div class="ico_edit"><a href="javascript:void(0)" onclick="updateDiyModel(\'' + id + '\',\'' + namespace + '\')" class="ico_diyedit" title="设置">设置</a> <a href="javascript:void(0)" class="ico_diydel" onclick="deleteDiy(\'' + id + '\')" title="删除">删除</a></div></div>');
+                                        }
+                                        else {
+                                            $('#' + id).html(result['html']).attr('sign', result['sign']);
+                                            $('#' + id).prepend('<div class="diy_edit"><div class="ico_edit"><a href="javascript:void(0)" onclick="updateDiyModel(\'' + id + '\',\'' + namespace + '\')" class="ico_diyedit" title="设置">设置</a> <a href="javascript:void(0)" class="ico_diydel" onclick="deleteDiy(\'' + id + '\')" title="删除">删除</a></div></div>');
+                                        }
+                                        
+                                    }
+                                });
+                            }
+                            function getPostData(){
+								
+                                var data = new Array();
+                                var result;
+                                $('.param_post').each(function(){
+                                    var postKey = 'PARAM_' + $(this).attr('id');
+                                    data[postKey] = $(this).val();
+                                    
+                                });
+                                var result = 'tagName=' + namespace;
+    							
+                                for (var one in data) {
+                                    result += '&' + one + '=' + data[one];
+                                }
+								
+                                return result;
+                            }
+</script>

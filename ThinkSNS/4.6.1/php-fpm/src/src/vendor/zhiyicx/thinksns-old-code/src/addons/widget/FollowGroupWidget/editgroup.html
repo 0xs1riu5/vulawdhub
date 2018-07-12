@@ -1,0 +1,166 @@
+<div class="layer-follow pop">
+    <div class="group-name">
+        <ul id="followGroupSelector">
+            <volist name="group_list" id="g">
+            <li>
+                <a href="javascript:;" class="right hover" onclick="delGroup({$g.follow_group_id})">删除</a>
+                <a href="javascript:void(0)" class="right hover mr10" onclick="editGroup({$g.follow_group_id})">{:L('PUBLIC_EDIT_GROUP')}</a>
+                <label onclick="editGroup({$g.});">
+                <span id='title_{$g.follow_group_id}' classfollow_group_id="cursor">{$g.title|htmlspecialchars_decode}</span></label>
+                <span id='edit_{$g.follow_group_id}' style="display:none">
+                <input type="text" value="{$g.title|htmlspecialchars_decode}" class="s-txt" onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'" >
+                <a href="javascript:;" onclick="saveGroup({$g.follow_group_id});" class="btn-green-small" style="margin-top:5px;"><span>{:L('PUBLIC_SAVE')}</span></a>
+                <a href="javascript:;" onclick="cenSaveGroup({$g.follow_group_id});" class="btn-cancel"><span>{:L('PUBLIC_CANCEL')}</span></a>
+                </span>
+                
+            </li>
+            </volist>
+        </ul>
+    </div>
+    <php>if(count($group_list) < 10):</php>
+    <div>
+        <div id="open_tab" class="new-add"><a href="javascript:void(0);" onclick="createFollowGroupTab('')" class="openTab">+{:L('PUBLIC_CREATE_GROUP')}</a></div>
+        <dl class="mt10">
+            <dd id="createFollowGroup">
+                <input type="text" name="followGroupTitle" value="" class="s-txt"  onblur="this.className='s-txt'" onfocus="this.className='s-txt-focus'"  style="display:none;">
+                <a onclick="createFollowGroup()" class="btn-green-small mr5" style="display:none;"><span>{:L('PUBLIC_CREATE')}</span></a>
+                <a href="javascript:void(0);" onclick="createFollowGroupTab('close')" class="btn-cancel" style="display:none;margin-top:5px;"><span>{:L('PUBLIC_CANCEL')}</span></a>
+            </dd>
+        </dl>
+    </div>
+    <php>endif;</php>
+</div>
+
+<script type="text/javascript">
+// 扩展关闭弹窗
+$(function() {
+    var afterClose = function() {
+        location.reload();
+    };
+    ui.box.init("", afterClose);
+});
+/**
+ * 编辑分组显示
+ * @param integer gid 分组ID
+ * @return void
+ */
+var editGroup = function(gid) {
+	$('#title_'+gid).hide();
+	$('#edit_'+gid).show();
+};
+/**
+ * 保存分组信息
+ * @param integer gid 分组ID
+ * @return void
+ */
+var saveGroup = function(gid) {
+	var title = $('#edit_'+gid).find('input').val();
+    if(getLength(title) > 10 ){
+        ui.error(L('PUBLIC_GROUP_NAME_MAX', {'num':10}));
+        return false;
+    }
+	if(title != $('#title_'+gid).html()) {
+		$.post(U('public/FollowGroup/saveGroup'),{gid:gid,title:title},function(msg){ 
+            if(msg.status == 0){
+                ui.error(msg.info);
+                $('#edit_'+gid).find('input').val($('#title_'+gid).html());   
+            }else{
+                $('.group_title').each(function(){
+                    if($(this).attr('gid') == gid){
+                        $(this).html(title);
+                    }
+                });
+                $('#title_'+gid).html(title);
+            }
+        },'json');
+	}
+	cenSaveGroup(gid);
+}
+/**
+ * 保存后页面显示
+ * @param integer gid 分组ID
+ * @return void
+ */
+var cenSaveGroup = function(gid) {
+	$('#title_'+gid).show();
+	$('#edit_'+gid).hide();
+}
+/**
+ * 创建分组框显示
+ * @param string action 创建动作，是创建还是关闭
+ * @return void
+ */
+var createFollowGroupTab = function(action) {
+	if(action == 'close') {
+		$("input[name='followGroupTitle']").val(' ');
+		$('#createFollowGroup input').css('display','none');
+		$('#createFollowGroup .btn-green-small').css('display','none');
+		$('#createFollowGroup .btn-cancel').css('display','none');
+        // 隐藏弹窗
+        var len = $('#followGroupSelector').find("li").length;
+        if(len > 9) {
+            $('#open_tab').css('display','none');
+        } else {
+            $('#open_tab').css('display','inline-block');
+        }
+	} else {
+		$('#createFollowGroup input').css('display','inline');
+		$('#createFollowGroup .btn-green-small').css('display','inline-block');
+		$('#createFollowGroup .btn-cancel').css('display','inline-block');
+		$('#open_tab').css('display','none');
+	}
+}
+/**
+ * 创建分组操作
+ * @return void
+ */
+var createFollowGroup = function() {
+	var title = $("input[name='followGroupTitle']").val();
+	if(title == '') {
+		ui.error(L('PUBLIC_PLEASE_GROUP_NAME'));
+		return false;
+	} else if(getLength(title, false) > 10) {
+		ui.error(L('PUBLIC_GROUP_NAME_MAX',{'num':10}));
+		return false;
+	}
+    // 创建分组操作
+	$.post(U('public/FollowGroup/setGroup'), {title: title}, function(res) {
+        if(res.status != 0) {
+            var html = '<li><a href="javascript:;" class="right hover" onclick="delGroup('+res.info+')">删除</a>\
+                        <a href="javascript:void(0)" class="right hover mr10" onclick="editGroup('+res.info+')">'+L('PUBLIC_EDIT_GROUPNAME')+'</a>\
+                        <label onclick="editGroup('+res.info+');">\
+                        <span id="title_'+res.info+'">'+title+'</span></label>\
+                        <span id="edit_'+res.info+'" style="display:none">\
+                        <input class="s-txt" type="text" onblur="this.className=\'s-txt\'" onfocus="this.className=\'s-txt-focus\'" value='+title+'>\
+                        <a class="btn-green-small" href="javascript:;" onclick="saveGroup('+res.info+');">'+L('PUBLIC_SAVE')+'</a>\
+                        <a class="btn-cancel" href="javascript:;" onclick="cenSaveGroup('+res.info+');">'+L('PUBLIC_QUXIAO')+'</a></span></li>';
+            $('#followGroupSelector').append(html);
+            createFollowGroupTab('close');
+        } else {
+            ui.error(res.info);
+        }
+	}, 'json');
+}
+/**
+ * 删除分组操作
+ * @param integer gid 分组ID
+ * @return void
+ */
+var delGroup = function(gid) {
+    var title = $('#title_' + gid).text();
+    ui.confirmBox("提示", '确定要删除" ' + title + ' "分组吗？<br />此分组下的人不会被取消关注。', function() {
+        $.post(U('public/FollowGroup/deleteGroup'), {gid:gid}, function(msg) {
+            if(msg.status == 1) {
+                ui.box.close();
+                ui.success("删除成功");
+                setTimeout(function() {
+                    location.href = U('public/Profile/following');
+                }, 1500);
+            } else {
+                ui.error("删除失败");
+            }
+            return false;
+        }, 'json');
+    });
+}
+</script>

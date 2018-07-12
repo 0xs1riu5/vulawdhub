@@ -1,0 +1,127 @@
+<php>
+    $navs = '<a href="'.U('public/WebMessage/pl',array('type'=>$type)).'" class="boxopenurl'.($t==''?' current':'').'">'.L('PUBLIC_ALL_STREAM').'</a>';
+    foreach($tab as $k => $v){
+        if($tabHash[$k]){
+            $navs .= '<a href="'.U('public/WebMessage/pl',array('t'=>$k,'type'=>$type)).'" class="boxopenurl'.($t==$k?' current':'').'">'.$tabHash[$k].'</a>';
+        }
+    }
+    $btn = '<a href="'.U('public/WebMessage/pl',array('type'=>'receive')).'" class="link boxopenurl'.($type=='receive'?' current':'').'">收到的评论</a><a href="'.U('public/WebMessage/pl',array('type'=>'send')).'" class="link boxopenurl'.($type=='send'?' current':'').'">发出的评论</a>';
+</php>
+<div id="set-data" data-title="评论" data-navs='{$navs}' data-btn='{$btn}'></div>
+<div class="common">
+    <php>if($list['data']):</php>
+    <ul class="comment">
+      <volist name='list.data' id='vo'>
+      <li>
+        <div class="face"><a href="{$vo.user_info.space_url}" target="_blank" event-node="face_card" uid="{$vo.user_info.uid}"><img src="{$vo.user_info.avatar_small}" /><php>if($i<=$unread_comment_count){</php><i></i><php>}</php></a></div>
+        <div class="detail">
+          <div class="name"><a href="{$vo.user_info.space_url}" event-node="face_card" uid="{$vo.user_info.uid}">{$vo.user_info.uname}</a><span>{$vo.ctime|friendlyDate}</span></div>
+          <div class="ct"><php>if($vo['is_audit']){</php>{$vo.content}<php>}else{</php>内容正在审核<php>}</php></div>
+        </div>
+        <div class="link"><a href="{$vo['sourceUrl']?$vo['sourceUrl']:'javascript:;'}"><php>if($vo['sourceImage']):</php><img src="{$vo.sourceImage}" /><php>if($vo['sourceIsVideo']):</php><i></i><php>endif;</php><php>else:echo $vo['sourceContent'];endif;</php></a></div>
+        <php>if($type == 'receive'):</php>
+        <div class="reply">
+          <form>
+            <input type="text" class="text" maxlength="140" value-prefix="回复@{$vo.user_info.uname}：" value="" />
+            <input type="submit" class="sbmt" value="回复" args="row_id={$vo['row_id']}&app_uid={$vo['app_uid']}&app_row_id={$vo['row_id']}&app_row_table=&app_name={$vo['app']}&table_name={$vo['table']}&to_comment_id={$vo['comment_id']}&to_uid={$vo['uid']}&ifShareFeed=0&comment_old=0&talkbox=0" to_comment_uname="{$vo['user_info']['uname']}" />
+            <a href="javascript:;" class="face-icon" event-node="comment_insert_face"></a>
+          </form>
+          <div class="face_parent_div"></div>
+        </div>
+        <php>endif;</php>
+      </li>
+      </volist>
+    </ul>
+    <div class="pagelist">{$list.html}</div>
+    <php>else:</php>
+    <div class="empty-list">你还没有评论哦~</div>
+    <php>endif;</php>
+</div>
+<script>
+$(function(){
+
+    $('a.boxopenurl').click(function(){
+        if(typeof core.message.openUrl == 'function'){
+            core.message.openUrl($(this).attr('href'), false);
+        }
+        return false;
+    });
+    $('ul.comment li').click(function(e){
+        var tagName = e.target.nodeName;
+        if(tagName && tagName.toLowerCase() == 'a'){
+            return ;
+        }
+        var reply = $(this).find('.reply').stop();
+        $('ul.comment .reply').not(reply).stop().slideUp('fast');
+        if(reply.is(':hidden')){
+            reply.slideDown('fast', function(){
+                var input = reply.find('input:first');
+                var inputVal = input.val();
+                input.val('').inputToEnd(inputVal);
+            });
+        }else{
+            reply.slideUp('fast');
+        }
+    });
+    $('ul.comment .reply').click(function(){ return false; });
+    $('ul.comment li').each(function(i, li){
+        var height = parseInt($(li).find('.ct').css('line-height'));
+        if(height && $(li).find('.ct').height() > height){
+            $(li).find('.detail,.face').css('padding-top',0);
+        }
+    });
+    $('.comment a[event-node="face_card"]').mouseleave(function(e) {
+        core.facecard.hide();
+    }).blur(function(e) {
+        core.facecard.hide();
+    }).mouseenter(function(e) {
+        var uid = $(this).attr('uid');
+        if(MID<1 || (MID == uid) || (UID ==uid)){
+            return false;
+        }
+        var obj = $(this);
+        if("undefined" == typeof(core.facecard)){
+            core.plugFunc('facecard',function(){
+                core.facecard.show(obj,uid);
+            })
+        }else{
+            core.facecard.show(obj,uid);
+        }
+    });
+    $('.comment a[event-node="comment_insert_face"]').click(function(){
+        var form = $(this).parents('form');
+        var input = form.find('input:text:first');
+        var parent = form.next();
+        core.plugInit('face',this,input,parent);
+    });
+    $('ul.comment .reply input.sbmt').click(function(){
+        var input = $(this).prev();
+        var val = $.trim(input.val());
+        if(!val) { input.focus(); return false; }
+        var args = $(this).attr('args');
+        var prefix = input.attr('value-prefix');
+        val = prefix ? prefix+val : val;
+        args += '&content='+encodeURIComponent(val);
+        $.post(U('widget/Comment/addcomment'), args, function(result){
+            if(result.status == 1){
+                input.val('');
+                input.parents('li').click();
+                ui.success('回复成功');
+            }else{
+                if(typeof result.data == 'string'){
+                    ui.error(result.data);
+                }else{
+                    ui.error('回复失败');
+                }
+                
+            }
+        }, 'json');
+    });
+    $('.pagelist a').click(function(){
+        if(typeof core.message.openUrl == 'function'){
+            core.message.openUrl($(this).attr('href'), false);
+        }
+        return false;
+    });
+});
+</script>

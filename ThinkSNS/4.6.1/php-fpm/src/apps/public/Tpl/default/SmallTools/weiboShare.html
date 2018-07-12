@@ -1,0 +1,68 @@
+<include file="__THEME__/public_header" />
+<link type="text/css" rel="stylesheet" href="__APP__/square.css" >
+<div id="page-wrap">
+	<div id="main-wrap">
+		<div class="clearfix">
+			<div class="st-bg">
+				<div class="mainbox_appC no_r">
+					<div class="tab-menu line-b-animate clearfix">
+						<include file="./_toolTab" />	
+					</div>
+					<div class="mainbox_C_C">
+						<div class="setItems">
+							<div class="data">
+								<div class="inviteMode mt10" style="background-color:#fff">
+									<dl>
+										<dt>选择样式</dt>
+										<dd class="lineD_btm">
+											<span class="rd ml10">
+												<label>
+													<input name="share_button" onclick="setButton(this.value);" type="radio" checked="checked" value="mbutton.png" />	
+													大按钮
+												</label>
+											</span>
+											<span class="rd ml10">
+												<label>
+													<input name="share_button" onclick="setButton(this.value);" type="radio" value="sbutton.png" />	
+													小按钮
+												</label>
+											</span>
+										</dd>
+										<dd class="btn_share_style">
+											<span id="share_button_test"></span>
+										</dd>
+									</dl>
+								</div>
+								<div class="inviteMode mt10">
+									<h5>将其他网页内容分享到{$ts['site']['site_name']}(复制下面代码,粘贴到其他网页源码中)</h5>
+									<textarea name="textarea2" id="share_button_value" cols="45" rows="5" onclick="select()"></textarea>
+									<div>
+										<input type="submit" name="button" id="copy" value="复制代码" class="right" />	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="c"></div>
+				</div>
+			</div>
+			<div class="c"></div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$('#copy').click(function(){
+  if (false == copy_clip(document.getElementById('share_button_value').value)) {
+    $('#share_button_value').select();
+  }
+  return false;
+});
+function setButton(icon){
+	var html = '<a title="分享到{$ts['site']['site_name']}" href="javascript:void(0)" onclick="var pic=\'\',st=\'\',su=\'\',d=document,w=window,e=encodeURIComponent,r=\'{:U('public/Widget/share','1=1')}\',l=d.location,t=e(d.title),h=e(l.href),u=r+\'&url=\'+h+\'&title=\'+t+\'&sourceTitle=\'+st+\'&sourceUrl=\'+su+\'&picUrl=\'+pic;if(!w.open(u)){l.href=u;}"><img src="__THEME__/image/shareicon/'+icon+'" alt="分享到分享到{$ts['site']['site_name']}" /></a>';
+	$('#share_button_value').text(html);
+	$('#share_button_test').html(html);
+}
+setButton('mbutton.png');
+</script>
+
+<include file="__THEME__/public_footer" />

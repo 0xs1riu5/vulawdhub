@@ -1,0 +1,31 @@
+<include file="__THEME__/public_header" />
+
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="col" class="st-grid content-bg st-bg-b cc">
+      <div id="col4" class="main-left">
+        <!--tab菜单-->
+        <include file="_tabs" />
+      </div>
+      <div id="col7" class="main-right">
+        <div class="extend minh person-set">
+          <div class="set-hd"><h3>我的标签</h3></div>
+          <!--信息设置项 基本信息-->
+          <form action="{:U('public/Account/doSaveProfile')}" method="post" model-node='account_save'>
+            <dl class="form-set">
+              <dd>
+                <div class="form-row">
+                {:W('Tag', array('width'=>'400px', 'row_id'=>$mid, 'tpl'=>'tags', 'tag_num'=>$tag_num, 'isUserTag' => true))}
+                <a event-node="submit_btn" href="#" class="btn-green-big ml">{:L('PUBLIC_SAVE')}</a>
+                </div>
+                <input type="text" style="display:none">
+              </dd>             
+            </dl>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="__THEME__/js/module.form.js"></script>
+<include file="__THEME__/public_footer" />

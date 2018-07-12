@@ -1,0 +1,12 @@
+
+<input type="hidden" id="current" name='city_ids' value='{$city_ids}'/>
+<a href="javascript:selectArea()">【{:L('PUBLIC_CANCEL_AREA')}】</a>
+
+<script>
+
+function selectArea(){
+    var typevalue = $("#current").val();
+    ui.box.load(U('widget/Area/area')+'&selected='+typevalue+'&tpl=loadCity',L('PUBLIC_SELECT_AREA'));
+}
+
+</script>

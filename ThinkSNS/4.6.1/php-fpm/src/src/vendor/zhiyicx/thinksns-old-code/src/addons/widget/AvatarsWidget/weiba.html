@@ -1,0 +1,105 @@
+<style>
+.upload-imgArea {
+	width:120px;
+	height:120px;
+	position:relative;
+}
+.upload-imgArea .mod-avatar {
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:1;
+}
+.upload-imgArea .file {
+	width:120px;
+	height:120px;
+	position:absolute;
+	top:0;
+	left:0;
+	opacity:0;
+	z-index:100;
+}
+.upload-imgArea .uploadbtn {
+	position:absolute;
+	left:0;
+	bottom:0;
+	width:120px;
+	height:40px;
+	display:block;
+	background:#000;
+	opacity:0.3;
+	filter:alpha(opacity = 30);
+	line-height:40px;
+	text-align:center;
+	color:#fff;
+	font-size:20px;
+	z-index:10;
+}
+</style>
+<!--<div id="selectUploadType" class="chanage">
+请选择个人正面大照片作为头像，照片不能小于300px*300px</a>
+</div>-->
+<form id='noflashUpload' model-node="avatar_upload_form" enctype="multipart/form-data" action="{:U('public/Account/doSaveAvatar', array('step'=>'upload'))}" method="post">
+  <div class="port-upload"> 
+  <dl class="form-avatar">
+    <dd>
+      <div class="upload-imgArea">
+        <input event-node="select_file" type="file" name="Filedata" class="file" />
+        <div model-node="avatar_scan" class="mod-avatar">
+          <div class="cut-1" style="width:120px;height:120px;"><img event-node="avatar_big" src="{$defaultImg}" style="width:120px;height:120px;" /> </div>
+        </div>
+        <a class="uploadbtn">点击选择图片</a> </div>
+      <span event-node="loading" style="display:none;"><img src="__THEME__/image/load.gif" />加载中...</span> 
+      <!--            <p>支持{$attach_allow_extension|strtoupper}格式，大小限制{$attach_max_size|default=0}M以内</p>--> 
+    </dd>
+  </dl>
+  </div>
+</form>
+<form model-node="avatar_setting_form" enctype="multipart/form-data" action="{:U('public/Account/doSaveAvatar', array('step'=>'save'))}" method="post" style="display:none;">
+  <dl class="form-avatar">
+    <dd>
+      <div model-node="avatar_area" class="mod-avatar left" style="width:300px; margin-bottom:10px; border-right:1px solid #E5E5E5;"></div>
+      <div class="mod-avatar left" style="padding-left:15px;">
+        <div model-node="avatar_preview" class="left" style=" width: 120px; height: 120px; border:1px solid #B4B5AF; overflow:hidden;"></div>
+      </div>
+    </dd>
+    <dd>
+      <input event-node="avatar_picurl" type="hidden" name="picurl">
+      <input event-node="avatar_picwidth" type="hidden" name="picwidth">
+      <input event-node="avatar_fullpicurl" type="hidden" name="fullpicurl">
+      <input event-node="avatar_x1" type="hidden" name="x1">
+      <input event-node="avatar_y1" type="hidden" name="y1">
+      <input event-node="avatar_x2" type="hidden" name="x2">
+      <input event-node="avatar_y2" type="hidden" name="y2">
+      <input event-node="avatar_w" type="hidden" name="w">
+      <input event-node="avatar_h" type="hidden" name="h">
+      <a event-node="avatar_save" event-args="tip={:L('PUBLIC_IMAGE_SAVE_IS')}？" class="btn-green-small" href="#">{:L('PUBLIC_SAVE')}</a> <a event-node="avatar_reset" class="btn-cancel ml10" href="#">{:L('PUBLIC_CANCEL')}</a> </dd>
+  </dl>
+</form>
+<script src="__THEME__/js/module.form.js?v20121111"></script> 
+<script src="__THEME__/js/avatar/module.avatar.js?v20130423"></script> 
+<script src="__THEME__/js/avatar/avatar.js?v20130423"></script> 
+<script type="text/javascript">
+<php> 
+if(!empty($callback)){
+    echo 'var upload_callback = "'.$callback.'"';
+}else{
+    echo 'var upload_callback = "nocallback"';
+}
+</php>
+
+var avatar_success = function(msg){
+    if(upload_callback!='nocallback'){
+        ui.success('保存成功');
+        setTimeout(function(){
+            eval(upload_callback+'("'+msg.small+'")');
+        },2000);
+    }else{
+        ui.success('保存成功');
+    }
+};
+
+var avatar_error = function(){
+    ui.error('保存失败');
+};
+</script>

@@ -1,0 +1,9 @@
+<span class='remark' >
+<php>if(!empty($remark)){</php>
+<em>(</em><a href="javascript:;" title='{:L('PUBLIC_CLICK_EDIT')}' event-node='setremark' remark='{$remark|urlencode}' class ="remark_{$uid}" uid='{$uid}'>{$remark}</a><em>)</em>
+<php>}else{</php>
+<neq name='showonly' value='1'>
+<em>(</em><a href="javascript:;" title='{:L('PUBLIC_CLICK_SETING')}' event-node='setremark' remark='' class ="remark_{$uid}" uid='{$uid}'>{:L('PUBLIC_REMARK_SETTING')}</a><em>)</em>
+</neq>
+<php>}</php>
+</span>

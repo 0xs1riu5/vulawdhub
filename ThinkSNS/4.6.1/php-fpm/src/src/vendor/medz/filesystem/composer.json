@@ -1,0 +1,35 @@
+{
+    "name": "medz/filesystem",
+    "type": "library",
+    "keywords": ["medz", "php", "filesystem"],
+    "description": "Static call function Symfony Filesystem Component.",
+    "homepage": "http://medz.cn",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Seven Du",
+            "email": "lovevipdsw@outlook.com",
+            "homepage": "http://medz.cn"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.9",
+        "symfony/filesystem": "~2.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Medz\\Component\\Filesystem\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "archive": { 
+        "exclude": [
+            "/test/"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-1.0-php5.3": "1.0-dev"
+        }
+    }
+}

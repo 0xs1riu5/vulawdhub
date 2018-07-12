@@ -1,0 +1,29 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap">
+    <div id="col" class="st-grid"> <include file='search_top' />
+      <div id="col8" class="st-section">
+        <div class="search-main"> 
+          <!--搜索列表-->
+          <php>if(empty($data['data'])){</php>
+          <div class="note">{:L('PUBLIC_NO_RELATE_DATA')}</div>
+          <php>}else{</php>
+          <div class="sperson-feedlist">
+            <div class="s-result">
+              <div class="s-gender">
+                <h4>{:L('PUBLIC_SEARCH_RESULT_CALCULATION',array('num'=>"<span>".$data['count']."</span>"))}</h4>
+              </div>
+            </div>
+            <php> $_tpl = THEME_PATH.'/'.$curApp.'/search.html';
+              echo fetch($_tpl, $this->tVar); </php>
+          </div>
+          <!--页码-->
+          <div id="page" class="page"> {$data.html} </div>
+          <!--页码/end-->
+          <php>}</php>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" />

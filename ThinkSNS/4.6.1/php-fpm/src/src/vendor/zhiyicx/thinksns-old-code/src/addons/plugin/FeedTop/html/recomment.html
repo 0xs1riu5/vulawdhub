@@ -1,0 +1,16 @@
+<div class="attention mb20 clearfix border-b" >
+<h3>官方推荐</h3>
+    <div class="comment_lists">  
+	<volist name="recomment_lists" id="vo">
+		<dl class="comment_list" id="comment_list" style="padding: 0px;">              
+			<dd style="margin: 0 0 0 10px;">
+			<p style="padding: 0;">
+				<a href="{:U('public/Profile/feed',array('feed_id'=>$vo['feed_id'],'uid'=>$vo['feed_info']['uid']))}" target="_blank">
+				{$vo.title}
+				</a>
+			</p>     
+			</dd>
+		 </dl>
+	 </volist>
+    </div>
+</div>

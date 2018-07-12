@@ -1,0 +1,37 @@
+<php>
+$canfeedshare = CheckPermission('core_normal','feed_share');
+</php>
+
+<volist name="list.data" id="vo">
+<dl class="comment_list" id="comment_list">
+	<dt><a href="{$vo.user_info.space_url}"><img src="{$vo.user_info.avatar_tiny}" width="30" height="30"/></a></dt>
+	<dd>
+		<p class="cont">{$vo.user_info.space_link}：<em>{$vo.feed_content|parse_html}<span class="time">({$vo.publish_time|friendlyDate})</span></em></p>
+		<php>if($canfeedshare == 1):</php>
+		<php>$cancomment = intval(CheckPermission('core_normal','feed_comment')); </php>
+		<p class="right mt5"><span><a href="javascript:;" onclick="shareFeed({$vo.sid}, {$vo.curid}, {$cancomment}, {$vo.is_repost});">转发</a></span></p>
+		<php>endif;</php>
+	</dd>
+</dl>
+</volist>
+
+<script type="text/javascript">
+/**
+ * 分享分享
+ * @return void
+ */
+var shareFeed = function (sid, curid, cancomment, is_repost) {
+	// 是否能评论
+	cancomment = cancomment || 0;
+	var url = U('public/Share/index')+'&sid='+sid+'&stable=feed&curid='+curid+'&curtable=feed&appname=public&cancomment=' + cancomment + '&is_repost='+is_repost;
+	// if ($('#tsbox').length > 0) {
+	// 	return false;
+	// }
+	// 分享弹窗
+	ui.box.load(url, L('PUBLIC_SHARE'), function () {
+		$('#at-view').hide();
+	});
+	$('#tsbox').css('z-index', 1001);
+	return false;
+};
+</script>

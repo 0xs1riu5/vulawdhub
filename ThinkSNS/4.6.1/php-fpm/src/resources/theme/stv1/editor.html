@@ -1,0 +1,80 @@
+<!-- 编辑器样式文件 -->
+<link href="__PUBLIC__/ts2/js/editor/editor/theme/base-min.css" rel="stylesheet"/>
+<!--[if lt IE 8]><!-->
+<link href="__PUBLIC__/ts2/js/editor/editor/theme/cool/editor-pkg-sprite-min.css" rel="stylesheet"/>
+<!--<![endif]-->
+<!--[if gte IE 8]><!-->
+<link href="__PUBLIC__/ts2/js/editor/editor/theme/cool/editor-pkg-min-datauri.css" rel="stylesheet"/>
+<!--<![endif]-->
+
+<?php
+// 读取附件大小的配置
+$_editor_system_default = model('Xdata')->lget('attach');
+$_editor_size_limit = empty($_editor_system_default['attach_max_size']) ? 2 : $_editor_system_default['attach_max_size']; // 默认2M
+$_editor_size_limit = floatval($_editor_size_limit) * 1000; // K
+?>
+
+<!-- 引入编辑器相关的JS文件 -->
+<script src="__PUBLIC__/ts2/js/editor/kissy-min.js?t=20120401"></script>
+<script src="__PUBLIC__/ts2/js/editor/uibase-min.js?t=20120401"></script>
+<script src="__PUBLIC__/ts2/js/editor/dd-min.js?t=20120401"></script>
+<script src="__PUBLIC__/ts2/js/editor/component-min.js?t=20120401"></script>
+<script src="__PUBLIC__/ts2/js/editor/overlay-min.js?t=20120401"></script>
+<script src="__PUBLIC__/ts2/js/editor/editor/editor-all-pkg-min.js?t=20120401"></script>
+<script src="__PUBLIC__/ts2/js/editor/editor/biz/ext/editor-plugin-pkg-min.js?t=20120401"></script>
+<script>
+<php> echo "var limitSize = '".$_editor_size_limit."';";</php>
+var _KISSY_ = {};
+
+function loadEditor(textareaId){
+	setTimeout("_loadEditor('"+textareaId+"')",100);
+}
+function _loadEditor(textareaId) {
+    KISSY.Editor.Config.base = "__PUBLIC__/ts2/js/editor/editor/plugins/";
+    KISSY.use('editor', function() {
+        var KE = KISSY.Editor;
+        var EDITER_UPLOAD = "<php> echo U('home/Attach/kissy');</php>";
+        //编辑器内弹窗 z-index 底限，防止互相覆盖
+        KE.Config.baseZIndex = 999999;
+        var cfg = {
+            attachForm:true,
+            baseZIndex:10000,
+            focus:false,
+            pluginConfig: {
+                "image":{
+                    upload:{
+                        serverUrl:EDITER_UPLOAD,
+                        surfix:"png,jpg,jpeg,gif,bmp",
+                        sizeLimit:limitSize
+                    }
+                },
+                "flash":{
+                    defaultWidth:"300",
+                    defaultHeight:"300"
+                },
+                "resize":{
+                    direction:["y"]
+                }
+            }
+        };
+        _KISSY_[textareaId] = KE("#"+textareaId, cfg);
+        _KISSY_[textareaId].use(
+            "font,link,image,flash,xiami-music,smiley");
+    });
+}
+
+function getEditorContent(textareaId)
+{
+    return _KISSY_[textareaId].getData();
+}
+
+function setEditorContent(textareaId,html)
+{
+    return _KISSY_[textareaId].setData(html);
+}
+
+function getEditorWordCount() {
+	var count = 0;
+	return count;
+}
+</script>

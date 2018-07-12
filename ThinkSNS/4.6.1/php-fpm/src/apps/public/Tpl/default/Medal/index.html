@@ -1,0 +1,56 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/medal.css" rel="stylesheet" type="text/css" />
+<script>
+function showdetail(id,type){
+	ui.box.load("{:U('public/Medal/showdetail')}",'勋章详情',null,{id:id,type:type});
+}
+function flaunt(id){
+    $.post(U('public/Medal/flaunt'),{id:id},function(res){
+        if(res){
+          ui.success("炫耀成功");
+        }
+    },'json');
+}
+</script>
+<div id="page-wrap">
+  <div id="main-wrap">
+  <div class="boxShadow">
+  	<div class="find-type">
+       <div class="app-title clearfix border-b">
+           <a href="{:U('public/Task/index')}" class="view-link">去做任务</a> 
+           <h4 class="left">勋章馆</h4>                     
+           <div class="app-tab-menu clearfix">
+               
+               <ul>
+                 <li><a href="{:U('public/Medal/index' , array('type'=>2,'uid'=>$uid))}" 
+              <php>if($type==2){</php>
+              class="current"
+              <php>}</php>
+              >全部勋章({$all_count})<eq name="type" value="2"><span class="arrow-t"></span></eq></a></li>
+                 <li><a href="{:U('public/Medal/index' , array('type'=>1,'uid'=>$uid))}" 
+              <php>if($type==1){</php>
+              class="current"
+              <php>}</php>
+              ><php>if($isme){</php>我<php>}else{</php>TA<php>}</php>的勋章({$user_count})<eq name="type" value="1"><span class="arrow-t"></span></eq></a></li>
+              </ul>
+           </div>
+       </div>
+    </div>
+
+    <div id="col" class="st-bg clearfix">
+      <div class="medal-content">
+        
+        <div class="medal-list clearfix">
+          <ul>
+            <volist name="data" id="v">
+              <li><a href="javascript:showdetail({$v.id},{$type});" class="pic"><img src="{$v.src}" width="100" height="100"></a><a href="javascript:;" class="name" title="{$v.name}">{$v.name|getShort=7}</a></li>
+            </volist>
+          </ul>
+          </div>
+        <div class="page"> {$html} </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" />

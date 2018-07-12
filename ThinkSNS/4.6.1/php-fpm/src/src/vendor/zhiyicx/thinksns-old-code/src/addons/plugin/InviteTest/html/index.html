@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="<?php echo THEME_PUBLIC_URL;?>/js/jquery-1.7.1.min.js?v=1427788364"></script>
+<title>请输入邀请码</title>
+<style type="text/css">
+html,body{height:100%;width:100%;overflow:hidden; padding:0; margin:0; min-width:720px;}
+body{ background:url(<php>echo getImageUrlByAttachId($config['bgimg']);</php>) no-repeat center center; position:relative;font-size:13px;line-height:1.5;font-family:"微软雅黑","Microsoft Yahei",Helvetica,Arial,sans-serif;color:#333}
+body *{ margin:0; padding:0;}
+form{position:absolute; top:53%; left:50%; margin-left:-153.5px; display:block; width:307px;}
+form input{width:295px;height:20px;line-height:20px;border:1px solid #888;padding:5px;color:#999;outline:none;text-align:center;font-size:13px;font-family:inherit;}
+form a{ display:block;width:307px; height:32px; line-height:32px; background:#0095E5;color:#fff;text-decoration:none; margin-top:20px;outline:none;text-align:center;}
+
+.dialog{margin:0;padding:0;width:510px;height:auto;max-height:700px;overflow:hidden;position:absolute;left:50%;top:-1000px;margin-left:-250px;background:#fff; clear:both;}
+.dialog .close-dialog{ position:absolute; top:10px; right:10px; display:block; height:22px; line-height:22px; width:22px; text-align:center; font-size:18px; color:#fff; text-decoration:none; outline:none; font-weight:bold;}
+.dialog{line-height:24px;}
+.dialog p.text{padding:0 20px;}
+</style>
+</head>
+<body>
+<form action="" method="post"><input type="text" name="invitecode" value="{$invitecode}" placeholder="输入邀请码按Enter进入" /><php>if($config['rule']):</php><a href="javascript:;" id="open_dialog">《邀请机制》如何得到内测邀请码？</a><php>endif;</php></form>
+<div class="dialog" id="dialog">
+<a href="javascript:;" class="close-dialog close_dialog">×</a>
+{$config['rule']}
+</div>
+<script type="text/javascript">
+var errorMsg = {:json_encode($errorMsg)};
+if(errorMsg) alert(errorMsg);
+$(function(){
+	$('form').submit(function(){
+		if(!$(this).find('input:first').val()){
+			$(this).find('input:first').focus();
+			return false;
+		}
+	});
+	$('#open_dialog').click(function(){
+		var height = $('#dialog').height();
+		$('#dialog').stop().css('top', (-height-1)+'px');
+		var top = ($(window).height()-height)/2;
+		$('#dialog').animate({top:top>0?top:0}, 300, 'swing');
+		return false;
+	});
+	$(window).resize(function(e) {
+		var top = $('#dialog').offset().top;
+		if(top>=0&&top<$(window).height()){
+        	var height = $('#dialog').height();
+			var top = ($(window).height()-height)/2;
+			$('#dialog').css('top', top>0?top:0);
+		}
+    });
+	$('.close_dialog').click(function(){
+		$('#dialog').stop().animate({top:$(window).height()+1}, 300, 'swing');
+	});
+	$(document).click(function(){
+		if($('#dialog').offset().top>=0) {
+			$('#dialog').stop().animate({top:$(window).height()+1}, 300, 'swing');
+		}
+	});
+	$('#dialog').click(function(){
+		return false;
+	});
+})
+</script>
+</body>
+</html>
+<?php exit;?>

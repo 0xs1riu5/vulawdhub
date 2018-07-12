@@ -1,0 +1,7 @@
+                <div class="tab-menu">
+                    <ul>
+						<volist name="tab_list" id="tab">
+                        <li <if condition=" $tab['field_key'] eq ACTION_NAME ">class="current"</if>><span><a href="<if condition="$tab['url']">{$tab.url}<else />{:U('public/Account/'.$tab['field_key'])}</if>">{$tab.field_name}</a></span></li>
+						</volist>
+                    </ul>
+                </div>

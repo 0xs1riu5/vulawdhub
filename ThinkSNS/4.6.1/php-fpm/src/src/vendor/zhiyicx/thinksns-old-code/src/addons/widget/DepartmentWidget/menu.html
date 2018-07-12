@@ -1,0 +1,48 @@
+<ul>
+	<volist name='pInfo' id='sv'>
+		<li <php> if($sid == $sv['sid']):</php> class="current" <php>endif;</php>>
+		<php>if(($sv['sid'] == $sid && !empty($childInfo) && $sid!=0) || ($sv['sid'] == $pid &&  $pid !=0)){</php>
+     	<a href="javascript:void(0);"  event-node="department_a"
+     	event-args="callback={$callback}&sid={$sv['pid']}&pid={$ppid}" class="back" style="float:right">
+     	&laquo;{:L('PUBLIC_GO_BACK')}
+     	</a>
+     	<php>}</php>
+     	
+     	<a <php>if($sid == 0 && $pid == 0 && $i != 1):</php>style="padding-left:25px;"<php>endif;</php> href="javascript:void(0);"  event-node="department_a"
+     	event-args="callback={$callback}&sid={$sv['sid']}&pid={$sv['pid']}" >
+            <i class="ico-minus-gray"></i>{$sv['name']}
+     	</a>
+     	</li>	
+	</volist>
+    <neq name='childInfo' value=''>
+    	<li>
+            <ul>
+                <volist name='childInfo' id='sv'>
+                    <li <php> if($sid == $sv['sid']):</php> class="current" <php>endif;</php>>
+                        <a style="padding-left:25px;" href="javascript:void(0);"  event-node="department_a"
+                    event-args="callback={$callback}&sid={$sv['sid']}&pid={$sv['pid']}&back={$sv['back']}&bsid={$sv['bsid']}&bpid={$sv['bpid']}" >
+                         <i class="ico-minus-gray"></i>{$sv['name']}
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+        </li>
+	</neq>
+</ul>
+<script type="text/javascript">
+M.addEventFns({
+	department_a:{
+		click:function(){
+			var args = M.getEventArgs(this);	
+			var sid = args.sid;
+			var pid = args.pid;
+			
+			var name = $(this).html();
+			name = name.replace(/<[^>]+>/g,"").replace(/^\s+|\s+$/g,"");
+		 	eval(args.callback+"('"+sid+"','"+name+"','"+pid+"')");
+			return false;
+			
+		}
+	}
+});	
+</script>

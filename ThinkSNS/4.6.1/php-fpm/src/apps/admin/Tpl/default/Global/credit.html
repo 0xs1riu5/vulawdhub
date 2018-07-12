@@ -1,0 +1,132 @@
+<include file="../Public/_header" />
+<div class="so_main">
+  <div class="tit_tab">
+    <ul>
+    <li><a href="{:U('admin/Global/credit')}" class="on">积分规则</a></li>
+    <li><a href="{:U('admin/Global/creditType')}">积分类型</a></li>
+    <li><a href="{:U('admin/Global/creditUser')}">设置用户积分</a></li>
+    <li><a href="{:U('admin/Global/creditLevel')}">积分等级</a></li>
+    </ul>
+  </div>
+  <div class="Toolbar_inbox">
+  	<div class="page right">{$html}</div>
+	<a href="{:U('admin/Global/addCredit')}" class="btn_a"><span>添加规则</span></a>
+	<a href="javascript:void(0);" class="btn_a" onclick="deleteCredit();"><span>删除规则</span></a>
+  </div>
+  
+  <div class="list">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th class="checkbox">
+		<input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+    	<label for="checkbox"></label>
+	</th>
+    <th class="line_l">ID</th>
+    <th class="line_l">名称</th>
+    <th class="line_l">别名</th>
+    <th class="line_l">类型</th>
+    <th class="line_l">周期范围</th>
+    <th class="line_l">周期内最多奖励次数</th>
+    <volist name="creditType" id="ct">    	
+    	<th class="line_l">{$ct.alias}</th>
+    </volist>
+    <th class="line_l">操作</th>
+  </tr>
+  <volist name="data" id="vo">
+	  <tr overstyle='on' id="credit_{$vo['id']}">
+	    <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.id}"></td>
+	    <td>{$vo.id}</td>
+	    <td>{$vo.name}</td>
+		<td>{$vo.alias}</td>
+	    <td>{$vo.type}</td>
+	    <td><php>if($vo['cycle']=='year'){ echo '每年'; }else if($vo['cycle']=='month'){ echo '每月'; }else{ echo '每天'; }</php></td>
+	    <td><php>{$vo.cycle_times|default='不限次数'}</td>
+        <volist name="creditType" id="ct">    	
+            <td>{$vo[$ct['name']]}</td>
+        </volist>
+	    <td>
+			<a href="{:U('admin/Global/editCredit', array('cid'=>$vo['id']))}">编辑</a> 
+	    	<a href="javascript:void(0);" onclick="deleteCredit({$vo['id']});">删除</a>
+		</td>
+	  </tr>
+  </volist>
+  </table>
+
+  </div>
+  <div class="Toolbar_inbox">
+	<div class="page right">{$html}</div>
+	<a href="javascript:void(0);" class="btn_a" onclick="window.open('{:U("admin/Global/addCredit")}','_self');"><span>添加规则</span></a>
+	<a href="javascript:void(0);" class="btn_a" onclick="deleteCredit();"><span>删除规则</span></a>
+  </div>
+</div>
+
+<script>
+	//鼠标移动表格效果
+	$(document).ready(function(){
+		$("tr[overstyle='on']").hover(
+		  function () {
+		    $(this).addClass("bg_hover");
+		  },
+		  function () {
+		    $(this).removeClass("bg_hover");
+		  }
+		);
+	});
+	
+	function checkon(o){
+		if( o.checked == true ){
+			$(o).parents('tr').addClass('bg_on') ;
+		}else{
+			$(o).parents('tr').removeClass('bg_on') ;
+		}
+	}
+	
+	function checkAll(o){
+		if( o.checked == true ){
+			$('input[name="checkbox"]').attr('checked','true');
+			$('tr[overstyle="on"]').addClass("bg_on");
+		}else{
+			$('input[name="checkbox"]').removeAttr('checked');
+			$('tr[overstyle="on"]').removeClass("bg_on");
+		}
+	}
+	
+	//获取已选择的ID数组
+	function getChecked() {
+		var ids = new Array();
+		$.each($('table input:checked'), function(i, n){
+			ids.push( $(n).val() );
+		});
+		return ids;
+	}
+	
+	function deleteCredit(ids) {
+		var length = 0;
+	    if(ids) {
+	        length = 1;         
+	    }else {
+	        ids    = getChecked();
+	        length = ids.length;
+	        ids    = ids.toString();
+	    }
+	    if(ids=='') {
+	        ui.error('请先选择一个规则');
+	        return ;
+	    }
+		if(ids == '' || !confirm('删除成功后将无法恢复，确认继续？')) return false;
+		
+		$.post("{:U('admin/Global/doDeleteCredit')}", {ids:ids}, function(res){
+			if(res == '1') {
+				ui.success('删除成功');
+				setTimeout("location.href = location.href",1000);
+				ids = ids.split(',');
+				for(i = 0; i < ids.length; i++) {
+					$('#credit_'+ids[i]).remove();
+				}
+			}else {
+				ui.error('删除失败');
+			}
+		});
+	}
+</script>
+<include file="../Public/_footer" />

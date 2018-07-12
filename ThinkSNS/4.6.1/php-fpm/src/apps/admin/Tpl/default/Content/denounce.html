@@ -1,0 +1,236 @@
+<include file="__THEME__/admin_header" />
+<div class="so_main">
+<script>
+function sureSearchDenounce(){
+	var id = $('#id').val();
+	var uid = $('#uid').val();
+	var fuid = $('#fuid').val();
+    var from = $('#from').val();
+	var state = $('#state').val();
+    var str_get = '&id='+id+'&uid='+uid+'&fuid='+fuid+'&state='+state;
+	var url = "{:U('admin/Content/denounce')}";
+	location.href = url + str_get;
+}
+</script>
+  <div class="page_tit">{:L('PUBLIC_REPORT_MANAGEMENT')}</div>
+  <div class="tit_tab">
+    <ul>
+    <li><a <eq name="state" value="0">class="on"</eq> href="{:U('admin/Content/denounce','state=0')}">{:L('PUBLIC_WAIT_OPERATION')}</a></li>
+    <li><a <eq name="state" value="1">class="on"</eq> href="{:U('admin/Content/denounce','state=1')}">{:L('PUBLIC_RECYCLE_BIN')}</a></li>
+    </ul>
+  </div>
+  <div id="search_div" <neq name="isSearch" value="1">style="display:none;"</neq>>
+    <div class="page_tit">{:L('PUBLIC_SEARCH_REPORT')} [ <a href="javascript:void(0);" onclick="searchDenounce();">{:L('PUBLIC_HIDDEN')}</a> ]</div>
+    <div class="form2">
+    <input type="hidden" name="isSearch" value="1" class="s-txt" style="width:300px"/>
+    <dl class="lineD">
+      <dt>ID：</dt>
+      <dd>
+        <input id="id" type="text" value="{$id}" class="s-txt" style="width:300px">
+        <p>{:L('PUBLIC_MULTIPLE_TIPS')}</p>
+      </dd>
+    </dl>
+    
+    <php>if($isSearch != 1) $uid = '';</php>
+    <dl class="lineD">
+      <dt>{:L('PUBLIC_STREAM_REPORT_ID')}：</dt>
+      <dd>
+        <input id="uid" type="text" value="{$uid}" class="s-txt" style="width:300px">
+        <p>{:L('PUBLIC_STREAM_REPORT_ID')}，{:L('PUBLIC_MULTIPLE_TIPS')}</p>
+      </dd>
+    </dl>
+    
+    <dl class="lineD">
+      <dt>被举报人ID：</dt>
+      <dd>
+      	<input type="text" id="fuid" value="{$fuid}"  class="s-txt" style="width:300px"/>
+        <p>被举报人ID，多个时使用英文的“,”分割</p>
+      </dd>
+    </dl>
+    <input type="hidden" value="{$state}" id="state" />
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="{:L('PUBLIC_CONFIRM')}" onclick="sureSearchDenounce();"/>
+    </div>
+  </div>
+  </div>
+  <div class="Toolbar_inbox">
+    <div class="page right">{$html}</div>
+    <a href="javascript:void(0);" class="btn_a" onclick="searchDenounce();">
+        <span class="search_action"><neq name="isSearch" value="1">{:L('PUBLIC_SEARCH_REPORT')}<else/>{:L('PUBLIC_SEARCH_FINISHIED')}</neq></span>
+    </a>
+    <a href="javascript:void(0);" class="btn_a" onclick="passReview();"><span>{:L('PUBLIC_REVOKE_REPORT')}</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="deleteRecord('', '{$state}');"><span>删除内容</span></a>
+  </div>
+  <div class="list">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th class="checkbox">
+        <input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+        <label for="checkbox"></label>
+    </th>
+    <th class="line_l">ID</th>
+    <th class="line_l">{:L('PUBLIC_STREAM_REPORT_ID')}</th>
+    <th class="line_l">{:L('PUBLIC_FORMANTS_USER_NAME')}</th>
+    <th class="line_l">{:L('PUBLIC_COME_FROM')}</th>
+    <th class="line_l" width="350">{:L('PUBLIC_FORMANTS_USER_INFO')}</th>
+    <th class="line_l" width="200">{:L('PUBLIC_REPORT_REASON')}</th>
+    <th class="line_l">{:L('PUBLIC_FORMANTS_USER_TIME')}</th>
+    <th class="line_l">{:L('PUBLIC_OPERATION')}</th>
+  </tr>
+  <volist id="vo" name="data">
+  	<php> 
+  	$fuserInfo = model('User')->getUserInfo($vo['fuid']);
+  	$userInfo = model('User')->getUserInfo($vo['uid']);
+  	</php>
+      <tr overstyle='on' id="Denounce_{$vo.id}">
+        <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.id}"></td>
+        <td>{$vo.id}</td>
+        <td>{$vo.uid}</td>
+        <td><php> if( $vo['uid']=='0' ){ echo '<font color=red>'.L('PUBLIC_SYSTEM_AUTOMATIC').'</font>'; }else{ echo( $userInfo['uname'] ); } </php></td>
+        <td>{$vo.from}</td>
+        <td>{:L('PUBLIC_STREAM_REPORT_UID')}：{$vo.fuid}&nbsp;&nbsp;&nbsp;&nbsp;{:L('PUBLIC_INFORMANTS_USER_NAME')}：{$fuserInfo.uname}<hr />{:L('PUBLIC_REPORT_FRONT_WORDS')}：{$vo.content}
+        <a href="{$vo.source_url}" target="_blank">{:L('PUBLIC_ORIGINAL_INFORMATION')}</a>
+        </td>
+        <td>{$vo.reason}</td>
+        <td>{$vo.ctime|date="Y-m-d H:i:s",###}</td>
+        <td>
+        <eq name="state" value="0">
+	        <a href="javascript:void(0);" onclick="passReview('{$vo.id}');">{:L('PUBLIC_REVOKE_REPORT')}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	        <a href="javascript:void(0);" onclick="deleteRecord('{$vo.id}')">删除内容</a>
+	    </eq>
+	    <eq name="state" value="1">
+	        <a href="javascript:void(0);" onclick="passReview('{$vo.id}');">{:L('PUBLIC_REVOKE_REPORT')}</a>
+	    </eq>
+	    <eq name="state" value="2">
+	        <a href="javascript:void(0);" onclick="deleteRecord('{$vo.id}')">删除内容</a>
+	    </eq>
+        </td>
+      </tr>
+  </volist>
+  </table>
+  </div>
+  <div class="Toolbar_inbox">
+    <div class="page right">{$html}</div>
+    <a href="javascript:void(0);" class="btn_a" onclick="searchDenounce();">
+        <span class="search_action"><neq name="isSearch" value="1">{:L('PUBLIC_SEARCH_REPORT')}<else/>{:L('PUBLIC_SEARCH_FINISHIED')}</neq></span>
+    </a>
+    <a href="javascript:void(0);" class="btn_a" onclick="passReview();"><span>{:L('PUBLIC_REVOKE_REPORT')}</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="deleteRecord('', '{$state}');"><span>删除内容</span></a>
+  </div>
+</div>
+
+<script>
+    //鼠标移动表格效果
+    $(document).ready(function(){
+        $("tr[overstyle='on']").hover(
+          function () {
+            $(this).addClass("bg_hover");
+          },
+          function () {
+            $(this).removeClass("bg_hover");
+          }
+        );
+    });
+    
+    function checkon(o){
+        if( o.checked == true ){
+            $(o).parents('tr').addClass('bg_on') ;
+        }else{
+            $(o).parents('tr').removeClass('bg_on') ;
+        }
+    }
+    
+    function checkAll(o){
+        if( o.checked == true ){
+            $('input[name="checkbox"]').attr('checked','true');
+            $('tr[overstyle="on"]').addClass("bg_on");
+        }else{
+            $('input[name="checkbox"]').removeAttr('checked');
+            $('tr[overstyle="on"]').removeClass("bg_on");
+        }
+    }
+
+    //获取已选择用户的ID数组
+    function getChecked() {
+        var ids = new Array();
+        $.each($('table input:checked'), function(i, n){
+            ids.push( $(n).val() );
+        });
+        return ids;
+    }
+    
+    function deleteRecord(ids, state) {
+        var length = 0;
+    	if(ids) {
+    		length = 1;    		
+    	}else {
+    		ids    = getChecked();
+    		length = ids.length;
+            ids    = ids.toString();
+    	}
+    	
+    	if(ids=='') {
+    		ui.error('{:L('PUBLIC_STREAM_REPORT_PLEASE_SELECT')}');
+    		return ;
+    	}
+    	if(confirm(L('PUBLIC_DELETE_NUMBER_TIPES',{'num':length}))) {
+    		$.post("{:U('admin/Content/doDeleteDenounce')}",{ids:ids, state:state},function(res){
+    			if(res=='1') {
+    				ui.success('{:L('PUBLIC_DELETE_SUCCESS')}');
+    				removeItem(ids);
+    			}else {
+    				ui.error('{:L('PUBLIC_DELETE_FAIL')}');
+    			}
+    		});
+    	}
+    }
+    
+    function passReview(ids){
+    	var length = 0;
+    	if(ids) {
+    		length = 1;    		
+    	}else {
+    		ids    = getChecked();
+    		length = ids.length;
+            ids    = ids.toString();
+    	}
+    	
+    	if(ids=='') {
+    		ui.error('{:L('PUBLIC_STREAM_REPORT_PLEASE_SELECT')}');
+    		return ;
+    	}
+    	if(confirm(L('PUBLIC_UNSET_TIPES',{'num':length}))) {
+    		$.post("{:U('admin/Content/doReviewDenounce')}",{ids:ids},function(res){
+    			if(res=='1') {
+    				ui.success('{:L('PUBLIC_ADMIN_OPRETING_SUCCESS')}');
+    				removeItem(ids);
+    			}else {
+    				ui.error('{:L('PUBLIC_ADMIN_OPRETING_ERROR')}');
+    			}
+    		});
+    	}
+    }
+    
+    function removeItem(ids) {
+    	ids = ids.split(',');
+        for(i = 0; i < ids.length; i++) {
+            $('#Denounce_'+ids[i]).remove();
+        }
+    }
+    
+    //搜索用户
+    var isSearchHidden = <neq name="isSearch" value="1">1<else/>0</neq>;
+    function searchDenounce() {
+        if(isSearchHidden == 1) {
+            $("#search_div").slideDown("fast");
+            $(".search_action").html("{:L('PUBLIC_SEARCH_FINISHIED')}");
+            isSearchHidden = 0;
+        }else {
+            $("#search_div").slideUp("fast");
+            $(".search_action").html("{:L('PUBLIC_SEARCH_REPORT')}");
+            isSearchHidden = 1;
+        }
+    }
+</script>
+
+<include file="__THEME__/admin_footer" />

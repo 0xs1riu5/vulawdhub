@@ -1,0 +1,270 @@
+<div class="pop_up">
+  <div class="pop_up_main">
+    <div class="pop_up_tab">
+      <div class="tab"> <a href="#" class="on">基本设置</a> </div>
+    </div>
+    <div class="pop_up_box">
+      <ul class="pop_up_box_form">
+        <li>
+          <div class="c1" style="width:100px;">图片展示方式： </div>
+          <div class="c2" style="width:370px;">
+            <select name="u" id="style" class="param_post text" onchange="changStyle($(this))">
+              <option value="simImage">单独静态图片</option>
+              <option value="downWord">底部tab左右滚动</option>
+              <option value="downNum">底部数字滚动</option>
+              <option value="leftWord">左边图滚动</option>
+            </select>
+          </div>
+        </li>
+        <li class="imageStyle" id="simImage">
+          <div class="c1" style="width:100px;">上传图片： </div>
+          <div class="c2" style="width:370px;">
+          <div class="lh25" id="attach_upload_data">
+            <php>if(!empty($attr['image_list'])){</php>
+            <php> 
+              $simnum = $attr['attachid'];
+              $tiList = (array) $attr['image_list'];
+              $imgList = array();
+              foreach($tiList as $key=>$value){
+              $attachId = str_replace('attach',''.$key);
+              $imgList[$key] = (array)$value;
+              } </php>
+              <volist name="imgList" id="vo">
+              <php>$attachid=str_replace('attach', '', $key);
+              $key=='image' && $attachid = $simnum;</php>
+                <input type="hidden" name="attach_path_{$attachid}" rel="path" value="{$vo.path}" class="attach{$attachid} userInput attach"/>
+              </volist>
+              <volist name="imgList" id="vo">
+              <php>$attachid=str_replace('attach', '', $key);
+              $key=='image' && $attachid = $simnum;</php>
+                <div class="mb10 attach{$attachid} attach">
+                  <p> <a onclick="deleteAttach({$attachid})" href="javascript:void(0)" class="attach{$attachid} attach">[删除]</a> 标题：
+                    <input type="text" value="{$vo.title}" class="attach{$attachid} userInput attach text" name="attach_name_{$attachid}" attachid="{$attachid}" rel="title"/>
+                  </p>
+                  <p style="padding-left: 33px;" class="pt10"> 链接：
+                    <input type="text" value="{$vo.url}" class="attach{$attachid} userInput attach text" name="attach_url_{$attachid}" rel="url"/>
+                  </p>
+                </div>
+              </volist>
+            </div>
+            <php>}</php>
+            <form>
+            <div>{:W('Upload',array('callback'=>'attach_upload_sim_imge','uploadType'=>'image','urlquery'=>'upload_type=image','inputname'=>'inputname'))}</div></form>
+            </div>
+        	
+        </li>
+        <li class="slide-param" style="<php>if($attr['style']=='simImage'){</php>display:none;<php>}</php>">
+          <div class="c1" style="width:100px;">自动播放间隔： </div>
+          <div class="c2" style="width:370px;">
+            <input type="text" name="autoPlayInterval" id="autoPlayInterval" class="param_post text in_mr5" value="3">
+            (单位：秒) </div>
+        </li>
+        <!--                <li>
+                    <div class="c1">
+                        缓存时间：
+                    </div>
+                    <div class="c2">
+                     	<select name="u" id="cache_timeout" class="param_post text">
+                        	<option value="60" >1分钟</option>
+                            <option value="180">3分钟</option>
+							<option value="300">5分钟</option>
+							<option value="600"   selected="selected">10分钟</option>
+							<option value="1800">30分钟</option>
+                            <option value="3600">1小时</option>
+                                                        <option value="0">不开启缓存</option>
+                            
+                        </select>
+                    </div>
+                </li>-->
+        <li class="slide-param" style="<php>if($attr['style']=='simImage'){</php>display:none;<php>}</php>">
+          <div class="c1" style="width:100px;"> 动画效果： </div>
+          <div class="c2" style="width:370px;">
+            <select name="effect" id="effect" class="param_post text" onchange="changStyle($(this))">
+              <option value="none" selected="selected">无特效</option>
+              <option value="scrollx">左右滚动</option>
+              <option value="scrollx fade">左右滚动+淡入淡出</option>
+              <option value="scrolly fade">上下滚动+淡入淡出</option>
+              <option value="fade">淡入淡出</option>
+            </select>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="preview" class="preview_r"> </div>
+</div>
+<script>
+	
+                                    	var index= '{$index}';
+                                    	var layout = '{$layout}';
+                                    	var parentId = '{$parentId}';
+                                    	var id = '{$id}';
+                                    	var namespace = '{$_GET['tagName']}';
+                                		var postData = new Array();
+										var imageLimit = new Array();
+										imageLimit['simImage'] = 1;
+										imageLimit['downWord'] = 4;
+										imageLimit['downWordFade'] = 5;
+										imageLimit['fade'] = 0;
+										imageLimit['downNum'] = 0;
+										var limitimg = 0;
+                                        function changStyle(_this){
+                                           var id = _this.val();
+										   if( id != "simImage"){
+										   	$('.slide-param').show();
+										   }else{
+										   	$('.slide-param').hide();
+										   }
+                                        }
+										$(function(){
+											var style = "{$attr['style']}";
+											$('#style').val(style);
+										});
+                              function preview(){
+                                var sendData = getPostData();
+        						if ( !sendData ){
+        							return;
+        						}
+                                $.ajax({
+                                    type: "POST",
+                                    url: SITE_URL + '/index.php?app=page&mod=Diy&act=previewModel',
+                                    data: sendData,
+                                    dataType: 'json',
+                                    success: function(result){
+                                        $('#preview').html(result.html);
+  var content = '<div id="diy_copyHtmlContent">\
+                                            		复制源代码:<input type="text" id="copyHtmlContent" onclick="select();" style="width:150px;" />\
+                                        		</div>';
+                                        $('#preview').append(content);
+                                        $('#diy_copyHtmlContent');
+                                        $('#copyHtmlContent').val(result.html).bind('click',function(){
+											copyToClipboard(result.html);
+										});
+										//$('#copyHtml').click();
+                                    }
+                                });
+                            }
+                                    	
+                                    	function savemodel(){
+                    						var sendData = getPostData();
+                    						if ( !sendData ){
+                    							return;
+                    						}
+                                			$.ajax({
+                                				type : "POST",
+                                				url  : SITE_URL + '/index.php?app=page&mod=Diy&act=saveModel',
+                                				data : sendData,
+                                				dataType : 'json',
+                                				success : function(result){
+                                 					//var jsonData = eval('('+result+')');
+                                    		 		frameArray[parentId][layout][index] = result['sign'];
+                                    		 		 if($('#'+id).html() == null){
+                                			  		 $('#placeholder').html(result['html']);
+                                    		 		 $('#placeholder')
+                                    		 			.removeAttr('class')
+                                    					.removeAttr('style')
+                                    					.addClass('mb10')
+                                    					.attr('id',id)
+                                    					.attr('rel',namespace)
+                                    					.attr('sign', result['sign'])
+                                    		 			.prepend('<div class="diy_edit"><div class="ico_edit"><a href="javascript:void(0)" onclick="updateDiyModel(\''+id+'\',\''+namespace+'\')" class="ico_diyedit" title="设置">设置</a> <a href="javascript:void(0)" class="ico_diydel" onclick="deleteDiy(\'' + id + '\')" title="删除">删除</a></div></div>');
+                            		        		 }else{
+                            		    			 	$('#'+id).html(result['html']);
+                            		    				$('#'+id).prepend('<div class="diy_edit"><div class="ico_edit"><a href="javascript:void(0)" onclick="updateDiyModel(\''+id+'\',\''+namespace+'\')" class="ico_diyedit" title="设置">设置</a> <a href="javascript:void(0)" class="ico_diydel" onclick="deleteDiy(\'' + id + '\')" title="删除">删除</a></div></div>');
+                            		    
+                            		    			 }
+                                				}
+                                			});
+                                    	}
+                                        function getPostData(){
+                                            var style = $("#style").val();
+                                            var data = new Array();
+                                            var result = 'tagName=' + namespace;
+											if(style == "simImage"){
+												  data['image'] = new Array();
+												  var attachid = $('.userInput[rel="title"]').attr('attachid');
+												  if ( $('.userInput[rel="title"]').length > 1 ){
+													  alert('单图模式只能显示一张图片');
+							                		  return false;
+												  }
+                                                    $('.userInput').each(function(){
+														var value = $(this).val().replace(/&/g,"[@]");
+                                                        data['image'][$(this).attr('rel')] = value;
+                                                    })
+                                                    for (one in data['image']) {
+                                                        result += '&image[image][' + one + ']' + "=" + data['image'][one];
+                                                   }
+                                                    result += '&PARAM_attachid='+attachid;
+											}else{
+													var postName;
+	                                                $('.userInput').each(function(){
+														var tempClass = $(this).attr('class');
+														tempClass = tempClass.split(' ');
+														if(typeof(data[tempClass[0]]) == "object"){
+															data[tempClass[0]][$(this).attr('rel')] = $(this).val();
+														}else{
+															data[tempClass[0]] = new Array();
+		                                                    data[tempClass[0]][$(this).attr('rel')] = $(this).val();	
+														}
+	                                                })
+													
+													var tempParam = new Array();
+        											var result;
+                                        			$('.param_post').each(function(){
+                    									if($(this).attr('type') == "radio" ){
+                    										if($(this).attr('checked')){
+                    											var postKey = 'PARAM_'+$(this).attr('name');
+                    										}else{
+                    											return true;
+                    										}
+                    									}else{
+                    										var postKey = 'PARAM_'+$(this).attr('id');
+                    									}
+														var value = $(this).val().replace(/&/g,"[@]");
+                                        				tempParam[postKey] = value;
+                                        			});
+													for(var i in tempParam){
+                                        				result += '&'+i+'='+tempParam[i];
+													}
+													
+	                                                for (one in data) {
+														postName = "image["+one+"]";
+														for(sub in data[one]){
+															result += '&'+postName+'['+sub+']' +"="+ data[one][sub];
+														}
+	                                                }
+													
+														
+											}
+                                            result += '&PARAM_style=' + style;
+                                            return result;
+                                        }
+
+                	function attach_upload_sim_imge(info){
+                		//判断附件类型
+                		//判断附件类型
+                		//var upload_url	=	'{$Think.const.UPLOAD_PATH}';				//上传目录
+                		//var insertImage	=	'{$insert_image}';
+                		//var imgPattern = new RegExp('^.*\.(bmp|gif|jpg|png){1}$','gi');	//图片类型匹配
+                		var imgPattern = new RegExp('^.*.(bmp|gif|jpg|png){1}$','gi'); //图片类型匹配
+                		if(imgPattern.test(info.name)){
+                			attachInfo = '<input class="attach'+info.attach_id+' userInput attach" attachid='+info.attach_id+' type="hidden" value="'+info.save_path+info.save_name+'" rel="path" name="attach_path_'+info.attach_id+'"/>\
+                						   <div class="mb10 attach'+info.attach_id+' attach">\
+                						   <p><a class="attach'+info.attach_id+' attach" href="javascript:void(0)" onclick="deleteAttach('+info.attach_id+')">[删除]</a>\
+                						   标题：<input type="text" rel="title" name="attach_name_'+info.attach_id+'" class="attach'+info.attach_id+' userInput attach text" attachid='+info.attach_id+' value="'+info.name+'" /></p>\
+                						   <p class="pt10" style="padding-left:33px;">链接：<input type="text" rel="url" name="attach_url_'+info.attach_id+'" class="attach'+info.attach_id+' userInput attach text" attachid='+info.attach_id+' value=""></p>\
+                						  </div>';
+                		}
+                		++ limitimg;
+                		if ( $('#style').val() == 'simImage' && limitimg > 1){
+                			alert('单图模式只能显示一张图片')
+                			return;
+                		}
+                		$('#attach_upload_data').prepend(attachInfo);
+                	}
+                	function deleteAttach(attach){
+                		if(confirm('确认删除？')){
+                			$('#attach_upload_data .attach'+attach).remove();
+                		}
+                	}
+</script>

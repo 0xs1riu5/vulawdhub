@@ -1,0 +1,67 @@
+<php>if($isAdmin != '1'){</php>
+<include file="public_header" />
+<php>}else {</php>
+<body>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="__THEME__/admin/admin.css" rel="stylesheet" type="text/css" />
+<script src="__THEME__/js/jquery.js"></script>
+<php>}</php>
+<script>
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>'
+// Js语言变量
+var LANG = new Array();
+
+//跳转
+function Jump(){
+  window.location.href = '{$jumpUrl}';
+}
+document.onload = setTimeout("Jump()" , {$waitSecond}* 1000);
+</script>
+
+<php>$notifyLang = LANG_URL.'/public_'.getLang().'.js';</php>
+<script type="text/javascript" src="{$notifyLang}"></script>
+
+<link href="{$publicCss}" rel="stylesheet" type="text/css">
+<base target="_self" />
+<eq name="status" value="1">
+  <div class="Prompt">
+  	<div class="Prompt-inner">
+      <p><i class="ico-ok-big"></i>{$message}</p>
+  </div>
+  </div>
+</eq>
+<eq name="status" value="0">
+  <div class="Prompt">
+  	<div class="Prompt-inner">
+       <div class="box-ver"><i class="ico-error-big"></i>{$message}</div>
+    </div>
+    </div>
+</eq>
+<php>if($isAdmin != '1'){</php>
+    <include file="public_footer" />
+<php>}else {</php>
+    </body>
+<php>}</php>
+
+<script>
+//底部置底
+var head_height = $("#body-bg").css("padding-top");
+var footer_height = $(".footer-wrap").height();
+var footer_margin_top = $(".footer-wrap").css("margin-top");
+var content_height = $(".Prompt").height();
+var window_height = $(window).height();
+var min_height = Number(window_height)-parseInt(head_height)-Number(footer_height)-parseInt(footer_margin_top)-1;
+if(content_height < min_height){
+  $(".Prompt").css("min-height",min_height);
+}
+</script>

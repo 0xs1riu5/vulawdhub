@@ -1,0 +1,12 @@
+
+	   <div class="right-box clearfix">
+	     <fieldset class="inter-line"><a class="right">共{$manageWeibaListCount|default=0}个</a><legend class="inter-txt">我管理的微吧</legend></fieldset>
+	     <ul>
+	        <volist name="manageWeibaList" id="vo">
+	            <li>
+	                <a class="" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><img src="{$vo.logo}" width="50" height="50" /></a>
+	                <a class="name" href="{:U('weiba/Index/detail',array('weiba_id'=>$vo['weiba_id']))}"><span>{$vo.weiba_name}</span></a>
+	            </li>
+	        </volist>
+	   </ul>
+	   </div>  

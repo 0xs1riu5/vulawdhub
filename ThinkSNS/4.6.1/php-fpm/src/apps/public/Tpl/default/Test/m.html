@@ -1,0 +1,52 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+    <div id="main-wrap" class=" bd-not">
+        <div class="extend">
+            <div model-node='testmodel'   model-args="name=tes22222tname&value=testvalue"  >
+              这里是块壮区域
+                <a href="" event-node='testevent' event-args="name=testname&value=testvalue">事件</a>
+            </div>
+        </div>
+    </div>
+</div>
+   
+ <script>
+ M.addModelFns({
+     'testmodel':{
+               click:function(){
+                    var args = M.getModelArgs(this);
+                  //alert(args.name);
+               },
+               load:function(){
+            	   
+            	   var c = this.childEvents['testevent'][0];
+            	   var args = M.getEventArgs(c);
+            	   alert(args.name);
+            	   //alert(args.name);
+               },
+               mouseenter :function(){
+            	   
+               },
+               mouseleave:function(){
+               }
+     }
+});
+
+M.addEventFns({
+    'testevent':{
+               click:function(){
+            	   var p = this.parentModel;
+            	   var args = M.getModelArgs(p);
+            	   alert(args.name);
+               },
+               load:function(){
+               },
+               mouseenter:function(){
+               },
+               mouseleave:function(){
+               }
+         } 
+});
+
+ </script>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,39 @@
+<div class="area-type-lists">
+<div class="area-type-list no-margin clearfix">
+   <!--<p>按地区查找</p>-->
+   <ul>
+      <li>
+         <a class="first <eq name="area" value="0">current</eq>" href="{:U('people/Index/index', array('area'=>0,'type'=>$type))}">全部</a>
+      </li>
+      <php>if(!$area){</php>   <!-- 循环所有省 -->
+      <volist name="allProvince" id="vo">
+      <li>
+         <a <eq name="area" value="$vo.id"> class="current"</eq> href="{:U('people/Index/index', array('area'=>$vo['id'],'type'=>$type))}">{$vo.title}</a>
+      </li>
+      </volist>
+      <php>}else{</php>
+         <neq name="parent2.title" value=""><li><a class="current" href="{:U('people/Index/index', array('area'=>$parent2['area_id'],'type'=>$type))}">{$parent2['title']}</a></li><else /><li><a class="current" href="{:U('people/Index/index', array('area'=>$parent1['id'],'type'=>$type))}">{$parent1['title']}</a></li></neq>
+      <php>}</php>
+   </ul>
+   <!--  -->
+   <php>if($parent2['title'] && $parent1['title']){</php>
+   <ul>
+      <li>
+         <a class="first <eq name="area" value="0">current</eq>" href="{:U('people/Index/index', array('area'=>$parent2['area_id'],'type'=>$type))}">全部</a>
+      </li>
+         <li><a class="current" href="{:U('people/Index/index', array('area'=>$parent1['id'],'type'=>$type))}">{$parent1['title']}</a></li>
+   </ul>
+   <php>}</php>
+   <!--  -->
+   <php>if($city){</php>
+   <ul>
+      <volist name="city" id="vo">
+      <li>
+         <a <eq name="area" value="$vo.id"> class="current"</eq> href="{:U('people/Index/index', array('area'=>$vo['id'],'type'=>$type))}">{$vo.title}</a>
+      </li>
+      </volist>
+   </ul>
+   <php>}</php>
+   
+</div>
+</div>

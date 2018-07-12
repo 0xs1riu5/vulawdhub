@@ -1,0 +1,104 @@
+<php>if(CheckPermission('core_normal','feed_post')){</php>
+		<!-- 发布分享/分享 -->
+		<div class="send_weibo diy-send-weibo" model-node="send_weibo">
+          <div class="box">
+			<div class="input" model-node="weibo_post_box">
+				<div class="input_before mb5" model-node="mini_editor" model-args="prompt={$prompt}">
+					
+					<textarea id="inputor{$time}" name="at" class="input_tips" event-node="mini_editor_textarea" model-args='t=feed'>{$initHTML}</textarea>
+					<div model-node="numsLeft" class="num">{$initNums}</div>
+					<div model-node="post_ok" style="display:none;text-align:center;position:absolute;left:0;top:10px;width:100%"><i class="ico-ok"></i>{:L('PUBLIC_SHARE_SUCCESS')}</div>
+				</div>
+				<div class="action clearfix" model-node='send_action'>
+					<div class="kind">
+					<div class="right release"><!--<span class="synchro">同步<i class="arrow-line-down"></i></span>-->{:Addons::hook('weibo_syn_middle_publish')}<a class="btn-grey-white" event-node='{$post_event}' event-args='type={$type}&app_name={$app_name}&topicHtml={$initHTML}&source_url={$source_url}' href="javascript:;"><span>发布</span></a></div>
+					<div class="acts">
+
+						<eq name="actions.face" value="true">
+						<php>if(in_array('face',$weibo_type)):</php>
+					    <a event-node="insert_face" class="face-block" href="javascript:;" title="表情"><i class="face"></i></a>
+						<php>endif;</php>
+					    </eq>
+
+					    <eq name="actions.at" value="true">
+						<php>if(in_array('at',$weibo_type)):</php>
+					    <a event-node="insert_at" class="at-block" href="javascript:;" title="好友"><i class="at"></i></a>
+						<php>endif;</php>
+					    </eq>
+
+					    <eq name="actions.image" value="true">
+					    <php>if(in_array('image',$weibo_type)):</php>
+					    <a href="javascript:void(0);" class="image-block" title="图片"><i class="image" ></i>
+					    <form style='display:inline;padding:0;margin:0;border:0;outline:none;' >
+					    <input type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','image')" urlquery='attach_type=feed_image&upload_type=image&thumb=1&width=100&height=100&cut=1' hidefocus="true">
+					    </form>
+					    </a>
+					    <div class="tips-img" style="display:none"><dl><dd><i class="arrow-open"></i>jpg,png,gif,bmp,tif</dd></dl></div>
+					    <php>endif;</php>
+					    </eq>
+
+					    <eq name="actions.video" value="true">
+					    <php>if(in_array('video',$weibo_type)):</php>
+					    <input type="hidden" id="postvideourl" value="" />
+					    <a event-node="insert_video" rel="{$post_event}" class="video-block" href="javascript:;" title="视频"><i class="video"></i></a>
+					    <php>endif;</php>
+					    </eq>
+
+					    <eq name="actions.file" value="true">
+					    <php>if(in_array('file',$weibo_type)):</php>
+					    <a class="file-block" href="javascript:;" title="附件"><i class="file"></i>
+					    <form style='display:inline;padding:0;margin:0;border:0' >
+					    <input type="file" name="attach" inputname='attach' onchange="core.plugInit('uploadFile',this,'','all')" urlquery='attach_type=feed_file&upload_type=file' hidefocus="true">
+					    </form>
+					    </a> 
+					    <php>endif;</php>
+					    </eq>
+					    
+					    <eq name="actions.topic" value="true">
+						<php>if(in_array('topic',$weibo_type)):</php>
+					    <a event-node="insert_topic" class="topic-block" href="javascript:;" title="话题"><i class="topic"></i></a>
+						<php>endif;</php>
+						</eq>
+
+						<eq name="actions.contribute" value="true">
+						<php>if(in_array('contribute',$weibo_type) && $hasChannel):</php>
+					    <a event-node="insert_contribute" class="contribute-block" href="javascript:;" title="投稿"><i class="contribute"></i></a>
+					    <input type="hidden" autocomplete="off" value="" id="contribute" />
+					    <php>endif;</php>
+					    </eq>
+					</div>	
+					<div class="clear"></div>
+		            <div model-node ='faceDiv'></div>
+		            <php>if($attachInfo){</php>
+			            <div uploadcontent="image" class="input-content attach-file">
+			            	<ul class="image-list">
+			            		<volist name="attachInfo" id="vo">
+				            		<li><a href="javascript:void(0)" class="pic"><img width="100" height="100" src="{$vo.attach_url}"></a><a onclick="core.uploadFile.removeAttachId(this,'image',{$vo.attach_id})" href="javascript:void(0)" class="name">删除</a>
+				            		</li>
+			            		</volist>
+			            	</ul>
+			            	<input type="hidden" id="attach_ids" name="attach_ids" feedtype="image" value="{$attach_ids}" class="attach_ids">
+			            </div>
+		            <php>}</php>
+		            </div>
+		        </div>
+			</div>
+		  </div>
+		</div>
+	<php>}else{</php>
+ 		<div class="send_weibo">
+		  <div class="box-purview"><div class="nologin"><i class="ico-error"></i>您还未登录，请<a class="nologin-a" href="javascript:ui.quicklogin();">&nbsp;登录</a>&nbsp;or&nbsp;<a class="nologin-a" href="{:U('public/Register/index')}">注册</a></div></div>
+		</div>
+	<php>}</php>
+ <script>
+ var initHtml = '{initHtml}';
+ core.loadFile(THEME_URL+'/js/plugins/core.at.js');
+ core.loadFile(THEME_URL+'/js/plugins/core.uploadFile.js');
+ core.loadFile(THEME_URL+'/js/module.weibo.js',function(){
+  M(document.getElementById('tsbox'));
+ });
+ atWho($('#inputor{$time}'));
+ setTimeout(function (){
+	 $('#inputor{$time}').focus();
+ },300)
+ </script>

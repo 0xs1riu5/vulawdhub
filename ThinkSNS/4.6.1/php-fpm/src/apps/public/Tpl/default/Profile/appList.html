@@ -1,0 +1,20 @@
+<include file="__THEME__/public_header" />
+<div id="page-wrap">
+  <div id="main-wrap"> <if condition="$mid==$uid"><include file="_top"/> <else /> <include file="_othertop"/></if>
+    <div id="col" class="st-grid">
+      <php>if($userPrivacy['space'] != 1){</php>
+        <div class="st-bg cc">
+        <include file="_tab_menu"/>
+          <php>if($_GET['tab'] == 'channel'){</php>
+            <include file="_sidebar"/>
+          <php>}</php>
+          {$profileContent}
+        </div>
+      <php>}else{</php>
+      <p class="extend">-_-。sorry！根据对方隐私设置，您无权查看TA的主页</p>
+      <php>}</php>
+    </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" /> 
+<script src="__THEME__/js/module.weibo.js"></script>

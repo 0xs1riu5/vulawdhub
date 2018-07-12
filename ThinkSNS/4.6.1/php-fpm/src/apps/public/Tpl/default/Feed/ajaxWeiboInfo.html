@@ -1,0 +1,366 @@
+<php>
+$cancomment = intval(CheckPermission('core_normal','feed_comment')); 
+$canfeedshare = CheckPermission('core_normal','feed_share');
+</php>
+
+<div id="big_list" class="info feed_lists">
+  <dl class="feed_list">
+    <dt class="face"><a href="{:U('public/Profile/index',array('uid'=>$feedInfo['uid']))}"><img src="{$feedInfo['avatar_big']}" width="50" height="50"/></a></dt>
+    <dd class="content">
+      <space uid="feedInfo.uid">{uname}</space>
+      <p class="date">{$feedInfo.publish_time|friendlyDate}</p>
+    </dd>
+  </dl>
+  <div class="detail"><p>{$feedInfo.feed_content|replaceUrl|parse_html}</p></div>
+
+  <div class="more-actions clearfix">
+    <span class="right">
+       <a id="comment_click" href="javascript:;" onclick="ajaxList('comment', '{$feedId}', 1, true)" class="current">评论</a><i class="vline">|</i>
+       <a id="report_click" href="javascript:;" onclick="ajaxList('report', '{$feedId}', 1, true)">转发</a><i class="vline">|</i>
+       {:W('Collection',array('type'=>'following','sid'=>$feedId,'stable'=>'feed','sapp'=>'public'))}<i class="vline">|</i>
+      {:W('Digg', array('feed_id'=>$feedId, 'digg_count'=>$feedInfo['digg_count'], 'diggArr'=>$diggArr, 'diggId'=>'digg_'))}
+    </span>
+  </div>
+ <div class="reply-box">
+  
+  <div class="repeat" id="repeat">
+    <div id="send_box" <eq name="cancomment" value="0">style="display:none;"</eq>>
+      <div class="action clearfix mb10">
+        
+      <div class="input">
+        <div class="input_before1">
+          <textarea id="mini_editor_textarea" class="input_tips" hidefocus="true"></textarea>
+          <div id="numsLeft" class="num">{$initNums}</div>
+        </div>
+        </div>
+        <div class="action mt5 clearfix">
+          <div><a id="reply_btn" send="1" onclick="sendAction()" href="javascript:;" class="btn-green-small right">回复</a></div>
+          <div class="acts"><a href="javascript:;" class="face-block" onclick="setFace(this);" title="表情"><i class="face"></i></a></div>
+          <div class="clear"></div>
+          <div id="face_div"></div>
+          <php>if($canfeedshare == 1):</php>
+          <p id="report_my_feed">
+          <!--[if !IE]><!-->
+          <label style="display:none"><input id="is_share_feed" type="checkbox" class="checkbox regular-checkbox"><span for="is_share_feed"></span>同时转发到我的分享</label>
+          <!--<![endif]-->
+          <!--[if IE]>
+          <label><input id="is_share_feed" type="checkbox" class="checkbox">同时转发到我的分享</label>
+          <![endif]-->
+          </p>
+          <php>endif;</php>
+          <php>if($cancomment == 1):</php>
+          <p id="comment_to_uid" class="iscomment" style="display:none">
+          <!--[if !IE]><!-->
+          <label><input id="is_comment" type="checkbox" class="checkbox regular-checkbox" /><span for="is_comment"></span>同时评论</label>
+          <!--<![endif]-->
+          <!--[if IE]>
+          <label><input id="is_comment" type="checkbox" class="checkbox" />同时评论给 {$feedInfo.uname}</label>
+          <![endif]-->
+          </p>
+          <php>endif;</php>
+        </div>
+      </div>
+    </div>
+    <eq name="cancomment" value="0"><span id="send_box_info"><div class="nologin">您还未登录，请<a class="nologin-a" href="javascript:ui.quicklogin();">&nbsp;登录</a>&nbsp;or&nbsp;<a class="nologin-a" href="{:U('public/Register/index')}">注册</a></div></span></eq>
+    <div class="comment_lists" id="ajax_list" rel="comment"></div>
+  </div>
+ </div>
+</div>
+
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
+<script type="text/javascript">
+var digglock = 0;
+function addDigg(feed_id){
+  if (digglock==1){
+    return;
+  }
+  digglock = 1;
+   $.post("{:U('public/Feed/addDigg')}", {feed_id:feed_id}, function(res){
+       if(res==1){
+         var num = $('#digg_'+feed_id).attr('rel');
+         num++;
+         $('#digg_'+feed_id).attr('rel', num);
+         $('#digg_'+feed_id).html('<a href="javascript:;" onclick="delDigg('+feed_id+')">已赞('+num+')</a>');
+         $('#digg'+feed_id).attr('rel', num);
+         $('#digg'+feed_id).html('<a href="javascript:;" onclick="delDigg('+feed_id+')">已赞('+num+')</a>');
+     }else {
+         ui.error('操作失败，如没有登录请先登录再操作');
+       }
+       digglock = 0;
+   });
+}
+
+function delDigg (feed_id) {
+  if (digglock == 1) {
+    return;
+  }
+  digglock = 1;
+  $.post("{:U('public/Feed/delDigg')}", {feed_id:feed_id}, function(res) {
+    if (res == 1) {
+      var num = $('#digg_'+feed_id).attr('rel');
+      num--;
+      var content;
+      if (num == 0) {
+        content = '<a href="javascript:;" onclick="addDigg('+feed_id+')">赞</a>';
+      } else {
+        content = '<a href="javascript:;" onclick="addDigg('+feed_id+')">已赞('+num+')</a>';
+      }
+      $('#digg_'+feed_id).attr('rel', num);
+      $('#digg_'+feed_id).html(content);
+      $('#digg'+feed_id).attr('rel', num);
+      $('#digg'+feed_id).html(content);
+    } else {
+      ui.error('操作失败，如没有登录请先登录再操作');
+    }
+    digglock = 0;
+  });
+}
+</script>
+<script type="text/javascript">
+/**
+ * 表情框操作
+ * @return void
+ */
+var setFace = function (obj) {
+  var _faceDiv = $('#face_div')[0];
+  core.plugInit('face', obj, $('#mini_editor_textarea'), _faceDiv, valChange);
+};
+
+/**
+ * 发布信息操作
+ * @return void
+ */
+var sendAction = function () {
+  var send = $('#reply_btn').attr('send');
+  if (send == 1) {
+    flashTextarea(document.getElementById('mini_editor_textarea'));
+    return false;
+  }
+  var rel = $('#ajax_list').attr('rel');
+  if (rel === 'comment') {
+    var args = {
+      app_name:'public',
+      app_row_id:'{$feedInfo["app_row_id"]}',
+      app_row_table:'feed',
+      app_uid:'{$feedInfo["uid"]}',
+      content: $('#mini_editor_textarea').val(),
+      row_id: '{$feedId}',
+      table_name: 'feed',
+      to_comment_id: 0,
+      to_uid: 0,
+      ifShareFeed: 0
+    };
+    // 回复
+    var to_comment_id = parseInt($('#to_comment_id').val());
+    if (typeof to_comment_id !== 'undefined' && to_comment_id !== 0) {
+      args.to_comment_id = to_comment_id;
+    }
+    var to_uid = parseInt($('#to_uid').val());
+    if (typeof to_uid !== 'undefined' && to_uid !== 0) {
+      args.to_uid = to_uid;
+    }
+    // 转发
+    var ifShareFeed = document.getElementById('is_share_feed').checked;
+    if (ifShareFeed) {
+      args.ifShareFeed = 1;
+    }
+    $.post(U('public/Feed/addcomment'), args, function (res) {
+      if (res.status == 1) {
+        $('#ajax_list').prepend(res.data);
+      } else {
+        ui.error(res.data);
+        return false;
+      }
+    }, 'json');
+  } else if (rel === 'report') {
+    var args = {
+      app_name: 'public',
+      body: $('#mini_editor_textarea').val(),
+      comment: 0,
+      content: '',
+      curid: '{$feedId}',
+      curtable: 'feed',
+      sid: '{$feedId}',
+      type: 'feed',
+      comment: 0
+    };
+    // 评论
+    var isComment = document.getElementById('is_comment').checked;
+    if (isComment) {
+      args.comment = 1;
+    }
+    $.post(U('public/Feed/addReport'), args, function (res) {
+      if (res.status == 1) {
+        $('#ajax_list').prepend(res.data);
+      } else {
+        ui.error(res.data);
+        return false;
+      }
+    }, 'json');
+  }
+  $('#mini_editor_textarea').val('');
+  $('#numsLeft').html('{$initNums}');
+  if ($('#to_comment_id') !== null && $('#to_uid') !== null) {
+    $('#to_comment_id').val(0);
+    $('#to_uid').val(0);
+  }
+};
+
+
+// 全局变量，控制点击频率
+var isajax = true;
+
+/**
+ * 获取评论或转发列表数据
+ * @param string type 类型，comment or report
+ * @param integer feedId 分享ID
+ * @param integer times 加载次数
+ * @param boolean isrest 是否重置数据，true重置，false不重置
+ * @return void
+ */
+var ajaxList = function (type, feedId, times, isrest) {
+  $('#view_more').remove();
+  isrest = isrest || false;
+  if (isrest) {
+    $('#ajax_list').html('');
+  }
+  // 设置发布框权限
+  setSendBox(type);
+  if (type === 'comment') {
+    $('#report_my_feed').show();
+    $('#comment_to_uid').hide();
+    $('#reply_btn').html('回复');
+    $('#comment_click').addClass('current');
+    $('#report_click').removeClass('current');
+  } else if (type === 'report') {
+    $('#report_my_feed').hide();
+    $('#comment_to_uid').show();
+    $('#reply_btn').html('转发');
+    $('#comment_click').removeClass('current');
+    $('#report_click').addClass('current');
+  }
+  if (typeof type === 'undefined' || typeof feedId === 'undefined') {
+    return false;
+  }
+  times = times || 1;
+  if (isajax) {
+    isajax = false;
+    $.get(U('public/Feed/ajaxList'), {feedId:feedId, type:type, p:times}, function (res) {
+      if (res.status == 1) {
+        $('#ajax_list').append(res.data);
+        $('#ajax_list').attr('rel', type);
+        if (res.over != 1) {
+          var viewMore = '';
+          if (type === 'comment') {
+            viewMore = '<div class="view-more" id="view_more"><a href="javascript:;" onclick="ajaxmore();">查看更多评论</a></div>';
+          } else if (type === 'report') {
+            viewMore = '<div class="view-more" id="view_more"><a href="javascript:;" onclick="ajaxmore();">查看更多转发</a></div>';
+          }
+          $('#ajax_list').after(viewMore);
+        }
+        isajax = true;
+      }
+    }, 'json');
+  }
+}
+
+/**
+ * 设置发布框状态
+ * @param string type 类型
+ * @return void
+ */
+var setSendBox = function (type) {
+  var cancomment = "{$cancomment}";
+  var canfeedshare = "{$canfeedshare}";
+  switch (type) {
+    case 'comment':
+      if (cancomment == 1) {
+        $('#send_box').show();
+        $('#send_box_info').html('');
+      } else {
+        $('#send_box').hide();
+      }
+      break;
+    case 'report':
+      if (canfeedshare == 1) {
+        $('#send_box').show();
+        $('#send_box_info').html('');
+      } else {
+        $('#send_box').hide();
+        $('#send_box_info').html('');
+      }
+      break;
+  }
+}
+
+/**
+ * 加载更多按钮方法
+ * @return {[type]} [description]
+ */
+var ajaxmore = function () {
+  var relval = $('#ajax_list').attr('rel');
+  var times = Math.ceil($('#ajax_list').find('dt').length / 5) + 1; 
+  ajaxList(relval, '{$feedId}', times);
+}
+
+/**
+ * 字数限制方法
+ * @return void
+ */
+var valChange = function () {
+  var initNums = '{$initNums}';
+  var obj = $('#mini_editor_textarea')[0];
+  if ('undefined' === typeof $('#numsLeft')) {
+    return true;
+  }
+  // 获取输入框中还能输入的数字个数
+  var strlen = core.getLength(obj.value , true);
+  // 匹配尾部空白符
+  if ($.trim(obj.value) !== '') {
+    var blank = obj.value.match(/\s+$/g);
+    if (blank !== null) {
+      strlen += Math.ceil(blank[0].length / 2);
+    }
+  }
+  var leftNums = initNums - strlen;
+  // 获取剩余字数
+  if(leftNums >= 0) {
+    // var html = (leftNums == initNums) ? '可以输入'+leftNums+'个字' : '您还可以输入'+leftNums+'个字';
+    var html = leftNums;
+    $('#numsLeft')[0].innerHTML = html;
+    $(obj).removeClass('fb');
+    if(leftNums == initNums) {
+      $('#reply_btn').attr('send', 1);
+    }
+    $('#reply_btn').attr('send', 0);
+  } else {
+    // var html = '已经超过了<span style="color:red">' + Math.abs(leftNums) + '</span>个字';
+    var html = '<span style="color:red">' + Math.abs(leftNums) + '</span>';
+    $(obj).addClass('fb');
+    $('#numsLeft')[0].innerHTML = html;
+    $('#reply_btn').attr('send', 1);
+  }
+}
+
+/**
+ * 信息初始化操作
+ * @return void
+ */
+$(function () {
+  // 浏览器的输入的兼容性
+  if($.browser.msie && parseInt($.browser.version) < 9) {
+    $('#mini_editor_textarea').bind("propertychange", function() {
+      valChange();
+    });
+  } else {
+    $('#mini_editor_textarea').bind("input", function() {
+      valChange();
+    });
+  }
+  // @Me
+  atWho($('#mini_editor_textarea'));
+  $('#mini_editor_textarea').focus();
+  // 载入评论列表
+  ajaxList('comment', '{$feedId}', 1);
+});
+</script>

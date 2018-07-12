@@ -1,0 +1,58 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+    <div class="page_tit">{:L('PUBLIC_WELCOME')}</div>
+    <div class="form2">
+         <h3 onclick="admin.fold('app_1');">{:L('PUBLIC_USER＿INFORMATION')}</h3>
+         <div id='app_1' class="list">
+         	<table width="100%" cellspacing="0" cellpadding="0" border="0">
+         		<tr >
+         			<th>{:L('PUBLIC_TOTAL_REGISTERED_USERS')}</th><th class="line_l">{:L('PUBLIC_TOTAL_ACTIVE_USERS')}</th><th class="line_l">{:L('PUBLIC_LARGEST_ONLINE_YESTERDAY')}</th><th class="line_l">{:L('PUBLIC_ONLINE_CURRENT')}</th><th class="line_l">{:L('PUBLIC_LARGEST_ONLINE_WEEK')}</th>
+         		</tr>
+         		<tr>
+         			<td>{$userInfo.totalUser|default=0}</td>
+         			<td>{$userInfo.activeUser|default=0}</td>
+         			<td>{$userInfo.yesterdayUser|default=0}</td>
+         			<td>{$userInfo.onlineUser|default=0}</td>
+         			<td>{$userInfo.weekAvg|default=0}</td>
+         		</tr>
+         	</table>
+         </div>
+         <h3 onclick="admin.fold('app_2');">{:L('PUBLIC_ACCESS_INFORMATION')}</h3>
+         <div id='app_2' class="list">
+         	<table width="100%" cellspacing="0" cellpadding="0" border="0">
+         		<tr>
+         			<th>{:L('PUBLIC_TIME')}</th><th class="line_l">{:L('PUBLIC_PAGE_VIEWS')}</th><th class="line_l">{:L('PUBLIC_INDEPENDENT_VISITORS')}</th><th class="line_l">{:L('PUBLIC_PER_CAPITA_VIEWS')}</th>
+         		</tr>
+         		<tr>
+         			<td>{:L('PUBLIC_TODAY')}</td>
+         			<td>{$visitCount.today.pv|default=0}</td>
+         			<td>{$visitCount.today.pu|default=0}</td>
+         			<td>{:round($visitCount['today']['pv']/$visitCount['today']['pu'],2)}</td>
+         		</tr>
+         		<tr>
+         			<td>{:L('PUBLIC_YESTERDAY')}</td>
+         			<td>{$visitCount.yesterday.pv|default=0}</td>
+         			<td>{$visitCount.yesterday.pu|default=0}</td>
+         			<td>{:round($visitCount['yesterday']['pv']/$visitCount['yesterday']['pu'],2)}</td>
+         		</tr>
+         		<tr>
+         			<td>{:L('PUBLIC_ONE_WEEK_AVERAGE')}</td>
+         			<td>{$visitCount.weekAvg.pv|default=0}</td>
+         			<td>{$visitCount.weekAvg.pu|default=0}</td>
+         			<td>{:round($visitCount['weekAvg']['pv']/$visitCount['weekAvg']['pu'],2)}</td>
+         		</tr>
+         	</table>
+         </div>
+        <php>$id = 3;</php>
+        <volist name="statistics" id="channel">
+            <php>$index = $id++;</php>
+            <h3 onclick="admin.fold('app_{$index}');">{$key}</h3>
+            <div id="app_{$index}">
+            <volist name="channel" id="vo">
+                <dl><dt><strong>{$key}：</strong></dt><dd>{$vo}</dd></dl>
+		    </volist>
+            </div>
+        </volist>
+    </div>
+</div>
+<include file="__THEME__/admin_footer" />

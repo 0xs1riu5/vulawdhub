@@ -1,0 +1,89 @@
+<style type="text/css">
+.s-txt {width:200px;}
+.code-textarea {width:500px;height:200px;}
+.pic-main {margin:0 0 0 0;width: 600px;}
+.pic-main ul {width:600px;list-style:none;}
+.pic-main li {float:left;width:200px;height:33px;text-align:center;line-height:33px}
+
+.pic-size {height:150px;} 
+
+.ico-top, .ico-btm {background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;height:14px;width:12px;}
+.ico-top, .ico-btm {display: inline-block;vertical-align: middle;}
+.ico-top {background-position: -12px 0;}
+.ico-btm {background-position: -24px 0;}
+.ico-top:hover {background-position: 0 0;}
+.ico-btm:hover {background-position: -35px 0;}
+
+.ico-close-small {
+  background: url("__THEME__/image/del.png") no-repeat 0 0;width:18px;height:18px;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: 0;
+  background-position: 0 -26px;
+  width: 9px;
+  height: 8px;
+  cursor: pointer;
+  _vertical-align:3px;
+  _background:url("__THEME__/image/del.gif") no-repeat 0 0;
+}
+a.ico-close-small:hover {
+  background-position: 0 -82px;
+  width: 9px;
+  height: 8px;
+  cursor: pointer;
+  _vertical-align: 3px;
+}
+.ml8 {
+  margin-left: 8px;
+}
+</style>
+
+<php>$AdSpaceAction = $editPage ? 'doEditFeedTop' : 'doAddFeedTop';</php>
+<form method="post" action="{:Addons::adminUrl($AdSpaceAction)}" autocomplete="off" onsubmit="return checkAdSpaceForm()">
+  <div class="form2">
+    <dl class="lineD">
+      <dt><font color="red"> * </font>标题：</dt>
+      <dd>
+	    <input type="hidden" class="s-txt" name="id" value="{$data.id}" />
+        <input type="text" class="s-txt" name="title" value="{$data.title}" style="width:600px"/>
+      </dd>
+    </dl>
+    <dl class="lineD">
+      <dt><font color="red"> * </font>置顶分享ID：</dt>
+      <dd>
+       <input type="text" class="s-txt" name="feed_id" value="{$data.feed_id}" style="width:100px"/>
+      </dd>
+    </dl>
+    <dl class="lineD">
+      <dt>是否显示：</dt>
+      <dd>
+	   <php>!isset($data['status']) && $data['status'] = 0;</php>
+        <label><input type="radio" name="status" value="0" <eq name="data.status" value="0">checked</eq> />是</label>
+		 <label><input type="radio" name="status" value="1" <eq name="data.status" value="1">checked</eq> />否</label>
+      </dd>
+    </dl>
+    <div class="page_btm">
+      <input type="submit" value="创建" class="btn_b" />
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+/**
+ * 验证表单数据正确性
+ * @return boolean 数据是否正确
+ */
+var checkAdSpaceForm = function()
+{
+  // 判断标题数据正确性
+  if($.trim($('input[name="title"]').val()) == '') {
+    ui.error('标题不能为空');
+    return false;
+  }
+  if($.trim($('input[name="feed_id"]').val()) == '') {
+    ui.error('置顶分享ID不能为空');
+    return false;
+  }
+  return true;
+};
+</script>

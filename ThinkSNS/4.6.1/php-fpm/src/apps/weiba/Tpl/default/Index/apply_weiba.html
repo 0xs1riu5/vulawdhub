@@ -1,0 +1,137 @@
+<include file="__THEME__/public_header" />
+
+<link href="__APP__/weiba.css" rel="stylesheet" type="text/css" />
+<style>
+  input.text{width: 238px;border: 1px solid #ccc;color: #888;font-size: 100%;font-family: inherit;height: 20px;line-height: 20px;padding: 5px;margin: 0 10px 0 0;}
+  textarea.text{width: 238px;border: 1px solid #ccc;color: #888;font-size: 100%;font-family: inherit;line-height: 20px;padding: 10px;margin: 0 10px 0 0;font-size: 14px; border-radius: 5px;}
+</style>
+<script type="text/javascript" src="__APP__/weiba.js"></script>
+<script>
+  var UPLOAD_URL ='{:UPLOAD_URL}';
+</script>
+<div class="content_holder" id="page-wrap">
+   <div class="content no_bg" id="main-wrap">
+       <div class="mno_l st-bg"> 
+            <p class="weiba-location"><a href="{:U('weiba/Index/index')}">微吧</a>&nbsp;<span class="f8">></span>&nbsp;<span class="f-red">申请微吧</span></p>
+             <div class="weiba-manage weiba-box">
+               <div class="boxL" style="width:100%;">                    
+                <!-- <form method="post" action="{:U('weiba/Manage/doWeibaEdit')}" id="weibaInfo"> -->
+                    <ul class="add_group">
+                        <li>
+                            <div class="c1"><font color="red"> * </font>微吧名称：</div>
+                            <div class="c2">
+                            <input type="text" class="text" style="width:610px;" name="weiba_name" id="weiba_name">
+                            <span id="group_name_tips" class="cRed pr5"></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="c1"><font color="red"> * </font>logo：</div>
+                            <!-- <div class="c2"><span class="left mr10"><img src=""/></span><span>更换微吧头像:<br />{:W('Upload',array('attachIds'=>$weiba_detail['logo'], 'uploadType'=>'image'))}</span></div> -->
+                            <div class="c2">
+                                {:W('Avatar',array('avatar'=>$user_info,'defaultImg'=>"__THEME__/image/icon_weiba_default.jpg",'tpl'=>'weiba'))}
+                           </div>
+                        </li>
+                        <li>
+                            <div class="c1"><font color="red"> * </font>简介：</div>
+                            <div class="c2"><textarea  class="text" rows="6" style="width:610px;" name="intro"></textarea><br /></div>
+                        </li>
+                        <li>
+                            <div class="c1">发帖权限：</div>
+                            <div class="c2">
+                            <div class="mr30 left"><input type="radio"  value="0" name="who_can_post" class="checkBox" id="checkid1"/><label for="checkid1" class="mb20"></label>所有人均可发帖</div>
+                            <div class="mr30 left"><input type="radio"  value="1" name="who_can_post" class="checkBox" id="checkid2"/><label for="checkid2" class="mb20"></label>仅限该吧粉丝发帖</div>
+                            <div class="mr30 left"><input type="radio"  value="2" name="who_can_post" class="checkBox" id="checkid3"/><label for="checkid3" class="mb20"></label>仅限该吧管理员发帖</div>
+                            <div class="mr30 left"><input type="radio"  value="3" name="who_can_post" class="checkBox" id="checkid4"/><label for="checkid4" class="mb20"></label>仅限该吧吧主发帖</div>
+                        </li>
+<!--                       <li>
+                        <div class="c1">附加信息：</div>
+                        <div class="c2">
+                        <input name="info" class="text" style="width:610px;" type="text" />
+                        </div>
+                      </li> -->
+                      <li>
+                        <div class="c1">分类：</div>
+                        <div class="c2">
+                        <select name="cid" id="cid">
+                          <option value="0" >选择分类</option>
+                          <volist name="weiba_cates" id="v">
+                              <option value="{$key}" <php>if($key==$weiba_detail['cid']){</php>selected="selected"<php>}</php>>{$v}</option>
+                          </volist>
+                        </select>
+                        </div>
+                      </li>
+                        <li>
+                            <div class="c1"></div>
+                            <div class="c2">
+                                <a href="javascript:void(0);" class="btn-green-big"  onclick="dosubmit()"><span>确定</span></a>
+                            </div>
+                        </li>
+                  </ul>
+                <!-- </form> -->
+             </div>  
+            </div>    
+           </div>
+           <div class="c"></div>
+       </div>
+   </div>
+</div>
+<include file="__THEME__/public_footer" />
+<script>
+function dosubmit(){        
+        var who_can_post = $("input[name='who_can_post']:checked").val();
+        var intro = $("textarea[name='intro']").val();
+        //var info = $("input[name='info']").val();
+        var weiba_name = $("input[name='weiba_name']").val();
+        //var logo = $("input[name='logo']").val();
+        var avatar_big = $("img[event-node='avatar_big']").attr('src');
+        var avatar_middle = $("img[event-node='avatar_middle']").attr('src');
+        var cid = $("#cid").val();
+        if(weiba_name == ""){
+          ui.error('微吧名称不能为空');
+          return false;
+        }
+        if(intro == ""){
+          ui.error('微吧简介不能为空');
+          return false;
+        }
+        if(typeof(who_can_post) == "undefined"){
+          ui.error('发帖权限不能为空');
+          return false;
+        }
+        if(typeof(avatar_big) == "undefined"){
+          ui.error('微吧LOGO不能为空');
+          return false;
+        }
+        if(cid == 0){
+          ui.error('请选择微吧分类');
+          return false;
+        }
+        if(typeof(avatar_middle) == "undefined"){
+            avatar_middle = avatar_big;
+        }
+        var post_content = {
+              dosubmit:1,
+              recommend:0,
+              who_can_post:who_can_post,
+              intro:intro,
+              //info:info,
+              cid:cid,
+              weiba_name:weiba_name,
+              //logo:logo,
+              avatar_big:avatar_big,
+              avatar_middle:avatar_middle,
+              };
+        $.post("{:U('weiba/Index/do_apply_weiba')}",post_content,function(data){
+          if(data == 1){
+            ui.success('申请成功，请等待管理员审核');
+            setTimeout(function() {
+               location.href = "{:U('weiba/Index/weibaList')}";
+            }, 1000);
+          }else if(data == -1){
+            ui.error("申请微吧功能未开启");
+          }else{
+            ui.error("申请失败");
+          }
+        })
+}
+</script>

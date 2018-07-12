@@ -1,0 +1,82 @@
+
+<!--信息设置项---帐号安全-->
+<div class="set-item-info">
+    <div class="bind-content">
+        <ul>
+        <volist name="bind" id="vo">
+        <li>
+            <div class="w1"><i class="ico-{$vo.type}-big"></i></div>
+            <div class="w2">{$vo.name}</div>
+            <div class="w3">
+            <neq name="vo.bind_user" value="">
+                <p>新浪网帐号：{$vo.bind_user}</p>
+                <p>绑定时间：{$vo.bind_time|friendlyDate}</p>
+            </neq>
+            </div>
+            <div class="w4">
+            <eq name="vo.isBind" value="true">
+                <eq name="vo.canSync" value="true">
+                    <eq name="vo.isSync" value="true">
+                     <!--[if !IE]><!-->
+                        <label><input type="checkbox" class="checkbox regular-checkbox" onclick="setSync('unsync','{$vo.type}');" checked="checked" id="id1"><span for="id1"></span>同步更新动态</label>
+                     <!--<![endif]-->
+                     <!--[if IE]>
+                        <label><input type="checkbox" class="checkbox" onclick="setSync('unsync','{$vo.type}');" checked="checked">同步更新动态</label>
+                     <!--[if IE]>
+                    <else />
+                    <!--[if !IE]><!-->
+                        <label><input type="checkbox" class="checkbox regular-checkbox" onclick="setSync('sync','{$vo.type}');" id="id2"><span for="id2"></span>同步更新动态</label>
+                     <!--<![endif]-->
+                    <!--[if IE]>
+                        <label><input type="checkbox" class="checkbox" onclick="setSync('sync','{$vo.type}');">同步更新动态</label>
+                    <!--[if IE]>
+                    </eq>
+                <else />
+                    &nbsp;
+                </eq>
+            <else />
+                &nbsp;
+            </eq>
+            </div>
+            <div class="w5">
+            <eq name="vo.isBind" value="true">
+                <a href="javascript:void(0);" onclick="unbind('{$vo.name}','{$vo.type}','{$vo.addon}','{$vo.unbind_hook}');">解除绑定</a>
+            <else />
+                <a href="{:Addons::createAddonShow($vo['addon'],$vo['bind_hook'],array('type'=>$vo['type'],'do'=>'bind'))}" class="btn-grey-white">点击绑定</a>
+            </eq>
+            </div>
+        </li>
+        </volist>
+        </ul>
+    </div>
+</div>
+<script>
+//取消新浪帐号绑定
+function unbind(name,type,addon,hooks){
+    if(confirm('确认要取消绑定'+name+'？')){
+        $.post( U('public/Widget/addonsRequest'),{addon:addon,hook:hooks,type:type},function(txt){
+            if(txt){
+                location.reload();
+            }
+        });
+    }
+}
+function setSync(sync,type){
+    if(sync=='unsync'){
+        if(!confirm('确认要取消同步么？')){
+            return false;
+        }
+        $.post( U('public/Widget/addonsRequest'),{addon:'Login',hook:'login_unbind_publish_weibo',type:type},function(txt){
+            if(txt){
+                location.reload();
+            }
+        });
+    }else{
+        $.post( U('public/Widget/addonsRequest'),{addon:'Login',hook:'login_ajax_bind_publish_weibo',type:type},function(txt){
+            if(txt){
+                location.reload();
+            }
+        });
+    }
+}
+</script>

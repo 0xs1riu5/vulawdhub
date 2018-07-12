@@ -1,0 +1,41 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/account.css" rel="stylesheet" type="text/css" />
+    <div id="page-wrap">
+        <div id="main-wrap">
+            <div id="col" class="st-grid content-bg st-bg-b cc">
+            	<div id="col4" class="main-left">
+                    <!--tab菜单--><include file="_tabs" />
+                </div>
+                <div id="col7" class="main-right">
+                    <div class="extend minh person-set">
+                    	<div class="set-hd"><h3>{$tabName}</h3></div>
+                        <!--信息设置项---个性化域名-->
+                        <if condition="$user_domain">
+                            <div class="item-set item-domain">
+                                <div class="set-item-info">{:U('public/Profile/index',array('uid'=>$user_domain))}</div>
+                                <p>{:L('PUBLIC_SHORT_DOMAIN_TYPELIMIT')}</p>
+                            </div>
+                            <!-- <div class="item-set item-domain">
+                                <div class="item-set-border">
+                                    <h3><i class="ico-ok"></i>您已成功设置个性域名</h3>
+                                    <p>地址为：http://wwww.abc.com/nanzhi</p>
+                                </div>
+                             </div> -->
+                        <else />
+                            <form model-node="account_domain" action="{:U('public/Account/doSaveDomain')}" method="post">
+                                <div class="item-set item-domain">
+                                    <div class="set-item-info">{:SITE_URL}/@<input event-node="input_text" name="domain" type="text" class="s-txt" style="width:188px;" /><a event-node="submit_btn" href="#" class="btn-green-big" style="height:32px;line-height:32px; vertical-align:middle; font-size:16px;">{:L('PUBLIC_SAVE')}</a>
+                                    <input type="text" style="display:none"> 
+                                    </div>
+                                    <p>{:L('PUBLIC_SHORT_DOMAIN_TYPELIMIT')}</p>
+                                </div>
+                            </form>
+                        </if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__THEME__/js/module.form.js"></script>
+<script src="__THEME__/js/account/module.setting.js"></script>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,45 @@
+<div class="search-main">
+	<!--搜索列表-->
+	<div class="sperson-feedlist">
+	<php>if($keyword != ""){</php>
+	<neq name='searchResult.data' value=''>
+	<volist name="searchResult.data" id="vo">
+	<dl class="feed_list">
+		<dt class="face"><a href="{$vo['space_url']}"><img src="{$vo['avatar_small']}" event-node='face_card' uid='{$vo['uid']}' width="50" height="50"></a></dt>
+		
+		<dd class="person-info">
+			<p class="hd">
+				<span class="right">
+					<if condition="$mid neq $vo['uid']">
+					{:W('FollowBtn', array('fid'=>$vo['uid'], 'uname'=>$vo['uname'], 'follow_state'=>$vo['follow_state'], 'type'=>'normal'))}
+					</if>
+				</span>
+				<span style="font-size:14px;width:270px;display:block">
+					<a href="{$vo['space_url']}" event-node='face_card' uid='{$vo['uid']}'><span class="contents">{$vo['uname']}</span></a>
+					<volist name="vo.userGroupData" id="v1">
+	                <img style="width:auto;height:auto;display:inline;cursor:pointer;" src="{$v1['user_group_icon_url']}" title="{$v1['user_group_name']}" />&nbsp;
+	                </volist>
+            	</span>
+			</p>
+			<p class="area"><if condition="$vo['sex'] eq 1"><i class="ico-male"></i><else /><i class="ico-female"></i></if>&nbsp;{$vo['location']}</p>
+			<p class="action">{:L('PUBLIC_FOLLOWING')}：<a href="{:U('public/Profile/following', array('uid'=>$vo['uid']))}">{$vo['usercount']['following_count']|default=0}</a><i class="vline">|</i>{:L('PUBLIC_FOLLOWERS')}：<a href="{:U('public/Profile/follower', array('uid'=>$vo['uid']))}">{$vo['usercount']['follower_count']|default=0}</a><i class="vline">|</i>{:L('PUBLIC_WEIBO')}：<a href="{$vo['space_url']}">{$vo['usercount']['weibo_count']|default=0}</a></p>
+			<php>if($vo['intro']){</php>
+			<p class="info">个人简介：{$vo['intro']}</p>
+			<php>}</php>
+			<php>if($vo['userTag']){</php>
+			<p class="tags">{:L('PUBLIC_TAG')}：<volist name="vo['userTag']" id="u_t_v"><a href="{:U('public/Search/index',array('t'=>3,'a'=>'public','k'=>$u_t_v))}"><span class="contents u_tag">{$u_t_v}</a></span>&nbsp;&nbsp;&nbsp;</volist></p>
+			<php>}</php>
+		</dd>
+	</dl>
+	</volist>
+	<neq name='searchResult.html' value=''>
+	<div class='page'>{$searchResult.html}</div>
+	</neq>
+	<else />
+	<div class="note">暂时没有相关用户</div>
+	</neq>
+	<php>}else{</php>
+		<div class="note">抱歉，搜索关键字不能为空</div>
+	<php>}</php>
+	</div>
+</div>

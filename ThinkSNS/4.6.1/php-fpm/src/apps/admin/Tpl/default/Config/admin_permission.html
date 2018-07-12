@@ -1,0 +1,100 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+  <div class="page_tit">{$applist.$appname}{:L('PUBLIC_SETTING_ADMIN')}</div>
+<!-- START APP 选择-->
+<!-- START APP 选择-->
+
+   <!-- START TAB框 -->
+  <php>if(!empty($pageTab)):</php>
+  <div class="tit_tab">
+    <div class="right"> 
+    {:L('PUBLIC_SELECT_APPLICATION')} 
+        <select name="applist" onchange="window.location.href='{:U('admin/Config/permission')}&appname='+this.value"> 
+        <volist name='applist' id='app'>
+        <option value="{$key}" <php>if($appname == $key){ echo 'selected="selected"';}</php> >{$app}</option>
+        </volist>
+        </select>
+    </div>
+    <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+    <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+    </volist>
+    </ul>
+  </div>
+  <php>endif;</php>
+  <!-- END TAB框 -->
+
+<div class="form">
+<div class="urse_purview list">
+	
+  <!-- START FORM TABLE-->
+  <form action="{:U('admin/Config/savepermission')}" method="post" autocomplete="off">
+  <input type="hidden" name="appname" value="{$appname}" />
+  <input type="hidden" name="modulename" value="{$modulename}" />
+  <php>$moduleRule = $ruleList[$modulename]['rule'] </php>
+<table class="tab_popedom" width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed ">
+  <!-- 用户组基本权限 -->
+  <tr>
+    <th style="width:30px">{:L('PUBLIC_SELECT')}</th>
+    <th style="width:80px">{:L('PUBLIC_USER_GROUP')}</th>
+    <volist id="vo" name="moduleRule">
+    <th class="line_l">
+      <label><input class="mr1 hAll" name="{$key}" rel="{$key}" type="checkbox" value="{$key}" />
+    {$vo}</label></th>
+    </volist>
+  </tr>
+  <volist id="group" name="userGroup">
+    <tr>
+    <td>
+      <input width="2%"  height="30" class="mr_1 vAll" name="user_group_id" rel="{$group.user_group_id}" type="checkbox" value="" />
+    </td>
+    <td align="left" style="padding-left: 5px;width:120px">{$group.user_group_name}</td>
+    <volist id="vo" name="moduleRule" k='kk'>
+    <td>
+
+    <input class="mr1 {$key} user_group_id_{$group.user_group_id}"  name="permission[{$group.user_group_id}][{$key}]" 
+          <php>if($saveRule[$group['user_group_id']][$key]){</php>checked="checked"<php>}</php>   
+        type="checkbox" value=1 />
+   
+    </td>
+    </volist>
+      </tr>
+</volist>
+
+  <!-- 应用下自定义用户组基本权限 -->
+  <volist id="groupvo" name="appgroup">
+  <php> $gkey = $key;</php>
+    <tr>
+      <td><input width="2%"  height="30" class="mr_1 vAll" name="user_group_id" rel="{$gkey}"
+      type="checkbox" value="" /></td>
+      <td width="5%" align="left" style="padding-left: 5px">{$groupvo}</td>
+    
+      <volist id="vo" name="moduleRule" k='kk'>
+      <td>    
+      <php>if(in_array($gkey, $ruleList[$modulename]['group'][$key] ) ){</php>
+        <input class="mr1 {$key} user_group_id_{$gkey}" name="permission[{$gkey}][{$key}]" 
+          <php>if($saveRule[$gkey][$key]){</php>checked="checked"<php>}</php> 
+        type="checkbox" value=1 />
+      <php>}else{</php>
+        <input class="mr1" type="checkbox" disabled="TRUE" />
+      <php>}</php>
+      
+      </td>
+      </volist>
+    </tr>
+  </volist>
+
+  </table>
+      <div class="mt10">
+        <input class="btn_b" type="submit" value="{:L('PUBLIC_SUBMIT')}">
+        </input>
+      </div>
+    </form>
+<!-- END FORM TABLE-->
+  </div>
+
+    </div>
+    </div>
+</div>
+<include file="__THEME__/admin_footer" />

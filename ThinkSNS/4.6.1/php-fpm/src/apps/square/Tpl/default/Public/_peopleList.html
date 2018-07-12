@@ -1,0 +1,66 @@
+<!--推荐认证用户-->
+<nosession name="mid">
+  <style type="text/css">
+    .profile-info-t dt .right{display: none;}
+  </style>
+</nosession>
+<php>if($user_recommend){</php>
+<div class="sq-top mr-10">
+  <h1> 推荐认证用户<span>找伙伴</span> </h1>
+  <a href="{:U('people/Index/index')}" class="more">更多用户</a></div>
+<div class="people-list">
+  <div class="people-list-l">
+    <!--认证用户-->
+    <ul class="clearfix">
+      <volist name='user_recommend' id ='vo'> 
+        <li 
+        <php>if(is_integer(($key + 1) /2)):</php>
+        style="margin-right:0;"
+        <php>endif;</php>
+        >
+        <div class="people-list-l-left"><a href="{:U('public/Profile/index', array('uid'=>$vo['uid']))}" title="{$vo.uname}"><img  src="{$vo.avatar_small}" /></a></div>
+        <div class="people-list-l-right">
+          <dl>
+            <dt class="clearfix"><a href="{$vo.space_url}" target="_blank" event-node="face_card" uid="{$vo.uid}">{$vo.uname}</a><div class="right">
+              {:W('FollowBtn',array('fid'=>$vo['uid'],'uname'=>$vo['uname'],'follow_state'=>$vo['follow_state'],'refer'=>'', 'type'=>'related'))}</div></dt>
+              <dd class="from">{$vo['intro']|getShort=40}</dd>
+          </dl>
+        </div>
+        </li>
+      </volist>
+    </ul>
+  </div>
+  <div class="people-list-r">
+    <div class="people-list-r-head">
+      <div class="people-list-r-head-avatar">
+        <a href="{:U('public/Profile/index', array('uid'=>$_user_recommend['uid']))}"><img src="{$_user_recommend.avatar_middle}"/></a>
+      </div>
+      <div class="people-list-r-head-info">
+        <dl>
+          <dt><a href="{:U('public/Profile/index', array('uid'=>$_user_recommend['uid']))}" event-node="face_card" uid="{$_user_recommend.uid}">{$_user_recommend.uname}</a></dt>
+          <!-- 简介 -->
+          <dd class="mt10 intro">{$_user_recommend.intro|getShort=50}</dd>
+          <!-- 认证信息 -->
+          <dd class="mt10 cert_info {$_user_recommend['verified_info']['icon']}">认证：{$_user_recommend['verified_info']['info']}</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="people-list-r-images">
+      <!-- 分享配图 -->
+      <volist name="_user_recommend_feedimages" id="vo">
+        <a href="{:U('public/Profile/feed',array('feed_id'=>$vo['feed_id'],'uid'=>$vo['uid']))}" title="{$vo.title}"><img src="{$vo.src}" <if condition="$key eq 3">style="margin-right:0px;"</if>/></a>
+      </volist>
+    </div>
+    <div class="people-list-r-posts">
+      <!-- 帖子 -->
+      <ul>
+      <volist name="_user_recommend_posts" id="vo">
+      <li <if condition="$key eq 4">style="border-bottom:none;"</if>>
+          <a href="{:U('weiba/Index/postDetail','post_id='.$vo['post_id'])}" title="{$vo.title}"><i class="ico-dot1"></i>{$vo.title|getShort=20}</a>
+        </li>
+      </volist>
+      </ul>
+    </div>
+  </div>
+</div>
+<php>}</php>

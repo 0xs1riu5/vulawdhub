@@ -1,0 +1,32 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/topic.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap">
+    <div id="feedback" class="feedback-fixed"><a href="{:U('public/Index/feedback')}" target="_blank">{:L('PUBLIC_FEEDBACK')}</a></div>
+    <div id="main-wrap">
+        <div id="st-index-grid" class="st-grid">
+            <div id="col8" class="st-section">
+                <!--右边-->
+                <include file="__THEME__/public_right" />
+                <div id="col5" class="st-index-main">
+                    <div class="topic_list">
+                        <h4>热门话题</h4>
+                        <ul>
+                        <volist name="recommend_list" id="vo">
+                            <li><a href="{:U('public/Topic/index',array('k'=>urlencode($vo['topic_name'])))}">{$vo.topic_name}</a>&nbsp;&nbsp;（{$vo.count}分享，{$vo.user_count}人参与）</li>
+                        </volist>
+                        </ul>
+                        <h4>正在发生</h4>
+                        <ul>
+                        <volist name="latest_list" id="vo">
+                            <li><a href="{:U('public/Topic/index',array('k'=>urlencode($vo['topic_name'])))}">{$vo.topic_name}</a>&nbsp;&nbsp;（{$vo.count}分享，{$vo.user_count}人参与）</li>
+                        </volist>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />
+<script type="text/javascript" src="__THEME__/js/home/module.home.js"></script>
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script>
