@@ -1,0 +1,22 @@
+version: '2'
+services:
+
+
+  php5-app_gxlcms1.0:
+    build: ./php-fpm
+    image: s1r1u5/gxlcms:1.0
+    restart: always
+    links: 
+        - mysql-gxlcms1.0:db
+    ports:
+        - 8001:80
+    depends_on:
+        - mysql-gxlcms1.0
+
+
+  mysql-gxlcms1.0:
+      build: ./mysql
+      image: s1r1u5/mysql_gxlcms:1.0
+      environment:
+        MYSQL_ROOT_PASSWORD: "123456"
+
