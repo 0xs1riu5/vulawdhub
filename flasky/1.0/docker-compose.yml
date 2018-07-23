@@ -1,0 +1,10 @@
+version: '2'
+services:
+
+  python2-app:
+    build: ./web
+    image: s1r1u5/flasky:1.0
+    restart: always
+    ports:
+        - 8001:80
+
