@@ -1,0 +1,28 @@
+version: "2"
+services:
+  nginx_php56:
+    image: s1r1u5/nginx_php56:1.15
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      # Path on the host, relative to the Compose file
+      - ./www:/var/www/html
+
+    links:
+      - php56:php56
+
+  mysql_php56:
+    image: s1r1u5/mysql_php56:5.7
+    build: ./mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=shadow
+
+  php56:
+    image: s1r1u5/php:php56-fpm
+    build: ./php-fpm
+    volumes:
+      # Path on the host, relative to the Compose file
+      - ./www:/var/www/html
+    links:
+      - mysql_php56:db
