@@ -11,6 +11,7 @@ COPY src/ /app
 
 RUN set -x \ 
     && chmod -R 777 /app \
+    && apt update \
     && apk add php5-iconv
 
 
