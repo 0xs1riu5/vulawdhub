@@ -185,12 +185,12 @@ echo $a;
 
 该木马的参数放在Accept-Language和Referer中，Accept-Language用的是zh-CN,zh;q=0.8,en;q=0.6 
 利用加密函数生成whoami的命令
-![](README/luffy4.png)
+![](README/luffy4%202.png)
 
 木马地址 http://127.0.0.1/www/index.php?m=misc&f=door
 
 发送请求
-![](README/luffy5.png)
+![](README/luffy5%202.png)
 
 
 然后利用代码解密
@@ -220,7 +220,7 @@ $a = gzuncompress(x(base64_decode($o),$k));
 
 ```
 
-![](README/luffy6.png)
+![](README/luffy6%202.png)
 
 
 官方提供的文件
