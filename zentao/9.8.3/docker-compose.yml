@@ -1,0 +1,31 @@
+version: "2"
+services:
+  nginx:
+    image: s1riu5/nginx:1.15
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      # Path on the host, relative to the Compose file
+      - ./www:/var/www/html
+
+    links:
+      - php72:php72
+
+  mysql:
+    image: s1riu5/mysql:5.7
+    build: ./mysql
+    #volumes:
+      # Path to store DATA
+      #  - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "shadow"
+
+  php72:
+    image: s1riu5/php:php72-fpm
+    build: ./php-fpm
+    volumes:
+      # Path on the host, relative to the Compose file
+      - ./www:/var/www/html
+    links:
+      - mysql:db
