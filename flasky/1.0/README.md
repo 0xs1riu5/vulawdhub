@@ -12,6 +12,7 @@ docker-compose up -d
 排除了flask的模版和静态文件等杂项，路由主要集中在auth和main文件中，先看auth
 在app目录下的auth文件夹中,先看一下他的初始化文件__init__.py
 ![](luffy1.png)
+
 可以看到,应用使用了蓝厂函数，url前缀是auth，然后审查views.py,在众多的路由中，最有问题的是
 
 ```
