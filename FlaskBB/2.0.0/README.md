@@ -5,6 +5,17 @@ docker-compose up -d
 ```
 该题是2018年Defcon对抗赛的web1，该网站用的是flaskbb搭建的，本身没有存在漏洞，开发人员通过修改了源代码造成了SSTI漏洞，现在凡是涉及Flask的安全问题几乎都会重点提及SSTI
 
+SSTI的漏洞主要涉及两个函数
+
+```
+from flask import render_template_string
+
+from jinja2 import Template
+```
+
+
+
+
 漏洞源码在flasks/app.py文件中的375行开始
 
 ```
