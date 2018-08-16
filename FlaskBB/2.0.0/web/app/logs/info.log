@@ -1,0 +1,60 @@
+2018-08-15 11:57:42,990 ERROR   flask.app                 Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/usr/local/lib/python2.7/dist-packages/flask/views.py", line 88, in view
+    return self.dispatch_request(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask/views.py", line 158, in dispatch_request
+    return meth(*args, **kwargs)
+  File "/app/flaskbb/forum/views.py", line 52, in get
+    categories = Category.get_all(user=real(current_user))
+  File "/app/flaskbb/forum/models.py", line 1246, in get_all
+    guest_group = Group.get_guest_group()
+  File "/app/flaskbb/user/models.py", line 81, in get_guest_group
+    return cls.query.filter(cls.guest == True).first()
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2835, in first
+    ret = list(self[0:1])
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2627, in __getitem__
+    return list(res)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2935, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2958, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 948, in execute
+    return meth(self, multiparams, params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py", line 269, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1060, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1200, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1413, in _handle_dbapi_exception
+    exc_info
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py", line 203, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1193, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py", line 508, in do_execute
+    cursor.execute(statement, parameters)
+OperationalError: (sqlite3.OperationalError) no such table: groups [SQL: u'SELECT groups.id AS groups_id, groups.name AS groups_name, groups.description AS groups_description, groups.admin AS groups_admin, groups.super_mod AS groups_super_mod, groups.mod AS groups_mod, groups.guest AS groups_guest, groups.banned AS groups_banned, groups.mod_edituser AS groups_mod_edituser, groups.mod_banuser AS groups_mod_banuser, groups.editpost AS groups_editpost, groups.deletepost AS groups_deletepost, groups.deletetopic AS groups_deletetopic, groups.posttopic AS groups_posttopic, groups.postreply AS groups_postreply, groups.viewhidden AS groups_viewhidden, groups.makehidden AS groups_makehidden \nFROM groups \nWHERE groups.guest = 1\n LIMIT ? OFFSET ?'] [parameters: (1, 0)] (Background on this error at: http://sqlalche.me/e/e3q8)
+2018-08-15 11:57:43,125 ERROR   flask.app                 Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1713, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1644, in handle_http_exception
+    return handler(e)
+  File "/app/flaskbb/app.py", line 380, in page_not_found
+    return render_template_string("<h1>URL %s  not found</h1><br/><p>Some programmers developed a forum program based on the foundation of flaskbb , but it cause some defects and bugs. Try to find it.</p><p>Notice that you should access the website with host \"<b>flaskweb.com</b>\" , please modify your hosts file or ADD this to HTTP header.</p>" % url), 404
+NameError: global name 'render_template_string' is not defined
