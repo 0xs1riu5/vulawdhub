@@ -1,0 +1,22 @@
+version: '2'
+services:
+  php5-app:
+    build: ./php-fpm
+    image: s1r1u5/zzcms:8.3
+    restart: always
+    links: 
+        - mysql_zzcms:db
+    ports:
+        - 8002:80
+
+    depends_on:
+        - mysql_zzcms
+
+  mysql_zzcms:
+    build: ./mysql
+    image: s1r1u5/mysql_zzcms:8.3
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    ports:
+        - 3306:3306
+
