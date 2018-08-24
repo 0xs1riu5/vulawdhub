@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>{#comane},{#companyshowtitle},{#sitename}</title>
+<meta name="keywords" content="{#comane},{#companyshowkeyword}">
+<meta name="description" content="{#comane},{#companyshowdescription}">
+<script type="text/javascript" src="{#siteurl}/zs/zsshow.js"></script>
+<link href="{#siteurl}/skin/{#skin}/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{#siteurl}/js/jquery.js"></script>
+
+<script type="text/javascript">
+$(function(){
+$("#getcode_math").click(function(){
+		$(this).attr("src",'{#siteurl}/one/code_math.php?' + Math.random());
+	});
+});
+
+$(document).ready(function(){  
+	$("#tel").blur(function() { //jquery 中change()函数  
+	$("#ts_tel").load(encodeURI("{#siteurl}/ajax/dl_liuyan_check_ajax.php?action=checktel&id="+$("#tel").val()));
+	}); 
+ 
+});
+</script>
+</head>
+<body>
+{#sitetop}
+<div class="main">
+{#showflyad}
+<div id="pagebody">
+<div class="titleA">公司简介</div>
+<div class="ztcontent">
+{#gsjj}
+</div>
+
+
+<div class="titleA">招商信息</div>
+	<div class="ztcontent" style="margin-bottom:10px">
+	<div class="divcp">
+	<ul>
+	{zsloop}
+	<li>
+    <table class="bgcolor3" border="0" cellspacing="1" cellpadding="4" width="100%">
+      <tbody>
+        <tr>
+          <td bgcolor="#ffffff" class="bigbigword bgcolor2">{#proname}</td>
+          </tr>
+        <tr>
+          <td height="270" align="center" bgcolor="#ffffff"><a  href="{#link}" target="_blank"><img src="{#imgbig}" onload="resizeimg(240,240,this)" /></a></td>
+        </tr>
+        <tr>
+          <td height="200" bgcolor="#ffffff">【产品名称】<a href="{#link}">{#proname}</a><br/>
+            【主要特点】{#prouse:100}<br/>
+            【规　　格】{#shuxing0}<br/>
+            【招商区域】{#city}          </td></tr>
+        <tr>
+          <td bgcolor="#ffffff"><table width="100%" border="0">
+            <tr>
+              <td width="49%" align="center"><input value="产品详情" type="button" name="Submit2" onclick="window.location.href='{#link}'" /></td>
+              <td width="51%" align="center"><form id="form1" method="post" name="form1" action="{#linkliuyan}">
+                  <input value="我要代理" type="submit" name="Submit" />
+                  <input id="proname" value="{#proname}" type="hidden" name="proname" />
+                  <input id="editor" value="{#editor}" type="hidden" name="editor" />
+                  <input id="fbrgroupid" value="{#groupid}" type="hidden" name="groupid" />
+                  <input id="cpid" value="{#cpid}" type="hidden" name="cpid" />
+                  <input id="bigclassid" value="{#bigclassid}" type="hidden" name="bigclassid" />
+                  <input id="token" value="{#token}" type="hidden" name="token" />
+              </form></td>
+            </tr>
+          </table></td>
+          </tr>
+      </tbody>
+    </table>
+	</li>
+    {/zsloop}</ul></div></div>
+
+<div class="titleA">资质证书</div>
+<div class="ztcontent">
+<TABLE border=0 cellSpacing=1 cellPadding=5 width="100%">
+  <TR>
+  {licence}
+    <TD align=middle>
+      <TABLE class=bgcolor2 border=0 cellSpacing=1 cellPadding=1>
+        <TR>
+          <TD bgColor=#ffffff height=120 width=120 align=center>
+		  <A href="{#link}" target=_blank><IMG alt="{#title}" src="{#img}"></A></TD>
+        </TR>
+        <TR>
+         <TD align=center>{#title}</TD>
+		 </TR>
+	</TABLE>
+</TD>
+{tr}
+{/licence}
+
+</TR>
+</TABLE>
+</div>
+
+
+<div class="titleA" style="margin-top:10px"> 我要留言<a name="dl_liuyan" id="dl_liuyan"></a></div> 
+ <FORM onSubmit="return CheckForms();" method="post" name="ly" action="{#siteurl}/zt/liuyan_save.php">
+ <table class="bgcolor3" border="0" cellspacing="1" cellpadding="5" width="100%">
+   <tbody>
+     <tr>
+       <td width="14%" align="right" class="bgcolor1">留言内容 <font color="#ff0000">*</font></td>
+       <td width="86%" class="bgcolor1"><table border="0" cellspacing="0" cellpadding="0" width="100%">
+           <tbody>
+             <tr>
+               <td width="35%">{textarea}<br />
+						<input name="contents2" id="contents2" style="display:none" />
+			<span id="ts_contents"></span>
+                 <input id="saver" value="{#editor}" type="hidden" name="saver" /></td>
+               <td width="65%"><input id="chcontent1" onclick="showinfo('content',1);document.ly.contents.focus();" value="我对你们的产品感兴趣，请与我联系。" type="checkbox" name="chcontent" />
+                 <label id="content1" for="chcontent1">我对你们的产品感兴趣，请与我联系。</label>
+                 <br />
+                 <input id="chcontent2" onclick="showinfo('content',2);document.ly.contents.focus();" value="有什么支持？" type="checkbox" name="chcontent" />
+                 <label id="content2" for="chcontent2">有什么支持？</label>
+                 <br />
+                 <input id="chcontent3" onclick="showinfo('content',3);document.ly.contents.focus();" value="请寄给我详细资料。" type="checkbox" name="chcontent" />
+                 <label id="content3" for="chcontent3">请寄给我详细资料。</label>
+                 <br />
+                 <input id="chcontent4" onclick="showinfo('content',4);document.ly.contents.focus();" value="请寄给我样品。" type="checkbox" name="chcontent" />
+                 <label id="content4" for="chcontent4">请寄给我样品。</label></td>
+             </tr>
+           </tbody>
+       </table></td>
+     </tr>
+   </tbody>
+ </table>
+ <div style="PADDING: 5px;" class="bgcolor1">填写联系方式</div>
+ <table class="bgcolor3" border="0" cellspacing="1" cellpadding="5" width="100%" >
+     <tr>
+       <td width="14%" align="right" class="bgcolor1">联 系 人 <font color="#ff0000">*</font></td>
+       <td width="86%" class="bgcolor1"><input name="name" id="name" onblur="check_somane()" value="{#somane}" size="30" maxlength="50" />
+				<input name="name2" id="name2" style="display:none" />
+			<span id="ts_name"></span>        </td>
+     </tr>
+     <tr>
+       <td class="bgcolor1" align="right">联系电话/手机 <font color="#ff0000">*</font></td>
+       <td class="bgcolor1"><input name="tel" id="tel" value="{#phone}" size="30" maxlength="50" /> 
+				<input name="tel2" id="tel2" style="display:none" />
+			<span id="ts_tel"></span>       </td>
+     </tr>
+     <tr>
+       <td class="bgcolor1" align="right">电子邮箱：</td>
+       <td class="bgcolor1"><input id="email" maxlength="50" size="30" name="email" onblur="check_email()" />
+				<input name="email2" id="email2" style="display:none" />
+			<span id="ts_email"></span>        </td>
+     </tr>
+	  <tr>
+                <td align="right" class="bgcolor1">答案 <font color="#FF0000">*</font></td>
+                <td class="bgcolor1"><input name="yzm" type="text" id="yzm" onblur="check_yzm()"  size="10" maxlength="50" style="width:60px"/>
+                 <input name="yzm2" id="yzm2" style="display:none" />
+			<span id="ts_yzm"></span>
+                  <img src="{#siteurl}/one/code_math.php" align="absmiddle" id="getcode_math" title="看不清，点击换一张" /></td>
+	  </tr>
+ </table>
+<div class="bgcolor2 center padding10"><input  value="填好了，发送" type="submit" name="tj" id="tj" class="botton"/></div>
+</form>
+</div>
+
+</div>
+{#kefu}
+</div>
+{#sitebottom}
+</body>
+</html>

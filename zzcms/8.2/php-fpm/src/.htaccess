@@ -1,0 +1,42 @@
+RewriteEngine on
+
+#RewriteCond %{HTTP_HOST} ^[a-z0-9\-]+\.zzcms\.net$
+#RewriteCond %{HTTP_HOST} !^(www|bbs|demo|3158)\.zzcms\.net$
+#RewriteRule ^/?$ /%{HTTP_HOST}
+#RewriteRule ^/([a-z0-9\-]+)\.zzcms\.net/?$ /zs/show.php?editor=$1
+
+RewriteRule ^index.htm$ /index.php
+RewriteRule ^(.*)/index.htm$ $1/index.php
+RewriteRule zs/order.htm$ /zs/order.php
+
+RewriteRule zsclass/([0-9,a-z]*).htm$ /zs/class.php?b=$1
+RewriteRule zsclass/([0-9,a-z]*)$ /zs/class2.php?b=$1
+RewriteRule zsclass/([0-9,a-z]*)/(\d*).htm$ /zs/class2.php?b=$1&page=$2
+
+RewriteRule zs/zs.htm$ zs/zs.php
+RewriteRule zs/(\d*).htm$ zs/zs.php?page=$1
+
+RewriteRule ^(.*)/$ $1/index.php
+#如zs/ 转到zs/index.php 需放到上面，否则会应用下面的这一条
+RewriteRule zs/([0-9,a-z]*)$ zs/zs.php?b=$1
+RewriteRule zs/([0-9,a-z]*)/(\d*).htm$ zs/zs.php?b=$1&page=$2
+RewriteRule zs/([0-9,a-z]*)/([0-9,a-z]*)$ zs/zs.php?b=$1&s=$2
+RewriteRule zs/([0-9,a-z]*)/([0-9,a-z]*)/(\d*).htm$ zs/zs.php?b=$1&s=$2&page=$3
+RewriteRule zs/show-(\d*).htm$ zs/show.php?id=$1
+
+RewriteRule zx/zx.htm$ zx/zx.php 
+RewriteRule zx/(\d*).htm$ zx/zx.php?page=$1 
+RewriteRule zx/(\d*)$ zx/zx.php?b=$1 
+RewriteRule zx/class/(\d*)$ zx/class.php?b=$1 
+RewriteRule zx/([0-9,a-z]*)/(\d*).htm$ zx/zx.php?b=$1&page=$2 
+RewriteRule zx/(\d*)/(\d*)$ zx/zx.php?b=$1&s=$2 
+RewriteRule zx/([0-9,a-z]*)/([0-9,a-z]*)/(\d*).htm$ zx/zx.php?b=$1&s=$2&page=$3 
+RewriteRule zx/show-(\d*).htm$ zx/show.php?id=$1 
+RewriteRule zx/show-(\d*)-(\d*).htm$ zx/show.php?id=$1&page=$2 
+
+RewriteRule help.htm$ one/help.php 
+RewriteRule link.htm$ one/link.php 
+RewriteRule siteinfo-(\d*).htm$ one/siteinfo.php?id=$1  
+
+RewriteRule reg/userreg.htm$ reg/userreg.php 
+RewriteRule user/login.htm$ user/login.php 
