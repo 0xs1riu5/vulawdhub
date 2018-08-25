@@ -19,6 +19,9 @@
 -- Table structure for table `zzcms_about`
 --
 
+CREATE DATABASE IF NOT EXISTS zzcms DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+use zzcms;
+
 DROP TABLE IF EXISTS `zzcms_about`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
