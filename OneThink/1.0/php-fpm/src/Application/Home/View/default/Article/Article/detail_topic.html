@@ -1,0 +1,69 @@
+<extend name="Base/common"/>
+
+<block name="header">
+    <header class="jumbotron subhead" id="overview">
+		<div class="container">
+			<h2>{$info.title}</h2>
+			<p>
+				<span  class="pull-left">
+					<span class="author">{$info.uid|get_username}</span>
+					<span> 发表于 {$info.create_time|date='Y-m-d H:i',###}</span>
+				</span>
+				<span class="pull-right">
+					<article:prev name="prev" info="info">
+                        <a href="{:U('?id='.$prev['id'])}">上一篇</a>
+                    </article:prev>
+                    <article:next name="next" info="info">
+                        <a href="{:U('?id='.$next['id'])}">下一篇</a>
+                    </article:next>
+				</span>
+			</p>
+		</div>
+	</header>
+</block>
+
+<block name="publish">
+    <ul class="nav nav-list bs-docs-sidenav">
+        <li>
+            <a href="{:U('edit?model=1&category='.$category['name'])}" class="btn btn-primary btn-block btn-large">发表话题</a>
+        </li>
+    </ul>
+</block>
+
+<block name="body">
+    <div class="span9 main-content">
+        <!-- Contents
+        ================================================== -->
+        <section id="contents">{$info.content}</section>
+        <hr/>
+	
+		<article:partlist id="$info['id']" name="partlist">
+			<div class="clearfix">
+				<div class="pull-left clearfix">{$i*$page}楼</div>
+                <div class="pull-right clearfix">
+                    <a href="javascript:;">{$partlist.uid|get_username}</a>
+                    <span>发表于 {$partlist.create_time|date='Y/m/d',###}</span>
+                </div>
+			</div>
+			<p>{$partlist.content}</p>
+    		<hr/>
+		</article:partlist>
+		<!-- 回复表单 -->
+        <div class="control-group">
+            <form action="{:U('save')}" method="post">
+            	<textarea name="content" rows="5" class="span9"> </textarea>
+            	<input type="hidden" name="title" value="RE:{$info.title}">
+                <input type="hidden" name="description" value="">
+            	<input type="hidden" name="model_id" value="{$info.model_id}">
+				<input type="hidden" name="category_id" value="{$info.category_id}">
+				<input type="hidden" name="pid" value="{$info.id}">
+				<input type="hidden" name="type" value="3">
+				<input type="hidden" name="parse" value="0">
+            	<div> 
+            	    <button class="btn">发表回复</button>
+            	</div>
+            </form>
+            {:hook('topicComment', array('name'=>'content'))}
+        </div>
+    </div>
+</block>

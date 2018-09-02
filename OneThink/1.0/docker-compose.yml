@@ -1,0 +1,22 @@
+version: '2'
+services:
+  php5-app:
+    build: ./php-fpm
+    image: s1riu5/onethink:1.0
+    restart: always
+    links: 
+        - mysql_onethink:db
+    ports:
+        - 80:80
+
+    depends_on:
+        - mysql_onethink
+
+  mysql_onethink:
+    build: ./mysql
+    image: s1riu5/mysql_onethink:1.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    ports:
+        - 3306:3306
+

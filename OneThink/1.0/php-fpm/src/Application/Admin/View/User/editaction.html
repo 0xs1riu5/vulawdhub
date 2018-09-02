@@ -1,0 +1,70 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<div class="main-title cf">
+		<h2><if condition="ACTION_NAME eq 'addaction'">新增<else/>编辑</if>行为</h2>
+	</div>
+	<!-- 表单 -->
+	<form id="form" action="{:U('saveAction')}" method="post" class="form-horizontal">
+		<div class="form-item cf">
+			<label class="item-label">行为标识<span class="check-tips">（输入行为标识 英文字母）</span></label>
+			<div class="controls">
+				<input type="text" class="text input-large" name="name" value="{$name}">
+			</div>
+		</div>
+		<div class="form-item cf">
+			<label class="item-label">行为名称<span class="check-tips">（输入行为名称）</span></label>
+			<div class="controls">
+				<input type="text" class="text input-large" name="title" value="{$title}">
+			</div>
+		</div>
+		<div class="form-item cf">
+			<label class="item-label">行为类型<span class="check-tips">（选择行为类型）</span></label>
+			<div class="controls">
+				<select name="type">
+					<volist name=":get_action_type(null,true)" id="vo">
+						<option value="{$key}">{$vo}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div class="form-item cf">
+			<label class="item-label">行为描述<span class="check-tips">（输入行为描述）</span></label>
+			<div class="controls">
+				<label class="textarea input-large"><textarea name="remark">{$remark}</textarea></label>
+			</div>
+		</div>
+		<div class="form-item cf">
+			<label class="item-label">行为规则<span class="check-tips">（输入行为规则，不写则只记录日志）</span></label>
+			<div class="controls">
+				<label class="textarea input-large"><textarea name="rule">{$rule}</textarea></label>
+				<span class="check-tips">
+				<br>规则定义  table:$table|field:$field|condition:$condition|rule:$rule[|cycle:$cycle|max:$max][;......]
+				<br>规则字段解释：table->要操作的数据表，不需要加表前缀；
+				<br>			field->要操作的字段；
+				<br>			condition->操作的条件，目前支持字符串，默认变量{$self}为执行行为的用户
+				<br>			rule->对字段进行的具体操作，目前支持加、减
+				<br>			cycle->执行周期，单位（小时），表示$cycle小时内最多执行$max次
+				<br>			max->单个周期内的最大执行次数（$cycle和$max必须同时定义，否则无效）
+				<br>单个行为后可加 ； 连接其他规则
+				</span>
+			</div>
+		</div>
+
+		<div class="form-item">
+			<input type="hidden" name="id" value="{$id}"/>
+			<button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">确 定</button>
+			<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+			</div>
+		</div>
+	</form>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+	Think.setValue('type',{$type});
+    //导航高亮
+    $('.side-sub-menu').find('a[href="{:U('User/Action')}"]').closest('li').addClass('current');
+</script>
+</block>
