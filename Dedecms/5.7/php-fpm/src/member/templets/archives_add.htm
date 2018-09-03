@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>发表<?php echo $cInfos['typename']; ?> - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script language='javascript' src="templets/js/main.js"></script>
+<script type="text/javascript" src="templets/js/inputAutoClear.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript" src="templets/js/checkSubmit.js"></script>
+</head>
+<body>
+<div id="main">
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <div id="appTab2">
+          <ul>
+            <li class="thisTab"><a href="#"><span>发表<?php echo $cInfos['typename']; ?></span></a></li>
+          </ul>
+        </div>
+      </div>
+     <form name="addcontent" action="archives_add.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <input type="hidden" name="channelid" value="<?php echo $channelid; ?>" />
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>发表<?php echo $cInfos['typename']; ?></strong></h3>
+        <div class="postForm">
+          <p class="cellBg">
+            <label><?php echo $cInfos['titlename']; ?>：</label>
+            <input name="title" type="text" id="title" value="请输入内容主题" maxlength="100" class="intxt" onfocus="inputAutoClear(this)"/>
+          </p>
+          <p>
+            <label>标签TAG：</label>
+            <input name="tags" type="text" id="tags" size="30" class="intxt" style="width:400px;"/> (用逗号分开) 
+          </p>
+          <p class="cellBg">
+            <label>作者：</label>
+            <input type="text" name="writer" id="writer" value="<?php echo $cfg_ml->M_UserName?>" class="intxt" />
+          </p>
+           <?php
+              if($cInfos['dfcid']>0) {
+              	echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />";
+              }else{
+            ?>
+          <p>
+            <label>隶属栏目：</label>
+            <?php
+				$typeOptions = GetOptionList(0,$channelid);
+				echo "<select name='typeid' size='1'>\r\n";
+				echo "<option value='0' selected>请选择栏目...</option>\r\n";
+				echo $typeOptions;
+				echo "</select>";
+			?>
+                <span style="color:#F00">*</span>(不能选择带颜色的分类)
+         </p>
+      	    <?php
+           		 }
+            ?>
+         <p class="cellBg">
+            <label>我的分类：</label>
+            <?php
+            	$classlist = classification($cfg_ml->M_ID, 0, $channelid);
+            	echo "<select name='mtypesid' size='1'>\r\n";
+            	echo "<option value='0' selected>请选择分类...</option>\r\n";
+				echo $classlist;
+				echo "</select>";
+            ?>
+         </p>
+            <?php
+              if($cInfos['needdes']==1) {
+            ?> 
+         <p>
+            <label>信息摘要：</label>
+            <textarea name="description" id="description" style="height:50px"></textarea> (内容的简要说明) 
+         </p> 
+          <?php
+              }
+              if($cInfos['needpic']==1) {
+          ?> 
+         <p class="cellBg">
+            <label>缩略图：</label>
+            <input class="file" name="litpic" type="file" id="litpic"  onchange="SeePicNew('divpicview',this);"  />
+         </p>
+          <?php
+            }
+            //自定义字段
+     		 PrintAutoFieldsAdd($cInfos['fieldset'],'autofield');
+ 				 if($safe_faq_send == 1){
+                $faqkey = array_rand($safefaqs);
+                
+          ?>
+      	 <p class="cellBg">
+            <label>验证问题：</label>
+            <?php echo $safefaqs[$faqkey]['question'];?> (答案:<?php echo $safefaqs[$faqkey]['answer'];?>)<input class="intxt" name="safeanswer" type="text" id="safeanswer" size="25" style='width:200px;'/> 
+                <input type="hidden" name="faqkey" value="<?php echo $faqkey;?>" />
+         </p>
+          
+     		<?php 
+     		}
+      		if(preg_match("/3/",$safe_gdopen)){
+      	   ?>
+         <p class="cellBg">
+            <label>验证码：</label>
+            <input class="text" name="vdcode" type="text" id="vdcode" size="10" style='width:50px;text-transform:uppercase;' />
+           <img src="../include/vdimgck.php" width="70" height="25" align="absmiddle" alt="看不清？点击更换" style="cursor:pointer" onclick="this.src=this.src+'?'" />
+         </p> 
+          <?php }?> 
+         <p>
+          	<button class="button2" type="submit">提交</button>
+            <button class="button2 ml10" type="reset" onclick="location.reload();">重置</button>
+         </p>
+    </div>
+      </div>
+  </form>
+      <!--主操作区域 -->
+    </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

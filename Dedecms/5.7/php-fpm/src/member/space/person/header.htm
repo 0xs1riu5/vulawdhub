@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>{dede:var.spacename /} {dede:var.curtitle /}</title>
+<meta name="author" content="{dede:var.uname /}"/>
+<link href="space/person/blue/style.css" rel="stylesheet" type="text/css" />
+<link href="blue/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<?php
+//未登录显示的head
+if(!$cfg_ml->IsLogin()) {
+?>
+<div id="headTop" class="aGray grayA">
+  <div class="logo" onclick="location='/'" title="网站主页"> </div>
+  <div id="topBar">
+    <ul class="userMenu green">
+      <li><a href="../" title="网站主页">网站主页</a></li>
+      <li><a href="../member/index_do.php?fmdo=user&dopost=regnew" title="注册">注册</a></li>
+      <li><a href="../member/login.php" title="登录">登录</a></li>
+      <li class="help"><a href="http://help.dedecms.com" title="DEDECMS 帮助中心">帮助</a></li>
+    </ul>
+    <span>
+    <script type="text/javascript">
+      var now=(new Date()).getHours();
+			if(now>0&&now<=6){
+				document.write("午夜好，");
+			}else if(now>6&&now<=11){
+				document.write("早上好，");
+			}else if(now>11&&now<=14){
+				document.write("中午好，");
+			}else if(now>14&&now<=18){
+				document.write("下午好，");
+			}else{
+				document.write("晚上好，");
+			}
+			</script>
+    <i>游客</i>你可以选择到</span> </div>
+</div>
+<?php
+}
+//登录后显示的head
+else {
+?>
+<div id="headTop" class="aGray grayA">
+  <div class="logo" onclick="location='/'" title="网站主页"> </div>
+  <div id="topBar">
+    <ul class="userMenu green">
+      <li><a href="../" title="网站主页">网站主页</a></li>
+      <li><a href="../member/edit_baseinfo.php" title="我的资料">我的资料</a></li>
+      <li><a href="<?php echo $myurl; ?>" title="我的空间">我的空间</a></li>
+      <li><a href="../member/index_do.php?fmdo=login&dopost=exit" title="注销">注销</a></li>
+      <li class="help"><a href="http://help.dedecms.com" title="DEDECMS 帮助中心">帮助</a></li>
+    </ul>
+    <span>
+    <script type="text/javascript">
+           	var now=(new Date()).getHours();
+			if(now>0&&now<=6){
+				document.write("午夜好，");
+			}else if(now>6&&now<=11){
+				document.write("早上好，");
+			}else if(now>11&&now<=14){
+				document.write("中午好，");
+			}else if(now>14&&now<=18){
+				document.write("下午好，");
+			}else{
+				document.write("晚上好，");
+			}
+			</script>
+    <i><?php echo $cfg_ml->M_UserName?></i></span> </div>
+</div>
+<?php
+}
+?>
+<div id="head" class="wrapper">
+  <div id="spaceName" class="whiteA aWhite">
+    <h1><a href="{dede:var.userurl /}">{dede:var.spacename /}</a></h1>
+    <p><?php echo $myurl; ?></p>
+  </div>
+  <ul id="navMenu" class="fLeftChild">
+    <li class="thisClass"><a href="index.php?uid={dede:var.userid_e /}"><span>首页</span></a></li>
+    <li><a href="index.php?uid={dede:var.userid_e /}&action=article"><span>文章</span></a></li>
+    <?php
+		foreach($_vars['bloglinks'] as $k=>$v)
+		{
+			if($k==2) {
+				echo "		<li><a href=\"index.php?uid={$_vars['userid_e']}&action=album\"><span>相册</span></a></li>\r\n";
+			}
+			else {
+				echo "		<li><a href=\"index.php?uid={$_vars['userid_e']}&action=archives&channelid={$k}\"><span>{$v}</span></a></li>\r\n";
+			}
+		}
+		?>
+    <li><a href="index.php?uid={dede:var.userid_e /}&action=infos"><span>个人资料</span></a></li>
+    <li><a href="index.php?uid={dede:var.userid_e /}&action=guestbook"><span>留言板</span></a></li>
+  </ul>
+</div>
+<div id="navChild"></div>
+<div class="clearfix"></div>

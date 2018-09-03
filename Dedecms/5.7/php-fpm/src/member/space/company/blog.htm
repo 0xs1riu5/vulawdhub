@@ -1,0 +1,116 @@
+{dede:include file='header.htm'/}
+
+<div id="side" class="left">
+	{dede:include file='side_icon.htm'/}
+	{dede:include file='side_visitor.htm'/}
+	{dede:include file='side_search.htm'/}
+</div>
+
+<!--begin main-->
+<div id="main" class="right">
+	<div class="box">
+	  <h2>查看新闻</h2>
+	 </div>
+<!--begin-->
+
+<div class="text">
+ <div class="gray">{dede:global.arcrow[pubdate] function="MyDate('y-m-d h:i',@me)" /}</div>
+		<h3>
+			<a href="{dede:global.arcrow[arcurl] /}" class="noul">{dede:global.arcrow[title] /}</a>
+		</h3>
+		<table class="blog-content">
+		  <tr>
+			<td>
+			  <p>{dede:global.arcrow[body] /}</p>
+			</td>
+		  </tr>
+		</table>
+</div>	
+
+<!--begin comment-->
+<div class="comment bb" style="padding-left:6px;">
+<?php if (count($msgs)>0)  { ?>
+<h5 id="cdisplay" style="display:;">一共有 <span id="sums"><?php echo count($msgs);?></span> 条评论</h5>
+<?php
+//原有评论（取其前50条）
+foreach ($msgs as $msg)
+{
+?>
+<dl id="<?php echo $msg['id']; ?>">
+	<dd class="comment-pic left">
+		<img src="<?php echo $msg['mface']=='' ? 'images/dfboy.png' : $msg['mface']; ?>" width="40" />
+	</dd>
+	<dd>
+	<?php
+		if ($msg['username']=='匿名' || $msg['userid']=='') {
+				echo $msg['username'];
+		}
+		else {
+	?>
+	<a href="index.php?uid=<?php echo urlencode($msg['userid']); ?>" class="big b"><?php echo $msg['username']; ?></a>
+	<?php } ?>
+	<span class="gray"><?php echo MyDate('m-d H:i',$msg['dtime']);?></span> Says:
+	</dd>
+	<dd class="comment-content" >
+		<span id="s_<?php echo $msg['id']; ?>"></span>
+		<div id="r_<?php echo $msg['id']; ?>">
+			<div class="re-comment" style="display:none;">
+				<b><?php echo $msg['username']; ?> 于 <?php echo MyDate('m-d H:i',$msg['dtime']);?> 回复：</b>
+				<div id="r_content_<?php echo $msg['id']; ?>"></div>
+			</div>
+			<div>
+				<img src="{dede:global.cfg_templets_skin/}/images/mood/<?php echo 'ico-mood-'.($msg['face']>0 ? $msg['face'] : 6).'.gif'; ?>" /><?php echo $msg['msg']; ?>
+			</div>
+		</div>
+	</dd>
+</dl>
+<?php
+} }
+?>
+	<div class="big"></div>
+	<div class="post-comment">
+	<h5>发表评论</h5>
+	<div>
+		<form action="feedback.php" method="post" name="feedback">
+		<input type="hidden" name="action" value="send" />
+		<input type="hidden" name="comtype" value="comments">
+		<input type="hidden" name="aid" value="<?php echo $aid; ?>" />
+		<input type="hidden" name="isconfirm" value="yes" />
+		<input name="cmtuser" type="hidden" value="{dede:var.uname /}">{dede:var.uname /}：
+	</div>
+	<div>
+		<textarea class="ip" id="cmtcontent" name="msg" style="width:90%;height:8em" ></textarea>
+	</div>
+	<div class="c"></div>
+	<div > 
+		<strong style= "FLOAT:left; ">表情:</strong>
+			<ul>
+				<li style= "FLOAT:left; "><input type="radio" name='face' value='6' checked="1" /><img src="templets/images/smiley/6.gif" /></li>
+				<li style= "FLOAT:left; "><input type="radio" name='face' value='4'/><img src="templets/images/smiley/4.gif" /></li>
+				<li style= "FLOAT:left; "><input type="radio" name='face' value='3'/><img src="templets/images/smiley/3.gif" /></li>
+				<li style= "FLOAT:left; "><input type="radio" name='face' value='5'/><img src="templets/images/smiley/5.gif" /></li>
+				<li style= "FLOAT:left; "><input type="radio" name='face' value='2'/><img src="templets/images/smiley/2.gif" /></li>
+				<li style= "FLOAT:left; "><input type="radio" name='face' value='1'/><img src="templets/images/smiley/1.gif" /></li>
+				<li><input type="radio" name='face' value='7'/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-7.gif" /></li>
+			</ul>
+		</div>
+		<table>
+				<tr>
+				<td>验证码：</td>
+			 	<td><input name="validate" type="text" id="validate" size="10" style="height:16px;width:60px;" class="ip" /></td>
+			 	<td><img src='../include/vdimgck.php' width='60px' height='20px'  /></td>
+       	<td>&nbsp;<input name="sbbt" type="submit" value="发送评论" style="width:60px;height:22px"  /></td>
+			 	<td><input name="notuser" type="checkbox" id="notuser" value="1" />匿名评论</td>
+			 </tr>
+		</table>
+	</form>
+	</div>
+	<div class="c"></div>
+</div>
+<!-- //end comment-->
+<!--end-->
+	</div>
+</div>
+<!--end main-->
+
+{dede:include file='footer.htm'/}

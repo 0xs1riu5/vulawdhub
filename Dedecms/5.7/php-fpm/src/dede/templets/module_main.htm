@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>模块打包</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script src="../include/dedeajax2.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+function getmodule(action,hash)
+    {
+		$DE('status_'+hash).innerHTML='<img src=\'images/loadinglit.gif\'>';
+		var myajax = new DedeAjax($DE('status_'+hash),false,true,'-','-','...');
+        myajax.SendGet2('module_main.php?action=download&hash='+hash);
+		$DE('manager_'+hash).style.display = 'block';
+		DedeXHTTP = null;
+    }
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">模块管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+  <form name="form1" action="plus_add.php" method="post">
+   <input type='hidden' name='dopost' value='save'>
+    <tr> 
+      <td height="25" colspan="7" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;"> 
+      	<div style='float:left'><a href='module_main.php'><b>模块管理</b></a> &gt; <b>模块列表：</b></div>
+		<div style='float:right;padding-right:8px;'>
+	<a href='module_main.php'>全部</a> |
+	<a href='module_main.php?moduletype=soft'>模块</a> | 
+	<a href='module_main.php?moduletype=templets'>模板</a> | 
+	<a href='module_main.php?moduletype=plus'>小插件</a> | 
+	<a href='module_main.php?moduletype=patch'>补丁</a>
+		</div>
+	</td>
+    </tr>
+    <tr bgcolor="#FBFCE2" >
+      <td align="center" width="16%">模块名称</td>
+      <td align="center" width="12%">发布时间</td>
+      <td align="center" width="14%">开发团队</td>
+      <td align="center" width="10%">编码</td>
+      <td align="center" width="10%">类型</td>
+      <td align="center" width="12%">模块状态</td>
+      <td align="center" width="26%">管理</td>
+    </tr>
+<?php
+if(count($modules)>0)
+foreach($modules as $k=>$v)
+{
+?>   
+    <tr bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+      <td><?php echo $v['name']; ?></td>
+      <td><?php echo $v['time']; ?></td>
+      <td><?php echo $v['team']; ?></td>
+      <td>
+      <?php
+      	if($cfg_soft_lang != $v['lang']) echo "<font color='red'>".$v['lang']."</font>";
+      	else  echo $v['lang'];
+      ?>
+      </td>
+      <td><?php echo $types[$v['moduletype']];?></td>
+      <td>
+	  
+      	<?php
+		$file = DEDEDATA."/module/{$v['hash']}.xml";
+		if(file_exists($file)) {
+			if(file_exists(DEDEDATA."/module/{$v['hash']}-readme.php")){
+				echo "<font color='green'>已安装</font> <a style='color:green' href='module_main.php?action=uninstall&hash={$v['hash']}'><u>卸载</u></a>";
+			}else{
+				echo "未安装 <a href='module_main.php?action=setup&hash={$v['hash']}'><u>安装</u></a>";
+			}
+		}else{
+			echo "<div id=\"status_{$v['hash']}\"><font color='red'>未下载</font> <a style='color:red' href=\"javascript:getmodule('download','{$v['hash']}')\"><u>下载</u></a></div>";
+		}
+      	?>
+		
+      </td>
+      <td>
+	  
+	  <div id = 'manager_<?php echo $v['hash']; ?>' <?php if(!file_exists(DEDEDATA."/module/{$v['hash']}.xml")) echo 'style="display:none;"'?>>
+      <a href='module_main.php?action=showreadme&hash=<?php echo $v['hash']; ?>'>使用说明</a>
+       |
+      <a href='module_main.php?action=view&hash=<?php echo $v['hash']; ?>'>详细</a>
+       |
+      <a href='module_main.php?action=edit&hash=<?php echo $v['hash']; ?>'>修改</a>
+       | 
+      <a href='module_main.php?action=del&hash=<?php echo $v['hash']; ?>'>删除</a>
+	  </div>
+      </td>
+    </tr>
+<?php
+}
+?>
+    <tr> 
+      <td colspan="7" align="center" bgcolor='#F9FCEF'>&nbsp;</td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

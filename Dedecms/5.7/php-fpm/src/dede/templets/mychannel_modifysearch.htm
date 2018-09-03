@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>修改频道</title>
+<script language="javascript" src="js/main.js"></script>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.STYLE1 {color: #FF0000}
+td{ padding:2px; padding-left:6px; line-height:150%; }
+.STYLE2 {color: #666666; }
+-->
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">自定义搜索管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+  <form name="form1" action="mychannel_edit.php" method="post" target="stafrm">
+    <input type='hidden' name='mid' value='<?php echo $mid?>'>
+    <input type='hidden' name='maintable' value='<?php echo $channel['maintable']?>'>
+    <input type='hidden' name='addontable' value='<?php echo $channel['addtable'];?>'>
+    <input type='hidden' name='step' value='<?php echo $step?>'>
+    <input type='hidden' name='dopost' value='modifysearch'>
+    <tr bgcolor="#CFCFCF">
+      <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;">
+      	<div style="width:100px; float:right"><a href="mychannel_edit.php?dopost=del&mid=<?php echo $mid;?>">删除自定义搜索</a></div>
+      	<b><a href="mychannel_main.php"><u>内容模型管理</u></a> &gt; 自定义搜索管理：</b>
+      	(自定义搜索再方便搜索的同时在一定程度上降低了效率，请根据需求定义搜索)
+      </td>
+    </tr>
+    <tr>
+      <td width="35%" height="28" align="left" bgcolor="#FFFFFF">频道ID：<br /></td>
+      <td width="65%" bgcolor="#FFFFFF">
+      	<?php echo $mid;?>
+</td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#ffffff">频道名称：<br /></td>
+      <td bgcolor="#ffffff">
+	    <?php echo $channel['typename']?>
+      </td>
+    </tr>
+    <?php
+    if($channel['issystem'] >= 0) {
+    ?>
+    <tr>
+      <td align="left" bgcolor="#FFFFFF">主表可供自定义搜索的字段<br />
+        <span class="STYLE2" id="help2">标题、关键字、摘要为默认选项，不用选择 </span></td>
+      <td bgcolor="#FFFFFF">
+      	<?php echo $mainfields; ?>
+      </td>
+    </tr>
+    <?php 
+    }    
+    ?>
+    <tr>
+      <td height="28" align="left" bgcolor="#ffffff">附件表可供自定义搜索的字段：<br />
+      <span class="STYLE2" id="help4">这里的字段是程序依据字段类型自动选择生成的。</span></td>
+      <td bgcolor="#ffffff">
+	    <?php echo $addonfields;?>
+     </td>
+    </tr>
+    <tr>
+      <td align="left" bgcolor="#FFFFFF">自定义搜索结果页模板<br />
+        <span class="STYLE2" id="help5" style="display: none;">只填写文件名，且文件必须在templets/default目录中 </span></td>
+      <td bgcolor="#FFFFFF">
+		    <input type="text" name="template" value="<?php echo $template;?>" style="width:200px" />
+      </td>
+    </tr>
+    <tr bgcolor="#ffffff">
+      <td height="28" colspan="2">
+      	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="26%" height="45">&nbsp;</td>
+            <td width="15%">
+            	<input type="submit" name="button" id="button" value="确定"   class='np coolbg'/>
+            </td>
+            <td width="59%">
+            	<input name="bt" type="button"  id="button2" onclick="location='mychannel_main.php';" value="返回" class='np coolbg'/>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </form>
+  <tr bgcolor="bgcolor="#F9FCEF">
+    <td height="20" colspan="2" bgcolor="#F9FCEF"> <table width="100%">
+        <tr>
+          <td width="74%"><strong>&nbsp;&nbsp;</strong>进行状态： </td>
+          <td width="26%" align="right">
+          	<script language='javascript'>
+          	function ResizeDiv(obj,ty)
+          	{
+          		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+          		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+          	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>]
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td colspan="2" id="mtd">
+    	<div id='mdv' style='width:100%;height:250px;'>
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div>
+	  </td>
+  </tr>
+</table>
+
+
+
+</body>
+</html>

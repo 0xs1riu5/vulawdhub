@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>点卡生成向导</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
+  <form action="cards_make.php" name="form1" target="stafrm">
+  <input type="hidden" name="dopost" value="make" />
+    <tr>
+      <td height="20" bgcolor="#EDF9D5" background='images/tbg.gif'>
+      	<table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="30%" style="padding-left:10px;"><strong>点卡生成向导：</strong> </td>
+          <td align="right">
+          	  <input type="button" name="ss1" value="点卡产品分类" style="width:90px;margin-right:6px" onClick="location='cards_type.php';" class='np coolbg' />
+              <input type="button" name="ss2" value="点卡使用记录" style="width:90px" onClick="location='cards_manage.php';" class='np coolbg' />
+          </td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td bgcolor="#FFFFFF">
+<table width="90%" border="0" cellpadding="2" cellspacing="2">
+          <tr>
+            <td width="90">点卡类型：</td>
+            <td>
+<select name='cardtype' style='width:120px'>
+<?php
+$dsql->SetQuery("Select * From #@__moneycard_type");
+$dsql->Execute();
+while($row=$dsql->GetArray()){
+  echo "  <option value='{$row['tid']}'>{$row['pname']}</option>\r\n";
+}
+$dsql->Close();
+?>
+</select>
+			</td>
+            <td width="90">生成数量：</td>
+            <td>
+			<input name="mnum" type="text" id="mnum"  style='width:120px' value="100" class='pubinputs' />
+			</td>
+          </tr>
+          <tr>
+            <td>点卡前缀：</td>
+            <td>
+              <input name="snprefix" type="text" id="snprefix"  style='width:120px' value="SN"  class='pubinputs'/>
+            </td>
+            <td>密码长度：</td>
+            <td><input name="pwdlen" type="text" id="pwdlen"  style='width:120px' value="4" class='pubinputs' />
+            </td>
+          </tr>
+          <tr>
+            <td>密码类型：</td>
+            <td><input type="radio" name="ctype" value="1" class='np' />
+              纯数字
+              <input name="ctype" type="radio"  value="2" checked='1' class='np' />
+              大写字母</td>
+            <td>密码组数：</td>
+            <td><input name="pwdgr" type="text" id="pwdgr"  style='width:120px' value="3" class='np' />
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="31" bgcolor="#ffffff" align="center">
+	  <input type="submit" name="Submit" value="开始生成点卡" class='np coolbg' />
+      </td>
+    </tr>
+  </form>
+  <tr bgcolor="#F9FCEF">
+    <td height="20"> <table width="100%">
+        <tr>
+          <td width="74%"><strong>结果：</strong></td>
+          <td width="26%" align="right"> <script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>]
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td id="mtd">
+    	<div id='mdv' style='width:100%;height:350px;'>
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

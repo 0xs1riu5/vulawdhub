@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>一键更新</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/calendar/calendar.js"></script>
+<script language='javascript'>
+function SelUp(){
+   var ob1 = document.getElementById("uptype1");
+   var ob2 = document.getElementById("uptype2");
+   var ob3 = document.getElementById("uptype3");
+   if(ob1.checked){
+      document.getElementById("seltime").style.display = "";
+	  document.getElementById("selid").style.display = "none";
+   }else if(ob2.checked){
+      document.getElementById("seltime").style.display = "none";
+	  document.getElementById("selid").style.display = "";
+   }else{
+      document.getElementById("seltime").style.display = "none";
+	  document.getElementById("selid").style.display = "none";
+   }
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <form name="form1" action="makehtml_all.php" target="stafrm" method="post">
+  <input type="hidden" name="action" value="make" />
+   <tr>
+    <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;">
+	    <strong>一键更新网站：</strong></td>
+    </td>
+    </tr>
+    <tr>
+      <td width="30%" height="30"  bgcolor="#FFFFFF">&nbsp;&nbsp;更新选项：</td>
+      <td valign="top" bgcolor="#FFFFFF">
+	   <input name="uptype" id="uptype1" type="radio" class="np" value="time" onClick="SelUp()" checked="checked" />
+	   指定时间的所有更新
+	   <input name="uptype" id="uptype2" type="radio" class="np" onClick="SelUp()" value="id" />
+	   指定ID文档的所有更新
+	   <input name="uptype" id="uptype3" type="radio" class="np" onClick="SelUp()" value="mkall" />
+	   更新所有
+	   </td>
+    </tr>
+    <tr id='seltime'>
+      <td height="20"  bgcolor="#FFFFFF">&nbsp;&nbsp;起始时间：</td>
+      <td height="20"  bgcolor="#FFFFFF">
+      	<input type="text" name="starttime" id="starttime" value="<?php echo GetDateMk(time()); ?>" style="width:200px" />
+                            <script language="javascript" type="text/javascript">
+					Calendar.setup({
+						inputField     :    "starttime",
+						ifFormat       :    "%Y-%m-%d",
+						showsTime      :    false,
+						timeFormat     :    "24"
+					});
+				 </script>
+      </td>
+    </tr>
+    <tr bgcolor="#FFFFFF" id="selid" style="display:none;">
+      <td height="20">&nbsp;&nbsp;起始ID：</td>
+      <td height="20">
+      	<input name="startid" type="text" id="startid" value="0" size="4" />
+      </td>
+    </tr>
+	<tr>
+      <td height="31" colspan="2" bgcolor="#ffffff" align="center" style="padding-top:6px">
+       <input type="submit" name="Submit" value="开始更新" class="coolbg" />
+      </td>
+    </tr>
+  </form>
+  <tr bgcolor="#F9FCEF">
+    <td height="20" colspan="2">
+    <table width="100%">
+     <tr>
+      <td width="74%">进行状态： </td>
+       <td width="26%" align="right">
+		    <script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>]          </td>
+        </tr>
+      </table>
+     </td>
+   </tr>
+   <tr bgcolor="#FFFFFF">
+    <td colspan="2" id="mtd">
+	  <div id='mdv' style='width:100%;height:350px;'>
+      <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="350px"></iframe>
+   </div>
+   <script language="JavaScript">
+	  document.all.mdv.style.pixelHeight = screen.height - 360;
+	  </script>
+   </td>
+  </tr>
+</table>
+</body>
+</html>

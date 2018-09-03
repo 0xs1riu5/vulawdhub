@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>发送邮件</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+.current {border:1px solid #dbe4cd;padding:5px;background:#FFFEF4;color:#FF0000;}
+</style>
+<script language="javascript">
+function ShowMore(formitem,one,more,group)
+{
+	if(formitem.checked){
+		document.getElementById(one).style.display = '';
+		document.getElementById(more).style.display = 'none';
+		document.getElementById(group).style.display = 'none';
+	}
+}
+</script>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">邮件订阅</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr>
+    <td height="25" colspan="9" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;">发送邮件</td>
+  </tr>
+  <tr bgcolor="#ffffff" height="26">
+    <td colspan="7" align="left">
+    <form method="post" action="mail_send.php">
+    <input name="action" type="hidden" value="post" />
+    <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#ffffff">
+    <tr>
+        <td width="15%" height="30" align="right">发送到：</td>
+        <td height="25" colspan="2">
+         <input type="radio" name="mode" id="radio" value="one"  onClick="ShowMore(this,'one','more','group');" checked />单人
+         <input type="radio" name="mode" id="radio" value="more" onClick="ShowMore(this,'more','one','group');" />多人
+         <input type="radio" name="mode" id="radio" value="group" onClick="ShowMore(this,'group','one','more');" />邮件群发
+        </td>
+      </tr>
+    <tr id="one">
+        <td height="30" align="right">E-Mail地址：</td>
+        <td height="25" colspan="2"><input name="address" type="text" class="text" value="@" size="28" maxlength="40" style="width:250px;margin-top:5px;margin-left:10px;"/>          
+          填写用户的E-Mail地址</td>
+      </tr>
+      <tr id="more" style="display:none">
+        <td height="30" align="right">E-Mail地址：</td>
+        <td height="25" colspan="2"><textarea name="address2" cols="28" rows="4" class="text" style="width:250px;margin-top:5px;margin-left:10px;">@,@</textarea>
+          不同的E-Mail地址之间用,号隔开</td>
+      </tr>
+        <tr id="group" style="display:none">
+        <td height="30" align="right">邮件列表：</td>
+        <td height="25" colspan="2">
+        <select name="mailfile" id="mailfile" style="margin-left: 10px;">
+        <?php
+        foreach($mailfiles as $i=>$mailfile)
+        {
+  
+            $selected = ($mailfile==$filename) ? " selected " : "";
+        ?>
+        <option value="<?php echo $mailfile; ?>" <?php echo $selected; ?> ><?php echo $mailfile; ?></option>
+        <?php
+        }
+        ?>
+	  </select>
+        </td>
+      </tr>
+      <tr>
+        <td height="30" align="right">邮件标题：</td>
+        <td height="25" colspan="2"><input name="title" type="text" id="title" class="company_manage_form_label" style="width:250px;margin-top:5px;margin-left:10px;" />
+          标题少于70个字符内</td>
+      </tr>
+      <tr>
+        <td height="12" align="right" valign="top" style="padding-top:5px;"><label for="pm_textarea">邮件内容：</label></td>
+        <td height="120" width="568" style="padding-left: 12px;">
+        <div style="width:568px;"><?php GetEditor("message","",450,"MemberLit"); ?></div>
+        </td>
+        <td width="314" >&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td height="28" align="right" valign="top">&nbsp;</td>
+        <td height="30" colspan="2" ><input type="submit" value="提交" class="button01" /></td>
+      </tr>
+    </table>
+     </form>
+    </td>
+  </tr>
+  <tr bgcolor="#F8FBFB">
+    <td height="26" colspan="9" align="center" bgcolor="#F9FCEF">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

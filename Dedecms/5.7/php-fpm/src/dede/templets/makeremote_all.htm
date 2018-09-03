@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>远程服务器同步</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" media="all" href="../include/calendar/calendar-win2k-1.css" title="win2k-1" />
+<script type="text/javascript" src="../include/calendar/calendar.js"></script>
+<script type="text/javascript" src="../include/calendar/calendar-cn.js"></script>
+<script language="javascript">
+function checkAll()
+{
+	for(i=0;i<document.form2.Iterm.length;i++)
+	{
+		if(!document.form2.Iterm[i].checked)
+		{
+			document.form2.Iterm[i].checked=true;
+		} else {
+			document.form2.Iterm[i].checked=false;
+		}
+	}
+}
+function changeDopost(postval)
+{
+	document.form2.maketype.value = postval;
+	document.form2.submit;
+}
+</script>
+</head>
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <form action="makeremote_all.php" method="post" name="form2" target="stafrm" id="form2">
+    <input type="hidden" name="dopost" value="make">
+     <input type="hidden" name="maketype" value="">
+    <tr>
+      <td height="28" colspan="5" background='images/tbg.gif'><table width="98%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="30%" height="18"><strong>远程服务器同步向导：</strong></td>
+            <td width="70%" align="right"><a href="makeremote_all.php?dopost=updateremote">&nbsp;[更新同步目录]</a></td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td width="61" valign="top" bgcolor="#FFFFFF"><label>
+          <input type="checkbox" name="remoteiterm" id="remoteiterm"  onChange="javascript:checkAll()">
+        </label>
+        选择</td>
+      <td width="185" align="center" valign="top" bgcolor="#FFFFFF">项目(站点根目录)</td>
+      <td width="265" align="center" valign="top" bgcolor="#FFFFFF">项目说明</td>
+      <td width="195" align="center" valign="top" bgcolor="#FFFFFF">选择服务器</td>
+      <td width="196" align="center" valign="top" bgcolor="#FFFFFF">状态</td>
+    </tr>
+    
+    <?php
+    foreach($remotefile as $key => $value)
+	{
+    $bgcolor = ($key % 2 == 0)? '#E6F3CD' : '#FFFFFF';
+    ?>
+    <tr>
+      <td width="61" align="center" valign="top" bgcolor="<?php echo $bgcolor;?>"><input name="Iterm[<?php echo $key;?>]" type="checkbox" id="Iterm" value="<?php echo $value['filedir'] ;?>"></td>
+      <td width="185" align="left" valign="top" bgcolor="<?php echo $bgcolor;?>"><?php echo $value['filedir'] ;?><?php echo ($value['issystem']==1)? '<font color="red">[系统]</font>' : '' ;?></td>
+      <td width="265" valign="top" bgcolor="<?php echo $bgcolor;?>"><?php echo $value['description'] ;?></td>
+      <td width="195" align="center" valign="top" bgcolor="<?php echo $bgcolor;?>"><label>
+          <?php
+          GetFtp($value['dfserv'], "serviterm[$key]");
+          ?>
+        </label></td>
+      <td width="196" align="center" valign="top" bgcolor="<?php echo $bgcolor;?>"><?php echo GetState($value['state']) ;?></td>
+    </tr>
+    <?php
+    }
+    ?>
+    <tr>
+      <td height="31" colspan="5" bgcolor="#FAFAF1" align="left">功能说明：本功能主要用于本地服务器文件同远程服务器进行同步，这里我们有几个是系统文件夹（Html生成、文件上传、专题）是必须要同远程服务器同步的，当然也有可选文件夹，用户可以在系统根目录\data\config.file.inc.php文件中进行修改（修改方法已在文件中说明）。</td>
+    </tr>
+    <tr>
+      <td height="31" colspan="5" bgcolor="#FAFAF1" align="center"><input type="submit" class='coolbg np' name="Submit2" value="更新选择" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" class='coolbg np' name="Submit" value="同步更新所有" onClick="changeDopost('makeall')" /></td>
+    </tr>
+  </form>
+  <tr bgcolor="#E6F3CD">
+    <td height="20" colspan="5"><table width="100%">
+        <tr>
+          <td width="74%">进行状态： </td>
+          <td width="26%" align="right"><script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>] </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td colspan="5" id="mtd"><div id='mdv' style='width:100%;height:350px;'>
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div></td>
+  </tr>
+</table>
+</body>
+</html>

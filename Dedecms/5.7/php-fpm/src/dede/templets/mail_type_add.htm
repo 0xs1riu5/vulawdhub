@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>发送邮件</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">邮件订阅</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr>
+    <td height="30" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;">添加分类</td>
+  </tr>
+  <tr bgcolor="#ffffff" height="26">
+    <td colspan="7" align="left">
+    <form method="post" action="mail_type.php">
+    <input name="dopost" type="hidden" value="addsave" />
+    <table width="100%" border="0" cellpadding="1" cellspacing="1">
+    <tr>
+        <td width="129" height="31" align="right">分类名称：</td>
+        <td height="31" colspan="2"><input name="typename" type="text" id="typename" class="company_manage_form_label" style="width:250px;margin-top:5px;margin-left:10px;" /></td>
+      </tr>
+      <tr>
+        <td height="12" align="right" valign="top" style="padding-top:5px;">分类描述：</td>
+        <td height="120" style="padding-left: 12px;"><textarea name="description" cols="45" id="description" style="width:260px;height:120px;"></textarea></td>
+        <td width="314">&nbsp;</td>
+      </tr>
+      <tr>
+        <td height="28" align="right" valign="top">&nbsp;</td>
+        <td height="30" colspan="2"><input type="submit" value="提交" class="button01" /></td>
+      </tr>
+    </table>
+     </form>
+    </td>
+  </tr>
+  <tr bgcolor="#F8FBFB">
+    <td height="26" align="center" bgcolor="#F9FCEF">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

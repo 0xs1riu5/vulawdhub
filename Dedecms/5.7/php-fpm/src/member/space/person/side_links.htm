@@ -1,0 +1,15 @@
+<!-- //links -->
+<dl class="border mT10">
+    <dt class="caption"><strong>个人书签</strong></dt>
+    <dd class="body lh20">
+      <ul class="list2 mB5">
+      	<?php
+				$dsql->Execute('fl',"Select * From `#@__member_flink` where mid='{$_vars['mid']}' ");
+				while($arr = $dsql->GetArray('fl'))
+				{
+					echo "<li><a href='{$arr['url']}' target='_blank'>{$arr['title']}</a></li>\r\n";
+				}
+				?>
+      </ul>
+    </dd>
+</dl>

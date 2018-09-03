@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>系统用户组管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <form name="form1" action="content_att.php" method="post">
+    <input type="hidden" name="dopost" value="save">
+    <tr> 
+      <td height="28" colspan="3" background='images/tbg.gif'>
+       <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr> 
+          <td width="24%" style="padding-left:10px;"><b>系统用户组管理</b> </td>
+          <td width="76%" align="right"><b>
+          	<a href="sys_group_add.php"><u>增加一个用户组</u></a>
+          	|
+            <a href="sys_admin_user.php"><u>管理系统用户</u></a>
+          	</b>
+          </td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+    <tr bgcolor="#FBFCE2" align="center" > 
+      <td width="20%" height="24">Rank</td>
+      <td width="45%">组名称</td>
+      <td width="35%">管理</td>
+    </tr>
+    <?php
+	$dsql->SetQuery("Select rank,typename,system From #@__admintype");
+	$dsql->Execute();
+	while($row = $dsql->GetObject())
+	{
+	?>
+   <tr align="center" bgcolor="#FFFFFF"> 
+      <td height="24"> 
+        <?php echo $row->rank?>
+      </td>
+      <td height="24">
+      	<?php echo $row->typename?>
+      </td>
+      <td>
+        <a href='sys_group_edit.php?rank=<?php echo $row->rank?>'>[权限设定]</a>
+      	<a href='sys_admin_user.php?rank=<?php echo $row->rank?>'>[组用户]</a>
+      <?php if($row->system==0){ ?><a href='sys_group_edit.php?dopost=del&rank=<?php echo $row->rank; ?>'>[删除组]</a><?php } ?>
+      </td>
+    </tr>
+    <?php
+	}
+	?>
+    <tr> 
+      <td height="24" colspan="3" bgcolor="#F9FCEF">&nbsp;</td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

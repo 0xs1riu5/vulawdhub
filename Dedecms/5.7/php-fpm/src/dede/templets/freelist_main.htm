@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>自由列表管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript" src="js/main.js"></script>
+<script language="JavaScript">
+var pageno = 1;
+var totalrow = <?php echo $totalRow?>;
+var pagesize = <?php echo $pagesize?>;
+var orderby = '<?php echo $orderby?>';
+var addget = "<?php echo $addget?>";
+//加载列表
+function ReloadPage(ordertype){
+	orderby = ordertype;
+	var listArea = $Obj('rslist');
+	var errMsg = "网络通信出错！<br>[<a href=\"javascript:ReloadPage('"+ordertype+"')\"><u>点击此重新加载列表</u></a>]";
+	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在加载...");
+	myajax.SendGet("freelist_main.php?dopost=getlist&pageno="+pageno+"&orderby="+ordertype+addget);
+}
+//载入指定页的列表
+function LoadPage(npage){
+	pageno = npage;
+	ReloadPage(orderby);
+	ReloadPageNum(pageno);
+}
+//更改
+function EditNote(nid){
+	location.href = 'freelist_edit.php?aid='+nid;
+}
+//更新HTML
+function CreateNote(nid){
+	location.href = 'makehtml_freelist.php?aid='+nid;
+}
+//删除
+function DelNote(nid){
+	if(!window.confirm("你确认要删除这条记录么！")){ return false; }
+	var listArea = $Obj('rslist');
+	totalrow = totalrow - 1;
+	var pagenum = Math.ceil(totalrow/pagesize);
+	if(pagenum<=pageno) pageno = pagenum;
+	var errMsg = "网络通信出错！<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>点击此重新加载列表</u></a>]";
+	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在处理...");
+	myajax.SendGet("freelist_main.php?dopost=del&aid="+nid+"&pageno="+pageno);
+	ReloadPageNum(pageno);
+}
+//重新加载分页列表
+function ReloadPageNum(startnum){
+	var ListArea = $Obj('pagelist');
+	var pagenum = Math.ceil(totalrow/pagesize);
+	var listsize = 3;
+	var ahtml = "";
+	var startloop = 1;
+	var endnum = 0;
+	ahtml += "共："+totalrow+" 条记录/"+pagenum+"页";
+	if(pageno>1 && pageno!=1) ahtml += " <a href='#' onclick='LoadPage(1)'>首页</a> ";
+	if(pageno>1) ahtml += "<a href='#' onclick='LoadPage("+(pageno-1)+")'>↑上页</a> ";
+	if(startnum >= pagenum-listsize){
+		startloop = pagenum-(listsize*2);
+		if(startloop<1) startloop = 1;
+		for(i=startloop;i<=pagenum;i++){
+			if(i==pageno) ahtml += i+" ";
+			else ahtml += "<a href='#' onclick='LoadPage("+i+")'>["+i+"]</a> ";
+		}
+	}
+	else if(pagenum < listsize){
+		for(i=1;i<=pagenum;i++){
+			if(i==pageno) ahtml += i+" ";
+			else ahtml += "<a href='#' onclick='LoadPage("+i+")'>["+i+"]</a> ";
+		}
+	}
+	else{
+		startloop = startnum-listsize;
+		if(startloop<1){ startloop=1; endnum = startloop + (listsize*2); }
+		else{ endnum = startnum+listsize; }
+		if(endnum >= pagenum) endnum = pagenum;
+		for(i=startloop;i<=endnum;i++){
+			if(i==pageno) ahtml += i+" ";
+			else ahtml += "<a href='#' onclick='LoadPage("+i+")'>["+i+"]</a> ";
+		}
+	}
+	if(pageno<pagenum) ahtml += "<a href='#' onclick='LoadPage("+(pageno+1)+")'>下页↓</a> ";
+	if(pageno!=pagenum && pagenum>1) ahtml += " <a href='#' onclick='LoadPage("+pagenum+")'>末页</a>";
+	ListArea.innerHTML = ahtml;
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">频道管理</div>
+</div>
+
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="border:1px solid #CFCFCF;border-bottom:none;">
+<tr>
+<td bgcolor="#CFCFCF" class="tbtitletxt" background="images/tbg.gif">
+	<table width='100%' border="0" cellpadding='0' cellspacing='0'>
+    <tr>
+     <td width='36%' class="tbtitletxt" style="padding-left:10px;"><strong>自由列表管理</strong>&nbsp;[<a href="freelist_add.php"><u>增加列表</u></a>]</td>
+     <td width="29%">&nbsp;</td>
+     <td width="35%" align='right'>&nbsp;</td>
+    </tr>
+  </table>
+  </td>
+  </tr>
+</table>
+	<span id='rslist'>
+	<?php
+	GetTagList($dsql,$pageno,$pagesize,$orderby);
+	?>
+	</span>
+	<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
+		<tr>
+		  <td height="35" align="center" style="background:#F9FCEF;padding:7px 6px 3px 6px;" >
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <form action="freelist_main.php" name="form1" id="form1">
+          <tr>
+            <td width="200" align="center">
+            	<input type="text" name="keyword" id="keyword" class='alltxt' style="width:170px" value="<?php echo $keyword?>" />
+            </td>
+            <td width="80" align="left">
+            	<input type="submit" name="Submit2" value="搜索"  class="coolbg np" />
+            </td>
+            <td align="left">
+            	<input type="button" name="bt1" value="增加列表" style="width:70px" onclick="location='freelist_add.php';" class="coolbg np" />
+              &nbsp;
+              <input type="button" name="bt2" value="更新所有列表HTML" style="width:180px" onclick="location='makehtml_freelist.php';" class="coolbg np" />
+            </td>
+            <td width="200">
+            	<span id='pagelist'><script language='javascript'>ReloadPageNum(1);</script></span>
+            </td>
+          </tr>
+        </form>
+      </table></td>
+  </tr>
+</table>
+</body>
+</html>

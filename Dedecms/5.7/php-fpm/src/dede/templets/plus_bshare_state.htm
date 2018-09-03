@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>BShare分享插件</title>
+<?php
+if(is_file(dirname(__file__).'/../img/base.css'))
+{
+?>
+<link href="img/base.css" rel="stylesheet" type="text/css" />
+<?php
+} else {
+?>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<?php
+}
+?>
+<link href='css/boxy.css' rel='stylesheet' type='text/css' />
+<?php
+if(is_file(DEDEINC.'/js/jquery/jquery.js'))
+{
+?>
+<script language="javascript" src="../include/js/jquery/jquery.js"></script>
+<?php
+} else {
+?>
+<script language="javascript" src="../images/js/j.js"></script>
+<?php
+}
+?>
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="js/boxy.js"></script>
+<script type="text/javascript" src="js/calendar/calendar.js"></script>
+</head>
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<div class="bodytitle">
+  <div class="bodytitleleft"></div>
+  <div class="bodytitletxt" style="padding-left:10px;">辅助插件</div>
+</div>
+<table width="98%" border="0" align="center" cellpadding="4" cellspacing="1" class="tbtitle" style="background:#CFCFCF;">
+  <tr>
+    <td bgcolor="#EDF9D5" colspan="2" background='images/tbg.gif' style="padding-left:10px;"><strong>bShare分享插件</strong></td>
+  </tr>
+  <tr>
+    <td colspan="2" bgcolor="#F9FCEF">&nbsp;您已经开通bShare服务：</td>
+  </tr>
+  <tr>
+    <td width="20%" align="right" bgcolor="#FFFFFF">&nbsp;<b>用户名：</b></td>
+    <td width="80%" bgcolor="#FFFFFF">&nbsp;&nbsp;<?php echo isset($cfg_bshare['user'])? $cfg_bshare['user'] : '';?></td>
+  </tr>
+  <tr>
+    <td align="right" bgcolor="#FFFFFF">&nbsp;<b>UUID：</b></td>
+    <td bgcolor="#FFFFFF">&nbsp; <?php echo isset($cfg_bshare['uuid'])? $cfg_bshare['uuid'] : '';?></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="right" bgcolor="#FFFFFF">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" bgcolor="#F9FCEF">前台调用样式/代码：</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" bgcolor="#FFFFFF">
+    <form action="plus_bshare.php?do=setcode" method="post" id="form1">
+    <p>内容页面中直接加入<span style="color:red">{dede:bshare/}</span>，或者使用:<br />
+        <span style="color:red">&lt;script src='<?php echo $cfg_phpurl;?>/bshare.php' type='text/javascript'&gt;&lt;/script&gt;</span><br />
+      即可调用分享插件。</p>
+      <p>
+        <textarea name="bscode" id="bscode" cols="60" rows="3"><?php echo $bshareCode;?>
+        </textarea>
+        <input type="button" name="selectStyle" id="selectStyle" value="选择样式" />
+        </a> <input type="submit" name="button" id="button" value="设定样式" /></p>
+        </form>
+      <div id="bshareCode" style="display:none">
+        <iframe src="<?php echo $cfg_phpurl;?>/bshare.php?dopost=getcode&uuid=<?php echo isset($cfg_bshare['uuid'])? $cfg_bshare['uuid'] : '';?>" name="bshare" width="780px" height="300px" scrolling="no">
+        </iframe>
+      </div></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" bgcolor="#FFFFFF">样式预览：</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" bgcolor="#FFFFFF"><?php echo $bshareCode;?></td>
+  </tr>
+  <tr>
+    <td bgcolor="#EDF9D5" colspan="2" background='images/tbg.gif' style="padding-left:10px;"><strong>统计信息</strong></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" bgcolor="#F9FCEF">选择查询条件：</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" bgcolor="#FFFFFF">开始：
+      <form id="form2" name="form1" method="get" action="" target="_self">
+        <input name="starttime" type="text" id="starttime" style="width:100px" value="<?php echo $starttime;?>" size="60" />
+        <script language="javascript" type="text/javascript">
+					Calendar.setup({
+						inputField     :    "starttime",
+						ifFormat       :    "%Y-%m-%d",
+						showsTime      :    false,
+						timeFormat     :    "24"
+					});
+</script>到 结束
+        <input name="endtime" type="text" id="endtime" style="width:100px" value="<?php echo $endtime;?>" size="60" />
+        <script language="javascript" type="text/javascript">
+					Calendar.setup({
+						inputField     :    "endtime",
+						ifFormat       :    "%Y-%m-%d",
+						showsTime      :    false,
+						timeFormat     :    "24"
+					});
+</script>
+        <input type="submit" name="search" id="searchBtn" value="查询"/>
+      </form></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" bgcolor="#FFFFFF"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1">
+        <tr>
+          <td colspan="2" align="left"><table border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="84" align="center" background="images/itemnote1.gif">&nbsp;平台统计&nbsp;</td>
+                <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>分享统计</u></a></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="display:none">
+        <tr>
+          <td colspan="2" align="left"><table height="24" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>平台统计</u></a>&nbsp;</td>
+                <td width="84" align="center" background="images/itemnote1.gif">分享统计</td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #cfcfcf;background:#ffffff;margin-top:-5px;">
+        <tr>
+          <td width="400%" height="24" align="left" class="bline"><table width="498" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="152">&nbsp;bURL社交影响力分析：</td>
+                <td width='346'>&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2"> 说明：数据格式“平台.(访问占用百分比)-访问次数”。 <br />
+                  <img src="<?php echo $platformUrl;?>" alt="bURL社交影响力分析" name="platformimg" id="platformimg" /></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="border:1px solid #cfcfcf;background:#ffffff; margin-top:-5px;display:none">
+        <tr>
+          <td height="24" class="bline" align="left" ><table width="498" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td height="22"><strong>分享统计信息：</strong></td>
+              </tr>
+              <tr>
+                <td height="22"><p>分享量统计表:</p>
+                  <p><img src="<?php echo $shareUrl;?>" alt="bURL社交影响力分析" /></p>
+                  <p>点击统计表</p>
+                  <p><img src="<?php echo $clickUrl;?>" alt="bURL社交影响力分析" /></p></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td bgcolor="#F9FCEF" colspan="2">&nbsp;</td>
+  </tr>
+</table>
+<script type="text/javascript">
+(function($){
+	$("#selectStyle").click(function()
+	{
+		if($.browser.msie)
+		{
+			if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
+			else{ var posLeft = 100; var posTop = 100; }
+			window.open('<?php echo $cfg_phpurl;?>/bshare.php?dopost=getcode&uuid=<?php echo isset($cfg_bshare['uuid'])? $cfg_bshare['uuid'] : '';?>','getCode','scrollbars=no,width=780px,height=300px,top='+posTop+',left='+posLeft)
+		}else {
+			new Boxy($("#bshareCode"),{title:'获取bShare代码',draggable: true,closeText:'关闭'});
+		}
+		// new Boxy($("#bshareCode"),{title:'获取bShare代码',draggable: true,closeText:'关闭'});
+	});
+})(jQuery);
+</script>
+</body>
+</html>

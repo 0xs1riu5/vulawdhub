@@ -1,0 +1,19 @@
+version: '2'
+services:
+  php5-dedecms_v57:
+    build: ./php-fpm
+    image: s1r1u5/dedecms:57
+    restart: always
+    links: 
+        - mysql_dedecms:db
+    ports:
+        - 80:80
+    depends_on:
+        - mysql_dedecms
+
+  mysql_dedecms:
+    build: ./mysql
+    image: s1r1u5/mysql_dedecms:57
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+

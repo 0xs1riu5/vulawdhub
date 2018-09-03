@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>采集内容预览</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<form name='form1' action='co_view.php' method='post'>
+<input type='hidden' name='action' value='save' />
+<input type='hidden' name='nid' value='<?php echo $nid; ?>' />
+<input type='hidden' name='aid' value='<?php echo $aid; ?>' />
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <tr> 
+    <td height="28" colspan="2" background='images/tbg.gif' style="padding-left:10px;">
+    	<a href='co_url.php'><b>采集内容管理</b></a><b> &gt; 采集内容预览：</b>(系统会自动下载并处理未下载过的内容)
+   </td>
+  </tr>
+  <tr bgcolor="#ffffff"> 
+    <td height="24" colspan="2">如果发布时间（pubdate）为空，系统将采用导入时的实际时间，‘#p#副标题#e#’字样是系统分页符号，请不要替换。</td>
+  </tr>
+  <tr height="26" bgcolor="#FBFCE2"> 
+    <td width="17%" height="24" align="center" bgcolor="#F8FCF1"><strong>字段名称</strong></td>
+    <td width="83%" align="center" bgcolor="#F8FCF1"><strong>内　容</strong></td>
+  </tr>
+ <?php
+for($i=0;$i<=$dtp->Count;$i++)
+{
+	$ctag = $dtp->CTags[$i];
+	if($ctag->GetName()=="field")
+	{
+		$fname = $ctag->GetAtt("name");
+		$fvalue = $ctag->GetInnerText();
+ ?>
+  <tr> 
+  <td height="24" align="center" valign="top" bgcolor="#FFFFFF">
+	<?php echo $fname?>
+	<input type='hidden' name='noteid_<?php echo $i?>' value='<?php echo $fname?>' />
+	</td>
+    <td bgcolor="#FFFFFF">
+	<?php
+	if(strlen($fvalue)<200) echo "<textarea name=\"value_$i\" rows=\"1\" style=\"width:90%\">$fvalue</textarea>";
+	else echo "<textarea name=\"value_$i\" rows=\"12\" style=\"width:90%\">$fvalue</textarea>";
+	?>
+	</td>
+  </tr>
+<?php
+  }
+}
+$dtp->Clear();
+?>
+<input type='hidden' name='endid' value='<?php echo $i?>' />
+  <tr  bgcolor="#F9FCEF"> 
+    <td height="24" colspan="2" align="center">
+    <input name="imageField" type="image" src="images/button_save.gif" class="np" width="60" height="22" border="0" />
+    	&nbsp;
+     <a href="<?php echo $backurl?>"><img src="images/button_back.gif" class="np" width="60" height="22" border="0" /></a>
+    </td>
+  </tr>
+</table>
+</form>
+
+<form name='form2' action='co_do.php' method='post'>
+<input type='hidden' name='dopost' value='replace' />
+<input type='hidden' name='nid' value='<?php echo $nid; ?>' />
+<input type='hidden' name='aid' value='<?php echo $aid; ?>' />
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center" style="margin-top:6px">
+<tr>
+ <td colspan='4' height="28" colspan="2" background='images/tbg.gif' style="padding-left:10px;">
+ 	<b>内容替换：</b>
+ </td>
+</tr>
+<tr bgcolor="#ffffff">
+ <td colspan='4' height="24">进行替换时会把当前节点的所有结果在原始内容中进行替换，使用正则表达式模式时，会要求再次确实，请注意使用风险。</td>
+</tr>
+<tr bgcolor="#ffffff">
+ <td width='12%'>匹配模式：</td>
+ <td colspan='3'>
+ 	<input type='radio' name='regtype' value='string' class='np' checked='1' />完全匹配
+ 	<input type='radio' name='regtype' value='regex' class='np' />正则表达式
+ </td>
+</tr>
+<tr bgcolor="#ffffff" height="160">
+ <td width='12%'>当前记录<br />原始内容参考：</td>
+ <td colspan='3'>
+ 	<textarea name="rs" style="width:96%;height:150px"><?php echo $body; ?></textarea>
+ </td>
+</tr>
+<tr bgcolor="#ffffff" height="70">
+ <td width='12%'>
+ 	要替换的字符串<br />
+ 	或正则表达式：
+ 	</td>
+ <td width='38%'>
+  <textarea name="fdstring" style="width:90%;height:60px"></textarea>
+ </td>
+ <td width='12%'>替换为：</td>
+ <td>
+  <textarea name="rpstring" style="width:90%;height:60px"></textarea>
+ </td>
+</tr>
+<tr bgcolor="#F9FCEF"> 
+  <td height="24" colspan="4" align="center">
+   <input name="imageField" type="image" src="images/button_ok.gif" class="np" width="60" height="22" border="0" />
+   &nbsp;
+   <a href="<?php echo $backurl?>"><img src="images/button_back.gif" class="np" width="60" height="22" border="0" /></a>
+  </td>
+</tr>
+</table>
+</form>
+
+</body>
+</html>

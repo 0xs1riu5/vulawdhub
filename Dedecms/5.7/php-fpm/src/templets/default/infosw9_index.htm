@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+</head>
+<body class="channel">
+{dede:include filename="head.htm"/}
+<!-- /header -->
+<div class="w960 center clear mt1">
+	<div class="pleft">
+    
+		<div class="picnews mt1">
+			<dl class="tbox">
+				<dt><strong>图文资讯</strong></dt>
+				<dd>
+					<ul class="e1">
+                    {dede:arclistsg row=5 orderby=pubdate flag='p'}
+          	<li><a href="[field:arcurl/]"><img src='[field:litpic/]' width='124px' height='94px'/><span class="title">[field:title/]</span></a></li>{/dede:arclistsg}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /picnews -->
+
+		
+		<div class="listbox">
+	{dede:channelartlist}
+      <dl class="tbox">
+        <dt><strong><a href="{dede:field name='typeurl'/}">{dede:field name='typename'/}</a></strong><span class="more"><a href="{dede:field name='typeurl'/}">更多...</a></span></dt>
+        <dd>
+          <ul class="d1 ico3">
+          {dede:arclistsg titlelen='60' row='8'}
+            <li><a href="[field:arcurl /]">[field:title /]</a></li>
+          {/dede:arclistsg}
+          </ul>
+        </dd>
+      </dl>
+	{/dede:channelartlist}
+		</div><!-- /listbox -->
+	</div><!-- /pleft -->
+	
+	<div class="pright">
+        	<div class="infos_search">
+			<dl class="tbox">
+				<dt><strong>信息搜索</strong></dt>
+				<dd>
+                {dede:infoguide}
+                    <form name='infoguide' method='get' action='/plus/list.php'>
+                    [field:nativeplace /]
+                    [field:infotype /]
+                    <input type='hidden' name='tid' value='[field:typeid /]' />
+                    <input type='hidden' name='channelid' value='-8' />
+                    <input type='text' name='keyword' value='' class="ipt-txt" />
+                    <input type='submit' value='搜索信息' class="btn-2" />
+                    </form>
+                {/dede:infoguide}
+				</dd>
+			</dl>
+		</div>
+        
+		<div class="strongrange mt1">
+			<dl class="tbox">
+				<dt><strong>推荐内容</strong></dt>
+				<dd>
+					<ul class="d1 ico2">
+           	{dede:arclistsg flag='c' titlelen=42 row=6}
+          	 <li><span>[[field:typename/]]</span><a href="[field:arcurl/]">[field:title/]</a></li>
+             {/dede:arclistsg}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /commend -->
+		<div id="conrightAD" style="margin:10px auto">{dede:myad name='listRtPicAD'/}</div>
+		<div class="strongrange mt1">
+			<dl class="tbox">
+				<dt><strong>热点内容</strong></dt>
+				<dd>
+					<ul class="d1 ico2">
+                    {dede:arclistsg row=10 orderby=click}
+                     <li><span>[[field:typename/]]</span><a href="[field:arcurl/]">[field:title/]</a></li>
+                    {/dede:arclistsg}
+					</ul>
+				</dd>
+			</dl>
+		</div>
+
+	</div><!-- /pright -->
+</div>
+<div id="footAD" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD'/}</div>
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
+
+</body>
+</html>

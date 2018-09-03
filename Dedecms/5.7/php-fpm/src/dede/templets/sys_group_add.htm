@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>组权限设置</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<center>
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6" align="center">
+<form name='form1' action='sys_group_add.php' method='post'> 
+<input type='hidden' name='dopost' value='save'>
+  <tr>
+    <td height="23" background="images/tbg.gif" align="left" style="padding-left:10px;"><b><a href='sys_group.php'>系统用户组管理</a>&gt;&gt;增加用户组：</b></td>
+</tr>
+  <tr> 
+    <td valign="top" bgcolor="#FFFFFF" align="center"> 
+      <table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td width="9%" height="30">组名称：</td>
+          <td width="91%" style="text-align:left;"> <input name="groupname" type="text" id="groupname"> 
+          </td>
+        </tr>
+        <tr> 
+          <td width="9%" height="30">级别值：</td>
+          <td width="91%" style="text-align:left;"> <input name="rankid" type="text" id="rankid" size="6">
+            （数字，系统已占用的级别值：
+            <?php
+          	
+          	$dsql->SetQuery("Select rank From #@__admintype");
+          	$dsql->Execute();
+          	while($row = $dsql->GetObject()) echo '<font color=red>'.$row->rank.'</font>、';
+          	?>
+            ，级别值必须小于10，超过或等于10所有权限设置将无效(超级管理员)，如果10个组不能完全满足你的要求，允许使用小数） </td>
+        </tr>
+        <?php
+        $start = 0;
+        $k = 0;
+        $gouplists = file(dirname(__FILE__).'/../inc/grouplist.txt');
+        foreach($gouplists as $line)
+        {
+        	$line = trim($line);
+        	if($line=="") continue;
+        	if(preg_match("#^>>#", $line))
+        	{
+        		if($start>0) echo "        	 </td></tr>\r\n";
+        		$start++;
+        		$lhead = "
+        	 <tr> 
+           <td height='25' colspan='2' bgcolor='#F9FAF3' style='text-align:left;'>{$start}、".str_replace('>>','',$line)."</td></tr>
+           <tr><td height='25' colspan='2' style='text-align:left;'>
+        		"; 
+        		echo $lhead;
+        	}
+        	else if(preg_match("#^>#", $line))
+        	{
+        		$ls = explode('>',$line);
+        		$tag = $ls[1];
+        		$tagname = str_replace('[br]', '<br />', $ls[2]);
+        		if(!preg_match("#<br \/>#", $tagname) ) $tagname .= "<font color='#888888'>($tag)</font>";
+        		else $tagname = str_replace('<br />', "<font color='#888888'>($tag)</font><br />", $tagname);
+        		echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='$tag'>$tagname\r\n";
+        	  $k++;
+        	}
+        }
+        $start++;
+        ?>
+        </td>
+        </tr>
+        <tr> 
+           <td height='25' colspan='2' bgcolor='#F9FAF3' style="text-align:left;"><?php echo $start?>、插件权限</td>
+         </tr>
+        <tr>
+        <td height='25' colspan='2' style='text-align:left;'>
+         <?php
+         $l = 0;
+         $dsql->SetQuery('Select plusname From #@__plus');
+         $dsql->Execute();
+         while($row=$dsql->GetObject()){
+         	 echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='plus_{$row->plusname}'>{$row->plusname}\r\n";
+        	 $k++;
+        	 $l++;
+        	 if($l%6==0) echo "<br />";
+         }
+         ?>  	
+        </td>
+        </tr>
+        <tr> 
+          <td height="50" align="center">&nbsp;</td>
+          <td height="50"  style="text-align:left;"><input  class="np" name="imageField" type="image" src="images/button_save.gif" width="60" height="22" border="0">
+          </td>
+        </tr>
+      </table>
+    </td>
+</tr>
+</form>
+</table>
+</center>
+</body>
+</html>

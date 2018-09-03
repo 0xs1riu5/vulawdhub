@@ -1,0 +1,190 @@
+@import url("../common/css/css.css");
+/*
+
+“风格” 样式
+
+2008.8.12 10:48 for Fangyu12@gmail.com
+
+Last modified 2008.10.06 15:30
+
+Copyright (c) 2008, dedecms All rights reserved.
+
+*/
+
+body {
+	background-attachment: scroll;
+	background-color: #9CAEC1;
+	background-image: url(bg.jpg);
+	background-repeat: no-repeat;
+	background-position: center 31px;
+}
+/* 链接
+-------------------------------------------------------------------*/
+a:link, a:visited {
+	color:#074387;
+	text-decoration:none;
+}
+a:hover, a:active {
+	color:#074387;
+	text-decoration:underline;
+}
+
+/* 导航菜单
+-------------------------------------------------------------------*/
+#head {
+	position:relative;
+	height:225px;
+}
+#spaceName {
+	position:absolute;
+	top:28%;
+	left:30px;
+}
+#navMenu {
+	position: absolute;
+	bottom: 0px;
+	left: 210px;
+	height: 34px;
+	line-height:34px;
+}
+#navMenu li a {
+	background-image: url(menu_bg.gif);
+	background-repeat: no-repeat;
+	background-position: left 0;
+	font-size: 14px;
+	display: block;
+	padding-left: 1em;
+	float:left;
+}
+#navMenu li a span {
+	background-image: url(menu_bg.gif);
+	background-repeat: no-repeat;
+	background-position: right 0;
+	display: block;
+	cursor:pointer;
+	float:left;
+	padding-right: 1em;
+}
+#navMenu li a:hover {
+	text-decoration: underline;
+	}
+#navMenu li.thisClass a {
+	background-position: left -34px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #666;
+}
+#navMenu li.thisClass a span {
+	background-position: right -34px;
+}
+#navChild {
+	background-image: url(nav_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: center top;
+	height: 37px;
+	margin-top:-1px;
+	*margin-top:-2px;
+}
+/* 盒子
+-------------------------------------------------------------------*/
+.border {
+	border: 1px solid #919BA2;
+	background-color: #EBEEF3;
+	padding: 1px;
+}
+.caption {
+	background-image: url(c_bg.png);
+	background-repeat: repeat-x;
+	background-position: left bottom;
+}
+.caption strong {
+	color:#3A3A3A;
+}
+/* 按钮
+-------------------------------------------------------------------*/
+button,
+.button {
+	margin:0;
+	height:23px;
+	line-height:23px;
+	font-size:12px;
+	cursor:pointer;
+	border:none;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.buttonBlue2 {
+	width:46px;
+	color:#fff;
+	background:url(botton.png) no-repeat 0 0;
+}
+.buttonBlue4 {
+	width:70px;
+	color:#fff;
+	background-image: url(botton.png);
+	background-repeat: no-repeat;
+	background-position: -60px top;
+}
+/* 蓝色圆角按钮
+-------------------------------------------------------------------*/
+.buttonBlue a {
+	background-image: url(botton.png);
+	background-repeat: no-repeat;
+	background-position: 0px -35px;
+	text-decoration: none;
+	padding-left: 8px;
+	float:left;
+}
+.buttonBlue a span {
+	background-image: url(botton.png);
+	background-repeat: no-repeat;
+	background-position: right -35px;
+	display: block;
+	cursor:pointer;
+	line-height: 23px;
+	height: 23px;
+	float:left;
+	padding-right: 8px;
+}
+.buttonBlue a:hover {
+	background-position: 0px -70px;
+	text-decoration: none;
+}
+.buttonBlue a:hover span {
+	background-position: right -70px;
+}
+#userInfo .buttonBlue li a {
+	margin-left:15px;
+	display:inline;
+}
+
+.c { clear:both; }
+
+.comment dl {
+	border:1px solid #fff;
+	margin-top:8px;
+	padding:3px;
+}
+
+.comment-pic {
+	float:left;
+	padding-right:6px;
+}
+
+.post-comment {
+	margin-top:10px;
+}
+
+.feedbackface {
+	line-height:36px;
+}
+
+.feedbackface li {
+	float:left;
+	margin-right:5px;
+}
+
+.post-comment h5 {
+	float:left; margin-right:10px;
+}

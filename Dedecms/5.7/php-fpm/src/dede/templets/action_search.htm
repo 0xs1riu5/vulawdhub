@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>操作搜索</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="28" background="images/tbg.gif"><b>当前位置</b>&nbsp;&gt; 搜索结果</td>
+  </tr>
+  <tr align="center" bgcolor="#F9FCEF" height="24">
+    <td align="left">&quot;<font color="red"><?php echo $keyword;?></font>&quot;的搜索结果</td>
+  </tr>
+  <tr align="center" bgcolor="#FFFFFF" height="24">
+    <td align="center">
+    <?php foreach ($asresult as $row) {?>
+      <table width="98%" border="0" cellspacing="5" cellpadding="0">
+        <tr>
+          <td align="left" bgcolor="#F9FCEF">◇<strong><?php echo $row['toptitle'] ?></strong> => <strong><?php echo $row['title'] ?></strong></td>
+        </tr>
+        <tr>
+          <td align="center">
+          	<table width="98%" border="0" cellspacing="0" cellpadding="5">
+            <?php foreach ($row['soniterm'] as $rows) {?>
+              <tr>
+                <td align="left">◇<a href='<?php echo $rows['linkurl'] ?>' target="main"><?php echo $rows['title'] ?></a><br>
+                  <?php echo $rows['description'] ?></td>
+              </tr>
+              <?php } ?>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    <?php }?>
+    </td>
+  </tr>
+  <tr align="center" bgcolor="#F9FCEF" height="24">
+    <td align="center">&nbsp;</td>
+  </tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>

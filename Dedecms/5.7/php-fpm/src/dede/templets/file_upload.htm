@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文件上传</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script src="menu.js" language="JavaScript"></script>
+</head>
+<body background="images/allbg.gif" leftmargin="0" topmargin="0">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+<td height="425" align="center" valign="top">
+<script language="javascript">
+var i=1;
+function make_upload()
+{ 
+  i++;
+  myob = document.getElementById("upfield");
+  myob.innerHTML+="<br>文件"+i+":<input type='file' name='upfile"+i+"' size='30'>";
+}
+function reset_upload()
+{ 
+  myob = document.getElementById("upfield");
+  myob.innerHTML="文件1:<input type='file' name='upfile1' size='30'>";
+}
+</script>
+<form method="POST" enctype="multipart/form-data" action="file_manage_control.php" name="form1">
+<input type='hidden' name='activepath' value="{dede:global name='activepath'/}">
+<input type='hidden' name='fmdo' value="upload">
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="600">
+<tr>
+<td width="100%" height="10" colspan="2" align="center"></td>
+</tr>
+<tr>
+<td width="10%" height="40" valign="top"></td>
+<td width="90%">
+<input type="button" value="增加上传框" name="bbb" class="bt1" onClick="make_upload();">
+<a href="file_manage_main.php?activepath={dede:global name='activepath'/}">[返回目录{dede:global name='activepath'/}]</a>
+</td>
+</tr>
+<tr>
+<td width="10%">　</td>
+<td width="90%">
+<div id="upfield">文件1:<input type='file' name='upfile1' size='30'></div>
+</td>
+</tr>
+<tr>
+<td width="100%" height="40" colspan="2">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" value=" 上传文件 " name="B1">
+&nbsp;
+<input type="button" value=" 重设表单 " name="B12" onClick="reset_upload();">
+</td>
+</tr>
+</table>
+</form>
+</td>
+</tr>
+</table>
+</body>
+</html>

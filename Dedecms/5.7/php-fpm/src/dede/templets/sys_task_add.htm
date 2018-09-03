@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>计划任务</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+<script language="javascript" src="../include/js/webcalendar.js"></script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="28" background="images/tbg.gif" style="padding-left:10px;"><b><a href="sys_task.php"><u>计划任务管理</u></a></b> &gt;&gt; 增加任务</td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<form action="sys_task_add.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return checkSubmit();";>
+	<input type="hidden" name="dopost" value="save" />
+	<table width="96%"  border="0" cellspacing="1" cellpadding="3" align="center">
+	  <tr>
+        <td class='bline' width="100" height="36" align="center">任务名称：</td>
+        <td class='bline'>
+        	<input name="taskname" type="text" class='pubinputs' id="taskname" size="30" /> 
+        </td>
+      </tr>
+      <tr>
+        <td class='bline' height="36" align="center">运行程序：</td>
+        <td class='bline'>
+        	<input name="dourl" type="text" id="dourl" size="30" class='pubinputs' />
+        	（程序必须放在../plus/task目录，因此填写文件名即可）
+        </td>
+      </tr>
+      <tr>
+        <td class='bline' height="80" align="center">任务说明：</td>
+        <td class='bline'><textarea name="description" id="description" style="width:380px;height:60px"></textarea></td>
+      </tr>
+      <tr>
+        <td class='bline' height="36" align="center">是否启用：</td>
+        <td class='bline' ><input name="nislock" type="radio" value="0" checked>
+          启用&nbsp;
+            <input name="nislock" type="radio" value="1">
+            不启用</td>
+      </tr>
+      <tr>
+        <td class='bline' height="36" align="center">循环方式：</td>
+        <td class='bline'><input name="runtype" type="radio" value="0" checked>
+循环&nbsp;
+  <input type="radio" name="runtype" value="1"> 
+  一次性
+</td>
+      </tr>
+      <tr>
+        <td class='bline' height="36" align="center">执行时间：</td>
+        <td class='bline'><input name="h" type="text" class="pubinputs" id="h" style="width:30px" value="1">
+          时（24小时制） 
+            <input name="m" type="text" class="pubinputs" id="m" style="width:30px" value="0">
+            分</td>
+      </tr>
+      <tr>
+        <td class='bline' height="36" align="center">执行周期：</td>
+        <td class='bline'>
+        	  <input name="freq" type="radio" value="1" checked>
+            天&nbsp;
+            <input type="radio" name="freq" value="7">
+            周&nbsp;
+            <input type="radio" name="freq" value="30">
+            月
+          </td>
+      </tr>
+      <tr>
+        <td class='bline' height="36" align="center">开始时间：</td>
+        <td class='bline'><input name="starttime" type="text" class="pubinputs" id="starttime" style="width:70px" onClick="SelectDate(this,'yyyy-MM-dd',80,0)"></td>
+      </tr>
+      <tr>
+        <td class='bline' height="36" align="center">结束时间：</td>
+        <td class='bline'><input name="endtime" type="text" class="pubinputs" id="endtime" style="width:70px" onClick="SelectDate(this,'yyyy-MM-dd',80,0)">
+          (不限不要填写)</td>
+      </tr>
+      <tr>
+        <td class='bline' align="center">
+        	附加参数：
+        </td>
+        <td class='bline'>
+        通过get方式向运行的程序发送的参数，格式为：<b>&lt;t:parameter  key='名称'   value='值'  /&gt;</b><br/>
+        	<textarea name="parameter" id="parameter" style="width:480px;height:150px"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td class='bline' height="28" align="center">&nbsp;</td>
+        <td class='bline'>&nbsp;</td>
+      </tr>
+      <tr>
+        <td height="51">&nbsp;</td>
+        <td>
+        	<input type="submit" name="Submit" value=" 提 交 " class="coolbg np" />　 　
+          <input type="reset" name="Submit" value=" 重 置 " class="coolbg np" />         </td>
+      </tr>
+    </table>
+	</form>
+ </td>
+</tr>
+</table>
+</body>
+</html>

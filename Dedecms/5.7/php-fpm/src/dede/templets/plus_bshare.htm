@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>BShare分享插件</title>
+<?php
+if(is_file(DEDEINC.'/js/jquery/jquery.js'))
+{
+?>
+<script language="javascript" src="../include/js/jquery/jquery.js"></script>
+<?php
+} else {
+?>
+<script language="javascript" src="../images/js/j.js"></script>
+<?php
+}
+?>
+<?php
+if(is_file(dirname(__file__).'/../img/base.css'))
+{
+?>
+<link href="img/base.css" rel="stylesheet" type="text/css" />
+<?php
+} else {
+?>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<?php
+}
+?>
+</head>
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<div class="bodytitle">
+  <div class="bodytitleleft"></div>
+  <div class="bodytitletxt" style="padding-left:10px;">辅助插件</div>
+</div>
+<table width="98%" border="0" align="center" cellpadding="4" cellspacing="1" class="tbtitle" style="background:#CFCFCF;">
+  <tr>
+    <td bgcolor="#EDF9D5" colspan="2" background='images/tbg.gif' style="padding-left:10px;"><strong>bShare分享插件</strong></td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF" colspan="2"><p> bShare不止是一个分享按钮。bShare是全球中文互联网最强大的社交分享引擎！
+        只需一个按钮，就能为您的网站注入社交化功能！ </p>
+      <p>bShare智能分享引擎让您的用户可以轻松地将最喜欢的内容分享到社交网站、微博上与好友分享。用户无须离开您的网站，就能快速地进行分享，继续浏览您的网站！</p></td>
+  </tr>
+  <form id="form2" name="form2" method="post" action="?do=open" target="_self" onsubmit="return CheckSubmit();">
+  <input name="submode" type="hidden" value="0" id="submode"/>
+    <tr>
+      <td colspan="2" bgcolor="#F9FCEF">&nbsp;<font color='red'>您尚未开通bShare，请先开通bShare服务：</font></td>
+    </tr>
+    <tr>
+      <td width="20%" align="right" bgcolor="#FFFFFF">&nbsp;<b>网站域名：</b></td>
+      <td width="80%" bgcolor="#FFFFFF"> &nbsp;&nbsp;<?php echo $_SERVER['HTTP_HOST'];?></td>
+    </tr>
+    <tr>
+      <td align="right" bgcolor="#FFFFFF">&nbsp;<b>账号类型：</b></td>
+      <td bgcolor="#FFFFFF"> <input name="bindtype" type="radio" id="bindtype0" value="0" checked="checked" class="bindtype"/>
+        新注册 
+          <input name="bindtype" type="radio" value="1" class="bindtype"/>
+已经有账号</td>
+    </tr>
+    <tr>
+      <td width="20%" align="right" bgcolor="#FFFFFF">&nbsp;<b>用户名：</b></td>
+      <td width="80%" bgcolor="#FFFFFF">&nbsp;
+        <input name="user" type="text" id="user" size="30" class='alltxt' /> 
+        (E-Mail地址)</td>
+    </tr>
+    <tr>
+      <td align="right" bgcolor="#FFFFFF">&nbsp;<b>密&nbsp;&nbsp;码：</b></td>
+      <td bgcolor="#FFFFFF">&nbsp;
+        <input name="pwd" type="password" id="pwd" size="30" class='alltxt' /></td>
+    </tr>
+    <tr id="repwdShow">
+      <td align="right" bgcolor="#FFFFFF">&nbsp;<b>确认密码：</b></td>
+      <td bgcolor="#FFFFFF">&nbsp;
+        <input name="repwd" type="password" id="repwd" size="30" class='alltxt' /></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center" bgcolor="#FFFFFF"><input name="button" type="submit" class="np coolbg" id="button" value="开通bShare服务" /></td>
+    </tr>
+  </form>
+  <tr>
+    <td bgcolor="#F9FCEF" colspan="2">&nbsp;</td>
+  </tr>
+</table>
+<script type="text/javascript">
+(function($)
+{
+	var regular = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i;
+	
+	function checkShow(doc)
+	{
+		$("#submode").val(doc.val());
+		if(doc.val() ==1)
+		{
+			$("#repwdShow").hide();
+		} else {
+			$("#repwdShow").show();
+		}
+	}
+	checkShow($(".bindtype"));
+	
+	$("#form2").submit(function(){
+		if(!regular.test($("#user").val()))
+		{
+			alert('请输入正确的邮箱地址！');
+			$("#user").focus();
+			return false;
+		}
+		if($("#pwd").val() == '')
+		{
+			alert('请输入密码！');
+			$("#pwd").focus();
+			return false;
+		}
+		if($("#submode").val() == 0 && 
+		    $("#pwd").val() != $("#repwd").val())
+		{
+			alert('密码需要保持一致！');
+			$("#repwd").focus();
+			return false;
+		}
+	    return true;
+	});
+	$("input:radio").change(function()
+	{
+		checkShow($(this));
+	});
+})(jQuery);
+</script>
+</body>
+</html>

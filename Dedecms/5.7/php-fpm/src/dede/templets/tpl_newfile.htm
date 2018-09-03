@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文件编辑</title>
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<script>
+function Post()
+{
+	if (document.form1.filename.value=="")
+	{
+		alert("文件名不能为空。");
+		document.form1.filename.focus();
+		return false;
+	}
+}
+</script>
+</head>
+<body bgcolor="#F2F4F3" leftmargin="15" topmargin="10">
+<table width=98% border=0 cellpadding=0 cellspacing=0 bordercolor=#111111 style="border-collapse: collapse">
+  <form method="POST" action="tpl.php" name=form1 onSubmit="return Post()">
+    <input type="hidden" name="action" value="savenewfile" />
+    <tr>
+      <td width=78% valign="top">
+	  <table border=0 cellpadding=0 cellspacing=0 style="border-collapse: collapse" width=100%>
+          <tr>
+            <td width=16% height="25">工作目录：</td>
+            <td width="84%"> &nbsp;&nbsp;&nbsp; <input name="path" size=40 value="<?php echo $path;?>" >
+              （空白表示根目录 ，不允许用 “..” 形式的路径）</td>
+          </tr>
+          <tr>
+            <td width=16% height="25">文件名称：</td>
+            <td>
+            	&nbsp;&nbsp;&nbsp;
+            	<input name="filename" size="40" value="newfile.htm" />
+             </td>
+          </tr>
+          <tr>
+            <td width=16% height="25">文件内容：</td>
+            <td>&nbsp;&nbsp;&nbsp;
+<textarea name="content" cols="150" rows="20" style="width:99%;"></textarea>
+             </td>
+          </tr>
+        </table>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        	<br />
+          <input type="submit" value="  保 存  " name='B1' class="coolbg np" />
+          &nbsp;
+          <input type="reset" value="取消修改" name='B2' class="coolbg np" />
+          &nbsp;
+          <input type="button" value="不理返回" name='B4' class="coolbg np" onClick="javascript:history.go(-1);" />
+          <br />  <br />
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>消息管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">
+	function folderSelAll()
+	{
+		for(i=0;i<document.form1.deleteid.length;i++)
+		{
+			if(!document.form1.deleteid[i].checked)
+			{
+				document.form1.deleteid[i].checked=true;
+			}
+		}
+	}
+	
+	//获得选中文件的文件名
+	function GetCheckfolderItem()
+	{
+		var allSel='';
+		if(document.form1.deleteid.value) return document.form1.deleteid.value;
+		for(i=0;i<document.form1.deleteid.length;i++)
+		{
+			if(document.form1.deleteid[i].checked)
+			{
+				if(allSel=='')
+				allSel=document.form1.deleteid[i].value;
+				else
+				allSel=allSel+","+document.form1.deleteid[i].value;
+			}
+		}
+		return allSel;
+	}
+	
+	function DoSubmit(myfolder)
+	{
+		var selid = GetCheckfolderItem();
+		if(selid=='') {
+			alert("你没选中任何信息！");
+			return false;
+		}
+		if(window.confirm("你确定要删除这些消息么？"))
+		{
+			location = "pm.php?dopost=del&ids="+selid+"&folder="+myfolder;
+		}
+	}
+</script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+            <li><a href="pm.php?dopost=send">写新消息</a></li>
+            <li class="thisTab"><a href="pm.php?folder=inbox">收件箱</a></li>
+            <li><a href="pm.php?folder=outbox">发件箱</a></li>
+            <li><a href="pm.php?folder=track">已发出信息</a></li>
+        </ul>
+        <div class="tabOther">
+          
+        </div>
+      </div>
+      <ul class="tabSub">
+        <li <?php if(empty($state)) echo 'class="thisTab"'; ?>><a href="pm.php?folder=inbox"><span>全部</span></a></li>
+        <li <?php if($state == "1") echo 'class="thisTab"'; ?>><a href="pm.php?folder=inbox&state=1"><span>已阅读</span></a></li>
+        <li <?php if($state == "-1") echo 'class="thisTab"'; ?>><a href="pm.php?folder=inbox&state=-1"><span>未阅读</span></a></li>
+      </ul>
+      <div id="mainCp">
+        <!--内容消息提示 -->
+        <h3 class="meTitle">短消息内容</h3>
+        <div class="contentShow">
+          <p>
+            <label>标题：</label>
+            <?php echo $row['subject']; ?> [<a href="pm.php?dopost=send">回复</a>]</p>
+          <p>
+            <label>内容：</label>
+            <?php echo text2html($row['message']); ?></p>
+        </div>
+      </div>
+      <!--主操作区域 -->
+    </div>
+  </div>
+ <?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

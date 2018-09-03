@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title><?php echo $cfg_webname; ?>- 完善详细资料</title>
+<link href="templets/style/login.css" rel="stylesheet" type="text/css" />
+<script src="templets/js/j.js" language="javascript" type="text/javascript"></script>
+<script src="templets/js/base.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript" language="javascript">
+<!--
+var reMethod = "<?php echo ($cfg_soft_lang == 'utf-8') ? 'POST' : 'GET';?>",pwdmin = <?php echo $cfg_mb_pwdmin; ?>;
+
+function changeAuthCode() {
+	var num = 	new Date().getTime();
+	var rand = Math.round(Math.random() * 10000);
+	num = num + rand;
+	$('#ver_code').css('visibility','visible');
+	if ($("#vdimgck")[0]) {
+		$("#vdimgck")[0].src = "../include/vdimgck.php?tag=" + num;
+	}
+	return false;	
+}
+
+function hideVc()
+{
+	$('#ver_code').css('visibility','hidden');
+}
+
+
+$(document).ready(function(){ 
+	$("#vdcode").focus(function(){
+	  var leftpos = $("#vdcode").position().left;
+	  var toppos = $("#vdcode").position().top - 42;
+	  $('#ver_code').css('left', leftpos+'px');
+	  $('#ver_code').css('top', toppos+'px');
+	  $('#ver_code').css('visibility','visible');
+	});
+	$("input[type='password']").click(function(){
+	  hideVc()
+	});
+	$("#txtUsername").click(function(){
+	  hideVc()
+	});
+	$("input[type='radio']").focus(function(){
+	  hideVc()
+	});
+	/*
+	$("#vdcode").blur(function(){
+		  $('#ver_code').css('visibility','hidden');
+	});
+	*/
+})
+
+-->
+</script>
+</head>
+<body>
+<div class="header">
+  <div class="auto960">
+    <ul class="userMenu fRight">
+      <li> <a title="网站主页" href="../">网站主页</a> </li>
+      <li> <a title="注册" href="../member/index_do.php?fmdo=user&dopost=regnew">注册</a> </li>
+      <li> <a title="登录" href="../member/login.php">登录</a> </li>
+      <li class="help"> <a title="DEDECMS 帮助中心" href="http://help.dedecms.com">帮助</a> </li>
+    </ul>
+    <span>
+    <script type="text/javascript">
+ var now=(new Date()).getHours();
+ if(now>0&&now<=6){
+document.write("午夜好，");
+ }else if(now>6&&now<=11){
+ document.write("早上好，");
+ }else if(now>11&&now<=14){
+ document.write("中午好，");
+ }else if(now>14&&now<=18){
+ document.write("下午好，");
+ }else{
+ document.write("晚上好，");
+ }
+</script>
+    <i class="green">游客</i> 你可以选择到 </span> </div>
+</div>
+<div class="wrapper">
+  <div class="logo fLeft"> <a href="/"> <img  style="margin:8px 0 0 25px;"alt="会员中心" src="../member/templets/images/login_logo.gif"/></a></div>
+  <div class="banner fRight"> <img src="../member/templets/images/530x56.gif" width="530" height="56" /></div>
+</div>
+<div id="login" class="bor" >
+  <div class="<?php echo ($cfg_mb_reginfo == 'Y')? '' : 's';?>tip2"></div>
+  <div class="theme fLeft">
+    <form method="post" action="reg_new.php" id="regUser" name="form2">
+      <input type="hidden" value="reginfo" name="dopost"/>
+      <input type="hidden" value="2" name="step"/>
+      <input type="hidden" value="<?php echo $membermodel->modid;?>" name="modid"/>
+      <p style="text-align: right;" class="mB10"/>
+    <?php
+        echo '<ul>';
+        echo '<li><div class="lform">'.$cfg_ml->M_UserName.'</div><span>用户名：</span></li>';
+        echo '<li><div class="lform">'.$cfg_ml->M_MbType.'</div><span>会员类型：</span></li>';
+        echo $postform;
+        echo '</ul>';
+    ?>
+      <ul>
+        <li><span>&nbsp;</span>
+          <button type="submit" id="btnSignCheck" class="buttonGreen142">完 成 注 册</button>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <br class="clear"/>
+</div>
+<script language="javascript" type="text/javascript">
+	window.onload=function (){
+		setInterval("document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
+	}
+</script>
+<div class="footer bor">
+  <div class="fLeft mL10">Copyright &copy; 2004-2011 DEDECMS. 织梦科技 版权所有</div>
+  <div class="fRight mR10" id="time">  </div>
+</div>
+</body>
+</html>

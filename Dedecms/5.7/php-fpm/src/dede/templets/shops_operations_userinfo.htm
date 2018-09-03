@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title><?php echo $rows['oid'];?></title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<body>
+<table width="430" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+  <tr>
+    <td width="118" height="25" align="right" bgcolor="#F6F6F6">订单号：</td>
+    <td width="292" height="25" align="left" bgcolor="#FFFFFF">&nbsp;<?php echo $rows['oid'];?></td>
+  </tr>
+
+  <tr>
+    <td width="118" height="25" align="right" bgcolor="#F6F6F6">配送：</td>
+    <td width="292" height="25" align="left" bgcolor="#FFFFFF">&nbsp;方式:<?php echo $rows['dname'];?> 费用:<?php echo $rows['dprice'];?>元</td>
+  </tr>
+  <tr>
+    <td width="118" height="25" align="right" bgcolor="#F6F6F6">收货人：</td>
+    <td width="292" height="25" align="left" bgcolor="#FFFFFF">&nbsp;<?php echo $rows['consignee'];?></td>
+  </tr>
+  <tr>
+    <td width="118" height="25" align="right" bgcolor="#F6F6F6">地址：</td>
+    <td width="292" height="25" align="left" bgcolor="#FFFFFF">&nbsp;<?php echo $rows['address'];?></td>
+  </tr>
+  <tr>
+    <td width="118" height="25" align="right" bgcolor="#F6F6F6">邮编：</td>
+    <td width="292" height="25" align="left" bgcolor="#FFFFFF">&nbsp;<?php echo $rows['zip'];?></td>
+  </tr>
+  <tr>
+    <td width="118" height="25" align="right" bgcolor="#F6F6F6">电话：</td>
+    <td width="292" height="25" align="left" bgcolor="#FFFFFF">&nbsp;<?php echo $rows['tel'];?></td>
+  </tr>
+  <tr>
+    <td width="118" height="25" align="right" bgcolor="#F6F6F6">E-Mail：</td>
+    <td width="292" height="25" align="left" bgcolor="#FFFFFF">&nbsp;<?php echo $rows['email'];?></td>
+  </tr>
+  <tr>
+    <td width="118" height="25" align="right" bgcolor="#F6F6F6">留言：</td>
+    <td width="292" height="25" align="left" bgcolor="#FFFFFF">&nbsp;<?php echo $rows['des'];?></td>
+  </tr>
+</table>
+<input type="button" name="ss12" value="关闭窗口" style="width:90px;margin-left:160px;margin-top:16px" onClick="window.close();" class='inputbut'>
+</body>
+</html>

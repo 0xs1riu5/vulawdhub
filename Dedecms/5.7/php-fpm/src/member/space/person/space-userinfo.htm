@@ -1,0 +1,51 @@
+
+    <dl class="border">
+      <dt class="caption"><strong>个人资料</strong></dt>
+      <dd class="body" id="userInfo"> <a class="pic" href="index.php?uid={dede:var.userid function="urlencode(@me)" /}&action=infos" title="我的资料">{dede:if $_vars['face']=='' } <img src="space/person/common/images/noavatar.gif" alt="<?php echo $row['uname']; ?>还没设置头像" /> {else} <img src="{dede:var.face/}" alt="{dede:var.uname/}的头像" /> {/dede:if}</a>
+        <div class="textCenter dashed pB10">
+          <h4 class="mT5 mB10">{dede:var.uname /}</h4>
+          <ul class="w50 buttonBlue grayA">
+            <li class="mB5"><a href="index.php?action=guestbook&uid={dede:var.userid/}"><span>给我留言</span></a></li>
+            <li class="mB5"><a href="pm.php?dopost=send&uid={dede:var.userid/}"><span>发送消息</span></a></li>
+            <li><a href="index.php?action=newfriend&uid={dede:var.userid/}"><span>加为好友</span></a></li>
+            <li><a href="index.php?action=blackfriend&uid={dede:var.userid/}"><span>加黑名单</span></a></li>
+          </ul>
+          <div class="clear"></div>
+        </div>
+        <ul class="mT10 mL10 mB10 lh20">
+          <li>会员等级：{dede:var.membername/}</li>
+          <li>会员积分：{dede:var.scores/}分</li>
+          <li>空间访问：{dede:var.homecount/}次</li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="border mT10">
+      <dt class="caption"><strong>公告</strong></dt>
+      <dd class="body lh20 pB10">{dede:var.spacenews/}</dd>
+    </dl>
+    <dl class="border mT10">
+      <dt class="caption"><strong>链接</strong></dt>
+      <dd class="body lh20">
+        <ul class="list2 mB5">
+          <?php
+			$dsql->Execute('fl',"Select * From `#@__member_flink` where mid='{$_vars['mid']}' ");
+				while($arr = $dsql->GetArray('fl'))
+					{echo "<li><a href='{$arr['url']}' target='_blank'>{$arr['title']}</a></li>\r\n";}
+			?>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="border mT10">
+      <dt class="caption"><strong>访客</strong></dt>
+      <dd class="body"> {dede:newvisitor row=6}
+        <div class="allList mB10">
+          <div class="img"> <a href="{dede:field.url/}" title="{dede:field.uname/}" target="_blank"><img src="{dede:field.face/}" width="50" height="50" alt="{dede:field.uname/}的头像" /></a> </div>
+          <div class="txt">
+            <h5 class="p1 mB5 blackA"><a href="{dede:field.url/}" target="_blank" title="{dede:field.uname/}">{dede:field.uname/}</a></h5>
+            <p class="p2">{dede:field.sign function="cn_substr(@me,60)" /}</p>
+            <p class="p2 clear">访问：{dede:var.logintime function="MyDate('m-d h:i',@me)" /}</p>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        {/dede:newvisitor} </dd>
+    </dl>

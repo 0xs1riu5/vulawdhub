@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>更改字段</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript">
+function GetFields()
+{
+	var theform = document.form1;
+	var itemname = theform.itemname.value;
+	var fieldname = theform.fname.value;
+	var dtype = theform.dtype.value;
+	var isnull = theform.isnull.value;
+	var vdefault = theform.vdefault.value;
+	var maxlength = theform.maxlength.value;
+	var vinnertext = theform.vinnertext.value;
+	var spage = (theform.spage[0].checked ? theform.spage[0].value : theform.spage[1].value);
+	var sisnull = (isnull==0 ? "false" : "true");
+	
+	if(itemname=="")
+	{
+		alert("表单提示名称不能为空！");
+		theform.itemname.focus();
+		return false;
+	}
+	
+	if((dtype=="radio"||dtype=="select"||dtype=="checkbox") && vdefault=="")
+	{
+		alert("你选择的select或radio、checkbox类型，必须默认值设置选择的项目（用逗号[,]分开）！");
+		return false;
+	}
+	
+	if(spage=="no") spage = "";
+	
+	revalue =  "<field:"+fieldname+" itemname=\""+itemname+"\" autofield=\"1\" type=\""+dtype+"\"";
+	revalue += " isnull=\""+sisnull+"\" default=\""+vdefault+"\" ";
+	revalue += " maxlength=\""+maxlength+"\" page=\""+spage+"\">\r\n"+vinnertext+"</field:"+fieldname+">\r\n";
+	document.form1.fieldstring.value = revalue;
+
+  return true;
+  
+}
+</script>
+<style type="text/css">
+<!--
+td{ padding:2px; padding-left:6px; }
+.STYLE1 {color: #FF3300}
+.STYLE2 {color: #666666}
+.nw { float:left; width:150px; }
+.cls { clear:both; }
+-->
+</style>
+</head>
+<body topmargin=8 background='images/allbg.gif'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
+  <form name="form1" action="diy_field_edit.php" method="post" onSubmit="return GetFields();">
+  	<input type='hidden' name='action' value='save'>
+  	<input type='hidden' name='diyid' value='<?php echo $diyid?>'>
+  	<input type='hidden' name='fname' value='<?php echo $fname?>'>
+	  <input type='hidden' name='issystem' value='<?php echo $issystem?>'>
+	  <input type='hidden' name='fieldstring' value=''>
+    <tr> 
+      <td height="20" colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif"> 
+        <table width="98%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="30%" style="padding-left:10px;"><b><a href="diy_main.php">自定义表单管理</a> &gt;&gt; 修改字段：</b>            </td>
+            <td align="right" style="padding-top:6px;">
+			        <input type="button" name="ss1" value="当前表单信息" onClick="location='diy_edit.php?diyid=<?php echo $diyid; ?>&dopost=edit';" class="nbt"/>
+            </td>
+          </tr>
+        </table> </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF"><strong>表单提示文字：</strong><br>
+        <span class="STYLE2">发布内容时显示的提示文字</span></td>
+      <td bgcolor="#FFFFFF">
+      	<input name="itemname" type="text" id="itemname" value="<?php echo $ctag->GetAtt('itemname')?>" class="pubinputs">
+        *（发布内容时显示的项名字）      </td>
+    </tr>
+    <tr> 
+      <td width="28%" bgcolor="#FFFFFF"><strong>字段名称：</strong><br>
+        <span class="STYLE2">只能用英文字母或数字，数据表的真实字段名</span></td>
+      <td width="72%" bgcolor="#FFFFFF" style="table-layout:fixed;word-break:break-all"> 
+        <?php echo $fname?>     </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF"><strong>数据类型：</strong></td>
+      <td bgcolor="#FFFFFF">
+      	<select name="dtype" id="type" style="width:200px">
+          <?php 
+          $dtype = $ctag->GetAtt('type');
+          if($dtype!='' && isset($fieldtypes[$dtype]))
+          {
+          	echo "          <option value='{$dtype}'>{$fieldtypes[$dtype]}</option>\r\n";
+          	$canchange = true;
+          }
+          else
+          {
+          	echo "          <option value='{$dtype}'>系统专用类型</option>\r\n";
+          	$canchange = false;
+          }
+          if($canchange)
+          {
+          ?>
+          <option value="text">单行文本(varchar)</option>
+          <option value="textchar">单行文本(char)</option>
+          <option value="multitext">多行文本</option>
+          <option value="htmltext">HTML文本</option>
+          <option value="int">整数类型</option>
+          <option value="float">小数类型</option>
+          <option value="datetime">时间类型</option>
+          <option value="img">图片</option>
+          <option value="addon">附件类型</option>
+          <option value="select">使用option下拉框</option>
+          <option value="radio">使用radio选项卡</option>
+          <option value="checkbox">Checkbox多选框</option>
+          <?php
+           }
+          ?>
+        </select>
+        <!--
+        //取消的类型
+        option value="textdata">文本保存HTML数据</option>
+        <option value="imgfile">图片(仅网址)</option>
+        <option value="media">多媒体文件</option>
+        <option value="stepselect">联动类型</option-->
+        </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF"><strong>内容是否需要分页符：</strong><br/>
+        <span class="STYLE2">如果内容需要分页符，不论何种内容，都可以用#P#副标题#e#作为分页符号实现内容分页，但一个模型里仅允许一个这样的字段!</span></td>
+      <td bgcolor="#FFFFFF">
+      	<input name="isnull" type="hidden" value="1" />
+        <input name="spage" type="radio"  value="split"<?php  if($ctag->GetAtt('page')=='split') echo " checked='1' "; ?> class='np' />
+        是 &nbsp; 
+        <input name="spage" type="radio"  value="no"<?php  if($ctag->GetAtt('page')=='no'||$ctag->GetAtt('page')=='') echo " checked='1' "; ?> class='np' />
+        否	  </td>
+      </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF"><strong>默认值：</strong><br>
+        <span class="STYLE2"> 如果定义数据类型为select、radio、checkbox时，此处填写被选择的项目(用“,”分开，如“男,女,人妖”)，如果为联动选框，这里填写联动选框项目名称。</span></td>
+      <td bgcolor="#FFFFFF"><textarea name="vdefault" type="text" id="vdefault" style="width:70%;height:60px"><?php echo $ctag->GetAtt('default'); ?></textarea></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF"><strong>最大长度：</strong><br>
+        <span class="STYLE2"> 文本数据必须填写，大于255为text类型 </span></td>
+      <td bgcolor="#FFFFFF">
+      	<input name="maxlength" type="text" id="maxlength" value="<?php echo $ctag->GetAtt('maxlength')?>" style="width:80px;padding-top:3px;"></td>
+    </tr>
+    <tr>
+      <td bgcolor="#FFFFFF" style="padding-left:10px;"><strong>自定义表单HTML：</strong></td>
+      <td bgcolor="#FFFFFF">
+      	◆自定义表单HTML用~name~表示提示文字，~form~表示表单元素<br>      </td>
+    </tr>
+    <tr> 
+      <td align="center" bgcolor="#FFFFFF"><br>      </td>
+      <td bgcolor="#FFFFFF"><textarea name="vinnertext" cols="45" rows="5" id="vinnertext" style="width:70%; height:120px;"><?php echo $ctag->GetInnerText(); ?></textarea></td>
+    </tr>
+    <tr>
+      <td height="28" colspan="2" bgcolor="#F9FCEF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="26%" height="45">&nbsp;</td>
+            <td width="10%"><input type="submit" name="button1" id="button1" value="确定" class="coolbg np" />
+            </td>
+            <td><input type="reset" name="button3" id="button3" value="重置" class="coolbg np" />
+            </td>
+          </tr>
+      </table></td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

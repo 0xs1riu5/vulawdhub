@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>搜索关键字管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="js/key.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language='javascript' src='js/main.js'></script>
+<script language="JavaScript">
+var pageno = 1;
+var totalrow = <?php echo $totalRow?>;
+var pagesize = <?php echo $pagesize?>;
+var orderby = '<?php echo $orderby?>';
+//加载列表
+function ReloadPage(ordertype){
+	orderby = ordertype;
+	var listArea = $Obj('rslist');
+	var errMsg = "网络通信出错！<br>[<a href=\"javascript:ReloadPage('"+ordertype+"')\"><u>点击此重新加载列表</u></a>]";
+  var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在加载...");
+  myajax.SendGet("search_keywords_main.php?dopost=getlist&pageno="+pageno+"&orderby="+ordertype);
+}
+//载入指定页的列表
+function LoadPage(npage){
+	pageno = npage;
+	ReloadPage(orderby);
+	ReloadPageNum(pageno);
+}
+//更新一个关键词
+function UpdateNote(nid){
+	var listArea = $Obj('rslist');
+	var kw = $Obj('keyword'+nid).value;
+	var kws = $Obj('spwords'+nid).value;
+	var ct = $Obj('count'+nid).value;
+
+	var errMsg = "网络通信出错！<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>点击此重新加载列表</u></a>]";
+	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在处理...");
+     <?php
+   if(strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
+   ?>
+   myajax.AddKeyUtf8('dopost','update');
+   myajax.AddKeyUtf8('aid',nid);
+   myajax.AddKeyUtf8('keyword',kw);
+   myajax.AddKeyUtf8('spwords',kws);
+   myajax.AddKeyUtf8('count',ct);
+   myajax.AddKeyUtf8('pageno',pageno);
+   myajax.AddKeyUtf8('orderby',orderby);
+   myajax.SendPost2('search_keywords_main.php');
+   <?php
+   }
+   elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
+   	 echo 'myajax.SendGet2("search_keywords_main.php?dopost=update&aid="+nid+"&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno+"&orderby="+orderby);';
+   }
+   ?>
+   //myajax.SendGet("search_keywords_main.php?dopost=update&aid="+nid+"&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno);
+}
+//删除关键词
+function DelNote(nid){
+	var listArea = $Obj('rslist');
+	totalrow = totalrow - 1;
+  var pagenum = Math.ceil(totalrow/pagesize);
+  if(pagenum<=pageno) pageno = pagenum;
+  var errMsg = "网络通信出错！<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>点击此重新加载列表</u></a>]";
+	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在处理...");
+  myajax.SendGet("search_keywords_main.php?dopost=del&aid="+nid+"&pageno="+pageno+"&orderby="+orderby);
+  ReloadPageNum(pageno);
+}
+//重新加载分页列表
+function ReloadPageNum(startnum){
+  var ListArea = $Obj('pagelist');
+  var pagenum = Math.ceil(totalrow/pagesize);
+  var listsize = 3;
+  var ahtml = "";
+  var startloop = 1;
+  var endnum = 0;
+  ahtml += "共："+totalrow+" 条记录/"+pagenum+"页 ";
+  if(pageno>1) ahtml += "<a href='#' onclick='LoadPage("+(pageno-1)+")'>↑上页</a> ";
+  if(startnum >= pagenum-listsize){
+  	startloop = pagenum-(listsize*2);
+  	if(startloop<1) startloop = 1;
+  	for(i=startloop;i<=pagenum;i++){
+  		if(i==pageno) ahtml += i+" ";
+  		else ahtml += "<a href='#' onclick='LoadPage("+i+")'>["+i+"]</a> ";
+  	}
+  }
+  else if(pagenum < listsize){
+  	for(i=1;i<=pagenum;i++){
+  		if(i==pageno) ahtml += i+" ";
+  		else ahtml += "<a href='#' onclick='LoadPage("+i+")'>["+i+"]</a> ";
+  	}
+  }
+  else{
+  	startloop = startnum-listsize;
+  	if(startloop<1){ startloop=1; endnum = startloop + (listsize*2); }
+  	else{ endnum = startnum+listsize; }
+  	if(endnum >= pagenum) endnum = pagenum;
+  	for(i=startloop;i<=endnum;i++){
+  		if(i==pageno) ahtml += i+" ";
+  		else ahtml += "<a href='#' onclick='LoadPage("+i+")'>["+i+"]</a> ";
+  	}
+  }
+  if(pageno<pagenum) ahtml += "<a href='#' onclick='LoadPage("+(pageno+1)+")'>下页↓</a> ";
+  ListArea.innerHTML = ahtml;
+}
+</script>
+<style>
+	.nnpp{
+	border-bottom:1px solid #666666;
+	border-top:1px solid #FFFFFF;
+	border-left:1px solid #FFFFFF;
+	border-right:1px solid #FFFFFF;
+	filter:alpha(opacity=50);
+ }
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="main" align='center'>
+  <table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D6D6D6" style="margin-bottom:3px">
+    <tr>
+      <td height="26" colspan="8" background="images/tbg.gif"><table width="100%" border="0">
+          <tr>
+            <td width="31%" align="left" style="padding-left:10px;"><strong>搜索关键词维护</strong></td>
+            <td align="right">
+            	&nbsp;
+            	<input class="np coolbg" name="n1" type="button" id="n1" value="文档关键字维护" onClick="location='article_keywords_main.php';" style="width:135">
+            </td>
+          </tr>
+        </table></td>
+    </tr>
+	</table>
+	<span id='rslist'>
+	<?php
+		GetKeywordList($dsql,$pageno,$pagesize,$orderby);
+	?>
+	</span>
+
+  <table width="98%" border="0" cellpadding="1" cellspacing="1"  bgcolor="#cfcfcf" style="margin-bottom:3px">
+    <tr align="center">
+      <td height="35" colspan="8"  bgcolor="#F9FCEF">
+      <span id='pagelist'></span>
+      <script language='javascript'>ReloadPageNum(1);</script>
+      </td>
+    </tr>
+  </table>
+
+</div>
+</body>
+</html>

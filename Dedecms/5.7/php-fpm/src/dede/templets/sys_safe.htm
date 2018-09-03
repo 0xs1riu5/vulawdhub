@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>系统配置参数 - 验证安全设置</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
+<script type="text/javascript">
+var $ = jQuery;
+$(document).ready(function(){
+	addIterm("qiterm","qbox");
+})
+//增加选项
+function addIterm(qiterm,qbox)
+{
+	if($("#"+qiterm)){
+		var iterm = $("#"+qiterm).children().clone()
+		$("#"+qbox).append(iterm)
+		//将其置为显示状态
+		$("#"+qbox+" > #"+qiterm ).show();
+	}
+}
+//删除当前选项
+function delIterm(obj)
+{
+	$(obj).parent().parent().remove();
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>  
+<form action="sys_safe.php" method="post" name="form1">
+<input type="hidden" name="dopost" value="save">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+
+    <tr>
+      <td height="26" colspan="2" bgcolor="#FFFFFF" background="images/tbg.gif" style="padding-left:10px;"><b>验证码参数设置</b></td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td width="26%" height="24">开启系统验证码：<br></td>
+      <td width="74%"><input name="gdopen[]" type="checkbox" id="gdopen1" value="1" <?php echo (preg_match("/1/",$safe_gdopen))? "checked" : ""; ?>>
+        <label for='gdopen1'>注册会员 </label>
+        <input name="gdopen[]" type="checkbox" id="gdopen2" value="2" <?php echo (preg_match("/2/",$safe_gdopen))? "checked" : ""; ?>>
+        <label for='gdopen2'>前台登陆 </label>
+        <input name="gdopen[]" type="checkbox" id="gdopen3" value="3" <?php echo (preg_match("/3/",$safe_gdopen))? "checked" : ""; ?>>
+        <label for='gdopen3'>会员投稿 </label>
+        <input name="gdopen[]" type="checkbox" id="gdopen4" value="4" <?php echo (preg_match("/4/",$safe_gdopen))? "checked" : ""; ?>>
+        <label for='gdopen4'>文档评论 </label>
+        <input name="gdopen[]" type="checkbox" id="gdopen5" value="5" <?php echo (preg_match("/5/",$safe_gdopen))? "checked" : ""; ?>>
+        <label for='gdopen5'>会员短消息 </label>
+        <input name="gdopen[]" type="checkbox" id="gdopen6" value="6" <?php echo (preg_match("/6/",$safe_gdopen))? "checked" : ""; ?>>
+        <label for='gdopen6'>后台登陆 </label>
+        <input name="gdopen[]" type="checkbox" id="gdopen7" value="7" <?php echo (preg_match("/7/",$safe_gdopen))? "checked" : ""; ?>>
+        <label for='gdopen7'>问答 </label></td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24">验证码生成类型：</td>
+      <td><input class="np" type="radio" value="1" name="codetype" id="cttpe1" <?php echo ($safe_codetype == 1)? "checked" : ""; ?>>
+        <label for="cttpe1">数字</label>
+        <input class="np" type="radio" value="2" name="codetype" id="cttpe2" <?php echo ($safe_codetype == 2)? "checked" : ""; ?>>
+        <label for="cttpe2">英文</label>
+        <input class="np" type="radio" value="3" name="codetype" id="cttpe3" <?php echo ($safe_codetype == 3)? "checked" : ""; ?>>
+        <label for="cttpe3">单词</label></td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24">选择验证码文件类型：</td>
+      <td><input name="gdtype" type="radio" value="1" id="dtype1" <?php echo ($safe_gdtype == 1)? "checked" : ""; ?>>
+        <label for="dtype1">jpg &nbsp;</label>
+        <input type="radio" name="gdtype" value="2" id="dtype2" <?php echo ($safe_gdtype == 2)? "checked" : ""; ?>>
+        <label for="dtype2">png
+          &nbsp;</label>
+        <input type="radio" name="gdtype" value="3" id="dtype3" <?php echo ($safe_gdtype == 3)? "checked" : ""; ?>>
+        <label for="dtype3">gif (GD&gt;= 2.0.28)</label></td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24">验证码干扰设置：</td>
+      <td><input name="gdstyle[]" type="checkbox" value="1" id="dstyle1" <?php echo (preg_match("/1/",$safe_gdstyle))? "checked" : ""; ?>>
+        <label for="dstyle1">背景线 &nbsp;</label>
+        <input type="checkbox" name="gdstyle[]" value="2" id="dstyle2" <?php echo (preg_match("/2/",$safe_gdstyle))? "checked" : ""; ?>>
+        <label for="dstyle2">背景图像
+          &nbsp;</label>
+        <input type="checkbox" name="gdstyle[]" value="3" id="dstyle3" <?php echo (preg_match("/3/",$safe_gdstyle))? "checked" : ""; ?>>
+        <label for="dstyle3">混杂文本色</label></td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24">验证码图片大小（设置为0为不限）：</td>
+      <td> 宽：
+        <input name="gd_wwidth" type=text id="gd_wwidth"   value="<?php echo empty($safe_wwidth)? "" :$safe_wwidth ;?>" size="5">
+        px
+        高：
+        <input name="gd_wheight" type=text id="gd_wheight"  value="<?php echo empty($safe_wheight)? "" :$safe_wheight ;?>" size="5">
+        px</td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24">验证码字符数：</td>
+      <td><input name="codelen" type="text" id="codelen" value="<?php echo empty($safe_codelen)? "" :$safe_codelen ;?>">
+        个(类型设为单词,该属性无效)</td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24" colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="26" colspan="2" bgcolor="#FFFFFF" background="images/tbg.gif"><b>验证问题设置</b></td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24"> 1、使用简单的文字问题(例如:11+5=?，请输入中文答案)<BR>
+        2、使用html代码(例如将问题做成一张小图片   &lt;img src="地址" /&gt;)<BR>
+        3、多个问题将随机出现一个问题。</td>
+      <td><table width="98%" border="0" cellspacing="2" cellpadding="0">
+          <tbody id="qiterm" style="display:none">
+            <tr>
+              <td width="50%"><input name="question[]" type="text" size="30" value=""/></td>
+              <td width="50%"><input name="answer[]" type="text" value=""/>
+                <a onClick="delIterm(this);" style="cursor: pointer; color: rgb(250, 137, 27);">[删除]</a></td>
+            </tr>
+          </tbody>
+          <thead>
+          <td width="50%">问题</td>
+            <td width="50%">答案<a onclick='addIterm("qiterm","qbox");' style='cursor: pointer; color: rgb(0, 0, 255);'>[+增加]</a></td>
+          </tr>
+          </thead>
+          
+          <tbody>
+            <?php
+            	if(!empty($safefaqs))
+                {
+                	foreach ($safefaqs as $key => $safefaq) {
+  
+					
+            ?>
+            <tr>
+              <td width="50%"><input name="question[]" type="text" value="<?php echo htmlspecialchars($safefaq['question']);?>" size="30"/></td>
+              <td width="50%"><input name="answer[]" type="text" value="<?php echo $safefaq['answer']?>"/>
+                <a onClick="delIterm(this);" style="cursor: pointer; color: rgb(250, 137, 27);">[删除]</a></td>
+            </tr>
+            <?php
+           			}
+           		}
+           ?>
+          </tbody>
+          <tbody id="qbox">
+          </tbody>
+        </table></td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24">注册开启验证问题:</td>
+      <td><input class="np" type="radio" value="1" name="gdfaq_reg" <?php echo ($safe_faq_reg == 1)? "checked" : ""; ?>>
+        开启
+        <input class="np" type="radio" value="0" name="gdfaq_reg" <?php echo ($safe_faq_reg == 0)? "checked" : ""; ?>>
+        关闭</td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24">会员投稿开启验证问题:</td>
+      <td><input class="np" type="radio" value="1" name="gdfaq_send" <?php echo ($safe_faq_send == 1)? "checked" : ""; ?>>
+        开启
+        <input class="np" type="radio" value="0" name="gdfaq_send" <?php echo ($safe_faq_send == 0)? "checked" : ""; ?>>
+        关闭</td>
+    </tr>
+    <tr bgcolor="#FFFFFF">
+      <td height="24">短消息开启验证问题:</td>
+      <td><input class="np" type="radio" value="1" name="gdfaq_msg" <?php echo ($safe_faq_msg == 1)? "checked" : ""; ?>>
+        开启
+        <input class="np" type="radio" value="0" name="gdfaq_msg" <?php echo ($safe_faq_msg == 0)? "checked" : ""; ?>>
+        关闭</td>
+    </tr>
+    <tr bgcolor="#F9FCEF">
+      <td height="37" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="7%">&nbsp;</td>
+            <td width="93%" align="center"><input name="imageField" class="np" type="image" src="images/button_ok.gif" width="60" height="22" border="0">
+              &nbsp; <img src="images/button_reset.gif" width="60" height="22"></td>
+          </tr>
+        </table></td>
+    </tr>
+
+</table>  
+</form>
+</body>
+</html>

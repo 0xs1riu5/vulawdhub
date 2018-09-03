@@ -1,0 +1,194 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>DedeCms menu</title>
+<link rel="stylesheet" href="css/base.css" type="text/css" />
+<script language="javascript" type="text/javascript" src="../include/js/dedeajax2.js"></script>
+<script src="../include/js/jquery/jquery.js" language="javascript" type="text/javascript"></script>
+<?php
+echo "<script language='javascript'>var curopenItem = '$openitem';</script>\r\n";
+?>
+<script language="javascript" type="text/javascript" src="js/leftmenu.js"></script>
+<style>
+div {
+	padding:0px;
+	margin:0px;
+}
+body {
+	padding:0px;
+	margin:auto;
+	text-align:center;
+	background-color:#eff5ed;
+	background:url(images/leftmenu_bg.gif);
+	padding-left:3px;
+	overflow:scroll;
+	overflow-x:hidden;
+	scrollbar-face-color: #eff8e6;
+	scrollbar-shadow-color: #edf2e3;
+	scrollbar-highlight-color: #ffffff;
+	scrollbar-3dlight-color: #F2F2F2;
+	scrollbar-darkshadow-color: #bdbcbd;
+	scrollbar-arrow-color: #bdbcbd
+}
+dl.bitem {
+	clear:both;
+	width:140px;
+	margin:0px 0px 5px 12px;
+	background:url(images/menunewbg.gif) repeat-x;
+}
+dl.bitem2 {
+	clear:both;
+	width:140px;
+	margin:0px 0px 5px 12px;
+	background:url(images/menunewbg2.gif) repeat-x;
+}
+dl.bitem dt, dl.bitem2 dt {
+	height:25px;
+	line-height:25px;
+	padding-left:35px;
+	cursor:pointer;
+}
+dl.bitem dt b, dl.bitem2 dt b {
+	color:#4D6C2F;
+}
+dl.bitem dd, dl.bitem2 dd {
+	padding:3px 3px 3px 3px;
+	background-color:#fff;
+}
+div.items {
+	clear:both;
+	padding:0px;
+	height:0px;
+}
+.fllct {
+	float:left;
+	width:85px;
+}
+.flrct {
+	padding-top:3px;
+	float:left;
+}
+.sitemu li {
+	padding:0px 0px 0px 18px;
+	line-height:22px;
+	background:url(images/arr4.gif) no-repeat 5px 9px;
+}
+ul {
+	padding-top:3px;
+}
+li {
+	height:22px;
+}
+a.mmac div {
+	background:url(images/leftbg2.gif) no-repeat;
+	height:37px!important;
+	height:47px;
+	padding:6px 4px 4px 10px;
+	word-wrap: break-word;
+	word-break : break-all;
+	font-weight:bold;
+	color:#325304;
+}
+a.mm div {
+	background:url(images/leftmbg1.gif) no-repeat;
+	height:37px!important;
+	height:47px;
+	padding:6px 4px 4px 10px;
+	word-wrap: break-word;
+	word-break : break-all;
+	font-weight:bold;
+	color:#475645;
+	cursor:pointer;
+}
+a.mm:hover div {
+	background:url(images/leftbg2.gif) no-repeat;
+	color:#4F7632;
+}
+.mmf {
+	height:1px;
+	padding:5px 7px 5px 7px;
+}
+#mainct {
+	padding-top:8px;
+	background: url(images/idnbg1.gif) repeat-y;
+}
+</style>
+<base target="main" />
+</head>
+<body target="main" onLoad="CheckOpenMenu();">
+<table width="180" align="left" border='0' cellspacing='0' cellpadding='0' style="text-align:left;">
+  <tr>
+    <td valign='top' style='padding-top:10px' width='20'><a id='link1' class='mmac'>
+      <div onClick="ShowMainMenu(1)">核心</div>
+      </a> <a id='link100' class='mm'>
+      <div onClick="ShowMainMenu(100)">模块</div>
+      </a> <a id='link5' class='mm'>
+      <div onClick="ShowMainMenu(5)">生成</div>
+      </a> <a id='link3' class='mm'>
+      <div onClick="ShowMainMenu(3)">采集</div>
+      </a> <a id='link6' class='mm'>
+      <div onClick="ShowMainMenu(6)">会员</div>
+      </a>
+      <?php
+  	if($cuserLogin->getUserType() >= 10) {
+  	?>
+      <a id='link7' class='mm'>
+      <div onClick="ShowMainMenu(7)">模板</div>
+      </a> <a id='link10' class='mm'>
+      <div onClick="ShowMainMenu(10)">系统</div>
+      </a>
+      <?php
+  	}
+  	?>
+      <div class='mmf'></div></td>
+    <td width='160' id='mainct' valign="top"><div id='ct1'>
+        <?php
+GetMenus($cuserLogin->getUserRank(), 'main');
+?>
+      </div>
+      <div id='ct100'></div>
+      <div id='ct3'></div>
+      <div id='ct5'></div>
+      <div id='ct6'></div>
+      <div id='ct7'></div>
+      <div id='ct20'></div>
+      <div id='ct10'></div></td>
+  </tr>
+  <tr>
+    <td width='26'></td>
+    <td width='160' valign='top'><img src='images/idnbgfoot.gif' /></td>
+  </tr>
+</table>
+<?php
+if(!empty($openitem) && $openitem!=1)
+{
+?>
+<script language='javascript'>
+	ShowMainMenu(100);
+</script>
+<?php
+}
+?>
+<script language="javascript">
+/*
+function bindClick()
+{
+	
+	jQuery("a").click(function()
+	{
+		if(jQuery(this).attr("target") == "main")
+		{
+			// 触发点击帮助教程窗体事件
+			var helpObj = jQuery(window.parent.document).find('#help');
+			//helpObj.html(jQuery(this).attr("href"));
+		}
+	});
+}
+
+(function($){
+	bindClick();
+})(jQuery);
+*/
+</script>
+</body>
+</html>

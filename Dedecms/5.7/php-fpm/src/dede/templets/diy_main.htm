@@ -1,0 +1,61 @@
+{dede:page pagesize="50"/}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>自定义表单管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">自定义表单管理</div>
+</div>
+
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="border:1px solid #CFCFCF;border-bottom:none;">
+		<tr>
+				<td bgcolor="#EDF9D5" class="tbtitletxt" background="images/tbg.gif">
+				  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
+                  <tr>
+                    <td width='30%' style="padding-left:10px;">[<a href="diy_add.php"><u>增加新的自定义表单</u></a>]</td>
+                    <td align='right'>
+						[图片说明：
+						<img src='images/manage1.gif' valign="middle"alt='更改' />更改
+						<img src='images/file_del.gif' valign="middle" alt='删除' />删除
+						]
+                   </td>
+                  </tr>
+         </table>
+      </td>
+  </tr>
+</table>
+
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class='tbtitle' style='background:#CFCFCF;margin-bottom:5px;'>
+		<tr align="center" bgcolor="#FBFCE2" height="26">
+         <td>diyid</td>
+		  <td>名称</td>
+		  <td>表名</td>
+		  <td>管理</td>
+  </tr>
+		   {dede:datalist}
+		  <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+        <td>{dede:field.diyid/}</td>
+        <td><a href="diy_list.php?action=list&diyid={dede:field.diyid/}"><u>{dede:field.name/}</u></a></td>
+        <td>{dede:field.table/}</td>
+        <td>
+         <a href='diy_edit.php?diyid={dede:field.diyid/}&dopost=edit'><img src='images/manage1.gif' alt='更改' /></a> |
+		     <a href='diy_edit.php?diyid={dede:field.diyid/}&dopost=delete'><img src='images/file_del.gif' alt='删除' /></a> |
+		     <a href="../plus/diy.php?action=list&diyid={dede:field.diyid/}" target="_blank"><img src='images/gtk-tmp.png' title='预览' alt='预览' />前台预览</a>
+		    </td>
+     </tr>
+		   {/dede:datalist}
+</table>
+
+
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
+		<tr>
+			<td height="35" align="center" style="background:#F9FCEF;padding:7px 6px 6px 10px;" >{dede:pagelist listsize=6/}</td>
+  </tr>
+</table>
+</body>
+</html>

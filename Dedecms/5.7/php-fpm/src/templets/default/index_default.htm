@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+</head>
+<body class="channel">
+{dede:include filename="head.htm"/}
+<!-- /header -->
+
+<div class="channel-nav w960 center clear">
+	<div class='sonnav'>
+	{dede:channel type='son' currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
+</div><!-- /channel-nav -->
+
+<div class="w960 center clear mt1">
+	<div class="pleft">
+		<div class="flashnews">
+			<script language='javascript'>
+linkarr = new Array();
+picarr = new Array();
+textarr = new Array();
+var swf_width=280;
+var swf_height=192;
+var files = "";
+var links = "";
+var texts = "";
+//这里设置调用标记
+{dede:arclist flag='f' row='5'}
+linkarr[[field:global.autoindex/]] = "[field:arcurl/]";
+picarr[[field:global.autoindex/]]  = "[field:litpic/]";
+textarr[[field:global.autoindex/]] = "[field:title function='html2text(@me)'/]";
+{/dede:arclist}
+for(i=1;i<picarr.length;i++){
+  if(files=="") files = picarr[i];
+  else files += "|"+picarr[i];
+}
+for(i=1;i<linkarr.length;i++){
+  if(links=="") links = linkarr[i];
+  else links += "|"+linkarr[i];
+}
+for(i=1;i<textarr.length;i++){
+  if(texts=="") texts = textarr[i];
+  else texts += "|"+textarr[i];
+}
+document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ swf_width +'" height="'+ swf_height +'">');
+document.write('<param name="movie" value="{dede:global.cfg_templets_skin/}/images/bcastr3.swf"><param name="quality" value="high">');
+document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+document.write('<param name="FlashVars" value="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'">');
+document.write('<embed src="{dede:global.cfg_templets_skin/}/images/bcastr3.swf" wmode="opaque" FlashVars="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'& menu="false" quality="high" width="'+ swf_width +'" height="'+ swf_height +'" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); document.write('</object>');
+</script>
+		</div><!-- /flashnews -->
+		<div class="topcommand">
+			<dl class="tbox">
+				<dt><strong>频道头条</strong></dt>
+				<dd>
+					<div class="onenews">
+                        {dede:arclist flag='h' limit='0,1'}
+                        <h2><a href="[field:arcurl/]">[field:title/]</a></h2>
+                        <p>[field:description function='cn_substr(@me,110)'/]...<a href="[field:arcurl/]">[查看全文]</a></p>
+                        {/dede:arclist}
+					</div><!-- /onenews -->
+					<ul class="c2 ico1">
+                        {dede:arclist flag='h' limit='1,6'}
+                        <li><a href="[field:arcurl/]">[field:title/]</a></li>
+                        {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /topcommand -->
+
+		<div class="picnews mt1">
+			<dl class="tbox">
+				<dt><strong>图文资讯</strong></dt>
+				<dd>
+					<ul class="e1">
+                    {dede:arclist row=5 orderby=pubdate type='image.' imgwidth='124' imgheight='94'}
+          	<li><a href="[field:arcurl/]">[field:image/]<span class="title">[field:title/]</span></a></li>{/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /picnews -->
+
+		<div class="listbox">
+	{dede:channelartlist}
+      <dl class="tbox">
+        <dt><strong><a href="{dede:field name='typeurl'/}">{dede:field name='typename'/}</a></strong><span class="more"><a href="{dede:field name='typeurl'/}">更多...</a></span></dt>
+        <dd>
+          <ul class="d1 ico3">
+          {dede:arclist titlelen='60' row='8'}
+            <li><span class="date">[field:pubdate function="MyDate('m-d',@me)"/]</span><a href="[field:arcurl /]">[field:title /]</a></li>
+          {/dede:arclist}
+          </ul>
+        </dd>
+      </dl>
+	{/dede:channelartlist}
+		</div><!-- /listbox -->
+	</div><!-- /pleft -->
+
+	<div class="pright">
+		<div class="commend">
+			<dl class="tbox">
+				<dt><strong>推荐内容</strong></dt>
+				<dd>
+					<ul class="d4">
+
+           {dede:arclist flag='c' titlelen=42 row=6}
+          	<li><a href="[field:arcurl/]">[field:title/]</a>
+            	<p>[field:description function='cn_substr(@me,80)'/]...</p>
+            </li>{/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /commend -->
+        <div id="conrightAD" style="margin:10px auto">{dede:myad name='listRtPicAD'/}</div>
+		<div class="hot mt1">
+			<dl class="tbox">
+				<dt><strong>热点内容</strong></dt>
+				<dd>
+					<ul class="c1 ico2">
+                    {dede:arclist row=10 orderby=click}
+                    	<li><a href="[field:arcurl/]">[field:title/]</a></li>
+                    {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div>
+
+	</div><!-- /pright -->
+</div>
+<div id="footAD" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD'/}</div>
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>已有分类管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+</head>
+<body>
+<div id="main">
+    <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php 
+   		include(DEDEMEMBER."/templets/menu.php"); 
+        $channels = array();
+        foreach($channelInfos as $mrow)
+        {
+          if($mrow['id'] < 0) continue;
+          if($mrow['isshow'] == 0 || $mrow['issend'] == 0) continue;
+          if($cfg_mb_album=='N' && $mrow['nid']=='image') continue;
+          if(trim($mrow['usertype']) != '' && $mrow['usertype'] != $cfg_ml->fields['mtype']) continue;
+          $channels[$mrow['id']] = $mrow;
+        }
+      ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="mtypes.php">分类管理</a></li>
+          <li><a href="flink_main.php">书签管理</a></li>
+          <li><a href="edit_space_info.php"><span>空间设置</span></a></li>
+          <li><a href="spaceskin.php">风格选择</a></li>
+        </ul>
+      </div>
+      <div id="mainCp" class="postForm">
+      <h3 class="meTitle"><strong>分类管理</strong></h3>
+        <div class="appMsg">
+           <form class="mTB10" action="mtypes.php?dopost=add" method="post" style="padding-left: 75px;">
+          	<strong>添加分类：</strong>
+          	<input type="text" name="mtypename" class="intxt"/>
+          	<select name='channelid' style='width:100px'>
+          		<?php 
+          		foreach($channels as $nrow) echo "		<option value='{$nrow['id']}'>{$nrow['typename']}</option>\r\n";
+          		?>
+          	</select> &nbsp;
+            <button class="button2" type="submit">添加</button>
+          </form>
+        </div>
+         <h3 class="meTitle">我的分类管理</h3>
+        <form action="mtypes.php?dopost=save" method="post">
+        <div class="postForm">
+         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+          <thead>
+            <tr>
+              <th width="5%">删?</th>
+              <th width="20%">分类ID</th>
+              <th width="30%">内容类型 </th>
+              <th>分类名称 </th>
+              </tr>
+          </thead>
+          <tbody>
+           {dede:array.mtypearr}
+            <tr>
+              <td class="tabTitle"><input type="checkbox" name="mtypeidarr[]" value="{dede:value.mtypeid/}"/></td>
+              <td align="center">{dede:value.mtypeid/}</td>
+              <td align="center"><a href='mtypes.php?channelid={dede:value.channelid/}'><?php echo $channels[$value['channelid']]['typename']; ?></a></td>
+              <td align="center"><input type="text" class="intxt" style="width:100px" name="mtypename[{dede:value.mtypeid/}]" value="{dede:value.mtypename/}"/></td>
+            </tr>
+           {/dede:array}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5"><button class="button2 mt10" type="submit">提交</button></td>
+            </tr>
+          </tfoot>
+        </table>
+       </div>
+      </form>
+      <!--主操作区域 -->
+    </div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

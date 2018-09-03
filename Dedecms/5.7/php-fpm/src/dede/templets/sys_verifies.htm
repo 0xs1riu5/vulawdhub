@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文件校验</title>
+<link href='css/base.css' rel='stylesheet' type='text/css' />
+<link rel="stylesheet" type="text/css" href="css/indexbody.css" />
+<script language='javascript'>
+	function Loading(surl)
+	{
+		document.getElementById('loaddiv').style.display = 'block';
+		location = surl;
+	}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div id='loaddiv' style='display:none'>
+	<p align='center' style='padding-top:200px'><img src='images/loadinglit.gif' /> 请稍后，正在处理中...</p>
+</div>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+<tr>
+    <td height="19" background="images/tbg.gif">
+      <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr>
+          <td width="24%"><strong>文件校验操作：</strong></td>
+          <td width="76%" align="right">
+          </td>
+        </tr>
+      </table>
+   </td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellspacing="4" cellpadding="2">
+        <tr>
+            <td height="53" align="center">&nbsp;</td>
+            <td>
+            	您的系统最后升级时间：<b><?php echo $updateTime; ?></b>；指纹码最后同步时间：<b><?php echo $verifiesTime; ?></b>
+            	<br />
+            	第一次效验文件时或您的系统已经升级过，请先点击“在线获取最新指纹码”
+            	<br />
+            	(文件校验将检查本站文件是否和DedeCMS原始文件是否完全一致，如果要替换差异文件，必须按提示设置被更改文件的目录有可写入权限)
+            </td>
+          <tr>
+            <td height="53" align="center">&nbsp;</td>
+            <td>
+            <div style='width:80%;background:#F9FCEF;border-bottom: 1px dashed #A7BA87;padding:3px;'>&nbsp;<b>效对操作：</b></div>
+            <div style='padding:10px 0px 20px 0px;'>
+            	<a href="javascript:Loading('sys_verifies.php?action=update');" class='np coolbg'>在线获取最新指纹码==&gt;</a>
+            	&nbsp;
+            	<a href="javascript:Loading('sys_verifies.php?action=verify');" class='np coolbg'>效对本地文件==&gt;</a>
+            	&nbsp;
+            	下载差异文件==&gt;
+            	&nbsp;
+            	替换差异文件==&gt;
+            </div>
+            
+            <div style='width:80%;background:#F9FCEF;border-bottom: 1px dashed #A7BA87;padding:3px;'>&nbsp;<b>管理指纹码：</b>(对于您自己修改过的文件，您可以在列表中屏蔽，下次忽略这些文件的效验)</div>
+            <div style='padding:10px 0px 180px 0px;'>
+							<a href="javascript:Loading('sys_verifies.php?action=manage');" class='np coolbg'>管理现有的指纹码</a>
+						</div>
+						<!--
+            <div style='width:80%;background:#D9E1CA;border-bottom: 1px dashed #A7BA87;padding:3px;'>&nbsp;<b>生成指纹码：</b></div>
+            <div style='padding:10px 0px 20px 0px;'>
+            	<a href="javascript:Loading('sys_verifies.php?action=make');" class='np coolbg'>生成指纹码(官方使用)</a>
+             </div>
+             -->
+            	<br />
+            	<br />
+            	<br />
+            </td>
+          </tr>
+      </table>
+	 </td>
+</tr>
+</table>
+</body>
+</html>

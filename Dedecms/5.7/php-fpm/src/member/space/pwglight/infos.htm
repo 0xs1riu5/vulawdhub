@@ -1,0 +1,59 @@
+{dede:include file='header.htm'/}
+
+  <script src="js/pw_drag.js"></script>
+  <div id="mode_savebar" style="display:none; position:absolute">
+  	<div class="menu_sm">
+  		<img  src="theme/default/images/save.jpg" /><a href="javascript:;" onclick="saveMode()">保存布局</a><img src="theme/default/images/close.jpg" /><a href="javascript:;" onclick="c_savemode()">取消</a>
+  	</div>
+  </div>
+
+	<div id="side" class="left">
+	{dede:include file='side_icon.htm'/}
+	</div>
+
+<!--begin main-->
+<div id="main" class="right">
+	<div class="box">
+	  <h2>基本资料</h2>
+	  <!--begin-->
+	  <div class="text">
+		<table class="blog-content">
+		  <tr>
+			<td>
+				<b>昵称：</b><?php echo $row['uname']; ?> <br />
+				<b>性别：</b><?php echo $row['sex']; ?> <br />
+				<b>生日：</b><?php echo $row['birthday']; ?><br />
+				<b>所在城市：</b>
+			<?php
+			$places = GetEnumsTypes($row['place']);
+			echo ( isset($em_nativeplaces[$places['top']]) ?  $em_nativeplaces[$places['top']] : '');
+		  ?>
+		  <?php
+		  echo ( isset($em_nativeplaces[$places['son']]) ?  $em_nativeplaces[$places['son']] : '');
+		  ?><br />
+		  	<b>交友宣言：</b><?php echo $row['lovemsg']; ?><br />
+			  <div class="c"></div>
+			</td>
+		  </tr>
+		</table>
+	  </div>
+	 <!--end-->
+	 <h2>联系方式</h2>
+	 <!--begin-->
+	 <div class="text">
+		<table class="blog-content">
+		  <tr>
+			<td>
+				<b>Email：</b><?php echo $_vars['email']; ?><br />
+				<b>QQ：</b><?php echo $row['qq']; ?><br />
+				<b>MSN: </b><?php echo $row['msn']; ?><br />
+			  <div class="c"></div>
+			</td>
+		  </tr>
+		</table>
+	 </div>
+	<!--end-->
+	</div>
+</div>
+
+{dede:include file='footer.htm'/}

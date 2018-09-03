@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=<?php echo $cfg_soft_lang; ?>'>
+<title>圈子管理>圈子列表><?php echo $groupname?></title>
+<script language='javascript' src='js/main.js'></script>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+a.current {border-left:1px solid #cfcfcf;border-right:1px solid #cfcfcf;background:#ffffff;color:#FF0000;font-weight:bold;}
+</style>
+<script type="text/javascript">
+function checkSubmit(){
+   if(document.form1.groupname.value==""){
+	    alert("圈子名称不能为空！");
+	    return false;
+   }
+}
+function SelectImage(fname,vlist){
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
+   window.open("../include/dialog/select_images.php?f="+fname+"&imgstick="+vlist, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">圈子管理</div>
+</div>
+
+
+<table width="98%" border="0" cellpadding="0" cellspacing="0" align="center"  style="border:1px solid #CFCFCF;">
+  <tr>
+    <td width="100%" valign="top">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-bottom:1px solid #CFCFCF;" class="gtab">
+        <tr>
+          <td height="26" background="images/tbg.gif" >
+          <a href="group_main.php">圈子列表</a>
+          <a class="current" id="cate_1">基本资料</a>
+          <a href="group_user.php?gid=<?php echo $id?>"><span id="cate_2">成员管理</span></a>
+          <a href="group_guestbook.php?gid=<?php echo $id?>"><span id="cate_3">留言管理</span></a>
+          <a href="group_notice.php?gid=<?php echo $id?>"><span id="cate_4">公告管理</span></a></td>
+        </tr>
+      </table>
+</td>
+  </tr>
+  <tr >
+    <td height="26" align="left" bgcolor="#FFFFFF">
+    <div id="cate_info_1">
+    <form name="form1" action="group_edit.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+    <input name="action" type="hidden" value="save">
+    <input name="id" type="hidden" value="<?php echo $id?>">
+    <table width="100%" border="0" cellpadding="0" cellspacing="6" bgcolor="#FFFFFF">
+      <tr bgcolor="#FDFEE9" height="26">
+        <td width="8%" height="30" align="right" bgcolor="#FFFFFF" >名称：</td>
+        <td height="30" colspan="2" align="left" bgcolor="#FFFFFF" >
+          <input name="groupname" type="text" id="groupname" value="<?php echo $groupsname?>" size="50" maxlength="70" />
+          *在30个字符内。</td>
+      </tr>
+      <tr bgcolor="#FDFEE9" height="26">
+        <td height="30" align="right" bgcolor="#FFFFFF" >隶属类：</td>
+        <td height="30" colspan="2" align="left" bgcolor="#FFFFFF" >
+          <select name="store" id="store">
+            <option value="0">选择一分类</option>
+            <?php echo $option?>
+          </select>
+          *更改圈子类目。</td>
+      </tr>
+      <tr bgcolor="#FDFEE9" height="26">
+        <td height="30" align="right" bgcolor="#FFFFFF" >&nbsp;</td>
+        <td height="30" colspan="2" align="left" valign="middle" bgcolor="#FFFFFF" >
+          <input name="issystem" type="radio" id="issystem_0" value="0" <?php if(!$groupissystem) echo "checked='checked'";?> />
+          普通
+          <input type="radio" name="issystem" value="1" id="issystem_1" <?php if($groupissystem) echo "checked='checked'";?> />
+          官方
+          <input type="radio" name="ishidden" value="0" id="ishidden_0" <?php if(!$groupishidden) echo "checked='checked'";?> />
+开放
+<input type="radio" name="ishidden" value="1" id="ishidden_1" <?php if($groupishidden) echo "checked='checked'";?> />
+关闭
+<input type="radio" name="isindex" id="isindex" value="1" <?php if($groupisindex) echo "checked='checked'";?> />
+ 推荐模块封面<br />        </td>
+      </tr>
+      <tr bgcolor="#FDFEE9" height="26">
+        <td height="30" align="right" bgcolor="#FFFFFF" >创建人：</td>
+        <td height="30" colspan="2" align="left" bgcolor="#FFFFFF" ><input name="creater" type="text" id="creater" value="<?php echo $groupcreater?>" maxlength="15" />
+          *设置圈子的初始创建人。</td>
+      </tr>
+
+      <tr bgcolor="#FDFEE9" height="26">
+        <td height="12" align="right" bgcolor="#FFFFFF" ><input type='checkbox' class='np' name='ddisremote' value='1'>
+          远程,图标：          </td>
+        <td width="44%" height="12" align="left" bgcolor="#FFFFFF" >
+        <table width="100%" border="0" cellspacing="1" cellpadding="1">
+        <tr>
+                  <td height="30"> 本地上传请点击“浏览”按钮
+                    <input name="litpic" type="file" id="litpic" style="width:200" onChange="SeePic(document.picview,document.form1.litpic);">                  </td>
+                </tr>
+                <tr>
+                  <td height="30">
+				    <input name="picname" type="text" id="picname" style="width:250" value="<?php echo $groupimg?>" onChange="SeePic(document.picview,this.value);">
+                    <input type="button" name="Submitss" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','');" class='inputbut'>                  </td>
+                </tr>
+         </table>        </td>
+        <td width="48%" align="left" bgcolor="#FFFFFF" >&nbsp;<img src="<?php echo $groupimg?>" name="picview" id="picview"></td>
+      </tr>
+
+      <tr bgcolor="#FDFEE9" height="26">
+        <td height="30" align="right" bgcolor="#FFFFFF" >管理员：</td>
+        <td height="30" colspan="2" align="left" bgcolor="#FFFFFF" ><input name="master" type="text" id="master" value="<?php echo $ismaster?>" size="20" />
+          *设置圈子管理员，最多可以设三位,多位用&quot;,&quot;逗号隔开。</td>
+ 	  </tr>
+
+      <tr bgcolor="#FDFEE9" height="26">
+        <td height="30" align="right" bgcolor="#FFFFFF" >说明：</td>
+        <td height="30" colspan="2" align="left" bgcolor="#FFFFFF" ><textarea name="des" cols="60" rows="5" id="des"><?php echo $groupdes?></textarea>
+          *给圈子做个简介，最多100个字符。</td>
+ 	  </tr>
+      <tr>
+        <td width="8%" height="33">&nbsp;</td>
+        <td width="44%"><input type="submit" name="button" id="button" value="更新设置" class="np coolbg"/></td>
+        <td >&nbsp;</td>
+      </tr>
+
+
+    </table>
+    </form>
+    </div>
+    <!--基本资料结束-->
+    </td>
+  </tr>
+</table>
+
+
+<a name="nmes" id="nmes"></a>
+</body>
+</html>

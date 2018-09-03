@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>我的好友 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/table_function.js"></script>
+<script type="text/javascript" src="../include/dedeajax2.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">
+  
+//获得选中文件的文件名
+function GetCheckfolderItem()
+{
+	var allSel='';
+	if(document.form1.selid.value) return document.form1.selid.value;
+	for(i=0;i<document.form1.selid.length;i++)
+	{
+		if(document.form1.selid[i].checked)
+		{
+			if(allSel=='')
+			allSel=document.form1.selid[i].value;
+			else
+			allSel=allSel+","+document.form1.selid[i].value;
+		}
+	}
+	return allSel;
+}
+
+function DelSel(ftype)
+{
+	var selid = GetCheckfolderItem();
+	if(selid=='') {
+		alert("你没选中任何好友！");
+		return false;
+	}
+	if(window.confirm("你确定要删除这些好友么？"))
+	{
+		location = "myfriend.php?dopost=del&ids="+selid+"&ftype="+ftype;
+	}
+}
+
+function ConvSta(sta,ftype)
+{
+	var selid = GetCheckfolderItem();
+	var stamsg = '';
+	if(selid=='') {
+		alert("你没选中任何好友！");
+		return false;
+	}
+
+	if(sta=='good') stamsg = '加入关注的好友';
+	else if(sta=='bad') stamsg = '加入黑名单';
+	else stamsg = '改为普通好友';
+
+	if(window.confirm("你确定要把这些好友"+stamsg+"么？"))
+	{
+		location = "myfriend.php?dopost=upsta&sta="+sta+"&ids="+selid+"&ftype="+ftype;
+	}
+}
+
+function EditMemberGroup(mid)
+{
+   var taget_obj = document.getElementById('mgp'+mid);
+   var myajax = new DedeAjax(taget_obj,false,false,"","","");
+   myajax.SendGet2("ajax_membergroup.php?action=show&mid="+mid);
+   DedeXHTTP = null;
+}
+
+function postMemberGroup(mid){
+   obj = document.getElementById('mgp'+mid);
+   v = document.getElementById('m_'+mid).value;
+   var myajax = new DedeAjax(obj,false,false,"","","");
+   <?php
+   if(strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
+   ?>
+   myajax.AddKeyUtf8('action','post');
+   myajax.AddKeyUtf8('mid',mid);
+   myajax.AddKeyUtf8('membergroup',v);
+   myajax.SendPost2('ajax_membergroup.php');
+   <?php
+   }
+   elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
+   	 echo 'myajax.SendGet2("ajax_membergroup.php?action=show&mid="+mid+"&action=post&membergroup="+v);';
+   }
+   ?>
+   DedeXHTTP = null;
+}
+
+function EditDescription(mid)
+{
+   var taget_obj = document.getElementById('des'+mid);
+   var myajax = new DedeAjax(taget_obj,false,false,"","","");
+   myajax.SendGet2("ajax_membergroup.php?action=desshow&mid="+mid);
+   DedeXHTTP = null;
+}
+
+function postDescription(mid){
+   obj = document.getElementById('des'+mid);
+   v = document.getElementById('m_'+mid).value;
+   var myajax = new DedeAjax(obj,false,false,"","","");
+   <?php
+   if(strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
+   ?>
+   myajax.AddKeyUtf8('action','post');
+   myajax.AddKeyUtf8('mid',mid);
+   myajax.AddKeyUtf8('mdescription',v);
+   myajax.SendPost2('ajax_membergroup.php');
+   <?php
+   }
+   elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
+   	 echo 'myajax.SendGet2("ajax_membergroup.php?action=desshow&mid="+mid+"&action=despost&mdescription="+v);';
+   }
+   ?>
+   DedeXHTTP = null;
+}
+</script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="myfriend.php?ftype=0"><span>所有好友</span></a></li>
+          <li><a href="search.php"><span>查找好友</span></a></li>
+          <li><a href="visit-history.php?dopost=viewme"><span>关注我的人</span></a></li>
+          <li><a href="visit-history.php?dopost=meview"><span>我最近访问</span></a></li>
+          <li><a href="myfriend_group.php"><span>分组设置</span></a></li>
+        </ul>
+      </div>
+      <ul class="tabSub">
+        <li <?php echo ($ftype==0)? "class='thisTab'" : "";?>><a href="myfriend.php?ftype=0"><span>全部</span></a></li>
+        <li <?php echo ($ftype==1)? "class='thisTab'" : "";?>><a href="myfriend.php?ftype=1"><span>关注好友</span></a></li>
+        <li <?php echo ($ftype==-1)? "class='thisTab'" : "";?>><a href="myfriend.php?ftype=-1"><span>黑名单</span></a></li>
+      </ul>
+      <form name='form1' action="myfriend.php" method="post">
+        <input type='hidden' name='ftype' value='del' />
+        <div id="mainCp">
+        <h3 class="meTitle">
+        	<?php if($ftype == '0') echo '所有好友';?>
+      		<?php if($ftype == '1') echo '关注好友';?>
+     	 	<?php if($ftype == '-1') echo '黑名单';?>
+            (<?php echo $dlist->totalResult;?>)
+        </h3>
+        <ul class="listStyle3">
+        {dede:datalist}
+          <li class="clearfix">
+            <div class="frdInfo">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td colspan="3" align="left" valign="middle" class="userTitle"><a href='index.php?uid=<?php echo urlencode($fields['floginid']); ?>' target='_blank'><?php echo $fields['funame']; ?></a>
+                    <div class="fRight">
+                      <input type="checkbox" name="selid" value="<? echo $fields['id']; ?>" />
+                    </div ></td>
+                </tr>
+                <tr>
+                  <td width="40%">资料：<?php echo getUserInfo($fields['fid'],'sex');?>
+                    <?php 
+                  	if(!getUserInfo($fields['fid'],'age')=="")
+                    {
+                  		echo ",".getUserInfo($fields['fid'],'age')."岁";
+                        echo ",".getUserInfo($fields['fid'],'birthday');
+                   	}
+                  ?></td>
+                  <td class="doPost">分组:<span id="mgp<?php echo $fields['fid'];?>"> <?php echo $fields['groupname'];?>&nbsp;&nbsp;<a href="#" onclick="EditMemberGroup('<?php echo $fields['fid'];?>');return false;">修改</a></span></td>
+                  <td align="right" class="doPost"  width="20%"><a href="pm.php?dopost=send&uid=<?php echo urlencode($fields['floginid']); ?>">给他发短消息</a></td>
+                </tr>
+                <tr>
+                  <td>E-Mail: <?php echo getUserInfo($fields['fid'],'email');?></td>
+                  <td class="doPost">描述:<span id="des<?php echo $fields['fid'];?>"> <?php echo $fields['description'];?> &nbsp;&nbsp;<a href="#" onclick="EditDescription('<?php echo $fields['fid'];?>');return false;">修改</a></span></td>
+                  <td align="right" class="doPost"><a href="index.php?action=delfriend&uid=<?php echo urlencode($fields['floginid']); ?>">解除好友关系</a></td>
+                </tr>
+              </table>
+            </div>
+            <img src="<?php echo getUserInfo($fields['fid'],'face');?>" width="60" height="60" /></li>
+         {/dede:datalist}
+        </ul>
+        <div class="listDo appMsg">
+          <div class="control fLeft">
+            <button id="checkedClick" type="button" class="greenBtn1">全选</button>
+            <button class="greenBtn1" onclick="DelSel('<?php echo $ftype; ?>');" type="button" >删除</button>
+           <?php if(empty($ftype)) { ?>
+            <button class="greenBtn1" onclick="ConvSta('good','<?php echo $ftype; ?>');" type="button" >关注</button>
+            <button class="greenBtn4" onclick="ConvSta('bad','<?php echo $ftype; ?>');" type="button" >加入黑名单</button>
+           <?php }else { ?>
+            <button class="greenBtn4" onclick="ConvSta('common','<?php echo $ftype; ?>');" type="button"  >还原为普通</button>
+           <?php } ?>
+          </div>
+          <div class="pageList fRight">{dede:pagelist listsize=5 /}</div>
+        </div>
+      </div>
+      </form>
+      <!--主操作区域 -->
+    </div>
+  </div>
+  <?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!--This is IE DTD patch , Don't delete this line.-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title><?php echo $cfg_webname; ?> - <?php echo $cfg_softname." ".$cfg_version; ?></title>
+<link href="css/frame.css" rel="stylesheet" type="text/css" />
+<script src="../include/js/jquery/jquery.js" language="javascript" type="text/javascript"></script>
+<script src="js/frame.js" language="javascript" type="text/javascript"></script>
+</head>
+<body class="showmenu">
+
+<div class="pagemask"></div>
+<iframe class="iframemask"></iframe>
+<div class="allmenu">
+	<div class="allmenu-box">
+<?php
+	echo $mapstring;
+?>
+<br style='clear:both' />
+	</div>
+</div>
+
+<div class="head">
+	<div class="top">
+		<div class="top_logo">
+			<img src="images/admin_top_logo.gif" width="170" height="37" alt="DedeCms Logo" title="Welcome use DedeCms" />
+		</div>
+		<div class="top_link">
+			<ul>
+				<li class="welcome">您好：<?php echo $cuserLogin->getUserName(); ?> ，欢迎使用DedeCMS！</li>
+				<li><a href="index_menu.php" target="menu">主菜单</a></li>
+     		<li><a href="#" onclick="JumpFrame('catalog_menu.php','public_guide.php');">内容发布</a></li>
+     		<li><a href="#" onclick="JumpFrame('index_menu.php','content_list.php');">内容维护</a></li>
+     		<li><a href="#" onclick="JumpFrame('index_menu.php','index_body.php');">系统主页</a></li>
+     		<li><a href="../index.php?upcache=1" target="_blank">网站主页</a></li>
+     		<li><a href="../member" target="_blank">会员中心</a></li>
+      	<li><a href="exit.php" target="_top">注销</a></li>
+			</ul>
+			<div class="quick">
+				<a href="#" class="ac_qucikmenu" id="ac_qucikmenu">快捷方式</a>
+				<a href="#" class="ac_qucikadd" id="ac_qucikadd"><!--ADD--></a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="topnav">
+		<div class="menuact">
+			<a href="#" id="togglemenu">隐藏菜单</a>
+			<?php
+			if($cuserLogin->getUserType() >= 10) echo '<a href="#" id="allmenu">功能地图</a>';
+			?>
+		</div>
+		<div class="nav" id="nav">
+		</div>
+        
+  <div class="sysmsg">
+			<h3>滚动消息:</h3>
+           
+	    <div class="scroll">
+             <form action="action_search.php" target="main" method="post"><input name="keyword" type="text" value="功能搜索" onfocus="if(this.value=='功能搜索'){this.value='';}"  onblur="if(this.value==''){this.value='功能搜索';}" class="allsearch" style="width:150px;"/><input name="" type="submit" value="搜索" class="np"/>
+		  <a href='http://bbs.dedecms.com' target='_blank'>官方论坛</a>
+		  <a href='http://help.dedecms.com' target='_blank'>在线帮助</a></form>
+		  </div>
+		</div>
+	</div>
+</div>
+
+<div class="left">
+	<div class="menu" id="menu">
+		 <iframe src="index_menu.php" id="menufra" name="menu" frameborder="0"></iframe>
+	</div>
+</div>
+
+<div class="right">
+	<div class="main">
+		<iframe id="main" name="main" frameborder="0" src="index_body.php"></iframe>
+	</div>
+  <!--<div id="help"><span id="content"><a href="#">栏目管理操作使用说明</a></span></div>-->
+</div>
+
+
+
+<div class="qucikmenu" id="qucikmenu">
+	<ul>
+		<?php
+      $dtp = new DedeTagparse();
+      $dtp->SetNameSpace('menu','<','>');
+      $dtp->LoadTemplet($myIcoFile);
+      if(is_array($dtp->CTags))
+      {
+         foreach($dtp->CTags as $ctag)
+         {
+         		$title = $ctag->GetAtt('title');
+         		$ico = $ctag->GetAtt('ico');
+         		$link = $ctag->GetAtt('link');
+         		echo "<li><a href='{$link}' target='main'>{$title}</a></li>\r\n";
+      		}
+			}
+	 ?>
+	</ul>
+</div>
+<script language="javascript">
+(function($)
+{
+	function changeSize()
+	{
+		var mainheight = $(".right").height() - $("#help").height();
+		$(".main").height(mainheight);
+	}
+	$(window).resize(function()
+	{
+		changeSize();
+	});
+	
+	changeSize();
+})(jQuery)
+
+function JumpFrame(url1, url2){
+    jQuery('#menufra').get(0).src = url1;
+    jQuery('#main').get(0).src = url2;
+}
+
+</script>
+</body>
+</html>

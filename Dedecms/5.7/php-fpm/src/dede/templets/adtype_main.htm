@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>广告分类管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body background="images/allbg.gif" leftmargin="8" topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <form name="form1" action="adtype_main.php" method="post">
+    <tr>
+      <td height="28" background="images/tbg.gif" colspan="7" style="padding-left:10px;"><input type="hidden" name="dopost" value="save"/><b>广告分类管理&nbsp;<a href="ad_main.php">[广告管理]</a></b></td>
+    </tr>
+    <tr bgcolor="#FBFCE2">
+      <td width="9%" height="24" align="center" valign="top">类型ID</td>
+      <td width="55%" align="center" valign="top">广告分类</td>
+      <td width="36%" align="center">状态</td>
+    </tr>
+    <?php
+	$dsql->SetQuery("Select * From #@__myadtype");
+	$dsql->Execute();
+	$k=0;
+	while($row = $dsql->GetObject())
+	{
+      $k++;
+	?>
+    <tr align="center" bgcolor="#FFFFFF">
+      <td height="24" valign="top">    <input type="hidden" name="ID_<?php echo $k?>" value="<?php echo $row->id?>"/><?php echo $row->id; ?></td>
+      <td height="24" valign="top"><input name="pname_<?php echo $k?>" value="<?php echo $row->typename?>" type="text" id="pname_<?php echo $k?>" class='pubinputs' style="width:90%" /></td>
+      <td><input name="check_<?php echo $k?>" type="checkbox" id="check_<?php echo $k?>"  value="1" checked='1' class='np' />
+        保留 </td>
+    </tr>
+    <?php
+	}
+	?>
+    <input type="hidden" name="idend" value="<?php echo $k?>">
+    <tr bgcolor="#F8FCF1">
+      <td height="24" colspan="5" valign="top" bgcolor="#F9FCEF"><strong>新增一个广告类型：</strong></td>
+    </tr>
+    <tr height="24" align="center" bgcolor="#FFFFFF">
+      <td colspan="2" valign="top"><input name="pname_new" type="text" id="pname_new" class='pubinputs' style="width:90%" /></td>
+      <td align="center" bgcolor="#FFFFFF"><input name="check_new" type="checkbox"  id="check_new" value="1" checked='1' class='np' />
+        新增 </td>
+    </tr>
+    <tr>
+      <td height="34" colspan="5" align="center" bgcolor="#F9FCEF"><input name="imageField"  type="submit" class="np coolbg" value="确定" /></td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

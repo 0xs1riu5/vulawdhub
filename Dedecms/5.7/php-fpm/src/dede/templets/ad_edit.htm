@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>更改广告</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/calendar/calendar.js"></script>
+</head>
+<body background="images/allbg.gif" leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="28" background="images/tbg.gif" style="padding-left:10px;">&nbsp;<b><a href="ad_main.php"><u>广告管理</u></a></b> &gt;&gt; 更改广告 </td>
+  </tr>
+  <tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top"><table width="100%" border="0" cellspacing="4" cellpadding="4">
+        <form action="ad_edit.php" method="post" enctype="multipart/form-data" name="form1">
+          <input type='hidden' name='aid' value='<?php echo $aid?>'>
+          <input type='hidden' name='dopost' value='saveedit'>
+          <tr>
+            <td height="25" align="center">广告位标识：</td>
+            <td colspan="2"><?php echo $row['tagname']; ?></td>
+          </tr>
+          <tr>
+            <td height="25" align="center">广告分类：</td>
+            <td colspan="2"><select name='clsid' style='width:150' id="clsid">
+                <option value='0'>默认分类...</option>
+                
+          	<?php echo $option;?>
+          
+              </select></td>
+          </tr>
+          <tr>
+            <td width="15%" height="25" align="center">广告投放范围：</td>
+            <td colspan="2"><?php
+           	$tl = new TypeLink(0);
+           	$typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
+            echo "<select name='typeid' style='width:300px'>\r\n";
+            echo "<option value='0' selected>投放在没有同名标识的所有栏目</option>\r\n";
+            echo $typeOptions;
+            echo "</select>";
+			?>
+              <br>
+              （如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目） </td>
+          </tr>
+          <tr>
+            <td height="25" align="center">广告位名称：</td>
+            <td colspan="2"><input name="adname" type="text" id="adname" size="30" value="<?php echo $row['adname']?>" class='iptxt' /></td>
+          </tr>
+          <tr>
+            <td height="25" align="center">时间限制：</td>
+            <td colspan="2"><input class="np" name="timeset" type="radio" value="0"<?php if($row['timeset']==0) echo " checked='1' "; ?> />
+              永不过期
+              <input class="np" type="radio" name="timeset" value="1" <?php if($row['timeset']==1) echo " checked='1' "; ?> />
+              在设内时间内有效</td>
+          </tr>
+          <tr>
+            <td height="25" align="center">投放时间：</td>
+            <td colspan="2">从
+              <input name="starttime" type="text" id="starttime" value="<?php echo GetDateTimeMk($row['starttime'])?>" class='iptxt' />
+              <script language="javascript" type="text/javascript">
+						Calendar.setup({
+							inputField     :    "starttime",
+							ifFormat       :    "%Y-%m-%d %H:%M",
+							showsTime      :    true,
+							timeFormat     :    "24"
+						});
+				 </script> 到 
+			  <input name="endtime" type="text" id="endtime" value="<?php echo GetDateTimeMk($row['endtime'])?>" class='iptxt' /><script language="javascript" type="text/javascript">
+						Calendar.setup({
+							inputField     :    "endtime",
+							ifFormat       :    "%Y-%m-%d %H:%M",
+							showsTime      :    true,
+							timeFormat     :    "24"
+						});
+				 </script></td>
+          </tr>
+          <tr>
+            <td height="80" align="center">正常显示内容：</td>
+            <td width="76%"><textarea name="normbody" rows="10" id="normbody" style="width:80%;height:100"><?php echo $row['normbody']?></textarea></td>
+            <td width="9%">&nbsp;</td>
+          </tr>
+          <tr>
+            <td height="80" align="center">过期显示内容：</td>
+            <td><textarea name="expbody" rows="10" id="expbody" style="width:80%;height:100"><?php echo $row['expbody']?></textarea></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td height="53" align="center">&nbsp;</td>
+            <td colspan="2"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0"></td>
+          </tr>
+        </form>
+      </table></td>
+  </tr>
+</table>
+</body>
+</html>

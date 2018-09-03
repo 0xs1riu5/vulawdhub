@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>编辑评论</title>
+<style type="text/css">
+<!--
+body {
+	background-image: url(images/allbg.gif);
+}
+-->
+</style>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td width="100%" height="24" colspan="2" background="images/tbg.gif">
+    	&nbsp;<strong><a href="<?php echo $ENV_GOBACK_URL; ?>"><u>评论管理</u></a> &gt;&gt; 编辑评论：</strong>
+    </td>
+  </tr>
+  <tr>
+    <td height="187" colspan="2" align="center" bgcolor="#FFFFFF">
+	<form name="form1" method="post" action="story_feedback_edit.php">
+	<input type="hidden" name="dopost" value="edit" />
+	<input type="hidden" name="id" value="<?php echo $row['id']; ?>" />
+        <table width="100%" border="0" cellpadding="3" cellspacing="1">
+          <tr bgcolor="#FFFFFF"> 
+            <td width="18%" height="24">评论所属文章：</td>
+            <td width="82%"> 
+              <?php echo $row['arctitle']; ?>
+            </td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="24">评论人：</td>
+            <td> 
+              <input name="username" type="text" id="username" size="20" value="<?php echo $row['username']; ?>" /> 
+            </td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="24">评论发布时间：</td>
+            <td> 
+              <?php echo GetDateTimeMK($row['dtime']); ?>
+            </td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="24">IP地址：</td>
+            <td> 
+              <?php echo $row['ip']; ?>
+            </td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="24">评论内容：</td>
+            <td>更改的评论内容HTML代码不会被屏蔽，可用HTML语法编辑。</td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="62" align="center">&nbsp; </td>
+            <td height="62"> 
+              <textarea name="msg" cols="60" rows="5" id="msg"><?php echo cn_substr(Text2Html($row['msg']), 500); ?></textarea></td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="24">管理员回复：</td>
+            <td>回复内容的HTML代码会被屏蔽。</td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="24" align="center">&nbsp; </td>
+            <td height="24"> 
+              <textarea name="adminmsg" cols="60" rows="5" id="adminmsg"></textarea></td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="40" width='600' colspan="2" align="center"> 
+              <input type="submit" name="Submit1" class='coolbg np' value="保存更改"  />
+              &nbsp; 
+              <input type="button" name="Submit2" class='coolbg np' value="不理返回" onClick="location='<?php echo $ENV_GOBACK_URL; ?>';" />
+            </td>
+          </tr>
+        </table>
+	  </form>
+	  </td>
+  </tr>
+</table>
+</body>
+</html>

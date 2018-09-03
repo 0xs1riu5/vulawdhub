@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>修改自定义表单</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="js/diy.js"></script>
+<script language="javascript">
+<!--
+function checkSubmit(){
+	if(document.form1.typename.value=='')
+	{
+        alert("自定义表单名称不能为空！");
+		return false;
+	}
+	return true;
+}
+//删除
+function DelNote(gourl){
+	if(!window.confirm("你确认要删除这条记录么！")){ return false; }
+	location.href=gourl;
+}
+-->
+</script>
+<style type="text/css">
+<!--
+.STYLE1 {color: #FF0000}
+td{ padding:2px; padding-left:6px; line-height:150%; }
+.STYLE2 {color: #666666; display:none; }
+-->
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">自定义表单管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+  <form name="form1" action="diy_edit.php" method="post" onSubmit="return checkSubmit();">
+    <input type='hidden' name='diyid' value='<?php echo $diyid;?>'>
+    <input type='hidden' name='dopost' value='save'>
+    <tr bgcolor="#CFCFCF"> 
+      <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;">
+      	<b><a href="diy_main.php"><u>自定义表单管理</u></a> &gt; 修改自定义表单：</b>
+      	(修改表名不会创建新表，如果您不懂手工处理这些表，请不要更改)
+      </td>
+    </tr>
+    <tr> 
+      <td width="170" height="28" align="left" bgcolor="#FFFFFF">自定义表单 diyid：<br />
+        <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span> </td>
+      <td bgcolor="#FFFFFF">
+       <?php echo $diyid;?>
+      * <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="showHide2('help1')" /></td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#F9FCEF">自定义表单名称：<br />
+      <span class="STYLE2" id="help3">　　自定义表单的中文名称，在后台管理，前台发布等均使用此名字。</span></td>
+      <td bgcolor="#F9FCEF">
+	    <input name="name" type="text" id="name" value="<?php echo $row['name']?>" style="width:180px" class='alltxt' />
+      *<img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="showHide2('help3')" />
+     </td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">数据表：<br />
+        <span class="STYLE2" id="help5">　　自定义表单数据表创建后不可修改表名</span></td>
+      <td bgcolor="#FFFFFF">
+	    <input name="table" type="text" id="table"  style="width:180px" value="<?php echo $row['table']; ?>" class='alltxt' disabled='1' />
+        *<img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="showHide2('help5')" />
+      </td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#F9FCEF">模型字段配置：<br />
+      信息索引类字段系统已经加入，<br />
+      您只需要增加其它个性化字段即可。</td>
+      <td bgcolor="#F9FCEF">
+      	<input name="fset" type="button" id="fset" value="添加新字段" onClick="location.href='diy_field_add.php?diyid=<?php echo $diyid; ?>'" class="np coolbg" style="margin-top:5px"/>
+      </td>
+    </tr>
+     <tr>
+      <td colspan='2'  bgcolor="#FFFFFF" style="padding:6px">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" align="center"  style="background:#cfcfcf;">
+   <tr align="center" bgcolor="#FBFCE2" height="26">
+      <td width="28%">表单提示文字</td>
+      <td width="18%">数据字段名</td>
+      <td width="20%">数据类型</td>
+      <td width="18%">表单类型</td>
+      <td>维护</td>
+  </tr>
+<?php 
+
+$ds = file(DedeInclude('/inc/fieldtype.txt'));
+foreach($ds as $d){
+	$dds = explode(',',trim($d));
+	$fieldtypes[$dds[0]] = $dds[1];
+}
+$fieldset = $row['info'];
+$dtp = new DedeTagParse();
+$dtp->SetNameSpace("field","<",">");
+$dtp->LoadSource($fieldset);
+if(is_array($dtp->CTags)){
+foreach($dtp->CTags as $ctag)
+{
+?>  <tr align="center" bgcolor="#FFFFFF" height="24">
+      <td>
+      <?php 
+			$itname = $ctag->GetAtt('itemname');
+			if($itname=='') echo "没指定";
+			else echo $itname;
+			?>
+			</td>
+      <td>
+      	<?php echo $ctag->GetTagName()?>
+      </td>
+      <td>
+      <?php 
+			$ft = $ctag->GetAtt('type');
+			if(isset($fieldtypes[$ft])) echo $fieldtypes[$ft];
+			else  echo "系统专用类型";
+			?>
+			</td>
+		  <td>
+		 <?php 
+			$ft = $ctag->GetAtt('autofield');
+			if($ft==''||$ft==0) echo "固化表单";
+			else  echo "自动表单";
+		 ?>
+		  </td>
+      <td>
+      	<a href="diy_field_edit.php?diyid=<?php echo $diyid;?>&fname=<?php echo $ctag->GetTagName()?>">[修改]</a>
+      	<a href="diy_field_edit.php?diyid=<?php echo $diyid;?>&action=delete&fname=<?php echo $ctag->GetTagName()?>">[删除]</a>
+      </td>
+  </tr>
+<?php 
+ }}
+ 
+?>
+</table>
+      </td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">列表模板：</td>
+      <td bgcolor="#FFFFFF">
+      	<input name="listtemplate" type="text" id="listtemplate" style="width:180px" value="<?php echo $row['listtemplate'];?>" class='alltxt' />
+      </td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">内容模板：</td>
+      <td bgcolor="#FFFFFF">
+      	<input name="viewtemplate" type="text" id="viewtemplate" style="width:180px" value="<?php echo $row['viewtemplate'];?>" class='alltxt' />
+      </td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">发布模板：</td>
+      <td bgcolor="#FFFFFF">
+      	<input name="posttemplate" type="text" id="posttemplate" style="width:180px" value="<?php echo $row['posttemplate'];?>" class='alltxt' />
+      </td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">前台列表和内容页公开？：</td>
+      <td bgcolor="#FFFFFF">
+      <label><input name="public" type="radio" value="2" <?php echo $row['public'] == 2 ? 'checked' : '';?> class='np' />完全公开</label>
+      <label><input name="public" type="radio" value="1" <?php echo $row['public'] == 1 ? 'checked' : '';?> class='np' />公开审核过的</label>
+      <label><input name="public" type="radio" value="0" <?php echo $row['public'] == 0 ? 'checked' : '';?> class='np' />不公开</label>
+      </td>
+    </tr>
+    <tr bgcolor="#F9FCEF"> 
+      <td height="28" colspan="2">
+      	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="26%" height="45">&nbsp;</td>
+            <td width="15%">
+            	<input type="submit" name="button" id="button" value="确定"  class='np coolbg'/>
+            </td>
+            <td width="59%">
+            	<input name="按钮" type="button" class='np coolbg'  id="button2" onclick="location='diy_main.php';" value="返回"/>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

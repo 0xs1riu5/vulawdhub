@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>邮件订阅 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language='javascript' src='templets/js/main.js'></script>
+<script type="text/javascript" language="javascript" src="../include/dedeajax2.js"></script>
+<script type="text/javascript" src="templets/js/table_function.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+     <div id="appTab">
+      <ul>
+        <li class="thisTab"><a href="mail.php">我的订阅</a></li>
+        <li><a href="mail.php?folder=drop">我要退订</a></li>
+      </ul>
+    </div>
+      <form name="form2" action="mail.php" method="post" onsubmit="return checkSubmit();">
+      <input type="hidden" name="dopost" value="save" />
+      <div id="mainCp">
+        <div class="postForm">
+          <p class="cellBg">
+            <label>订阅类型：</label> </p>
+           <ul class="picList">
+            <?php if($inputbox=="") echo "暂无订阅内容"; else echo $inputbox ;?>
+          </ul>
+           <p>
+          <button class="button2 mt5 ml10" type="submit">订阅</button>
+        </p>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

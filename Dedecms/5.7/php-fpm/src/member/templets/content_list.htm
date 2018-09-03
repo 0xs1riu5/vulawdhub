@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>文档管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">
+  function viewArc(aid){
+	  window.open("{dede:global.cfg_phpurl /}/view.php?aid="+aid);
+  }
+  function editArc(aid,channelid){
+	  location = "archives_do.php?dopost=edit&channelid="+channelid+"&aid="+aid;
+  }
+  function delArc(aid){
+	  if(window.confirm('你确定要删除这篇文档吗?')) location="archives_do.php?aid="+aid+"&dopost=delArc";
+  }
+</script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="#"><span><?php echo $positionname; ?></span></a></li>
+        </ul>
+      </div>
+      <ul class="tabSub">
+        <li <?php echo ($arcrank=='')? "class='thisTab'" : "";?>><a href="content_list.php?channelid=<?php echo $channelid;?>"><span>全部</span></a></li>
+        <li <?php echo ($arcrank=='1')? "class='thisTab'" : "";?>><a href="content_list.php?channelid=<?php echo $channelid;?>&arcrank=1"><span>已审核</span></a></li>
+        <li <?php echo ($arcrank=='-1')? "class='thisTab'" : "";?>><a href="content_list.php?channelid=<?php echo $channelid;?>&arcrank=-1"><span>未审核</span></a></li>
+        <li <?php echo ($arcrank=='-2')? "class='thisTab'" : "";?>><a href="content_list.php?channelid=<?php echo $channelid;?>&arcrank=-2"><span>被退回</span></a></li>
+      </ul>
+      <div id="mainCp">
+        <!--内容消息提示 -->
+        <h3 class="meTitle">已发布<?php echo $positionname; ?><small>(曾经发布的所有<?php echo $positionname; ?>)</small></h3>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+          <thead>
+            <tr>
+              <th width="40%">文章标题</th>
+              <th width="15%">类目 </th>
+              <th width="10%">状态 </th>
+              <th width="10%">点击 </th>
+              <th width="11%">发布时间 </th>
+              <th width="25%">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          {dede:datalist}
+            <tr>
+              <td class="tabTitle"><a href='<?php echo $cfg_phpurl; ?>/view.php?aid=<?php echo $fields['id']; ?>' target='_blank'><?php echo $fields['title']; ?><?php echo IsPicArchives($fields['litpic']); ?></a></td>
+              <td align="center"><?php echo $fields['typename']; ?></td>
+              <td align="center"><?php
+if($fields['arcrank']>=0) echo "已审核";
+else if($fields['arcrank']==-2) echo "<font color='blue'>被退回</font>";
+else echo "<font color='red'>未审核</font>";
+?></td>
+              <td align="center"><?php echo $fields['click']; ?></td>
+              <td><?php echo GetDateMk($fields['senddate']); ?></td>
+              <td align="center" class="doPost"><?php
+if($fields['arcrank']<0 || $dtime - $fields['senddate'] < $maxtime)
+{
+?>
+                <a href="javascript:editArc(<?php echo $fields['id']?>,<?php echo $fields['channel']?>);">修改</a> | <a href="javascript:delArc(<?php echo $fields['id']?>);">删除</a> |
+                <?php
+}
+else
+{
+	echo "<span class='gray'>改 | 删 | </span>";
+}
+?>  <a href="javascript:viewArc(<?php echo $fields['id']; ?>);">预览</a></td>
+            </tr>
+         {/dede:datalist}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="6"><div class="pageList">{dede:pagelist listsize=5/}</div></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!--主操作区域 -->
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>  
+</div>
+</body>
+</html>

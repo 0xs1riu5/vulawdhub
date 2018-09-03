@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>商城订单 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript" src="templets/js/table_function.js"></script>
+<script type="text/javascript">
+	//获得选中文件的文件名
+	function GetCheckfolderItem()
+	{
+		var allSel='';
+		if(document.form1.deleteid.value) return document.form1.deleteid.value;
+		for(i=0;i<document.form1.deleteid.length;i++)
+		{
+			if(document.form1.deleteid[i].checked)
+			{
+				if(allSel=='')
+				allSel=document.form1.deleteid[i].value;
+				else
+				allSel=allSel+","+document.form1.deleteid[i].value;
+			}
+		}
+		return allSel;
+	}
+	
+	function DoSubmit()
+	{
+		var selid = GetCheckfolderItem();
+		if(selid=='') {
+			alert("你没选中任何信息！");
+			return false;
+		}
+		if(window.confirm("你确定要删除这些消息么？"))
+		{
+			location = "shops_orders.php?dopost=del&ids="+selid;
+		}
+	}
+</script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+           <li><a href="buy.php">会员升级/点卡充值</a></li>
+           <li><a href="operation.php">点卡/会员定单</a></li>
+           <li><a href="mypay.php" id="buy">我购买的文章</a></li>
+           <li class="thisTab"><a href="shops_orders.php">商品定单</a></li>
+           <li><a href="shops_products.php" id="buy">我购买的商品</a></li>
+        </ul>
+      </div>
+      <div id="mainCp">
+        <!--内容消息提示 -->
+        <h3 class="meTitle">商品订单</h3>
+        <div class="postForm" style="padding-bottom: 0px;">
+          <form name="form3" action="shops_products.php" method="get">
+            <div class="fLeft" style="margin-top:3px; padding-left: 130px;"> 订单号：
+              <input class="intxt" type='text' name='oid' size="40" value='' />
+              <button class="button2" type="submit">搜索</button>
+            </div>
+          </form>
+        </div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+            <thead>
+              <tr>
+                <th colspan="2" width="25%">订单号</th>
+                <th>状态 </th>
+                <th width="10%">数量 </th>
+                <th width="10%">总计(元)</th>
+                <th width="20%">时间 </th>
+              </tr>
+            </thead>
+            <form name='form1' action="shops_orders.php" method="post">
+            <input type='hidden' name='dopost' value='del' />
+            <tbody>
+            {dede:datalist}
+            <tr>
+              <td align="center"><input type="checkbox" name="deleteid" value="{dede:field.oid/}"/></td>
+              <td align="center"><a href="shops_products.php?do=show&oid={dede:field.oid/}">{dede:field.oid/}</a></td>
+              <td align="center"><?php echo GetSta($fields["state"],$fields["oid"])?></td>
+              <td align="center">{dede:field.cartcount/}</td>
+              <td align="center"><strong>{dede:field.priceCount/}</strong></td>
+              <td align="center">{dede:field.stime function="Mydate('Y-m-d h:i:s',@me)"/}</td>
+            </tr>
+            {/dede:datalist}
+            <tr>
+            <td colspan="6"><button id="checkedClick" type="button" class="greenBtn1">全选</button><button type="button" onclick="DoSubmit()" class="greenBtn3">删除选中</button></td></tr></tbody>
+            </form>
+          <tfoot>
+            <tr>
+              <td colspan="6"><div class="pageList">{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!--主操作区域 -->
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

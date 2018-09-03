@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>连载栏目管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript" src="js/story.js"></script>
+<style type="text/css">
+<!--
+#addCatalog {
+	position:absolute;
+	left:455px;
+	top:64px;
+	width:325px;
+	height:238px;
+	z-index:1;
+	background-color: #F9FCEF;
+	border:1px solid #889D8F;
+	padding:6px;
+	display:none
+}
+#editCatalog {
+	position:absolute;
+	left:455px;
+	top:64px;
+	width:325px;
+	height:238px;
+	z-index:1;
+	background-color: #F9FCEF;
+	border:1px solid #889D8F;
+	padding:6px;
+	display:none
+}
+-->
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" align="center" border="0" cellpadding="0" cellspacing="1" bgcolor="#D6D6D6">
+	<tr>
+			<td bgcolor="#EDF9D5" height="28" background='images/tbg.gif'>
+					<table width='96%' border="0" cellpadding='0' cellspacing='0'>
+						<tr background='images/tbg.gif'>
+						<td width='30%' class="tbtitletxt" style="padding-left:10px;"><strong>小说栏目管理</strong> <a href="../book" target="_blank">[查看首页]</a></td>
+						<td align='right'>
+					[<a href="javascript:ShowAddCatalog();"><u>增加新栏目</u></a>]
+					&nbsp;
+					[<a href="story_add.php"><u>增加新图书</u></a>]
+					</td>
+				</tr>
+			</table>
+		</td>
+  </tr>
+	<tr>
+		  <td style="background:#ffffff;padding:7px 6px 6px 10px;" >
+		  <font color='red'><?php echo $msg; ?></font>
+		  </td>
+  </tr>
+<tr>
+<td height="116" bgcolor="#FFFFFF" style="padding:7px 6px 6px 10px;" >
+<?php
+//栏目递归列表
+echo "<form name='frank' action='story_catalog.php' method='post'>\r\n";
+echo "<input type='hidden' name='action' value='uprank' />";
+echo "<table width='98%' border='0' cellpadding='0' cellspacing='3'>\r\n";
+echo "<tr>\r\n<td width='1%' height='1'></td><td width='60%'></td><td></td></tr>\r\n";
+$options = "";
+foreach($btypes as $k=>$v)
+{
+	  echo "<tr height='24' bgcolor='#FDFEF1'>\r\n";
+	  echo "<td><input type='text' size='2' name='rank_{$k}' value='{$ranks[$k]}'></td>\r\n";
+	  echo "<td style='padding-left:3px'>·{$v} (ID：{$k} ，图书：".TjBookNum($k,$dsql).")</td>\r\n";
+	  echo "<td align='right' style='padding-right:8px;'>\r\n";
+	  echo "<a href='javascript:EditCatalog({$k});'>修改</a> | ";
+	  echo "<a href='javascript:DelCatalog({$k});'>删除</a> | ";
+	  echo "<a href='story_add.php?catid={$k}'>添加图书</a> | ";
+	  echo "<a href='story_books.php?catid={$k}'>图书列表</a> ";
+	  echo "</td>\r\n</tr>\r\n";
+	  $options .= "<option value='{$k}'>{$v}</option>\r\n";
+    //获取下级栏目
+
+    if(!empty($stypes[$k]) && is_array($stypes[$k])){
+	    foreach($stypes[$k] as $kk=>$vv)
+	    {
+	    	 echo "<tr height='24'>\r\n";
+		     echo "<td><input type='text' size='2' name='rank_{$kk}' value='{$ranks[$kk]}'></td>\r\n";
+		     echo "<td style='padding-left:18px'>·{$vv} (ID：{$kk}，图书：".TjBookNum($kk,$dsql).")</td>\r\n";
+		     echo "<td align='right' style='padding-right:8px;'>\r\n";
+		     echo "<a href='javascript:EditCatalog({$kk});'>修改</a> | ";
+		     echo "<a href='javascript:DelCatalog({$kk});'>删除</a> | ";
+		     echo "<a href='story_add.php?catid={$kk}'>添加图书</a> | ";
+		     echo "<a href='story_books.php?catid={$kk}'>图书列表</a>";
+		     echo "</td>\r\n</tr>\r\n";;
+	    }
+	}
+}
+echo "</table>\r\n";
+echo "<div style='padding-top:10px;margin-top:10px;border-top:1px solid #cccccc'><input type='submit' name='Submit' value='更新排序' style='width:80px' class='np coolbg'/></div>";
+echo "</form>\r\n";
+?>
+</td>
+</tr>
+</table>
+<!--  下面是隐藏的栏目增加／修改表单  -->
+<div id="editCatalog">
+<span id='editCatalogBody'>请稍候，正在载入...</span>
+</div>
+<div id="addCatalog">
+<form name='addform' action='story_catalog.php' method='get'>
+<input type='hidden' name='action' value='add' />
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+     <td width="90" height="28">栏目名称：</td>
+     <td width="101"><input name="classname" type="text" id="classname" /></td>
+     <td width="20" align="right" valign="top"><a href="javascript:CloseAddCatalog()"><img src="images/close.gif" width="12" height="12" border="0" /></a></td>
+   </tr>
+   <tr>
+     <td height="28">隶属栏目：</td>
+     <td colspan="2">
+     <select name="pid" id="pid">
+       <option value="0">新建顶级栏目</option>
+       <?php echo $options; ?>
+     </select>
+     </td>
+   </tr>
+   <tr>
+     <td height="28">排序级别：</td>
+     <td colspan="2"><input name="rank" type="text" id="rank" size="5" value="0" />
+       （数值小靠前）</td>
+   </tr>
+   <tr>
+     <td height="28">连载类型：</td>
+     <td colspan="2"><input name="booktype" type="radio"  value="0" checked="checked" />
+       小说
+         <input type="radio" name="booktype" value="1"  />
+     漫画</td>
+   </tr>
+   <tr>
+     <td height="28">关键字：</td>
+     <td colspan="2"><input name="keywords" type="text" id="keywords" /></td>
+   </tr>
+   <tr>
+     <td>摘　要：</td>
+     <td colspan="2"><textarea name="description" id="description" style="width:180px;height:45px"></textarea></td>
+   </tr>
+   <tr>
+     <td height="43">&nbsp;</td>
+     <td colspan="2"><input type="submit" name="Submit" value="增加栏目" style="width:80px"/></td>
+   </tr>
+  </table>
+</form>
+</div>
+</body>
+</html>

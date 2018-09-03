@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>上传新文件</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style>
+.coolbg2
+{
+  border: 1px solid #000000;
+  background-color: #F2F5E9;
+  height:18px;
+}
+.pubinputs
+{
+    height:22px;
+    margin-top: 5px;
+}
+</style>
+<script language='javascript'>
+function CheckSubmit()
+{
+	if(document.form1.title.value==""){
+		alert("请设定媒体标题！");
+		document.form1.title.focus();
+		return false;
+	}
+}
+var startNum = 6;
+function MakeUpload()
+{
+   var upfield = document.getElementById("uploadfield");
+   var endNum =  Number(document.form1.picnum.value)+startNum;
+   if(endNum>40) endNum = 40;
+   for(startNum;startNum<=endNum;startNum++){
+	   upfield.innerHTML += "<input type='file' name='upfile"+startNum+"' style='width:300px' size='30' class='pubinputs' /><br/>";
+   }
+}
+function ResetUpload()
+{
+   var upfield = document.getElementById("uploadfield");
+   upfield.innerHTML = "";
+   startNum = 2;
+}
+</script>
+</head>
+<body background="images/allbg.gif" leftmargin='8' topmargin='8'>
+<table width="98%" align="center" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr> 
+    <td height="28" background='images/tbg.gif'>
+    	<table width="98%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="2%" align="center" valign="middle"><img src="images/item_tt2.gif" width="7" height="15" /></td>
+          <td width="44%"><strong>上传新文件：</strong></td>
+          <td width="54%" align="right">[<a href='media_main.php'><u>附件/媒体数据管理</u></a>]</td>
+        </tr>
+      </table>
+     </td>
+  </tr>
+  <tr> 
+    <td height="19" bgcolor="#ffffff">
+    	 <img src="images/help.gif" border="0" />
+    	提示：图片类型仅支持jpg、png、gif、wbmp格式，flash为.swf格式，视音频和附件为限定扩展名的类型(可在系统参数中修改)。
+    </td>
+  </tr>
+  <tr> 
+    <td height="69" align="center" valign="top" bgcolor="#FFFFFF">
+    	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <form enctype="multipart/form-data" name='form1' action="media_add.php" method="POST" onSubmit="return CheckSubmit();">
+          <input type="hidden" name="dopost" value="upload" />
+          <tr> 
+            <td width="15%" height="30" align="center" bgcolor="#FFFFFF"  class='bline'>媒体类型：</td>
+            <td width="85%" height="25" bgcolor="#FFFFFF"  class='bline' style="text-align:left;">
+            	<input name="mediatype" type="radio" class="np" value="1" checked='1' />
+              图片 
+              <input type="radio" name="mediatype" class="np" value="2" />
+              FLASH 
+              <input type="radio" name="mediatype" class="np" value="3" />
+              视频/音频 
+              <input type="radio" name="mediatype" class="np" value="4" />
+              附件/其它
+            </td>
+          </tr>
+          <tr> 
+            <td height="30" align="center" bgcolor="#FFFFFF"  class='bline'>说明标题：</td>
+            <td height="25" bgcolor="#FFFFFF"  class='bline' style="text-align:left;">
+            	<input name="title" type="text" id="title" size="30" style="width:300px" />
+            </td>
+          </tr>
+          <tr> 
+            <td height="30" align="center" bgcolor="#FFFFFF"  class='bline'>参数说明：</td>
+            <td height="30" bgcolor="#FFFFFF"  class='bline' colspan='2' style="text-align:left;">
+            	图片不需要指定“宽”、“高”，其它附加参数仅方便多媒体文件管理，没其它含义
+            </td>
+          </tr>
+          <tr> 
+            <td height="30" align="center" bgcolor="#FFFFFF" class='bline'>附加参数：</td>
+            <td height="25" bgcolor="#FFFFFF" class='bline' style="text-align:left;">宽： 
+              <input name="mediawidth" type="text" id="mediawidth" size="5" />
+              (像素)　高： 
+              <input name="mediaheight" type="text" id="mediaheight" size="5" />
+              (像素)　播放时间： 
+              <input name="playtime" type="text" id="mediawidth3" size="5" />
+              (分钟)</td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#FFFFFF"  class='bline'>上传文件：</td>
+            <td bgcolor="#FFFFFF"  class='bline'  style="text-align:left;">数量：
+              <input name="picnum" type="text" id="picnum" value="5" size="6" />
+              <input type="button" name="Submit" value="增加" onClick="MakeUpload()" />
+			       &nbsp;
+              <input type="button" name="Submit" value="恢复" onClick="ResetUpload()" />
+			      </td>
+          </tr>
+          <tr> 
+            <td align="center" bgcolor="#FFFFFF">&nbsp;</td>
+            <td bgcolor="#FFFFFF"  style="text-align:left;">
+			<input name="upfile1" type="file" id="upfile1" style='width:300px' size='30' class='pubinputs' /><br/>
+			<input name="upfile2" type="file" id="upfile2" style='width:300px' size='30' class='pubinputs' /><br/>
+			<input name="upfile3" type="file" id="upfile3" style='width:300px' size='30' class='pubinputs' /><br/>
+			<input name="upfile4" type="file" id="upfile4" style='width:300px' size='30' class='pubinputs' /><br/>
+			<input name="upfile5" type="file" id="upfile5" style='width:300px' size='30' class='pubinputs' /><br/>
+            <span id='uploadfield'></span>
+			 </td>
+          </tr>
+          <tr> 
+            <td height="50" colspan="2" bgcolor="#FFFFFF">
+            	<table width="60%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td align="center">
+				             <input class="np" name="imageField" type="image" src="images/button_save.gif" width="60" height="22" border="0" /> 
+                  </td>
+                </tr>
+              </table>
+             </td>
+          </tr>
+        </form>
+      </table>
+      </td>
+  </tr>
+</table>
+	</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>采集节点测试</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="js/co.js"></script>
+<style type="text/css">
+<!--
+.STYLE2 {color: #666666}
+-->
+</style>
+</head>
+<body>
+<div class="bodytitle" style="width:98%">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt" style="padding-left:10px;"><b>新增采集节点：测试基本信息及网址索引页规则设置</b></div>
+<div style='float:right;padding-right:6px;padding-top:3px'>
+      <input type="button" name="b" value="返回节点管理页" class="coolbg np" style="width:110px;height:20px;" onclick="location.href='co_main.php';" />
+    </div>
+</div>
+<form name="form1" method="post" action="co_add.php">
+<input type='hidden' name='channelid' value='<?php echo $channelid; ?>' />
+<input type='hidden' name='step' value='2' />
+<input type='hidden' name='dopost' value='preview' />
+<input type='hidden' name='notename' value="<?php echo $notename; ?>" />
+<input type='hidden' name='sourcelang' value="<?php echo $sourcelang; ?>" />
+<input type='hidden' name='usemore' value="<?php echo $usemore; ?>" />
+<input type='hidden' name='islisten' value="<?php echo $islisten; ?>" />
+<input type='hidden' name='listenpage' value="<?php echo $listenpage; ?>" />
+<input type='hidden' name='freq' value="<?php echo $freq; ?>" />
+<input type='hidden' name='extypeid' value="<?php echo $extypeid; ?>" />
+<input type='hidden' name='listconfig' value="<?php echo urlencode($listconfig); ?>" />
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+    <tr> 
+      <td height="25" background="images/tbg.gif" bgcolor="#F2F6E5" style="padding-left:10px;"><strong>网址获取规则测试：</strong></td>
+    </tr>
+    <tr>
+      <td height="26" bgcolor="#FFFFFF">
+      	测试的列表网址：<?php echo $demopage; ?>
+      </td>
+    </tr>
+    <tr id="sitem"> 
+      <td height="23" bgcolor="#ffffff">
+      	获得的文章网址(只显示前十条)：<br />
+      	<?php
+      	if(isset($links[0])) 
+      	{
+      		 $i = 1;
+      		 foreach($links as $arr)
+      		 {
+      			  if($i==1) echo "<input type='hidden' name='previewurl' value=\"{$arr['link']}\" />\r\n";
+      			  if($arr['image'] != '') $arr['image'] = "<img src='{$arr['image']}' />\r\n";
+      			  echo "<hr />";
+      			  echo "网址: <a href='{$arr['link']}' target='_blank'>{$arr['link']}</a><br />\r\n标题: {$arr['title']}<br />\r\n图片: {$arr['image']}\r\n";
+      		    $i++;
+      		    if($i>10) break;
+      		 }
+      	}
+      	else
+      	{
+      		 echo $errmsg;
+      	}
+      	?>
+      </td>
+    </tr>
+	  <tr> 
+      <td height="94" align="center" bgcolor="#FFFFFF">
+      <input type="button" name="b2" value="返回上一步进行修改" class="coolbg np" onclick="history.go(-1);" style="width:200px" />
+        &nbsp;
+      <input type="submit" name="b12" value="保存信息并进入下一步设置" class="coolbg np" style="width:200px" />
+      </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>DedeCms Home</title>
+<base target="_self">
+<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/indexbody.css" />
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
+<script language="javascript" src="../include/js/jquery/ui.core.js"></script>
+<script language="javascript" src="../include/js/jquery/ui.draggable.js"></script>
+<script language="javascript" src="../include/js/jquery/ui.sortable.js"></script>
+<script language="javascript" src="js/jquery.json-2.2.min.js"></script>
+<script language="javascript" src="js/indexbody.js"></script>
+<script language="javascript" src="js/drag.js"></script>
+<script type="text/javascript">
+function showMore()
+{
+	$("#allInfo").toggle();
+	$("#allInfoTD").toggle();
+}
+</script>
+</head>
+<body leftmargin="8" topmargin='8' bgcolor="#FFFFFF">
+<div style="min-width:780px">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+     <div style='float:left'>
+       欢迎使用专业的PHP网站管理系统，轻松建站的首选利器 -- <?php echo $cfg_softname; ?>
+     </div>
+     <div id='' style='float:right;padding-right:8px;'>
+         <!--  //保留位置（顶右）  -->
+     </div>
+   </td>
+  </tr>
+  <tr>
+    <td height="1" background="images/sp_bg.gif" style='padding:0px'></td>
+  </tr>
+</table>
+
+<div id='mainmsg'>
+    <div class="column" id="column1"><!--左侧开始-->    
+        <dl class="dbox" id="item1">
+            <dt class='lside'><span class='l'><?php echo $cfg_soft_enname; ?> 更新消息</span></dt>
+            <dd>
+                <div id='updatetest'>
+                    <div id='updateinfos'>
+                        <?php
+                            echo "<div class='updatedvt'><b>您系统版本最后更新时间为：{$oktime} </b><br/>";
+                            echo " <a href='javascript:LoadUpdateInfos();' class='np coolbg'>进行在线更新</a> &nbsp; \r\n";
+                            echo " <a href='sys_repair.php' class='np coolbg'>系统错误修复</a></div>\r\n";
+                            echo "<iframe name='stafrm' src='{$offUrl}&uptime={$oktime}' frameborder='0' id='stafrm' width='98%' height='50'></iframe>";
+                        ?>
+                    </div>
+                 </div>
+            </dd>
+        </dl><!--更新消息结束-->        
+        <dl class='dbox' id="item2">
+            <dt class='lside'><span class='l'>商业授权查询</span></dt>
+            <dd>               
+                <iframe name="showauth" src="index_body.php?dopost=showauth" width="100%" frameborder="0" scrolling="no" marginwidth="10" marginheight="10" id="showauth"></iframe>                
+            </dd>
+        </dl><!--更新消息结束-->
+        <dl class='dbox' id="item3">
+            <dt class='lside'>
+                <div class='l'>快捷操作</div>
+                <div class='r'><a href='#' onClick="AddNew()"><b>【新增】</b></a><a href='#' onClick="ListAll()"><b>【管理】</b></a></div>
+            </dt>
+            <dd>
+                <div id='quickmenu'>
+                    <?php
+                        $dtp = new DedeTagparse();
+                        $dtp->SetNameSpace('menu','<','>');
+                        $dtp->LoadTemplet($myIcoFile);
+                        if(is_array($dtp->CTags)){
+                            foreach($dtp->CTags as $ctag){
+                                $title = $ctag->GetAtt('title');
+                                $ico = $ctag->GetAtt('ico');
+                                $link = $ctag->GetAtt('link');
+                                echo "<div class='icoitem' style='background:url($ico) 10px 3px no-repeat;'><a href='{$link}'>{$title}</a></div>\r\n";
+                            }
+                        }
+                    ?>
+                </div>
+            </dd>
+
+        </dl><!--快捷操作结束-->   
+        <dl class="dbox" id="item4">
+            <dt class='lside'><div class='l'>系统基本信息</div></dt>
+            <dd class='intable'>
+                <table width="98%" class="dboxtable">
+                    <tr>
+                        <td width="25%" class='nline' style="text-align:right">您的级别：</td>
+                        <td class='nline'>
+                            <?php
+                                if($cuserLogin->getUserType()==10) {
+                                    echo "总管理员";
+                            } else if($cuserLogin->getUserType()==5) {
+                                echo "频道总编";
+                            } else {
+                                echo "信息采集员或其它管理员";
+                            }
+                        ?>
+                        [<a href="javascript:showMore()">查看更多</a>]</td>
+                    </tr>
+                    <tr>
+                     <td colspan="2" class='nline' id="allInfoTD" style="display:none"><table width="100%" border="0" cellspacing="0" cellpadding="0" id="allInfo" style="display:none">
+                    <tr>
+                        <td rowspan="5" class='nline' style="text-align:right">PHP环境摘要：</td>
+                        <td class='nline' style="text-align:left"> PHP版本：<?php echo @phpversion(); ?>&nbsp;GD版本：<?php echo @gdversion(); ?></td>
+                    </tr>
+                    <tr>
+                        <td class='nline' style="text-align:left">是否安全模式：<font color='red'><?php echo ($isSafeMode ? 'On' : 'Off')?></font>
+                            <?php
+                                if($isSafeMode) {
+                                    echo "<br>　　<font color='blue'>由于您的系统以安全模式运行，为了确保程序兼容性，第一次进入本系统时请更改“<a href='sys_info.php'><u>更改系统参数</u></a>”里的FTP选项，并选择用FTP形式创建目录，完成后：<a href='testenv.php' style='color:red'><u>点击此进行一次DedeCms目录权限检测&gt;&gt;</u></a></font>";
+                                } else {
+                                    echo "　<a href='testenv.php' style='color:blue'><u>DedeCMS目录权限检测&gt;&gt;</u></a></font>";
+                                }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='nline' style="text-align:left">
+                            Register_Globals：<font color='red'><?php echo ini_get("register_globals") ? 'On' : 'Off'?></font> &nbsp;
+                            Magic_Quotes_Gpc：<font color='red'><?php echo ini_get("magic_quotes_gpc") ? 'On' : 'Off'?></font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='nline' style="text-align:left">支持上传的最大文件：<?php echo ini_get("post_max_size")?></td>
+                    </tr>
+                    <tr>
+                        <td class='nline' style="text-align:left">是否允许打开远程连接：<?php echo ini_get("allow_url_fopen") ? '支持' : '不支持'; ?></td>
+                    </tr>
+                    <tr>
+                        <td class='nline' style="text-align:right"> 其它必须函数检测：</td>
+                        <td class='nline' style="text-align:left">
+                            <?php
+                                $needfunc = array('dir','phpinfo');
+                                $n = 0;
+                                foreach($needfunc as $k) {
+                                    if(!function_exists($k)) {
+                                        echo "<font color='red'>[{$k}×]</font> ";
+                                        $n++;
+                                    }
+                                }
+                                if($n==0) {
+                                    echo "符合要求";
+                                } else {
+                                echo "被禁用的函数可能导致部份功能无法使用！";
+                                }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='nline' style="text-align:right"> 软件版本信息： </td>
+                        <td class='nline' style="text-align:left"> 版本名称：<?php echo $cfg_soft_enname; ?>&nbsp;版本号：<?php echo $cfg_version; ?></td>
+                    </tr>
+                     </table></td>
+                    </tr>
+                </table>
+            </dd>
+        </dl><!--系统基本信息结束-->
+        <dl class='dbox' id="item5">
+            <dt class='lside'><div class='l'>开发团队</div></dt>
+            <dd class='intable'>
+                <table width="98%" class="dboxtable">
+                    <tr>
+                        <td width='25%' height='36' class='nline' style="text-align:right"> 主程序开发： </td>
+                        <td class='nline' style="text-align:left">天涯、IT柏拉图、沙羡、蓝色随想、Niap、木匠、cha369</td>
+                    </tr>
+                    <tr>
+                        <td height='36' class='nline' style="text-align:right">界面及交互设计：</td>
+                        <td class='nline' style="text-align:left">尐湶細蓅、like、猪头心宇、方域、小王</td>
+                    </tr>
+                    <tr>
+                        <td height='36' class='nline' style="text-align:right">官方论坛协助：</td>
+                        <td class='nline' style="text-align:left">感谢以下站长（排名不分先后）:疯狂的锤子、木木/阿杰</td>
+                    </tr>
+
+                </table>
+            </dd>
+        </dl><!--开发团队结束-->
+    </div><!--左侧结束-->
+    <div class="column" id="column2" ><!-- //右边的快捷消息开始 -->
+        <dl class='dbox' id="item8">
+            <dt class='lside'><div class='l'>赞助商链接(<a href="http://ad.dedecms.com/ad/" target="_blank">说明</a>)</div></dt>
+            <dd>
+                <iframe name="showad" src="index_body.php?dopost=showad" frameborder="0" width="100%" id="showad" frameborder="0" scrolling="no"  marginheight="5"></iframe>
+            </dd>
+        </dl><!--赞助商链接结束-->
+        <dl class='dbox' id="item6">
+            <dt class='lside'><div class='l'>信息统计</div></dt>
+            <dd id='listCount'>
+                正在载入中...
+            </dd>
+        </dl><!--信息统计结束-->
+        <dl class='dbox' id="item7">
+            <dt class='lside'><div class='l'>最新文档</div></dt>
+            <dd id='listNews'>
+<?php
+    $query = "SELECT arc.id, arc.arcrank, arc.title, arc.channel, ch.editcon  FROM `#@__archives` arc
+            LEFT JOIN `#@__channeltype` ch ON ch.id = arc.channel
+             WHERE arc.arcrank<>-2 ORDER BY arc.id DESC LIMIT 0, 6 ";
+    $arcArr = array();
+    $dsql->Execute('m', $query);
+    while($row = $dsql->GetArray('m'))
+    {
+        $arcArr[] = $row;
+    }
+?>
+    <table width="100%" class="dboxtable">
+    <?php
+    if(count($arcArr) > 1)
+    {
+        foreach($arcArr as $row)
+        {
+            if(trim($row['editcon'])=='') {
+                $row['editcon'] = 'archives_edit.php';
+            }
+            $linkstr = "·<a href='{$row['editcon']}?aid={$row['id']}&channelid={$row['channel']}'>{$row['title']}</a>";
+            if($row['arcrank']==-1) $linkstr .= "<font color='red'>(未审核)</font>";
+        ?>
+        <tr>
+            <td class='nline'  style="text-align:left">
+                <?php echo $linkstr; ?>
+            </td>
+        </tr>
+        <?php
+        }
+    } else {
+    ?>
+        <tr>
+            <td class='nline'  style="text-align:left">
+                暂无新增内容
+            </td>
+        </tr>
+    <?php
+    }
+    ?>
+    </table>
+            </dd>
+        </dl><!--最新文档结束-->
+    </div>
+</div>
+<br style='clear:both'/>
+<!-- //底部 -->
+<div align="center" class="footer">
+Copyright &copy; 2004-2011 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>. 织梦科技 版权所有
+</div>
+
+<!--  下面是隐藏的项目  -->
+<div id='loaddiv' style='display:none'>
+    <p align='center' style='padding-top:200px'><img src='images/loadinglit.gif' /> 请稍后，正在下载更新文件列表...</p>
+</div>
+<div id="editTab">
+<span id='editTabBody'>请稍候，正在载入...</span>
+</div>
+<div id="addTab">
+<form name='addform' action='index_body.php'>
+<input type='hidden' name='dopost' value='addnew' />
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+     <td height='28' colspan='3' background="images/tbg.gif">
+         <div style='float:left'><b>增加快捷操作项</b></div>
+      <div style='float:right;padding:3px 10px 0 0;'>
+        <a href="javascript:CloseTab('addTab')"><img src="images/close.gif" width="12" height="12" border="0" /></a>
+      </div>
+     </td>
+   </tr>
+      <tr><td style="height:6px;font-size:1px;border-top:1px solid #8DA659" colspan="2">&nbsp;</td></tr>
+   <tr>
+     <td width="20%" height="28" align="right">链接标题：</td>
+     <td width="70%">
+         <input name="title" type="text" id="title" class='pubinputs' style="width:255px;"/>
+     </td>
+   </tr>
+   <tr>
+     <td height="28" width="20%" align="right">ICO图片：</td>
+     <td width="70%">
+         <input name="ico" type="text" id="ico" class='pubinputs' style="width:255px;"/>
+     </td>
+   </tr>
+   <tr>
+     <td height="28" width="20%" align="right">链接网址：</td>
+     <td width="70%">
+         <input name="link" type="text" id="link" class='pubinputs' style="width:255px;"/>
+     </td>
+   </tr>
+   <tr>
+     <td height="45">&nbsp;</td>
+     <td>
+         <input type="submit" name="Submit" value="保存项目" class="np coolbg" style="width:80px;cursor:pointer" />
+     </td>
+   </tr>
+  </table>
+</form>
+</div>
+</div>
+</body>
+</html>

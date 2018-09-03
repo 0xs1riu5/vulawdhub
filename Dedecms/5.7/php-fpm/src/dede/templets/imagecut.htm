@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>图片裁剪 Image Cropper</title>
+<script>var targetname = '<?php echo $f;?>';</script>
+<script type="text/javascript" src="../images/js/j.js"></script>
+<script src="../images/js/ui.core.js"></script>
+<script src="../images/js/ui.draggable.js"></script>
+<script  src="../images/js/ui.resizable.js"></script>
+<style type="text/css">
+body {padding:10px 0;margin:0;background:#333;font-size:12px;line-height:14px;}
+form,ul,ol,h1,h2,h3,h4,h5,h6,p {margin:0;padding:0;}
+input,textarea,select,button {font-size:12px;}
+img {border:none;}
+em {font-style:normal;}
+cite,small,address {font-size:12px;font-style:normal;color:#999;}
+a {color:#00f;text-decoration:underline;}
+#box { padding:10px;margin:10px 20px 10px 20px;background:#999;font-size:14px; }
+/*演示内容*/
+#imgBox {
+	float:left;
+	border:#333 3px solid;
+}
+#imgCut {
+	border:#fff 2px dashed;
+	position:absolute;
+	top:30px;
+	left:30px;
+	background: url(../images/transparent.gif) repeat-x;
+	cursor:move;
+}
+#faceImg {
+	width:400px;
+}
+#imgBox_pre {
+	float:left;
+	width:250px;
+	margin-left:30px;
+}
+#imgBox_pre strong{
+	display:block;font-size:12px;text-align:center;
+}
+#imgBox_pre button{
+	width:80px;
+	margin:0 auto;
+}
+#imgBox_pre div {
+	width:150px;
+	margin:5px auto 20px;
+	border:#666 5px solid;
+	overflow:hidden;
+}
+#data {
+	clear:both;padding-top:20px;
+}
+#dobutton {
+	clear:both; margin-top:8px;
+}
+</style>
+<script language="javascript">
+var scale2, scale3, imgH, imgW, imgsrc, scale, temp_top, temp_left;
+var sysW = <?php echo $cfg_ddimg_width; ?>;
+var sysH = <?php echo $cfg_ddimg_height; ?>;
+<?php
+$info = '';
+$sizes = getimagesize($cfg_basedir.$file, $info);
+$imgw = $sizes[0];
+$imgh = $sizes[1];
+echo "  trueImgW = $imgw;\r\n  trueImgH = $imgh;\r\n";
+?>
+var $ = jQuery;
+$(function () {
+    $("#imgCut").width(sysW).height(sysH);
+    
+    scale3 = sysW / sysH;
+    scale2 = $("#imgBox_pre div").width() / $("#imgCut").width();
+    $("#faceImg_pre").width($("#faceImg").width() * scale2).height($("#faceImg").height() * scale2);
+    $("#imgBox_pre div").height($("#imgBox_pre div").width() / scale3);
+    $("#width").val(sysW);
+    $("#height").val(sysH);
+    
+    $("#imgCut").draggable({
+            containment : $("#faceImg"), 
+            drag : function () {
+                
+                scale3 = $("#imgCut").width() / $("#imgCut").height();
+                scale2 = $("#imgBox_pre div").width() / $("#imgCut").width();
+                $("#faceImg_pre").width($("#faceImg").width() * scale2).height($("#faceImg").height() * scale2);
+                $("#imgBox_pre div").height($("#imgBox_pre div").width() / scale3);
+                $("#width").val($("#imgCut").width());
+                $("#height").val($("#imgCut").height());
+                
+                temp_top = $(this).offset().top - $("#faceImg").offset().top;
+                temp_left = $(this).offset().left - $("#faceImg").offset().left;
+                
+                $("#imgBox_pre div").scrollTop(temp_top * scale2);
+                $("#imgBox_pre div").scrollLeft(temp_left * scale2);
+                
+                $("#left").val(temp_left);
+                $("#top").val(temp_top);
+            }, 
+            stop : function () {
+            }
+        });
+
+});
+
+function changeRang()
+{
+	$("#imgCut").resizable({
+		containment : $("#faceImg"), 
+		handles : "all", 
+		knobHandles : true, 
+		aspectRatio : false, 
+		minWidth : 90, 
+		minHeight : 60, 
+		resize : function () {
+			
+			scale3 = $("#imgCut").width() / $("#imgCut").height();
+			scale2 = $("#imgBox_pre div").width() / $("#imgCut").width();
+			$("#faceImg_pre").width($("#faceImg").width() * scale2).height($("#faceImg").height() * scale2);
+			$("#imgBox_pre div").height($("#imgBox_pre div").width() / scale3);
+			$("#width").val($("#imgCut").width());
+			$("#height").val($("#imgCut").height());
+			
+			temp_top = $(this).offset().top - $("#faceImg").offset().top;
+			temp_left = $(this).offset().left - $("#faceImg").offset().left;
+			
+			$("#imgBox_pre div").scrollTop(temp_top * scale2);
+			$("#imgBox_pre div").scrollLeft(temp_left * scale2);
+			
+			$("#left").val(temp_left);
+			$("#top").val(temp_top);
+		}, 
+		stop : function (e, ui) {
+		}
+	});
+}
+function ReturnImg(reimg)
+{
+	<?php
+	if( empty($isupload) )
+	{
+		$reObjJs = "		var backObj = window.opener.document.form1.picname;
+		var prvObj = window.opener.document.getElementById('divpicview');\r\n";
+	}
+	else
+	{
+		$reObjJs = "		var backObj = window.opener.parent.document.form1.picname;
+		var prvObj = window.opener.parent.document.getElementById('divpicview');\r\n";
+	}
+	echo $reObjJs;
+	?>
+	backObj.value = reimg;
+	if(prvObj)
+	{
+		prvObj.style.width = '150px';
+		prvObj.innerHTML = "<img src='"+reimg+"?n' width='150' />";
+	}
+	if(document.all) {
+		window.opener=true;
+	}
+	window.close();
+}
+</script>
+</head>
+<body>
+<div id="box">
+	<form id="setFace" name="setFace" method="post" action="imagecut.php">
+	<input type="hidden" name="action" value="cut" />
+	<input type="hidden" name="f" value="<?php echo $f;?>" />
+	<input type="hidden" name="file" value="<?php echo $file;?>" />
+	<input type="hidden" name="isupload" value="<?php echo (empty($isupload) ? '' : $isupload); ?>" />
+   <div id="imgBox">
+    	<img id="faceImg" src="<?php echo $file;?>" />
+    	<div id="imgCut"></div>
+   </div>
+   <div>
+   		<div id="imgBox_pre">
+   		<strong>预览</strong>
+   		<div class='boximg'><img id="faceImg_pre" src="<?php echo $file;?>" /></div>
+   		<p align="center">
+   			<button type="submit" name="sb1" id="sb1">裁剪</button> &nbsp;
+   			<button type="button" name="useold" onClick="ReturnImg('<?php echo $file; ?>')">使用原图</button>
+   		</p>
+	 </div>
+   <div id="data" style='color:#ffffff'>
+    left<input name="left" type="text" id="left" size="3" readonly="readonly" />
+    top<input name="top" type="text" id="top" size="3" readonly="readonly" />
+    宽<input name="width" type="text" id="width" size="3" readonly="readonly" />
+    高<input name="height" type="text" id="height" size="3" readonly="readonly" />
+  	<a href='javascript:changeRang();' id='changeRang'><u>改变比例</u></a>
+    </div>
+  </form>
+</div>
+</body>
+</html>

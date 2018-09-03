@@ -1,0 +1,165 @@
+<!-- //主模板必须要引入{dede:global.cfg_cmsurl/}/include/dedeajax2.js -->
+<a name='postform'></a>
+<div class="mt1">
+		<dl class="tbox">
+			<dt>
+				<strong>发表评论</strong>
+				<span class="more"></span>
+			</dt>
+			<dd>
+				<div class="dede_comment_post">
+          <form action="#" method="post" name="feedback">
+          <input type="hidden" name="dopost" value="send" />
+          <input type="hidden" name="comtype" value="comments">
+          <input type="hidden" name="aid" value="{dede:field name="id"/}" />
+          <input type="hidden" name="fid" id='feedbackfid' value="0" />
+          <div class="dcmp-title">
+						<small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small>
+					</div><!-- /dcmp-title -->
+					<div class="dcmp-stand">
+						<strong>评价:</strong>
+							<input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /><label for="dcmp-stand-neu"><img src="{dede:global.cfg_templets_skin/}/images/cmt-neu.gif" />中立</label>
+							<input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /><label for="dcmp-stand-good"><img src="{dede:global.cfg_templets_skin/}/images/cmt-good.gif" />好评</label>
+							<input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /><label for="dcmp-stand-bad"><img src="{dede:global.cfg_templets_skin/}/images/cmt-bad.gif" />差评</label>
+					</div><!-- /dcmp-stand -->
+                    <div class="clr"></div>
+                    <div class="dcmp-mood">
+						<strong>表情:</strong>
+						<ul>            
+								{dede:php}
+								for ($i = 1; $i < 12; $i++)
+								{
+                                    $isecheck = ($i == 1) ? 'checked="1" ' : '';
+								    echo '<li><input type="radio" name="face" value="'.$i.'" '.$isecheck.'/><img src="'.$cfg_templets_skin.'/images/mood/ico-mood-'.$i.'.gif" /></li>';
+								}
+								{/dede:php}                   
+						</ul>
+					</div><!-- /dcmp-mood -->
+					<div class="dcmp-content">
+						<textarea cols="60" name="msg" rows="5" class="ipt-txt"></textarea>
+					</div><!-- /dcmp-content -->
+					<div class="dcmp-post"><!--未登陆-->
+							<div class="dcmp-userinfo" id="_ajax_feedback">
+								{dede:php}
+								if($cfg_mb_open=='Y') {
+									echo '用户名:<input type="text" name="username" size="16" class="ipt-txt" style="text-transform: uppercase;"/>';
+								}
+								{/dede:php}
+                                {dede:php}
+								if(preg_match("/4/",$safe_gdopen)){
+								echo '验证码:<input type="text" name="validate" size="4" class="ipt-txt" style="text-transform:uppercase;"/><img src= "'.$cfg_cmspath.'/include/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+\'?\'" title="点击我更换图片" alt="点击我更换图片" />';
+								 }
+                                {/dede:php}
+                <input type="checkbox" name="notuser" id="dcmp-submit-guest" /><label for="dcmp-submit-guest" />匿名? </label>
+							</div>
+              {dede:php}
+								if($cfg_mb_open=='Y') {
+              		echo '<script language="javascript" type="text/javascript">CheckLogin();</script>';
+              	}
+							{/dede:php}
+							<div class="dcmp-submit">
+								<button type="button" onClick='PostComment()'>发表评论</button>
+							</div>
+						</div>
+        </form>
+				</div>
+			</dd>
+		</dl>
+	</div><!-- //评论表单区结束 -->
+
+<!-- //评论内容区 -->
+	<a name='commettop'></a>
+	<div class="mt1">
+			<dl class="tbox">
+				<dt>
+					<strong>最新评论</strong>
+					<span class="more"><a href="{dede:field name='phpurl'/}/feedback.php?aid={dede:field.id/}">进入详细评论页&gt;&gt;</a></span>
+				</dt>
+				<!-- //这两个ID的区块必须存在，否则JS会出错 -->
+				<dd id='commetcontentNew'></dd>
+				<dd id='commetcontent'></dd>
+			</dl>
+	</div>
+<!--
+//由于评论载入时使用异步传输，因此必须在最后一步加载（DIGG和评论框须放在评论内容前面）
+//如果一定需要提前的把myajax.SendGet改为myajax.SendGet2，但可能会引起页面阻滞
+-->
+<script language='javascript'>
+function LoadCommets(page)
+{
+		var taget_obj = document.getElementById('commetcontent');
+		var waithtml = "<div style='line-height:50px'><img src='{dede:global.cfg_cmsurl/}/images/loadinglit.gif' />评论加载中...</div>";
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x', waithtml);
+		myajax.SendGet2("{dede:global.cfg_phpurl /}/feedback_ajax.php?dopost=getlist&aid={dede:field.id/}&page="+page);
+		DedeXHTTP = null;
+}
+function PostComment()
+{
+		var f = document.feedback;
+		var nface = '6';
+		var nfeedbacktype = 'feedback';
+		var nvalidate = '';
+		var nnotuser = '';
+		var nusername = '';
+		var npwd = '';
+		var taget_obj = $DE('commetcontentNew');
+		var waithtml = "<div style='line-height:30px'><img src='{dede:global.cfg_cmsurl/}/images/loadinglit.gif' />正在发送中...</div>";
+		if(f.msg.value=='')
+		{
+			alert("评论内容不能为空！");
+			return;
+		}
+		if(f.validate)
+		{
+			if(f.validate.value=='') {
+				alert("请填写验证码！");
+				return;
+			}
+			else {
+				nvalidate = f.validate.value;
+			}
+		}
+		if(f.msg.value.length > 500)
+		{
+			alert("你的评论是不是太长了？请填写500字以内的评论。");
+			return;
+		}
+		if(f.feedbacktype) {
+			for(var i=0; i < f.feedbacktype.length; i++)
+				if(f.feedbacktype[i].checked) nfeedbacktype = f.feedbacktype[i].value;
+		}
+		if(f.face) {
+			for(var j=0; j < f.face.length; j++)
+				if(f.face[j].checked) nface = f.face[j].value;
+		}
+		if(f.notuser.checked) nnotuser = '1';
+		if(f.username) nusername = f.username.value;
+		if(f.pwd) npwd = f.pwd.value;
+		
+		var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+		myajax.sendlang = '{dede:global.cfg_soft_lang/}';
+		myajax.AddKeyN('dopost', 'send');
+		myajax.AddKeyN('aid', '{dede:field.id/}');
+		myajax.AddKeyN('fid', f.fid.value);
+		myajax.AddKeyN('face', nface);
+		myajax.AddKeyN('feedbacktype', nfeedbacktype);
+		myajax.AddKeyN('validate', nvalidate);
+		myajax.AddKeyN('notuser', nnotuser);
+		myajax.AddKeyN('username', nusername);
+		myajax.AddKeyN('pwd', npwd);
+		myajax.AddKeyN('msg', f.msg.value);
+		myajax.SendPost2('{dede:global.cfg_phpurl/}/feedback_ajax.php');
+		f.msg.value = '';
+		f.fid.value = 0;
+		if(f.validate)
+		{
+			if($DE('validateimg')) $DE('validateimg').src = "{dede:global.cfg_cmsurl/}/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+}
+function quoteCommet(fid)
+{
+	document.feedback.fid.value = fid;
+}
+LoadCommets(1);
+</script><!-- //评论内容区结束 -->

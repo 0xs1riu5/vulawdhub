@@ -1,0 +1,137 @@
+{dede:include file='header.htm'/}
+<div class="wrapper mT10">
+  <div class="west">
+  	{dede:include file='side_icon.htm'/}
+  </div>
+  <div class="east">
+    <dl class="border">
+      <dt class="caption"><strong>基本资料</strong></dt>
+      <dd class="body pB10">
+        <table width="700" align="center" class="tList">
+          <tr>
+            <td>昵称：</td>
+            <td><?php echo $row['uname']; ?></td>
+          </tr>
+          <tr>
+            <td width="101">性别： </td>
+            <td width="593"><?php echo $row['sex']; ?></td>
+          </tr>
+          <tr>
+            <td>目前所在地：</td>
+            <td> 省份：
+              <?php
+			$places = GetEnumsTypes($row['place']);
+			echo ( isset($em_nativeplaces[$places['top']]) ?  $em_nativeplaces[$places['top']] : '');
+		  ?>
+              &nbsp; 城市：
+              <?php
+		  echo ( isset($em_nativeplaces[$places['son']]) ?  $em_nativeplaces[$places['son']] : '');
+		  ?></td>
+          </tr>
+          <tr>
+            <td>家乡所在地：</td>
+            <td> 省份：
+              <?php
+			$places = GetEnumsTypes($row['oldplace']);
+			echo ( isset($em_nativeplaces[$places['top']]) ?  $em_nativeplaces[$places['top']] : '');
+		  ?>
+              &nbsp; 城市：
+              <?php
+		  echo ( isset($em_nativeplaces[$places['son']]) ?  $em_nativeplaces[$places['son']] : '');
+		  ?></td>
+          </tr>
+          <tr>
+            <td>出生日期：</td>
+            <td><?php echo $row['birthday']; ?></td>
+          </tr>
+          <tr>
+            <td>交友目的：</td>
+            <td><?php echo GetEnumsValue('datingtype',$row['datingtype']); ?></td>
+          </tr>
+          <tr>
+            <td>婚姻状况：</td>
+            <td><?php echo GetEnumsValue('marital',$row['marital']); ?></td>
+          </tr>
+          <tr>
+            <td>星座：</td>
+            <td><?php echo GetEnumsValue('star',$row['star']); ?></td>
+          </tr>
+          <tr>
+            <td>血型：</td>
+            <td><?php echo GetEnumsValue('blood',$row['blood']); ?></td>
+          </tr>
+          <tr>
+            <td>身高：</td>
+            <td>><?php echo $row['height']; ?> 厘米</td>
+          </tr>
+          <tr>
+            <td>体型：</td>
+            <td><?php echo GetEnumsValue('bodytype',$row['bodytype']); ?></td>
+          </tr>
+        </table>
+      </dd>
+    </dl>
+    <dl class="border mT10">
+      <dt class="caption"><strong>经济状况</strong></dt>
+      <dd class="body pB10">
+        <table width="700" align="center" class="tList">
+          <tr>
+            <td width="101">收入情况：</td>
+            <td width="593"><?php echo GetEnumsValue('income',$row['income']); ?></td>
+          </tr>
+          <tr>
+            <td>教育程度：</td>
+            <td><?php echo GetEnumsValue('education',$row['education']); ?></td>
+          </tr>
+          <tr>
+            <td>住房情况：</td>
+            <td><?php echo GetEnumsValue('house',$row['house']); ?></td>
+          </tr>
+          <tr>
+            <td>所属行业：</td>
+            <td><?php echo GetEnumsValue('vocation',$row['vocation']); ?></td>
+          </tr>
+          <tr>
+            <td>掌握语言：</td>
+            <td>
+              <?php
+    $arr = $dsql->GetOne("Select * From `#@__sys_set` where sname='language' ");
+    $sets = explode(',',$arr['items']);
+    foreach($sets as $v){
+    	if(preg_match("#".$v."#", $row['language'])) echo "  $v ";
+    }
+    ?></td>
+          </tr>
+        </table>
+      </dd>
+    </dl>
+    <dl class="border mT10">
+      <dt class="caption"><strong>兴趣爱好</strong></dt>
+      <dd class="body pB10">
+        <table width="700" align="center" class="tList">
+          <tr>
+            <td width="101">是否喝酒：</td>
+            <td width="593"><?php echo GetEnumsValue('drink',$row['drink']); ?></td>
+          </tr>
+          <tr>
+            <td>是否抽烟：</td>
+            <td><?php echo GetEnumsValue('smoke',$row['smoke']); ?></td>
+          </tr>
+          <tr>
+            <td>兴趣爱好：</td>
+            <td> <?php
+    	$arr = $dsql->GetOne("Select * From `#@__sys_set` where sname='nature' ");
+    	$sets = explode(',',$arr['items']);
+    	foreach($sets as $v){
+    		if(preg_match("#".$v."#",$row['nature'])) echo " $v ";
+    	}
+    	?></td>
+          </tr>
+        </table>
+      </dd>
+    </dl>
+  </div>
+</div>
+{dede:include file='footer.htm'/}
+</body>
+</html>

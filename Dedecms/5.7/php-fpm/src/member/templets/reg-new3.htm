@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>"/>
+<meta http-equiv="refresh" content="10;url=index.php">
+<title><?php echo $cfg_webname; ?>- 注册成功</title>
+<link href="<?php echo $cfg_cmspath; ?>/member/templets/style/login.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+var time = 10;
+function returnUrlByTime() {
+   window.setTimeout('returnUrlByTime()', 1000);
+   time = time - 1;
+   document.getElementById("loadtime").innerHTML = time;
+}
+</script>
+</head>
+<body>
+<div class="header">
+  <div class="auto960">
+    <ul class="userMenu fRight">
+      <li> <a title="网站主页" href="<?php echo $cfg_cmspath; ?>/">网站主页</a> </li>
+      <li> <a title="注册" href="../member/index_do.php?fmdo=user&dopost=regnew">注册</a> </li>
+      <li> <a title="登录" href="../member/login.php">登录</a> </li>
+      <li class="help"> <a title="DEDECMS 帮助中心" href="http://help.dedecms.com" target="_blank">帮助</a> </li>
+    </ul>
+    <span>
+    <script type="text/javascript">
+ var now=(new Date()).getHours();
+ if(now>0&&now<=6){
+document.write("午夜好，");
+ }else if(now>6&&now<=11){
+ document.write("早上好，");
+ }else if(now>11&&now<=14){
+ document.write("中午好，");
+ }else if(now>14&&now<=18){
+ document.write("下午好，");
+ }else{
+ document.write("晚上好，");
+ }
+</script>
+    <i class="green">游客</i> 你可以选择到 </span> </div>
+</div>
+<div class="wrapper">
+  <div class="logo fLeft"> <a href="<?php echo $cfg_cmspath; ?>/member/"> <img  style="margin:8px 0 0 25px;"alt="会员中心" src="../member/templets/images/login_logo.gif"/></a></div>
+  <div class="banner fRight"> <img src="../member/templets/images/530x56.gif" width="530" height="56" /></div>
+</div>
+<div class="bor"><div class="<?php echo ($cfg_mb_reginfo == 'Y')? '' : 's';?>tip3"></div>
+  <p class="success" style="margin-top: 25px;">注册成功!<?php echo $uname=empty($uname)? '' : '您的用户名：<font color="#ff6600">'.$uname.'</font>,';?>您已成为本站的正式会员!<br /><?php if($cfg_mb_spacesta=="-10") echo '<font color="#ff6600">由于系统开启了邮件审核机制，因此你的帐号需要审核后才能发信息!</font><br />';?>
+  <font color="#ff6600"><span id="loadtime" style=" font-weight:bold">10</span></font>秒钟后自动转到会员中心！<br />
+<a href="<?php echo $cfg_cmspath; ?>/member/">马上进入会员中心</a>&nbsp;&nbsp;<a href="<?php echo $cfg_cmspath; ?>/">返回网站首页</a></p></div>
+<script language="javascript" type="text/javascript">
+	window.onload=function (){
+		setInterval("document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
+	}
+</script>
+<div class="footer bor">
+  <div class="fLeft mL10">Copyright &copy; 2004-2011 DEDECMS. 织梦科技 版权所有</div>
+  <div class="fRight mR10" id="time"></div>
+</div>
+</body>
+</html>

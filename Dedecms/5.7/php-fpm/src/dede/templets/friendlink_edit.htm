@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>友情链接更改</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="28" background="images/tbg.gif" style="padding-left:10px;">
+    	<b><a href="friendlink_main.php"><u>友情链接管理</u></a></b> &gt;&gt; 链接更改</td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<form action="friendlink_edit.php" method="post" enctype="multipart/form-data" name="form1">
+	<input type="hidden" name="id" value="<?php echo $myLink['id']?>">
+	<input type="hidden" name="dopost" value="saveedit">
+	<table width="80%"  border="0" cellspacing="1" cellpadding="3">
+	  <tr>
+        <td width="19%" height="25">网址：</td>
+        <td width="81%">
+        <input name="url" type="text" id="url" value="<?php echo $myLink['url']?>" size="30" class='pubinputs' />
+        </td>
+      </tr>
+      <tr>
+        <td width="19%" height="25">排列位置：</td>
+        <td width="81%">
+        <input name="sortrank" type="text" id="sortrank" value="<?php echo $myLink['sortrank']?>" size="10"  class='pubinputs' style="width:60px" />
+        (由小到大排列)
+        </td>
+      </tr>
+      <tr>
+        <td height="25">网站名称：</td>
+        <td><input name="webname" type="text" id="webname" size="30" value="<?php echo $myLink['webname']?>" class='pubinputs' /></td>
+      </tr>
+      <tr>
+        <td height="25">网站Logo：</td>
+        <td>
+        	<input name="logo" type="text" id="logo" size="40" value="<?php echo $myLink['logo']?>" class='pubinputs'/>
+          (88*31 gif或jpg)
+         </td>
+      </tr>
+      <tr>
+        <td height="25">上传Logo：</td>
+        <td><input name="logoimg" type="file" id="logoimg" size="30" class='pubinputs' /></td>
+      </tr>
+      <tr>
+        <td height="25">网站简况：</td>
+        <td><textarea name="msg" cols="50" rows="4" id="msg"><?php echo $myLink['msg']?></textarea></td>
+      </tr>
+      <tr>
+        <td height="25">站长Email：</td>
+        <td><input name="email" type="text" id="email" size="30" value="<?php echo $myLink['email']?>" class='pubinputs' /></td>
+      </tr>
+      <tr>
+        <td height="25">链接位置：</td>
+        <td>
+        	<input type='radio' name='ischeck' value="0" <?php if($myLink['ischeck']==0) echo " checked='1' "?>/> 未审核
+        	<input type='radio' name='ischeck' value="1" <?php if($myLink['ischeck']==1) echo " checked='1' "?>/> 内页
+        	<input type='radio' name='ischeck' value="2" <?php if($myLink['ischeck']==2) echo " checked='1' "?>/> 首页
+        </td>
+      </tr>
+      <tr>
+        <td height="25">网站类型：</td>
+        <td>
+        <select name="typeid" id="typeid">
+        <?php
+        echo "	<option value='".$myLink['typeid']."'>".$myLink['typename']."</option>\r\n";
+        $dsql->SetQuery("select * from #@__flinktype where id<>'".$myLink['typeid']."'");
+        $dsql->Execute();
+        while($row=$dsql->GetObject()){
+        	echo "	<option value='".$row->id."'>".$row->typename."</option>\r\n";
+        }
+        ?>
+        </select>
+        </td>
+      </tr>
+      <tr>
+        <td height="51">&nbsp;</td>
+        <td>
+        	<input type="submit" name="Submit" value=" 提 交 " class="np coolbg" />　 　
+          <input type="reset" name="Submit" value=" 返 回 " onClick="location.href='<?php echo $ENV_GOBACK_URL?>';" class="np coolbg" />
+         </td>
+      </tr>
+    </table>
+	</form>
+ </td>
+</tr>
+</table>
+</body>
+</html>

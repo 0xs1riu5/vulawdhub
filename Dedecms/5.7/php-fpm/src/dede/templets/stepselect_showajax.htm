@@ -1,0 +1,97 @@
+<?php
+if($action=='edit') {
+$arr = $dsql->GetOne("Select * from `#@__stepselect` where id='$id' ");
+$sbjs = " onsubmit=\"alert('该分类是系统内置枚举，不允许修改！'); return false;\" ";
+if($arr['issystem']==0) $sbjs = '';
+?>
+<!-- 编辑表单 -->
+<div style='float:left;'><b>修改类别</b></div>
+<div style='float:right;'>[<a href="#" onclick="javascript:CloseTWin();">关闭</a>]</div>
+<br style='clear:both' />
+<form action='stepselect_main.php' method='post'<?php echo $sbjs; ?>>
+<INPUT TYPE="hidden" NAME="action" value="edit_save" />
+<INPUT TYPE="hidden" NAME="id" value="<?php echo $arr['id']; ?>" />
+<div>类 别 名：<INPUT TYPE="text" NAME="itemname" class="iptxt" style='width:180px' value="<?php echo $arr['itemname']; ?>" /></div>
+<div>缓存组名：<INPUT TYPE="text" NAME="egroup" class="iptxt" style='width:180px' value="<?php echo $arr['egroup']; ?>" /></div>
+<div>缓存组名必须为英文或数字组合!</div>
+<div><INPUT TYPE="submit" value="确定修改" class="np coolbg"/></div>
+</form>
+<?php
+} else if($action=='addnew') {
+?>
+<!-- 新增类别表单 -->
+<div style='float:left;'><b>新增类别</b></div>
+<div style='float:right;'>[<a href="#" onclick="javascript:CloseTWin();">关闭</a>]</div>
+<br style='clear:both' />
+<form action='stepselect_main.php' method='post'>
+<INPUT TYPE="hidden" NAME="action" value="addnew_save" />
+<div>类 别 名：<INPUT TYPE="text" NAME="itemname" class="iptxt" style='width:180px' /></div>
+<div>缓存组名：<INPUT TYPE="text" NAME="egroup" class="iptxt" style='width:180px' /></div>
+<div>缓存组名必须为英文或数字组合!</div>
+<div><INPUT TYPE="submit" value="确定增加" class="np coolbg"/></div>
+</form>
+<?php
+} else if($action=='addenum') {
+$arr = $dsql->GetOne("Select * from `#@__stepselect` where id='$id' ");
+$dsql->Execute('out',"Select evalue,ename from `#@__sys_enum` where egroup='{$arr['egroup']}' And (evalue mod 500)=0  order by disorder asc,evalue asc");
+$options = '';
+if($arr['issign']==0)
+{
+  while($row1 = $dsql->GetArray('out')) $options .= "<option value='{$row1['evalue']}'>{$row1['ename']}</option>\r\n";
+}
+?>
+<!-- 新增枚举表单 -->
+<div style='float:left;'><b>添加枚举</b></div>
+<div style='float:right;'>[<a href="#" onclick="javascript:CloseTWin();">关闭</a>]</div>
+<br style='clear:both' />
+<form action='stepselect_main.php' method='post'>
+<INPUT TYPE="hidden" NAME="action" value="addenum_save" />
+<INPUT TYPE="hidden" NAME="issign" value="<?php echo $arr['issign']; ?>" />
+<INPUT TYPE="hidden" NAME="egroup" value="<?php echo $arr['egroup']; ?>" />
+<div>
+隶属枚举：<select name='topvalue' style='width:180px'>
+<option value='0'>增加一级枚举</option>
+<?php echo $options; ?>
+</select>
+</div>
+<div>　枚举名：<INPUT TYPE="text" NAME="ename" class="iptxt" style='width:180px' /></div>
+<div>　排序值：<INPUT TYPE="text" NAME="disorder" class="iptxt" style='width:180px' /></div>
+<div>如果不指定，默认以枚举添加先后来排序。</div>
+<div><INPUT TYPE="submit" value="确定增加" class="np coolbg"/></div>
+</form>
+<?php
+} else if($action=='view') {
+	$arr = $dsql->GetOne("Select * from `#@__stepselect` where id='$id' ");
+	$dsql->Execute('out',"Select * From `#@__sys_enum` where egroup like '{$arr['egroup']}' order by disorder asc, evalue asc");
+	$options = '';
+  while($row1 = $dsql->GetArray('out')) 
+  {
+  		 if($row1['evalue']%500==0 || $arr['issign']==1)
+  		 {
+  				$options .= "<option value='{$row1['evalue']}'>{$row1['ename']}</option>\r\n";
+  		 }
+  		 else
+  		 {
+  				$options .= "<option value='{$row1['evalue']}'>  └─{$row1['ename']}</option>\r\n";
+  		 }
+  }
+?>
+<!-- 预览联动表单 -->
+<div style='float:left;'><b>预览联动表单</b></div>
+<div style='float:right;'>[<a href="#" onclick="javascript:CloseTWin();">关闭</a>]</div>
+<br style='clear:both' />
+<br style='clear:both' />
+<div>
+<b>类别关系：</b>
+<select name='topvalue' style='width:160px'>
+<option value='0'>--请选择--</option>
+<?php echo $options; ?>
+</select>
+<br />
+<br />
+这里仅显示数据关系，实际应用中，二级联动生成的表单是支持级连的，并非全部列出。
+</div>
+<br style='clear:both' />
+<?php
+}
+?>

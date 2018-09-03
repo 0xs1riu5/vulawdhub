@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>采集节点测试</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script language='javascript' type="text/javascript" src="js/co.js"></script>
+<style type="text/css">
+<!--
+.STYLE2 {color: #666666}
+-->
+</style>
+</head>
+<body>
+<div class="bodytitle" style="width:98%">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt"><b>新增采集节点：测试内容字段设置</b></div>
+<div style='float:right;padding-right:6px;padding-top:3px'>
+      <input type="button" name="b" value="返回节点管理页" class="coolbg np" style="width:110px;height:20px;" onclick="location.href='co_main.php';" />
+    </div>
+</div>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+    <tr> 
+      <td height="25" background="images/tbg.gif" bgcolor="#F2F6E5"><strong>网址获取规则测试：</strong>(测试时不会下载远程图片)</td>
+    </tr>
+    <tr>
+      <td height="26" bgcolor="#FFFFFF">
+      	测试的网址：<?php echo $previewurl; ?>
+      </td>
+    </tr>
+    <tr id="sitem"> 
+      <td height="23" bgcolor="#ffffff">
+      	<?php
+      	if($previewurl=='') echo "你没有指定测试时使用的文章网址，因此系统无法进行测试！";
+      	else {
+        $dc = new DedeCollection();
+        $dc->LoadNote($nid);
+      	echo "<textarea name='test' style='width:100%;height:450px'>".$dc->TestArt($previewurl)."</textarea>";
+        }
+      	?>
+      </td>
+    </tr>
+	  <tr> 
+      <td height="94" align="center" bgcolor="#FFFFFF">
+      <input type="button" name="b2" value="返回上一步进行修改" class="coolbg np" onclick="history.go(-1);" style="width:180px" />
+        &nbsp;
+      <input type="button" name="b3" value="仅保存" class="coolbg np" style="width:80px" onclick="location='co_add.php?nid=<?php echo $nid; ?>&step=6';" />
+      &nbsp;
+      <input type="button" name="b5" value="保存并开始采集" class="coolbg np" style="width:120px" onclick="location='co_add.php?nid=<?php echo $nid; ?>&step=7';" />
+      </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>

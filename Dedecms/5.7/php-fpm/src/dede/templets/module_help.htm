@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript">
+function LoadHashCode()
+{
+	var tgobj = document.getElementById('modulcode');
+	var email = document.form1.email.value;
+	var modulname = document.form1.modulname.value;
+	var myajax = new DedeAjax(tgobj,false,true,'-','-','...');
+   <?php
+   if(strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
+   ?>
+   myajax.AddKeyUtf8('action','gethash');
+   myajax.AddKeyUtf8('email',email);
+   myajax.AddKeyUtf8('modulname',modulname);
+   myajax.SendPost2('module_make.php');
+   <?php
+   }
+   elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
+   	 echo 'myajax.SendGet2("module_make.php?action=gethash&email="+email+"&modulname="+modulname);';
+   }
+   ?>
+
+	//myajax.SendGet2('module_make.php?action=gethash&email='+email+'&modulname='+modulname);
+	DedeXHTTP = null;
+}
+</script>
+<title>模块打包</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style>
+td{padding-left:8px}
+</style>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">模块管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+    <tr>
+      <td width="100%" height="20"> <b>&nbsp;<a href="plus_main.php"><u>模块管理</u></a>
+        &gt; DedeCms模块开发指南：</b> </td>
+    </tr>
+    <tr>
+      <td bgcolor="#FFFFFF"><table width="720" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><strong>目录 </strong></td>
+          </tr>
+          <tr>
+            <td><a href="#1">1、Dede模块开发介绍</a></td>
+          </tr>
+          <tr>
+            <td><a href="#2">2、如何对我开发的模块进行打包？</a></td>
+          </tr>
+          <tr>
+            <td><a href="#3">3、开发模块安装程序和卸载的注意事项。</a></td>
+          </tr>
+          <tr>
+            <td><a href="#4">4、Dedecms的后台管理程序的开发注意事项。</a></td>
+          </tr>
+        </table></td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#FFFFFF"><strong>1、Dede模块开发介绍<a name="1" id="1"></a></strong></td>
+    </tr>
+
+    <tr>
+      <td height="100" bgcolor="#FFFFFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bgcolor="#FFFFFF"><strong>2、如何对我开发的模块进行打包？<a name="2" id="2"></a></strong></td>
+    </tr>
+    <tr>
+      <td height="100" bgcolor="#FFFFFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bgcolor="#FFFFFF"><strong>3、开发模块安装程序和卸载程序的注意事项。<a name="3" id="3"></a></strong></td>
+    </tr>
+    <tr>
+      <td height="100" bgcolor="#FFFFFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td bgcolor="#FFFFFF"><strong>4、Dedecms的后台管理程序的开发注意事项。<a name="4" id="4"></a></strong></td>
+    </tr>
+
+    <tr>
+      <td height="100" bgcolor="#FFFFFF">&nbsp;</td>
+    </tr>
+    <tr bgcolor="#F9FDF0">
+      <td height="28">&nbsp;</td>
+    </tr>
+</table>
+</body>
+</html>

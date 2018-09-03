@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+</head>
+<body class="articlelist">
+{dede:include filename="head.htm"/}
+<!-- /header -->
+
+<div class="channel-nav w960 center clear">
+	<div class='sonnav'>
+	{dede:channel currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
+</div><!-- /channel-nav -->
+
+<div class="w960 center clear mt1">
+	<div class="pleft">
+		<div class="place">
+			<strong>当前位置:</strong> {dede:field name='position'/}
+		</div><!-- /place -->
+		<div class="listbox">
+			<ul class="e2">
+{dede:list pagesize='10'}
+				<li>
+      				[field:array runphp='yes']@me = (empty(@me['litpic']) ? "" : "<a href='{@me['arcurl']}' class='preview'><img src='{@me['litpic']}'/></a>"); [/field:array]
+					<a href="[field:arcurl/]" class="title">[field:title/]</a>
+					<span class="info">
+						<small>日期：</small>[field:pubdate function="GetDateTimeMK(@me)"/]
+						<small>点击：</small>[field:click/]
+						<small>好评：</small>[field:scores/]
+					</span>
+					<p class="intro">
+						[field:description/]...
+					</p>
+				</li>
+{/dede:list}
+			</ul>
+		</div><!-- /listbox -->
+		<div class="dede_pages">
+			<ul class="pagelist">
+             {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
+			</ul>
+		</div><!-- /pages -->
+	</div><!-- /pleft -->
+	
+	<div class="pright">
+		<div class="commend">
+			<dl class="tbox">
+				<dt><strong>推荐内容</strong></dt>
+				<dd>
+					<ul class="d4">
+           {dede:arclist flag='c' titlelen=42 row=6}
+          	<li><a href="[field:arcurl/]">[field:title/]</a>
+            	<p>[field:description function='cn_substr(@me,80)'/]...</p>
+            </li>{/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /commend -->
+		<div id="listRtPicAD" style="margin:10px auto">{dede:myad name='listRtPicAD'/}</div>
+		<div class="hot mt1">
+			<dl class="tbox">
+				<dt><strong>热点内容</strong></dt>
+				<dd>
+					<ul class="c1 ico2">
+                    {dede:arclist row=10 orderby=click}
+                    	<li><a href="[field:arcurl/]">[field:title/]</a></li>
+                    {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div>
+        <div id="listRtPicAD2" style="margin:10px auto">{dede:myad name='listRtPicAD2'/}</div>
+
+	</div><!-- /pright -->
+</div>
+<div id="innerfooterAD" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD'/}</div>
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
+
+</body>
+</html>

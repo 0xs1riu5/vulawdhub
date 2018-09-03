@@ -1,0 +1,14 @@
+圈子主题调用标签
+>>dede>>
+{dede:groupthread gid='0' orderby='dateline' orderway='desc' row='12' titlelen='30'}
+<li>
+<a href='[field:groupurl/]' target="_blank">[[field:groupname function="cn_substr(@me,10)"/]]</a>
+<a href="[field:url/]" title="[field:subject/]" target="_blank">[field:subject/]</a>([field:lastpost function="GetDateMk('@me')"/])
+</li>
+{/dede:groupthread}
+>>dede>>
+gid='0' 圈子id，默认为全部
+orderby='dateline'  排序，默认为时间
+orderway='desc'  排序方向，默认是最新主题在前
+row='12'        记录数
+titlelen='30'   主题标题(subject)最大长度

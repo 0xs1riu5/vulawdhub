@@ -1,0 +1,12 @@
+连载图书调用
+>>dede>>
+{dede:booklist row='12' booktype='-1' orderby='lastpost' author='' keyword=''}
+<a href='[field:bookurl /]'>[field:bookname /]</a><br />
+{/dede:booklist}
+>>dede>>
+这个标签和bookcontentlist实际是完全相同的，只是默认底层模板不同
+row='12' 调用记录条数
+booktype='-1' 图书类型，0 图书、1 漫画，默认全部
+orderby='lastpost' 排序类型，当按排序类型为 commend 表示推荐图书
+author=''  作者
+keyword='' 关键字（用 , 分开多个关键字）

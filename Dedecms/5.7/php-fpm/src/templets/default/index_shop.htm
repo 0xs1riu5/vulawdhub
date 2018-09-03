@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+</head>
+<body class="channel">
+{dede:include filename="head.htm"/}
+<!-- /header -->
+<div class="w960 center clear mt1">
+	<div class="pleft">
+		<div class="flashnews">
+			<script language='javascript'>
+linkarr = new Array();
+picarr = new Array();
+textarr = new Array();
+var swf_width=280;
+var swf_height=192;
+var files = "";
+var links = "";
+var texts = "";
+//这里设置调用标记
+{dede:arclist flag='f' row='5'}
+linkarr[[field:global.autoindex/]] = "[field:arcurl/]";
+picarr[[field:global.autoindex/]]  = "[field:litpic/]";
+textarr[[field:global.autoindex/]] = "[field:title function='html2text(@me)'/]";
+{/dede:arclist}
+for(i=1;i<picarr.length;i++){
+  if(files=="") files = picarr[i];
+  else files += "|"+picarr[i];
+}
+for(i=1;i<linkarr.length;i++){
+  if(links=="") links = linkarr[i];
+  else links += "|"+linkarr[i];
+}
+for(i=1;i<textarr.length;i++){
+  if(texts=="") texts = textarr[i];
+  else texts += "|"+textarr[i];
+}
+document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ swf_width +'" height="'+ swf_height +'">');
+document.write('<param name="movie" value="{dede:global.cfg_templets_skin/}/images/bcastr3.swf"><param name="quality" value="high">');
+document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+document.write('<param name="FlashVars" value="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'">');
+document.write('<embed src="{dede:global.cfg_templets_skin/}/images/bcastr3.swf" wmode="opaque" FlashVars="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'& menu="false" quality="high" width="'+ swf_width +'" height="'+ swf_height +'" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); document.write('</object>');
+</script>
+		</div><!-- /flashnews -->
+		<div class="topcommand">
+			<dl class="tbox">
+				<dt><strong>频道推荐</strong></dt>
+				<dd>
+					<div class="onenews">
+                        {dede:arclist flag='c' limit='0,1'}
+                        <h2><a href="[field:arcurl/]">[field:title/]</a></h2>
+                        <p>[field:description function='cn_substr(@me,110)'/]...<a href="[field:arcurl/]">[查看全文]</a></p>
+                        {/dede:arclist}
+					</div><!-- /onenews -->
+					<ul class="c2 ico1">
+                        {dede:arclist flag='c' limit='1,4'}
+                        <li><a href="[field:arcurl/]">[field:title/]</a></li>
+                        {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /topcommand -->
+
+
+		<div class="listbox">
+	{dede:channelartlist}
+
+      <dl class="tbox">
+        <dt><strong><a href="{dede:field name='typeurl'/}">{dede:field name='typename'/}</a></strong><span class="more"><a href="{dede:field name='typeurl'/}">更多...</a></span></dt>
+        <dd>
+          <ul class="e6">
+          {dede:arclist row='3' type='image.'}
+           <li><a href="[field:arcurl/]" title="[field:title function='html2text(@me)' /]"><img src="[field:litpic/]" alt="[field:title function='html2text(@me)'/]"/></a></li>
+		{/dede:arclist}
+          </ul>
+          <ul class="c2 ico3">
+          {dede:arclist titlelen='60' row='8'}
+            <li><a href="[field:arcurl /]">[field:title /]</a></li>
+			{/dede:arclist}
+          </ul>
+        </dd>
+      </dl>
+	{/dede:channelartlist}
+		</div><!-- /listbox -->
+	</div><!-- /pleft -->
+
+	<div class="pright">
+		<div class="productrange">
+			<dl class="tbox">
+				<dt><strong>推荐商品</strong></dt>
+				<dd>
+					<ul class="f1">
+                    {dede:arclist flag='c' titlelen=42 row=8}
+						<li>
+							<a href="[field:arcurl/]">[field:title/]</a>
+							<span><small>好评:</small>[field:scores/]</span>
+							<span><small>人气:</small>[field:click/]</span>
+						</li>
+                    {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div>
+        <div id="conrightAD" style="margin:10px auto">{dede:myad name='listRtPicAD'/}</div>
+		<div class="comment mt1">
+			<dl class="tbox">
+				<dt><strong>热门商品</strong></dt>
+				<dd>
+					<ul class="e3">
+                    {dede:arclist row=10 orderby=click type='image.'}
+						<li>
+							<a href="[field:arcurl/]" class="preview"><img src="[field:litpic/]" alt="[field:title function='html2text(@me)'/]"/></a>
+							<a href="[field:arcurl/]" class="title">[field:title/]</a>
+							<span class="intro">人气:<span class="fc-f90">[field:click/]</span></span>
+						</li>
+                    {/dede:arclist}
+
+					</ul>
+				</dd>
+			</dl>
+		</div>
+
+
+
+	</div><!-- /pright -->
+</div>
+<div id="footAD" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD'/}</div>
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
+
+</body>
+</html>

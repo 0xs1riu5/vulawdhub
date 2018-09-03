@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>单页采集规则管理</title>
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript">
+function ShowAddNode(){
+	$DE('addNode').style.display='block';
+}
+function CloseAddNode(){
+	$DE('addNode').style.display='none';
+}	
+function CloseEditNode(){
+	$DE('editNode').style.display='none';
+}
+//编辑
+function EditNode(nid){
+	$DE('editNode').style.display='block';
+	var myajax = new DedeAjax($DE('editNodeBody'),false,true,"","","请稍候，正在载入...");
+	myajax.SendGet2('article_coonepage_rule.php?action=editload&id='+nid);
+	DedeXHTTP = null;
+}
+
+//获得选中文件的文件名
+function getCheckboxItem()
+{
+	var allSel="";
+	if(document.form2.ids.value) return document.form2.ids.value;
+	for(i=0;i<document.form2.ids.length;i++)
+	{
+		if(document.form2.ids[i].checked)
+		{
+				allSel = ( allSel=='' ? document.form2.ids[i].value : allSel+","+document.form2.ids[i].value);
+		}
+	}
+	return allSel;	
+}
+
+function selAll()
+{
+	for(i=0;i<document.form2.ids.length;i++)
+	{
+		if(!document.form2.ids[i].checked)
+		{
+			document.form2.ids[i].checked=true;
+		}
+	}
+}
+function noSelAll()
+{
+	for(i=0;i<document.form2.ids.length;i++)
+	{
+		if(document.form2.ids[i].checked)
+		{
+			document.form2.ids[i].checked=false;
+		}
+	}
+}
+
+//删除节点
+function DelNode(selid)
+{
+	if(selid==0) selid = getCheckboxItem();
+	if(selid!='')
+	{
+	  if(window.confirm("你确实要删除这些条目么？")) location="article_coonepage_rule.php?ids="+selid+"&action=del";
+	}else{
+		alert("你没选择任何条目！");
+	}
+}
+
+</script>
+<style type="text/css">
+<!--
+#addNode {
+	position:absolute;
+	left:20px;
+	top:20px;
+	width:430px;
+	height:300px;
+	z-index:2;
+	background-color: #F2FDDB;
+	border:1px solid #889D8F;
+	padding:6px;
+	display:none
+}
+#editNode {
+	position:absolute;
+	left:20px;
+	top:20px;
+	width:430px;
+	height:300px;
+	z-index:1;
+	background-color: #F2FDDB;
+	border:1px solid #889D8F;
+	padding:6px;
+	display:none
+}
+-->
+</style>
+</head>
+<body leftmargin="8" topmargin="8" background='images/allbg.gif'>
+<table width='98%' border='0' align='center' cellpadding='0' cellspacing='0' align="center">
+<tr> 
+<td align='center' valign='top'>
+<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6">
+<tr bgcolor="#F3FAD3"> 
+<td height="26" colspan="6">
+<div style="float:left;padding-left:6px"><b>单页采集规则管理：</b></div>
+<div style="float:right;padding-right:10px"><a href='javascript:ShowAddNode();'>[增加新网址]</a></div>
+</td>
+</tr>
+<form name="form2">
+<tr align="center" bgcolor="#FAFAF1" height="22"> 
+<td width="8%">ID</td>
+<td width="8%">选择</td>
+<td width="20%">网址</td>
+<td width="12%">编码</td>
+<td width="28%">网站名称</td>
+<td width="12%">操作</td>
+</tr>
+{dede:datalist}
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';"
+	 onMouseOut="javascript:this.bgColor='#FFFFFF';" height="24"> 
+<td><?php echo $fields['id']?></td>
+<td><input name="ids" type="checkbox" id="ids" value="<?php echo $fields['id']?>" class="np"></td>
+<td align='left'>
+<?php echo $fields['url']; ?>
+</td>
+<td><?php echo $fields['lang']; ?></td>
+<td><?php echo $fields['title']; ?></td>
+<td>
+<a href="javascript:EditNode(<?php echo $fields['id']?>)">编辑</a> | 
+<a href="javascript:DelNode(<?php echo $fields['id']?>)">删除</a> 
+</td>
+</tr>
+{/dede:datalist}
+<tr bgcolor="#FAFAF1"> 
+<td height="24" colspan="6">
+&nbsp;
+<a href="javascript:selAll()" class="coolbg">全选</a> 
+<a href="javascript:noSelAll()" class="coolbg">取消</a> 
+<a href="javascript:DelNode(0)" class="coolbg">&nbsp;删除&nbsp;</a> 
+</td>
+</tr>
+</form>
+<tr align="right" bgcolor="#F3FAD3"> 
+<td height="28" colspan="6" align="center">
+	{dede:pagelist listsize=5/}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+
+<!--  下面是隐藏的栏目增加／修改表单  -->
+<div id="editNode">
+<span id='editNodeBody'>请稍候，正在载入...</span>
+</div>
+
+<div id="addNode">
+<form name='addform' action='article_coonepage_rule.php' method='post'>
+<input type='hidden' name='action' value='add' />
+<table width="430" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="102" height="30">网站名称：</td>
+    <td width="302"><input name="title" type="text" id="title" style="width:200px" /></td>
+    <td width="26" align="center"><a href="javascript:CloseAddNode()"><img src="images/close.gif" width="12" height="12" border="0" /></a></td>
+  </tr>
+  <tr>
+    <td height="30">原内容编码：</td>
+    <td colspan="2">
+      <input type="radio" name="lang" value="gb2312" checked="checked" />
+      GB2312/GBK
+      <input type="radio" name="lang" value="utf-8" />
+      UTF-8
+    </td>
+  </tr>
+  <tr>
+    <td height="30">用作文章来源：</td>
+    <td colspan="2"><input type="radio" name="issource" value="0" />
+      否
+        <input name="issource" type="radio" value="1" checked="checked" />
+    是</td>
+  </tr>
+  <tr>
+    <td height="30">网站网址：</td>
+    <td colspan="2"><input name="url" type="text" id="url" style="width:200px" /></td>
+  </tr>
+  <tr>
+    <td height="30">&nbsp;</td>
+    <td colspan="2">使用不带http及任何附加目录的网址<br />
+    如：news.dedecms.com</td>
+  </tr>
+  <tr>
+    <td height="30">采集规则：</td>
+    <td colspan="2">仅针对文章内容，格式：前面HTML{@body}后面HMTL</td>
+  </tr>
+  <tr>
+    <td height="90">&nbsp;</td>
+    <td colspan="2"><textarea name="rule" style="width:300px;height:80px">{@body}</textarea></td>
+  </tr>
+  <tr>
+    <td height="32">&nbsp;</td>
+    <td colspan="2"><input class="nbt" type="submit" name="Submit" value="保存规则" />　
+    <input type="reset" class="nbt" name="Submit2" value="重置" /></td>
+  </tr>
+</table>
+</form>
+</div>
+
+</body>
+</html>

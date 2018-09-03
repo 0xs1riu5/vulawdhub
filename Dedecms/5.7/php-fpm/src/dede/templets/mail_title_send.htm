@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>发送邮件</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">邮件订阅</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <td height="20" colspan="10" bgcolor="#EDF9D5" background="images/tbg.gif">
+	  <div style="float:left;padding-right:5px;padding-left:10px;"><b>群发期刊</b></div>
+	  <div style='float:right;padding-right:8px;'>[<a href="mail_title.php?dopost=add"><u>添加期刊</u></a>]</div>
+    </td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td height="25" width="5%" align="center" >ID</td>
+    <td width="5%" align="center">期刊号</td>
+    <td  align="center" >期刊名称</td>
+    <td width="10%" align="center">所属分类</td>
+    <td width="10%" align="center">订阅数</td>
+    <td width="10%" align="center">添加时间</td>
+    <td width="10%" align="center">发送时间</td>
+    <td width="10%" align="center">状态</td>
+    <td width="10%" align="center">发送次数</td>
+    <td width="10%" align="center">操作</td>
+  </tr>
+  {dede:datalist}
+  <tr bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+    <td align="center">{dede:field.id/}</td>
+    <td align="center">{dede:field.period/}</td>
+    <td align="center">{dede:field.title/}</td>
+    <td align="center">{dede:field.typename/}</td>
+    <td align="center">{dede:field.typeid function='GetCount(@me)'/}</td>
+    <td align="center">{dede:field.addtime function='GetDateTimeMk(@me)'/}</td>
+    <td align="center">{dede:field.sendtime function='GetSendTimeMk(@me)'/}</td>
+    <td align="center">{dede:field.state function='GetState(@me)'/}</td>
+    <td align="center">{dede:field.count/}</td>
+    <td align="center"><a href="mail_title_send.php?dopost=send&typeid={dede:field.typeid/}&id={dede:field.id/}">开始发送</a></td>
+   </tr>
+   {/dede:datalist}
+  <tr>
+    <td height="7" colspan="10" bgcolor="#F9FCEF">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

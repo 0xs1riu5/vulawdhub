@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>新增频道</title>
+<style type="text/css">
+<!--
+body { background-image: url(images/allbg.gif); }
+.STYLE2 { color: #666666;  }
+-->
+</style>
+<script language="javascript">
+<!--
+function $Obj(objname)
+{
+	return document.getElementById(objname);
+}
+function ShowHide2(objname)
+{
+    var obj = $Obj(objname);
+    if(obj.style.display != 'block'){ obj.style.display = 'block' }
+    else{  obj.style.display = 'none'; }
+}
+function PublicDefault()
+{
+	if($Obj('is1').checked || $Obj('is2').checked)
+	{
+		$Obj("addcon").value = "archives_add.php";
+		$Obj("editcon").value = "archives_edit.php";
+		$Obj("mancon").value = "content_list.php";
+		$Obj("useraddcon").value = "archives_add.php";
+		$Obj("usereditcon").value = "archives_edit.php";
+		$Obj("usermancon").value = "content_list.php";
+	}
+	else
+	{
+		$Obj("addcon").value = "archives_sg_add.php";
+		$Obj("editcon").value = "archives_sg_edit.php";
+		$Obj("mancon").value = "content_sg_list.php";
+		$Obj("useraddcon").value = "archives_sg_add.php";
+		$Obj("usereditcon").value = "archives_sg_edit.php";
+		$Obj("usermancon").value = "content_sg_list.php";
+	}
+}
+-->
+</script>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body topmargin="8">
+<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <form name="form1" action="mychannel_add.php" method="post">
+    <input type='hidden' name='action' value='add'>
+    <tr> 
+      <td height="28" colspan="2" background="images/tbg.gif" style="padding-left:10px;"> 
+       <a href="mychannel_main.php"><b>内容模型管理</b></a> 
+       <b> &gt; 新增内容模型：</b>
+      </td>
+    </tr>
+    <tr> 
+      <td width="35%" bgcolor="#FFFFFF">
+      <b>频道ID</b><br />
+      <span class="STYLE2" id='help1'>数字，创建后不可更改，并具有唯一性。</span>
+      </td>
+      <td width="65%" bgcolor="#FFFFFF">
+      	<input name="id" type="text" id="id" size="10" value="<?php echo $newid; ?>" class="pubinputs" />  *  
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>名字标识</b><br />
+      <span class="STYLE2" id="help2">与文档的模板相关连，建议由英文、数字或下划线组成，因为部份Unix系统无法识别中文文件，频道默认文档模板是 “default/article_名字标识.htm”，列表模板、封面模板类推。 </span>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="nid" type="text" id="nid" value="ch<?php echo $newid; ?>" class="pubinputs" /> * 
+     </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>频道名称</b><br />
+      <span class="STYLE2" id="help3">频道的中文名称，在后台管理，前台发布等均使用此名字。</span>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="typename" type="text" id="typename" value="频道<?php echo $newid; ?>" class="pubinputs" /> * 
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>附加表</b><br />
+       <span class="STYLE2" id="help4">频道除主表以外其它自定义类型数据存放数据的表，如果您不使用主表关连的各种特性(推荐、会员权限等)，也可以使用完全以附加表作为存储数据。</span>
+      </td>
+      <td bgcolor="#FFFFFF">
+      <input name="addtable" type="text" id="addtable" value="<?php echo $cfg_dbprefix,'addon',$newid; ?>" class="pubinputs" />
+      必须由英文、数字、下划线组成 * 
+      <input name="isdel" type="checkbox" class="np" id="isdel" value="1" />
+      删除已有表
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>模型性质</b><br />
+      <span class="STYLE2" id="help5">如果为<u>系统模型</u>将禁止删除，此选项不可更改，对于独立模型，系统强制创建字段aid,typeid,senddate,title, mid, channel，独立模型的文档内容必须点击栏目进入列表才能管理。</span>      </td>
+      <td bgcolor="#FFFFFF">
+       <input type="radio" name="issystem" id='is1' class="np" value="0" onClick="PublicDefault()" checked='1' />
+        自动模型 
+        <input type="radio" name="issystem" id='is2' value="1" onClick="PublicDefault()" class="np" />
+        系统模型
+        <input type="radio" name="issystem" id='is3' value="-1" onClick="PublicDefault()" class="np" />
+        独立模型(不使用主表)
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>是否支持会员投稿</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+        <input name="issend" type="radio" class="np" value="0" checked='1' />
+        不支持　 
+       <input type="radio" name="issend" class="np" value="1" />
+        支持
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>会员许可投稿级别</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<select name='sendrank' id='sendrank' style='width:120px'>
+          <option value='0'>游客</option>
+          <?php
+              $urank = $cuserLogin->getUserRank();
+              $dsql->SetQuery("Select * from `#@__arcrank` where adminrank<='$urank' And rank>=10");
+              $dsql->Execute();
+              while($row2 = $dsql->GetObject())
+              {
+              	echo "     <option value='".$row2->rank."'>".$row2->membername."</option>\r\n";
+              }
+          ?>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#FFFFFF">
+      <b>许可投稿会员组</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      <?php
+        $dsql->SetQuery("Select * from `#@__member_model`");
+        $dsql->Execute();
+        while($row3 = $dsql->GetObject())
+        {
+          echo "<input name='usertype' class='np' type='radio' value=".$row3->name." />".$row3->name."\r\n";
+        }
+       ?>
+        <input name="usertype" class="np" type="radio" value="" checked='1' />
+        不限
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>会员稿件默认状态</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      <input name="arcsta" class="np" type="radio" value="-1" checked='1' />
+        未审核 
+        <input name="arcsta" class="np" type="radio" value="0" />
+        已审核（自动生成HTML） 
+        <input name="arcsta" class="np" type="radio" value="1" />
+        已审核（仅使用动态文档）</td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>投稿标题使用名称</b></td>
+      <td bgcolor="#FFFFFF">
+      	<input name="titlename" type="text" id="titlename" value="标题" class="pubinputs" />
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>投稿是否使用摘要</b><br/>
+      <span class="STYLE2">如果不使用主表(独立模型)，缩略图设置同。</span></td>
+      <td bgcolor="#FFFFFF">
+      	<input name="needdes" type="radio" class="np" value="1" checked='1' />
+        使用 
+        <input name="needdes" type="radio" class="np" value="0" />
+        不使用
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>投稿是否使用缩图</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="needpic" type="radio" class="np" value="1"  checked='1' />
+        使用 
+        <input name="needpic" type="radio" class="np" value="0" />
+        不使用
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>默认栏目ID</b><br />
+      <span class="STYLE2" id="help8">与投稿是唯一性结合可以用模型设计自定义表单</span>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="dfcid" type="text" id="dfcid" value="0" class="pubinputs" style="width:80px;" /></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>投稿具有唯一性</b><br />
+      <span class="STYLE2" id="help9">如果投稿是唯一的(会员只能在这个模型对应的栏目中发布单篇文档)，其作用相当于自定义表单</span>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="onlyone" type="radio" class="np" value="1"  />
+        是
+        <input name="onlyone" type="radio" class="np" value="0"  checked='1'/>
+        不是
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>档案发布程序</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="addcon" type="text" id="addcon" value="archives_add.php" class="pubinputs" />
+        * 
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>档案修改程序</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="editcon" type="text" id="editcon" value="archives_edit.php" class="pubinputs" />
+        * 
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>档案管理程序</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="mancon" type="text" id="mancon" value="content_list.php" class="pubinputs" />
+        *
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>前台会员发布程序</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="useraddcon" type="text" id="useraddcon" value="archives_add.php" class="pubinputs" />
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>前台会员修改程序</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="usereditcon" type="text" id="usereditcon" value="archives_edit.php" class="pubinputs" />
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+      <b>前台会员管理程序</b>
+      </td>
+      <td bgcolor="#FFFFFF">
+      	<input name="usermancon" type="text" id="usermancon" value="content_list.php" class="pubinputs" />
+      </td>
+    </tr>
+    <tr bgcolor="#F9FCEF"> 
+      <td height="32" colspan="2">
+      	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="26%">&nbsp;</td>
+            <td width="15%">
+            <input name="imageField" class="np" type="image" src="images/button_ok.gif" width="60" height="22" border="0" />
+            </td>
+            <td width="59%">
+            <img src="images/button_back.gif" width="60" height="22" onClick="location='mychannel_main.php';" style="cursor:pointer" />
+            </td>
+          </tr>
+        </table>
+       </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

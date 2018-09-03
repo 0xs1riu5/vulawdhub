@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>修改会员模型管理</title>
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="js/diy.js"></script>
+<script language="javascript">
+<!--
+function CheckSubmit()
+{
+	if(document.form1.typename.value=='')
+	{
+		alert("自定义表单名称不能为空！");
+		return false;
+	}
+	return true;
+}
+//删除
+function DelNote(gourl){
+	if(!window.confirm("你确认要删除这条记录么！")){ return false; }
+	location.href=gourl;
+}
+-->
+</script>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+.STYLE1 {
+	color: #FF0000
+}
+td {
+	padding:2px;
+	padding-left:6px;
+	line-height:150%;
+}
+.STYLE2 {
+	color: #666666;
+	display:none;
+}
+-->
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+  <div class="bodytitleleft"></div>
+  <div class="bodytitletxt" style="padding-left:10px;">会员模型管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+  <form name="form1" action="member_model_edit.php" method="post" onSubmit="return CheckSubmit();">
+    <input type='hidden' name='id' value='<?php echo $id;?>'>
+     <input type='hidden' name='name' value='<?php echo $row['name'];?>'>
+    <input type='hidden' name='dopost' value='save'>
+    <tr bgcolor="#CFCFCF">
+      <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;"><b><a href="member_model_main.php"><u>会员模型管理</u></a> &gt; 修改<?php echo $row['name']?>会员模型：</b> (修改表名不会创建新表，如果您不懂手工处理这些表，请不要更改) </td>
+    </tr>
+    <tr>
+      <td width="35%" height="28" align="left" bgcolor="#FFFFFF">会员模型ID：<br />
+        <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span></td>
+      <td width="65%" bgcolor="#FFFFFF"><?php echo $id;?> * <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help1')" /> <?php if($row['issystem']) echo "<font color='red'>系统模型,我们不建议您去修改基本配置信息!</font>";?></td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#F9FCEF">模型名称：<br />
+        <span class="STYLE2" id="help3">　　会员模型类型统一使用中文,前台后台都保持一致。</span></td>
+      <td bgcolor="#F8FCEF"><input name="name" type="text" id="name" value="<?php echo $row['name']?>" style="width:180px" class='alltxt' <?php if($row['issystem']) echo "disabled='1'";?>/>
+        *<img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help3')" /></td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">数据表：<br />
+        <span class="STYLE2" id="help5">　　模型表一旦创建不可修改</span></td>
+      <td bgcolor="#FFFFFF"><input name="table" type="text" id="table"  style="width:180px" value="<?php echo $row['table']; ?>" class='alltxt' disabled='1' />
+        *<img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help5')" /></td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#F9FCEF">模型字段配置：<br />
+        信息索引类字段系统已经加入，<br />
+        您只需要增加其它个性化字段即可。</td>
+      <td bgcolor="#F8FCEF"><input name="fset" type="button" id="fset" value="添加新字段" onClick="location.href='member_model_field_add.php?id=<?php echo $id; ?>'" class="np coolbg" style="margin-top:5px"/></td>
+    </tr>
+    <tr>
+      <td colspan='2'  bgcolor="#FFFFFF" style="padding:6px"><table width="100%" border="0" cellpadding="1" cellspacing="1" align="center"  style="background:#cfcfcf;">
+          <tr align="center" bgcolor="#FBFCE2" height="24">
+            <td width="12%">提示文字</td>
+            <td width="12%">数据字段名</td>
+            <td width="12%">数据类型</td>
+            <td width="12%">前台显示</td>
+            <td width="12%">条件搜索</td>
+            <td width="12%">状态</td>
+            <td width="12%">表单类型</td>
+            <td width="16%">维护</td>
+          </tr>
+          <?php 
+
+$ds = file(DedeInclude('/inc/fieldtype.txt'));
+foreach($ds as $d){
+	$dds = explode(',',trim($d));
+	$fieldtypes[$dds[0]] = $dds[1];
+}
+$fieldset = $row['info'];
+$dtp = new DedeTagParse();
+$dtp->SetNameSpace("field","<",">");
+$dtp->LoadSource($fieldset);
+if(is_array($dtp->CTags)){
+foreach($dtp->CTags as $ctag)
+{
+?>
+          <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';"
+
+onMouseOut="javascript:this.bgColor='#FFFFFF';">
+            <td><?php 
+			$itname = $ctag->GetAtt('itemname');
+			if($itname=='') echo "没指定";
+			else echo $itname;
+			?></td>
+            <td><?php echo $ctag->GetTagName()?></td>
+            <td><?php 
+			$ft = $ctag->GetAtt('type');
+			if(isset($fieldtypes[$ft])) echo $fieldtypes[$ft];
+			else  echo "系统专用类型";
+			?></td>
+            <td><?php 
+			$issearch = $ctag->GetAtt('issearch');
+			echo ($issearch == '1')? "<font color=green>√</font>" : "<font color=red>×</font>";
+			?></td>
+            <td><?php 
+			$isshow = $ctag->GetAtt('isshow');
+			echo ($isshow == '1')? "<font color=green>√</font>" : "<font color=red>×</font>";
+			?></td>
+            <td><?php 
+			$state = $ctag->GetAtt('state');
+			echo ($state == 1)? "<font color=green>√</font>" : "<font color=red>×</font>";
+			?></td>
+            <td><?php 
+			$ft = $ctag->GetAtt('autofield');
+			if($ft==''||$ft==0) echo "固化表单";
+			else  echo "自动表单";
+		 ?></td>
+            <td><a href="member_model_field_edit.php?id=<?php echo $id;?>&fname=<?php echo $ctag->GetTagName()?>">[修改]</a> <a href="member_model_field_edit.php?id=<?php echo $id;?>&action=disabled&fname=<?php echo $ctag->GetTagName()?>">[<?php echo ($ctag->GetAtt('state')==1)? "禁用" : "启用" ?>]</a> <a href="member_model_field_edit.php?id=<?php echo $id;?>&action=delete&fname=<?php echo $ctag->GetTagName()?>">[删除]</a></td>
+          </tr>
+          <?php 
+ }}
+ 
+?>
+        </table></td>
+    </tr>
+<tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">模型描述：</td>
+      <td bgcolor="#FFFFFF"><label>
+        <textarea name="description" cols="50" rows="5" class="tbtitle" id="description"><?php echo $row['description']; ?></textarea>
+      </label></td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">会员模型状态：</td>
+      <td bgcolor="#FFFFFF"><input name="state" type="radio" class='np'  value="1" <?php if($row['state']=='1') echo " checked='1' "; ?>/>
+        启用 &nbsp;
+        <input name="state" type="radio"  value="0" class='np' <?php if($row['state']=='0') echo " checked='1' "; ?>/>
+      禁用</td>
+    </tr>
+    <tr bgcolor="#F9FCEF">
+      <td height="28" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="26%" height="45">&nbsp;</td>
+            <td width="15%"><input type="submit" name="button" id="button" value="确定"  class='np coolbg'/></td>
+            <td width="59%"><input name="按钮" type="button" class='np coolbg'  id="button2" onclick="location='diy_main.php';" value="返回"/></td>
+          </tr>
+        </table></td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

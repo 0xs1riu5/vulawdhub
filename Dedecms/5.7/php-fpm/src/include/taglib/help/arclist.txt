@@ -1,0 +1,34 @@
+文章列表调用标记
+>>dede>>
+{dede:arclist  flag='h' typeid='' row='' col='' titlelen='' infolen='' 
+imgwidth='' imgheight='' listtype='' orderby='' keyword='' limit='0,1'}
+<a href='[field:arcurl/]'>[field:title/]</a>
+{/dede:arclist}
+>>dede>>
+col='' 分多少列显示（默认为单列）
+row='10' 返回文档列表总数
+typeid='' 栏目ID,在列表模板和档案模板中一般不需要指定，在封面模板中允许用","分开表示多个栏目；
+titlelen = '30' 标题长度 等同于titlelength
+infolen='160' 表示内容简介长度 等同于infolength
+imgwidth='120' 缩略图宽度
+imgheight='90' 缩略图高度
+listtype='all' 栏目类型（顶级栏目？？）
+orderby='sortrank' 文档排序方式
+	§ orderby='hot' 或 orderby='click' 表示按点击数排列
+	§ orderby='sortrank' 或 orderby='pubdate' 按出版时间排列
+	§ orderby='near' 
+	§ orderby=='lastpost' 按最后评论时间
+	§ orderby=='scores' 按得分排序
+	§ orderby='id' 按文章ID排序
+	§ orderby='rand' 随机获得指定条件的文档列表
+keyword='' 含有指定关键字的文档列表，多个关键字用","分
+innertext = '' 单条记录样式
+aid='' 指定文档ID
+idlist ='' 提取特定文档（文档ID） 
+isweight = 'n' 开启按照权重排序,默认为n/N,如果设为y/Y,则内容会按照weight字段排序,数值越小越靠前
+channelid 频道ID
+limit='' 起始,结束 表示限定的记录范围（如：limit='1,2'）
+flag = 'h' 自定义属性值：头条[h]推荐[c]图片[p]幻灯[f]滚动[s]跳转[j]图文[a]加粗[b] 
+noflag = '' 同flag，但这里是表示不包含这些属性
+orderway='desc' 值为 desc 或 asc ，指定排序方式是降序还是顺向排序，默认为降序
+subday='天数' 表示在多少天以内的文档

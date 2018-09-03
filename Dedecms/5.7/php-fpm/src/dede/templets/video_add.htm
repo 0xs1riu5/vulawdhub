@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>增加视频</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script type="text/javascript" src="js/calendar/calendar.js"></script>
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="inc/spark/js/swfobject.js"></script>
+<script language="javascript">
+<!--
+function checkSubmit()
+{
+	if(document.form1.title.value==""){
+		alert("视频名称不能为空！");
+		document.form1.title.focus();
+		return false;
+	}
+	if(document.form1.typeid.value==0){
+		alert("请选择档案的主类别！");
+		return false;
+	}
+    if(document.form1.videourl.value==""){
+		alert("视频地址不能为空");
+		return false;
+	}
+}
+
+
+if($Nav()!="IE") ShowObj('adset');
+  
+</script>
+</head>
+<body topmargin="8">
+<form name="form1" action="video_add.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<input type="hidden" name="dopost" value="save" />
+<input type="hidden" name="channelid" value="<?php echo $channelid?>" />
+<input type="hidden" name="cid" value="<?php echo $cid; ?>" />
+    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td width="64%" height="30"><IMG height=14 src="images/book1.gif" width=20>&nbsp;<a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>视频列表</u></a>&gt;&gt;发布新视频</td>
+      <td align="right">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a>
+      </td>
+    </tr>
+  </table>
+  
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1">
+    <tr>
+      <td colspan="2">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;常规信息&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>高级参数</u></a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="display:none">
+    <tr>
+      <td colspan="2"> <table height="24" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>常规信息</u></a>&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote1.gif">高级参数</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+ 
+  
+
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #cfcfcf;background:#ffffff;">
+    <tr>
+      <td height="24"  class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;视频名称：</td>
+          <td width='408'><input name="title" type="text" id="title" style="width:388px">          </td>
+          <td width="90">&nbsp;简略标题：</td>
+          <td><input name="shorttitle" type="text" id="shorttitle" style="width:150px">          </td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td width="400%" height="24" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;自定义属性：</td>
+          <td>
+         <?php
+         $dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
+         $dsql->Execute();
+         while($trow = $dsql->GetObject())
+         {
+         	if($trow->att=='j')
+         	{
+         		$jumpclick = " onclick='ShowUrlTr()'";
+         	}
+         	else
+         	{
+         		$jumpclick = '';
+         	}
+         	if(ereg($trow->att,$arcRow['flag']))
+         	{
+         		echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' {$jumpclick} checked='checked' />{$trow->attname}[{$trow->att}]";
+         	}
+
+         	else
+         	{
+         		echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}'{$jumpclick} />{$trow->attname}[{$trow->att}]";
+         	}
+         }
+          ?>
+           </td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td height="24"  class="bline" id="redirecturltr" style="display:none">
+	   <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90">&nbsp;跳转网址：</td>
+            <td>
+            	<input name="redirecturl" type="text" id="redirecturl" style="width:300px" value="" />            </td>
+          </tr>
+       </table>       </td>
+    </tr>
+    <tr>
+      <td width="400%" height="24" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;TAG标签：</td>
+          <td><input name="tags" type="text" id="tags" value="" style="width:300px" onChange="$Obj('keywords').value=this.value;" />(','号分开，单个标签小于12字节)</td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+   <tr id="pictable">
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90"> &nbsp;缩 略 图：</td>
+            <td width="560">
+            	<table width="100%" border="0" cellspacing="1" cellpadding="1">
+                <tr>
+                  <td height="30">
+                  <input name="picname" type="text" id="picname" style="width:240px" />
+                  <input type="button"  value="本地上传" style="width:70px;cursor:pointer;" />
+                  <iframe name='uplitpicfra' id='uplitpicfra' src='' width='200' height='200' style='display:none'></iframe>
+                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew(this, 'divpicview', 'uplitpicfra', 165, 'video_add.php');" size="1" class='np coolbg'/></span>
+                  <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
+                  <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
+                  <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程
+                  </td>
+                </tr>
+              </table>
+             </td>
+            <td width="150" align="center">
+            <div id='divpicview' class='divpre'></div>
+            </td>
+          </tr>
+        </table></td>
+    </tr>
+
+    <tr>
+      <td height="24"  class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90">&nbsp;视频来源：</td>
+            <td width="240">
+              <input name="source" type="text" id="source" style="width:200px">            </td>
+            <td width="90">视频作者：</td>
+            <td width="159"><input name="writer" type="text" id="writer" style="width:120px"></td>
+			<td>&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td height="24"  class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
+
+
+
+		  <tr>
+          <td width="90">&nbsp;视频主栏目：</td>
+          <td>
+       <span id='typeidct'>
+       <?php
+          $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
+          echo "<select name='typeid' id='typeid' style='width:240px'>\r\n";
+          echo "<option value='0'>请选择栏目...</option>\r\n";
+          echo $typeOptions;
+          echo "</select>";
+			?></span>
+			<img src='images/menusearch.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
+			&nbsp;
+			<?php
+			if($cfg_need_typeid2=='Y')
+			{
+				echo "<a href='javascript:AddTypeid2();'>【<u>选择副栏目</u>】</a>";
+			}
+			?>
+			  </td>
+        </tr>
+        </table>       </td>
+    </tr>
+
+	<tr id='typeid2tr' style='display:none'>
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;视频副栏目：</td>
+          <td>
+          <span id='typeid2ct'></span><input type='text' name='typeid2' id='typeid2' value='' style='width:200px;' />
+          <img src='images/menusearch2.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
+			    </td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+    
+    <tr>
+      <td height="24"  bgcolor="#F1F5F2" class="bline2"><strong>视频地址：</strong></td>
+    </tr>
+    <tr>
+      <td height="24"  class="bline">
+        <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90">&nbsp;视频地址：</td>
+            <td>
+                <input name="videourl" type="text" id="videourl" style="width:300px;float:left;margin-right:5px;">
+                <div style='float:left;'>
+                    <!-- cc视频插件代码 -->
+                    <object width='72' height='24'>
+                    <param name='wmode' value='transparent' />
+                    <param name='allowScriptAccess' value='always' />
+                    <param name='movie' value='http://union.bokecc.com/flash/plugin/plugin_13.swf?userID=<?php echo $userid?>&type=其他' />
+                    <embed src='http://union.bokecc.com/flash/plugin/plugin_13.swf?userID=<?php echo $userid?>&type=其他' type='application/x-shockwave-flash' width='72' height='24' allowScriptAccess='always' wmode='transparent'></embed>
+                    </object>
+                    <!-- cc视频插件代码 -->
+                </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    
+    <tr>
+      <td height="24"  bgcolor="#F1F5F2" class="bline2"><strong>剧情介绍：</strong></td>
+    </tr>
+      <tr>
+      <td height="24" colspan="4" class="bline">
+      <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;内容摘要：</td>
+          <td width="500"><textarea name="description" rows="3" id="description" style="width:80%;height:200px;"></textarea></td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+      </td>
+  </tr>
+  </table>
+
+ <!-- //高级参数 -->
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="display:none;border:1px solid #cfcfcf;background:#ffffff;">
+  <tr>
+  <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90" height="22">&nbsp;文章排序：</td>
+            <td width="240"> <select name="sortup" id="sortup" style="width:150">
+                <option value="0" selected>默认排序</option>
+                <option value="7">置顶一周</option>
+                <option value="30">置顶一个月</option>
+                <option value="90">置顶三个月</option>
+                <option value="180">置顶半年</option>
+                <option value="360">置顶一年</option>
+              </select> </td>
+            <td width="90">标题颜色：</td>
+            <td>
+            	<input name="color" type="text" id="color" style="width:120px">
+                <input type="button" onclick="ShowColor(event,this)" value="选取" id="modcolor" name="modcolor">
+            </td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90">&nbsp;阅读权限：</td>
+            <td width="240"> <select name="arcrank" id="arcrank" style="width:150px">
+                <?php
+                $urank = $cuserLogin->getUserRank();
+                $dsql->SetQuery("Select * from `#@__arcrank` where adminrank<='$urank'");
+                $dsql->Execute();
+                while($row = $dsql->GetObject())
+                {
+                	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
+                }
+              ?>
+              </select> </td>
+            <td width="90">发布选项：</td>
+            <td>
+            	<input name="ishtml" type="radio" class="np" value="1" checked>
+              生成HTML
+              <input type="radio" name="ishtml" class="np" value="0">
+              仅动态浏览              </td>
+          </tr>
+        </table></td>
+    </tr>
+
+    <tr>
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;发布时间：</td>
+          <td width="241"><?php
+          $nowtime = GetDateTimeMk(time());
+          echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
+			?>          </td>
+          <td width="90">消费点数：</td>
+          <td width="379"><input name="money" type="text" id="money" value="0" size="10">          </td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;关键字：</td>
+          <td colspan="2"><input type='text' name="keywords" id="keywords" style="width:290px;" value="" /><input name="autokey" type="checkbox" onClick="ShowHide('keywords');"; class="np" id="autokey" value="1"<?php if($cfg_arc_autokeyword=='Y') echo ' checked'; ?>>
+<input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');">&nbsp;&nbsp;自动获取，手动填写用","分开</td>
+        </tr>
+      </table></td>
+    </tr>
+
+    <tr>
+      <td height="24" colspan="4" class="bline">
+      <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;自定义文件名：</td>
+          <td width="449"><input type="text" name="filename" id="filename"/>不包括后缀名如.html等</td>
+          <td width="261">&nbsp;</td>
+        </tr>
+      </table>
+      </td>
+  </tr>
+  <tr>
+      <td height="24" colspan="4">&nbsp;</td>
+  </tr>
+  </table>
+
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
+  <tr>
+    <td height="35">
+	<table width="100%" border="0" cellspacing="1" cellpadding="1">
+        <tr>
+          <td width="17%">&nbsp;</td>
+          <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="115"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" class="np" border="0"></td>
+                <td width="99"><img src="images/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer;"></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+</form>
+<script language='javascript'>InitPage();</script>
+</body>
+</html>

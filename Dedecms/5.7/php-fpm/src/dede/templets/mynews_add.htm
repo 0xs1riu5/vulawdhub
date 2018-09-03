@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>站内新闻发布</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script>
+function checkSubmit()
+{
+  if(document.form1.title.value=="")
+  {
+     document.form1.title.focus();
+     alert("标题必须设定！");
+     return false;
+  }
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6">
+  <form action="mynews_add.php" method="post" name="form1" onSubmit="return checkSubmit();">
+  <input type="hidden" name="dopost" value="save" />
+  <tr>
+      <td height="24" background="images/tbg.gif"> 
+        <table width="99%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td><strong>&nbsp;站内新闻管理-&gt;增加消息</strong></td>
+            <td align="right"> <a href="mynews_main.php"><img src="images/file_edit.gif" width="15" height="16" border="0"><u>返回管理页</u></a> 
+            </td>
+          </tr>
+        </table></td>
+</tr>
+<tr>
+    <td height="127" align="center" bgcolor="#FFFFFF"> 
+      <table width="98%" border="0" cellspacing="2" cellpadding="0">
+          <tr> 
+            <td height="20" colspan="2" align="left">　      说明：站内新闻是为了方便站长发布站点公告而设置的一种小功能，由于要读取包括text字段的信息，应定期删除太旧的信息，否则可能会让模板解析速度变慢。如果没有选择显示频道，则在这个频道中使用这个标记时会被“所有位置...”的标记内容代替。</td>
+          </tr>
+          <tr> 
+            <td height="20" colspan="2"  align="left">　 站内新闻调用代码： {dede:mynews row='条数' titlelen='标题长度'}Innertext{/dede:mynews}，Innertext支持的字段为：[field:title 
+              /],[field:writer /],[field:senddate /](时间),[field:body /]。 </td>
+          </tr>
+          <tr> 
+            <td width="13%" height="30" align="right">标　题：</td>
+            <td width="87%" align="left"> <input name="title" type="text" id="title" size="35" style="width:350"> 
+            </td>
+          </tr>
+          <tr>
+            <td height="30" align="right">显示频道：</td>
+            <td align="left">
+			  <select name="typeid" style="width:150">
+                <option value="0" selected>所有位置...</option>
+                <?php
+			  $dsql->SetQuery("Select id,typename From #@__arctype where reid=0 order by sortrank desc");
+			  $dsql->Execute();
+			  while($row = $dsql->GetObject())
+			  {
+			     echo "<option value='".$row->id."'>".$row->typename."</option>\r\n";
+			  }
+			  ?>
+              </select>
+			  </td>
+          </tr>
+          <tr> 
+            <td height="30" align="right">发言人：</td>
+            <td  align="left">
+            	<input name="writer" type="text" id="writer" value="<?php echo $cuserLogin->getUserName()?>" size="16" />            
+           </td>
+          </tr>
+		  <tr> 
+            <td height="30" align="right">日期：</td>
+            <td  align="left"><input name="sdate" type="text" id="sdate" size="25" value="<?php echo GetDateTimeMk(time())?>" />
+           </td>
+          </tr>
+          <tr> 
+            <td height="172" valign="top" align="right">信息内容：</td>
+            <td height="172"> 
+              <?php
+	GetEditor("body","",250,"Small");
+	?>
+            </td>
+          </tr>
+          <tr> 
+            <td height="38">&nbsp;</td>
+            <td>
+            	<input type="submit" name="Submit" value="发布新闻" class="coolbg np" />
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="2">&nbsp;</td>
+          </tr>
+     </table>
+    </td>
+</tr>
+</form>
+</table>
+</body>
+</html>

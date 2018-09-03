@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>会员管理--积分头衔设置</title>
+<script language="javascript" src="js/main.js"></script>
+<script type="text/javascript">
+function CheckAll(form, prefix, checkall) {
+	var checkall = checkall ? checkall : 'chkall';
+	for(var i = 0; i < form.elements.length; i++) {
+		var e = form.elements[i];
+		if(e.name && e.name != checkall && (!prefix || (prefix && e.name.match(prefix)))) {
+			e.checked = form.elements[checkall].checked;
+		}
+	}
+}
+</script>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+td{ padding-left:10px}
+</style>
+<body background="images/allbg.gif" >
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt"  style="padding-left:10px;">积分头衔设置</div>
+</div>
+<form action="member_scores.php" method="post" >
+<input name="action" type="hidden" value="save" />
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="border:1px solid #CFCFCF;border-bottom:none;">
+  <tr bgcolor="#EDF9D5">
+    <td width="100%" height="24" background='images/tbg.gif' style="padding-left:10px;">
+    	<b><a href="member_main.php"><U>会员管理</U></a> &gt; 积分头衔设置：</b>
+    </td>
+  </tr>
+  </table>  
+  <table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CFCFCF" align="center">
+        <tr>
+          <td width="6%" height="30" align="center" valign="middle" bgcolor="#FBFCE2">
+          	<input type="checkbox" name="chkall" id="chkall" onClick="CheckAll(this.form)" class='np' />
+          删?</td>
+          <td width="23%" height="30" align="center" bgcolor="#FEFCEF">积分大于</td>
+          <td width="24%" height="30" align="center" bgcolor="#FEFCEF">星星数</td>
+          <td width="23%" height="30" align="center" bgcolor="#FEFCEF">级别头衔</td>
+          <td width="24%" height="30" align="center" bgcolor="#FEFCEF">是否默认</td>
+        </tr>
+        <?php
+		foreach($Scores as $v){	
+		?>
+        <tr height="28" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+          <td height="28" align="center" >
+          	<input name="Ids-<?php echo $v['id']?>" type="checkbox" id="Ids-<?php echo $v['id']?>" value="1" class='np' />
+          </td>
+          <td height="28" align="left" style="padding:5px;">
+          <input name="integral-<?php echo $v['id']?>" type="text" id="integral-<?php echo $v['id']?>" value="<?php echo $v['integral']?>" size="10" /></td>
+          <td height="28" align="left" style="padding:5px;">
+          <input name="icon-<?php echo $v['id']?>" type="text" id="icon-<?php echo $v['id']?>" value="<?php echo $v['icon']?>" size="3" /></td>
+          <td height="28" align="left" style="padding:5px;">
+          <input name="titles-<?php echo $v['id']?>" type="text" id="titles-<?php echo $v['id']?>" value="<?php echo $v['titles']?>" size="20" /></td>
+          <td height="28" align="left" style="padding:5px;">
+            <select name="isdefault-<?php echo $v['id']?>" id="isdefault-<?php echo $v['id']?>">
+              <option value="1" <?php if($v['isdefault']) echo " selected='selected'";?>>是</option>
+              <option value="0" <?php if(!$v['isdefault']) echo " selected='selected'";?>>否</option>            
+            </select>
+            </td>
+        </tr>
+        <?php
+		}
+		?>
+        <tr bgcolor="#F9FCEF">
+          <td height="28">&nbsp;&nbsp;新增：</td>
+          <td height="28" style="padding:5px;"><input name="add_integral" type="text" id="add_integral" size="10" /></td>
+          <td height="28" style="padding:5px;"><input name="add_icon" type="text" id="add_icon" size="3" /></td>
+          <td height="28" style="padding:5px;"><input name="add_titles" type="text" id="add_titles" size="20" /></td>
+          <td height="28" style="padding:5px;">
+          <select name="add_isdefault" id="add_isdefault">
+              <option value="1" >是</option>
+              <option value="0" >否</option>            
+          </select></td>
+        </tr>
+</table>
+<br />
+<table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="40" align="center">
+    	<input name="imageField" type="submit" class="np coolbg" value="提交" id="imageField"/>
+    </td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>

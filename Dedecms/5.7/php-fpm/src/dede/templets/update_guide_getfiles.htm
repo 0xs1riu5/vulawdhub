@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>自动更新程序--下载更新文件</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+ <tr> 
+      <td height="28" colspan="2" background='images/tbg.gif'>
+      <div style="float:left">
+    		<strong>自动更新程序--下载更新文件</strong>
+   		</div>
+  	 	<div style="float:right;padding-right:6px;">
+  	 		<a href='index_body.php' class='np coolbg'>返回系统主页</a>
+    	</div>
+      </td>
+  </tr>
+  <tr bgcolor="#ffffff"> 
+    <td height="20" colspan="2">
+    	下载的文件临时存放在文件夹(<font color='red'>../data/<?php echo $tmpdir; ?></font>)内，如果某些基础类有重要的改动导致更新中途中错，您可以从这文件夹提取文件手工更新。
+    </td>
+  </tr>
+  <?php echo $dirinfos; ?>
+  <tr bgcolor="#F8FEDA"> 
+    <td height="20" colspan="2">
+    	<table width="100%">
+        <tr> 
+          <td width="74%">进行状态： </td>
+          <td width="26%" align="right">
+          	<script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>] 
+          </td>
+        </tr>
+      </table>
+     </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td colspan="2" id="mtd">
+    	<div id='mdv' style='width:100%;height:350px;'> 
+        <?php
+        echo $doneStr;
+        ?>
+      </div>
+	  </td>
+  </tr>
+</table>
+</body>
+</html>

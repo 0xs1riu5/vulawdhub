@@ -1,0 +1,125 @@
+/*
+
+“圆角” 样式
+
+2008.8.12 10:48 for Fangyu12@gmail.com
+
+Last modified 2008.10.06 15:30
+
+Copyright (c) 2008, dedecms All rights reserved.
+
+*/
+/* 圆角模型
+-------------------------------------------------------------------*/
+.module,
+.module .mid {
+	overflow:hidden;
+}
+.module .top .t_l, .module .bottom .b_l {
+	float:left;
+	overflow:hidden;
+}
+.module .top .t_r, .module .bottom .b_r {
+	float:right;
+	overflow:hidden;
+}
+.module .top em {
+	float:left;
+	font-size:13px;
+	font-weight:bold;
+	font-family:Arial,Helvetica,sans-serif;
+	margin-left: 5px;
+}
+.module .top em a:link, .module .top em a:visited {
+	font-size:13px;
+	font-weight:bold;
+}
+.module .top span {
+	float:right;
+}
+.module .top strong {
+	cursor:pointer;
+	float:right;
+	font-weight:normal;
+	margin-right:4px;
+}
+.module .mid .m_l, .module .mid .m_r {
+	overflow:hidden;
+}
+.module .mid .content {
+	overflow:hidden;
+	height:100%;
+	clear: both;
+	margin-right: 8px;
+	margin-left: 8px;
+	padding-top: 8px;
+	/*padding-bottom: 10px;*/
+}
+.module .top, 
+.module .top .t_l, 
+.module .top .t_r, 
+.module .bottom, 
+.module .bottom .b_l, 
+.module .bottom .b_r {
+	background-image: url("../images/bg.png");
+}
+
+/* 银色
+-------------------------------------------------------------------*/
+.silver .top {
+	background-position: 0 -200px;
+	background-repeat: repeat-x;
+	height: 32px;
+}
+.silver .top .t_l {
+	background-position: -5px -160px;
+	background-repeat: no-repeat;
+	height: 32px;
+	width: 5px;
+}
+.silver .top .t_r {
+	background-position: 0 -160px;
+	background-repeat: no-repeat;
+	height: 32px;
+	width: 5px;
+}
+/* 绿色
+-------------------------------------------------------------------*/
+.green .top {
+	background-position: 0 -40px;
+	background-repeat: repeat-x;
+	height: 31px;
+	line-height:31px;
+}
+.green .top .t_l {
+	background-position: -5px 0;
+	background-repeat: no-repeat;
+	height: 31px;
+	width: 5px;
+}
+.green .top .t_r {
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	height: 31px;
+	width: 5px;
+}
+
+
+.green .bottom {
+	background-position: 0 -120px;
+	background-repeat: repeat-x;
+	height: 33px;
+	line-height:33px;
+}
+.green .bottom .b_l {
+	background-position: -5px -80px;
+	background-repeat: no-repeat;
+	height: 33px;
+	width: 5px;
+}
+.green .bottom .b_r {
+	background-position: 0 -80px;
+	background-repeat: no-repeat;
+	height: 33px;
+	width: 5px;
+}

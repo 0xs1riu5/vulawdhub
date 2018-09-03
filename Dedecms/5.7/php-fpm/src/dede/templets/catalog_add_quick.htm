@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>栏目管理--快速创建栏目</title>
+<script type="text/javascript" src="../include/js/jquery/jquery.js"></script>
+<script type="text/javascript">
+var $ = jQuery;
+$(document).ready(function(){
+    //删除按钮事件
+    $("#addQuick .del").click(function() {
+        $(this).parents(".repeat").remove();
+    });
+    //添加按钮事件
+    $("#add").click(function(){
+		var id = $("#addQuick tr").prevAll("tr").length + 1;
+        $("#addQuick tr:eq(1)").clone(true).addClass("repeat")
+			.find(".rank input")
+                .attr("value",function(){return id})
+				.end()
+            .find(".pubinputs")
+                .attr("name",function(){return this.name+id})
+				.attr("id",function(){return this.id+id})
+                .end()
+            .appendTo($("#addQuick"));
+    });
+    //删除按钮事件
+    $("#addQuickRel .del").click(function() {
+        $(this).parents(".repeat").remove();
+    });
+    //添加按钮事件
+    $("#addrel").click(function(){
+		var id = $("#addQuickRel tr").prevAll("tr").length + 1;
+        $("#addQuickRel tr:eq(1)").clone(true).addClass("repeat")
+			.find(".rank input")
+                .attr("value",function(){return id})
+				.end()
+            .find(".pubinputs")
+                .attr("name",function(){return this.name+id})
+				.attr("id",function(){return this.id+id})
+                .end()
+            .appendTo($("#addQuickRel"));
+    });
+});
+</script>
+<script language="javascript">
+function ShowHide(objname){
+  var obj = document.getElementById(objname);
+  if(obj.style.display == "block" || obj.style.display == "")
+	   obj.style.display = "none";
+  else
+	   obj.style.display = "block";
+}
+function ShowObj(objname){
+   var obj = document.getElementById(objname);
+	 obj.style.display = "block";
+}
+function HideObj(objname){
+  var obj = document.getElementById(objname);
+	obj.style.display = "none";
+}
+function showSeltype(objname)
+{
+	if(objname.value != 0)
+	{
+		$("#addQuickRel").show();
+		$("#pathtype").show();
+		$("#addQuick").hide();
+		$("#savetype").val('rel');
+	} else {
+		$("#addQuickRel").hide();
+		$("#addQuick").show();
+		$("#pathtype").hide();
+		$("#savetype").val('');
+	}
+}
+</script>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body leftmargin='15' topmargin='10'>
+<form name="form1" action="catalog_add.php" method="post">
+  <input type="hidden" name="dopost" value="savequick" />
+  <input type="hidden" name="savetype" value="" id="savetype"/>
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
+    <tr>
+      <td width="100%" height="20" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="30"><img height='14' src='images/book1.gif' width='20' />&nbsp;<a href="catalog_main.php"><u>栏目管理</u></a> &gt;&gt; 批量增加栏目 </td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td width="100%" height="1" background="images/sp_bg.gif"></td>
+    </tr>
+  </table>
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td height="10"></td>
+    </tr>
+    <tr>
+      <td height="95" align="left" bgcolor="#FFFFFF">
+	  <table width="100%" border="0" cellspacing="0" id="head1" cellpadding="0" >
+          <tr>
+            <td colspan="2" bgcolor="#FFFFFF"><table width="84" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;常规选项&nbsp;</td>
+                </tr>
+              </table></td>
+          </tr>
+        </table>
+        <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0" style="border:1px solid #cfcfcf;background:#ffffff;text-align:left;">
+          <tr>
+            <td height="24"  bgcolor="#F9FCEF" style="padding-left:10px;"><strong>公用参数：</strong></td>
+            <td  bgcolor="#F9FCEF"></td>
+          </tr>
+          <tr>
+            <td width="150" class='bline' height="26" style="padding-left:10px;">是否支持投稿：</td>
+            <td class='bline'><input type='radio' name='issend' value='0' class='np' />
+              不支持
+              &nbsp;
+              <input type='radio' name='issend' value='1' class='np' checked='1' />
+              支持 </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;">目录保存位置：</td>
+            <td class='bline'><input name="referpath" type="radio" id="truepath1" class="np" value="parent" checked='1' />
+              默认HMTL目录(
+              <?php
+            $pardir = '{cmspath}'.$cfg_arcdir;
+            if(!empty($typedir)) $pardir = $typedir.'/';
+            $pardir = preg_replace("#\/{1,}#", '/', $pardir);
+            echo $pardir;
+            ?>
+              )
+              <input name="referpath" type="radio" id="truepath2" class="np" value="cmspath" />
+              CMS根目录
+              <input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir; ?>" />
+            <span id="pathtype" style="display:none"><input name="referpath" type="radio" id="truepath3" class="np" value="typepath" />
+            隶属栏目所属的目录</span></td>
+          </tr>
+          <tr>
+           <td class='bline' height="26" style="padding-left:10px;">隶属栏目：</td>
+           <td class='bline'>
+           <select name='reid' onchange="showSeltype(this)">
+           <option value='0'>选择所属目录... </option>
+            <?php echo $typeOptions;?>
+           </select> 
+           （默认为顶级栏目）
+           </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;">内容模型： &nbsp; </td>
+            <td class='bline'><select name="channeltype" id="channeltype" style="width:200px" onChange="ParTemplet(this)">
+                <?php
+            foreach($channelArray as $k=>$arr)
+            {
+            	if($k==$channelid) echo "    <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+              else  echo "    <option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+            }
+            ?>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;">栏目列表选项：</td>
+            <td class='bline'><input type='radio' name='isdefault' value='1' class='np' checked='1' />
+              链接到默认页
+              <input type='radio' name='isdefault' value='0' class='np' />
+              链接到列表第一页
+              <input type='radio' name='isdefault' value='-1' class='np' />
+              使用动态页 </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;">默认页的名称： </td>
+            <td class='bline'><input name="defaultname" type="text" value="index.html" class="pubinputs" /></td>
+          </tr>
+          <tr id='helpvar2' style='display:none'>
+            <td height="24" bgcolor="#F3F7EA" style="padding-left:10px;">支持变量： </td>
+            <td height="24" bgcolor="#F3F7EA"> {Y}、{M}、{D} 年月日<br/>
+              {timestamp} INT类型的UNIX时间戳<br/>
+              {aid} 文章ID<br/>
+              {pinyin} 拼音+文章ID<br/>
+              {py} 拼音部首+文章ID<br/>
+              {typedir} 栏目目录 <br/>
+              {cc} 日期+ID混编后用转换为适合的字母 <br/>
+            </td>
+          </tr>
+          <tr>
+            <td height="26" class='bline' style="padding-left:10px;">文章命名规则：</td>
+            <td class='bline'><input name="namerule" type="text" id="namerule" value="{typedir}/{Y}{M}{D}/{aid}.html" size="40" class="pubinputs" />
+              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar2')" /> </td>
+          </tr>
+          <tr id='helpvar3' style='display:none'>
+            <td height="24" bgcolor="#F3F7EA" style="padding-left:10px;">支持变量： </td>
+            <td bgcolor="#F3F7EA">{page} 列表的页码</td>
+          </tr>
+          <tr>
+            <td height="26" style="padding-left:10px;">列表命名规则：</td>
+            <td><input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" size="40" class="pubinputs" />
+              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar3')" /></td>
+          </tr>
+          <tr>
+            <td height="24"  bgcolor="#F9FCEF" style="padding-left:10px;"><strong>栏目填写：</strong></td>
+            <td  bgcolor="#F9FCEF"></td>
+          </tr>
+          <tr>
+            <td colspan='2' style="padding:5px 0px 8px 10px">
+			<table id="addQuick" width="800"  border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf">
+                <tbody>
+                  <tr bgcolor="#FBFCE2" align="center">
+                    <td width="60" height="28">排序</td>
+                    <td width="170">顶级栏目名称</td>
+                    <td width="520">子栏目(用&quot;目录名称1,目录名称2...&quot;这样表示多个栏目)</td>
+                    <td width="50" align="center"><input name="" type="button" value="添加" id="add" class="coolbt"></td>
+                  </tr>
+                  <tr bgcolor="#FFFFFF" height="32"  align="center">
+                    <td class="rank" style="padding:5px;"><input type="hidden" name="posttype" value="" class="pubinputs" />
+                      <input type="text" name="rank" id="rank" value="1" class="pubinputs" style="width:50px;" /></td>
+                    <td align='center'><input type="text" name="toptype" id="toptype" class="pubinputs" style="width:160px;" /></td>
+                    <td><input type="text" name="sontype" id="sontype" class="pubinputs" style="width:480px;" /></td>
+                    <td align="center"><input name="" type="button" value="删除" id="add" class="del coolbt"></td>
+                  </tr>
+                  <?php for($i=2;$i<=10;$i++) { ?>
+                  <tr bgcolor="#FFFFFF" height="32" class="repeat"  align="center">
+                    <td class="rank"><input type="hidden" name="posttype<?php echo $i; ?>" value="<?php echo $i; ?>" />
+                      <input type="text" name="rank<?php echo $i; ?>" id="rank<?php echo $i; ?>" value="<?php echo $i; ?>" class="pubinputs" style="width:50px;" /></td>
+                    <td align='center'><input type="text" name="toptype<?php echo $i; ?>" id="toptype<?php echo $i; ?>" class="pubinputs" style="width:160px;" /></td>
+                    <td><input type="text" name="sontype<?php echo $i; ?>" id="sontype<?php echo $i; ?>" class="pubinputs" style="width:480px;" /></td>
+                    <td align="center"><input name="" type="button" value="删除" id="add" class="del coolbt"></td>
+                  </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+              
+              
+              <table id="addQuickRel" width="302"  border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" style="display:none">
+                <tbody>
+                  <tr bgcolor="#FBFCE2" align="center">
+                    <td width="60" height="28">排序</td>
+                    <td width="170">栏目名称</td>
+                    <td width="50" align="center"><input name="" type="button" value="添加" id="addrel" class="coolbt"></td>
+                  </tr>
+                  <tr bgcolor="#FFFFFF" height="32"  align="center">
+                    <td class="rank" style="padding:5px;"><input type="hidden" name="posttype" value="" class="pubinputs" />
+                      <input type="text" name="rank" id="rank" value="1" class="pubinputs" style="width:50px;" /></td>
+                    <td align='center'><input type="text" name="reltype" id="reltype" class="pubinputs" style="width:160px;" /></td>
+                    <td align="center"><input name="" type="button" value="删除" id="add" class="del coolbt"></td>
+                  </tr>
+                  <?php for($i=2;$i<=10;$i++) { ?>
+                  <tr bgcolor="#FFFFFF" height="32" class="repeat"  align="center">
+                    <td class="rank"><input type="hidden" name="posttype<?php echo $i; ?>" value="<?php echo $i; ?>" />
+                      <input type="text" name="rank<?php echo $i; ?>" id="rank<?php echo $i; ?>" value="<?php echo $i; ?>" class="pubinputs" style="width:50px;" /></td>
+                    <td align='center'><input type="text" name="reltype<?php echo $i; ?>" id="reltype<?php echo $i; ?>" class="pubinputs" style="width:160px;" /></td>
+                    <td align="center"><input name="" type="button" value="删除" id="add" class="del coolbt"></td>
+                  </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+              </td>
+          </tr>
+        </table>
+        <table width="98%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
+         <tr>
+            <td width="1%" height="36"></td>
+            <td width="99%" valign="bottom"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0" class="np" />
+              &nbsp;&nbsp;&nbsp; <a href="catalog_main.php"><img src="images/button_back.gif" width="60" height="22" border="0" /></a> </td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

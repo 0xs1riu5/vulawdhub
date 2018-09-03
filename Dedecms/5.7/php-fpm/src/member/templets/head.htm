@@ -1,0 +1,103 @@
+<?php
+//未登录显示的head
+if(!$cfg_ml->IsLogin()) {
+?>
+<div id="header">
+	<div id="siteNav">
+    <div class="innerWrap">
+      <div id="loginInfo">
+      <script type="text/javascript">
+           	var now=(new Date()).getHours();
+			if(now>0&&now<=6){
+				document.write("午夜好，");
+			}else if(now>6&&now<=11){
+				document.write("早上好，");
+			}else if(now>11&&now<=14){
+				document.write("中午好，");
+			}else if(now>14&&now<=18){
+				document.write("下午好，");
+			}else{
+				document.write("晚上好，");
+			}
+			</script>
+       游客
+       </div>
+      <ul id="quickMenu">
+        <li><a title="网站主页" href="../">网站主页</a> </li>
+        <li><a title="注册" href="../member/index_do.php?fmdo=user&dopost=regnew">注册</a> </li>
+        <li><a title="登录" href="../member/login.php">登录</a> </li>
+        <li class="help"> <a title="DEDECMS 帮助中心" href="http://help.dedecms.com" target="_blank">帮助</a> </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<?php
+}
+//登录后显示的head
+else {
+?>
+<div id="header">
+  <div id="siteNav">
+    <div class="innerWrap">
+      <div id="loginInfo">
+      <script type="text/javascript">
+           	var now=(new Date()).getHours();
+			if(now>0&&now<=6){
+				document.write("午夜好，");
+			}else if(now>6&&now<=11){
+				document.write("早上好，");
+			}else if(now>11&&now<=14){
+				document.write("中午好，");
+			}else if(now>14&&now<=18){
+				document.write("下午好，");
+			}else{
+				document.write("晚上好，");
+			}
+			</script>
+       <a href="#" class="userName"><?php echo $cfg_ml->M_UserName?></a> <a href="../member/index_do.php?fmdo=login&dopost=exit#">[退出]</a> 
+       <?php
+       $pms = $dsql->GetOne("SELECT COUNT(*) AS nums FROM #@__member_pms WHERE toid='{$cfg_ml->M_ID}' AND `hasview`=0 AND folder = 'inbox'");
+		if($pms['nums'] > 0)
+		{
+			echo "<a href='/member/pm.php' target='_blank'>短消息 [<font color='#FF0000'>{$pms['nums']}</font>]</a>";
+		}
+		elseif($pms['nums']==0)
+		{
+			echo "<a href='/member/pm.php' target='_blank'>短消息</a>";
+		}
+       ?>
+       </div>
+      <ul id="quickMenu">
+        <li class="home"><a href="../" title="会员中心首页">主页</a></li>
+        <li><a href="#">内容中心</a></li>
+        <li><a href="<?php echo $myurl; ?>" title="会员空间">会员空间</a></li>
+        <li><a href="../member/mystow.php" title="收藏夹">收藏夹</a></li>
+        <li class="help"><a href="http://help.dedecms.com" title="DEDECMS 帮助中心">帮助</a></li>
+      </ul>
+    </div>
+  </div>
+  <!--顶部导航 -->
+  <div id="topPic"> <a href="../member/"><img alt="会员中心" src="../member/templets/images/m_logo.gif" class="topLogo"/></a> </div>
+  <div id="topNav">
+    <ul id="appIterm">
+      <li <?php echo ($menutype == 'content')? 'class="thisApp"' : "" ;?>><a href="../member/content_list.php?channelid=1">内容中心</a></li>
+      <li <?php echo ($menutype == 'mydede')? 'class="thisApp"' : "" ;?>><a href="../member/" title="我的织梦">我的织梦</a></li>
+      <li <?php echo ($menutype == 'config')? 'class="thisApp"' : "" ;?>><a href="../member/edit_space_info.php" title="系统设置">系统设置</a></li>
+    </ul>
+    <!--程序导航列表 -->
+    <div id="channel">
+      <ul>
+        <li><a href="<?php echo $myurl; ?>" title="个人空间" target="_blank"><span>个人空间</span></a></li>
+        <li <?php echo ($menutype_son == 'mf')? 'class="thisApp"' : "" ;?>><a href="../member/myfriend.php" title="我的好友"><span>我的好友</span></a></li>
+        <li <?php echo ($menutype_son == 'pm')? 'class="thisApp"' : "" ;?>><a href="../member/pm.php" title="短消息"><span>短消息</span></a></li>
+        <li <?php echo ($menutype_son == 'gu')? 'class="thisApp"' : "" ;?>><a href="../member/guestbook_admin.php" title="留言板"><span>留言板</span></a></li>
+        <li <?php echo ($menutype_son == 'op')? 'class="thisApp"' : "" ;?>><a href="../member/operation.php" title="消费中心"><span>消费中心</span></a></li>
+        <li <?php echo ($menutype_son == 'cc')? 'class="thisApp"' : "" ;?>><a href="../member/caicai.php" title="随便踩踩"><span>随便踩踩</span></a></li>
+      </ul>
+    </div>
+    <!--导航栏目项 -->
+  </div>
+</div>
+<?php
+}
+?>

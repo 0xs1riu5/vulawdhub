@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>编辑软件:<?php echo $row['title']?> - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language='javascript' src="templets/js/main.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript" src="templets/js/checkSubmit.js"></script>
+<script type="text/javascript">
+var startNum = 2;
+function MakeUpload()
+{
+	var upfield = document.getElementById("uploadfield");
+	var morelinkobj = document.getElementById("morelink");
+	var endNum =  parseInt(document.form1.picnum.value) + startNum;
+	morelinkobj.style.display = "block";
+	if(endNum>12) endNum = 12;
+	for(startNum;startNum<=endNum;startNum++){
+		upfield.innerHTML += "<div class='mT10' style='margin-top:16px'>";
+		upfield.innerHTML += "<font color='#727272'>软件地址"+startNum+"：</font><input type='text' name='softurl"+startNum+"' value='http://' maxlength='100' class='intxt'> ";
+		upfield.innerHTML += " ";
+		upfield.innerHTML += "<font color='#727272'>服务器名称：</font><input type='text' name='servermsg"+startNum+"' class='intxt' style='width:150px'>\r\n";
+		upfield.innerHTML += "</div>";
+	}
+}
+
+function ShowHideAddr()
+{
+	document.getElementById('morelink').style.display = (document.getElementById('morelink').style.display=='block' ? 'none' : 'block');
+	document.getElementById('btsh3').value = (document.getElementById('morelink').style.display=='block' ? '隐藏地址' : '显示地址');
+}
+
+-->
+</script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="#"><span>编辑软件</span></a></li>
+        </ul>
+      </div>
+     <form class="mTB10 mR10 mL10" name="form1" action="soft_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <input type="hidden" name="aid" value="<?php echo $row['id']; ?>" />
+          <input type="hidden" name="idhash" value="<?php echo md5($row['id'].$cfg_cookie_encode); ?>" />
+          <input type="hidden" name="channelid" value="<?php echo $row['channel']; ?>" />
+          <input type="hidden" name="oldlitpic" value="<?php echo $row['litpic']; ?>" />
+          <input type="hidden" name="sortrank" value="<?php echo $row['sortrank']; ?>" />
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>编辑软件</strong></h3>
+        <div class="postForm">
+          <p class="cellBg">
+            <label><?php echo $cInfos['typename']; ?>名称：</label>
+            <input name="title" type="text" id="title" value="<?php echo $row['title']?>" maxlength="100" class="intxt"/>
+          </p>
+          <p>
+            <label>标签TAG：</label>
+            <input name="tags" type="text" id="tags" value="<?php echo GetTags($row['id']); ?>" maxlength="100" class="intxt"/>
+          </p>
+          <p class="cellBg">
+            <label>作者：</label>
+            <input name="writer" type="text" id="writer" value="<?php echo $cfg_ml->M_UserName?>"  maxlength="100" class="intxt" style="width:95px;">
+          </p>
+          <p>
+            <span class="colLeft">
+              <label>文件类型：</label>
+              <select name="filetype" id="filetype" style="width:100px">
+                    <?php
+       if($addRow["filetype"]!="") echo "<option value=\"".$addRow["filetype"]."\">".$addRow["filetype"]."</option>\r\n";
+                ?>
+            <option value=".exe" selected="selected">.exe</option>
+                    <option value=".zip">.zip</option>
+                    <option value=".rar">.rar</option>
+                    <option value=".iso">.iso</option>
+                    <option value=".gz">.gz</option>
+                    <option value="其它">其它</option>
+              </select>
+            </span>
+            <span class="colRight">
+              <label>界面语言：</label>
+              <select name="language" id="language" style="width:100px">
+                    <?php
+   if($addRow["language"]!="") echo "<option value=\"".$addRow["language"]."\">".$addRow["language"]."</option>\r\n";
+                ?>
+                    <option value="简体中文" selected="selected">简体中文</option>
+                    <option value="英文软件">英文软件</option>
+                    <option value="繁体中文">繁体中文</option>
+                    <option value="其它类型">其它类型</option>
+               </select>
+            </span>
+          </p>
+          <p class="cellBg">
+            <span class="colLeft">
+              <label>软件类型：</label>
+			  <select name="softtype" id="softtype" style="width:100px">
+                    <?php
+      					if($addRow["softtype"]!="") echo "<option value=\"".$addRow["softtype"]."\">".$addRow["softtype"]."</option>\r\n";
+               		 ?>
+                <option value="国产软件" selected="selected">国产软件</option>
+                <option value="国外软件">国外软件</option>
+                <option value="汉化补丁">汉化补丁</option>
+              </select>
+            </span>
+            <span class="colRight">
+              <label>授权方式：</label>
+              <select name="accredit" id="accredit" style="width:100px">
+                    <?php
+              if($addRow["accredit"]!="") echo "<option value=\"".$addRow["accredit"]."\">".$addRow["accredit"]."</option>\r\n";
+                ?>
+                    <option value="共享软件" selected="selected">共享软件</option>
+                    <option value="免费软件">免费软件</option>
+                    <option value="开源软件">开源软件</option>
+                    <option value="商业软件">商业软件</option>
+                    <option value="破解软件">破解软件</option>
+                    <option value="游戏外挂">游戏外挂</option>
+              </select>
+            </span>
+          </p>
+          <p>
+            <span class="colLeft">
+              <label>运行环境：</label>
+              <input type='text' name='os'  value="<?php echo isset($addRow['os'])? $addRow['os'] : ''; ?>"  maxlength="100" class="intxt" style="width:160px"/>
+            </span>
+            <span class="colRight">
+              <label>软件等级：</label>
+              <select name="softrank" id="softrank" style="width:100px">
+                    <?php
+              if($addRow["softrank"]!="") echo "<option value=\"".$addRow["softrank"]."\">".$addRow["softrank"]."星</option>\r\n";
+                ?>
+                    <option value="1">一星</option>
+                    <option value="2">二星</option>
+                    <option value="3" selected="selected">三星 </option>
+                    <option value="4">四星</option>
+                    <option value="5">五星</option>
+               </select>
+            </span>
+          </p>
+          <p  class="cellBg">
+            <span class="colLeft">
+              <label>官方网址：</label>
+              <input type="text" name="officialDemo" id="officialDemo" value="<?php echo isset($addRow['officialUrl'])? $addRow['officialUrl'] : ''; ?>"  maxlength="100"  class="intxt" style="width:160px"/>
+            </span>
+            <span class="colRight">
+              <label>程序演示：</label>
+              <input type="text" name="officialUrl" id="officialUrl" value="<?php echo isset($addRow['officialDemo'])? $addRow['officialDemo'] : ''; ?>"  maxlength="100"  class="intxt" style="width:160px"/>
+            </span>
+          </p>
+          <p>
+            <span class="colLeft">
+              <label>软件大小：</label>
+              <input name="softsize" type="text" id="softsize" value="<?php echo isset($addRow['softsize'])? $addRow['softsize'] : ''; ?>" maxlength="100" class="intxt" style="width:95px"/>
+            </span>
+            <span class="colRight">
+              <label>软件来源：</label>
+              <input name="source" type="text" id="source" value="<?php echo $row['source'] ?>" maxlength="100" class="intxt" style="width:160px"/>
+            </span>
+          </p>
+          <p class="cellBg">
+            <span class="colLeft">
+              <label>隶属栏目：</label>
+              <?php
+   				 $typeOptions = GetOptionList($row["typeid"],$row["channel"]);
+    			 echo "<select name='typeid' size='1'>\r\n";
+   				 echo $typeOptions;
+   				 echo "</select>";
+			  ?>
+              <span style="color:#F00">*</span>
+            </span>
+            <span class="colRight">
+              <label>需要金币：</label>
+              <input name="needmoney" type="text" value="<?php echo isset($addRow["needmoney"])? $addRow["needmoney"] : ''; ?>" id="needmoney" maxlength="100" class="intxt" style="width:80px" />(最大允许100个)
+            </span>
+          </p>
+          <p>
+            <label>缩略图：</label>
+            <input name="litpic" type="file" id="litpic" onchange="SeePicNew('divpicview',this);"  maxlength="100" class="intxt"/>
+          </p>
+          <p class="cellBg">
+            <label style="width: 85px;">原来的缩略图：</label>
+            <img name="nlitpic"  id="nlitpic" src='
+            <?php  
+            echo !empty($row['litpic'])? $row['litpic'] : 'templets/images/dfpic.gif';  
+            ?>' style="width: 200px; height:150px"/>
+          </p>
+           <?php
+            //自定义字段
+     		   PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');
+      	   ?>
+    </div>
+        <h3 class="meTitle"><strong>软件详情</strong></h3>
+        <div class="contentShow postForm">
+          <p>
+            <label>文字介绍：</label><?php 
+            $addRow["introduce"] = isset($addRow["introduce"])? $addRow["introduce"] : '';
+            GetEditor("body",$addRow["introduce"],250,"Small");
+            ?>
+          </p>
+          <p class="cellBg">
+            <label>本地地址：</label>
+            	<input name="softurl1" type="text" id="softurl1" class="intxt" style="width:230px" />
+                <button  name="sel1" type="button" id="sel1" onclick="SelectSoft('form1.softurl1')" class="bt3">选取</button>
+                  服务器名称：
+                <input name="servermsg1" type="text" id="servermsg1" value="本地下载" class="intxt" style="width:150px" />
+          </p>
+          <p>
+            <label>其它地址：</label>
+            	<input name="picnum" type="text" id="picnum" value="5" class="intxt" style="width:230px"/>
+                <button name='kkkup' type='button' id='kkkup2' onclick="MakeUpload();" class="bt2">增加地址</button>
+                <button type="button" name="Submit3" id="btsh3" onclick="ShowHideAddr();" class="bt2">隐藏地址</button>
+                  (最多为12个链接)</p>
+                  <div id="morelink" class="mt10">
+                    <?php
+        				echo $nForm;
+        				echo "<span id='uploadfield'></span>";
+	      			?>
+                  </div>
+          
+      <?php
+      	//游客强制加验证码，会员则判断后台开关
+      	if(preg_match("/3/",$safe_gdopen)){
+      ?>
+          <p class="cellBg">
+            <label>验证码：</label>
+            <input name="vdcode" type="text" id="vdcode" maxlength="100" class="intxt" style='width:50px;text-transform:uppercase;' />
+            <img src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></p>
+      <?php }?>
+      <p>
+             <button class="button2" type="submit">提交</button>
+             <button class="button2 ml10" type="reset" onclick="location.reload();">重置</button>
+      </p>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>修改文章:<?php echo $row['title']?> - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="templets/js/main.js"></script>
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript" src="templets/js/checkSubmit.js"></script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="#"><span>修改文章</span></a></li>
+        </ul>        
+        </div>
+      <form class="mTB10 mL10 mR10" name="addcontent" id="addcontent" action="article_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <input type="hidden" name="aid" value="<?php echo $row['id']; ?>" />
+          <input type="hidden" name="idhash" value="<?php echo md5($row['id'].$cfg_cookie_encode); ?>" />
+          <input type="hidden" name="channelid" value="<?php echo $row['channel']; ?>" />
+          <input type="hidden" name="oldlitpic" value="<?php echo $row['litpic']; ?>" />
+          <input type="hidden" name="sortrank" value="<?php echo $row['sortrank']; ?>" />
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>修改文章</strong></h3>
+        <div class="postForm">
+          <p class="cellBg">
+            <label>标题：</label>
+            <input  name="title" type="text" id="title" value="<?php echo $row['title']?>" maxlength="100" class="intxt"/>
+          </p>
+          <p>
+            <label>标签TAG：</label>
+            <input name="tags" type="text" id="tags"  value="<?php echo $row['keywords']; ?>" maxlength="100" class="intxt"/>(用逗号分开) 
+          </p>
+          <p class="cellBg">
+            <label>作者：</label>
+            <input type="text" name="writer" id="writer" value="<?php echo $cfg_ml->M_UserName?>" maxlength="100" class="intxt" style="width:219px"/>
+          </p>
+          <p>
+            <label>隶属栏目：</label>
+            <?php
+    			$typeOptions = GetOptionList($row["typeid"],$row["channel"]);
+   			    echo "<select name='typeid' size='1'>\r\n";
+    			echo $typeOptions;
+    			echo "</select>";
+			?>
+            <span style="color:#F00">*</span>(不能选择带颜色的分类)
+          </p>
+          <p class="cellBg">
+            <label>我的分类：</label>
+			<?php
+                $typeOptions = classification($cfg_ml->M_ID, $row['mtypeid'], $channelid);
+                echo "<select name='mtypesid' size='1'>\r\n";
+                echo "<option value='0' selected>请选择分类...</option>\r\n";
+                echo $typeOptions;
+                echo "</select>";
+    		?> 
+          </p>
+          <p>
+            <label>信息摘要：</label>
+            <textarea name="description" id="description"><?php echo $row["description"]; ?></textarea>
+            (内容的简要说明) </p>
+          <p class="cellBg">
+            <label>缩略图：</label>
+            <input name="litpic" type="file" id="litpic" onchange="SeePicNew('divpicview',this);"  maxlength="100" class="intxt"/>
+          </p>
+          <?php if($row['litpic']!='')
+          { 
+          ?>
+          <p>
+            <label style="width: 85px;">原来的缩略图：</label>
+            <img name="nlitpic"  id="nlitpic" src='<?php  echo $row['litpic'];  ?>' style="width: 200px; height:150px" />
+          </p>
+          <?php
+          }
+     	  //自定义字段
+      	  	PrintAutoFieldsEdit($row['fieldset'],$addRow,'autofield');
+      	  ?>
+    </div>
+        <!-- 表单操作区域 -->
+        <h3 class="meTitle">详细内容</h3>
+        <div class="contentShow postForm">
+          <p>
+            <?php GetEditor("body",$addRow['body'],350,"Member"); ?>
+          </p>
+      <?php
+      	//游客强制加验证码，会员则判断后台开关
+       	if(preg_match("/3/",$safe_gdopen)){
+      ?>
+          <p class="cellBg">
+            <label>验证码：</label>
+            <input name="vdcode" type="text" id="vdcode" maxlength="100" class="intxt" style='width:50px;text-transform:uppercase;' />
+            <img src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" />
+          </p>
+      <?php }?>
+      <p>
+             <button class="button2" type="submit">提交</button>
+             <button class="button2 ml10" type="reset" onclick="location.reload();">重置</button>
+      </p>
+        </div>
+      </div>
+      </form>
+      <!--主操作区域 -->
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

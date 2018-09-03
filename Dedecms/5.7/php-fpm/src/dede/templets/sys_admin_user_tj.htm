@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>管理员帐号--绩效统计</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language='javascript' src='../include/js/dedeajax2.js'></script>
+<script language='javascript'>
+	//gcontainer,mShowError,mShowWait,mErrCon,mErrDisplay,mWaitDisplay
+	function LoadUser(uid)
+	{
+		var loadhtml = $DE('loaddiv').innerHTML;
+		var ajaxdiv = $DE('userct'+uid);
+		var myajax = new DedeAjax(ajaxdiv, true, true, '载入失败！', loadhtml);
+		myajax.SendGet2('sys_admin_user_tj.php?dopost=getone&uid='+uid);
+	}
+</script>
+<style>
+.userct {
+	padding-top:12px;
+	width:100%;
+	height:60px;
+}
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div id='loaddiv' style='display:none'>
+	<p align='center'><img src='images/loadinglit.gif' /> 请稍后，正在载入中...</p>
+</div>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="28" background="images/tbg.gif" bgcolor="#E7E7E7"> 
+      <a href="sys_admin_user.php" style="padding-left:10px;"><strong><u>管理员帐号</u></strong></a> &gt; <strong>编辑绩效统计</strong>
+    </td>
+</tr>
+<tr>
+  <td height="269" valign="top" bgcolor="#FFFFFF">
+  <?php
+  $dsql->Execute('me', 'Select * From `#@__admin` order by id asc');
+  while( $arr = $dsql->GetArray('me') )
+  {
+  	echo "<div id='userct{$arr['id']}' class='userct'><p align='center'><img src='images/loadinglit.gif' /> 请稍后，正在载入中...</p></div>\r\n<script language='javascript'>LoadUser({$arr['id']});</script>\r\n";
+  }
+  ?>
+  </td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>新增连载内容</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript" src="js/story.js"></script>
+<style type="text/css">
+<!--
+#addCatalog {
+	position:absolute;
+	left:455px;
+	top:64px;
+	width:325px;
+	height:238px;
+	z-index:2;
+	background-color: #F2FDDB;
+	border:1px solid #889D8F;
+	padding:6px;
+	display:none
+}
+#editCatalog {
+	position:absolute;
+	left:455px;
+	top:64px;
+	width:325px;
+	height:238px;
+	z-index:1;
+	background-color: #F2FDDB;
+	border:1px solid #889D8F;
+	padding:6px;
+	display:none
+}
+-->
+</style>
+
+<script language="javascript">
+function CheckSelTable(nnum){
+	var cbox = $Obj('isokcheck'+nnum);
+	var seltb = $Obj('seltb'+nnum);
+	if(cbox.checked) seltb.style.display = 'none';
+	else seltb.style.display = 'block';
+}
+
+var startNum = 1;
+function MakeUpload(mnum)
+{
+   var endNum = 0;
+   var upfield = document.getElementById("uploadfield");
+   var pnumObj = document.getElementById("picnum");
+   var fhtml = "";
+ 
+   if(mnum==0) endNum = startNum + Number(pnumObj.value);
+   else endNum = mnum;
+   if(endNum>120) endNum = 120;
+   
+   for(startNum;startNum < endNum;startNum++){
+	   fhtml = "";
+	   fhtml += "<table width='90%'><tr><td><input type='checkbox' name='isokcheck"+startNum+"' id='isokcheck"+startNum+"' value='1' class='np' onClick='CheckSelTable("+startNum+")'>显示/隐藏图片["+startNum+"]的选框</td></tr></table>";
+	   fhtml += "<table width=\"90%\" border=\"0\" id=\"seltb"+startNum+"\" cellpadding=\"1\" cellspacing=\"1\" bgcolor=\"#E8F5D6\" style=\"margin-bottom:6px;margin-left:10px\"><tobdy>";
+	   fhtml += "<tr bgcolor=\"#F4F9DD\">\r\n";
+	   fhtml += "<td height=\"25\" colspan=\"2\">　<strong>图片"+startNum+"：</strong></td>";
+	   fhtml += "</tr>";
+	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
+	   fhtml += "<td width=\"70%\" height=\"25\"> 　本地上传： ";
+	   fhtml += "<input type=\"file\" name='imgfile"+startNum+"' style=\"width:330px\"  onChange=\"SeePic(document.picview"+startNum+",document.form1.imgfile"+startNum+");\"></td>";
+	   fhtml += "<td rowspan=\"3\" align=\"center\"><img src=\"images/pview.gif\" width=\"150\" id=\"picview"+startNum+"\" name=\"picview"+startNum+"\"></td>";
+	   fhtml += "</tr>";
+	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
+	   fhtml += "<td height=\"25\"> 　指定网址： ";
+	   fhtml += "<input type=\"text\" name='imgurl"+startNum+"' style=\"width:260px\"> ";
+	   fhtml += "<input type=\"button\" name='selpic"+startNum+"' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl"+startNum+"','big','picview"+startNum+"')\">";
+	   fhtml += "</td></tr>";
+	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
+	   fhtml += "<td height=\"25\">　漫画标题： ";
+	   fhtml += "<input type='text' name='title"+startNum+"' style=\"width:300px\"/> </td>";
+	   fhtml += "</tr></tobdy></table>\r\n";
+	   upfield.innerHTML += fhtml;
+  }
+}
+</script>
+
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">连载管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
+	<tr>
+	<td bgcolor="#EDF9D5" class="tbtitletxt" background='images/tbg.gif'> 
+	  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
+     <tr>
+     <td width='30%' class="tbtitletxt"><strong>连载内容(漫画类)&gt;&gt;增加内容</strong></td>
+     <td align='right'>
+			[<a href="story_list_content.php?bookid=<?php echo $bookid; ?>"><u>本图书内容列表</u></a>]
+			&nbsp;	
+			[<a href="story_books.php"><u>所有连载图书</u></a>]
+			</td>
+     </tr>
+    </table>
+  </td>
+ </tr>
+</table>
+<form name='form1' action='story_add_photo_action.php' enctype="multipart/form-data" method='post' onSubmit="return checkSubmitAddPhoto();">		
+<input type='hidden' name='bookid' value='<?php echo $bookid; ?>' />	
+<input type='hidden' name='catid' value='<?php echo $catid; ?>' />
+<input type='hidden' name='bookname' value='<?php echo str_replace("'","`",$bookname); ?>' />
+<input type='hidden' name='booktype' value='<?php echo $booktype; ?>' />
+<input type='hidden' name='photonum' value='5' />
+	
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
+		<tr>
+		  <td style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+		  <font color='red'><?php echo $msg; ?></font>
+		  </td>
+  </tr>
+<tr>
+<td height="116" bgcolor="#FFFFFF" style="padding:0px 6px 6px 10px;">
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+    <td height="32" class="bline">默认标题：</td>
+    <td class="bline"><input name="title" type="text" id="title" size="35" /></td>
+  </tr>
+  <tr>
+    <td style="width:120px" class="bline">隶属图书名称：</td>
+    <td class="bline">
+    	<?php echo $bookname; ?>    </td>
+  </tr>
+  <tr>
+    <td height="32" class="bline">
+    隶属章节：<br />
+	  <input name="addchapter" type="checkbox" onClick="ShowHideSelChapter('selchap','newchap')" id="addchapter" value="1"
+	  <?php echo(count($chapters)>0 ? "" : " checked"); ?> />
+    添加新章节    </td>
+    <td class="bline" style="padding-top:5px;padding-bottom:5px">
+    <span id='selchap' style="<?php echo(count($chapters)>0 ? "display:block" : "display:none"); ?>">
+    <select name="chapterid" size="5" id="chapterid" style="width:250px">
+    	<?php
+    	$ok = false;
+    	foreach($chapters as $k=>$v){
+    		if(!$ok){ $ok=true; echo "    <option value='$k' selected>第{$chapnums[$k]}章 $v</option>\r\n"; }
+    		else echo "    <option value='$k'>第{$chapnums[$k]}章 $v</option>\r\n";
+    	}
+    	?>
+    </select>
+	</span>
+    <span id="newchap" style="<?php echo(count($chapters)>0 ? "display:none" : "display:block"); ?>">
+	新章节名称：
+          <input name="chapternew" type="text" id="chapternew" size="30" value="默认章节" />
+          <br />
+（如果没有可选章节或已有章节已经结束，请填写新章节名称，名称上不需加“第X章”这样的字样）	</span>	</td>
+  </tr>
+  <tr>
+    <td height="32" colspan="2" class="bline">　　为了方便您的多篇漫画或其它连载图片发布，您可以在此同时上传多个图片，系统会自动将其分割成多篇文档，如果您的内容主题是不需要单独设定的，可不指定每个图片的标题，系统将自动采用默认标题加数字进行标识。</td>
+    </tr>
+  <tr>
+    <td colspan="2"><table width="800" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td>&nbsp;远程图片：</td>
+        <td colspan="3"><input name="isremote" type="checkbox" id="isremote"  value="1" />
+下载到本地 </td>
+        </tr>
+      <tr>
+        <td width="80">&nbsp;图片：</td>
+        <td width="74"><input name="picnum" type="text" id="picnum" size="8" value="10" /></td>
+        <td width="117"><input name='kkkup' type='button' id='kkkup2' value='增加表单' onclick="MakeUpload(0);" class="inputbut" /></td>
+        <td width="529"> （ 注：最大60幅，手工指定的图片链接允许填写远程网址） </td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="82" colspan="2">
+	<span id="uploadfield"></span>
+	<script language="JavaScript">
+	     MakeUpload(6);
+	</script>
+	</td>
+    </tr>
+  <tr>
+    <td height="70">&nbsp;</td>
+    <td><input type="submit" name="Submit" value="保 存" class='np coolbg' />　　
+      <input type="reset" name="Submit2" value="重 置" class='np coolbg' /></td>
+  </tr>
+</table></td>
+</tr>
+</table>
+</form>
+</div>
+</body>
+</html>

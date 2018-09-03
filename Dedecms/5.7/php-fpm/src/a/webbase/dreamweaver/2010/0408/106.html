@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>招聘启事 织梦大家庭新年招募第一波_我的网站</title>
+<meta name="keywords" content="新年,招募,第一,波,大家庭,织梦,招聘,启事,标题" />
+<meta name="description" content="2010年，新一年，新征程……织梦大家庭招募能够共同创业的新伙伴。首要特点：织梦需要的是创业伙伴，而非普通员工。织梦是一个大家共同的创业平台！繁华浮躁的时代，我们需要的是『" />
+<link href="/templets/default/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<script language="javascript" type="text/javascript" src="/include/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+function CheckLogin(){
+	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("/member/ajax_feedback.php");
+	  DedeXHTTP = null;
+}
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+}
+function postDigg(ftype,aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	var saveid = GetCookie('diggid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==aid && hasid) continue;
+			else {
+				if(saveids[i]==aid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return; }
+		else saveid += ','+aid;
+		SetCookie('diggid',saveid,1);
+	}
+	else
+	{
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	var url = "/plus/digg_ajax.php?action="+ftype+"&id="+aid;
+	myajax.SendGet2(url);
+}
+function getDigg(aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/digg_ajax.php?id="+aid);
+	DedeXHTTP = null;
+}
+-->
+</script>
+</head>
+<body class="articleview">
+<div class="header_top">  
+    <div class="w960 center">  
+     <span id="time" class="time">织梦CMS - 轻松建站从此开始！</span>
+     <div class="toplinks"><a href="/plus/heightsearch.php" target="_blank">高级搜索</a>|<a href="/data/sitemap.html" target="_blank">网站地图</a>|<a href="/tags.php">TAG标签</a><a href="/data/rssmap.html" class="rss">RSS订阅</a><span>[<a href=""onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('http://192.168.78.135');">设为首页</a>] [<a href="javascript:window.external.AddFavorite('http://192.168.78.135','我的网站')">加入收藏</a>]</span></div>
+    </div> 
+</div>
+<div class="header">
+	<div class="top w960 center">
+      <div class="title">
+        <h1><a href="http://192.168.78.135"><img src="/templets/default/images/logo.gif" height="54" width="216" alt="我的网站"/></a> </h1>
+      </div>
+      <div class="banner"></div>
+      <div class="banner2"></div>
+       
+	</div><!-- //top -->
+	<!-- //菜单 -->
+	<div class="module blue mT10 wrapper w963">
+  	<div class="top">
+    	<!-- //如果不使用currentstyle，可以在channel标签加入 cacheid='channeltoplist' 属性提升性能 -->
+    <div id="navMenu">
+    	<ul>
+      	<li><a href='/'><span>主页</span></a></li>
+      	<li class='hover'><a href='/a/webbase/'  rel='dropmenu1'><span>网页基础</span></a></li>
+      	<li><a href='/a/pics/' ><span>站长图集</span></a></li>
+      	
+      	<li><a href='/a/downloads/' ><span>软件下载</span></a></li>
+      	
+      	<li><a href='/a/shops/' ><span>商品销售</span></a></li>
+      	
+      	<li><a href='/a/infos/' ><span>分类信息</span></a></li>
+      	
+      	<li><a href='http://www.dedecms.com' ><span>织梦CMS</span></a></li>
+      	
+      	<li><a href='http://docs.dedecms.com' ><span>帮助文档</span></a></li>
+      	
+    	</ul>
+    </div>	
+    <div class="search">
+      <form  name="formsearch" action="/plus/search.php">
+        <div class="form">
+          <h4>搜索</h4>
+           <input type="hidden" name="kwtype" value="0" />
+           <input name="q" type="text" class="search-keyword" id="search-keyword" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}"  onblur="if(this.value==''){this.value='在这里搜索...';}" />
+           <select name="searchtype" class="search-option" id="search-option">
+               <option value="title" selected='1'>检索标题</option>
+               <option value="titlekeyword">智能模糊</option>
+           </select>
+          <button type="submit" class="search-submit">搜索</button>
+        </div>
+        </form>
+        <div class="tags">
+          <h4>热门标签:</h4>
+          <ul>
+          
+            <li><a href='/tags.php?/dedecms5.1/'>dedecms5.1</a></li>
+          
+            <li><a href='/tags.php?/sp1/'>sp1</a></li>
+          
+            <li><a href='/tags.php?/%E5%85%8D%E8%B4%B9%E7%89%88/'>免费版</a></li>
+          
+          </ul>
+        </div>
+    </div><!-- //search -->
+		</div>
+	</div>
+</div><!-- //header -->
+
+<!-- /header -->
+<div class="w960 center clear mt1">
+<div class="pleft">
+ <div class="place"> <strong>当前位置:</strong> <a href='http://192.168.78.135/'>主页</a> > <a href='/a/webbase/'>网页基础</a> > <a href='/a/webbase/dreamweaver/'>Dreamweaver</a> >  </div>
+ <!-- /place -->
+ <div class="viewbox">
+  <div class="title">
+   <h2>招聘启事 织梦大家庭新年招募第一波</h2>
+  </div>
+  <!-- /title -->
+  <div class="info"> <small>时间:</small>2016-07-22 14:31<small>来源:</small>织梦官方 <small>作者:</small>织梦官方 <small>点击:</small>
+   <script src="/plus/count.php?view=yes&aid=106&mid=1" type='text/javascript' language="javascript"></script>
+   次</div>
+  <!-- /info -->
+  
+  <div class="intro">2010年，新一年，新征程……
+织梦大家庭招募能够共同创业的新伙伴。
+首要特点：织梦需要的是创业伙伴，而非普通员工。织梦是一个大家共同的创业平台！繁华浮躁的时代，我们需要的是『</div>
+  
+  <div class="content">
+   <table width='100%'>
+    <tr>
+     <td><div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top;"></div>
+      <p>
+	<font size="3">2010年，新一年，新征程&hellip;&hellip;<br />
+	织梦大家庭招募能够共同创业的新伙伴。<br />
+	首要特点：织梦需要的是创业伙伴，而非普通员工。织梦是一个大家共同的创业平台！繁华浮躁的时代，我们需要的是『不浮躁』的人。<br />
+	我们特制作了这份具有织梦特色的招聘模板页面给熟悉DedeCMS的GGJJDDMM，你如果条件符合并有意加入，请立即联系我们：<br />
+	P.S. 如果目前你还是个新手，但你非常喜爱DedeCMS并且有足够的自信和学习力，我们同样的给予机会让你加入到织梦大家庭一起参与创业！<br />
+	我们为加入织梦团队的伙伴，提供住宿，让大家在上海吃住无忧。<br />
+	<br />
+	&nbsp;----------------------------------------------------<br />
+	|&nbsp;&nbsp;&nbsp; E-mail:hr#dedecms.com(#&lt;=&gt;@)&nbsp;&nbsp;&nbsp; |<br />
+	&nbsp;----------------------------------------------------<br />
+	&nbsp;<br />
+	{dede:招聘启事 标题=&#39;织梦大家庭新年招募第一波&#39; 工作地点=&#39;上海&#39; 版本=&#39;1.0.1&#39; 时间=&#39;2010+&#39;}<br />
+	&nbsp; 声明 织梦人<br />
+	&nbsp; {<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥性别 = &#39;不限&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥年龄 = &#39;不限&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥性格 = &#39;开朗&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥学历 = &#39;英雄不问出处&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥团队意识 = &#39;强&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥学习能力 = &#39;非常强&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥人品 = &#39;好&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥烟酒 = &#39;没瘾&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥薪资 = &#39;人有多大胆,地有多大产&#39;;<br />
+	&nbsp; }<br />
+	&nbsp;<br />
+	&nbsp; /*****我们需要这样的策划人员*****/<br />
+	&nbsp; 文案策划 继承 织梦人<br />
+	&nbsp; {<br />
+	&nbsp;&nbsp;&nbsp; ￥招聘人数 = &#39;2+&#39;;<br />
+	&nbsp;&nbsp;&nbsp; ￥描述 = &#39;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.基本的要求可以查看&quot;声明 织梦人{}&quot;,如果您还符合以上的要求则可以继续阅读下面部分的内容;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.有基本的市场营销观念,能够了解用户并且能够主动挖掘用户潜在商业价值;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.有较强的文字组织能力,能够通过文字有条理的表达、沟通；<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.对网站建设方面比较了解，能够知道网站建设中一些基本的流程，并且能够准确地形成文档同用户或技术团队沟通；<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.熟悉各种文案编辑工具的使用，例如：Axure、Dreamweaver、Visio等，能够制作线框图，流程图者优先考虑；<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.有制定规范的能力，善于发现问题，分析问题，能够解决问题者最佳；<br />
+	&nbsp;&nbsp;&nbsp; &#39;;<br />
+	&nbsp; }<br />
+	&nbsp;<br />
+	&nbsp; /*****这样的是织梦喜欢的网站制作人员*****/<br />
+	&nbsp; 网站制作 继承 织梦人<br />
+	&nbsp; {<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;人数&gt;3+<!--人数--><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;熟悉DedeCMS&gt;是<!--熟悉DedeCMS--><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;织梦标签&gt;会<!--织梦标签--><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;技术&gt;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <xml>必须</xml><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></p>
+<p>
+	必须</p>
+<br />
+<p>
+	<font size="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <css>必须</css><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <javascript>必须</javascript><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <json>最佳</json><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <ajax>最佳</ajax><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!--技术--><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;熟悉软件&gt;<photoshop><fireworks><dreamweaver><illustrator><!--熟悉软件--><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;跨平台浏览器兼容性&gt;有经验<!--跨平台浏览器兼容性--><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <web标准化>有经验</web标准化><br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;沟通能力&gt;很好<!--沟通能力--><br />
+	&nbsp; }<br />
+	&nbsp;<br />
+	&nbsp; /*****我们需要怎样一个程序员*****/<br />
+	&nbsp; 程序员 继承 织梦人<br />
+	&nbsp; {<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥人数 = 5+;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥编程经验 &gt; 3年;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥技术 in (&#39;PHP&#39;, &#39;MySQL&#39;, &#39;Linux&#39;, &#39;C/C++&#39;, &#39;其它&#39;);<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥优先 = (￥熟悉 == &#39;DedeCMS&#39;)? &#39;是&#39; : &#39;Out&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥自主开发产品 = &#39;可以&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥程序员-&gt;编码()<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥代码习惯 = &#39;良好&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥结构 = &#39;清晰&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥命名 = &#39;规范&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥逻辑 = &#39;强&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥代码冗余率 = &#39;低&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥程序员-&gt;学习()<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥同类产品 = &#39;熟悉&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥UI/UE = &#39;经常研究&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥用户习惯 = &#39;了解&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥新技术 = &#39;非常关注&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; ￥程序员-&gt;开发()<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥MySQL索引优化 = &#39;具有&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥查询优化和存储优化 = &#39;有经验&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥PHP缓存技术 = &#39;有经验&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ￥静态化设计 = &#39;有经验&#39;;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+	&nbsp; }<br />
+	&nbsp;<br />
+	{/dede:招聘启事 CopyRight=&#39;2007-2010 DesDev INC.&#39;} </illustrator></dreamweaver></fireworks></photoshop></font><br />
+	&nbsp;</p>
+
+      
+      (责任编辑：admin)</td>
+    </tr>
+   </table>
+  </div>
+  <!-- /content -->
+  <div class="dede_pages">
+   <ul class="pagelist">
+    
+   </ul>
+  </div>
+  <!-- /pages -->
+  <!-- //顶踩 -->
+  <div class="newdigg" id="newdigg">
+   <div class="diggbox digg_good" onmousemove="this.style.backgroundPosition='left bottom';" onmouseout="this.style.backgroundPosition='left top';" onclick="javascript:postDigg('good',106)">
+    <div class="digg_act">顶一下</div>
+    <div class="digg_num">(0)</div>
+    <div class="digg_percent">
+     <div class="digg_percent_bar"><span style="width:0%"></span></div>
+     <div class="digg_percent_num">0%</div>
+    </div>
+   </div>
+   <div class="diggbox digg_bad" onmousemove="this.style.backgroundPosition='right bottom';" onmouseout="this.style.backgroundPosition='right top';" onclick="javascript:postDigg('bad',106)">
+    <div class="digg_act">踩一下</div>
+    <div class="digg_num">(0)</div>
+    <div class="digg_percent">
+     <div class="digg_percent_bar"><span style="width:0%"></span></div>
+     <div class="digg_percent_num">0%</div>
+    </div>
+   </div>
+  </div>
+  <script language="javascript" type="text/javascript">getDigg(106);</script>
+  <!-- //顶踩部份的源码结束 -->
+  <!-- //分享代码开始 -->
+  
+  <!-- //分享代码结束 -->
+  <div class="boxoff"> <strong>------分隔线----------------------------</strong> </div>
+  <div class="handle">
+   <div class="context">
+    <ul>
+     <li>上一篇：<a href='/a/webbase/dreamweaver/2010/0407/72.html'>在Dreamweaver中为插入的Flash添加透明</a> </li>
+     <li>下一篇：没有了 </li>
+    </ul>
+   </div>
+   <!-- /context -->
+   <div class="actbox">
+    <ul>
+     <li id="act-fav"><a href="/plus/stow.php?aid=106" target="_blank">收藏</a></li>
+     <li id="act-err"><a href="/plus/erraddsave.php?aid=106&title=招聘启事 织梦大家庭新年招募第一波" target="_blank">挑错</a></li>
+     <li id="act-pus"><a href="/plus/recommend.php?aid=106" target="_blank">推荐</a></li>
+     <li id="act-pnt"><a href="#" onClick="window.print();">打印</a></li>
+    </ul>
+   </div>
+   <!-- /actbox -->
+  </div>
+  <!-- /handle -->
+ </div>
+ <!-- /viewbox -->
+ <!-- //AJAX评论区 -->
+ <!-- //主模板必须要引入/include/dedeajax2.js -->
+<a name='postform'></a>
+<div class="mt1">
+		<dl class="tbox">
+			<dt>
+				<strong>发表评论</strong>
+				<span class="more"></span>
+			</dt>
+			<dd>
+				<div class="dede_comment_post">
+          <form action="#" method="post" name="feedback">
+          <input type="hidden" name="dopost" value="send" />
+          <input type="hidden" name="comtype" value="comments">
+          <input type="hidden" name="aid" value="106" />
+          <input type="hidden" name="fid" id='feedbackfid' value="0" />
+          <div class="dcmp-title">
+						<small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small>
+					</div><!-- /dcmp-title -->
+					<div class="dcmp-stand">
+						<strong>评价:</strong>
+							<input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /><label for="dcmp-stand-neu"><img src="/templets/default/images/cmt-neu.gif" />中立</label>
+							<input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /><label for="dcmp-stand-good"><img src="/templets/default/images/cmt-good.gif" />好评</label>
+							<input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /><label for="dcmp-stand-bad"><img src="/templets/default/images/cmt-bad.gif" />差评</label>
+					</div><!-- /dcmp-stand -->
+                    <div class="clr"></div>
+                    <div class="dcmp-mood">
+						<strong>表情:</strong>
+						<ul>            
+								<li><input type="radio" name="face" value="1" checked="1" /><img src="/templets/default/images/mood/ico-mood-1.gif" /></li><li><input type="radio" name="face" value="2" /><img src="/templets/default/images/mood/ico-mood-2.gif" /></li><li><input type="radio" name="face" value="3" /><img src="/templets/default/images/mood/ico-mood-3.gif" /></li><li><input type="radio" name="face" value="4" /><img src="/templets/default/images/mood/ico-mood-4.gif" /></li><li><input type="radio" name="face" value="5" /><img src="/templets/default/images/mood/ico-mood-5.gif" /></li><li><input type="radio" name="face" value="6" /><img src="/templets/default/images/mood/ico-mood-6.gif" /></li><li><input type="radio" name="face" value="7" /><img src="/templets/default/images/mood/ico-mood-7.gif" /></li><li><input type="radio" name="face" value="8" /><img src="/templets/default/images/mood/ico-mood-8.gif" /></li><li><input type="radio" name="face" value="9" /><img src="/templets/default/images/mood/ico-mood-9.gif" /></li><li><input type="radio" name="face" value="10" /><img src="/templets/default/images/mood/ico-mood-10.gif" /></li><li><input type="radio" name="face" value="11" /><img src="/templets/default/images/mood/ico-mood-11.gif" /></li>                   
+						</ul>
+					</div><!-- /dcmp-mood -->
+					<div class="dcmp-content">
+						<textarea cols="60" name="msg" rows="5" class="ipt-txt"></textarea>
+					</div><!-- /dcmp-content -->
+					<div class="dcmp-post"><!--未登陆-->
+							<div class="dcmp-userinfo" id="_ajax_feedback">
+								用户名:<input type="text" name="username" size="16" class="ipt-txt" style="text-transform: uppercase;"/>
+                                验证码:<input type="text" name="validate" size="4" class="ipt-txt" style="text-transform:uppercase;"/><img src= "/include/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+'?'" title="点击我更换图片" alt="点击我更换图片" />
+                <input type="checkbox" name="notuser" id="dcmp-submit-guest" /><label for="dcmp-submit-guest" />匿名? </label>
+							</div>
+              <script language="javascript" type="text/javascript">CheckLogin();</script>
+							<div class="dcmp-submit">
+								<button type="button" onClick='PostComment()'>发表评论</button>
+							</div>
+						</div>
+        </form>
+				</div>
+			</dd>
+		</dl>
+	</div><!-- //评论表单区结束 -->
+
+<!-- //评论内容区 -->
+	<a name='commettop'></a>
+	<div class="mt1">
+			<dl class="tbox">
+				<dt>
+					<strong>最新评论</strong>
+					<span class="more"><a href="/plus/feedback.php?aid=106">进入详细评论页&gt;&gt;</a></span>
+				</dt>
+				<!-- //这两个ID的区块必须存在，否则JS会出错 -->
+				<dd id='commetcontentNew'></dd>
+				<dd id='commetcontent'></dd>
+			</dl>
+	</div>
+<!--
+//由于评论载入时使用异步传输，因此必须在最后一步加载（DIGG和评论框须放在评论内容前面）
+//如果一定需要提前的把myajax.SendGet改为myajax.SendGet2，但可能会引起页面阻滞
+-->
+<script language='javascript'>
+function LoadCommets(page)
+{
+		var taget_obj = document.getElementById('commetcontent');
+		var waithtml = "<div style='line-height:50px'><img src='/images/loadinglit.gif' />评论加载中...</div>";
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x', waithtml);
+		myajax.SendGet2("/plus/feedback_ajax.php?dopost=getlist&aid=106&page="+page);
+		DedeXHTTP = null;
+}
+function PostComment()
+{
+		var f = document.feedback;
+		var nface = '6';
+		var nfeedbacktype = 'feedback';
+		var nvalidate = '';
+		var nnotuser = '';
+		var nusername = '';
+		var npwd = '';
+		var taget_obj = $DE('commetcontentNew');
+		var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' />正在发送中...</div>";
+		if(f.msg.value=='')
+		{
+			alert("评论内容不能为空！");
+			return;
+		}
+		if(f.validate)
+		{
+			if(f.validate.value=='') {
+				alert("请填写验证码！");
+				return;
+			}
+			else {
+				nvalidate = f.validate.value;
+			}
+		}
+		if(f.msg.value.length > 500)
+		{
+			alert("你的评论是不是太长了？请填写500字以内的评论。");
+			return;
+		}
+		if(f.feedbacktype) {
+			for(var i=0; i < f.feedbacktype.length; i++)
+				if(f.feedbacktype[i].checked) nfeedbacktype = f.feedbacktype[i].value;
+		}
+		if(f.face) {
+			for(var j=0; j < f.face.length; j++)
+				if(f.face[j].checked) nface = f.face[j].value;
+		}
+		if(f.notuser.checked) nnotuser = '1';
+		if(f.username) nusername = f.username.value;
+		if(f.pwd) npwd = f.pwd.value;
+		
+		var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+		myajax.sendlang = 'utf-8';
+		myajax.AddKeyN('dopost', 'send');
+		myajax.AddKeyN('aid', '106');
+		myajax.AddKeyN('fid', f.fid.value);
+		myajax.AddKeyN('face', nface);
+		myajax.AddKeyN('feedbacktype', nfeedbacktype);
+		myajax.AddKeyN('validate', nvalidate);
+		myajax.AddKeyN('notuser', nnotuser);
+		myajax.AddKeyN('username', nusername);
+		myajax.AddKeyN('pwd', npwd);
+		myajax.AddKeyN('msg', f.msg.value);
+		myajax.SendPost2('/plus/feedback_ajax.php');
+		f.msg.value = '';
+		f.fid.value = 0;
+		if(f.validate)
+		{
+			if($DE('validateimg')) $DE('validateimg').src = "/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+}
+function quoteCommet(fid)
+{
+	document.feedback.fid.value = fid;
+}
+LoadCommets(1);
+</script><!-- //评论内容区结束 -->
+ </div>
+<!-- //左边内容结束 -->
+<!-- //右边内容开始 -->
+<div class="pright"> 
+ <div class="pright">
+  <div>
+   <dl class="tbox">
+    <dt><strong>栏目列表</strong></dt>
+    <dd>
+     <ul class="d6">
+      
+      <li><a href='/a/webbase/html/'>HTML</a></li>
+      
+      <li><a href='/a/webbase/div-css/'>DIV&CSS</a></li>
+      
+      <li><a href='/a/webbase/javascript-ajax/'>Javascript/Ajax</a></li>
+      <li><a href='/a/webbase/dreamweaver/' class='thisclass'>Dreamweaver</a></li>
+     </ul>
+    </dd>
+   </dl>
+  </div>
+  <div id="contentRtPicAD" style="margin:10px auto"></div>
+  <div class="commend mt1">
+   <dl class="tbox light">
+    <dt class='light'><strong>推荐内容</strong></dt>
+    <dd class='light'>
+     <ul class="d4">
+      <li><a href="/a/webbase/dreamweaver/2010/0408/106.html">招聘启事 织梦大家庭新年招募第一</a>
+       <p>2010年，新一年，新征程……
+织梦大家庭招募能够共同创业的新...</p>
+      </li>
+
+     </ul>
+    </dd>
+   </dl>
+  </div>
+  <!-- /commend -->
+  <div class="hot mt1">
+   <dl class="tbox light">
+    <dt class='light'><strong>热点内容</strong></dt>
+    <dd class='light'>
+     <ul class="c1 ico2">
+      <li><a href="/a/webbase/dreamweaver/2010/0408/106.html">招聘启事 织梦大家庭新年</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/54.html">使用Dreamweaver批量做web网页</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/55.html">用 Dreamweaver 8 搞定web标准</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/56.html">Dreamweaver cs3 彩蛋</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/57.html">插入的Flash添加透明或其他</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/58.html">Dreamweaver8轻松实现文本的</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/59.html">Dreamweaver基础教程：层及其</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/60.html">Dreamweaver中加入竖直线的问</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/61.html">Dreamweaver CS3新功能</a></li>
+<li><a href="/a/webbase/dreamweaver/2010/0407/62.html">在Dreamweaver8.0.2中为插入的</a></li>
+
+     </ul>
+    </dd>
+   </dl>
+  </div>
+  <div id="contentRtPicAD2" style="margin:10px auto"></div>
+ </div>
+ <!-- /pright -->
+</div>
+<div id="innerfooterAD2" style="margin:10px auto; width:726px"></div>
+
+<!-- //底部模板 -->
+<div class="footer w960 center mt1 clear">
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+    <div class="footer_left"></div>
+    <div class="footer_body">
+	<p class="powered">    
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>DedeCMS_V57_UTF8</strong></a> &copy; 2004-2011 <a href="http://www.desdev.cn/" target="_blank">DesDev</a> Inc.<br /><div class="copyright">Copyright &copy; 2004-2011 DEDECMS. 织梦科技 版权所有&nbsp;&nbsp;</div></p>        
+<!-- /powered -->
+   </div>
+   <div class="footer_right"></div>
+</div>
+<!-- /footer -->
+</body>
+</html>

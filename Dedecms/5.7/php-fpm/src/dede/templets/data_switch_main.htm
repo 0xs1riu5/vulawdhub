@@ -1,0 +1,51 @@
+{dede:config.pagesize value="20"/}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>外部数据导入</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="19" background="images/tbg.gif" colspan="7"> <strong>外部数据导入</strong>&nbsp; 
+      [<a href="friendlink_add.php"><u>增加规则</u></a>]
+      [<a href='{dede:global name='cfg_phpurl'/}/flink_add.php' target='_blank'><u>导入规则</u></a>]
+    </td>
+  </tr>
+  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+          <td width="26%">网站名称</td>
+          <td width="12%">网站Logo</td>
+          <td width="15%">站长Email</td>
+          <td width="18%">时间</td>
+          <td width="8%">状态</td>
+          <td width="8%">顺序</td>
+          <td width="15%">管理</td>
+        </tr>
+        {dede:datalist}
+        <tr align="center" bgcolor="#FFFFFF" height="24"
+        	 onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+          <td><a href="{dede:field.url /}" target='_blank'>{dede:field.webname /}</a></td>
+          <td><a href="{dede:field.url /}" target='_blank'>{dede:field.logo function="GetPic(@me)" /}</a></td>
+          <td>{dede:field.email /}</td>
+          <td>{dede:field.dtime /}</td>
+          <td>{dede:field.ischeck function="GetSta(@me)" /}</td>
+          <td>{dede:field.sortrank /}</td>
+          <td>
+          	<a href='friendlink_edit.php?id={dede:field.id /}&dopost=getedit'>[更改]</a>
+		        <a href='friendlink_edit.php?id={dede:field.id /}&dopost=delete'>[删除]</a>
+		      </td>
+        </tr>
+		{/dede:datalist}
+     <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td colspan="7">
+      	{dede:pagelist listsize=5/}
+      </td>
+     </tr>
+   </table>
+   </td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>邮件列表文件管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+.current {border:1px solid #dbe4cd;padding:5px;background:#FFFEF4;color:#FF0000;}
+</style>
+</head>
+<body>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr>
+    <td height="24" colspan="4" bgcolor="#EDF9D5" background="images/tbg.gif">
+	  <div style="float:left;padding-right:5px;padding-left:10px;"><b>邮件列表管理</b></div>
+    </td>
+  </tr>
+  <tr bgcolor="#FBFCE2" height="28" align="center">
+    <td width="28%"><strong>文件名</strong></td>
+    <td width="16%" background="img/newlinebg3.gif"><strong>文件大小</strong></td>
+    <td width="22%" background="img/wbg.gif"><strong>创建时间</strong></td>
+    <td width="34%" background="img/newlinebg3.gif"><strong>操作</strong></td>
+  </tr>
+<?php
+$dh = dir($inpath);
+$ty1="";
+$ty2="";
+$files = $dirs = array();
+while(($file = $dh->read()) !== false)
+{
+	if($file!="." && $file!=".." && !is_dir("$inpath/$file"))
+	{
+		@$filesize = filesize("$inpath/$file");
+		@$filesize=$filesize/1024;
+		@$filetime = filemtime("$inpath/$file");
+		@$filetime = MyDate("Y-m-d H:i:s",$filetime);
+		if($filesize<0.1)
+		{
+			@list($ty1,$ty2)=explode(".",$filesize);
+			$filesize=$ty1.".".substr($ty2,0,2);
+		}
+		else
+		{
+			@list($ty1,$ty2)=explode(".",$filesize);
+			$filesize=$ty1.".".substr($ty2,0,1);
+		}
+	}
+	
+	if(!is_dir("$inpath/$file"))
+	{
+        $line = "\n<tr bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#FCFDEE';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+        <td align='center'>$file</td>
+        <td align='center'>$filesize KB</td>
+        <td align='center'>$filetime</td>
+        <td align='center'>
+        <a href='mail_file_manage.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath."/data/mail")."'>[删除]</a>
+        </td>
+        </tr>";
+		$files[] = $line;
+	}
+}
+$dh->close();
+foreach ($files as $file)
+{
+	echo $file;
+}
+?>
+  <tr>
+    <td height="8" colspan="4" bgcolor="#F9FCEF">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

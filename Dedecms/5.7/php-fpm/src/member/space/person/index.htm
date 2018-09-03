@@ -1,0 +1,47 @@
+{dede:include file='header.htm'/}
+<div class="wrapper mT10">
+  <div class="west">
+  {dede:include file='side_icon.htm'/}
+	{dede:include file='side_class.htm'/}
+	{dede:include file='side_news.htm'/}
+	{dede:include file='side_visitor.htm'/}
+	{dede:include file='side_search.htm'/}
+	{dede:include file='side_links.htm'/}
+  </div>
+  <div class="east">
+    <dl class="border">
+      <dt class="caption"><strong>文章</strong></dt>
+      <dd class="body">
+{dede:spacenewart row=10 titlelen=60 }
+<?php
+	if($fields['channel']==1) {
+			$fields['arcurl'] = "index.php?uid={$_vars['userid_e']}&action=viewarchives&aid={$fields['id']}";
+	}
+?>
+        <div class="mp10 dashed">
+          <div class="mB10">
+          <h3 class="fLeft"><a href="{dede:field.arcurl/}">{dede:field.title/}</a></h3>
+          <span class="mL5 aGray">({dede:field.pubdate function="MyDate('Y-m-d h:i',@me)"/})</span>
+          </div>
+          <p class="f14 aBlack lh22">{dede:field.description function="" /}</p>
+          <div id="artInfo">
+            <strong class="fLeft"><a href="{dede:field.arcurl/}" target="_blank" title="点击查看全文">点击查看全文</a></strong>
+            <ul class="fRight fLeftChild overflow">
+              <li><a href="{dede:field.arcurl/}" target="_blank" title="{dede:field.title/}">浏览</a>({dede:field.click/})</li>
+              <li><a href="{dede:global.cfg_phpurl/}/feedback.php?aid={dede:field.id/}" target="_blank">评论</a>({dede:field.scores/})</li>
+              <li><a href="{dede:global.cfg_phpurl/}/feedback.php?aid={dede:field.id/}" target="_blank">好评</a>({dede:field.goodpost/})</li>
+              <li><a href="{dede:global.cfg_phpurl/}/feedback.php?aid={dede:field.id/}" target="_blank">差评</a>({dede:field.badpost/})</li>
+            </ul>
+          </div>
+          <div class="clearfix pB10"></div>
+        </div>
+        {/dede:spacenewart}
+        <div class="fRight mB10"><a href="index.php?uid={dede:var.userid_e /}&action=archives">更多内容&gt;&gt;</a></div>
+        <div class="clearfix"></div>
+      </dd>
+    </dl>
+  </div>
+</div>
+{dede:include file='footer.htm'/}
+</body>
+</html>

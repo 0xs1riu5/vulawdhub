@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>重复文档检测</title>
+<script language="javascript">
+
+//获得选中文件的文件名
+function getCheckboxItem()
+{
+	var allSel="";
+	if(document.form2.arcTitle.value) return document.form2.arcTitle.value;
+	for(i=0;i<document.form2.arcTitle.length;i++)
+	{
+		if(document.form2.arcTitle[i].checked)
+		{
+			if(allSel=="")
+				allSel=document.form2.arcTitle[i].value;
+			else
+				allSel=allSel+"`"+document.form2.arcTitle[i].value;
+		}
+	}
+	return allSel;
+}
+
+//删除文档
+function delArc(){
+	var qstr=getCheckboxItem();
+	document.form2.titles.value = qstr;
+	document.form2.submit();
+}
+
+function selAll()
+{
+	for(i=0;i<document.form2.arcTitle.length;i++){
+		if(!document.form2.arcTitle[i].checked){
+			document.form2.arcTitle[i].checked=true;
+		}
+	}
+}
+function noSelAll()
+{
+	for(i=0;i<document.form2.arcTitle.length;i++){
+		if(document.form2.arcTitle[i].checked){
+			document.form2.arcTitle[i].checked=false;
+		}
+	}
+}
+</script>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+body,td,th {
+	font-size: 12px;
+}
+a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+a:active {
+	text-decoration: none;
+}
+a {
+	font-size: 12px;
+}
+-->
+</style>
+</head>
+<body>
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbtitle">
+  <tr bgcolor="#E7E7E7">
+    <td height="24" colspan="3" bgcolor="#EDF9D5">
+    	<strong>·重复文档列表：</strong>
+    </td>
+  </tr>
+  <form name="form2" method="POST" action="article_test_same.php">
+   <input type='hidden' name='deltype' value='<?php echo $deltype; ?>' />
+   <input type='hidden' name='dopost' value='delsel' />
+   <input type='hidden' name='pagesize' value='<?php echo $pagesize; ?>' />
+   <input type='hidden' name='channelid' value='<?php echo $channelid; ?>' />
+   <input type='hidden' name='maintable' value='<?php echo $maintable; ?>' />
+   <input type='hidden' name='titles' value='' />
+  <tr bgcolor="#F8FBFB" height="24" align="center">
+    <td width="9%"> 选择 </td>
+    <td width="10%"> 重复数量 </td>
+    <td width="81%"> 文档标题 </td>
+  </tr>
+ <?php
+ while($row = $dsql->GetArray())
+ {
+	 if($row['dd']==1 ) break;
+ ?>
+  <tr bgcolor="#FFFFFF" align="center" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+    <td>
+      <input name="arcTitles" type="checkbox" id="arcTitle" value="<?php echo urlencode($row['title'])?>" class="np" />
+    </td>
+    <td>
+    <?php
+     $allarc += $row['dd'];
+     echo $row['dd'];
+    ?>
+    </td>
+    <td>
+    	<?php echo $row['title']; ?>
+    </td>
+  </tr>
+ <?php
+  }
+ ?>
+ <tr bgcolor="#E5F9FF">
+   <td height="28" colspan="3" bgcolor="#EDF9D5">
+     &nbsp;
+     <input type='button' name='bt1' value='全选' onclick='selAll()' />
+     &nbsp;
+     <input type='button' name='bt2' value='反选' onclick='noSelAll()' />
+     &nbsp;
+     <input type='button' name='bt3' value='删除' onclick='delArc()' />
+     &nbsp;
+     (共有 <?php echo $allarc; ?> 篇重复标题的文档！)
+   </td>
+ </tr>
+</form>
+</table>
+</body>
+</html>

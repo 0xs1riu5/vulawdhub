@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>计划任务</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <form name="form1" action="content_att.php" method="post">
+    <input type="hidden" name="dopost" value="save">
+    <tr> 
+      <td height="28" colspan="6" background='images/tbg.gif'>
+       <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr> 
+          <td width="24%" style="padding-left:10px;"><b>计划任务</b> </td>
+          <td width="76%" align="right">
+          	[<b><a href="sys_task_add.php"><u>增加一个新任务</u></a></b>]
+          </td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+    <tr bgcolor="#FBFCE2" height="24" align="center" > 
+      <td width="24%">任务程序</td>
+      <td width="30%">任务说明</td>
+      <td width="8%">是否启用</td>
+      <td width="8%">运行时间</td>
+      <td width="18%">上次运行时间</td>
+      <td width="12%">管理</td>
+    </tr>
+  <?php
+	$dsql->SetQuery("Select id,taskname,dourl,islock,runtype,runtime,starttime,endtime,freq,lastrun,description From `#@__sys_task` order by id desc ");
+	$dsql->Execute();
+	while($row = $dsql->GetObject())
+	{
+	?>
+   <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+      <td> 
+        <?php echo $row->taskname; ?><br />
+        <?php echo $row->dourl; ?>
+      </td>
+      <td>
+      	<?php echo $row->description; ?>
+      </td>
+       <td>
+      	<?php echo ($row->islock==0 ? '启用' : '禁用'); ?>
+      </td>
+      <td>
+      	<?php echo $row->runtime; ?>
+      </td>
+       <td>
+      	<?php echo (empty($row->lastrun) ? '没运行过' : GetDateTimeMk($row->lastrun)); ?>
+      </td>
+      <td>
+      	<a href='sys_task_edit.php?id=<?php echo $row->id; ?>'>[修改]</a>
+      	<a href='#' onClick="(window.confirm('你确实要删除这个任务么！') ? location='sys_task.php?dopost=del&id=<?php echo $row->id; ?>' : '')">[删除]</a>
+      </td>
+    </tr>
+  <?php
+	}
+	?>
+    <tr> 
+      <td colspan="6" bgcolor="#F9FCEF" style="padding-left:16px;">
+<a href='#' onClick="document.getElementById('helpmsg').style.display=(document.getElementById('helpmsg').style.display=='none' ? 'block' : 'none');"><img src='images/help.gif' /><b>计划任务执行的说明</b></a>
+<div id='helpmsg' style='display:none;margin-top:6px;line-height:200%;'>
+·为了确保任务能执行完全，建议使用Dede的客户端工具，否则只能通过JS触发，但JS触发有很多不确定因素会导致任务不能完成；<br />
+·JS触发方式：在所有文档页面中用JS调用/plus/task.php?client=js（必须禁用计划任务的密码，<a href='sys_info.php'><u>系统配置参数-&gt;其它选项</u></a>）；<br/>
+·自行定制客户端：直接访问“http://网址/plus/task.php?clientpwd=管理密码”，会返回其中一个可执行任务的网址（没有可用任务则返回串：notask)，然后客户端运行这个网址即可。
+</div>
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

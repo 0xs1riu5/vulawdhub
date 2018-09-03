@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>我的分组管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script language="javascript" type="text/javascript" src="{dede:cfg.cmspath/}/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+</head>
+<body>
+<div id="main">
+    <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li><a href="myfriend.php?ftype=0"><span>所有好友</span></a></li>
+          <li><a href="search.php"><span>查找好友</span></a></li>
+          <li><a href="visit-history.php?dopost=viewme"><span>关注我的人</span></a></li>
+          <li><a href="visit-history.php?dopost=meview"><span>我最近访问</span></a></li>
+          <li class="thisTab"><a href="myfriend_group.php"><span>分组设置</span></a></li>
+        </ul>
+      </div>
+      <div id="mainCp" class="postForm">
+        <div class="appMsg" style="padding-bottom: 0px;">
+           <form class="mTB10" action="myfriend_group.php?dopost=add" method="post" style="padding-left: 140px;">
+          	<strong>添加分组：</strong>
+          	<input type="text" name="groupname" class="intxt" style="width:100px"/>&nbsp;
+            <button class="button2" type="submit">添加</button>
+          </form>
+        </div>
+         <h3 class="meTitle">我的组别管理</h3>
+        <form action="myfriend_group.php?dopost=save" method="post">
+        <div class="postForm" style="width: 400px;padding-left: 140px;">
+         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+          <thead>
+            <tr>
+              <th width="10%">删?</th>
+              <th>分类名称 </th>
+              </tr>
+          </thead>
+          <tbody>
+           <?php if(is_array($GLOBALS['mtypearr'])){?> 
+           {dede:array.mtypearr}
+            <tr>
+              <td align="center"><input type="checkbox" name="mtypeidarr[]" value="{dede:value.id/}"/></td>
+              <td align="center"><input type="text" name="groupname[{dede:value.id/}]" value="{dede:value.groupname/}" class="intxt" style="width:100px"/></td>
+            </tr>
+           {/dede:array}
+         <?php } ?>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3"><button class="button2 mt10" type="submit">提交</button></td>
+            </tr>
+          </tfoot>
+        </table>
+       </div>
+      </form>
+      <!--主操作区域 -->
+    </div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

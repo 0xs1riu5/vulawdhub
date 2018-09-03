@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>增加自定义页面</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+<script language="javascript">
+function checkSubmit()
+{
+	if(document.form1.title.value=="")
+	{
+		alert("页面名称不能为空！");
+		document.form1.title.focus();
+		return false;
+	}
+	if(document.form1.nfilename.value=="")
+	{
+		alert("文件名不能为空！");
+		document.form1.nfilename.focus();
+		return false;
+	}
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf">
+<tr>
+    <td height="19" background="images/tbg.gif" style="padding-left:10px;">
+    	<b>◆<a href="templets_one.php"><u>单独页面管理</u></a></b>&gt;&gt;增加新页面
+    </td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellspacing="4" cellpadding="2">
+        <form action="templets_one_add.php" method="post" name="form1" onSubmit="return checkSubmit()">
+          <input type='hidden' name='dopost' value='save'>
+          <tr> 
+            <td colspan="2">
+            	单独页面管理仅适用于页面较少的情况(建议小于500个页面)，大量文档的用文章模型进行管理。
+            </td>
+          </tr>
+          <tr> 
+            <td width="15%" height="24" align="center">页面标题：</td>
+            <td> 
+              <input name="title" type="text" id="title" size="30">
+            </td>
+          </tr>
+          <tr> 
+            <td height="24" align="center">页面关键字：</td>
+            <td><input name="keywords" type="text" id="keywords" size="30">
+              (用&quot;,&quot;分开{dede:field name='keywords'/})</td>
+          </tr>
+          <tr> 
+            <td height="24" align="center">页面摘要信息：</td>
+            <td><textarea name="description" cols="50" id="description"></textarea>
+            (100字左右{dede:field name='description'/})</td>
+          </tr>
+          <tr>
+            <td height="24" align="center">关联标识：</td>
+            <td>
+            	<input name="likeid" type="text" id="likeid" value="" size="10">
+            	<?php
+            	echo "<select name='likeidsel' id='likeidsel'>\r\n";
+            	$dsql->Execute('s',"Select likeid From `#@__sgpage` group  by likeid ");
+            	echo "<option value='default'>default</option>\r\n";
+            	while($arr = $dsql->GetArray('s'))
+            	{
+            		echo "<option value='{$arr['likeid']}'>{$arr['likeid']}</option>\r\n";
+            	}
+            	echo "</select>\r\n";
+            	?>
+              <br />
+              (通过这个标识来识别类同页面，模板中用{dede:likesgpage id='标识'/}调用有相同标识的页面)
+            </td>
+          </tr>
+          <tr>
+            <td height="24" align="center">文件名：</td>
+            <td>
+            	<input name="nfilename" type="text" id="nfilename" value="<?php echo $cfg_arcdir."/newfile{$nowid}.html"; ?>" size="30">
+             （相对于CMS安装目录）
+              </td>
+          </tr>
+          <tr>
+            <td height="24" align="center">模板文件名：</td>
+            <td><input name="template" type="text" id="template" value="{style}/singlepage.htm" size="30"></td>
+          </tr>
+          <tr> 
+            <td height="24" align="center">是否编译内容：</td>
+            <td><input name="ismake" type="radio" value="1">
+              含模板标记，要编译 
+              <input name="ismake" type="radio" value="0" checked>
+              不含模板标记，不需要编译</td>
+          </tr>
+          <tr> 
+            <td height="24" colspan="2" bgcolor="#FBFCE2"">内容：(模板里用{dede:field name='body'/}来获得)</td>
+          </tr>
+          <tr> 
+            <td height="80" colspan="2" align="center"> 
+              <?php
+	            GetEditor("body","","500","Default","print","false");
+	            ?>            
+	        </td>
+          </tr>
+          <tr> 
+            <td height="53" align="center">&nbsp;</td>
+            <td>
+			   <input name="imageField" type="image" src="images/button_ok.gif" class="np" width="60" height="22" border="0">
+			   &nbsp;&nbsp;&nbsp;&nbsp;
+			   <a href="#" onClick="document.form1.reset();"><img src="images/button_reset.gif" width="60" height="22" border="0"></a>
+			    </td>
+          </tr>
+        </form>
+      </table>
+    </td>
+</tr>
+</table>
+</body>
+</html>

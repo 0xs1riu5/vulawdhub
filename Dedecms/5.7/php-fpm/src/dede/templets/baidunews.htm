@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>百度新闻地图</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">辅助插件</div>
+</div><table width="98%" border="0" align="center" cellpadding="4" cellspacing="1" class="tbtitle" style="background:#CFCFCF;">
+  <tr>
+    <td bgcolor="#EDF9D5" colspan="2" background='images/tbg.gif' style="padding-left:10px;">
+    	<strong>百度新闻地图</strong>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF" colspan="2">
+    	<p>《互联网新闻开放协议》是百度新闻搜索制定的搜索引擎新闻源收录标准，网站可将发布的新闻内容制作成遵循此开放协议的XML格式的网页（独立于原有的新闻发布形式）供搜索引擎索引。</p>
+    	<p> <a href="http://news.baidu.com/newsop.html#kg" target="_blank">详情参见</a></p>
+      <p>配置的相关参数在 【<a href="sys_info.php">系统设置</a> -&gt; 其他选项】中调整</p>
+      <p>只适用于文章频道，数据表为DedeCMS默认的</p>    </td>
+  </tr>
+  <form id="form2" name="form1" method="post" action="?do=yes" target="stafrm">
+  <tr>
+    <td colspan="2" bgcolor="#F9FCEF">&nbsp;<b>设置：</b></td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">&nbsp;<b>文件名：</b></td>
+    <td bgcolor="#FFFFFF">&nbsp;
+      <input name="filename" type="text" id="textfield" value="../data/baidunews.xml" size="30" class='alltxt' />
+     </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" bgcolor="#FFFFFF">
+    	<input name="button" type="submit" class="np coolbg" id="button" value="开始生成" />
+    </td>
+  </tr>
+</form>
+  <tr>
+    <td bgcolor="#F9FCEF" colspan="2">&nbsp;<b>状态：</b></td>
+  </tr>
+  <tr>
+    <td align="center" bgcolor="#FFFFFF" colspan="2">
+    	<iframe name="stafrm" frameborder="0" id="stafrm" width="96%" height="350px" />
+    </td>
+  </tr>
+</table>
+</body>
+</html>

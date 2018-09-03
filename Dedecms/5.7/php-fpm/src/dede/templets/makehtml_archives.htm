@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>生成HTML</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <form name='form2' action='content_list.php' method="get" target='stafrm'>
+   <input type='hidden' name='nullfield' value='ok'>
+  </form>
+  <form name="form1" action="makehtml_archives_action.php" method="get" target='stafrm'>
+  <tr> 
+    <td height="28" colspan="2" background='images/tbg.gif'>
+    	<table width="98%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="30%" height="18" style="padding-left:10px;"><strong>更新文档HTML：</strong></td>
+          <td width="70%" align="right">
+          	<a href="makehtml_list.php?typeid=<?php echo (isset($typeid) ? $typeid : 0); ?>" class="np coolbg">更新栏目HTML</a>
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr> 
+    <td width="108" valign="top" bgcolor="#FFFFFF">选择栏目：</td>
+    <td width="377" valign="top" bgcolor="#FFFFFF">
+    <?php
+       if(empty($cid)) $cid="0";
+       $tl = new TypeLink($cid);
+       $typeOptions = $tl->GetOptionArray($cid,$admin_catalogs,0);
+       echo "<select name='typeid' style='width:300'>\r\n";
+       if($cid=="0") echo "<option value='0' selected>更新所有文档...</option>\r\n";
+       echo $typeOptions;
+       echo "</select>";
+		?>
+   </td>
+  </tr>
+  <tr>
+    <td height="20" valign="top" bgcolor="#FFFFFF">起始ID：</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF"><input name="startid" type="text" id="startid" size="10">
+      （空或0表示从头开始）</td>
+  </tr>
+  <tr> 
+    <td height="20" valign="top" bgcolor="#FFFFFF">结束ID：</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF"><input name="endid" type="text" id="endid" size="10">
+      （空或0表示直到结束ID） </td>
+  </tr>
+    <tr> 
+      <td height="20" bgcolor="#FFFFFF">每页生成：</td>
+      <td height="20" bgcolor="#FFFFFF"> <input name="pagesize" type="text" id="pagesize" value="20" size="8">
+        个文件</td>
+    </tr>
+    <tr> 
+      <td height="20" colspan="2" bgcolor="#ffffff" align="center">
+      	<input name="b112" type="button" class='coolbg np' value="开始生成HTML" onClick="document.form1.submit();" style="width:100">  <?php 
+      if($cfg_remote_site=='Y')
+      {
+    ?>    
+     <input name="isremote" type="checkbox" id="isremote" value="1">
+是否同步远程发布到     
+      <?php GetFtp();?>
+      <?php
+      }
+    ?>  
+        &nbsp;
+      <input type="button" name="b113" value="查看所有文档"  class='coolbg np' onClick="document.form2.submit();" style="width:100"></td>
+    </tr>
+  </form>
+  <tr bgcolor="#F9FCEF"> 
+    <td height="20" colspan="2"> <table width="100%">
+        <tr> 
+          <td width="74%">进行状态： </td>
+          <td width="26%" align="right">
+          	<script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>] 
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td colspan="2" id="mtd">
+    	<div id='mdv' style='width:100%;height:350px;'> 
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

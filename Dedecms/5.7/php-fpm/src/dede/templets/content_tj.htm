@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文档信息统计</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%"  border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+    <tr> 
+      <td height="28" colspan="2" background='images/tbg.gif'>
+      	<strong>文档信息统计：</strong>
+      </td>
+    </tr>
+    <tr> 
+      
+    <td height="250" colspan="2" align="center" valign="top" bgcolor="#FFFFFF">
+	 <table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr><td height="10"></td></tr>
+      </table>
+      <table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td><strong>综合信息统计：</strong></td>
+          <td><table width="300" border="0" cellpadding="1" cellspacing="1" bgcolor="#996666">
+              <tr bgcolor="#FFFFFF"> 
+                <td width="140" bgcolor="#F3ECDA">&nbsp;文档总数：</td>
+                <td width="152">　［<?php echo $row1['dd']?>］</td>
+              </tr>
+              <tr bgcolor="#FFFFFF"> 
+                <td bgcolor="#F3ECDA">&nbsp;评论总数：</td>
+                <td>　［<?php echo $row2['dd']?>］</td>
+              </tr>
+              <tr bgcolor="#FFFFFF"> 
+                <td bgcolor="#F3ECDA">&nbsp;会员总数：</td>
+                <td>　［<?php echo $row3['dd']?>］</td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr> 
+          <td width="13%" height="80"><strong>频道信息统计：</strong></td>
+          <td width="87%"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td height="10"></td>
+              </tr>
+            </table>
+            <table width="300" border="0" cellpadding="1" cellspacing="1" bgcolor="#996666">
+              <tr align="center" bgcolor="#E8E6D7"> 
+                <td width="140" bgcolor="#E8E6D7">频道名称</td>
+                <td>文档总数</td>
+              </tr>
+              <?php
+              $arcs = array();
+              $dsql->Execute("aaa","Select channel,count(channel) as dd From `#@__archives`  group by channel");
+              while($row = $dsql->GetArray("aaa")) $arcs[$row['channel']] = $row['dd'];
+              $dsql->Execute("me","Select id,typename From `#@__channeltype`");
+              while($row = $dsql->GetObject()){
+              ?>
+              <tr align="center" bgcolor="#FFFFFF"> 
+                <td><?php echo $row->typename?></td>
+                <td>
+                ［<?php echo (isset($arcs[$row->id]) ? $arcs[$row->id] : 0 ); ?>］
+                </td>
+              </tr>
+              <?php } ?>
+            </table></td>
+        </tr>
+      </table> 
+      <table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="10"></td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr> 
+      
+    <td height="20" colspan="2" bgcolor="#DFE9C0"></td>
+    </tr>
+</table>
+</body>
+</html>

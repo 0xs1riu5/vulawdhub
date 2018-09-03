@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>更改标记</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf">
+<tr>
+  <td height="19" background="images/tbg.gif"  style="padding-left:10px;"><b><a href="mytag_main.php"><u>自定义标记管理</u></a></b>&gt;&gt;更改标记</td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellspacing="4" cellpadding="4">
+        <form action="mytag_edit.php" method="post" enctype="multipart/form-data" name="form1">
+          <input type='hidden' name='aid' value='<?php echo $aid?>'>
+          <input type='hidden' name='dopost' value='saveedit'>
+          <tr> 
+            <td width="15%" height="25" align="center">所属栏目：</td>
+            <td colspan="2">
+			<?php
+           	$tl = new TypeLink(0);
+           	$typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
+            echo "<select name='typeid' style='width:300'>\r\n";
+            echo "<option value='0' selected>显示在没有继承本标记的所有栏目</option>\r\n";
+            echo $typeOptions;
+            echo "</select>";
+			?>
+			</td>
+          </tr>
+          <tr> 
+            <td height="25" align="center">标记名称：</td>
+            <td colspan="2"><?php echo $row['tagname']?></td>
+          </tr>
+          <tr> 
+            <td height="25" align="center">时间限制：</td>
+            <td colspan="2"><input name="timeset" type="radio" value="0"<?php if($row['timeset']==0) echo " checked"; ?>>
+              永不过期 
+              <input type="radio" name="timeset" value="1" <?php if($row['timeset']==1) echo " checked"; ?>>
+              在设内时间内有效</td>
+          </tr>
+          <tr> 
+            <td height="25" align="center">开始时间：</td>
+            <td colspan="2"><input name="starttime" type="text" id="starttime" value="<?php echo GetDateTimeMk($row['starttime'])?>"></td>
+          </tr>
+          <tr> 
+            <td height="25" align="center">结束时间：</td>
+            <td colspan="2"><input name="endtime" type="text" id="endtime" value="<?php echo GetDateTimeMk($row['endtime'])?>"></td>
+          </tr>
+          <tr> 
+            <td height="80" align="center">正常显示内容：</td>
+            <td width="76%">
+			<textarea name="normbody" id="normbody" style="width:80%;height:100"><?php echo $row['normbody']?></textarea> 
+            </td>
+            <td width="9%">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="80" align="center">过期显示内容：</td>
+            <td>
+			<textarea name="expbody" id="expbody" style="width:80%;height:100"><?php echo $row['expbody']?></textarea> 
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="53" align="center">&nbsp;</td>
+            <td colspan="2"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0"></td>
+          </tr>
+        </form>
+      </table>
+	 </td>
+</tr>
+</table>
+</body>
+</html>

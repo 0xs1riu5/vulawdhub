@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>自动更新程序--待下载文件列表</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="css/indexbody.css">
+<script language='javascript' src='../include/js/dedeajax2.js'></script>
+<script language='javascript' src='js/indexbody.js'></script>
+</head>
+<body background="images/allbg.gif" leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+<tr>
+    <td height="28" background="images/tbg.gif">
+    	<div style="float:left">
+    		<strong>自动更新程序--待下载文件列表</strong>
+   		</div>
+  	 	<div style="float:right;padding-right:6px;">
+  	 		<a href='index_body.php' class='np coolbg'>返回系统主页</a>
+    	</div>
+    </td>
+</tr>
+<tr>
+<td bgcolor="#FFFFFF" height='350' valign='top' style="padding:6px;">
+<?php
+	echo $allFileList;
+?>
+</td>
+</tr>
+</table>
+</body>
+</html>

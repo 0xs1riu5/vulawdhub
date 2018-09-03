@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>软件频道设置</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+function AddServer()
+{
+   if(document.form1.serverurl.value==""||document.form1.serverurl.value=="http://"){ alert('服务器网址不能为空！'); return ;}
+   if(document.form1.servername.value==""){ alert('服务器名称不能为空！'); return ;}
+   if(document.form1.servertype.value==""){ alert('服务器类型不能为空！'); return ;}
+   document.form1.sites.value += document.form1.serverurl.value+" | "+document.form1.servername.value+" | "+document.form1.servertype.value+"\r\n";
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <form name="form1" action="soft_config.php" method="post">
+    <input type="hidden" name="dopost" value="save" />
+    <tr> 
+      <td height="28" colspan="2" background='images/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="30%" height="18" style="padding-left:10px;"><strong>软件频道设置：</strong></td>
+            <td width="70%" align="right">&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF" width="200">链接显示方式：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="radio" name="downtype" class="np" value="0"<?php if($row['downtype']==0) echo " checked='checked' ";?>/>
+        直接显示地址列表 
+        <input name="downtype" type="radio" value="1" class="np"<?php if($row['downtype']==1) echo " checked='checked' ";?>/>
+        要求进入下载地址列表页
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">附件下载方式：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="radio" name="gotojump" class="np" value="0"<?php if($row['gotojump']==0) echo " checked='checked' ";?>/>
+        链接到真实软件地址 
+        <input name="gotojump" type="radio" class="np" value="1"<?php if($row['gotojump']==1) echo " checked='checked' ";?>/>
+        链接到跳转页面
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">是否启用镜像站点：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="radio" name="ismoresite" class="np" value="1"<?php if($row['ismoresite']==1) echo " checked='checked' ";?>/>
+        启用 
+        <input name="ismoresite" type="radio" class="np" value="0"<?php if($row['ismoresite']==0) echo " checked='checked' ";?>/>
+        不启用       </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">启用镜像站点后是否保留本地下载：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="radio" name="islocal" class="np" value="1"<?php if($row['islocal']==1) echo " checked='checked' ";?>/>
+        保留
+        <input name="islocal" type="radio" class="np" value="0"<?php if($row['islocal']==0) echo " checked='checked' ";?>/>
+        不保留       </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">镜像处理方式：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="radio" name="moresitedo" class="np" value="1"<?php if($row['moresitedo']==1) echo " checked='checked' ";?>/>
+        根据本地地址和服务器列表自动生成
+        <input name="moresitedo" type="radio" class="np" value="0"<?php if($row['moresitedo']==0) echo " checked='checked' ";?>/>
+        发布时按服务器生成列表由我手工填写
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#F9FCEF" colspan='2' style="padding-left:10px;"><b>不管是全局，还是具体某软件设置了下面的参数，附件下载方式都必须链接到中转页，否则无效！</b></td>
+    </td>
+    <tr> 
+      <td bgcolor="#FFFFFF">下载默认等级：</td>
+      <td bgcolor="#FFFFFF">
+      	<select name="dfrank" id="dfrank" style="width:150px">
+         <?php
+              $urank = $cuserLogin->getUserRank();
+              $dsql->SetQuery("Select * from `#@__arcrank` where `rank`>=0 ");
+              $dsql->Execute();
+              while($nrow = $dsql->GetArray())
+              {
+                	if($nrow['rank']==0) $nrow['membername'] = "开放下载";
+                	if($nrow['rank']==$row['dfrank']) echo "     <option value='{$nrow['rank']}' selected>{$nrow['membername']}</option>\r\n";
+                	else echo "     <option value='{$nrow['rank']}'>{$nrow['membername']}</option>\r\n";
+              }
+         ?>
+        </select>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">下载默认金币：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="text" name="dfywboy" class="np" value="<?php echo $row['dfywboy']; ?>" style='width:80px;' />
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">参数限制方式：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="radio" name="argrange" class="np" value="0"<?php if($row['argrange']==0) echo " checked='checked' ";?>/>允许发布时重新选择权限
+      	<input type="radio" name="argrange" class="np" value="2"<?php if($row['argrange']==1) echo " checked='checked' ";?>/>所有软件均使用此权限
+      </td>
+    </tr>
+    <tr> 
+      <td height="26" colspan="2" bgcolor="#F9FCEF" style="padding-left:10px;">
+      	<strong>镜像服务器列表：      </strong></td>
+    </tr>
+    <tr> 
+      <td colspan="2" bgcolor="#FFFFFF">服务器网址： 
+        <input name="serverurl" type="text" id="serverurl" value="http://" />
+        服务器名称： 
+        <input name="servername" type="text" id="servername" />
+        服务器类型： 
+        <input name="servertype" type="text" id="servertype" value="默认" />
+		<input type="button" name="Submit" value="增加一项" onClick="AddServer()"  class="coolbg np" />
+       </td>
+    </tr>
+    <tr>
+      <td height="62" colspan="2" bgcolor="#FFFFFF"><textarea name="sites" id="sites" style="width:99%;height:150px"><?php echo $row['sites']; ?></textarea></td>
+    </tr>
+    <tr>
+      <td height="26" colspan="2" bgcolor="#F9FCEF" style="padding-left:10px;"><strong>下载说明：</strong></td>
+    </tr>
+    <tr> 
+      <td height="62" colspan="2" bgcolor="#FFFFFF"><?php GetEditor('downmsg',$row['downmsg'],250); ?></td>
+    </tr>
+    <tr> 
+      <td height="41" colspan="2" bgcolor="#F9FCEF" align="center">
+      <input type="submit" name="Submit" value="保存设置" class="coolbg np" />　　　　        
+        <input type="reset" name="rset" id="rset" value="重置" class="coolbg np" />
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文件校验</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+<tr>
+    <td height="19" background="images/tbg.gif">
+      <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr>
+          <td width="24%">
+          	<a href='sys_verifies.php'><b>文件效验</b></a>
+          	&gt;&gt;
+          	<strong>校验结果：</strong> 共有 <?php echo count($filelist); ?> 个文件不同
+          </td>
+          <td width="76%" align="right">
+          </td>
+        </tr>
+      </table>
+   </td>
+</tr>
+<tr>
+ <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <form action="sys_verifies.php?action=getfiles" method="post">
+        <tr>
+          <td class='bline2'> 恢复? </td>
+          <td class='bline2'> 文件名(Ctrl+F查找) </td>
+          <td class='bline2'> 校验方式 </td>
+          <td class='bline2'> 最后修改时间 </td>
+          <td class='bline2'> 指纹码/点击可浏览文件内容 </td>
+        </tr>
+        <?php
+        	foreach ($filelist as $key => $file)
+        	{
+         ?>
+          <tr>
+          <td class='bline'>
+          	<input type="checkbox" name="refiles[]" value="<?php echo $file['filename'];?>" checked='1' />
+          </td>
+          <td class='bline'>
+          	<?php echo $file['filename']; ?>
+          </td>
+          <td class='bline'>
+          	<?php echo $file['method']; ?>
+          </td>
+          <td class='bline'>
+          	<?php echo $file['mtime']; ?>
+          </td>
+          <td class='bline'>
+             <a href="sys_verifies.php?action=view&filename=<?php echo $file['turefile']; ?>" target="_blank" class='coolbg' title="标准效验码为： <?php echo $file['cthash']; ?>">
+             	<?php echo $file['localhash']; ?>
+            </a>
+          </td>
+          </tr>
+         <?php
+          }
+         ?>
+          <tr>
+          	<td colspan="20" height='42'>
+          		<input type="submit" name="submit" value="从官方下载选中的文件并恢复" class='np coolbg' />
+            </td>
+          </tr>
+      </table>
+    </form>
+	</td>
+</tr>
+</table>
+</body>
+</html>

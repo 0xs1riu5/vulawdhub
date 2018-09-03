@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title><?php echo $cfg_webname; ?>- 会员注册</title>
+<link href="templets/style/login.css" rel="stylesheet" type="text/css" />
+<script src="templets/js/j.js" language="javascript" type="text/javascript"></script>
+<script src="templets/js/base.js" language="javascript" type="text/javascript"></script>
+<script src='templets/js/CheckPassStrength.js' type="text/javascript" language="javascript"></script>
+<script type="text/javascript" language="javascript" src='templets/js/reg_new.js'></script>
+<script type="text/javascript" language="javascript">
+<!--
+var reMethod = "<?php echo ($cfg_soft_lang == 'utf-8') ? 'POST' : 'GET';?>",pwdmin = <?php echo $cfg_mb_pwdmin; ?>;
+
+function changeAuthCode() {
+	var num = 	new Date().getTime();
+	var rand = Math.round(Math.random() * 10000);
+	num = num + rand;
+	$('#ver_code').css('visibility','visible');
+	if ($("#vdimgck")[0]) {
+		$("#vdimgck")[0].src = "../include/vdimgck.php?tag=" + num;
+	}
+	return false;	
+}
+
+function hideVc()
+{
+	$('#ver_code').css('visibility','hidden');
+}
+
+
+$(document).ready(function(){ 
+	$("#passwordLevel").removeClass().addClass("rank r0");
+	$("#vdcode").focus(function(){
+	  var leftpos = $("#vdcode").position().left;
+	  var toppos = $("#vdcode").position().top - 42;
+	  $('#ver_code').css('left', leftpos+'px');
+	  $('#ver_code').css('top', toppos+'px');
+	  $('#ver_code').css('visibility','visible');
+	});
+	$("input[type='password']").click(function(){
+	  hideVc()
+	});
+	$("#txtUsername").click(function(){
+	  hideVc()
+	});
+	$("input[type='radio']").focus(function(){
+	  hideVc()
+	});
+	/*
+	$("#vdcode").blur(function(){
+		  $('#ver_code').css('visibility','hidden');
+	});
+	*/
+})
+
+-->
+</script>
+</head>
+<body>
+<div class="header">
+  <div class="auto960">
+    <ul class="userMenu fRight">
+      <li> <a title="网站主页" href="../">网站主页</a> </li>
+      <li> <a title="注册" href="../member/index_do.php?fmdo=user&dopost=regnew">注册</a> </li>
+      <li> <a title="登录" href="../member/login.php">登录</a> </li>
+      <li class="help"> <a title="DEDECMS 帮助中心" href="http://help.dedecms.com">帮助</a> </li>
+    </ul>
+    <span>
+    <script type="text/javascript">
+ var now=(new Date()).getHours();
+ if(now>0&&now<=6){
+document.write("午夜好，");
+ }else if(now>6&&now<=11){
+ document.write("早上好，");
+ }else if(now>11&&now<=14){
+ document.write("中午好，");
+ }else if(now>14&&now<=18){
+ document.write("下午好，");
+ }else{
+ document.write("晚上好，");
+ }
+</script>
+    <i class="green">游客</i> 你可以选择到 </span> </div>
+</div>
+<div class="wrapper">
+  <div class="logo fLeft"> <a href="/"> <img  style="margin:8px 0 0 25px;"alt="会员中心" src="../member/templets/images/login_logo.gif"/></a></div>
+  <div class="banner fRight"> <img src="../member/templets/images/530x56.gif" width="530" height="56" /></div>
+</div>
+<div id="login" class="bor" >
+
+  <div class="<?php echo ($cfg_mb_reginfo == 'Y')? '' : 's';?>tip1"></div>
+  <div class="theme fLeft">
+    <form method="post" action="reg_new.php" id="regUser" name="form2">
+      <input type="hidden" value="regbase" name="dopost"/>
+      <input type="hidden" value="1" name="step"/>
+      <input type="hidden" value="个人" name="mtype"/>
+      <p style="text-align: right;" class="mB10"/>
+      <ul>
+        <li class="mL68">(带<i class="red"> * </i>号的表示为必填项目，用户名必须大于3位小于20位，密码必须大于3位)</li>
+        <li><span>帐号类型：</span>
+         <?php
+         if(!file_exists(DEDEDATA.'/cache/member_model.inc'))
+         {
+         	   $dsql->SetQuery("SELECT * FROM `#@__member_model` WHERE state='1'");
+	           $dsql->Execute();
+	           while($row=$dsql->GetObject())
+	           {
+		             $_MemberMod[$row->id]=array($row->name,$row->table);
+           	 }
+          } else {
+           	     require_once DEDEDATA.'/cache/member_model.inc';
+          }
+            foreach ($_MemberMod as $type)
+            {
+                if($type[0] == '个人') echo ' <label><input type="radio" name="mtype" class="usermtype" value="'.$type[0].'" checked/>';
+                elseif($type[0] == '企业') echo ' <label><input type="radio" name="mtype" class="usermtype2" value="'.$type[0].'" />';
+                else echo ' <label><input type="radio" name="mtype" class="usermtype" value="'.$type[0].'" />';
+                echo $type[0], '</label> &nbsp;';
+            }
+        ?>
+        </li>
+        <li><span>用户名：</span>
+          <input type="text" class="intxt w200" id="txtUsername" name="userid"/>
+        <i class="red">*</i> <em id="_userid">(可以使用中文，但禁止除[@][.]以外的特殊符号)</em> </li>
+        <li><span id="uwname">用户笔名：</span>
+          <input type="text" class="intxt w200" size="20" id="uname" name="uname"/>
+          <i class="red">*</i> <em id="_uname"/> </li>
+        <li><span>登陆密码：</span>
+          <input type="password" onkeyup="setPasswordLevel(this, document.getElementById('passwordLevel'));" style="font-family: verdana;" class="intxt w200" id="txtPassword" name="userpwd"/>
+          <i class="red">*</i> </li>
+        <li><span>密码强度：</span>
+          <input id="passwordLevel" class="rank r2" disabled="disabled" name="Input"/>
+        </li>
+        <li><span>确认密码：</span>
+          <input type="password" class="intxt w200" size="20" value="" id="userpwdok" name="userpwdok"/>
+          <i class="red">*</i> <em id="_userpwdok"><font color="red"><b>×两次输入密码不一致</b></font></em> </li>
+          <?php
+            if($safe_faq_reg == '1'){
+            $faqkey = array_rand($safefaqs);
+          ?>
+          <li><span>请回答注册问题：</span>
+      	  <p class="cellBg">
+            <?php echo $safefaqs[$faqkey]['question'];?> (答案:<?php echo $safefaqs[$faqkey]['answer'];?>)
+           </li>
+          <li><span>您的回答是：</span>
+            <input name="rsafeanswer" type="text" id="rsafeanswer" size="25" style='width:200px;' class="intxt w200"/> 
+            <input type="hidden" name="faqkey" value="<?php echo $faqkey;?>" />
+            <i class="red">*</i> </li>
+          <?php
+          	}
+          ?>
+          <li><span>电子邮箱：</span>
+            <input type="text" class="intxt w200" id="email" name="email"/>
+            <i class="red">*</i> <em id="_email">(每个电子邮邮箱只能注册一个帐号)</em> </li>
+          <li><span>安全问题：</span>
+            <?php
+            require(DEDEDATA.'/safequestions.php');
+            echo GetSafequestion(0,'safequestion');
+            ?>
+          <em id="_safequestion">(忘记密码时重设密码用)</em> </li>
+          <li><span>问题答案：</span>
+          <input id="safeanswer" class="intxt w200" type="text" value="" name="safeanswer"/>
+          </li>
+        <li><span>性别：</span>
+            <input type="radio" value="男" name="sex"/>
+            男
+        <input type="radio" value="女" name="sex"/>
+            女
+            <input type="radio" checked="checked" value="" name="sex"/>
+          保密        </li>
+          <?php
+            if(preg_match("/1/",$safe_gdopen)){
+          ?>
+          <li><span>验证码：</span>
+            <input type="text" class="intxt w200" style="width: 50px; text-transform: uppercase;" id="vdcode" name="vdcode"/><img id="vdimgck" align="absmiddle" onclick="this.src=this.src+'?'" style="cursor: pointer;" alt="看不清？点击更换" src="../include/vdimgck.php"/>
+           看不清？ <a href="javascript:void(0)" onclick="changeAuthCode();">点击更换</a></li>
+           <?php }?>
+      </ul>
+      <div><span style="height: 110px; width: 15%;" class="fLeft">会员注册协议：</span>
+        <div class="contract"> 1、在本站注册的会员，必须遵守《互联网电子公告服务管理规定》，不得在本站发表诽谤他人，侵犯他人隐私，侵犯他人知识产权，传播病毒，政治言论，商业讯息等信息。<br/>
+          2、在所有在本站发表的文章，本站都具有最终编辑权，并且保留用于印刷或向第三方发表的权利，如果你的资料不齐全，我们将有权不作任何通知使用你在本站发布的作品。<br/>
+        3、在登记过程中，您将选择注册名和密码。注册名的选择应遵守法律法规及社会公德。您必须对您的密码保密，您将对您注册名和密码下发生的所有活动承担责任。</div>
+      </div>
+      <br />
+      <ul>
+        <li><span>&nbsp;</span>
+          <input type="checkbox" checked="" value="" id="agree" name="agree"/>
+          我已阅读并完全接受服务协议 </li>
+        <li><span>&nbsp;</span>
+          <button type="submit" id="btnSignCheck" class="buttonGreen142">完 善 信 息</button>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <br class="clear"/>
+</div>
+<script language="javascript" type="text/javascript">
+	window.onload=function (){
+		setInterval("document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
+	}
+</script>
+<div class="footer bor">
+  <div class="fLeft mL10">Copyright &copy; 2004-2011 DEDECMS. 织梦科技 版权所有</div>
+  <div class="fRight mR10" id="time">  </div>
+</div>
+</body>
+</html>

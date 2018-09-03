@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>更改帐号基本资料 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language='javascript'src='templets/js/main.js'></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">  
+  function checkSubmit()
+{
+	if(document.form2.oldpwd.value=='')
+	{
+		document.form2.oldpwd.focus();
+		alert("旧密码必须填写！");
+		return false;
+	}
+	if(document.form2.userpwdok.value!=document.form2.userpwd.value)
+	{
+		document.form2.userpwdok.focus();
+		alert("两次密码不一致！");
+		return false;
+	}
+	if(document.form2.email.value=="")
+	{
+		document.form2.email.focus();
+		alert("Email不能为空！");
+		return false;
+	}
+	if(document.form2.uname.value=="")
+	{
+		document.form2.uname.focus();
+		alert("用户昵称不能为空！");
+		return false;
+	}
+	if(document.form2.vdcode.value=="")
+	{
+		document.form2.vdcode.focus();
+		alert("验证码不能为空！");
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<div id="main">
+ <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="edit_baseinfo.php">基本资料</a></li>
+          <li><a href="edit_fullinfo.php">详细资料</a></li>
+          <li><a href="edit_face.php">头像设置</a></li>
+        </ul>
+      </div>
+     <form action="edit_baseinfo.php" method="post" enctype="multipart/form-data" name="form2" onsubmit="return checkSubmit();">
+     <input type="hidden" name="dopost" value="save" />
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>基本资料</strong></h3>
+        <div class="postForm">
+          <p class="cellBg">
+            <label>帐号类型：</label>
+            <?php echo $row['mtype']; ?></p>
+          <p>
+            <label>用户名：</label>
+            <?php echo $cfg_ml->M_LoginID; ?>
+          </p>
+          <p class="cellBg">
+            <label style="width:90px">昵称/公司名称：</label>
+            <input name="uname" type="text" id="uname" value="<?php echo $row['uname']; ?>" class="intxt" style="width:100px"/>
+            * <span id="_uname">(个人会员该项为昵称，企业会员填写公司名称)</span>
+          </p>
+          <p>
+            <label>原登陆密码：</label>
+            <input name="oldpwd" type="password" id="oldpwd" class="intxt" /> <span style="color:red;">*</span>
+          </p>
+          <p class="cellBg">
+            <label>新密码：</label>
+            <input name="userpwd" type="password" id="userpwd" class="intxt" />
+            <span id="_userpwdok">(不修改密码请保留此项为空)</span>
+          </p>
+          <p>
+            <label>确认新密码：</label>
+            <input name="userpwdok" type="password" id="userpwdok" value="" class="intxt" />
+            <span id="_userpwdok2">(不修改密码请保留此项为空)</span> </span>
+          </p>
+          <p class="cellBg">
+            <label>原安全问题：</label>
+            <?php
+      			require(DEDEDATA.'/safequestions.php');
+      			echo GetSafequestion($row['safequestion'],'safequestion');
+     		 ?>
+                <span id="_safequestion">(忘记密码时重设密码用)</span>
+          </p>
+          <p>
+            <label>原问题答案：</label>
+            <input name="safeanswer" type="text" id="safeanswer" value="" class="intxt" />
+          </p>
+
+          <p class="cellBg">
+            <label>新安全问题：</label>
+            <?php
+      			echo GetSafequestion(0,'newsafequestion');
+      		?>
+               <span id="_safequestionnew">(不修改不用填写)</span> 
+          </p>
+          <p>
+            <label>新问题答案：</label>
+            <input name="newsafeanswer" type="text" id="newsafeanswer" class="intxt"/>
+          </p>
+          <p class="cellBg">
+            <label><span class="tdl">电子邮箱</span>：</label>
+            <input name="email" type="text" id="email" value="<?php echo $row['email']; ?>" class="intxt"/><br>
+            <span id="_email" style="margin-left:80px"> <span style="color:red;">*</span> (每个电子邮邮箱只能注册一个帐号，要修改电子邮箱必须填写正确安全问题的答案)</span> 
+          </p>
+          <p>
+            <label>性别：</label>
+			<input type="radio" name="sex" value="男" <?php if($row['sex']=='男') echo " checked='checked' "; ?>/>
+             男 &nbsp;
+            <input type="radio" name="sex" value="女" <?php if($row['sex']=='女') echo " checked='checked' "; ?>/>
+             女 &nbsp;
+            <input type="radio" name="sex" value="保密'" <?php if($row['sex']=='保密') echo " checked='checked' "; ?>/>
+             保密 
+          </p>
+          <p class="cellBg">
+            <label>验证码：</label>
+			<input name="vdcode" type="text" id="vdcode" style='width:50px;text-transform:uppercase;' class="intxt" />
+           <img src="../include/vdimgck.php" align="absmiddle" alt="看不清？点击更换" style="cursor:pointer" onclick="this.src=this.src+'?'" />
+          </p>
+          <p>
+            <button class="button2" type="submit">更新</button>
+            <button class="button2 ml10" type="reset">重设</button>
+          </p>
+    </div>
+      </div>
+      </form>
+      <!--主操作区域 -->
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

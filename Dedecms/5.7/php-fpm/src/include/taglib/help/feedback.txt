@@ -1,0 +1,12 @@
+调用最新评论
+>>dede>>
+{dede:feedback}
+<ul>
+<li class='fbtitle'>[field:username function="(@me=='guest' ? '游客' : @me)"/] 对 [field:title/] 的评论：</li>
+<li class='fbmsg'>&nbsp;&nbsp;<a href="plus/feedback.php?aid=[field:aid/]" class='fbmsg'>[field:msg /]</a></li>
+</ul>
+{/dede:feedback}
+>>dede>>
+row='12' 调用评论条数
+titlelen='24' 标题长度
+infolen='100' 评论长度

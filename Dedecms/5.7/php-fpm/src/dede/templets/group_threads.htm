@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=<?php echo $cfg_soft_lang; ?>'>
+<title>圈子管理->主题管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+</style>
+<script type="text/javascript">
+function CheckAll(form){
+	for (var i=0;i<form.elements.length;i++){
+		var e = form.elements[i];
+		e.checked == true ? e.checked = false : e.checked = true;
+	}
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">圈子管理->主题管理 <a href="../group" target="_blank">[查看首页]</a></div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+  <tr>
+    <td height="30" align="center" bgcolor="#ffffff">
+      <form action="group_threads.php" name="form1" method="get">
+	    <table width="380" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="69">&nbsp;关键字：</td>
+            <td width="83" align="left">
+           	  <input name="keyword" type="text" id="keyword" size="12" style="width:100" value="<?php echo $keyword?>">            </td>
+            <td width="60">&nbsp;用户：</td>
+            <td width="87"><input name="username" type="text" id="username" size="12" style="width:100" value="<?php echo $username?>" /></td>
+            <td width="81" align="center"><input name="imageField" type="submit" class="np coolbg" value="搜索"/></td>
+          </tr>
+        </table>
+	  </form>
+    </td>
+  </tr>
+</table>
+<form action="group_threads.php" method="post" onSubmit="return(confirm('删除后无法恢复,您确定删除吗?'))">
+<table width="98%" border="0" align="center" cellpadding="1" cellspacing="0" height="26"  style="border:1px solid #CFCFCF;border-bottom:none;margin-top:10px;">
+  <tr>
+    <td width="53%" height="30" align="left" background="images/tbg.gif" style="padding-left:10px;"><font color="#458146"><strong>所有主题</strong></font></td>
+    <td width="47%" height="30" align="right" background="images/tbg.gif">&nbsp;<a href="group_threads.php?orders=digest" ><font color="#458146">精品区</font></a> <font color="#458146">|</font> <a href="group_threads.php?orders=close" ><font color="#458146">已关闭</font></a><font color="#458146">|</font> <a href="group_threads.php?orders=rep"><font color="#458146">最多回复</font></a>&nbsp;&nbsp;</td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="0" cellspacing="0" align="center">
+  <tr>
+    <td height="30" align="center" bgcolor="#FAFCEF">
+  <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" style="background:#CFCFCF;">
+  <tr bgcolor="#FDFEE9" >
+    <td width="3%" height="24" align="left" bgcolor="#FDFEE9"></td>
+    <td width="5%" height="24" align="center" bgcolor="#FDFEE9">点击</td>
+    <td width="5%" height="24" align="center" bgcolor="#FDFEE9">回复</td>
+    <td width="44%" height="24" align="left" bgcolor="#FDFEE9">标题/圈子</td>
+    <td width="16%" height="24" align="center" bgcolor="#FDFEE9">作者</td>
+    <td width="15%" height="24" align="center" bgcolor="#FDFEE9">最后回复</td>
+    <td width="12%" align="center" bgcolor="#FDFEE9">操作</td>
+  </tr>
+{dede:datalist}
+<?php
+$row = $fields;
+$titleleft = "";
+$subject = $row['subject'];
+if($row['digest']) $titleleft .= "<span style='color:green;'>[精]</span>";
+if($row['displayorder']) $titleleft .= "<span style='color:red;'>[顶]</span>";
+if($row['closed']) $subject = "<s>".$subject."</s>";
+$subject = $titleleft.$subject;
+?>
+  <tr bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+    <td height="28" align="center"><input name="ids[]" type="checkbox" id="Ids-<?php echo $row['tid']?>" value="<?php echo $row['tid']?>" /></td>
+    <td height="28" align="center"><?php echo $row['views']?></td>
+    <td height="28" align="center"><?php echo $row['replies']?></td>
+    <td height="28" align="left"><?php echo $subject?>/<a href="group_edit.php?id=<?php echo $row['gid']?>"><?php echo GetGroupname($row['gid'])?></a></td>
+    <td height="28" align="center"><a href="member_view.php?id=<?php echo $row['authorid']?>"><?php echo $row['author']?></a> [<?php echo GetDateMk($row['dateline'])?>]</td>
+    <td height="28" align="center"><?php echo $row['lastposter']?> [<?php echo GetDateMk($row['lastpost'])?>]</td>
+    <td height="28" align="center"><a href="group_threads.php?action=del&id=<?php echo $row['tid']?>" onClick="return(confirm('删除后无法恢复,您确定删除吗?'))">删除</a>|<a href="group_threads.php?action=close&id=<?php echo $row['tid']?>">关闭</a>|<a href="group_threads.php?action=digest&id=<?php echo $row['tid']?>">加精</a>|<a href="group_threads.php?action=top&id=<?php echo $row['tid']?>">置顶</a></td>
+  </tr>
+{/dede:datalist}
+  <tr>
+    <td height="28" colspan="7" align="left" bgcolor="#F9FCEF">
+      <table width="100%" border="0">
+        <tr>
+          <td width="26%">&nbsp;<input type="button" class="np coolbg" onClick="CheckAll(this.form)" value="反 选" />
+            <input type="submit" class="np coolbg" value="删除" /></td>
+          <td width="74%" align="right">{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}&nbsp;&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>

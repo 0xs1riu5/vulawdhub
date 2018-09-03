@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>修改连载内容</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript" src="js/story.js"></script>
+<style type="text/css">
+<!--
+#addCatalog {
+	position:absolute;
+	left:455px;
+	top:64px;
+	width:325px;
+	height:238px;
+	z-index:2;
+	background-color: #F2FDDB;
+	border:1px solid #889D8F;
+	padding:6px;
+	display:none
+}
+#editCatalog {
+	position:absolute;
+	left:455px;
+	top:64px;
+	width:325px;
+	height:238px;
+	z-index:1;
+	background-color: #F2FDDB;
+	border:1px solid #889D8F;
+	padding:6px;
+	display:none
+}
+-->
+</style>
+
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">小说管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
+	<tr>
+	<td bgcolor="#EDF9D5" class="tbtitletxt"> 
+	  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
+     <tr>
+     <td width='30%' class="tbtitletxt"><strong>内容(漫画类)&gt;&gt;修改内容</strong></td>
+     <td align='right'>
+			[<a href="story_list_content.php?bookid=<?php echo $bookid; ?>"><u>本图书内容列表</u></a>]
+			&nbsp;	
+			[<a href="story_books.php"><u>所有图书</u></a>]
+			</td>
+     </tr>
+    </table>
+  </td>
+ </tr>
+</table>
+<form name='form1' action='story_edit_photo_action.php' enctype="multipart/form-data" method='post'>		
+<input type='hidden' name='cid' value='<?php echo $cid; ?>' />
+<input type='hidden' name='bookid' value='<?php echo $bookid; ?>' />	
+<input type='hidden' name='catid' value='<?php echo $catid; ?>' />
+<input type='hidden' name='bookname' value='<?php echo str_replace("'","`",$bookname); ?>' />
+<input type='hidden' name='booktype' value='<?php echo $booktype; ?>' />
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
+		<tr>
+		  <td style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+		  <font color='red'><?php if(isset($msg))echo $msg; ?></font>
+		  </td>
+  </tr>
+<tr>
+<td height="116" bgcolor="#FFFFFF" style="padding:0px 6px 6px 10px;">
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+    <td height="32" class="bline">默认标题：</td>
+    <td class="bline"><input name="title" type="text" id="title" size="35" value="<?php echo $contents['title'];  ?>" /></td>
+  </tr>
+  <tr>
+    <td style="width:120px" class="bline">隶属图书名称：</td>
+    <td class="bline">
+    	<?php echo $bookname; ?>    </td>
+  </tr>
+  <tr>
+    <td style="width:120px" class="bline">在章节中的顺序：</td>
+    <td class="bline">
+    	<input name="sortid" type="text" id="sortid" size="5" value="<?php echo $contents['sortid'];  ?>" />
+    </td>
+  </tr>
+  <tr>
+    <td height="32" class="bline">
+    隶属章节：<br />
+	  <input name="addchapter" type="checkbox" onClick="ShowHideSelChapter('selchap','newchap')" id="addchapter" value="1" />
+    添加新章节    </td>
+    <td class="bline" style="padding-top:5px;padding-bottom:5px">
+    <span id='selchap' style="display:block">
+    <select name="chapterid" size="5" id="chapterid" style="width:250px">
+    	<?php
+    	foreach($chapters as $k=>$v){
+    		if($k==$contents['chapterid']){ echo "    <option value='$k' selected>第{$chapnums[$k]}章 $v</option>\r\n"; }
+    		else echo "    <option value='$k'>第{$chapnums[$k]}章 $v</option>\r\n";
+    	}
+    	?>
+    </select>
+	</span>
+    <span id="newchap" style="display:none">
+	新章节名称：
+          <input name="chapternew" type="text" id="chapternew" size="30" />
+          <br />
+（如果没有可选章节或已有章节已经结束，请填写新章节名称，名称上不需加“第X章”这样的字样）
+	</span>
+</td>
+  </tr>
+  <tr>
+    <td height="32" colspan="2" class="bline">　　为了方便您的多篇漫画或其它连载图片发布，您可以在此同时上传多个图片，系统会自动将其分割成多篇文档，如果您的内容主题是不需要单独设定的，可不指定每个图片的标题，系统将自动采用默认标题加数字进行标识。</td>
+    </tr>
+  <tr>
+    <td colspan="2"><table border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="80">&nbsp;远程图片：</td>
+        <td colspan="3"><input name="isremote" type="checkbox" id="isremote"  value="1" />
+下载到本地 </td>
+        </tr>
+      
+    </table></td>
+  </tr>
+  <tr>
+    <td height="82" colspan="2" style="padding-top:10px;padding-bottom:10px">
+	<table width="90%" border="0" id="seltb" cellpadding="1" cellspacing="1" bgcolor="#E8F5D6" style="margin-bottom:6px;margin-left:10px">
+<tobdy>
+<tr bgcolor="#F4F9DD">
+<td height="25" colspan="2">
+ &nbsp;<strong>图片：</strong></td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="70%" height="25">
+　本地上传： 
+<input type="file" name='imgfile' style="width:330px" onChange="SeePic(document.picview,document.form1.imgfile);" /></td>
+<td rowspan="2" align="center" style="padding-top:10px;padding-bottom:10px">
+<img src="<?php if($contents['bigpic']=='') echo 'images/pview.gif'; else echo $contents['bigpic']; ?>" width="150" id="picview" name="picview" /></td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td height="25"> 　指定网址： 
+<input type="text" name='imgurl' style="width:260px" value="<?php echo $contents['bigpic']; ?>" /> 
+<input type="button" name='selpic' value="选取" style="width:65px" onClick="SelectImageN('form1.imgurl','big','picview')" /></td>
+</tr>
+</tobdy>
+</table>
+	</td>
+    </tr>
+  <tr>
+    <td height="70">&nbsp;</td>
+    <td><input type="submit" name="Submit" value="保 存" class='np coolbg' />　　
+      <input type="reset" name="Submit2" value="重 置" class='np coolbg' /></td>
+  </tr>
+</table></td>
+</tr>
+</table>
+</form>
+</div>
+</body>
+</html>

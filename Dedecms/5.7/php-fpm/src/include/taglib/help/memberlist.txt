@@ -1,0 +1,9 @@
+会员信息调用标签
+>>dede>>
+{dede:memberlist orderby='scores' row='20'}
+<a href="../member/index.php?uid={dede:field.userid /}">{dede:field.userid /}</a>
+<span>{dede:field.scores /}</span>
+{/dede:memberlist}
+>>dede>>
+orderby = 'scores' 按积分排序
+row = '6' 调用数目

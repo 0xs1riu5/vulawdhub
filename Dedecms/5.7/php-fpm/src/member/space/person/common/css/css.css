@@ -1,0 +1,182 @@
+@import url("global.css");
+
+/*
+
+“结构” 样式
+
+2008.8.12 10:48 for Fangyu12@gmail.com
+
+Last modified 2008.10.06 15:30
+
+Copyright (c) 2008, dedecms All rights reserved.
+
+*/
+/* 顶部导航 add for Fangyu
+-------------------------------------------------------------------*/
+#headTop {
+	width:100%;
+	height:30px;
+	background-image: url(../images/module_top.gif);
+	background-repeat: repeat-x;
+}
+#headTop .logo {
+	background:url(../images/module_top_logo.gif) no-repeat 20px 6px;
+	width:200px;
+	height:30px;
+	float:left;
+	cursor:pointer;
+}
+/* 登入信息
+-------------------------------------------------------------------*/
+#topBar {
+	float: right;
+	height: 12px;
+	margin-bottom: 15px;
+	line-height: 12px;
+	margin-top: 8px;
+}
+#topBar span, #topBar .userMenu li {
+	padding-right: 8px;
+	padding-left: 8px;
+	line-height: 12px;
+	height: 12px;
+	padding-top: 1px;
+	white-space: nowrap;
+}
+#topBar span {
+	float: right;
+}
+#topBar span i {
+	font-style: normal;
+	padding-right: 3px;
+}
+#topBar .userMenu {
+	float: right;
+}
+#topBar .userMenu li {
+	float: left;
+}
+#topBar .userMenu li.help {
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #999;
+	text-align: right;
+	padding-right: 0px;
+	margin-right:8px;
+}
+/* 用户信息
+-------------------------------------------------------------------*/
+#userInfo .pic {
+	display: table-cell !important;
+	display:block;
+	font-size:25px;
+	overflow:hidden;
+	text-align:center;
+	vertical-align:middle;
+	margin-right: auto;
+	margin-left: auto;
+	width:190px;
+}
+#userInfo .pic img {
+	vertical-align:middle;
+	max-width:190px;
+	max-height:190px;
+	width:expression(this.width>190?190:true);
+	height:expression(this.height>190?190:true);
+}
+#artInfo {
+	margin-top:30px;
+}
+#artInfo li {
+	font-size: 11px;
+	margin-left: -1px;
+	padding-left: 10px;
+	border-left: 1px solid #CCC;
+	height: 12px;
+	line-height:12px;
+	margin-right: 10px;
+}
+#artInfo li a {
+	font-size:12px;
+	margin-right:5px;
+}
+/* 相册
+-------------------------------------------------------------------*/
+#album {
+	overflow:hidden;
+}
+#album li {
+	width:25%;
+	float:left;
+	margin-top: 20px;
+	position: relative;
+}
+#album dl {
+	height: 150px;
+	width: 150px;
+	margin: 0px auto;
+	background-image: url(../images/album_bg.png);
+	background-repeat: no-repeat;
+	padding-top: 10px;
+	padding-bottom: 30px;
+}
+#album dl dt {
+	margin-bottom:5px;
+	padding-left: 10px;
+}
+#album dl dt a {
+	display: table-cell !important;
+	display:block;
+	font-size:66px;
+	width:130px;
+	height:95px;
+	overflow:hidden;
+	text-align:center;
+	vertical-align:middle;
+}
+#album dl dt img {
+	vertical-align:middle;
+	max-width:130px;
+	max-height:95px;
+	height:expression(this.height>95?95:true);
+	border-width: 0px;
+}
+
+/* 分页
+-------------------------------------------------------------------*/
+.pagelistbox span {
+	visibility:hidden;
+}
+.pagelistbox a {
+	margin:0 2px;
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	padding: 1px 4px;
+}
+/* 页脚
+-------------------------------------------------------------------*/
+#footer {
+	background-image: url(../../blue/footer.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	text-align: center;
+	height: 168px;
+}
+#footer ul {
+	margin-right: auto;
+	margin-left: auto;
+	padding-top: 50px;
+	width: 580px;
+	overflow: hidden;
+}
+#footer li {
+	float: left;
+	width: 70px;
+	margin-left: -2px;
+	margin-right: 3px;
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: #666666;
+	height:14px;
+	line-height:14px;
+}

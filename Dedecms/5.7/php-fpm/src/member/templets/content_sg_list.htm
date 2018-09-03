@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>文档管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">
+  function viewArc(aid){
+	  window.open("{dede:global.cfg_phpurl /}/view.php?aid="+aid);
+  }
+  function editArc(aid,channelid){
+	  location = "archives_do.php?dopost=edit&channelid="+channelid+"&aid="+aid;
+  }
+  function delArc(aid){
+	  if(window.confirm('你确定要删除这篇文档吗?')) location="archives_do.php?aid="+aid+"&dopost=delArc";
+  }
+</script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="#"><span><?php echo $cInfos['typename']; ?></span></a></li>
+        </ul>        
+      </div>
+      <div id="mainCp">
+        <!--内容消息提示 -->
+        <h3 class="meTitle"><span class="fLeft">已发布<?php echo $cInfos['typename']; ?></span><small>(曾经发布的所有<?php echo $cInfos['typename']; ?>)</small></h3>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+          <thead>
+            <tr>
+              <th width="40%">文章标题</th>
+              <th width="15%">类目 </th>
+              <th>点击 </th>
+              <th width="11%">发布时间 </th>
+              <th width="25%">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          {dede:datalist}
+            <tr>
+              <td class="tabTitle"><a href='<?php echo $cfg_phpurl; ?>/view.php?aid=<?php echo $fields['aid']; ?>' target='_blank'><?php echo $fields['title']; ?></a> </td>
+              <td align="center"><?php echo $fields['typename']; ?></td>
+              <td align="center"><?php echo $fields['click']; ?></td>
+              <td align="center"><?php echo GetDateMk($fields['senddate']); ?></td>
+              <td align="center" class="doPost">
+                <a href="javascript:editArc(<?php echo $fields['aid']?>,<?php echo $fields['channel']?>);">修改</a> | <a href="javascript:delArc(<?php echo $fields['aid']?>);">删除</a> | <a href="javascript:viewArc(<?php echo $fields['aid']; ?>);">预览</a>
+              </td>
+            </tr>
+         {/dede:datalist}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5"><div class="pageList">{dede:pagelist listsize=5/}</div></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!--主操作区域 -->
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

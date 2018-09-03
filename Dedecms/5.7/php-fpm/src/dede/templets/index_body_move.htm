@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>DedeCMS Home</title>
+<base target="_self">
+<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/indexbody.css" />
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
+<script language="javascript" src="../include/js/jquery/ui.core.js"></script>
+<script language="javascript" src="../include/js/jquery/ui.draggable.js"></script>
+<script language="javascript" src="../include/js/jquery/ui.sortable.js"></script>
+<script language="javascript" src="js/jquery.json-2.2.min.js"></script>
+<script language="javascript" src="js/indexbody.js"></script>
+<script language="javascript" src="js/drag.js"></script>
+</head>
+<body leftmargin="8" topmargin='8' bgcolor="#FFFFFF">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+     <div style='float:left'>
+       欢迎使用专业的PHP网站管理系统，轻松建站的首选利器 -- <?php echo $cfg_softname; ?>
+     </div>
+     <div id='' style='float:right;padding-right:8px;'>
+         <!--  //保留位置（顶右）  -->
+     </div>
+   </td>
+  </tr>
+  <tr>
+    <td height="1" background="images/sp_bg.gif" style='padding:0px'></td>
+  </tr>
+</table>
+
+<div id='mainmsg'>
+<?php
+$dtp = new DedeTagparse();
+$dtp->SetNameSpace("menu","<",">");
+$dtp->LoadTemplet($myIcoFile);
+if(is_array($dtp->CTags)){
+	$menu = "";
+    foreach($dtp->CTags as $ctag){
+        $title = $ctag->GetAtt("title");
+        $ico = $ctag->GetAtt("ico");
+        $link = $ctag->GetAtt("link");
+        $menu .= '<div class="icoitem" style="background:url('.$ico.') 10px 3px no-repeat;"><a href='.$link.'>'.$title.'</a></div>';
+    }
+}
+//
+if($cuserLogin->getUserType()==10) {
+    $adminname = "总管理员";
+} else if($cuserLogin->getUserType()==5) {
+    $adminname = "频道总编";
+} else {
+    $adminname = "信息采集员或其它管理员";
+}
+//
+if($isSafeMode) {
+    $safe = '<br><font color="blue">由于您的系统以安全模式运行，为了确保程序兼容性，第一次进入本系统时请更改“<a href="sys_info.php"><u>更改系统参数</u></a>”里的FTP选项，并选择用FTP形式创建目录，完成后：<a href="testenv.php" style="color:red"><u>点击此进行一次DedeCms目录权限检测&gt;&gt;</u></a></font>';
+} else {
+    $safe =  '<a href="testenv.php" style="color:blue"><u>DedeCMS目录权限检测&gt;&gt;</u></a></font>';
+}
+//
+$needfunc = array("dir","phpinfo");
+$n = 0;
+foreach($needfunc as $k) {
+    if(!function_exists($k)) {
+        echo '<font color="red">[{$k}×]</font>';
+        $n++;
+    }
+}
+if($n==0) {
+    $need = "符合要求";
+} else {
+    $need =  "被禁用的函数可能导致部份功能无法使用！";
+}
+//
+$phpversion = @phpversion();
+$gdversion = @gdversion();
+$isSafeMode  = $isSafeMode ? "On" : "Off";
+$regblo = ini_get("register_globals") ? "On" : "Off";
+$magquo = ini_get("magic_quotes_gpc") ? "On" : "Off";
+$post_msize = ini_get("post_max_size");
+$alluf = ini_get("allow_url_fopen") ? "支持" : "不支持";
+
+$query = "SELECT arc.id, arc.arcrank, arc.title, arc.channel, ch.editcon  FROM `#@__archives` arc
+        LEFT JOIN `#@__channeltype` ch ON ch.id = arc.channel
+         WHERE arc.arcrank<>-2 ORDER BY arc.id DESC LIMIT 0, 6 ";
+$arcArr = array();
+$dsql->Execute('m', $query);
+while($row = $dsql->GetArray('m'))
+{
+    $arcArr[] = $row;
+}
+$latestNews = '<table width="100%" class="dboxtable">';
+foreach($arcArr as $row)
+{
+    if(trim($row['editcon'])=='') {
+        $row['editcon'] = 'archives_edit.php';
+    }
+    $linkstr = "·<a href='{$row['editcon']}?aid={$row['id']}&channelid={$row['channel']}'>{$row['title']}</a>";
+    if($row['arcrank']==-1) $linkstr .= "<font color='red'>(未审核)</font>";
+    $latestNews .= '    <tr>
+        <td class=\'nline\'>'.$linkstr;
+    $latestNews .= '        </td>
+    </tr>';
+}
+$latestNews .= '</table>';
+
+$drgonIterm = array(
+            'item1' => '<dt class="lside"><span class="l">'.$cfg_soft_enname.';更新消息</span></dt>
+                        <dd>
+                            <div id="updatetest">
+                                <div id="updateinfos">
+                                      <div class="updatedvt"><b>您系统版本最后更新时间为：'.$oktime.' </b><br/>
+                                      <a href="javascript:LoadUpdateInfos();" class="np coolbg">进行在线更新</a> &nbsp
+                                       <a href="sys_repair.php" class="np coolbg">系统错误修复</a></div>
+                                       <iframe name="stafrm" src="'.$offUrl.'&uptime='.$oktime.'" frameborder="0" id="stafrm" width="98%" height="50"></iframe>
+                                </div>
+                             </div>
+                        </dd>',
+            'item2' => '<dt class="lside"><span class="l">商业授权查询</span></dt>
+                        <dd>
+                            <div class="biz">
+                                <script type="text/javascript" src="'.$updateHost.'/dedecms/authorization.'.$cfg_soft_lang.'.js"></script>
+                            </div>
+                        </dd>',
+            'item3' => '<dt class="lside">
+                                <div class="l">快捷操作</div>
+                                <div class="r"><a href="#" onClick="AddNew()"><b>【新增】</b></a><a href="#" onClick="ListAll()"><b>【管理】</b></a></div>
+                            </dt>
+                            <dd>
+                                <div id="quickmenu">'.$menu .'
+                                </div>
+                            </dd> ',
+            'item4' => '<dt class="lside"><div class="l">系统基本信息</div></dt>
+                        <dd class="intable">
+                            <table width="98%" class="dboxtable">
+                                <tr>
+                                    <td width="25%" class="nline">您的级别：</td>
+                                    <td class="nline">'.$adminname.'
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="5" class="nline">PHP环境摘要：</td>
+                                    <td class="nline"> PHP版本：'.$phpversion.'&nbsp;GD版本：'.$gdversion.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="nline">是否安全模式：<font color="red">'.$isSafeMode .'</font> '.$safe.'
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="nline">
+                                        Register_Globals：<font color="red">'.$regblo.'</font> &nbsp;
+                                        Magic_Quotes_Gpc：<font color="red">'.$magquo.'</font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="nline">支持上传的最大文件：'.$post_msize.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="nline">是否允许打开远程连接：'.$alluf .'</td>
+                                </tr>
+                                <tr>
+                                    <td class="nline"> 其它必须函数检测：</td>
+                                    <td class="nline">'.$need.'
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="nline"> 软件版本信息： </td>
+                                    <td class="nline"> 版本名称：'.$cfg_soft_enname.'&nbsp;版本号：'.$cfg_version.'</td>
+                                </tr>
+                            </table>
+                        </dd>',
+
+            'item5' => '<dt class="lside"><div class="l">开发团队</div></dt>
+                        <dd class="intable">
+                            <table width="98%" class="dboxtable">
+                                <tr>
+                                    <td width="25%" height="36" class="nline"> 主程序开发： </td>
+                                    <td class="nline">天涯、IT柏拉图、沙羡、蓝色随想、Niap、木匠、cha369</td>
+                                </tr>
+                                <tr>
+                                    <td height="36" class="nline">界面及交互设计：</td>
+                                    <td class="nline">like、猪头心宇、方域、小王</td>
+                                </tr>
+                                <tr>
+                                    <td height="36" class="nline">官方论坛协助：</td>
+                                    <td class="nline">感谢以下站长（排名不分先后）:疯狂的锤子、木木/阿杰</td>
+                                </tr>
+            
+                            </table>
+                        </dd>',
+
+            'item6' => '<dt class="lside"><div class="l">信息统计</div></dt>
+                        <dd id=\'listCount\'>
+                            正在载入...
+                        </dd>',
+            'item7' => '<dt class="lside"><div class="l">最新文档</div></dt>
+                        <dd id=\'listNews\'>
+                            ' .$latestNews. '
+                        </dd>',
+                        
+            'item8' => '<dt class="lside"><div class="l">官方动态</div></dt>
+                        <dd>
+                            <table width="98%" class="dboxtable">
+                                <tr>
+                                    <td width="25%" height="36" class="nline"> 会员数：</td>
+                                    <td class="nline">22</td>
+                                </tr>
+                                <tr>
+                                    <td height="36" class="nline">文档数：</td>
+                                    <td class="nline">433</td>
+                                </tr>
+                                <tr>
+                                    <td height="36" class="nline">普通文章：</td>
+                                    <td class="nline">235</td>
+                                </tr>
+                            </table>
+                        </dd>',                        
+)
+?>
+    <div class="column" id="column1"><!--左侧开始-->
+        <?php foreach ($column1 as $row) {        ?>
+        <dl class="dbox" id="<?php echo $row ?>">
+             <?php echo $drgonIterm[$row]; ?>
+        </dl>
+        <?php } ?>
+    </div><!--左侧结束-->
+    <div class="column" id="column2" ><!-- //右边的快捷消息开始 -->
+        <?php foreach ($column2 as $row) {        ?>
+        <dl class="dbox" id="<?php echo $row ?>">
+             <?php echo $drgonIterm[$row]; ?>
+        </dl>
+        <?php } ?> 
+    </div>
+</div>
+<br style='clear:both'/>
+<!-- //底部 -->
+<div align="center" class="footer">
+Copyright &copy; 2004-2011 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>. 织梦科技 版权所有
+</div>
+
+<!--  下面是隐藏的项目  -->
+<div id='loaddiv' style='display:none'>
+    <p align='center' style='padding-top:200px'><img src='images/loadinglit.gif' /> 请稍后，正在下载更新文件列表...</p>
+</div>
+<div id="editTab">
+<span id='editTabBody'>请稍候，正在载入...</span>
+</div>
+<div id="addTab">
+<form name='addform' action='index_body.php'>
+<input type='hidden' name='dopost' value='addnew' />
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+     <td height='28' colspan='3' background="images/tbg.gif">
+       <div style='float:left'><b>增加快捷操作项</b></div>
+      <div style='float:right;padding:3px 10px 0 0;'>
+         <a href="javascript:CloseTab('addTab')"><img src="images/close.gif" width="12" height="12" border="0" /></a>
+      </div>
+     </td>
+   </tr>
+      <tr><td style="height:6px;font-size:1px;border-top:1px solid #8DA659" colspan="2">&nbsp;</td></tr>
+   <tr>
+     <td width="20%" height="28">链接标题：</td>
+     <td width="70%">
+         <input name="title" type="text" id="title" class='pubinputs' />
+     </td>
+   </tr>
+   <tr>
+     <td height="28" width="20%">ICO图片：</td>
+     <td width="70%">
+         <input name="ico" type="text" id="ico" class='pubinputs' />
+     </td>
+   </tr>
+   <tr>
+     <td height="28" width="20%">链接网址：</td>
+     <td width="70%">
+         <input name="link" type="text" id="link" class='pubinputs' />
+     </td>
+   </tr>
+   <tr>
+     <td height="45">&nbsp;</td>
+     <td>
+         <input type="submit" name="Submit" value="保存项目" class="np coolbg" style="width:80px;cursor:pointer" />
+     </td>
+   </tr>
+  </table>
+</form>
+</div>
+
+</body>
+</html>

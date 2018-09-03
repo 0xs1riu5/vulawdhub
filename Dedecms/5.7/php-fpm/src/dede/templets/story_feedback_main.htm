@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>小说评论管理</title>
+<script language='javascript'>
+//获得选中文件的文件名
+function getCheckboxItem()
+{
+	var allSel="";
+	if(document.feedback.fid.value) return document.feedback.fid.value;
+	for(i=0;i<document.feedback.fid.length;i++)
+	{
+		if(document.feedback.fid[i].checked)
+		{
+			if(allSel=="")
+				allSel=document.feedback.fid[i].value;
+			else
+				allSel=allSel+","+document.feedback.fid[i].value;
+		}
+	}
+	return allSel;	
+}
+function selAll()
+{
+	for(i=0;i<document.feedback.fid.length;i++)
+	{
+		document.feedback.fid[i].checked=true;
+	}
+}
+function selNone()
+{
+	for(i=0;i<document.feedback.fid.length;i++)
+	{
+		document.feedback.fid[i].checked=false;
+	}
+}
+function selNor()
+{
+	for(i=0;i<document.feedback.fid.length;i++)
+	{
+		if(document.feedback.fid[i].checked==false)
+			document.feedback.fid[i].checked=true;
+		else
+			document.feedback.fid[i].checked=false;
+		
+	}
+}
+function delFeedback()
+{
+	var qstr=getCheckboxItem();
+	if(qstr=="") alert("你没选中任何内容！");
+	else if(window.confirm('你确定要删除这些评论吗?')) location.href="story_feedback_main.php?job=del&fid="+qstr;
+}
+function delFeedbackIP()
+{
+	var qstr=getCheckboxItem();
+	if(qstr=="") alert("你没选中任何内容！");
+	else if(window.confirm('你确定要删除这些评论吗?')) location.href="story_feedback_main.php?job=delall&fid="+qstr;
+}
+function checkFeedback()
+{
+	var qstr=getCheckboxItem();
+	if(qstr=="") alert("你没选中任何内容！");
+	else location.href="story_feedback_main.php?job=check&fid="+qstr;
+}
+function editFeedback()
+{
+	var qstr=getCheckboxItem();
+	if(qstr=="") alert("你没选中任何内容！");
+	else location.href="story_feedback_edit.php?job=edit&fid="+qstr;
+}
+</script>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" align="center" cellspacing="1" bgcolor="#D6D6D6">
+<tr>
+<td height="28" background='images/tbg.gif'>
+<div style="float:left;">
+	<a href='story_feedback_main.php' style="padding-left:10px;"><u><b>评论管理</b></u></a>
+</div>
+<div style="float:right;padding-right:10px">
+<form name='form1'>
+	关键字：
+	<input type='text' size='15' name='keyword' style='width:150'> 
+ 	<select name="typeid" style="width:180">
+ 		<option value="0">--请选择--</option>
+ 		{dede:global.openarray /}
+	</select>
+	<input type='submit' name='sb' value=' 搜索 ' class='coolbt' />
+</form>
+</div>
+ </td>
+</tr>
+<form name='feedback'>
+<tr>
+<td height="215" bgcolor="#FFFFFF" valign="top">
+<table width='100%' border='0' cellpadding='0' cellspacing='0'>
+{dede:datalist}
+<tr height='25'> 
+<td>
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#cfcfcf">
+<tr height="25" bgcolor="#FBFCE2"> 
+<td width="9%">
+	&nbsp;选择 <input name="fid" type="checkbox" class="np" id="fid" value="{dede:field.id/}"> 
+</td>
+<td width="12%" style="padding-left:8px;">
+	用户：{dede:field.username/}
+</td>
+<td width="30%" style="padding-left:8px;">
+	文档：<a href='story_feedback_main.php?aid={dede:field.aid/}'><u>{dede:field.arctitle/}</u></a> (<a href="/book/book.php?bid={dede:field.aid/}" target="_blank"><u>浏览</u></a>)
+</td>
+<td width="18%" align="center">
+	IP地址：<a href='feedback_main.php?ip={dede:field.ip/}'><u>{dede:field.ip/}</u></a>
+</td>
+<td width="21% style="padding-left:8px;"">
+	时间：{dede:field.dtime function="GetDateTimeMK(@me)" /}
+</td>
+<td width="10%" align="center">
+	<a href='story_feedback_edit.php?id={dede:field.id/}'><img src="images/feedback-edit.gif" border="0" width="45" height="18"></a>
+</td>
+</tr>
+<tr align="center" bgcolor="#FFFFFF"> 
+<td height="28" colspan="6">
+	<table width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td>
+{dede:field.ischeck function="IsCheck(@me)" /}
+{dede:field.msg function='cn_substr(Text2Html(@me), 50)'/}
+</td>
+</tr>
+</table></td>
+</tr>
+</table>
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td height="3"></td>
+</tr>
+</table></td>
+</tr>
+{/dede:datalist}
+<tr>
+<td height='20' align='center' bgcolor="#F9FCEF">
+  {dede:pagelist listsize='5' /}
+</td>
+</tr>
+<tr> 
+<td height='30'>
+<table width="98%">
+<tr>
+<td width="30%">
+<input type='button' name='kk1' value='全选' onClick="selAll()" class="coolbg np" /> 
+<input type='button' name='kk2' value='取消' onClick="selNone()" class="coolbg np" />
+<input type='button' name='kk3' value='反选' onClick="selNor()" class="coolbg np" />
+</td>
+<td align="right">
+<input type='button' name='db' value=' 删除相同IP的所有评论 ' onClick="delFeedbackIP()" class="coolbg np" />
+<input type='button' name='db' value=' 删除评论 ' onClick="delFeedback()" class="coolbg np" />
+<input type='button' name='db2' value=' 审核评论 ' onClick="checkFeedback()" class="coolbg np" />
+</td>
+</tr>
+</table>
+ </td>
+</tr>
+</table>
+</td>
+</tr>
+</form>
+</table>
+</body>
+</html>

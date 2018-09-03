@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文件校验</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+<tr>
+    <td height="19" background="images/tbg.gif">
+      <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr>
+          <td width="24%">
+          	<strong><a href='sys_verifies.php'><b>文件校验</b></a> &gt;&gt; 文件效验管理</strong>
+          </td>
+          <td width="76%" align="right">
+          </td>
+        </tr>
+      </table>
+   </td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <form action="sys_verifies.php?action=modify" method="post">
+      <tr>
+       <td colspan="4" class='bline2' style="color:red"> &nbsp;说明:这里是系统文件列表,如果本地对某些文件做过修改,但又不希望同官方服务器上面的镜像版本(发布版本)对应文件进行同步,可将文件校验方式修改为&ldquo;本地(local)&rdquo;,以确保不会重新下载文件修复。</td>
+      </tr>
+      <tr>
+          <td class='bline2'> 修改? </td>
+          <td class='bline2'> 文件名(用 Ctrl+F 搜索) </td>
+          <td class='bline2'> 文件HASH </td>
+          <td class='bline2'> 校验方式 </td>
+          </tr>
+          <?php
+          foreach ($filelist as $key => $file)
+          {
+          ?>
+          <tr>
+          <td class='bline'>
+          	<input type="checkbox" name="modifys[]" value="<?php echo $file['filename'];?>" />
+          </td>
+          <td class='bline'>
+          	<?php echo $file['filename'];?>
+          </td>
+          <td class='bline'>
+          	<?php echo $file['cthash'];?>
+          </td>
+          <td class='bline'>
+          	<?php echo $file['method'];?>
+          </td>
+          </tr>
+          <?php
+          }
+          ?>
+          <tr>
+          <td colspan="20" height='28'>
+          	<label><input type="radio" name="method" value="offical" />官方(official)</label>
+         	 <label><input type="radio" name="method" value="local" checked='1' />本地(local)</label>
+          </td>
+          </tr>
+          <tr>
+          	<td colspan="20" height='36'>
+          	 <input type="submit" name="submit" value="修改要文件的校验方式" class='np coolbg' />
+          	</td>
+           </tr>
+        </form>
+      </table>
+	 </td>
+</tr>
+</table>
+</body>
+</html>

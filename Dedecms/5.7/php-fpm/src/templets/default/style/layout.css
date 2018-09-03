@@ -1,0 +1,736 @@
+/***
+ *	DedeCMS v5.3 Style (grass green)
+ *	dedecms.com  Author pigz  2008-11-10 10:57
+ **/
+
+/*--------------------------------------------------
+ box base
+ ---------------------------------------------*/
+/* 自适应宽度的块(通用块) */
+
+.tbox{
+	margin:0 0 8px 0;
+	border-bottom:1px solid #DADADA;
+	overflow:hidden;
+	background:url(../images/green_skin.png) 0 -294px repeat-x;
+}
+.tbox dt{
+	height:24px;
+	border:1px solid #DADADA;
+	overflow:hidden;
+	clear:both;
+}
+.tbox dd{
+	border-left:1px solid #DADADA;
+	border-right:1px solid #DADADA;
+	/*padding:4px 4px 0px;*/
+	overflow:hidden;
+}
+
+.tbox dt strong{
+	height:24px;
+	line-height:24px; !important;line-height:25px;
+	padding-left:8px;
+	padding-right:4px;
+	display:block;
+	float:left;
+	color:#316301;
+	letter-spacing:1px;
+}
+.tbox dt strong a{
+	color:#316301;
+}
+.tbox dt strong a:hover{
+	color:#596F37;
+	text-decoration:none;
+}
+.tbox dt span.more{
+	float:right;
+	position:relative;
+	line-height:25px;
+	padding-right:8px;
+	color:#596F37;
+}
+.tbox dt span.more a{
+	color:#596F37;
+	text-decoration:none;
+}
+.tbox dt span.more a:hover{
+	color:#ff3333;
+	text-decoration:underline;
+}
+.tbox dt span.label{
+	height:25px;
+	float:right;
+	overflow:hidden;
+	padding-right:1px;
+	padding-top:2px;
+}
+.tbox dt span.label a{
+	height:26px;
+	display:block;
+	padding:0px 7px 0px 8px;
+	line-height:26px;
+	border-left:1px solid #DADADA;
+	float:left;
+	color:#666;
+	text-decoration:none;
+	overflow:hidden;
+	letter-spacing:1px;
+}
+.tbox dt span.label a:hover{
+	color:#360;
+}
+.tbox dt span.label a.thisclass{
+	background:#FFF;
+	color:#333;
+	border-top:3px solid #DADADA;
+}
+
+.tbox dt span.linklabel{
+	float:left;
+	margin-left:10px;
+	overflow:hidden;
+	padding-right:1px;
+	padding-top:2px;
+}
+.tbox dt span.linklabel a{
+	height:20px;
+	display:block;
+	padding:0px 7px 0px 8px;
+	margin:0 5px;
+	line-height:20px;
+	border-left:1px solid #DADADA;
+	border-top:1px solid #DADADA;
+	border-right:1px solid #DADADA;
+	float:left;
+	color:#666;
+	text-decoration:none;
+	overflow:hidden;
+	letter-spacing:1px;
+}
+.tbox dt span.linklabel a:hover{
+	color:#360;
+}
+.tbox dt span.linklabel a.thisclass{
+	background:#FFF;
+	color:#333;
+}
+
+/* 较重颜色的Box */
+.light {
+	background:none;
+}
+.light dt{
+	height:24px;
+	border:1px solid #DADADA;
+	overflow:hidden;
+	background:url(../images/green_skin.png) 0 -188px repeat-x;
+	clear:both;
+}
+.light dd{
+	border-left:1px solid #DADADA;
+	border-right:1px solid #DADADA;
+	/*padding:4px 4px 0px;*/
+	overflow:hidden;
+}
+dt.light strong{
+	color:#316301;
+}
+/*--------------------------------------------------
+ box layout (prefix space:a,b)
+ ---------------------------------------------*/
+ 
+/*---------- a : 文本列表块 ---------*/
+
+/*---------- b : 图文混排块 ---------*/
+
+
+/*-------------------------------------------------- 
+ list layout (prefix space:c,d,e,f)
+ ---------------------------------------------*/
+ 
+/*---------- c : 纯文本列表 ---------*/
+.c1{/* 纯文本链接列表 */
+	padding:4px 0px;
+	clear:right;
+}
+.c1 li{
+	height:27px;
+	line-height:27px;
+	overflow:hidden;
+	padding-left:16px;
+	background:url(../images/ico-2.gif) 7px 11px no-repeat;
+}
+.c1 a{
+	color:#585858;
+}
+
+.c2{/* 水平切分的两列纯文本链接列表 */
+	width:100%;
+	padding:4px 0px;
+	overflow:hidden;
+	clear:both;
+}
+.c2 li{
+	width:44%;
+	margin-right:1%;
+	float:left;
+	height:27px;
+	line-height:27px;
+	overflow:hidden;
+	padding-left:16px;
+	background:url(../images/ico-2.gif) 7px 11px no-repeat;
+}
+
+/*---------- d : 附加信息列表 ---------*/
+.d1{/* 前置时间日期的小列表 */
+	padding:4px 0px;
+}
+.d1 li{
+	height:27px;
+	line-height:27px;
+	overflow:hidden;
+}
+.d1 li span{
+	color:#ABA9A2;
+	margin-right:5px;
+	float:left;
+}
+.d1 li a{
+	
+}
+.d2{/* 后置时间日期的小列表 */
+	padding:4px 0px;
+}
+.d2 li{
+	height:27px;
+	line-height:27px;
+	overflow:hidden;
+}
+.d2 li span{
+	color:#777;
+	float:right;
+	padding-right:10px;
+	margin-left:10px;
+}
+.d2 li a{
+	overflow:hidden;
+}
+.d4{/*带内容简介的小列表*/
+	padding:0px 0px;
+}
+.d4 li{
+	padding:4px 8px;
+	overflow:hidden;
+}
+.d4 li a{
+	display:block;
+	line-height:23px;
+	overflow:hidden;
+	text-indent:14px;
+	background:url(../images/ico-3.gif) 4px 9px no-repeat;
+}
+.d4 li p{
+	color:#888;
+	line-height:17px;
+	height:33px;
+	overflow:hidden;
+}
+.d5{/* 后置时间日期的大列表 */
+	padding:8px;
+	border-bottom:1px solid #EEE;
+}
+.d5 li{
+	height:41px;
+	line-height:41px;
+	background:url(../images/ico-2.gif) 2px 17px no-repeat;
+	padding-left:16px;
+}
+.d5 li a{
+	font-size:14px;
+}
+.d5 li span{
+	margin-left:10px;
+	color:#777;
+}
+/*---------- e : 图文混排列表 ---------*/
+.e1{/* 横向浮动的图片列表 120*90  */
+	width:100%;
+	overflow:hidden;
+	clear:both;
+	padding-top:10px;
+	padding-bottom:8px;
+}
+.e1 li{
+	width:126px;
+	overflow:hidden;
+	padding-left:12px;
+	float:left;
+	text-align:center;
+	
+}
+.e1 li a{
+	display:block;
+	color:#6C6D61;
+}
+.e1 li a:hover img{
+	border:1px solid #D7D9CC;
+	padding:2px;
+}
+.e1 li a img{
+	display:block;
+	border:1px solid #E3E3E3;
+	padding:2px;
+	width:120px;
+	height:90px;
+}
+.e1 li a span{
+	display:block;
+	line-height:17px;
+	padding-top:6px;
+}
+.e1 li span{
+	
+}
+.e2{
+	
+}
+.e2 li{
+	width:100%;
+	overflow:hidden;
+	clear:both;
+	padding:12px 0px;
+	border-bottom:1px solid #EEE;
+	color:#aaa;
+}
+.e2 li b a{
+	color:#555;
+}
+.e2 li a.preview{
+	width:84px;
+	float:left;
+	margin-right:7px;
+	margin-bottom:3px;
+	margin-left:10px;
+	display:inline;
+}
+.e2 li a.preview img{
+	width:80px;
+	/*height:60px;*/
+	display:block;
+	padding:1px;
+	border:1px solid #EEE;
+}
+.e2 li a.preview:hover img{
+	border:1px solid #AAA;
+}
+.e2 li a.title{
+	overflow:hidden;
+	line-height:25px;
+	font-weight:bold;
+	font-size:14px;
+	margin-left:2px;
+}
+.e2 span.info{
+	display:block;
+	line-height:23px;
+	color:#555;
+	padding-left:12px;
+}
+.e2 span.info small{
+	color:#AAA;
+	font-size:12px;
+	margin-left:3px;
+}
+.e2 span.info a{
+	color:#690;
+}
+.e2 p.intro{
+	color:#776955;
+	line-height:20px;
+	margin-left:5px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.e3{/* 图文混排小列表 */	
+	clear:both;
+	overflow:hidden;
+}
+.e3 li{
+	height:50px;
+	overflow:hidden;
+	padding:6px;
+	border-bottom:1px dashed #DCEBD7;
+}
+.e3 li a.preview{
+	width:58px;
+	height:48px;
+	float:left;
+	display:block;
+	margin-right:6px;
+	overflow:hidden;
+}
+.e3 li a.preview img{
+	width:58px;
+	height:48px;
+}
+
+.e3 li a.title{
+	height:21px;
+	display:block;
+	line-height:21px;
+	overflow:hidden;
+}
+.e3 li .intro{
+	color:#777;
+	display:block;
+	float:left;
+	line-height:23px;
+}
+.e5{/* 竖排小图列表 102*70 (仅供首页图文混排列表使用) */
+	padding-left:8px;
+	width:112px;
+	float:left;
+	font-size:0px;
+	line-height:0px;
+}
+.e5 li{
+	display:block;
+	width:104px;
+	overflow:hidden;
+	padding-top:8px;
+}
+.e6{/* 横排小图列表 102*70 (仅供首页图文混排列表使用) */
+	height:81px;
+	padding-left:6px;
+	clear:both;
+	overflow:hidden;
+}
+.e6 li{
+	display:block;
+	width:104px;
+	padding-top:8px;
+	padding-right:8px;
+	overflow:hidden;
+	float:left;
+}
+.e5 li a,.e6 li a{
+	width:102px;
+	height:70px;
+	overflow:hidden;
+	display:block;
+	border:1px solid #676767;
+}
+.e5 li a img,.e6 li a img{
+	display:block;
+	width:102px;
+	height:70px;
+}
+.e5 li a:hover,.e6 li a:hover{
+	border:1px solid #333;
+}
+.e7{/* 横排小图列表 52*52 (用户头像列表) */
+	clear:both;
+	overflow:hidden;
+}
+.e7 li{
+	width:60px;
+	height:86px;
+	float:left;
+	overflow:hidden;
+	padding-left:11px;
+}
+.e7 li a{
+	display:block;
+	margin:0px auto;
+	text-align:center;
+}
+.e7 li a img{
+	width:52px;
+	height:52px;
+	display:block;
+	margin:0px auto 6px;
+	padding:2px;
+	border:1px solid #DDD;
+}
+.e7 li a:hover img{
+	border:1px solid #AAA;
+}
+
+.e8{/*图集列表专用大图列表*/
+	width:100%;
+	overflow:hidden;
+	clear:both;
+	margin-left:12px;
+	margin-top:16px;
+}
+.e8 li{
+	width:168px;
+	height:184px;
+	float:left;
+	display:block;
+	overflow:hidden;
+	margin-right:8px;
+	text-align:center;
+}
+.e8 li .pic{
+	width:160px;
+	height:120px;
+	display:block;
+	background:url(../images/picbox-listbg.gif) no-repeat;
+	text-align:left;
+	overflow:hidden;
+}
+.e8 li .pic img{
+	width:152px;
+	height:112px;
+	display:block;
+	margin-left:3px;
+	margin-top:3px;
+	border:none;
+}
+.e8 li .title{
+	height:31px;
+	display:block;
+	line-height:31px;
+	font-weight:bold;
+	overflow:hidden;
+}
+.e8 li .date{
+	color:#666;
+}
+.e8 li .date small{
+	line-height:17px;
+	font-size:12px;
+	color:#999;
+}
+.e9{/* 右侧小图列表 */
+	width:100%;
+	clear:both;
+	overflow:hidden;
+	padding-top:4px;
+}
+.e9 li{
+	width:106px;
+	height:110px;
+	float:left;
+	text-align:center;
+	overflow:hidden;
+	margin-left:6px;
+	display:inline;
+}
+.e9 li a{
+	color:#777;
+}
+.e9 li a img{
+	width:102px;
+	height:76px;
+	display:block;
+	padding:1px;
+	border:1px solid #DDD;
+}
+.e9 li a span.title{
+	display:block;
+	height:29px;
+	line-height:29px;
+	overflow:hidden;
+}
+/*---------- f : 特殊列表 ---------*/
+.f1{/* 带数字ICO的排行榜列表 */
+	background:url(../images/number-range.gif) 5px 5px no-repeat;
+	overflow:hidden;
+}
+.f1 li{
+	height:38px;
+	display:block;
+	padding:3px 0px 4px 0px;;
+	border-bottom:1px dashed #DCEBD7;
+	padding-left:38px;
+	overflow:hidden;
+}
+.f1 li a{
+	height:21px;
+	line-height:21px;
+	overflow:hidden;
+	display:block;
+}
+.f1 li span{
+	line-height:15px;
+	color:#666666;
+	margin-left:5px;
+}
+.f1 li span small{
+	font-size:12px;
+	color:#999;
+}
+.f1 li span a{
+	display:inline;
+	line-height:15px;
+	color:#666666;
+	color:#690;
+}
+
+.f2{/* 评论专用列表 */
+	overflow:hidden;
+}
+.f2 li{
+	height:73px;
+	clear:both;
+	overflow:hidden;
+	border-bottom:1px dashed #DCEBD7;
+	padding:0px 8px;
+}
+.f2 small{
+	display:block;
+	height:21px;
+	padding-top:6px;
+	line-height:21px;
+	overflow:hidden;
+	font-size:12px;
+	color:#999;
+}
+.f2 small a.username{
+	color:#666;
+}
+.f2 p{
+	height:42px;
+	overflow:hidden;
+	line-height:21px;
+	color:#888;
+	text-indent:17px;
+	background:url(../images/ico-comment-quote.gif) 0px 4px no-repeat;
+}
+
+.f4{/*友情链接(图片)专用*/
+
+}
+.f4 li{
+	width:94px;
+	height:37px;
+	display:block;
+	float:left;
+	overflow:hidden;
+	margin:10px 12px 2px 8px;
+}
+.f4 li a{
+	width:88px;
+	height:31px;
+	overflow:hidden;
+	float:left;
+	border:3px solid #FFF;
+}
+.f4 li a:hover{
+	border:3px solid #EEE;
+}
+.f5{/*友情链接(文字)专用*/
+	width:100%;
+	overflow:hidden;
+	clear:both;
+	padding-bottom:10px;
+	height:40px;
+}
+.f5 li{
+	float:left;
+	line-height:14px;
+	padding:8px 10px 0px;
+	white-space:nowrap;
+}
+.f5 li a{
+	color:#666666;
+	float:left;
+}
+.f5 li a img{
+	border:3px solid #EEE;
+}
+
+.f6{/* 链接横排自适应列表 */
+	width:100%;
+	overflow:hidden;
+	clear:both;
+	padding-bottom:10px;
+}
+.f6 li{
+	float:left;
+	line-height:14px;
+	padding:8px 10px 0px;
+	white-space:nowrap;
+}
+.f6 li a{
+	color:#666666;
+	float:left;
+}
+/*list_nav
+------------------*/
+.d6{
+	width:100%;
+	overflow:hidden;
+	padding-bottom:6px;
+	clear:both;
+	display:inherit;
+	}
+.d6 li{
+	float:left;
+	margin:6px 0 1px 8px;
+	display:inline;
+	}
+.d6 li a{
+	width:87px;
+	padding-left:20px;
+	height:26px;
+	line-height:26px;
+	display:block;
+	background:url(../images/green_skin.png) -42px -222px no-repeat;
+	color:#316301;
+	}
+.d6 li a:hover{
+	text-decoration:none;
+	}	
+.d6 li a.thisclass{
+	background:url(../images/green_skin.png) -42px -249px no-repeat;
+	}
+/*-------------------------------------------------- 
+ list icon
+ ---------------------------------------------*/
+.ico1 li{
+	padding-left:16px;
+	background:url(../images/ico-1.gif) 7px 11px no-repeat;
+}
+.ico2 li{
+	padding-left:16px;
+	background:url(../images/ico-2.gif) 6px 11px no-repeat;
+}
+.ico3 li{
+	padding-left:16px;
+	background:url(../images/ico-3.gif) 7px 11px no-repeat;
+}
+
+li.dotline {
+	height:26px;
+	line-height:26px;
+}
+.c_page{
+	text-align:right;
+	line-height:25px;
+	height:25px;
+	background:#FBFBFB;
+	border-top:1px solid #EAEAEA;
+	}
+.c_page a{
+	text-align:center;
+	background:url(../images/page_bg.gif) #FBFBFB no-repeat;
+	width:16px;
+	height:15px;
+	line-height:15px;
+	display:inline-block;
+	margin-top:5px;
+	color:#000;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:9px;
+	}
+.c_page a:hover{
+	text-decoration:none;
+	}
+.c_page a.thislink{
+	color:#7A2334;
+	}

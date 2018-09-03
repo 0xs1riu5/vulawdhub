@@ -1,0 +1,546 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>栏目管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript">
+var channelArray = new Array();
+<?php
+$i = 0;
+foreach($channelArray as $k=>$arr)
+{
+echo "channelArray[$k] = \"{$arr['nid']}\";\r\n";
+}
+?>
+
+function Nav(){
+    if(window.navigator.userAgent.indexOf("MSIE")>=1) return 'IE';
+  else if(window.navigator.userAgent.indexOf("Firefox")>=1) return 'FF';
+  else return "OT";
+}
+
+function SelectTemplets(fname){
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
+   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+}
+
+function ShowHide(objname)
+{
+  var obj = document.getElementById(objname);
+  if(obj.style.display != "none")
+       obj.style.display = "none";
+  else {
+       if(Nav()=='IE') obj.style.display = "block";
+       else obj.style.display = "table-row";
+    }
+}
+
+function ShowObj(objname)
+{
+   var obj = document.getElementById(objname);
+     if(Nav()=='IE') obj.style.display = "block";
+     else obj.style.display = "table";
+}
+
+function HideObj(objname){
+  var obj = document.getElementById(objname);
+    obj.style.display = "none";
+}
+
+function ShowItem1(){
+  ShowObj('head1'); ShowObj('needset');
+  HideObj('head2'); HideObj('adset');
+  HideObj('head3'); HideObj('ctset');
+}
+
+function ShowItem2(){
+  ShowObj('head2'); ShowObj('adset');
+  HideObj('head1'); HideObj('needset');
+  HideObj('head3'); HideObj('ctset');
+}
+
+function ShowItem3(){
+  ShowObj('head3'); ShowObj('ctset');
+  HideObj('head1'); HideObj('needset');
+  HideObj('head2'); HideObj('adset');
+}
+
+function CheckTypeDir(){
+  var upinyin = document.getElementById('upinyin');
+  var tpobj = document.getElementById('typedir');
+  if(upinyin.checked) tpobj.style.display = "none";
+  else tpobj.style.display = "block";
+}
+
+function ParTemplet(obj)
+{
+  var sevvalue = channelArray[obj.value];
+  var tobj = document.getElementById('smclass');
+  var tempindex = document.getElementsByName('tempindex');
+  var templist = document.getElementsByName('templist');
+  var temparticle = document.getElementsByName('temparticle');
+  var dfstyle = document.getElementsByName('dfstyle');
+  var dfstyleValue = dfstyle[0].value;
+  tempindex[0].value = dfstyleValue+"/index_"+sevvalue+".htm";
+  templist[0].value = dfstyleValue+"/list_"+sevvalue+".htm";
+  temparticle[0].value = dfstyleValue+"/article_"+sevvalue+".htm";
+  if(obj.value < 0)
+  {
+      if(Nav()=='IE') tobj.style.display = "block";
+      else tobj.style.display = "table-row";
+  }
+  else
+  {
+      tobj.style.display = "none";
+  }
+}
+
+function checkSubmit()
+{
+   if(document.form1.typename.value==""){
+          alert("栏目名称不能为空！");
+          document.form1.typename.focus();
+          return false;
+     }
+     return true;
+}
+
+function CheckPathSet()
+{
+    var surl = document.getElementById("siteurl");
+    var sreid = document.getElementById("reid");
+    var mysel = document.getElementById("truepath3");
+    if(surl.value!=""){
+        if(sreid.value=="0" || sreid.value==""){
+            mysel.checked = true;
+        }
+    }
+}
+
+function CheckCross()
+{
+    var cross2 = document.getElementById('cross2');
+    var crossid = document.getElementById('crossid');
+    if(cross2.checked) crossid.style.display = 'block';
+    else crossid.style.display = 'none';
+}
+
+</script>
+</head>
+<body leftmargin='15' topmargin='10' bgcolor="#FFFFFF">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
+  <tr>
+    <td width="100%" height="20" valign="top">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="30"><IMG height=14 src="images/book1.gif" width=20>&nbsp;<a href="catalog_main.php"><u>栏目管理</u></a>&nbsp;&gt;&gt;&nbsp;增加栏目</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td width="100%" height="1" background="images/sp_bg.gif"></td>
+  </tr>
+</table>
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr><td height="10"></td></tr>
+  <tr>
+  <form name="form1" action="catalog_add.php" method="post" onSubmit="return checkSubmit();">
+  <input type="hidden" name="dopost" value="save" />
+  <input type="hidden" name="reid" id="reid" value="<?php echo $id; ?>" />
+  <input type='hidden' name='topid' id='topid' value='<?php echo $topid; ?>' />
+<?php
+  if($id>0)
+  {
+      echo "  <input type='hidden' name='moresite' value='{$myrow['moresite']}' />\r\n";
+      echo "  <input type='hidden' name='siteurl' value='{$myrow['siteurl']}' />\r\n";
+      echo "  <input type='hidden' name='sitepath' value='{$myrow['sitepath']}' />\r\n";
+  }
+?>
+    <td height="95" align="center" bgcolor="#FFFFFF">
+    <table width="100%" border="0" cellspacing="0" id="head1" cellpadding="0">
+          <tr>
+            <td colspan="2" bgcolor="#FFFFFF" align="left">
+           <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;常规选项&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>高级选项</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem3()"><u>栏目内容</u></a>&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" border="0" cellspacing="0" id="head2" cellpadding="0" style="display:none">
+          <tr>
+            <td colspan="2" bgcolor="#FFFFFF"  style="text-align:left;">
+          <table height="24" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" align="center" background="images/itemnote2.gif" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>常规选项</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote1.gif">高级选项&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem3()"><u>栏目内容</u></a>&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+       </table>
+
+       <table width="100%" border="0" cellspacing="0" id="head3" cellpadding="0" style="display:none">
+          <tr>
+            <td colspan="2" bgcolor="#FFFFFF" style="text-align:left;">
+             <table height="24" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" align="center" background="images/itemnote2.gif" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>常规选项</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>高级选项</u>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote1.gif">栏目内容&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+       </table>
+        <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0" style="text-align:left;border:1px solid #cfcfcf;background:#ffffff;">
+          <tr>
+            <td width="150" class='bline' height="26" style="padding-left:10px;">是否支持投稿：</td>
+            <td class='bline'>
+                <input type='radio' name='issend' value='0' class='np' <?php if($issend==0) echo " checked='checked' ";?> />
+              不支持&nbsp;
+              <input type='radio' name='issend' value='1' class='np' <?php if($issend==1) echo " checked='checked' ";?> />
+              支持
+             </td>
+          </tr>
+          <tr>
+            <td width="150" class='bline' height="26" style="padding-left:10px;">是否隐藏栏目：</td>
+            <td class='bline'>
+                <input type='radio' name='ishidden' value='0' class='np' checked="checked" />
+              显示　&nbsp;
+              <input type='radio' name='ishidden' value='1' class='np' />
+              隐藏
+             </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;"><font color='red'>内容模型：</font></td>
+            <td class='bline'>
+                
+           <select name="channeltype" id="channeltype" style="width:200px" onChange="ParTemplet(this)">
+            <?php
+            foreach($channelArray as $k=>$arr)
+            {
+                if($k==$channelid) {
+                    $nid = $arr['nid'];
+                    echo "    <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+              }
+              else
+              {
+                    echo "    <option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+          }
+            }
+            ?>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;"><font color='red'>栏目名称：</font></td>
+            <td class='bline'><input name="typename" type="text" id="typename" size="30" class="iptxt" /></td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;"> 排列顺序： </td>
+            <td class='bline'><input name="sortrank" size="6" type="text" value="50" class="pubinputs" style="width:60px" />
+              （由低 -&gt; 高） </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;">浏览权限：</td>
+            <td class='bline'>
+                <select name="corank" id="corank" style="width:100px">
+                <?php
+              $dsql->SetQuery("Select * from `#@__arcrank` where rank >= 0");
+              $dsql->Execute();
+              while($row = $dsql->GetObject())
+              {
+                  if($corank==$row->rank) echo "<option value='".$row->rank."' selected>".$row->membername."</option>\r\n";
+                        else
+                        {
+                            //如果上级目录的corank>0，下级必须继承
+                            if($corank==0)
+                            { echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n"; }
+                        }
+              }
+              ?>
+              </select>
+              (仅限制栏目里的文档浏览权限) </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;">上级目录：</td>
+            <td class='bline'>
+                <?php
+                    $pardir = '{cmspath}'.$cfg_arcdir;
+                    if(!empty($typedir)) $pardir = $typedir.'/';
+                    $pardir = preg_replace("#\/{1,}#", '/', $pardir);
+                    echo $pardir;
+                ?>
+              <input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir?>" />
+            </td>
+          </tr>
+          <tr>
+            <td height="26" style="padding-left:10px;">文件保存目录：</td>
+            <td>
+                <table border="0" cellspacing="1" cellpadding="1">
+                <tr>
+                  <td>
+                      <input name="typedir" type="text" id="typedir" class="pubinputs" style="width:300px">
+                  </td>
+                  <td>
+                  <input name="upinyin" type="checkbox" id="upinyin" class="np" value="1" onClick="CheckTypeDir()" />
+                  拼音
+                  </td>
+                </tr>
+              </table>
+              </td>
+          </tr>
+          <tr>
+            <td class='bline' height="26" style="padding-left:10px;">目录相对位置：</td>
+            <td class='bline'>
+                    <input name="referpath" type="radio" id="truepath1" class="np" value="parent" checked="chekced" />
+              上级目录
+              <?php
+              if($moresite==0){
+              ?>
+              <input name="referpath" type="radio" id="truepath2" class="np" value="cmspath" />
+              CMS根目录
+              <input name="referpath" type="radio" id="truepath3" class="np" value="basepath" />
+              站点根目录
+              <?php } ?>
+              </td>
+          </tr>
+          
+          <tr>
+            <td height="26" style="padding-left:10px;">栏目列表选项：</td>
+            <td>
+            <input type='radio' name='isdefault' value='1' class='np' checked="checked" />
+              链接到默认页
+              <input type='radio' name='isdefault' value='0' class='np' />
+              链接到列表第一页
+              <input type='radio' name='isdefault' value='-1' class='np' />
+              使用动态页
+            </td>
+          </tr>
+          <tr>
+            <td height="26" class='bline' style="padding-left:10px;">默认页的名称： </td>
+            <td class='bline'>
+            <input name="defaultname" type="text" value="index.html" class="iptxt" />
+            </td>
+          </tr>
+          <tr>
+            <td height="26" class='bline' style="padding-left:10px;">栏目属性：</td>
+            <td class='bline'>
+                <input name="ispart" type="radio" id="radio" value="0" class='np' checked="checked"/>
+              最终列表栏目（允许在本栏目发布文档，并生成文档列表） <br>
+              <input name="ispart" type="radio" id="radio" value="1" class='np'/>
+              频道封面（栏目本身不允许发布文档） <br>
+              <input name="ispart" type="radio" id="radio" value="2" class='np'/>
+              外部连接（在"文件保存目录"处填写网址）
+             </td>
+          </tr>
+          <tr id='helpvarco' style='display:none'>
+            <td height="80" bgcolor="#F3F7EA" style="padding-left:10px;">栏目交叉说明： </td>
+            <td bgcolor="#F3F7EA">
+            交叉栏目是指一个大栏目与另一个非下级的子栏目出现交叉的情况，相当于系统原来的副栏目功能，不过现在改在栏目里预先设置好。<br />例如：
+            网站上有大栏目——智能手机、音乐手机，另外又有栏目——诺基亚-&gt;智能手机、诺基亚-&gt;音乐手机，这样顶级的大栏目就和另一个大栏目的子栏目形成了交叉，这样只需要在大栏目中指定交叉的栏目即可。
+            <br />注：会自动索引交叉栏目的内容，但不会索引交叉栏目下级栏目的内容，这种应用也适用于按地区划分资讯的站点。
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:10px;">栏目交叉： <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvarco')" /> <br />仅适用[最终列表栏目]</td>
+            <td style="padding:3px 0px 3px 0px">
+                <input name="cross" type="radio" id="cross0" value="0" class='np' onClick="CheckCross()" checked='1' />
+                不交叉
+                <input name="cross" type="radio" id="cross1" value="1" class='np' onClick="CheckCross()" />
+                自动获取同名栏目内容
+                <input name="cross" type="radio" id="cross2" value="2" class='np' onClick="CheckCross()" />
+                手工指定交叉栏目ID(用逗号分开)
+                <br />
+                <textarea name="crossid" cols="50" rows="3" id="crossid" style="display:none" class="alltxt"></textarea>
+            </td>
+          </tr>
+          <tr id='smclass' style='<?php echo ($channelid<0 ? '' : 'display:none'); ?>'>
+            <td class='bline' style="padding-left:10px;">绑定小分类：  <br />仅适用[分类信息模型]</td>
+            <td class='bline' style="padding:3px 0px 3px 0px">
+                <select name='smalltype[]' size='5' style='width:120px' multiple='yes'>
+                    <?php
+                    $sql = "SELECT * FROM `#@__sys_enum` WHERE egroup LIKE 'infotype' ORDER BY disorder ASC, id DESC ";
+                    $dsql->Execute('s',$sql);
+                    while($arr = $dsql->GetArray('s'))
+                    {
+                        if($arr['evalue']%500==0) {
+                            echo "<option value='{$arr['evalue']}'>{$arr['ename']}</option>\r\n";
+                        }
+                        else if(preg_match("#\.#", $arr['evalue']))
+                        {
+                            echo "<option value='{$arr['evalue']}'> └───{$arr['ename']}</option>\r\n";
+                        }
+                        else {
+                            echo "<option value='{$arr['evalue']}'> └─{$arr['ename']}</option>\r\n";
+                        }
+                    }
+                    ?>
+                </select>    
+                按 Ctrl 多选，不选系统将调用全部分类，在<a href='stepselect_main.php'>“<u>联动类别管理</u>”</a>中管理
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #cfcfcf;background:#ffffff;display:none;text-align:left;" id="adset">
+          <?php
+          if($id==0)
+          {
+          ?>
+          <tr>
+            <td class='bline' width="150" height="24" style="padding-left:10px;">多站点支持：</td>
+            <td class='bline'>
+            <input name="moresite" type="radio"  class="np" value="0" checked="checked"/>
+              不启用
+              <input type="radio" name="moresite" class="np" value="1"/>
+              启用
+             </td>
+          </tr>
+          <tr>
+            <td height="24" bgcolor="#F3F7EA" style="padding-left:10px;">说明：</td>
+            <td bgcolor="#F3F7EA">如果需要绑定二级域名，必须在“系统参数”中设定“支持多站点”。</td>
+          </tr>
+          <tr>
+            <td class='bline' height="24" style="padding-left:10px;">绑定域名：</td>
+            <td class='bline'>
+                <input name="siteurl" type="text" id="siteurl" size="35" onChange="CheckPathSet();" class="pubinputs" />
+              (需加 http://，一级或二级域名的根网址)
+            </td>
+          </tr>
+          <tr>
+            <td class='bline' height="24" style="padding-left:10px;">站点根目录：</td>
+            <td class='bline'>
+                为简化操作，站点根目录与当前栏目目录一致，请注意当前栏目文件保存目录的设置，域名需自行手工绑定到这个目录。
+            </td>
+          </tr>
+          <?php
+          }
+          ?>
+          <tr id='helpvar1' style='display:none'>
+            <td height="24" bgcolor="#F3F7EA" style="padding-left:10px;">支持变量： </td>
+            <td bgcolor="#F3F7EA"> {tid}表示栏目ID，<br>
+              {cid}表示频道模型的'名字ID' <font color='#888888'> （
+              <?php
+              foreach($channelArray as $k=>$arr)
+              {
+                   echo "{$arr['typename']}({$arr['nid']})、";
+              }
+             ?>
+              ） </font> <br/>
+              模板文件的默认位置是放在模板目录 "cms安装目录
+              <?php echo $cfg_templets_dir ?>
+              " 内。
+              <input type='hidden' value='{style}' name='dfstyle' class="pubinputs" />
+            </td>
+          </tr>
+          <tr>
+            <td height="24" bgcolor="#F3F7EA" style="padding-left:10px;">规则选项：</td>
+            <td bgcolor="#F3F7EA">按不同的内容类型设定相关模板及命名规则。</td>
+          </tr>
+          <tr>
+            <td height="26" style="padding-left:10px;">封面模板：</td>
+            <td> <input name="tempindex" type="text" value="{style}/index_<?php echo $nid?>.htm" class="pubinputs" style="width:300px"/>
+              <input type="button" name="set1" value="浏览..." class="coolbg np" style="width:60px" onClick="SelectTemplets('form1.tempindex');" />
+              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar1')"/>
+            </td>
+          </tr>
+          <tr>
+            <td height="26" style="padding-left:10px;">列表模板：</td>
+            <td> <input name="templist" type="text" value="{style}/list_<?php echo $nid?>.htm"  class="pubinputs" style="width:300px" />
+              <input type="button" name="set3" value="浏览... "class="coolbg np" style="width:60px" onClick="SelectTemplets('form1.templist');" />
+            </td>
+          </tr>
+          <tr>
+            <td height="26" style="padding-left:10px;">文章模板：</td>
+            <td><input name="temparticle" type="text" value="{style}/article_<?php echo $nid?>.htm" class="pubinputs"  style="width:300px" />
+              <input type="button" name="set4" value="浏览..." class="coolbg np" style="width:60px" onClick="SelectTemplets('form1.temparticle');"/>
+            </td>
+          </tr>
+          <tr id='helpvar2' style='display:none'>
+            <td height="24" bgcolor="#F3F7EA" style="padding-left:10px;">支持变量： </td>
+            <td height="24" bgcolor="#F3F7EA"> {Y}、{M}、{D} 年月日<br/>
+              {timestamp} INT类型的UNIX时间戳<br/>
+              {aid} 文章ID<br/>
+              {pinyin} 拼音+文章ID<br/>
+              {py} 拼音部首+文章ID<br/>
+              {typedir} 栏目目录 <br/>
+              {cc} 日期+ID混编后用转换为适合的字母 <br/>
+              </td>
+          </tr>
+          <tr>
+            <td height="26" style="padding-left:10px;">文章命名规则：</td>
+            <td> <input name="namerule" type="text" id="namerule" value="<?php echo $cfg_df_namerule;?>" class="pubinputs"  style="width:250px" />
+              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar2')" />
+            </td>
+          </tr>
+          <tr id='helpvar3' style='display:none'>
+            <td height="24" bgcolor="#F3F7EA" style="padding-left:10px;">支持变量： </td>
+            <td bgcolor="#F3F7EA">{page} 列表的页码</td>
+          </tr>
+          <tr>
+            <td height="26" style="padding-left:10px;">列表命名规则：</td>
+            <td>
+              <input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html"  class="pubinputs"  style="width:250px" />
+              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar3')"/></td>
+          </tr>
+          <tr>
+            <td height="65" style="padding-left:10px;">SEO标题：</td>
+            <td>
+                <input name="seotitle" type="text" style="width:250px" id="seotitle" class="alltxt" value="" />
+                (栏目模板里用{dede:field.seotitle /}调用)
+            </td>
+          </tr>
+          <tr>
+            <td height="65" style="padding-left:10px;">关键字：</td>
+            <td>
+                <textarea name="keywords" cols="70" rows="4" id="keywords" class="alltxt"></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td height="65" style="padding-left:10px;">栏目描述：</td>
+            <td height="65"> <textarea name="description" cols="70" style="height:50px" rows="4" id="description" class="alltxt"></textarea></td>
+          </tr>
+        </table>
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #cfcfcf;background:#ffffff;display:none;text-align:left;" id="ctset">
+          <tr>
+            <td height="28" style="padding-left:10px;">说明：栏目内容是替代原来栏目单独页的更灵活的一种方式，可在栏目模板中用{dede:field.content/}调用，通常用于企业简介之类的用途。</td>
+          </tr>
+          <tr>
+            <td style="padding:10px;">
+                <?php
+                GetEditor("content","","450","Default","print","false");
+                ?>
+            </td>
+          </tr>
+      </table>
+
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
+          <tr>
+            <td width="1%" height="35"></td>
+            <td width="99%" valign="bottom">
+<input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0" class="np" />
+&nbsp;&nbsp;&nbsp;
+            <a href="catalog_main.php"><img src="images/button_back.gif" width="60" height="22" border="0" /></a>
+            </td>
+          </tr>
+        </table></td>
+      </form>
+  </tr>
+</table>
+</body>
+</html>

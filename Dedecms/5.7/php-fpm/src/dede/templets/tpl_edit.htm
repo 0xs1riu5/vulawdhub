@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文件编辑</title>
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<style type="text/css">
+.selbt {	
+	float:left;
+	width:120px;
+	margin:2px 0px 2px 3px;
+	text-align:center;
+}
+.helpdiv {
+	float:left;
+ 	display:none;
+	border: 1px dashed #749F4D;
+  	background-color: #F9FCEF;
+	width:99%;
+	padding:5px;
+}
+</style>
+<script  language="javascript">
+function Post()
+{
+	if (document.form1.filename.value=="")
+	{
+		alert("文件名不能为空。");
+		document.form1.filename.focus();
+		return false;
+	}
+}
+function showdiv(id)
+{
+	hideobj = GETNAMES("help111");
+	for(i=0;i<hideobj.length;i++)
+	{
+		hideobj[i].style.display="none";
+	}
+	if(id != '')
+	{
+		 document.getElementById(id).style.display="block";
+	}
+}
+function GETNAMES(name)
+{
+	var returns = document.getElementsByName(name);
+	 if(returns.length > 0) return returns;
+	 returns = new Array();
+	 var e = document.getElementsByTagName('div');
+	 for(i = 0; i < e.length; i++)
+	{
+		 if(e[i].getAttribute("name") == name)
+		 {
+			 returns[returns.length] = e[i];
+		}
+	 }
+	 return returns;
+}
+</script>
+</head>
+<body bgcolor="#F2F4F3" leftmargin="8" topmargin="8">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#ECFAD3" style="margin-bottom:8px;">
+  <tr>
+    <td height="28" style="border:1px dotted #BFD67C" background='images/wbg.gif'>
+		&nbsp;&nbsp;◇<a href='templets_main.php?acdir=<?php echo $acdir; ?>'><b>模板管理</b></a> &gt;&gt; <b>修改/新建模板</b>
+	  </td>
+  </tr>
+</table>
+<form method="POST" action="tpl.php" name=form1 onSubmit="return Post()">
+<input type="hidden" name="action" value="saveedit" />
+<input type="hidden" name="acdir" value="<?php echo $acdir; ?>" />
+<table width='98%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#cfcfcf' align="center">
+		<tr bgcolor='#EEF4EA'>
+			<td colspan='2' background='images/wbg.gif' height='26'  style="padding-left:10px;">
+					<font color='#666600'><b>修改/新建模板：</b></font>
+			</td>
+		</tr>
+		<tr bgcolor='#FFFFFF'>
+  		<td>文件名称</td>
+  		<td>
+  			<input name=filename size=40 value="<?php echo $filename; ?>" class="alltxt"/>
+    		（不允许用 “..” 形式的路径）
+  		</td>
+		</tr>
+	<tr  bgcolor="#F9FCEF">
+  		<td colspan='2' hieght="30" style="padding-left:10px;"><b>参考标签：</b></td>
+	</tr>   <tr  bgcolor='#FFFFFF'>
+      <td colspan='2' >
+<?php
+//foreach($dtags as $tag)
+//{
+	//echo '<div class="coolbg np selbt" title="'.$key.'"><a href="javascript:;" onclick="showdiv(\''.$tag.'\');"> '.$tag.' </a></div>';
+//}
+//echo '<a href="javascript:;" onclick="showdiv(\'\');"> 隐藏全部 </a><br />';
+foreach ($helps as $key => $help)
+{
+	echo '<div class="coolbg np selbt" title="'.trim($help[0]).'"><a href="javascript:;" onclick="showdiv(\''.$key.'\');"> '.$key.' </a></div>'."\r\n";
+
+}
+?>
+	  </td>
+    </tr>
+    <tr>
+      <td colspan='2'  bgcolor='#FFFFFF' style="border-top:1px solid #fff;">
+      <?php
+foreach ($helps as $key => $help)
+{    
+	echo '<div name="help111" id="'.$key.'" class="helpdiv" ><div style=" float:right;"><a href="###" onclick="showdiv(\'\')" title="隐藏标签说明">关闭</a></div><b>标签名称：</b>'.$key.'<br /><b>功能说明：</b>'.trim($help[0]).'<br /><b>使用实例：</b><br /><textarea rows="5" cols="50" style="width:98%">'.trim($help[1]).'</textarea><br /><b>参数说明：</b><br />'."\r\n";
+	$parameters = explode("\n", $help[2]);
+	foreach($parameters as $parameter)
+	{
+		$parameter = trim($parameter);
+		if($parameter == '') continue;
+		else echo $parameter,'<br />';
+	}
+	echo '</div>'."\r\n";
+}
+?>
+      </td>
+    </tr>
+    <tr bgcolor='#FFFFFF'>
+      <td colspan='2' >
+	  <textarea name="content" cols="150" rows="24" style="width:99%;height:450px"><?php echo $content; ?></textarea>
+	  </td>
+    </tr>
+    <tr>
+      <td height="42" colspan='2' bgcolor="#F9FCEF">
+          <input type="submit" value="  保 存  " name='B1' class="coolbg np" />
+          &nbsp;
+          <input type="reset" value="取消修改" name='B2' class="coolbg np" />
+          &nbsp;
+          <input type="button" value="不理返回" name='B4' class="coolbg np" onClick="javascript:history.go(-1);" />
+      </td>
+    </tr>
+</table>
+ </form>
+</body>
+</html>

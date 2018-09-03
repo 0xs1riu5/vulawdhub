@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>测试节点</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <tr> 
+    <td height="20" background='images/tbg.gif'>
+    	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="30%" height="18" style="padding-left:10px;"><strong>测试节点：</strong></td>
+          <td width="70%" align="right">
+          	<input type="button" name="b115" value="开始采集" class="coolbg np" style="width:120px" onClick="location='co_gather_start.php?nid=<?php echo $nid; ?>';" />
+          	<input type="button" name="b11" value="返回采集节点管理页" class="coolbg np" style="width:160" onClick="location.href='co_main.php';" />
+          </td>
+        </tr>
+      </table>
+      </td>
+  </tr>
+  <tr>
+    <td height="94" bgcolor="#FFFFFF" align="center">
+    	<table width="98%" border="0">
+        <tr bgcolor="#FBFCE2"> 
+          <td width="13%" height="24" align="center"><b>节点名称：</b></td>
+          <td width="87%" align="left">&nbsp;<?php echo($co->noteInfos['notename']); ?></td>
+        </tr>
+        <tr> 
+          <td height="24" align="center">列表测试信息：</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr> 
+          <td height="24" colspan="2">
+            <textarea name="r1" id="r1" style="width:99%;height:250px"><?php
+            	$testurl = '';
+            	$turls = $co->Testlists($testurl);
+            	echo "测试的列表网址： $testurl\r\n";
+            	if(isset($turls[0]['link']))
+            	{
+            		$turl = $turls[0]['link'];
+            		print_r($turls);
+            	} else {
+            		$turl = '';
+            	}
+            	$turl = (!empty($co->artNotes['previewurl']) ? $co->artNotes['previewurl'] : $turl);
+           ?></textarea> 
+          </td>
+        </tr>
+        <tr> 
+          <td height="24">网页规则测试：</td>
+          <td align="left">(DedeCMS里时间日期字段一般是整数类型，如果您看到pubdate、senddate是整数，那种属正常的情况)</td>
+        </tr>
+        <tr> 
+          <td height="24" colspan="2" align="left">
+         单个网页测试网址: <?php echo "$turl \r\n"; ?>
+         <br />
+         <textarea name="r2" id="r2" style="width:99%;height:250px"><?php
+         	if($turl!=''){
+         		echo $co->TestArt($turl);
+         	}
+         	else
+         	{
+         		echo "列表规则错误，找不到任何文章网址！";
+         	}
+         ?></textarea>
+		  </td>
+        </tr>
+      </table>
+      </td>
+  </tr>
+  <tr> 
+      <td height="60" align="center" bgcolor="#FFFFFF">
+      <input type="button" name="b2" value="重新修改节点配置" class="coolbg np" onClick="location='co_edit.php?nid=<?php echo $nid; ?>';" style="width:180px" />
+      &nbsp;
+      <input type="button" name="b5" value="确定并开始采集" class="coolbg np" style="width:120px" onClick="location='co_gather_start.php?nid=<?php echo $nid; ?>';" />
+      </td>
+  </tr>
+  <tr> 
+    <td height="28" bgcolor="#F9FCEF">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!-- //begin icon -->
+<dl class="border">
+	<dt class="caption"><strong>博主资料</strong></dt>
+	<dd class="body" id="userInfo"> <a class="pic" href="index.php?uid={dede:var.userid function="urlencode(@me)" /}&action=infos" title="我的资料">    <h4 style=" text-align:center">{dede:var.uname /}</h4>{dede:if $_vars['face']=='' } <img src="space/person/common/images/noavatar.gif" alt="<?php echo $row['uname']; ?>还没设置头像" /> {else} <img src="{dede:var.face/}" alt="{dede:var.uname/}的头像" /> {/dede:if}</a>
+		<div class="textCenter dashed pB10">
+			 <h6 class="mT5 mB10">{dede:var.msg /}</h6>
+				<ul class="w50 buttonBlue grayA">
+            <li class="mB5"><a href="index.php?action=guestbook&uid={dede:var.userid/}"><span>给我留言</span></a></li>
+            <li class="mB5"><a href="pm.php?dopost=send&uid={dede:var.userid/}"><span>发送消息</span></a></li>
+            <li><a href="index.php?action=newfriend&uid={dede:var.userid/}"><span>加为好友</span></a></li>
+            <li><a href="index.php?action=blackfriend&uid={dede:var.userid/}"><span>加黑名单</span></a></li>
+				</ul>
+				<div class="clear"></div>
+			</div>
+			<ul class="mT10 mL10 mB10 lh20">
+          <li>会员等级：{dede:var.membername/}</li>
+          <li>会员积分：{dede:var.scores/}分</li>
+          <li>空间访问：{dede:var.homecount/}次</li>
+			</ul>
+	</dd>
+</dl>
+<!-- //end icon -->
+
+

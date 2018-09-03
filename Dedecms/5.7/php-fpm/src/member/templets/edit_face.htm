@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>更改头像 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language='javascript'src='templets/js/main.js'></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+</head>
+<body>
+<div id="main">
+   <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li><a href="edit_baseinfo.php">基本资料</a></li>
+          <li><a href="edit_fullinfo.php">详细资料</a></li>
+          <li class="thisTab"><a href="edit_face.php">头像设置</a></li>
+        </ul>
+      </div>
+<form action="edit_face.php" method="post" enctype="multipart/form-data" name="form1">
+    <input type="hidden" name="dopost" value="save" />
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>用户头像</strong></h3>
+         <?php
+          if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+          {
+            $data = uc_get_user($cfg_ml->M_LoginID);
+            echo uc_avatar($data[0]);
+          }
+          else
+          {
+          ?>
+        <div class="postForm">
+          <p class="cellBg">
+            <label style="width:90px">手工填写网址：</label>
+            <input name='oldface' type='hidden' id='oldface' value='<?php echo $face; ?>' />
+            <input name='faceurl' type='text' id='faceurl' size='35' class='intxt' style='width:250px' value='<?php echo $face; ?>' />
+          <p>
+            <label style="width:100px">选择上传的文件：</label>
+            <input name="face" type="file" id="face" size="45" /> 大小180x180像
+          </p>
+          <p class="cellBg">
+            <label style="width:90px"><b>原来的头像：</b><br />
+                	<a href="edit_face.php?dopost=delold&oldface=<?php echo urlencode($face); ?>">[删除旧头像]</a></label>
+            <div id='faceview' class='overflow mTB10 litPic' style="width:180px;height:180px;text-align:center;vertical-align:middle;line-height:180px;display:table-cell;">
+                 <?php
+       					if($face!='') echo " <img class='' src='$face' style='_margin-top:expression(( 180 - this.height ) / 2);' />\r\n";
+       			?>
+              </div>
+          </p>
+          <p>
+            <button class="button2" type="submit">更新</button>
+            <button class="button2 ml10" type="reset">重设</button>
+          </p>
+    </div>
+    <?php } ?>
+ </div>
+</form>
+      <!--主操作区域 -->
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<script language="javascript" type="text/javascript">
+	window.onload=function (){
+		setInterval("document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
+	}
+</script>
+
+<div id="footer">
+  <div class="fLeft">Copyright &copy; 2004-2011 DEDECMS. 织梦科技 版权所有</div>
+  <div id="time" class="fRight"></div>
+</div>

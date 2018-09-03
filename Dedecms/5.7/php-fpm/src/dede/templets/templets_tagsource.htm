@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>标签源码碎片管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.linerow { border-bottom: 1px solid #CBD8AC; }
+td { padding-left:5px; }
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" style="margin-bottom:6px;">
+  <tr>
+   <td height="28" background="images/tbg.gif" colspan="7"  style="padding-left:10px;">
+     <b>标签源码碎片管理</b> &nbsp; (DedeCMS 5.3及以上版本标签源码是完全独立的，懂程序的用户可以按需修改或自行增加标签)
+	</td>
+</tr>
+</table>
+<table width='98%' border='0' cellspacing='1' cellpadding='0' bgcolor="#cfcfcf" align="center">
+   <tr height="26" align="center">
+     <td width="25%" background="images/wbg.gif"><strong>标签文件名</strong></td>
+     <td width="33%" background="images/wbg.gif" align="left"><strong>标签说明</strong></td>
+     <td width="22%" background="images/wbg.gif"><strong>修改时间</strong></td>
+     <td width="20%" background="images/wbg.gif"><strong>操作</strong></td>
+   </tr>
+   <tr>
+      <td colspan='4' height="28" bgcolor="#F9FCEF">
+      	<div style='float:left'>
+      	<b>
+      		当前位置：标签源码碎片管理(文件存放在 ../include/taglib 文件夹)
+      	</b>
+        </div>
+      	<div style='float:right;padding-right:10px'>
+      		<a href='tpl.php?action=addnewtag'>[<u>增加一个新的标签</u>]</a>
+        </div>
+      </td>
+   </tr>
+   <?php
+   $dh = dir($libdir);
+   while($filename=$dh->read())
+   {
+   	  if(!preg_match("#\.php$#", $filename)) continue;
+   	  $filetime = filemtime($libdir.'/'.$filename);
+      $filetime = MyDate("Y-m-d H:i",$filetime);
+      $fileinfo = GetHelpInfo(str_replace('.lib.php','',$filename));
+   ?>
+   <tr height="26" bgcolor='#FFFFFF' onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+	  <td>
+       <img src='images/htm.gif' border='0' align='absmiddle' /><?php echo $filename; ?>
+    </td>
+		<td>
+			<?php echo $fileinfo; ?>
+		</td>
+		<td align='center'>
+			<?php echo $filetime; ?>
+		</td>
+		<td align='center'>
+			<a href='tpl.php?action=edittag&filename=<?php echo $filename; ?>'>[编辑]</a>
+		</td>
+	</tr>
+	<?php } ?>
+	<tr>
+    <td colspan="4" height='32' bgcolor="#F9FCEF">
+      <p style="text-align:center;color:red">修改系统标签有风险，请小心操作！</p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

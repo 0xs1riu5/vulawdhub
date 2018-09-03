@@ -1,0 +1,19 @@
+单表模型的文章列表调用标记
+>>dede>>
+{dede:arclistsg  flag='h' typeid='' row='' col='' titlelen='' orderway='' keyword='' limit='0,1'}
+<a href='[field:arcurl/]'>[field:title/]</a>
+{/dede:arclistsg}
+>>dede>>
+col='' 分多少列显示（默认为单列），5.3版中本属性无效，要多列显示的可用div+css实现
+row='10' 返回文档列表总数
+typeid='' 栏目ID,在列表模板和档案模板中一般不需要指定，在封面模板中允许用","分开表示多个栏目；
+titlelen = '30' 标题长度 等同于titlelength
+orderwey='desc'或'asc' 排序方向
+keyword= 含有指定关键字的文档列表，多个关键字用","分
+innertext = "<a href='[field:arcurl/]'>[field:title/]</a>" 单条记录样式(innertext是放在标签之间的代码)
+arcid='' 指定文档ID
+idlist ='' 提取特定文档（文档ID） 
+channelid = '' 频道ID
+limit='' 起始,结束 表示限定的记录范围（如：limit='1,2'）
+flag = 'h' 自定义属性值：头条[h]推荐[c]图片[p]幻灯[f]滚动[s]跳转[j]图文[a]加粗[b] 
+subday='天数' 表示在多少天以内的文档

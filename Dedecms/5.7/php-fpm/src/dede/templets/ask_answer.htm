@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>问答模块 -- 用户提问管理</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+<script>
+function selAll()
+{
+	for(i=0;i<document.form2.answerid.length;i++)
+	{
+		if(!document.form2.answerid[i].checked)
+		{
+			document.form2.answerid[i].checked=true;
+		}
+	}
+}
+function noSelAll()
+{
+	for(i=0;i<document.form2.answerid.length;i++)
+	{
+		if(document.form2.answerid[i].checked)
+		{
+			document.form2.answerid[i].checked=false;
+		}
+	}
+}
+//获得选中文件的文件名
+function getCheckboxItem()
+{
+	var allSel="";
+	if(document.form2.answerid.value) return document.form2.answerid.value;
+	for(i=0;i<document.form2.answerid.length;i++)
+	{
+		if(document.form2.answerid[i].checked)
+		{
+			if(allSel=="")
+				allSel=document.form2.answerid[i].value;
+			else
+				allSel=allSel+"`"+document.form2.answerid[i].value;
+		}
+	}
+	return allSel;
+}
+
+//获得选中其中一个的id
+function getOneItem()
+{
+	var allSel="";
+	if(document.form2.answerid.value) return document.form2.answerid.value;
+	for(i=0;i<document.form2.answerid.length;i++)
+	{
+		if(document.form2.answerid[i].checked)
+		{
+				allSel = document.form2.answerid[i].value;
+				break;
+		}
+	}
+	return allSel;
+}
+function checkanswer(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="ask_answer.php?aid="+aid+"&action=check&qstr="+qstr;
+}
+function deleteanswer(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="ask_answer.php?qstr="+qstr+"&aid="+aid+"&action=delete";
+}
+</script>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+	<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt"><a href='../ask' target='_blank'><b>问答模块</b></a> -- 用户答案管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+<tr>
+<td height="24" colspan="6" align="left" bgcolor="#EDF9D5" background="images/tbg.gif">
+&nbsp;§<b>答案列表 &nbsp; <a href="ask_answer.php">全部答案</a> | <a href="ask_answer.php?check=1">未审核的答案</a></b>
+</td>
+</tr>
+<form name="form2" action="ask_answer.php">
+<tr align="center" height="25" bgcolor="#FBFCE2">
+  <td  width="6%">id</td>
+  <td width="4%">选择</td>
+  <td width="62%">答案</td>
+  <td width="10%">回答时间</td>
+  <td width="6%">回答者</td>
+  <td width="6%">答案状态</td>
+</tr>
+{dede:datalist}
+<?php
+	if($fields['ifcheck'] == 1){
+		$fields['ifcheck'] = '已审核';
+	}elseif($fields['ifcheck']==0){
+		$fields['ifcheck'] = '未审核';
+	}
+	$fields['dateline'] = gmdate('Y-m-d H:i:s' , $fields['dateline'] + 3600*$cfg_ask_timeoffset);
+?>
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" >
+<td><?php echo $fields['id']; ?></td>
+<td><input name="answerid" type="checkbox" id="id" value="<?php echo $fields['id']; ?>" class='np' /></td>
+<td align='left'><a title="点击查看问题页面" href="../ask/question.php?id=<?php echo $fields['askid']; ?>" target="_blank"><?php echo $fields['content']; ?></a></td>
+<td><?php echo $fields['dateline']; ?></td>
+<td><a href="member_view.php?ID=<?php echo $fields['uid'];?>" target="_blank"><?php echo $fields['username']; ?></a></td>
+<td><?php echo $fields['ifcheck']; ?></td>
+</tr>
+{/dede:datalist}
+<tr bgcolor="#ffffff">
+<td height="24" colspan="10" align="left">
+&nbsp;
+<a href="javascript:selAll()" class="coolbg">全选</a>
+<a href="javascript:noSelAll()" class="coolbg">取消</a>
+<a href="javascript:checkanswer(0)" class="coolbg">审核</a>
+<a href="javascript:deleteanswer(0)" class="coolbg">删除</a></td>
+</tr>
+</form>
+<tr align="right" bgcolor="#E5F9FF">
+<td height="20" colspan="10" align="center" bgcolor="#F9FCEF">
+	{dede:pagelist /}
+</td>
+</tr>
+</table>
+</body>
+</html>

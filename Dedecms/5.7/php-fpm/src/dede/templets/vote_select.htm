@@ -1,0 +1,53 @@
+{dede:config.pagesize value='20'/}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>投票管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<script language='javascript' src="js/main.js"></script>
+<script language="javascript" src="../include/js/jquery/jquery.js"></script>
+<script language="javascript" src="../include/js/jquery/ui.core.js"></script>
+<script language="javascript" src="../include/js/jquery/ui.draggable.js"></script>
+<script language='javascript' src='js/tb-box.js'></script>
+
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<form id="form1" name="form1" method="post" action="">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+   <td height="28" background="images/tbg.gif" colspan="5">
+     <b>投票选择</b></td>
+</tr>
+  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+
+      <td width="8%">投票ID</td>
+      <td width="18%">投票名称</td>
+	  <td width="20%">开始时间</td>
+	  <td width="20%">结束时间</td>
+
+	  <td width="10%">投票ID</td>
+  </tr>
+        {dede:datalist}
+         <tr align="center" bgcolor="#FFFFFF" height="24" 
+         	onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+          <td <?php if($fields['aid'] == $aid) echo "style='color:red'";?>>{dede:field.aid /}</td>
+          <td <?php if($fields['aid'] == $aid) echo "style='color:red'";?>>
+          	{dede:field.votename /}
+          </td>
+          <td <?php if($fields['aid'] == $aid) echo "style='color:red'";?>>{dede:field name='starttime' function="MyDate('Y-m-d',@me)"/}</td>
+          <td <?php if($fields['aid'] == $aid) echo "style='color:red'";?>>{dede:field name='endtime' function="MyDate('Y-m-d',@me)"/}</td>
+
+		  <td><a href="javascript:PutVote({dede:field.aid/});" id="TB_closeWindowButton">选取</a></td>
+        </tr>
+		{/dede:datalist}
+     <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td colspan="5">{dede:pagelist listsize='6'/}</td>
+     </tr>
+   </table>
+   </td>
+</tr>
+</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文档管理</title>
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<script language="javascript">
+function moveArc(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="archives_do.php?aid="+aid+"&dopost=return&qstr="+qstr;
+}
+function delArc(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="archives_do.php?qstr="+qstr+"&aid="+aid+"&dopost=del&recycle=1";
+}
+//获得选中文件的文件名
+function getCheckboxItem()
+{
+	var allSel="";
+	if(document.form2.arcID.value) return document.form2.arcID.value;
+	for(i=0;i<document.form2.arcID.length;i++)
+	{
+		if(document.form2.arcID[i].checked)
+		{
+			if(allSel=="")
+				allSel=document.form2.arcID[i].value;
+			else
+				allSel=allSel+"`"+document.form2.arcID[i].value;
+		}
+	}
+	return allSel;
+}
+//获得选中其中一个的id
+function getOneItem()
+{
+	var allSel="";
+	if(document.form2.arcID.value) return document.form2.arcID.value;
+	for(i=0;i<document.form2.arcID.length;i++)
+	{
+		if(document.form2.arcID[i].checked)
+		{
+				allSel = document.form2.arcID[i].value;
+				break;
+		}
+	}
+	return allSel;
+}
+function selAll()
+{
+	for(i=0;i<document.form2.arcID.length;i++)
+	{
+		if(!document.form2.arcID[i].checked)
+		{
+			document.form2.arcID[i].checked=true;
+		}
+	}
+}
+function noSelAll()
+{
+	for(i=0;i<document.form2.arcID.length;i++)
+	{
+		if(document.form2.arcID[i].checked)
+		{
+			document.form2.arcID[i].checked=false;
+		}
+	}
+}
+</script>
+</head>
+<body leftmargin="8" topmargin="8" background='images/allbg.gif'>
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#cfcfcf" align="center">
+<tr bgcolor="#E7E7E7">
+<td height="28" colspan="7" background="images/tbg.gif" style="padding-left:10px;">
+	<b>文档回收站</b> &nbsp;
+</td>
+</tr>
+<form name="form2">
+<tr align="center" bgcolor="#FBFCE2" height="25">
+<td width="6%">ID</td>
+<td width="4%">选择</td>
+<td width="28%">文章标题</td>
+<td width="10%">更新时间</td>
+<td width="10%">类目</td>
+<td width="8%">点击</td>
+<td width="10%">操作</td>
+</tr>
+{dede:datalist}
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"
+	height="25" oncontextmenu="ShowMenu(event,this,{dede:field.id/},'{dede:field.title function='urlencode(@me)'/}')">
+<td>{dede:field.id/}</td>
+<td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.id/}" class="np"></td>
+<td align='left'>
+	<a href='archives_do.php?aid={dede:field.id/}&dopost=editArchives'><u>{dede:field.title/}</u></a>
+</td>
+<td>{dede:field.senddate function='GetDateMk(@me)'/}</td>
+<td>{dede:field.typename/}</td>
+<td>{dede:field.click/}</td>
+<td><a href="javascript:moveArc({dede:field.id/})">还原</a> | <a href="javascript:delArc({dede:field.id/})">删除</a></td>
+</tr>
+{/dede:datalist}
+<tr bgcolor="#ffffff">
+<td height="24" colspan="7">
+&nbsp;
+<a href="javascript:selAll()" class="coolbg">全选</a>
+<a href="javascript:noSelAll()" class="coolbg">取消</a>
+<a href="javascript:moveArc(0)" class="coolbg">&nbsp;还原&nbsp;</a>
+<a href="javascript:delArc(0)" class="coolbg">&nbsp;删除&nbsp;</a></td>
+</tr>
+</form>
+<tr align="right" bgcolor="#F9FCEF">
+<td height="30" colspan="7" align="center">
+	{dede:pagelist listsize=3/}</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>生成HTML</title>
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript" src="js/story.js"></script>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">连载管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style="background:#CFCFCF;">
+		<tr>
+		<td height="25" bgcolor="#EDF9D5" background="images/tbg.gif" class="tbtitletxt"> 
+		 <table width='96%' border="0" cellpadding='0' cellspacing='0' style="padding-left:10px;">
+        <tr>
+          <td width='30%' class="tbtitletxt"><strong>更新连载图书HTML</strong></td>
+          <td align='right'>[<a href="story_books.php"><u>连载内容列表</u></a>]</td>
+        </tr>
+      </table>
+		</td>
+  </tr>
+</table>
+<form name="form1" action="makehtml_story.php" method="get" target='stafrm'>
+<input type="hidden" name="action" value="make">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;border-top:none;">
+   <tr> 
+      <td height="20" valign="top" bgcolor="#FFFFFF">　说明：默认的情况下，本程序只更新图书内容封面的HTML。</td>
+    </tr>
+    <tr>
+      <td height="42" bgcolor="#FFFFFF">　图书开始ID：
+        <input name="startid" type="text" id="startid" value="1" size="5" class='alltxt' /> 
+      结束ID：
+      <input name="endid" type="text" id="endid" value="0" size="5" class='alltxt' />
+      （0表示从开始到全部） 
+      每批数量：
+      <input name="makenum" type="text" id="makenum" value="50" size="5" class='alltxt' />
+      栏目： 
+      <select name="catid" id="catid" style="width:150px">
+        <option value='0'>请选择栏目</option>
+        <?php
+    if(!isset($catid)) $catid = 0;
+    foreach($btypes as $k=>$v)
+    {
+    	if($catid!=$k) echo "<option value='$k'>[{$booktypes[$k]}]$v</option>\r\n";
+    	else echo "<option value='$k' selected>[{$booktypes[$k]}]$v</option>\r\n";
+    	foreach($stypes[$k] as $kk=>$vv)
+    	{
+    		if($catid!=$kk)  echo "<option value='$kk'> --[{$booktypes[$k]}]$vv</option>\r\n";
+    		else echo "<option value='$kk' selected> --[{$booktypes[$k]}]$vv</option>\r\n";
+    	}
+    }
+    ?>
+      </select>
+     </td>
+    </tr>
+    <tr> 
+      <td height="42" align="center" bgcolor="#FFFFFF">
+      	<input name="b112" type="button" value="开始生成HTML" onClick="document.form1.submit();" class='np coolbg' />
+      </td>
+    </tr>
+  <tr bgcolor="#F9FCEF"> 
+    <td height="20" bgcolor="#F9FCEF">
+    <table width="100%">
+      <tr>
+        <td width="74%">进行状态： </td>
+        <td width="26%" align="right">
+        	<script language='JavaScript' type="text/javascript">
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+          [<a href='#' onclick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onclick="ResizeDiv('mdv','-');">缩小</a>] </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td id="mtd">
+    	<div id='mdv' style='width:100%;height:100;'> 
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="250"></iframe>
+      </div>
+	 </td>
+  </tr>
+</table>
+</form>
+</body>
+</html>

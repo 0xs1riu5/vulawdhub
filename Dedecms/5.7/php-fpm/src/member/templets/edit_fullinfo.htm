@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>更改详细资料 - 会员中心 -<?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language='javascript'src='templets/js/main.js'></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+</head>
+<body>
+<div id="main">
+   <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+    <div id="appTab">
+        <ul>
+          <li><a href="edit_baseinfo.php">基本资料</a></li>
+          <li class="thisTab"><a href="edit_fullinfo.php">详细资料</a></li>
+          <li><a href="edit_face.php">头像设置</a></li>
+        </ul>
+      </div>
+    <form method="post" action="edit_fullinfo.php" name="form1">
+      <input type="hidden" value="save" name="dopost"/>
+      <input type="hidden" value="<?php echo $membermodel->modid;?>" name="modid"/>
+    <div id="mainCp">
+        <h3 class="meTitle"><strong>详细资料</strong></h3>
+        <div class="postForm">
+    
+        <?php
+            echo $postform;
+        ?>
+      <p>
+       <label>&nbsp;</label>
+          <button type="submit" id="btnSignCheck" class="buttonGreen142">完 成 </button>
+      </p>   
+    </div>
+    </div>
+     </form>
+     
+     <!--主操作区域 -->
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

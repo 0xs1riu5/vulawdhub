@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>编辑评论</title>
+<style type="text/css">
+<!--
+body {
+	background-image: url(images/allbg.gif);
+}
+-->
+</style>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td width="100%" height="24" colspan="2" background="images/tbg.gif">
+    	&nbsp;<strong><a href="<?php echo $ENV_GOBACK_URL; ?>"><u>表单管理</u></a> &gt;&gt; 编辑评论：</strong>    </td>
+  </tr>
+  <tr>
+    <td height="167" colspan="2" align="center" bgcolor="#FFFFFF" valign="top">
+	<form name="form1" method="post" enctype="multipart/form-data" action="diy_list.php?action=edit&diyid=<?php echo $diy->diyid ?>&id=<?php echo $row['id'] ?>&do=2">
+	<input type="hidden" name="dopost" value="edit" />
+	<input type="hidden" name="id" value="<?php echo $row['id']; ?>" />
+	
+        <table width="100%" border="0" cellpadding="3" cellspacing="1" style="text-align:left;">
+		<?php
+		 $formfields = '';
+		 foreach($fieldlist as $field=>$fielddata)
+		{
+		    $allowhtml = array('htmltext');
+			if($row[$field]=='') continue;
+			if($fielddata[1]=='img')
+			{
+				$row[$field] = "<input name='photo' type='file' />  <a href='{$row[$field]}' target='_blank'><img src='images/channeladd.gif' border='0' /> 浏览原图</a> <a href='diy_list.php?action=delete&diyid=$diy->diyid&id=$row[id]&do=1&name=$field'>删除原图</a>\r\n";
+			}
+			else if($fielddata[1]=='addon')
+			{
+				$row[$field] = "<input name='file' type='file' />  <a href='{$row[$field]}' target='_blank'><img src='images/channeladd.gif' border='0' /> 浏览原附件</a> <a href='diy_list.php?action=delete&diyid=$diy->diyid&id=$row[id]&do=1&name=$field'>删除原附件</a>";
+			}
+			else
+			{
+				if(!in_array($fielddata[1],$allowhtml)){
+					$row[$field] = htmlspecialchars($row[$field]);
+					$row[$field] = "<input type='text' name='".$field."' value='".$row[$field]."'/>";
+				}
+			}
+			echo '<tr bgcolor="#ffffff"><td width="20%" height="24">'.$fielddata[0].':'.'</td><td width="80%">'.$row[$field].'</td></tr>';
+			$formfields .= 	$formfields == ''? $field.','.$fielddata[1] : ';'.$field.','.$fielddata[1];	
+		}
+		echo "<input type='hidden' name='dede_fields' value='".$formfields."'>";
+		?>
+		 
+          <tr bgcolor="#FFFFFF"> 
+		 
+            <td height="40" width='600' colspan="2" align="center">
+			   
+               <input type="submit" name="Submit1" class='coolbg np' value="保存更改"  />
+              <input type="button" name="Submit2" class='coolbg np' value="不理返回" onClick="location='<?php echo $ENV_GOBACK_URL; ?>';" />
+			 
+			              </td>
+          </tr>
+        </table>
+	  </form>
+	  </td>
+  </tr>
+</table>
+</body>
+</html>

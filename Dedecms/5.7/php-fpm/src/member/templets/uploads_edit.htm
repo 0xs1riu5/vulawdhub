@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>修改附件 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language='javascript' src='templets/js/main.js'></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">
+  function checkSubmit()
+{
+	if(document.form1.title.value=='')
+	{
+		alert('标题不能为空！');
+		document.form1.title.focus();
+		return false;
+	}
+	if(document.form1.vdcode.value=='')
+	{
+		document.form1.vdcode.focus();
+		alert('验证码不能为空！');
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<div id="main">
+    <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="uploads.php">附件管理</a></li>
+        </ul>
+      </div>
+      <form name="form1" action="uploads_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="aid" value="<?php echo $aid; ?>" />
+          <input type="hidden" name="mediatype" value="<?php echo $arow['mediatype']; ?>" />
+          <input type="hidden" name="oldurl" value="<?php echo $arow['url']; ?>" />
+          <input type="hidden" name="dopost" value="save" />
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>修改附件</strong></h3>
+        <div class="postForm">
+          <p class="cellBg">
+            <label>允许的类型：</label>
+            <?php
+     			if($arow['mediatype']==1){
+     			echo $cfg_imgtype;
+     		    }
+     			else if($arow['mediatype']==2){
+     			echo "swf";
+			    }
+     			else if($arow['mediatype']==3){
+     			echo $cfg_mediatype;
+     		    }
+     			else{
+     			echo $cfg_mb_addontype;
+     		    }
+     		?>
+          </p>
+          <p>
+            <label>注释标题：</label>
+           	<input name="title" type="text" id="title" value="<?php echo $arow['title']?>" class="intxt"/>
+          </p>
+          <?php
+    		 if($arow['mediatype']==1){
+     		?>
+          <p class="cellBg">
+          <label>更换图片：</label>
+          <input name="addonfile" type="file" id="addonfile" style="width:300px" <?php if($arow['mediatype']==1) echo " onChange=\"SeePicNew('divpicview',this);\" "; ?> />
+          </p>
+          <p>
+            <label>预览区：</label>
+   		  <?php
+             	$furl = $arow['url'];
+             	$w = 150;
+             	if($furl!="" && file_exists($cfg_basedir.$furl))
+             	{
+             		$info = "";
+             		$datas = GetImageSize($cfg_basedir.$furl,$info);
+             		if($datas[0]>500)
+             		{
+             			$w = 500;
+             		}
+             		else
+             		{
+             			$w = $datas[0];
+             		}
+             	}
+             	else
+             	{
+             		$furl = "images/pview.gif";
+             	}
+             	$furl = $furl."?".time();
+             	?>
+              <div id='divpicview' class='divpre'></div>
+              <a href="<?php echo $furl?>" target="_blank"><img src="<?php echo $furl; ?>" id="picview" width="<?php echo $w?>" border="0" /></a>
+          </p>
+          <?php
+           }else{
+           ?>
+          <p class="cellBg">
+            <label>更换附件：</label>
+            <input name="addonfile" type="file" id="addonfile" style="width:300px" />
+          </p>
+           <?php
+           }
+           ?>
+          <p>
+            <button class="button2" type="submit" >更改</button>
+          </p>
+        </div>
+     </div>
+     </form>
+    </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

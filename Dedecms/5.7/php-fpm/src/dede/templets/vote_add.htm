@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>增加投票</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="../include/js/jquery/jquery.js"></script>
+<script src="../include/js/webcalendar.js" type="text/javascript"></script>
+<script language="javascript">
+var i=1;
+function AddItem()
+{ 
+  i++;
+  if(i>15){
+		alert("最大只允许15个选项！");
+		return;
+  }
+  var htmldata = "<br/>选项"+i+"： <input name='voteitem"+i+"' type='text' size='30'>";
+  jQuery("#voteitem").append(htmldata);
+}
+function ResetItem()
+{ 
+  i = 1;
+	var obj = document.getElementById("voteitem");
+	obj.innerHTML="选项1： <input name='voteitem1' type='text' size='30'>";
+}
+function checkSubmit()
+{
+	if(document.form1.votename.value=="")
+	{
+		alert("投票名称不能为空！");
+		document.form1.votename.focus();
+		return false;
+	}
+}
+</script>
+</head>
+<body background="images/allbg.gif" leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="28" background="images/tbg.gif" style="padding-left:10px;"><b>投票管理</b>&gt;&gt;增加投票&nbsp;&nbsp;[<a href="vote_main.php"><u>管理以往投票内容记录</u></a>]</td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellspacing="4" cellpadding="4">
+        <form name="form1" method="post" action="vote_add.php" onSubmit="return checkSubmit()">
+		<input type='hidden' name='dopost' value='save'>
+		<input type="hidden" name="isarc" value="<?php echo $isarc; ?>" />
+		<tr> 
+          <td width="15%" align="center">投票名称：</td>
+          <td width="85%"> <input name="votename" type="text" id="votename"> </td>
+        </tr>
+        <tr> 
+          <td align="center">开始时间：</td>
+          <td><input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>" class="dateico" onClick="SelectDate(this,'yyyy-MM-dd hh:mm:ss',80,0)"></td>
+        </tr>
+        <tr> 
+          <td align="center">结束时间：</td>
+          <td><input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>" class="dateico" onClick="SelectDate(this,'yyyy-MM-dd hh:mm:ss',80,0)"></td>
+        </tr>
+		<tr> 
+          <td align="center">是否允许游客投票：</td>
+          <td> <input name="isallow" type="radio" class="np" value="0">
+            是 　 
+              <input type="radio" name="isallow" class="np" value="1" checked>
+              否</td>
+        </tr>
+		<tr> 
+          <td align="center">是否允许查看投票：</td>
+          <td> <input name="view" type="radio" class="np" value="0">
+            是 　 
+              <input type="radio" name="view" class="np" value="1" checked>
+              否</td>
+        </tr>
+     <tr> 
+          <td align="center">投票时间间隔：</td>
+          <td><input name="spec" type="text" value="" class="spec">
+            (N天后可再次投票，0 表示此IP地址只能投一次)</td>
+        </tr>
+        <tr> 
+          <td align="center">是否多选：</td>
+          <td> <input name="ismore" type="radio" class="np" value="0" checked>
+            单选 　 
+            <input type="radio" name="ismore" class="np" value="1">
+            多选 </td>
+        </tr>
+		
+        <tr>
+          <td align="center">投 票 项：</td>
+          <td><input type="button" value="增加投票选项" name="bbb" class="bt1" onClick="AddItem();">
+            　 
+            <input type="button" value="重置投票选项" name="bbb2" class="bt1" onClick="ResetItem();"></td>
+        </tr>
+        <tr> 
+          <td></td>
+          <td>
+		  <div id="voteitem">
+			选项1： 
+                <input name="voteitem1" type="text" id="voteitem1" size="30">
+		  </div>
+		  </td>
+        </tr>
+		<tr> 
+          <td align="center">是否启用：</td>
+          <td> <input name="isenable" type="radio" class="np" value="0" checked>
+            是 　 
+              <input type="radio" name="isenable" class="np" value="1">
+              否</td>
+        </tr>
+        <tr> 
+          <td height="47">&nbsp;</td>
+          <td><input type="submit" name="Submit" value="保存投票数据"></td>
+        </tr>
+        <tr> 
+          
+        </tr>
+		</form>
+
+		<td colspan="2">&nbsp;</td>
+      </table>
+	 </td>
+</tr>
+
+</table>
+</body>
+</html>

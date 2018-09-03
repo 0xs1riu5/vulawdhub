@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>关键字管理</title>
+<script language="javascript">
+//获得选中文件的文件名
+function SelKw(kw)
+{
+	if(document.form2.keywords.value)
+	{
+		document.form2.keywords.value += ","+kw;
+	}
+	else
+	{
+		document.form2.keywords.value = kw;
+	}
+}
+function ReturnValue()
+{
+	if(window.opener.document.<?php echo $f?>.value)
+	{
+		window.opener.document.<?php echo $f?>.value += ','+document.form2.keywords.value;
+	}
+	else
+	{
+		window.opener.document.<?php echo $f?>.value = document.form2.keywords.value;
+	}
+	//window.opener=true; //firefox出错
+	window.close();
+}
+function showHide(objname)
+{
+	var obj = document.getElementById(objname);
+	if(obj.style.display=="none") obj.style.display = "block";
+	else obj.style.display="none";
+}
+function AddNewKw()
+{
+	showHide("addnew");
+}
+</script>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background="images/allbg.gif" leftmargin="1" topmargin="1">
+<div class="main">
+  <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D6D6D6">
+   <form name='form1' action="article_keywords_main.php">
+   <input type='hidden' name='dopost' value='add' />
+    <tr id="addnew" style="display:none">
+        <td width="100%" height="24" colspan="2" align="center" bgcolor="#009900">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="60" align="center">关键字：</td>
+              <td width="140"><input name="keyword" type="text" id="keyword" style="width:130px" /></td>
+              <td width="40">链接：</td>
+              <td width="140"><input name="rpurl" type="text" id="rpurl" style="width:130px" /></td>
+              <td width="40">频率：</td>
+              <td width="50"><input name="rank" type="text" id="rank" style="width:30px" value="30" /></td>
+              <td width="80"><input type="submit" name="Submit" value="保存" class="np"></td>
+            </tr>
+          </table>
+		</td>
+     </tr>
+	 </form>
+	<form name='form2'>
+      <tr>
+        <td width="100%" height="26" colspan="2" background="images/tbg.gif">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+              <td width="31%"><strong>选择关键字</strong></td>
+              <td width="69%" align="right">
+                <input type="button" name="kwa" value="新增关键字" onClick="AddNewKw()">
+                <input type="button" name="kwm" value="关键字管理" onClick="location='article_keywords_main.php';">
+                </td>
+            </tr>
+          </table></td>
+      </tr>
+      <tr>
+        <td bgcolor="#FFFFFF" style="line-height:180%">
+        	{dede:datalist}
+        	 <a href='javascript:SelKw("{dede:field.keyword/}")'><u>{dede:field.keyword/}</u></a>
+          {/dede:datalist}
+          </td>
+      </tr>
+      <tr>
+        <td height="24" bgcolor="#E4FAC7" style="line-height:180%">
+        <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="120">已选的关键字：</td>
+              <td width="320"><input name="keywords" type="text" id="keywords" style="width:300" value="<?php echo $keywords?>"></td>
+              <td width="93"><input type="button" name="Submit" value="选用" onClick="ReturnValue()"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr align="center">
+        <td height="24" bgcolor="#F9FCEF">
+         {dede:pagelist listsize=3/}
+         </td>
+      </tr>
+    </form>
+  </table>
+  <div class="tbbottom" style="text-align:right;width:99%" align="left"></div>
+</div>
+</body>
+</html>

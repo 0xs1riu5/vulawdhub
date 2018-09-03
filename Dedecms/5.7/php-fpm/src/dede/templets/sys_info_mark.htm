@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>系统配置参数 - 图片水印设置</title>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <form action="sys_info_mark.php" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="action" value="save">
+  <input type="hidden" name="get_photo_markimg" value="<?php echo $photo_markimg?>">
+  <tr> 
+    <td height="26" colspan="2" bgcolor="#FFFFFF" background="images/tbg.gif" style="padding-left:10px;">
+	<b>DedeCMS系统配置参数</b> - <strong>图片水印设置</strong>    </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td width="41%" height="24">上传的图片是否使用图片水印功能：<br> </td>
+    <td width="59%">
+    	<input class="np" type="radio" value="1" name="get_photo_markup"<?php if($photo_markup=='1') echo ' checked';?>>
+      开启 
+      <input class="np" type="radio" value="0" name="get_photo_markup"<?php if($photo_markup=='0') echo ' checked';?>>
+      关闭
+    </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="24">采集的图片是否使用图片水印功能：</td>
+    <td>
+    	<input class="np" type="radio" value="1" name="get_photo_markdown"<?php if($photo_markdown=='1') echo ' checked';?>>
+      开启 
+      <input class="np" type="radio" value="0" name="get_photo_markdown"<?php if($photo_markdown=='0') echo ' checked';?>>
+      关闭
+    </td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">选择水印的文件类型：</td>
+    <td>
+    	<input name="get_photo_marktype" type="radio" value="0" <?php if($photo_marktype == 0) echo 'checked'?>>gif
+        &nbsp;<input type="radio" name="get_photo_marktype" value="1" <?php if($photo_marktype == 1) echo 'checked'?>>png
+        &nbsp;<input type="radio" name="get_photo_marktype" value="2" <?php if($photo_marktype == 2) echo 'checked'?>>文字
+       
+   </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="24">添加水印的图片大小控制（设置为0为不限）：</td>
+    <td> 宽： 
+      <input name="get_photo_wwidth" type=text id="get_photo_wwidth"   value="<?php echo $photo_wwidth?>" size="5">
+      高： 
+      <input name="get_photo_wheight" type=text id="get_photo_wheight"  value="<?php echo $photo_wheight?>" size="5"> </td>
+  </tr>
+  
+  <tr bgcolor="#FFFFFF"> 
+    <td height="24">水印图片文件名（如果不存在，则使用文字水印）：</td>
+    <td><img src="../data/mark/<?php echo $photo_markimg; ?>" alt="dede"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">上传新图片：</td>
+    <td>
+	<input name="newimg" type="file" id="newimg" style="width:300">
+    <br>
+	<?php echo "你的系统支持的图片格式：".$cfg_photo_support; ?>	</td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="24">水印图片文字：(&nbsp;请查看data\mark\simhei.ttf字体库是否存在)</td>
+    <td> <input type="text" name="get_photo_watertext"  value="<?php echo $photo_watertext?>"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="24">水印图片文字字体大小：</td>
+    <td> <input name="get_photo_fontsize" type=text id="get_photo_fontsize"  value="<?php echo $photo_fontsize?>"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="24">水印图片文字颜色（默认#FF0000为红色）：</td>
+    <td> <input name="get_photo_fontcolor" type=text id="get_photo_fontcolor"  value="<?php echo $photo_fontcolor?>"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">设置 JPEG 类型的图片附件添加水印后质量参数，范围为 0～100 的整数，数值越大结果图片效果越好，但尺寸也越大。</td>
+    <td>
+      <input type="text" name="get_photo_marktrans" id="get_photo_marktrans" value="<?php echo $photo_marktrans?>">   </td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">设置 GIF 类型水印图片与原始图片的融合度,水印透明度（0—100，值越小越透明）：</td>
+    <td><input name="get_photo_diaphaneity" type=text id="get_photo_diaphaneity"  value="<?php echo $photo_diaphaneity?>"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">水印位置：</td>
+    <td>
+	<input class="np" type="radio" name="get_photo_waterpos"  value="0"<?php if($photo_waterpos==0) echo ' checked';?>>
+          随机位置
+	<table width="300" border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="33%"><input class="np" type="radio" name="get_photo_waterpos"  value="1"<?php if($photo_waterpos==1) echo ' checked';?>>
+          顶部居左</td>
+        <td width="33%"><input class="np" type="radio" name="get_photo_waterpos"  value="2"<?php if($photo_waterpos==2) echo ' checked';?>>
+          顶部居中</td>
+        <td><input class="np" type="radio" name="get_photo_waterpos"  value="3"<?php if($photo_waterpos==3) echo ' checked';?>>
+          顶部居右</td>
+      </tr>
+      <tr>
+        <td><input class="np" type="radio" name="get_photo_waterpos"  value="4"<?php if($photo_waterpos==4) echo ' checked';?>>
+          左边居中</td>
+        <td><input class="np" type="radio" name="get_photo_waterpos"  value="5"<?php if($photo_waterpos==5) echo ' checked';?>>
+          图片中心</td>
+        <td><input class="np" type="radio" name="get_photo_waterpos"  value="6"<?php if($photo_waterpos==6) echo ' checked';?>>
+          右边居中</td>
+      </tr>
+      <tr>
+        <td><input class="np" type="radio" name="get_photo_waterpos"  value="7"<?php if($photo_waterpos==7) echo ' checked';?>>
+          底部居左</td>
+        <td><input class="np" type="radio" name="get_photo_waterpos"  value="8"<?php if($photo_waterpos==8) echo ' checked';?>>
+          底部居中</td>
+        <td><input name="get_photo_waterpos" type="radio" class="np"  value="9"<?php if($photo_waterpos==9) echo ' checked';?>>
+          底部居右</td>
+      </tr>
+    </table></td>
+  </tr>
+  
+  <tr bgcolor="#F9FCEF"> 
+    <td height="37" colspan="2">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="7%">&nbsp;</td>
+          <td width="93%" align="center">
+		  <input name="imageField" class="np" type="image" src="images/button_ok.gif" width="60" height="22" border="0">
+            　&nbsp;
+		 <img src="images/button_reset.gif" width="60" height="22">		  </td>
+        </tr>
+      </table>	  </td>
+  </tr>
+  </form>
+</table>
+</body>
+</html>

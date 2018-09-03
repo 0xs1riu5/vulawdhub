@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript">
+function LoadHashCode()
+{
+	var tgobj = document.getElementById('modulcode');
+	var email = document.form1.email.value;
+	var modulname = document.form1.modulname.value;
+	var myajax = new DedeAjax(tgobj,false,true,'-','-','...');
+
+   <?php
+   if(strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
+   ?>
+   myajax.AddKeyUtf8('action','gethash');
+   myajax.AddKeyUtf8('email',email);
+   myajax.AddKeyUtf8('modulname',modulname);
+   myajax.SendPost2('module_make.php');
+   <?php
+   }
+   elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
+   	 echo 'myajax.SendGet2("module_make.php?action=gethash&email="+email+"&modulname="+modulname);';
+   }
+   ?>
+
+	//myajax.SendGet2('module_make.php?action=gethash&email='+email+'&modulname='+modulname);
+	DedeXHTTP = null;
+}
+function ShowHideField(cbox,vid,nid)
+{
+	var cboxobj = document.getElementById(cbox);
+	if(cboxobj.checked)
+	{
+		document.getElementById(nid).style.display = 'block';
+		document.getElementById(vid).style.display = 'none';
+	}
+	else
+	{
+		document.getElementById(nid).style.display = 'none';
+		document.getElementById(vid).style.display = 'block';
+	}
+}
+function ShowHideMb(rbox1,nid)
+{
+	var rboxobj = document.getElementById(rbox1);
+	if(rboxobj.checked)
+	{
+		document.getElementById(nid).style.display = 'none';
+	}
+	else
+	{
+		document.getElementById(nid).style.display = 'block';
+	}
+}
+</script>
+<title>模块打包</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style>
+td{padding-left:8px}
+</style>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;"><b>模块管理</b></div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+  <form action="module_make.php" method="post" enctype="multipart/form-data" name="form1">
+   <input type='hidden' name='action' value='make'>
+    <tr>
+      <td height="20" colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;"><a href="module_main.php"><u><b>模块管理</b></u></a>
+        &gt; <b> 模块打包：</b> </td>
+    </tr>
+    <tr>
+      <td width="19%" align="center" bgcolor="#FFFFFF"><b>模块名称：</b></td>
+      <td width="81%" bgcolor="#FFFFFF">
+      	<input name="modulname" type="text" id="modulname" style="width:180px" class='alltxt'/>      </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>语言编码：</b></td>
+      <td bgcolor="#FFFFFF">
+        <b><?php echo $cfg_soft_lang; ?></b>
+      	(不同编码模块可以使用，但不能在此打包)
+      	<input name="lang" type="hidden" value='<?php echo $cfg_soft_lang; ?>' />
+      </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>封装类型：</b></td>
+      <td bgcolor="#FFFFFF">
+      	<input name="moduletype" type="radio" id="moduletype1" class='np' value='soft' checked='1' /> 模块
+      	<input name="moduletype" type="radio" id="moduletype2" class='np' value='templets' /> 模板
+      	<input name="moduletype" type="radio" id="moduletype3" class='np' value='plus' /> 小插件
+      	<input name="moduletype" type="radio" id="moduletype3" class='np' value='patch' /> 补丁
+      </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>联系Email：</b></td>
+      <td bgcolor="#FFFFFF"><input name="email" type="text" id="email" style="width:180px" onchange="LoadHashCode()" class='alltxt'/> </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>模块识别码：</b></td>
+      <td bgcolor="#FFFFFF">
+      <span id='modulcode'>由模块名称和Email生成</span>[<a href='javascript:LoadHashCode();'>更新</a>]      </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>开发团队：</b></td>
+      <td bgcolor="#FFFFFF"><input name="team" type="text" id="team" style="width:180px" class='alltxt' /> </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>发布时间：</b></td>
+      <td bgcolor="#FFFFFF">
+      	<input name="mtime" type="text" id="mtime" style="width:180px" value="<?php echo GetDateMk(time()); ?>" class='alltxt'/>      </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>官方网址：</b></td>
+      <td bgcolor="#FFFFFF"><input name="url" type="text" id="url"  style="width:250px" class='alltxt' /> </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>是否涉及会员系统：</b></td>
+      <td bgcolor="#FFFFFF">
+
+      	<input name="ismember" type="radio" class='np' id="ismember0" value="0" onclick="ShowHideMb('ismember0','rboxct')" checked="checked" />
+不涉及
+<input name="ismember" type="radio" id="ismember1" value="1" onclick="ShowHideMb('ismember0','rboxct')" class='np' /> 涉及
+<div id='rboxct' style='display:none'>
+   	  导航使用名称：
+      <input name="indexname" type="text" id="indexname" style="width:180px" value=""/>
+      <br />
+导航使用网址：
+<input name="indexurl" type="text" id="indexurl" style="width:180px" value="" />
+(用相对于会员中心的网址，如：../ask)
+</div>
+
+</td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>后台管理菜单：</b></td>
+      <td bgcolor="#FFFFFF">
+      	<textarea name="menustring" rows="8" id="menustring" style="width:80%"></textarea>
+      	<br />
+      	(普通插件或模板、补丁类不要填写，模块菜单格式请参考inc/inc_menu_module.php)
+       </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>使用说明文件：</b></td>
+      <td bgcolor="#FFFFFF">
+      	<input type="checkbox" name="autoreadme" value='1' id="autoreadme" class="np" onclick="ShowHideField('autoreadme','autoreadmeinput','autoreadmect')" />
+      	直接填写
+      	<br />
+      	<div style='display:block' id='autoreadmeinput'>
+      		<input name="readme" type="file" id="readme"  style="width:350px" />
+      	</div>
+      	<div style='margin:5px 0px 5px 5px;display:none' id='autoreadmect'>
+      	<table width="80%" border="0" cellpadding="5" cellspacing="1" bgcolor="#83B771">
+          <tr>
+            <td width="75%" bgcolor="#F3FDE1">
+            	<b>填写使用协议或说明：</b>
+            	<br /> 如果需要带HTML格式，请编译后点击修改时使用HTML
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#FFFFFF" align="center">
+            	<textarea name="readmetxt" rows="10" id="readmetxt" style="width:99%"></textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>安装程序：</b></td>
+      <td bgcolor="#FFFFFF">
+
+      	<input type="checkbox" name="autosetup" value='1' id="autosetup" class="np" onclick="ShowHideField('autosetup','autosetupinput','autosetupct')" />
+      	自动生成(由系统自动处理安装)
+      	<br />
+     <div style='display:block' id='autosetupinput'>
+      	<input name="setup" type="file" id="setup" style="width:350px" />
+     </div>
+     <div style='margin:5px 0px 5px 5px;display:none' id='autosetupct'>
+      	<table width="80%" border="0" cellpadding="5" cellspacing="1" bgcolor="#83B771">
+          <tr>
+            <td width="75%" bgcolor="#F3FDE1">
+            	<b>请使用MySQL4.0版本格式的SQL语句:</b>
+            	<br />
+            	 MySQL4.1/5.x版本请把创建表语句 ENGINE=MyISAM DEFAULT CHARSET=* ，改为 TYPE=MyISAM ，SQL语句允许换行，但必须用 ";换行" 表示一条SQL语句结束
+            	<br />
+            	如果SQL中包含有模块网址的，用 _ROOTURL_ 表示，如：_ROOTURL_/ask/index.php
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#FFFFFF" align="center">
+            	<textarea name="setupsql40" rows="10" id="setupsql40" style="width:99%"></textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      	</td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>删除程序：</b></td>
+      <td bgcolor="#FFFFFF">
+
+      	<input type="checkbox" name="autodel" value='1' id="autodel" class="np" onclick="ShowHideField('autodel','autodelinput','autodelct')" />
+      	自动生成(由系统自动处理卸载)
+      	<br />
+      	<div style='display:block' id='autodelinput'>
+      	  <input name="uninstall" type="file" id="uninstall" style="width:350px" />
+        </div>
+      	<div style='margin:5px 0px 5px 5px;display:none' id='autodelct'>
+      	<table width="80%" border="0" cellpadding="5" cellspacing="1" bgcolor="#83B771">
+          <tr>
+            <td width="75%" bgcolor="#F3FDE1">
+            	<b>卸载时执行的SQL语句：</b>
+            	<br />
+            	(SQL允许换行，但必须用 ";换行" 表示一条SQL语句结束)
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#FFFFFF" align="center">
+            <textarea name="delsql" rows="10" id="delsql" style="width:99%"></textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      	</td>
+    </tr>
+
+    <tr>
+      <td align="center" bgcolor="#FFFFFF"><b>文件列表：</b></td>
+      <td bgcolor="#FFFFFF">
+      	<p>
+      		每行指定一个文件或目录，路径为相对于本目录，本目录的文件则直接用文件名即可，对于整个打包的目录，不需要指定子目录里的文件。<br />
+        如：如果已经指定了： ../book 则不需要再指定目录里的 ../book/index.php 等文件或目录，系统会自动索引整个目录，<br />
+        对于不需要索引整个目录的，请不要指定这个目录，否则可能会把不必要的文件也放进模块中。 <br />
+          <textarea name="filelist" rows="8" id="filelist" style="width:80%"></textarea>
+         </p>
+       </td>
+    </tr>
+    <tr bgcolor="#F9FDF0">
+      <td height="28" colspan="2" bgcolor="#F9FCEF">
+      	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="26%">&nbsp;</td>
+            <td width="15%">
+            	<input name="imageField" type="submit" class="np coolbg" value="提交" />
+            </td>
+            <td width="59%">
+            	<input type="button" name="button" id="button" value="返回" onClick="location='plus_main.php';" class="np coolbg" />
+            </td>
+          </tr>
+       </table>
+       </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

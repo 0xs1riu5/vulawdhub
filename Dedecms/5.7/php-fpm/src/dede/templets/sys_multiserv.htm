@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>服务器分布/远程</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="JavaScript">
+function AddServer()
+{
+   var op="";
+   var sel = document.getElementById("c_userlist"); 
+   for(var i=0;i<sel.length;i++){
+   if(sel.options[i].selected == true){
+	  op +=sel.options[i].value+",";
+	}
+   }
+   if(document.form1.c_servurl.value==""||document.form1.c_servurl.value=="http://"){ alert('服务器网址不能为空！'); return ;}
+   if(document.form1.c_servname.value==""){ alert('服务器名称不能为空！'); return ;}
+   if(document.form1.c_servuser.value==""){ alert('FTP用户名不能为空！'); return ;}
+   if(document.form1.c_servpwd.value==""){ alert('FTP密码不能为空！'); return ;}
+   document.form1.c_servinfo.value += document.form1.c_servname.value+" | "+document.form1.c_servurl.value+
+   " | "+document.form1.c_servport.value+" | "+document.form1.c_servuser.value+" | "+document.form1.c_servpwd.value+" | "+op+
+   "\r\n";
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <form name="form1" action="sys_multiserv.php" method="post">
+    <input type="hidden" name="dopost" value="save" />
+    <tr> 
+      <td height="28" colspan="2" background='images/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="30%" height="18" style="padding-left:10px;"><strong>服务器分布/远程设置：</strong></td>
+            <td width="70%" align="right">&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+<tr> 
+      <td colspan="2" bgcolor="#FFFFFF">在开启分布/远程设置后需要在栏目中对相关的站点进行设置，例如子域名、后台栏目生成</td>
+    </tr>
+<tr> 
+      <td height="26" colspan="2" bgcolor="#F9FCEF">
+      	<strong>附件服务器设置：      </strong></td>
+    </tr>
+    
+    <tr> 
+      <td bgcolor="#FFFFFF" width="19%">是否启用附件服务器：</td>
+      <td width="81%" bgcolor="#FFFFFF">
+      	<input name="c_remoteuploads" type="radio" class="np" value="1" <?php echo ($row['remoteuploads']==1)? 'checked' : '';?>/>
+        启用 
+        <input name="c_remoteuploads" type="radio" class="np" value="0" <?php echo ($row['remoteuploads']==0)? 'checked' : '';?>/>
+        不启用
+      <small style="color:#999">开启后附件将同步远程发布到附件服务器中</small></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">附件服务器域名：</td>
+      <td bgcolor="#FFFFFF"> <label>
+        <input name="c_remoteupUrl" type="text" id="c_remoteupUrl" value="<?php echo empty($row['remoteupUrl'])? '' :$row['remoteupUrl'];?>" size="35">
+     <small style="color:#999"> 例如：http://img.dedecms.com,开启后图片地址都变为远程地址</small></label></td>
+    </tr>
+    <tr> 
+      <td valign="top" bgcolor="#FFFFFF">远程服务器(FTP)：</td>
+      <td align="center" bgcolor="#FFFFFF"><table width="98%" border="0" cellspacing="5" cellpadding="0">
+        <tr>
+          <td width="14%">主机IP：</td>
+          <td width="86%" style="text-align:left;"><input name="c_rmhost" type="text" id="c_rmhost" value="<?php echo empty($row['rminfo']['rmhost'])? '' : $row['rminfo']['rmhost'];?>" size="35"></td>
+        </tr>
+        <tr>
+          <td>FTP端口：</td>
+          <td style="text-align:left;"><input name="c_rmport" type="text" id="c_rmport" value="<?php echo empty($row['rminfo']['rmport'])? '' :$row['rminfo']['rmport'];?>" size="35"></td>
+        </tr>
+        <tr>
+          <td>FTP用户名</td>
+          <td style="text-align:left;"><input name="c_rmname" type="text" id="c_rmname" value="<?php echo empty($row['rminfo']['rmname'])? '': $row['rminfo']['rmname'];?>" size="35"></td>
+        </tr>
+        <tr>
+          <td>FTP密码</td>
+          <td style="text-align:left;"><input name="c_rmpwd" type="text" id="c_rmpwd" value="<?php echo empty($row['rminfo']['rmpwd'])? '': $row['rminfo']['rmpwd'];?>" size="35"></td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr> 
+      <td height="26" colspan="2" bgcolor="#F9FCEF">
+      	<strong>远程服务器列表：</strong>(FTP镜像) <small style="color:#999">添加的服务器配置将在前台远程发布中可选</small></td>
+    </tr>
+    <tr> 
+      <td colspan="2" bgcolor="#FFFFFF">
+      <table width="98%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="160" height="30" align="right" style="line-height:28px;">名称： 
+</td>
+    <td width="181" align="left" style="line-height:28px;"><input name="c_servname" type="text" id="c_servname" value="站点1" size="22" /></td>
+    <td width="102" rowspan="6" align="center"><span style="line-height:28px;">
+      <input type="button" name="Submit2" value="增加一项" onClick="AddServer()"  class="coolbg np" />
+    </span></td>
+    <td width="832">自定义文本编辑框</td>
+    </tr>
+  <tr>
+    <td width="160" height="30" align="right" style="line-height:28px;">服务器IP：</td>
+    <td height="30" align="left" style="line-height:28px;"><input name="c_servurl" type="text" id="c_servurl" size="22" /></td>
+    <td width="832" rowspan="5" valign="top"><textarea name="c_servinfo" id="c_servinfo" style="width:100%;height:150px"><?php echo $row['servinfo'] ;?></textarea><br/>
+      (<strong>格式</strong>：名称|服务器IP|FTP端口|FTP用户名|FTP密码|管理员,每行一条，以&quot;,&quot;结束)</td>
+  </tr>
+  <tr>
+    <td width="160" height="30" align="right" style="line-height:28px;"> FTP端口：</td>
+    <td height="30" align="left" style="line-height:28px;"><input name="c_servport" type="text" id="c_servport" value="21" size="6" /></td>
+    </tr>
+  <tr>
+    <td width="160" height="30" align="right" style="line-height:28px;">FTP用户名：</td>
+    <td height="30" align="left" style="line-height:28px;"><input name="c_servuser" type="text" id="c_servuser" size="22"></td>
+    </tr>
+  <tr>
+    <td width="160" height="15" align="right" style="line-height:28px;">FTP密码：</td>
+    <td height="15" align="left" style="line-height:28px;"><input name="c_servpwd" type="text" id="c_servpwd" size="22"></td>
+    </tr>
+  <tr>
+    <td height="7" align="right" style="line-height:28px;">管理员：</td>
+    <td height="7" align="left" style="line-height:28px;"> <select name="c_userlist" size="3" multiple id="c_userlist">
+      <?php foreach ($adminLists as $adminList) {  ?>
+      <option value="<?php echo $adminList['userid'];?>"><?php echo $adminList['uname'];?> | <?php echo $adminList['typename'];?></option>
+      <?php }?>
+      </select>
+      <br/>(多选)</td>
+    </tr>
+      </table>
+
+      </td>
+    </tr>
+    <tr> 
+      <td height="41" colspan="2" bgcolor="#FAFAF1" align="center">
+      <input type="submit" name="Submit" value="保存设置" class="coolbg np" />　　　　        
+        <input type="reset" name="rset" id="rset" value="重置" class="coolbg np" />
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

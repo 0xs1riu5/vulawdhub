@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>消息管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">
+	function folderSelAll()
+	{
+		for(i=0;i<document.form1.deleteid.length;i++)
+		{
+			if(!document.form1.deleteid[i].checked)
+			{
+				document.form1.deleteid[i].checked=true;
+			}
+		}
+	}
+	
+	//获得选中文件的文件名
+	function GetCheckfolderItem()
+	{
+		var allSel='';
+		if(document.form1.deleteid.value) return document.form1.deleteid.value;
+		for(i=0;i<document.form1.deleteid.length;i++)
+		{
+			if(document.form1.deleteid[i].checked)
+			{
+				if(allSel=='')
+				allSel=document.form1.deleteid[i].value;
+				else
+				allSel=allSel+","+document.form1.deleteid[i].value;
+			}
+		}
+		return allSel;
+	}
+	
+	function DoSubmit(myfolder)
+	{
+		var selid = GetCheckfolderItem();
+		if(selid=='') {
+			alert("你没选中任何信息！");
+			return false;
+		}
+		if(window.confirm("你确定要删除这些消息么？"))
+		{
+			location = "pm.php?dopost=del&ids="+selid+"&folder="+myfolder;
+		}
+	}
+</script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+            <li class="thisTab"><a href="pm.php?dopost=send">写新消息</a></li>
+            <li><a href="pm.php?folder=inbox">收件箱</a></li>
+            <li><a href="pm.php?folder=outbox">发件箱</a></li>
+            <li><a href="pm.php?folder=track">已发出信息</a></li>
+        </ul>
+        <div class="tabOther">
+          
+        </div>
+      </div>
+      <div id="mainCp" style="height:330px;">
+        <h3 class="meTitle">发送新短消息</h3>
+        <div class="postForm" style="padding-left: 20px; padding-right: 20px;width: 520px;	float: left;">
+        <form class="mTB10 mL10 mR10" action="pm.php" method="post" name="form1">
+          <input type='hidden' name='dopost' value='savesend' />
+            <p>
+              <label>发送到：</label>
+              <input name="msgtoid" type="text" class="intxt" value="<?php if(!empty($uid)) echo $uid; ?>" size="28" maxlength="100" style=" width:100px" />
+              <small> (填写用户的登录id(网址uid=后面跟的id)</small>
+            </p>
+            <p>
+              <label>标题：</label>
+              <input name="subject" type="text" class="intxt" value="" size="50" maxlength="70" style="width:300px;"/>
+              <small> (60个字符节以内)</small>
+            </p>
+            <p style=" width:530px">
+              <label>内容：</label>
+              <textarea name="message" cols="50" rows="" style="width:300px;"></textarea>
+			  <small>(1000个字符以内)</small>
+            </p>
+            <?php
+            if(preg_match("/5/",$safe_gdopen)){
+          ?>
+          <p>
+          <label>验证码：</label>
+            <input type="text" class="intxt w200" style="width: 50px; text-transform: uppercase;" id="vdcode" name="vdcode"/><img id="vdimgck" align="absmiddle" onclick="this.src=this.src+'?'" style="cursor: pointer;" alt="看不清？点击更换" src="../include/vdimgck.php"/>
+           看不清？ <a href="javascript:void(0)" onclick="changeAuthCode();">点击更换</a></li>
+              </p>
+              <?php }?>
+              <?php
+	        	if($safe_faq_msg == '1'){
+	          	$faqkey = array_rand($safefaqs);
+	          ?> 
+	          <p> 
+              <label>验证问题：</label>
+        		<?php echo $safefaqs[$faqkey]['question'];?> (答案:<?php echo $safefaqs[$faqkey]['answer'];?>)<input class="intxt" name="safeanswer" type="text" id="safeanswer" size="25" style='width:150px;'/> 
+        		<input type="hidden" name="faqkey" value="<?php echo $faqkey;?>" />
+	          <?php
+	            }
+	          ?>
+	        </p> 
+             <p><label><button class="button2" type="submit">发送</button></label></p>
+          </form>
+        </div>
+        
+        
+      <div class="dedeRight">
+      <!--好友列表 -->
+      <script type="text/javascript">
+		$(document).ready(function(){
+			$(".buddy dt").click(function(){$(this).toggleClass("close");$(this).next("dd").toggle();});
+			$(".buddy li").hover(function(){$(this).addClass("hover"); },function(){$(this).removeClass("hover"); });
+		});
+		</script>
+      <div class="titleBar">
+        <h5 class="fLeft">好友列表</h5>
+        <span class="fRight"><a href="myfriend.php" title="好友管理">管理</a></span> 
+      </div>
+        <dl class="buddy">
+        <dt class="icon17">所有好友</dt>
+        <dd> 
+          <ul>
+           <?php
+          	foreach ($friends as $friend)
+         	{
+				echo '<li class="thickbox"><span class="fLeft icon16"></span>'.$friend['funame'].'</li>';
+          	}
+          ?>
+          </ul>
+        </dd>
+      </dl>
+      <!--好友搜索 -->
+      <div class="buddySearch textCenter">
+        <form action="search.php">
+          <input class="text" type="text" name="keyword" value="" style="width:100px;" />
+          <button class="button1" type="submit">搜</button>
+        </form>
+      </div>
+    </div>
+      </div>
+      <!--主操作区域 -->
+    </div>
+  </div>
+ <?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

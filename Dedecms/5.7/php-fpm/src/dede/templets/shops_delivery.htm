@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>配送方式配置</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<style>
+.fontOrange { COLOR: #ff4e00}
+.npvar { width:90% }
+</style>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<center>
+<form action="shops_delivery.php" method="post" name="form1">
+<input type="hidden" name="do" value="add">
+<table width="98%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-bottom:8px;" >
+<tr>
+<td>
+<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#cfcfcf" class="sysinfo">
+<tr align="center" height="24">
+  <td height="30" colspan="2" align="left" bgcolor="#EDF9D5" background='images/tbg.gif'  style="padding-left:10px;">
+  	<strong>增加一个配送方式</strong>
+  </td>
+</tr>
+<tr align="center" height="24" bgcolor="#FFFFFF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+  &nbsp;&nbsp;名称：
+</td>
+<td align="left" bgcolor="#FFFFFF"><input name="dname" style="margin-left:6px;" type="text" id="dname" />
+  &nbsp;*此处填写配送方式名称</td>
+</tr>
+<tr align="center" height="24" bgcolor="#ECF8FF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+  &nbsp;&nbsp;手续费：
+ </td>
+<td align="left" bgcolor="#FFFFFF">
+	<input name="price" type="text" id="price" style="margin-left:6px;" value="0.00" size="6" maxlength="6"/>
+  元
+  &nbsp;*发货时所用的手续费，若要收取，请填写(精确到小数位两位)！
+</td>
+</tr>
+<tr align="center" height="24" bgcolor="#ECF8FF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+	&nbsp;&nbsp;简要说明：
+</td>
+<td align="left" bgcolor="#FFFFFF">
+	<textarea name="des" id="des" style="margin-left:6px;height:50px;width:320px;"></textarea>
+  &nbsp;最多100个文字内,简要说明一下。
+</td>
+</tr>
+<tr bgcolor="#F3FFDD">
+  <td height="50" colspan="3" align="center" bgcolor="#FFFFFF">
+    <table width="200" border="0" cellspacing="1" cellpadding="1">
+       <tr align="center">
+        <td>
+         <input name="imageField" type="submit" value="确认" class='np coolbg' />
+        </td>
+        <td align="center">
+          <input type="reset" name="button"  value="重置" class='np coolbg' />
+        </td>
+       </tr>
+     </table>
+   </td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</form>
+<form action="shops_delivery.php" method="post" name="form2">
+<input type="hidden" name="do" value="edit" />
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+      <tr>
+        <td height="28" colspan="3" align="left" bgcolor="#EDF9D5" background='images/tbg.gif'>
+        	<strong>&nbsp;已有配送方式列表<strong></strong></strong>
+        </td>
+      </tr>
+      <tr bgcolor="#F3FFDD">
+        <td height="50" colspan="3" align="center" bgcolor="#FFFFFF">
+		<table width="100%" border="0" cellpadding="1" cellspacing="2" style="BORDER: #CCC 1px solid;">
+		  <?php foreach($deliveryarr as $rs) { ?>
+		  <input type="hidden" name="pid[]" value="<?php echo $rs['pid'];?>" />
+      <tr>
+      <td width="23%" height="24" align="left" bgcolor="#F0F0F0" style="padding-left:5px;">
+			  <input name="m_dname<?php echo $rs['pid'];?>" type="text" value="<?php echo $rs['dname'];?>" />
+			  <div style="background-color:#FFFFFF; padding:3px;BORDER-TOP: #CCC 1px solid;"><a href="shops_delivery.php?do=del&id=<?php echo $rs['pid'];?>" onClick="return(confirm('删除后无法恢复,您确定删除吗?'))">删除</a></div>
+		  </td>
+      <td width="77%" align="left" valign="top" bgcolor="#F0F0F0" style="BORDER-BOTTOM: #CCC 1px solid;padding-left:5px;">
+      	 手续费：
+         <input name="m_price<?php echo $rs['pid'];?>" type="text" id="m_price<?php echo $rs['pid'];?>" style="margin-left:6px;" value="<?php echo $rs['price'];?>" size="6" maxlength="6"/>
+          元
+			  <div style="background-color:#FFFFFF; padding:3px;BORDER-TOP: #CCC 1px solid;"><textarea name="m_des<?php echo $rs['pid'];?>" id="m_des<?php echo $rs['pid'];?>" style="margin-left:6px; width:320px;"><?php echo $rs['des'];?></textarea></div>
+			  </td>
+      </tr>
+		  <?php  }?>
+    </table>
+		</td>
+    </tr>
+	  <tr bgcolor="#F3FFDD">
+        <td height="36" colspan="3" align="left" bgcolor="#FFFFFF">
+        	<input name="imageField2" type="submit" class="np coolbg" value="修改" />
+        </td>
+	  </tr>
+</table>
+</form>
+</center>
+</body>
+</html>

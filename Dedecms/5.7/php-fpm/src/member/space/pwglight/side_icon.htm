@@ -1,0 +1,36 @@
+<!-- //begin icon -->
+<div class="box" id="side_icon">
+	  <h2>博主资料</h2>
+	  <div class="profile">
+		<div class="text">
+		  <div class="profile-pic">
+		  	<span id="msg"></span>
+			<div>
+			{dede:if $_vars['face']=='' }
+	<img src="images/nopic.gif" alt="nopic" />
+	{else}
+	<img src="{dede:var.face/}" alt="{dede:var.uname/}" />
+	{/dede:if}
+			</div>
+		  </div>
+         <div style="height:30px;text-align:center">{dede:var.msg /}</div>
+		  <dl class="profile">
+			<dd class="tac" style="word-break:keep-all">
+			  <img src="space/person/images/talk.gif" align="absmiddle" /><a href="index.php?action=guestbook&uid={dede:var.userid/}">留言</a> |
+			  <img src="space/person/images/message.gif" align="absmiddle" /><a href="pm.php?dopost=send&uid={dede:var.userid/}">短消息</a> |
+				<img src="space/person/images/team.gif" align="absmiddle" /><a href="index.php?action=newfriend&uid={dede:var.userid/}">加好友</a> |
+			  <img src="space/person/images/del.png" align="absmiddle" /><img src="space/person/images/addto.gif" align="absmiddle" /><a href="index.php?action=blackfriend&uid={dede:var.userid/}">加黑名单</a>
+
+			</dd>
+			<dd style='margin-top:10px;'>&nbsp;用户昵称：{dede:var.uname /}</dd>
+			<dd>&nbsp;最后登录：{dede:var.logintime function="MyDate('y-m-d h:i',@me)" /}</dd>
+			<dd>&nbsp;会员等级：{dede:var.membername/}</dd>
+      <dd>&nbsp;会员积分：{dede:var.scores/} 分</dd>
+			<dd>&nbsp;空间访问：{dede:var.homecount/} 次</dd>
+		  </dl>
+		</div>
+	  </div>
+</div>
+<!-- //end icon -->
+
+

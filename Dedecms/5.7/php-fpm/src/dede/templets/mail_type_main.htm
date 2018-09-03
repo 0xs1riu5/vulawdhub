@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>发送邮件</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt" style="padding-left:10px;">邮件订阅</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr>
+    <td width="92%" height="20" colspan="4" bgcolor="#EDF9D5" background="images/tbg.gif">
+	  <div style='float:left;padding-right:5px;padding-left:10px;'><b>分类管理</b></div>
+	  <div style='float:right;padding-right:8px;'>[<a href="mail_type.php?dopost=add"><u>新增分类</u></a>]</div>
+	</td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td align="center" width="10%">ID</td>
+    <td align="center" width="20%">分类名称</td>
+    <td align="center">分类描述</td>
+    <td align="center" width="30%">操作</td>
+  </tr>
+  {dede:datalist}
+  <tr bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+    <td align="center">{dede:field.id/}</td>
+    <td align="center">{dede:field.typename/}</td>
+    <td align="center">{dede:field.description/}</td>
+    <td align="center"><a href="mail_type.php?dopost=edit&id={dede:field.id/}">编辑</a> | <a href="mail_type.php?dopost=delete&id={dede:field.id/}">删除</a></td>
+  </tr>
+  {/dede:datalist}
+  <tr>
+    <td height="7" colspan="4" bgcolor="#F9FCEF">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

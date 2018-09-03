@@ -1,0 +1,30 @@
+{dede:include file='header.htm'/}
+<div class="wrapper mT10">
+  <div class="west">
+  {dede:include file='side_icon.htm'/}
+	{dede:include file='side_class.htm'/}
+	{dede:include file='side_search.htm'/}
+  </div>
+  <div class="east">
+    <dl class="border">
+      <dt class="caption"><strong>相册</strong></dt>
+      <dd class="body">
+        <ul id="album">
+        {dede:datalist titlelen='20'}
+          <li>
+            <dl>
+              <dt><a href="{dede:field.arcurl/}"><img src='{dede:field.litpic/}' /></a></dt>
+              <dd class="textCenter" ><strong><a href="{dede:field.arcurl/}">{dede:field.title/}</a></strong></dd>
+            </dl>
+          </li>
+          {/dede:datalist}
+        </ul>
+        <div class="fRight mTB10 pd10">{dede:pagelist/}</div>
+        <div class="clearfix"></div>
+      </dd>
+    </dl>
+  </div>
+</div>
+{dede:include file='footer.htm'/}
+</body>
+</html>

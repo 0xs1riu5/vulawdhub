@@ -1,0 +1,37 @@
+{dede:include file='header.htm'/}
+
+<div id="side" class="left">
+	{dede:include file='side_icon.htm'/}
+	{dede:include file='side_class.htm'/}
+	{dede:include file='side_search.htm'/}
+</div>
+
+<!--begin main-->
+<div id="main" class="right">
+<div class="box">
+	<h2>相册列表</h2>
+	<!--begin-->
+<div class="text">
+	<table class="blog-content">
+	<tr>
+		<td>
+		<div class="listPic listPic-albumn">
+		{dede:datalist titlelen = '20'}
+		<dl>
+			<dd><a href="{dede:field.arcurl/}"><img src='{dede:field.litpic/}'/></dd>
+			<dt><a href="{dede:field.arcurl/}">{dede:field.title/}</a></dt>
+		</dl>
+		{/dede:datalist}
+		</div>
+		<div class="c"></div>
+		</td>
+		</tr>
+	</table>
+</div>
+<div class="big"><div class="pages">{dede:pagelist/}</div></a></span></div>
+<!--end-->
+	</div>
+</div>
+<!--end main-->
+
+{dede:include file='footer.htm'/}

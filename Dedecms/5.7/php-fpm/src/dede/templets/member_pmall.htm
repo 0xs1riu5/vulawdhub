@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>用户短信管理</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+.current {border:1px solid #CFCFCF;padding:5px;background:#FFFEF4;color:#FF0000;}
+</style>
+</head>
+<body background='images/allbg.gif'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">短信管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;margin-bottom:5px">
+  <tr>
+    <td height="30" align="center" bgcolor="#F9FCEF">
+      <form action="member_pm.php" name="form1" method="get">
+	    <table border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="90">&nbsp;关键字：</td>
+            <td width="110" align="center">
+            	<input name="keyword" type="text" id="keyword" size="12" style="width:100px"></td>
+            <td width="80">&nbsp;用户：</td>
+            <td width="74"><input name="username" type="text" id="username" size="12" style="width:100px" /></td>
+            <td width="100" align="center"><select name="folder" id="folder">
+              <option value="inbox">收件箱</option>
+              <option value="outbox">发件箱</option>
+            </select>
+            </td>
+            <td width="60" align="center"><input name="imageField" type="submit" class="coolbg np" value="搜索"/></td>
+          </tr>
+        </table>
+	  </form>
+    </td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
+  <tr>
+    <td height="30" colspan="9" bgcolor="#EDF9D5" background='images/tbg.gif'>
+    	<a href='member_pm.php'>短信列表</a> <span class="current" id="cate_1">群发短信</span> <a href='member_pmone.php'>单独短信</a>
+    </td>
+  </tr>
+  <tr bgcolor="#ffffff" height="26">
+    <td colspan="7" align="left">
+    <form id="postall" method="post" action="member_pmall.php">
+    <input name="action" type="hidden" value="post" />
+    <table width="100%" border="0" cellpadding="1" cellspacing="1">
+      <tr>
+        <td width="13%" height="30" align="right">标题：</td>
+        <td width="87%" height="25"><input name="subject" type="text" id="subject" class="company_manage_form_label" style="width:250px;height:16px;margin-top:5px;margin-left:10px;" />
+          标题少于70个字符内</td>
+      </tr>
+      <tr>
+        <td height="12" align="right" valign="top" style="padding-top:5px;"><label for="pm_textarea">内容：</label></td>
+        <td height="120" ><textarea name="message" id="message" cols="40" rows="5" class="company_manage_form_label1" style="width:350px;height:100px;margin-top:5px;margin-left:10px;"></textarea>
+          1000个字符以内</td>
+      </tr>
+
+      <tr>
+        <td height="28" align="right" valign="top">&nbsp;</td>
+        <td height="30"><input type="submit" value="提交" class="button01" /></td>
+      </tr>
+    </table>
+     </form>
+    </td>
+  </tr>
+  <tr bgcolor="#F9FCEF">
+    <td height="26" colspan="9" align="center">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>安装支付接口</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+</head>
+<style>
+.npvar {
+	width:90%
+}
+</style>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<center>
+  <table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+    <tr>
+      <td height="28" background="images/tbg.gif">&nbsp;<b><a href="sys_payment.php"><u>支付接口列表</u></a></b> &gt;&gt; 安装支付接口 </td>
+    </tr>
+    <tr>
+      <td height="200" bgcolor="#FFFFFF" valign="top"><table width="100%" border="0" cellspacing="4" cellpadding="4">
+          <form action="sys_payment.php" method="post" enctype="multipart/form-data" name="form1">
+            <input type='hidden' name='pid' value='<?php echo $row['id'];?>'>
+            <input type='hidden' name='pm' value='<?php echo $pm;?>'>
+            <input type='hidden' name='dopost' value='config'>
+            <tr>
+              <td height="25" align="center">支付名称：</td>
+              <td width="85%"><input name="pay_name" type="text" class='iptxt' id="pay_name" value="<?php echo $row['name'];?>" size="30" /></td>
+            </tr>
+            <tr>
+              <td width="15%" height="108" align="center">支付描述：</td>
+              <td><textarea name="pay_desc" cols="75" id="pay_desc" style="height:100"><?php echo $row['description'];?></textarea></td>
+            </tr>
+            <?php echo $reval ?>
+            <tr>
+              <td height="25" align="center">手续费：</td>
+              <td><input name="pay_fee" type="text" class='iptxt' id="pay_fee" size="10" value="<?php echo $row['fee'];?>"/> 元</td>
+            </tr>
+            <tr>
+              <td height="25" align="center">货到付款：</td>
+              <td><?php echo ($row['cod']==0)? '否':'是';?></td>
+            </tr>
+            <tr>
+              <td height="25" align="center">在线支付：</td>
+              <td><?php echo ($row['online']==0)? '否':'是';?></td>
+            </tr>
+            <tr>
+              <td height="53" align="center">&nbsp;</td>
+              <td><input name="imageField"  type="submit" class="np coolbg" value="确定"/></td>
+            </tr>
+          </form>
+        </table></td>
+    </tr>
+  </table>
+</center>
+</body>
+</html>

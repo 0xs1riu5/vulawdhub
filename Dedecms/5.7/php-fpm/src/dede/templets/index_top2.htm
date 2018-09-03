@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>dedecms</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language='javascript'>
+var preFrameW = '206,*';
+var FrameHide = 0;
+var curStyle = 1;
+var totalItem = 9;
+function ChangeMenu(way)
+{
+	var addwidth = 10;
+	var fcol = top.document.all.btFrame.cols;
+	if(way==1) addwidth = 10;
+	else if(way==-1) addwidth = -10;
+	else if(way==0){
+		if(FrameHide == 0){
+			preFrameW = top.document.all.btFrame.cols;
+			top.document.all.btFrame.cols = '0,*';
+			FrameHide = 1;
+			return;
+		}else{
+			top.document.all.btFrame.cols = preFrameW;
+			FrameHide = 0;
+			return;
+		}
+	}
+	fcols = fcol.split(',');
+	fcols[0] = parseInt(fcols[0]) + addwidth;
+	top.document.all.btFrame.cols = fcols[0]+',*';
+}
+
+function ChangeMenuFF(way)
+{
+	var addwidth = 10;
+	alert(window.parent.document.getElementsByTagName('btFrame').cols);
+	var fcol = window.parent.document.getElementsByTagName('btFrame').cols;
+	if(way==1) addwidth = 10;
+	else if(way==-1) addwidth = -10;
+	else if(way==0){
+		if(FrameHide == 0){
+			preFrameW = window.parent.document.getElementsByTagName('btFrame').cols;
+			window.parent.document.getElementsByTagName('btFrame').cols = '0,*';
+			FrameHide = 1;
+			return;
+		}else{
+			window.parent.document.getElementsByTagName('btFrame').cols = preFrameW;
+			FrameHide = 0;
+			return;
+		}
+	}
+	fcols = fcol.split(',');
+	fcols[0] = parseInt(fcols[0]) + addwidth;
+	window.parent.document.getElementsByTagName('btFrame').cols = fcols[0]+',*';
+}
+
+
+function mv(selobj,moveout,itemnum)
+{
+   if(itemnum==curStyle) return false;
+   if(moveout=='m') selobj.className = 'itemsel';
+   if(moveout=='o') selobj.className = 'item';
+   return true;
+}
+
+function changeSel(itemnum)
+{
+  curStyle = itemnum;
+  for(i=1;i<=totalItem;i++)
+  {
+     if(document.getElementById('item'+i)) document.getElementById('item'+i).className='item';
+  }
+  document.getElementById('item'+itemnum).className='itemsel';
+}
+
+</script>
+<style>
+body {
+	padding:0px; margin:0px;
+}
+a:link,a:visited {
+  color:#ffffff;
+  text-decoration: underline;
+}
+#lpart {
+	float:right;
+	height:53px;
+	line-height:53px;
+	margin:0px;
+	padding:0px;
+}
+#rpart {
+	float:right;
+	width:450px;
+	height:53px;
+	margin:0px;
+	padding:0px;
+	margin-left:5px;
+	background:url(../images/style2tbgr.gif);
+}
+#tpa {
+	color: #009933;
+	margin:0px;
+	
+	float:left;
+}
+
+#tpa dd {
+	margin:0px;
+	padding:0px;
+	float:left;
+	margin-right:2px;
+	color:#ffffff;
+	padding:17px 0px 0px 5px;
+}
+
+#tpa dd.img {
+	padding:17px 0px 0px 5px;
+}
+</style>
+</head>
+<body bgColor='#ffffff'>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" background="../images/topbg2.gif">
+  <tr>
+    <td width='20%'><img src="images/df_dedetitle2.gif" alt="dedecms logo" title="dedecms logo" /></td>
+    <td width='80%'>
+     <div id='rpart'>
+     	<dl id="tpa">
+				<dd class='img'><a href="javascript:ChangeMenu(-1);"><img vspace="5" src="../images/arrl.gif" border="0" width="5" height="8" alt="缩小左框架"  title="缩小左框架" /></a></dd>
+				<dd class='img'><a href="javascript:ChangeMenu(0);"><img vspace="3" src="../images/arrfc.gif" border="0" width="12" height="12" alt="显示/隐藏左框架" title="显示/隐藏左框架" /></a></dd>
+				<dd class='img' style="margin-right:10px;"><a href="javascript:ChangeMenu(1);"><img vspace="5" src="images/arrr.gif" border="0" width="5" height="8" alt="增大左框架" title="增大左框架" /></a></dd>
+				<dd class='txt'>
+					<a href="index_menu.php" target="menu">主菜单</a> | 
+     			<a href="catalog_menu.php" target="menu">内容发布</a> |
+     			<a href="index_body.php" target="main">系统主页</a> |
+     			<a href="../index.php?upcache=1" target="_blank">网站主页</a> |  
+     			<a href="../member" target="_blank">会员中心</a> | 
+      		<a href="exit.php" target="_top">注销</a>
+       </dd>
+			</dl>
+     </div>
+     <div id='lpart'>
+     	您好：<span class="username"><?php echo $cuserLogin->getUserName(); ?> </span>，欢迎使用DedeCMS！
+     </div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

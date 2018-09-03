@@ -1,0 +1,67 @@
+{dede:include file='header.htm'/}
+
+<div id="side" class="left">
+	{dede:include file='side_icon.htm'/}
+	{dede:include file='side_class.htm'/}
+	{dede:include file='side_news.htm'/}
+	{dede:include file='side_visitor.htm'/}
+	{dede:include file='side_search.htm'/}
+</div>
+
+<!--begin main-->
+<div id="main" class="right">
+<div class="box">
+<h2>
+最新日志文章列表
+<img src="space/lxvista/images/write.gif"><a href="article_add.php" class="noul"><span class="gray fn">发表日志</span></a>
+</h2>
+<!--begin-->
+{dede:spacenewart row=6 titlelen=60 infolen=200}
+<?php
+	if($fields['channel']==1) {
+			$fields['arcurl'] = "index.php?uid={$_vars['userid_e']}&action=viewarchives&aid={$fields['id']}";
+	}
+?>
+	  <div class="text">
+		<div class="gray">{dede:field.pubdate function="MyDate('y-m-d h:i',@me)"/}</div>
+		<h3>
+			<a href="{dede:field.arcurl/}" class="noul">{dede:field.title/}</a>
+		</h3>
+		<table class="blog-content">
+		  <tr>
+			<td>
+			  <p>
+			  	{dede:if !preg_match("#defaultpic#", $fields['litpic']) }
+							<img src='{dede:field.litpic/}' />
+					{/dede:if}
+				  {dede:field.description/}
+				 </p>
+			</td>
+		  </tr>
+		</table>
+		<div class="bb">
+		  <div>
+		  类别：
+		  {dede:if field.mtypename=='' }
+		  	<a href="#">无分类</a> | 
+      {else}
+        <a href="index.php?uid={dede:var.userid_e /}&action=archives&mtype=<?php echo $mty['mtypeid']; ?>">{dede:field.mtypename/}</a> | 
+			{/dede:if}
+			  <a href="{dede:field.arcurl/}" target="_blank" title="{dede:field.title/}">浏览全文</a>({dede:field.click/}) | 
+        <a href="{dede:global.cfg_phpurl/}/feedback.php?aid={dede:field.id/}" target="_blank">好评度</a>({dede:field.scores/})
+			</div>
+		  <div class="c"></div>
+		</div>
+		</div>
+{/dede:spacenewart}
+	 <div class="big">
+	  	<div style="line-height:36px;padding-left:10px;margin-bottom:10px;">
+	  		<a href="index.php?uid={dede:var.userid_e /}&action=archives">更多内容&gt;&gt;</a>
+	  	</div>
+	 </div>
+	<!--end-->
+  </div>
+</div>
+<!--end main-->
+
+{dede:include file='footer.htm' /}

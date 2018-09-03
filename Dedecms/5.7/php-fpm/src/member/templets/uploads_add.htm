@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>上传附件 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript">
+<!--
+function checkSubmit()
+{
+
+	if(document.form1.title.value=='') {
+		alert("标题不能为空！");
+		document.form1.title.focus();
+		return false;
+	}
+
+}
+-->
+</script>
+</head>
+<body>
+<form name="form1" action="uploads_add.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+  <input type="hidden" name="f" value="<?php echo $f; ?>" />
+  <input type="hidden" name="mediatype" value="<?php echo $mediatype; ?>" />
+  <input type="hidden" name="keyword" value="<?php echo $keyword; ?>" />
+  <input type="hidden" name="dopost" value="save" />
+  <table cellspacing="1" class="submit">
+    <thead>
+      <tr>
+        <th colspan="2" >上传附件</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td width="21%" align="right" valign="top">允许的类型：</td>
+        <td width="79%"><?php
+
+     	if($mediatype==1){
+     		echo $cfg_imgtype;
+     	}
+     	else if($mediatype==2){
+     		echo "swf";
+     	}
+     	else if($mediatype==3){
+     		echo $cfg_mediatype;
+     	}
+     	else{
+     		echo $cfg_mb_addontype;
+     	}
+     	?></td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">注释标题：</td>
+        <td><input name="title" type="text" id="title" size="30" class="text" value="" /></td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">选择文件：</td>
+        <td><input name="addonfile" type="file" id="addonfile" style="width:300px" <?php if($mediatype==1) echo " onChange=\"SeePicNew('divpicview',this);\" "; ?> /></td>
+      </tr>
+      <?php if($mediatype==1) { ?>
+      <tr>
+        <td align="right" valign="top">预览区：</td>
+        <td><div id='divpicview' class='divpre'></div></td>
+      </tr>
+      <?php } ?>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td height="45">&nbsp;</td>
+        <td height="45"><button class="button2" type="submit" >提交</button></td>
+      </tr>
+    </tfoot>
+  </table>
+</form>
+</body>
+</html>

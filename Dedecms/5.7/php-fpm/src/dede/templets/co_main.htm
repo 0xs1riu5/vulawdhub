@@ -1,0 +1,202 @@
+{dede:config.pagesize value="20"/}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>采集节点管理</title>
+<script language="javascript" src="js/context_menu.js"></script>
+<script language="javascript" src="js/ieemu.js"></script>
+<script language="javascript">
+if(moz) {
+	extendEventObject();
+	extendElementModel();
+	emulateAttachEvent();
+}
+//编辑节点
+function EditNote(nid)
+{
+	if(nid=="") nid = getOneItem();
+  if(nid==""){ alert("请选择一个节点！"); return;}
+	location.href = "co_edit.php?nid="+nid;
+}
+//编辑节点配置
+function EditNoteText(nid)
+{
+	if(nid=="") nid = getOneItem();
+  if(nid==""){ alert("请选择一个节点！"); return;}
+	location.href = "co_edit_text.php?nid="+nid;
+}
+//清空节点
+function ClearNote(nid)
+{
+	if(nid=="") nid = getOneItem();
+	if(nid==""){ alert("请选择一个节点！"); return;}
+	location.href = "co_do.php?dopost=clear&nid="+nid;
+}
+//删除节点
+function DelNote(nid)
+{
+	if(nid=="") nid = getOneItem();
+	if(nid==""){ alert("请选择一个节点！"); return;}
+	if(window.confirm('你确定要删除这个节点吗?'))
+	{ location.href = "co_do.php?dopost=delete&nid="+nid; }
+}
+//查看已下载的内容
+function ViewDown(nid)
+{
+	if(nid=="") nid = getOneItem();
+	location.href = "co_url.php?nid="+nid;
+}
+//测试规则
+function TestRule(nid)
+{
+	if(nid=="") nid = getOneItem();
+	if(nid==""){ alert("请选择一个节点！"); return;}
+	location.href = "co_test_rule.php?nid="+nid;
+}
+//导出采集
+function ExportDown(nid)
+{
+	if(nid=="") nid = getOneItem();
+	if(nid==""){ alert("请选择一个节点！"); return;}
+	location.href = "co_export.php?nid="+nid;;
+}
+//导入规则
+function GetRule()
+{
+	location.href = "co_get_corule.php";
+}
+//导出规则
+function ExportRule(nid)
+{
+	if(nid=="") nid = getOneItem();
+	if(nid==""){ alert("请选择一个节点！"); return;}
+	location.href = "co_export_corule.php?nid="+nid;
+}
+//采集所选节点
+function GatherSel(nid)
+{
+	if(nid=="") nid = getOneItem();
+	if(nid==""){ alert("请选择一个节点！"); return;}
+	location.href = "co_gather_start.php?nid="+nid;
+}
+//复制所选节点
+function CopyNote(nid)
+{
+	if(nid=="") nid = getOneItem();
+	if(nid==""){ alert("请选择一个节点！"); return;}
+	location.href = "co_do.php?dopost=copy&nid="+nid;
+}
+//上下文菜单
+function ShowMenu(evt,obj,nid)
+{
+  var eobj,popupoptions
+  popupoptions = [
+    new ContextItem("测试当前节点",function(){ TestRule(nid); }),
+    new ContextItem("采集当前节点",function(){ GatherSel(nid); }),
+    new ContextSeperator(),
+    new ContextItem("更改当前节点",function(){ EditNote(nid); }),
+    new ContextItem("更改节点配置",function(){ EditNoteText(nid); }),
+    new ContextSeperator(),
+    new ContextItem("查看采集内容",function(){ ViewDown(nid); }),
+    new ContextItem("导出采集",function(){ ExportDown(nid); }),
+    new ContextSeperator(),
+    new ContextItem("清空已下载信息",function(){ ClearNote(nid); }),
+    new ContextItem("删除当前节点",function(){ DelNote(nid); }),
+    new ContextSeperator(),
+    new ContextItem("复制当前节点",function(){ CopyNote(nid); }),
+    new ContextSeperator(),
+    new ContextItem("导出配置规则",function(){ ExportRule(nid); }),
+    new ContextItem("关闭菜单(<u>C</u>)",function(){})
+  ]
+  ContextMenu.display(evt,popupoptions)
+}
+//获得选中其中一个的id
+function getOneItem()
+{
+	var allSel="";
+	if(document.form1.nids.value) return document.form1.nids.value;
+	for(i=0;i<document.form1.nids.length;i++)
+	{
+		if(document.form1.nids[i].checked)
+		{
+				allSel = document.form1.nids[i].value;
+				break;
+		}
+	}
+	return allSel;	
+}
+</script>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <tr> 
+    <td height="20" colspan="7" background='images/tbg.gif'> <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="20%" height="18" style="padding-left:10px;"><strong>采集节点管理：</strong></td>
+          <td width="80%" align="right">
+          	<input type="button" name="ba" value="添加新节点" onClick="location='co_add.php?action=select';" class="coolbg np" style="width:100px" /> 
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr align="center" height="26" bgcolor="#FBFCE2"> 
+    <td width="8%">选择</td>
+    <td width="32%">节点名称</td>
+    <td width="18%">针对规则</td>
+    <td width="10%">最后采集日期</td>
+    <td width="10%">加入日期</td>
+    <td width="10%">编码</td>
+    <td width="10%">网址数</td>
+  </tr>
+  <form name="form1">
+    {dede:datalist} 
+    <tr bgcolor="#FFFFFF" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';"
+    	 onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" oncontextmenu="ShowMenu(event,this,{dede:field.nid /});"> 
+      <td><input type='checkbox' name='nids' value='{dede:field.nid /}' class='np'></td>
+      <td><a href='co_url.php?nid={dede:field.nid /}'>{dede:field.notename /}</a></td>
+      <td>{dede:field.typename /}</td>
+      <td>{dede:field.cotime function='GetDatePage(@me)' /}</td>
+      <td>{dede:field.uptime function='GetDatePage(@me)' /}</td>
+      <td>{dede:field.sourcelang /}</td>
+      <td>{dede:field.nid function='TjUrlNum(@me)' /}</td>
+    </tr>
+    {/dede:datalist} 
+  </form>
+  <tr bgcolor="#ffffff"> 
+    <td height="24" colspan="7"> 
+      <table width="90%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>
+          	&nbsp;
+          	<a href="#" onClick="location='co_add.php?action=select';" class='coolbg np'>增加新节点</a>
+            <a href="javascript:GetRule();" class='coolbg np'>导入配置</a>
+            <a href="javascript:ExportRule('');" class='coolbg np'>导出配置</a> 
+             | 
+            <a href="javascript:GatherSel('');" class='coolbg np' style='color:red'>采集</a>
+            <a href="javascript:ExportDown('');" class='coolbg np'>导出数据</a>
+             |
+          	<a href="javascript:EditNote('');" class='coolbg np'>更改</a>
+          	<a href="javascript:EditNoteText('');" class='coolbg np'>更改配置</a>
+          	<a href="javascript:TestRule('');" class='coolbg np'>测试</a>
+          	 | 
+          	<a href="javascript:ViewDown('');" class='coolbg np'>查看已下载</a> 
+             | 
+            <a href="javascript:CopyNote('');" class='coolbg np'>复制</a>
+            <a href="javascript:ClearNote('');" class='coolbg np'>清空</a> 
+             | 
+            <a href="javascript:DelNote('');" class='coolbg np'>删除</a>
+           </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr  bgcolor="#F9FCEF"> 
+    <td height="24" colspan="7" align="center">
+    	{dede:pagelist size='5' /}
+    </td>
+  </tr>
+</table>
+</body>
+</html>

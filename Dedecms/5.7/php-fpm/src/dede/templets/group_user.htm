@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=<?php echo $cfg_soft_lang; ?>'>
+<title>圈子管理>圈子列表><?php echo $groupname?></title>
+<script language='javascript' src='js/main.js'></script>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+a.current {border-left:1px solid #cfcfcf;border-right:1px solid #cfcfcf;background:#ffffff;color:#FF0000;font-weight:bold;}
+</style>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">圈子管理</div>
+</div>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+  <tr>
+    <td height="30" align="left" bgcolor="#ffffff">
+      <table width="228" border="0" align="left" cellpadding="0" cellspacing="0">
+      <form action="group_user.php" method="get" name="form1" id="form1">
+      <input name="gid" type="hidden" value="<?php echo $gid?>" />
+        <tr>
+          <td width="60">&nbsp;成员：</td>
+          <td width="87"><input name="username" type="text" id="username" size="12" style="width:100" value="<?php echo $username?>" /></td>
+          <td width="81" align="center"><input name="imageField" type="submit" class="np coolbg" value="搜索"/></td>
+        </tr>
+       </form>
+      </table>
+
+      <table width="405" border="0" cellpadding="0" cellspacing="0">
+        <form action="group_user.php" method="get" name="form2" id="form2">
+          <input name="gid" type="hidden" value="<?php echo $gid?>" />
+          <input name="action" type="hidden" value="add" />
+          <tr>
+            <td width="90" align="right">&nbsp;加入会员：</td>
+            <td width="112"><input name="uname" type="text" id="uname" size="15" style="width:100" value="<?php echo $username?>" /></td>
+            <td width="75" align="left"><input type="radio" name="setmaster" id="setmaser" value="1" />
+            管理员</td>
+            <td width="128" align="left"><input name="imageField2" type="submit" class="np coolbg" value="添加" id="imageField"/></td>
+          </tr>
+        </form>
+    </table></td>
+  </tr>
+</table>
+<br />
+<table width="98%" border="0" cellpadding="0" cellspacing="0" align="center">
+  <tr>
+    <td width="100%" height="24">
+	<table width="99%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #CFCFCF;border-bottom:none;" class="gtab">
+        <tr>
+          <td height="26" background="images/tbg.gif" >
+          <a href="group_main.php">圈子列表</a>
+          <a href="group_edit.php?id=<?php echo $gid?>"><span id="cate_1" >基本资料</span></a>
+          <a id="cate_2" class="current">成员管理</a>
+          <a href="group_guestbook.php?gid=<?php echo $gid?>"><span id="cate_3">留言管理</span></a>
+          <a href="group_notice.php?gid=<?php echo $gid?>"><span id="cate_4">公告管理</span></a>          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr >
+    <td height="26" align="left" bgcolor="#FFFFFF">
+    <!--成员管理-->
+    <div id="cate_info_2">
+      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CFCFCF">
+        <tr bgcolor="#FBFCE2">
+          <td width="19%" height="28" align="center">用户名</td>
+          <td width="17%" height="28" align="center">身份</td>
+          <td width="17%" height="28" align="center">加入时间</td>
+          <td width="13%" height="28" align="center">发贴数</td>
+          <td width="11%" align="center">回贴数</td>
+          <td width="23%" align="center">操作</td>
+        </tr>
+{dede:datalist}
+<?php
+$rs = $fields;
+?>
+        <tr height="28" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+          <td height="28" align="center" ><a href="member_view.php?id=<?php echo $rs['uid']?>"><?php echo $rs['username']?></a></td>
+          <td height="28" align="center" ><?php echo GetMaster($rs['username'])?></td>
+          <td height="28" align="center" ><?php echo GetDateMk($rs['jointime'])?></td>
+          <td height="28" align="center" ><?php echo $rs['posts']?></td>
+          <td height="28" align="center" ><?php echo $rs['replies']?></td>
+          <td height="28" align="center" ><a href="group_user.php?action=admin&id=<?php echo $rs['uid']?>&gid=<?php echo $gid?>">设为管理员</a> | <a href="group_user.php?action=del&id=<?php echo $rs['uid']?>&gid=<?php echo $gid?>">移出群</a></td>
+        </tr>
+{/dede:datalist}
+        <tr>
+          <td height="28" colspan="6" bgcolor="#F9FCEF">{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}</td>
+        </tr>
+      </table>
+    </div>
+    </td>
+  </tr>
+</table>
+<a name="nmes" id="nmes"></a>
+</body>
+</html>

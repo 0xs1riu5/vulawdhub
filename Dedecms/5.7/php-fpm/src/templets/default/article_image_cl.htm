@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/} - {dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field.keywords/}" />
+<meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templets_skin/}/images/photo/album.css" rel="stylesheet" media="screen" type="text/css">
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
+<SCRIPT language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/images/photo/sinaflash.js"></SCRIPT>
+<SCRIPT language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/images/photo/heiphoto.js"></SCRIPT>
+<script language="javascript" type="text/javascript">
+<!--
+function CheckLogin(){
+	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("{dede:global.cfg_cmsurl/}/member/ajax_feedback.php");
+	  DedeXHTTP = null;
+}
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("{dede:field name='phpurl'/}/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+}
+function postDigg(ftype,aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	var saveid = GetCookie('diggid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==aid && hasid) continue;
+			else {
+				if(saveids[i]==aid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return; }
+		else saveid += ','+aid;
+		SetCookie('diggid',saveid,1);
+	}
+	else
+	{
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	var url = "{dede:global.cfg_phpurl/}/digg_ajax.php?action="+ftype+"&id="+aid;
+	myajax.SendGet2(url);
+}
+-->
+</script>
+<STYLE type=text/css media=print>
+.secondaryHeader {
+	DISPLAY: none! important
+}
+.eControl {
+	DISPLAY: none! important;
+	border:#000 solid 1px;
+	width:300px;
+}
+#efpTxt .others {
+	DISPLAY: none! important
+}
+#efpPicList {
+	DISPLAY: none! important
+}
+.footer {
+	DISPLAY: none! important
+}
+#efpClew {
+	DISPLAY: none! important
+}
+#CommFormBottomBox {
+	DISPLAY: none! important
+}
+#efpLeftArea {
+	DISPLAY: none! important
+}
+#efpRightArea {
+	DISPLAY: none! important
+}
+.eTitle H1 {
+	MARGIN: 0px
+}
+</STYLE>
+<link href="images/photo/album.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+{dede:include filename="head2.htm"/}
+<div class="w960 center clear mt1">
+  <div class="place"> <strong>当前位置:</strong> {dede:field name='position'/}{dede:field.title/} </div>
+  <div id="wrap">
+    <div class="pic">
+      <!-- /place -->
+      <!--相册代码开始-->
+      <DIV class=eTitle>
+        <H1><SPAN id=txtTitle>{dede:field.title/}</SPAN><SPAN id=total>(<SPAN class=cC00>0</SPAN>/0)</SPAN></H1>
+      </DIV>
+      <DIV class=eControl>
+        <DIV class=ecCont>
+          <DIV id=ecbSpeed>
+            <DIV class=buttonCont id=ecbSpeedInfo>5秒</DIV>
+          </DIV>
+          <DIV id=ecbPre title=上一张>
+            <DIV class=buttonCont></DIV>
+          </DIV>
+          <DIV id=ecbPlay>
+            <DIV class=play id=ecpPlayStatus></DIV>
+          </DIV>
+          <DIV id=ecbNext title=下一张>
+            <DIV class=buttonCont></DIV>
+          </DIV>
+          <DIV id=ecbLine>
+            <DIV class=buttonCont></DIV>
+          </DIV>
+          <DIV id=ecbMode title=列表模式(tab)>
+            <DIV class=buttonCont></DIV>
+          </DIV>
+          <DIV id=ecbModeReturn title=返回幻灯模式(tab)>
+            <DIV class=buttonCont></DIV>
+          </DIV>
+          <DIV id=ecbFullScreen title=全屏浏览>
+            <DIV class=buttonCont id=fullScreenFlash></DIV>
+          </DIV>
+          <!-- 速度条 begin -->
+          <DIV id=SpeedBox>
+            <DIV id=SpeedCont>
+              <DIV id=SpeedSlide></DIV>
+              <DIV id=SpeedNonius></DIV>
+            </DIV>
+          </DIV>
+          <!-- 速度条 end -->
+        </DIV>
+      </DIV>
+      <DIV id=eFramePic>
+        <DIV id=efpBigPic>
+          <DIV id=efpClew></DIV>
+          <DIV id=d_BigPic></DIV>
+          <DIV class=arrLeft id=efpLeftArea title=上一张></DIV>
+          <DIV class=arrRight id=efpRightArea title=下一张></DIV>
+          <DIV id=endSelect>
+            <DIV id=endSelClose></DIV>
+            <DIV class=bg></DIV>
+            <DIV class=E_Cont>
+              <P>您已经浏览完所有图片</P>
+              <P><A id=rePlayBut href="javascript:void(0)"></A><A id=nextPicsBut href="javascript:void(0)"></A></P>
+            </DIV>
+          </DIV>
+          <!-- endSelect end -->
+        </DIV>
+        <DIV id=efpTxt>
+        	<H2 id=d_picTit></H2>
+        	<DIV id=d_picTime></DIV>
+        	<DIV id=d_picIntro></DIV>
+        	<DIV class=others>
+       		时间:{dede:field.pubdate function="MyDate('Y-m-d H:i',@me)"/} | 浏览<script src="{dede:field name='phpurl'/}/count.php?view=yes&aid={dede:field.id/}&mid={dede:field.mid/}" type='text/javascript' language="javascript"></script>次 | 已有<SPAN class=cC00 
+        id=commAObjNum><A href="/plus/feedback.php?aid={dede:field.id/}" target="_blank">{dede:sql sql="SELECT count(id) as total FROM #@__feedback where aid=~id~;"}[field:total runphp='yes']@me=empty(@me)? 0 : @me;[/field:total]{/dede:sql}</A></SPAN>条评论</DIV> 
+        </DIV>
+        <DIV id=efpTxt style="display:none">
+          <H2 id=d_picTit></H2>
+          <DIV id=d_picTime></DIV>
+          <DIV id=d_picIntro></DIV>
+        </DIV>
+        <DIV id=efpContent><div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top; display:block">{dede:myad name='contentMidPicAD'/}</div>{dede:field.body/}<div style="clear:both"></div></DIV>
+        <DIV id=efpPicList>
+          <DIV id=efpPreGroup>
+            <DIV id=efpPrePic onmouseover="this.className='selected'" 
+onmouseout="this.className=''">
+              <TABLE cellSpacing=0>
+                <TR>
+                  <TD>{dede:prenext get='preimg'/}</TD>
+                </TR>
+              </TABLE>
+            </DIV>
+            <DIV id=efpPreTxt><< 上一图集</DIV>
+          </DIV>
+          <DIV id=efpListLeftArr onMouseOver="this.className='selected'" onmouseout="this.className=''"></DIV>
+          <DIV id=efpPicListCont></DIV>
+          <DIV id=efpListRightArr onMouseOver="this.className='selected'" onmouseout="this.className=''"></DIV>
+          <DIV id=efpNextGroup>
+            <DIV id=efpNextPic onmouseover="this.className='selected'" 
+onmouseout="this.className=''">
+              <TABLE cellSpacing=0>
+                <TR>
+                  <TD>{dede:prenext get='nextimg'/}</TD>
+                </TR>
+              </TABLE>
+            </DIV>
+            <DIV id=efpPreTxt>下一图集 >></DIV>
+          </DIV>
+        </DIV>
+      </DIV>
+      <DIV id=ePicList></DIV>
+      <DIV id=eData style="DISPLAY: none"> {dede:field name='id' function="litimgurls(@me)"/} </DIV>
+      <SCRIPT language=javascript type="text/javascript">
+          <!--//--><![CDATA[//><!--
+          var dataInfo = {
+              title : "{dede:field.title/}"
+          };
+          function echoFocus(){
+              var flashPic = "",flashTxt = "{dede:field.alttext/}";
+              var newHref;
+              var datas = sina.$('eData').getElementsByTagName('dl');
+              for(var i=0;i<datas.length;i++){
+                  //try{
+                      var title,pic,middlePic,smallPic,datetime,intro,commUrl;
+                      title = datas[i].getElementsByTagName('dt');
+                      if(title){
+                          title = title[0].innerHTML;
+                      }else{
+                          title = 'null';
+                      };
+                      var info = datas[i].getElementsByTagName('dd');
+                      if(info){
+                          pic = info[0].innerHTML;
+                          middlePic = info[1].innerHTML;
+                          smallPic = info[2].innerHTML;
+                          datetime = info[3].innerHTML;
+                          intro = info[4].innerHTML;
+                          commUrl = info[5].getElementsByTagName('a');
+                          imageId = info[6].innerHTML;
+                          commUrl = '';
+          
+                      };
+                      epidiascope.add({
+                                      src : pic,
+                                      lowsrc_b : middlePic,
+                                      lowsrc_s : smallPic,
+                                      date : datetime,
+                                      title : title,
+                                      text : intro,
+                                      comment : commUrl,
+                                      id : imageId
+                                  });
+                      if(flashPic != ""){flashPic += "|"};
+                      flashPic += encodeURIComponent(pic);
+                      
+                      if(flashTxt != ""){flashTxt += "|"};
+                      flashTxt += encodeURIComponent(title) + "#" + encodeURIComponent(intro.replace(/<.*?>/g,'')); 
+                  //}catch(e){}
+              };
+              epidiascope.autoPlay = false;
+              epidiascope.init();
+              fullFlash(flashTxt,flashPic);
+              
+              if(Math.random()<=0.01){
+                  epidiascope.stop();
+              };
+          };
+          function fullFlash(txt,pic){	
+              var flashurl = "{dede:global.cfg_templets_skin/}/images/photo/photo.swf";
+              var fullScreen = new sinaFlash(flashurl, "fullScreenObj", "100%", "100%", "8", "#000000");
+              fullScreen.addParam("quality", "best");
+              fullScreen.addParam("wmode", "transparent");
+              fullScreen.addParam("allowFullScreen", "true");
+              fullScreen.addParam("allowScriptAccess","always");
+              fullScreen.addVariable("mylinkpic", pic);		
+              fullScreen.addVariable("infotxt",dataInfo.title);
+              fullScreen.addVariable("mytxt",txt);
+              fullScreen.addVariable("fulls_btnx","0");
+              fullScreen.addVariable("fulls_btny","0");
+              fullScreen.addVariable("fulls_btnalpha","0")
+              fullScreen.write("fullScreenFlash");
+          };
+          function flash_to_js(name){
+              name = new String(name);
+              var status = name.split("|");
+              epidiascope.speedBar.setGrade(status[1]);
+              epidiascope.select(parseInt(status[0]));
+          };
+          function js_to_flash(){
+              epidiascope.stop();
+              return epidiascope.selectedIndex + "|" + epidiascope.speedBar.grade;
+          };
+          var sendT = {
+              getHeader : function(){
+                  return document.getElementById("txtTitle").innerHTML + '-' + document.getElementById("d_picTit").innerHTML;
+              },
+              getFirstImgSrc : function(){
+                  if (document.getElementById("d_BigPic").getElementsByTagName("img")[0]){
+                      return document.getElementById("d_BigPic").getElementsByTagName("img")[0].src;
+                  }else{
+                      return null;
+                  }
+              }
+          }
+          
+          echoFocus();
+          //--><!]]>
+          </SCRIPT>
+      <div style="clear:both "></div>
+    </div>
+    <!-- /pleft -->
+  </div>
+  <div class="pleft"> {dede:include file='ajaxfeedback.htm' /} </div>
+  <div class="pright" style="padding-top: 8px;">
+    <div class="pright">
+        <div>
+          <dl class="tbox">
+				<dt><strong>栏目列表</strong></dt>
+				<dd>
+					<ul class="d6">
+                      {dede:channel type='son' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a></li>"}
+		<li><a href='[field:typeurl/]'>[field:typename/]</a></li>{/dede:channel}
+					</ul>
+				</dd>
+			</dl>
+        </div>
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
+    <div class="infos_userinfo"> {dede:memberinfos}
+      <dl class="tbox">
+        <dt><strong>发布者资料</strong></dt>
+        <dd> <a href="[field:spaceurl /]" class="userface"><img src="[field:face/]" width="52" height="52" /></a> <a href='[field:spaceurl /]' class="username">[field:uname/]</a> <span class="useract"> <a href="[field:spaceurl /]" class="useract-vi">查看详细资料</a> <a href="[field:spaceurl /]&action=guestbook" class="useract-pm">发送留言</a> <a href="[field:spaceurl /]&action=newfriend" class="useract-af">加为好友</a> </span> <span class="userinfo-sp"><small>用户等级:</small>[field:rankname /]</span> <span class="userinfo-sp"><small>注册时间:</small>[field:jointime function="MyDate('Y-m-d H:m',@me)"/]</span> <span class="userinfo-sp"><small>最后登录:</small>[field:logintime function="MyDate('Y-m-d H:m',@me)"/]</span> </dd>
+      </dl>
+      {/dede:memberinfos} </div>
+    <div class="mt1">
+      <dl class="tbox">
+        <dt><strong>热点图集</strong></dt>
+        <dd>
+          <ul class="e3">
+            {dede:arclist row='5' type='image.' orderby=click}
+            <li> <a href="[field:arcurl/]" class="preview"><img src="[field:litpic/]" alt="[field:title function='html2text(@me)'/]"/></a> <a href="[field:arcurl/]" class="title">[field:title/]</a> <span class="intro">更新:[field:pubdate function="GetDateMK(@me)"/]</span> </li>
+            {/dede:arclist}
+          </ul>
+        </dd>
+      </dl>
+    </div>
+    <div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
+  </div>
+</div>
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
+{dede:include filename="footer.htm"/}<br />
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>查找好友 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language="javascript" src="../images/enums.js"></script>
+<script type="text/javascript" language="javascript">
+<?php echo GetEnumsJs('nativeplace'); ?>
+</script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+</head>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li><a href="myfriend.php?ftype=0"><span>所有好友</span></a></li>
+          <li class="thisTab"><a href="search.php"><span>查找好友</span></a></li>
+          <li><a href="visit-history.php?dopost=viewme"><span>关注我的人</span></a></li>
+          <li><a href="visit-history.php?dopost=meview"><span>我最近访问</span></a></li>
+          <li><a href="myfriend_group.php"><span>分组设置</span></a></li>
+        </ul>
+      </div>
+      <div id="mainCp">
+         <div class="postForm">
+          <form action="search.php">
+              <input class="intxt" type='text' name='keyword' value='' style="width:170px" />
+              <select name="province" id="province" onchange="javascript:selNext(document.getElementById('city'),this.value)">
+              <option value='0'>一级地区</option>
+             <?php
+              global $em_nativeplaces;
+              foreach($em_nativeplaces as $k=>$v)
+							{
+								if($k%500 == 0)
+								{
+									if($k==$province) echo "<option value='$k' selected='selected'>$v</option>\r\n";
+									else echo "<option value='$k'>$v</option>\r\n";
+								}
+							}
+            ?>
+              </select>
+              <select id="city" name="city">
+                <option value='0'>具体地区</option>
+                <?php
+                if(!empty($province))
+                {
+                	foreach($em_nativeplaces as $k=>$v)
+									{
+										if($k > $province && $k < $province+500)
+										{
+											if($k==$city) echo "<option value='$k' selected='selected'>$v</option>\r\n";
+											else echo "<option value='$k'>$v</option>\r\n";
+										}
+									}
+                }
+                ?>
+              </select>
+              
+              <input class="intxt" name="minage" type="text" id="minage" value="18" style="width:20px" />
+              -
+              <input class="intxt" name="maxage" type="text" id="maxage" value="35" style="width:20px" />
+              岁
+              <input type="radio" name="sex" id="radio1" value="男" />
+              男
+              <input name="sex" type="radio" id="radio2" value="女" />
+              女
+              <input name="sex" type="radio" id="radio3" value="" checked="checked" />
+              不限
+              <button class="button2 mL10" type="submit">搜索</button>
+            </form>
+            </div>
+          <h3 class="meTitle"> </h3>
+        <ul class="listStyle3">
+        {dede:datalist}
+        <?php
+   			if(empty($fields['face'])) $face=($fields['sex']=='女')? 'templets/images/dfgirl.png' : 'templets/images/dfboy.png';
+            else $face=$fields['face'];
+    		$spaceurl = $cfg_basehost.'/member/index.php?uid='.$fields['userid'];
+    	?>
+<li class="clearfix">
+  <div class="frdInfo">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td colspan="3" align="left" valign="middle" class="userTitle"><a href='index.php?uid={dede:field.userid /}' target='_blank'>{dede:field.uname /}</a> (
+                <?php
+        			 if(trim($fields['lovemsg'])=='') echo '此人什么都不想说...';
+       				 else{
+        				$fields['lovemsg'] = trim($fields['lovemsg']);
+        				echo $fields['lovemsg'];
+         		}
+       			?>
+                )
+         </td>
+      </tr>
+      <tr>
+        <td width="40%">资料：{dede:field.sex/}
+         <?php 
+         	if(!($fields['age'])==""){
+          		echo ",".($fields['age'])."岁";
+          	}
+         ?>
+          </td>
+        <td>E-Mail: {dede:field.email/}</td>
+        <td align="right" class="doPost"><a href='index.php?uid={dede:field.userid /}&action=infos' target='_blank'>[资料]</a></td>
+        </tr>
+      <tr>
+        <td>出生日期: {dede:field.birthday/}</td>
+        <td class="doPost"><a href='index.php?action=newfriend&uid={dede:field.userid /}' target='_blank'>加为好友</a></td>
+        <td align="right" class="doPost"><a href='index.php?uid={dede:field.userid /}&action=guestbook' target='_blank'>[留言]</a></td>
+        </tr>
+      </table>
+    </div>
+      <a href='<?php echo $spaceurl; ?>' target='_blank'><img src='<?php echo $face ?>' width='60' height='60'/></a> </li>
+         {/dede:datalist}
+        </ul>
+        <div style="clear:both"></div>
+        <div class="listDo appMsg">
+          <div class="control fLeft">
+          </div>
+          <div class="pageList fRight">{dede:pagelist listsize=5 /}</div>
+        </div>
+      </div>
+      <!--主操作区域 -->
+    </div>
+  </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

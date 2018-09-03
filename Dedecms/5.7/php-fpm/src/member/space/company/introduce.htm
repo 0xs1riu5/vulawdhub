@@ -1,0 +1,46 @@
+{dede:include file='header.htm' /}
+
+<div id="side" class="left">
+	{dede:include file='side_search.htm' /}
+	{dede:include file='side_class.htm' /}
+	{dede:include file='side_news.htm' /}
+</div>
+
+<!--begin main-->
+<div id="main" class="right">
+
+<div class="box">
+	<h2>公司简介</h2>
+</div>
+<div class="infobox">
+	<div class="introduce">
+		<img src="{dede:var.comface /}" alt="{dede:var.company /}照片" />
+		{dede:var.introduce /}
+	</div>
+	<ul>
+		<li><span>公司名称：</span>{dede:var.company /}</li>
+		<li><span>贸易种类：</span>{dede:var.vocation /}</li>
+		<li><span>主营产品：</span>{dede:var.product /}</li>
+		<li><span>公司规模：</span>{dede:var.cosize /}</li>
+		<li><span>所在地：</span>{dede:var.place /}</li>
+	</ul>
+</div>
+
+<div class="box">
+	<h2>联系方式</h2>
+</div>
+<div class="infobox">
+<ul>
+	<li>联系人：{dede:var.linkman /}</li>
+	<li>电话：{dede:var.tel /}</li>
+	<li>传真：{dede:var.fax /}</li>
+	<li>网址： {dede:var.url /}</li>
+	<li>Email： {dede:var.email /}</li>
+	<li>地址：{dede:var.address /}</li>
+</ul>
+</div>	
+
+</div>
+<!--end main-->
+
+{dede:include file='footer.htm' /}

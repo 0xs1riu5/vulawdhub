@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>网址书签管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/main.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript" language="javascript">
+<!--
+var reMethod = "<?php echo ($cfg_soft_lang == 'utf-8') ? 'POST' : 'GET';?>";
+//增加链接
+function AddnewLink(){
+	var taget_obj = $Obj('linkList');
+	var linktype,getquery;
+	getquery = "";
+
+	if($Obj('title').value==''){
+		alert('链接标题不能为空！');
+		return false;
+	}
+	getquery += "&title="+$Obj('title').value;
+
+	if($Obj('url').value==''){
+		alert('链接网址不能为空！');
+		return false;
+	}
+	getquery += "&url="+$Obj('url').value;
+	
+	$("#linkList").html("正在处理..！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载列表</u></a>.");
+	$.ajax({
+		type: reMethod,
+		url: "flink_main.php",
+		data: "dopost=addnew"+getquery,
+		dataType: 'html',
+		success: function(result)
+		{
+			$("#linkList").html(result);
+		}
+	}); 
+}
+
+//更新类目
+function UpdateType(tid){
+	var taget_obj = $Obj('linkList');
+	var linktype,getquery;
+	getquery = "";
+	if($Obj('title'+tid).value==''){
+		alert('链接标题不能为空！');
+		return false;
+	}
+	getquery += "&title="+$Obj('title'+tid).value;
+
+	if($Obj('url'+tid).value==''){
+		alert('链接网址不能为空！');
+		return false;
+	}
+	getquery += "&url="+$Obj('url'+tid).value;
+
+	$("#linkList").html("正在处理..！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载列表</u></a>.");
+	
+	$.ajax({
+		type: reMethod,
+		url: "flink_main.php",
+		data: "dopost=update&aid="+tid+getquery,
+		dataType: 'html',
+		success: function(result)
+		{
+			$("#linkList").html(result);
+		}
+	}); 
+}
+
+//删除链接
+function DelType(tid){
+	var taget_obj = $Obj('linkList');
+	var titlename = $Obj('title'+tid).value;
+	if(!window.confirm('你确定要删除链接：'+titlename+' 吗？')){ return false; }
+	$("#linkList").html("正在处理..！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载列表</u></a>.");
+	$.ajax({
+		type: reMethod,
+		url: "flink_main.php",
+		data: "dopost=del&aid="+tid,
+		dataType: 'html',
+		success: function(result)
+		{
+			$("#linkList").html(result);
+		}
+	}); 
+}
+
+//重载类目
+function ReLoadList(oby){
+	var taget_obj = $Obj('typeList');
+	$.ajax({
+		type: reMethod,
+		url: "flink_main.php",
+		data: "dopost=reload",
+		dataType: 'html',
+		success: function(result)
+		{
+			$("#linkList").html(result);
+		}
+	}); 
+}
+-->
+</script>
+</head>
+<body>
+<div id="main">
+   <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+   <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li><a href="mtypes.php">分类管理</a></li>
+          <li class="thisTab"><a href="flink_main.php">书签管理</a></li>
+          <li><a href="edit_space_info.php"><span>空间设置</span></a></li>
+          <li><a href="spaceskin.php">风格选择</a></li>
+        </ul>
+      </div>
+      <script type="text/javascript" src="js/table_function.js"></script>
+      <div id="mainCp" class="postForm">
+      <h3 class="meTitle"><strong>书签管理</strong></h3>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+              <td width="20%" align="right">链接名称:</td>
+              <td><input name="title" type="text" id="title" class="intxt" style="width:170px;" />
+              <button class="button2 ml5" type="submit" onclick='AddnewLink()'>增加</button></td>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <td height="10"></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td width="20%" align="right">链接网址:</td>
+              <td><input name="url" type="text" id="url" class="intxt" value="http://" /></td>
+            </tr>
+          </tbody>
+        </table>
+         <h3 class="meTitle" style="padding-top: 10px;"><strong>已有链接管理</strong></h3>
+        <div id="linkList" class="postForm doPost">
+          <?php GetLinkList($dsql); ?>
+        </div>
+      <!--主操作区域 -->
+    </div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>支付接口配置</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script language='javascript'>
+var _key = 0;
+var payment_regurl = new Array(
+<?php 
+$mch_temp = array();
+foreach($cfg_pay_info['type'] as $k => $val){ 
+	$mch_temp[] = '"'.addslashes($cfg_pay_info['reg'][$k]).'"';
+}
+echo implode(",\n",$mch_temp);
+?>
+);
+var payment_image = new Array(
+<?php 
+$mch_temp = array();
+foreach($cfg_pay_info['type'] as $k => $val){ 
+	$mch_temp[] = '"../member/templets/images/pay/'.addslashes($cfg_pay_info['logo'][$k]).'"';
+}
+echo implode(",\n",$mch_temp);
+?>
+);
+
+var payment_des = new Array(
+<?php 
+$mch_temp = array();
+foreach($cfg_pay_info['type'] as $k => $val){ 
+	$mch_temp[] = '"'.addslashes($cfg_pay_info['des'][$k]).'"';
+}
+echo implode(",\n",$mch_temp);
+?>
+);
+
+function $Obj(objname){
+	return document.getElementById(objname);
+}
+function ShowReg(_e){
+	if(_e > 0) savePayment();	
+	$Obj("payreg").href = payment_regurl[_e];
+	$Obj("regimage").src = payment_image[_e];
+	$Obj("paydes").innerHTML = payment_des[_e];
+	$Obj("SalesId").value = $Obj("payment_userid_"+_e).value;
+	$Obj("SalesEmail").value = $Obj("payment_email_"+_e).value;
+	$Obj("SalesKey").value = $Obj("payment_key_"+_e).value;
+	$Obj("SalesExp").value = $Obj("payment_exp_"+_e).value;
+	_key = _e;
+}
+function setPayment(_name,_v){
+	$Obj("payment_"+_name+"_"+_key).value = _v;
+}
+
+function ShowHide(objname){
+	var obj = $Obj(objname);
+	if(obj.style.display == "block" || obj.style.display == ""){  obj.style.display = "none"; }
+	else{  obj.style.display = "block"; }
+}
+
+function savePayment(){
+	$Obj("payment_userid_"+_key).value = $Obj("SalesId").value;
+	$Obj("payment_email_"+_key).value = $Obj("SalesEmail").value;
+	$Obj("payment_key_"+_key).value = $Obj("SalesKey").value;
+	$Obj("payment_exp_"+_key).value = $Obj("SalesExp").value;
+}
+</script>
+</head>
+<style>
+.npvar { width:90% }
+</style>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<center>
+<form action="sys_info_pay.php" method="post" name="form1" onSubmit="savePayment()">
+<input type="hidden" name="dopost" value="save">
+<?php
+$payment_arr = array('userid','key','exp','email');
+foreach($payment_arr as $value){
+    foreach($cfg_pay_info['type'] as $k => $val){
+    if(!isset(${'payment_'.$value}[$k])) $payment_temp = '';
+    else $payment_temp = ${'payment_'.$value}[$k];
+    echo '<input type="hidden" id="payment_'.$value.'_'.$k.'" name="payment_'.$value.'['.$k.']" value="'.$payment_temp.'">'."\n";
+    }
+}
+?>
+
+<table width="98%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-bottom:8px;" >
+<tr>
+<td>
+<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#cbd8ac" class="sysinfo">
+<tr align="center" height="28">
+  <td height="30" colspan="2" align="left" bgcolor="#EDF9D5" background='images/tbg.gif'><b>&nbsp;支付接口配置参数</b>
+</td>
+</tr>
+<tr align="center" height="24" bgcolor="#FFFFFF">
+<td height="30" colspan="2" align="left" bgcolor="#FFFFFF">
+&nbsp;&nbsp;<?php echo $message;?></td>
+</tr>
+<tr align="center" height="24" bgcolor="#FFFFFF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+&nbsp;&nbsp;接口类型：</td>
+<td align="left" bgcolor="#FFFFFF">
+<div style="padding:6px; line-height:24px;">
+<?php foreach($cfg_pay_info['name'] as $k => $val) { ?>
+<li style="float:left; width:180px;">
+<input name="payment_select[<?php echo $k;?>]" type="checkbox" value="<?php echo $cfg_pay_info['type'][$k];?>" Onclick="if(this.checked == true) ShowReg(<?php echo $k;?>);" <?php if(in_array($cfg_pay_info['type'][$k],$payment_select)) echo 'checked'; ?>> <span onClick="ShowReg(<?php echo $k;?>);" style="cursor:pointer;"><?php echo $val;?></span>
+</li>
+<?php }?>
+</div>
+</td>
+</tr>
+<tr align="center" height="24" bgcolor="#ECF8FF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+&nbsp;&nbsp;商户号：</td>
+<td align="left" bgcolor="#FFFFFF">
+	<input name="SalesId" type="text" id="SalesId" class='pubinputs' value="" onKeyUp="setPayment('userid',this.value)"/>
+  &nbsp;此处填写您的支付帐号、客户号或客户id等，此帐号在支付服务提供商处取得</td>
+</tr>
+
+<tr align="center" height="24" bgcolor="#ECF8FF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+&nbsp;&nbsp;邮箱：</td>
+<td align="left" bgcolor="#FFFFFF"> <input name="SalesEmail" type="text" id="SalesEmail"  class='pubinputs' value="" onMouseOver="setPayment('email',this.value)"/>
+  &nbsp;使用支付宝接口时,需填写支付宝账号邮箱</td>
+</tr>
+
+<tr align="center" height="24" bgcolor="#ECF8FF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+&nbsp;&nbsp;私钥：</td>
+<td align="left" bgcolor="#FFFFFF">
+	<input name="SalesKey" type="text" id="SalesKey"  class='pubinputs' style="width:450px;" value="" onMouseOver="setPayment('key',this.value)"/>
+  <br />
+  &nbsp;签约商家请填写“交易安全校验码(key)”；未签约商家不用填写此项.(该项只支持数字和英文字母)</td>
+</tr>
+
+<tr align="center" height="24" bgcolor="#ECF8FF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+&nbsp;&nbsp;支持交易货币：</td>
+<td align="left" bgcolor="#FFFFFF">
+  <input name="SalesCurpay" type="checkbox" id="SalesCurpay" value="CNY" checked="checked" class="np" />
+  人民币&nbsp;*现只支持人民币,根据支付接口与银行卡决定,默认为人民币.</td>
+</tr>
+
+<tr align="center" height="24" bgcolor="#ECF8FF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+&nbsp;&nbsp;支付手续费：</td>
+<td align="left" bgcolor="#FFFFFF">
+  <input name="SalesExp" type="text"  class='pubinputs' style="width:80px" value="" onMouseOver="setPayment('exp',this.value)"/>
+  以百分比计算,手续费将计算在产品价格内.如果3% 则填0.03</td>
+</tr>
+
+<tr align="center" height="24" bgcolor="#ECF8FF">
+<td width="13%" height="30" align="right" bgcolor="#FFFFFF">
+&nbsp;&nbsp;支付接口申请地址：</td>
+<td align="left" bgcolor="#FFFFFF">
+  <a id="payreg" href="http://union.tenpay.com/mch/mch_register.shtml?posid=22&actid=84&opid=50&whoid=31&sp_suggestuser=1202347401" target="_bank" style="margin-left:6px;">点击申请</a>
+  <br>
+  <img src="../../member/images/pay/tenpay.jpg" id="regimage" />
+  <p>
+  <span id="paydes">财付通是腾讯公司为促进中国电子商务的发展需要，满足互联网用户价值需求，针对网上交易安全而精心推出的一系列服务。</span>
+  </p> </td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+ShowReg(0);
+</script>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#cbd8ac;">
+      <tr>
+        <td height="26" colspan="3" align="left" bgcolor="#EDF9D5"> <strong>&nbsp;如果该配置无效要手动更改,可打开/data/sys_pay.cache.php文件进行手工配置。<strong>
+          </strong></strong></td>
+      </tr>
+      <tr bgcolor="#F3FFDD">
+        <td height="50" colspan="3" align="center" bgcolor="#FFFFFF"> <table width="200" border="0" cellspacing="1" cellpadding="1">
+            <tr>
+              <td align="center" valign="middle"><input type="reset" name="button"  value="重置" class='np coolbg' />              </td>
+              <td align="center" valign="middle"><input name="imageField" type="submit" class='np coolbg' value="提交"/>&nbsp;</td>
+            </tr>
+        </table></td>
+      </tr>
+    </table>
+  </form>
+</center>
+</body>
+</html>

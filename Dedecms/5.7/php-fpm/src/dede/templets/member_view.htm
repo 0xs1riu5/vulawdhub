@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>查看会员</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language='javascript'src='../data/enums/area.js'></script>
+<script>
+function checkSubmit()
+{
+  if(document.form2.email.value=="")
+  {
+    document.form2.email.focus();
+    alert("Email不能为空！");
+    return false;
+  }
+  if(document.form2.uname.value=="")
+  {
+    document.form2.uname.focus();
+    alert("用户昵称不能为空！");
+    return false;
+  }
+}
+</script>
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="19" background="images/tbg.gif" style="padding-left:10px;"><a href='<?php echo $ENV_GOBACK_URL; ?>'><b>会员管理</b></a> &gt;&gt; 查看会员</td>
+</tr>
+<tr>
+<td height="200" bgcolor="#FFFFFF" align='center'>
+	<?php
+	if($row['matt']==10) echo "<font color='red'>当前用户是网站管理员关连的帐号，请小心操作！</font>";
+	?>
+	<table width="98%" border="0" cellspacing="0" cellpadding="6" >
+        <tr> 
+          <td colspan="2" height="10" ></td>
+        </tr>
+        <form name="form2" action="member_do.php" method="post" onSubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="edituser" />
+          <input type="hidden" name="id" value="<?php echo $id?>" />
+          <tr> 
+            <td width="17%" align="right" class='bline'>用户名：</td>
+            <td width="83%" class='bline' style="text-align:left;"> 
+              <?php
+			  echo "<b>".$row['userid']."</b>";
+              if($row['face']!='') {
+			     echo "<br /><img src='{$row['face']}' width='80'/>";
+			  }
+			  ?>
+             </td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>密　码：</td>
+            <td class='bline'  style="text-align:left;">
+            <input type="text" name="pwd" id="pwd" />
+            (不修改留空)
+            </td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>注册时间：</td>
+            <td class='bline' style="text-align:left;"> 
+              <?php echo GetDateTimeMk($row['jointime'])?>
+              　ＩＰ： 
+              <?php echo $row['joinip']?>
+             </td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>最近登录时间：</td>
+            <td class='bline' style="text-align:left;"> 
+              <?php echo GetDateTimeMk($row['logintime'])?>
+              　ＩＰ： 
+              <?php echo $row['loginip']?>
+             </td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>用户类型：</td>
+            <td class='bline'  style="text-align:left;">
+            <?php echo $row['mtype']; ?>
+            </td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>电子邮箱：</td>
+            <td class='bline' style="text-align:left;">
+            <input name="email" type="text" id="email" value="<?php echo $row['email']?>" style="width:150px;" />
+            </td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>昵　称：</td>
+            <td class='bline' style="text-align:left;">
+            <input name="uname" type="text" value="<?php echo $row['uname']?>" id="uname" size="20" style="width:150px;" />
+           </td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>性　别：</td>
+            <td class='bline' style="text-align:left;">
+            <input type="radio" name="sex" class="np" value="男"<?php if($row['sex']=="男" ) echo" checked='1'" ;?> />
+              男 &nbsp; 
+             <input type="radio" name="sex" class="np" value="女"<?php if($row['sex']=="女" ) echo" checked='1'" ;?> />
+              女
+             <input type="radio" name="sex" class="np" value=""<?php if($row['sex']=="" ) echo" checked='1'" ;?> />
+              保密
+             </td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>金币 ：</td>
+            <td class='bline' style="text-align:left;">
+           <input name="money" type="text" id="money" value="<?php echo $row['money']; ?>" style="width:80px;" />
+            积分：<input name="scores" type="text" id="scores" value="<?php echo $row['scores']; ?>" style="width:80px;" /></td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>等级：</td>
+            <td class='bline' style="text-align:left;"><?php
+             $MemberTypes = '';
+             $dsql->SetQuery("Select rank,membername From `#@__arcrank` where rank>0");
+             $dsql->Execute('n');
+             $MemberTypes[0] = "限制会员";
+             while($nrow = $dsql->GetObject('n')){
+	              $MemberTypes[$nrow->rank] = $nrow->membername;
+             }
+             $options = "<select name='rank' style='width:80px'>\r\n";
+             foreach($MemberTypes as $k=>$v)
+             {
+  	            if($k!=$row['rank']) $options .= "<option value='$k'>$v</option>\r\n";
+  	            else $options .= "<option value='$k' selected>$v</option>\r\n";
+             }
+             $options .= "</select>\r\n";
+			 echo $options;
+			?></td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>升级时间：</td>
+            <td class='bline' style="text-align:left;">
+            <input type="text" style="width: 200px;" value="<?php echo $row['uptime']=($row['uptime']=="0")? GetDateTimeMk(time()) : GetDateTimeMk($row['uptime']);?>" id="uptime" name="uptime">
+            （如果你要升级会员，必须设置此时间为当前时间）</td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>会员天数：</td>
+            <td class='bline' style="text-align:left;"><input type="text" style="width: 200px;" value="<?php echo $row['exptime']?>" id="exptime" name="exptime">
+            （如果你要升级会员，会员天数必须大于0） </td>
+          </tr>
+          <?php if($mhasDay!=0){ $mhasDay=($mhasDay>0)? $mhasDay : '<font  color="red">该会员已经到期</font>';?>
+          <tr> 
+            <td align="right" class='bline'>会员剩余天数：</td>
+            <td class='bline' style="text-align:left;"><?php echo $mhasDay; ?></td>
+          </tr>
+          <tr> 
+          <?php } ?>
+            <td align="right" class='bline'>推荐级别：</td>
+            <td class='bline' style="text-align:left;">
+            <input name="oldmatt" type="hidden" id="oldmatt" value="<?php echo $row['matt']?>" />
+            <input name="matt" type="text" id="matt" value="<?php echo $row['matt']?>" size="3" />
+          (0为普通，1为推荐，10为管理员[不能在前台登录]
+          <font color='red'>{非管理员ID是严格使用10属性的，要新建管理在 <a href='sys_admin_user_add.php' target='_blank'><u>系统帐号</u></a> 的地方增加}</font>)
+            </td>
+          </tr>
+          <tr>
+            <td align="right" class='bline'>资料状况：</td>
+            <td class='bline' style="text-align:left;">
+           	<select name='spacesta'>
+           		<?php
+           		foreach($staArr as $k=>$v)
+           		{
+           			if($row['spacesta']==$k) echo "<option value='$k' selected>$v</option>\r\n";
+           			else echo "<option value='$k'>$v</option>\r\n";
+           		}
+           		?>
+           	</select>
+            </td>
+          </tr>
+          <tr> 
+            <td height="60" align="right" class='bline'>空间信息：</td>
+            <td class='bline' style="text-align:left;">
+            <?php
+            $nrow = $dsql->GetOne("Select * From `#@__member_tj` where mid='{$row['mid']}' ");
+            echo "文章：{$nrow['article']} 图集：{$nrow['album']} 文档：{$nrow['archives']} 收藏：{$nrow['stow']}";
+            echo "<br />空间访问：{$nrow['homecount']} 页面访问：{$nrow['pagecount']} 留言：{$nrow['feedback']} 好友：{$nrow['friend']} ";
+            ?>
+            </td>
+          </tr>
+          <tr> 
+            <td width="17%" align="right" class='bline'>特殊操作：</td>
+            <td width="83%" class='bline'  style="text-align:left;">
+            <a href='member_do.php?dopost=memberlogin&id=<?php echo $row['mid']; ?>&jumpurl=../member/edit_fullinfo.php' target='_blank'><u>查看/修改详细资料</u></a>
+            &nbsp;|&nbsp;
+            <a href='member_do.php?dopost=memberlogin&id=<?php echo $row['mid']; ?>' target='_blank'><u>登陆到此用户控制面板</u></a>
+            &nbsp;|&nbsp;
+            <a href='../member/index.php?uid=<?php echo $row['userid']; ?>' target='_blank'><u>浏览此用户的空间</u></a>
+            </td> 
+          </tr>
+          <tr> 
+            <td height="67" align="right" >&nbsp;</td>
+            <td height="67" align="left">
+            <input type="submit" name="Submit" value="确定修改" class='coolbg' /> 
+              &nbsp;&nbsp;
+            <input type="reset" name="Submit22" value="重置表单" class='coolbg' />
+            </td>
+          </tr>
+        </form>
+    </table>
+    </td>
+</tr>
+</table>
+</body>
+</html>

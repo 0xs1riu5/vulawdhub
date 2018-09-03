@@ -1,0 +1,42 @@
+<?php
+if($action=='article')
+{
+	  	$action = 'article';
+	  	$channelid = 1;
+}
+else if($action=='album')
+{
+	  	$action = 'album';
+	  	$channelid = 2;
+}
+else
+{
+	  	$action = 'archives';
+	  	$channelid = empty($channelid) ? 0 : intval($channelid);
+}
+if($channelid >= 0)
+{
+	$channelAdd = '';
+	if($channelid > 2) $channelAdd = '&channelid='.$channelid;
+?>
+<!-- //begin dirs -->
+<div class="box" id="side_userclass">
+	<h2>日志分类</h2>
+	<ul class="list" id="bloglist">
+	<?php
+	  if (count($mtypearr)>0)
+	  {
+	  	foreach ($mtypearr as $mty)
+	  	{ 
+	  		if(!empty($channelid) && $mty['channelid'] != $channelid) continue;
+				echo "<li><a href=\"index.php?uid={$_vars['userid_e']}&action={$action}&mtype={$mty['mtypeid']}{$channelAdd}\">{$mty['mtypename']}</a></li>\r\n";
+	 		}
+	 	}
+		?>
+		<li><a href="index.php?uid={dede:var.userid_e /}&action=<?php echo $action.$channelAdd; ?>">所有文档&gt;&gt;</a></li>
+	  </ul>
+</div>
+<!-- //end dirs -->
+<?php
+}
+?>

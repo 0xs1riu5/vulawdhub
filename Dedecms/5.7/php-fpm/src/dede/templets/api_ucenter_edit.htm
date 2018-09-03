@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>ucenter1.5.0配置向导</title>
+<style rel="stylesheet" type="text/css">
+<!--
+*{ word-wrap:break-word; outline:none; }
+body{ background:#FFF; text-align:center; }
+body, td, input, textarea, select, button{ color:#666; font:12px "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif; }
+body, ul, dl, dd, p, h1, h2, h3, h4, h5, h6, form, fieldset { margin:0; padding:0; }
+h1, h2, h3, h4, h5, h6{ font-size:12px; }
+a{ color:#2366A8; text-decoration:none; }
+	a:hover { text-decoration:underline; }
+	a img{ border:none; }
+em, cite, th{ font-style:normal; font-weight:normal; }
+table{ border-collapse:collapse; }
+/* form */
+textarea, input{ padding:2px; border:1px solid; border-color:#666 #eee #eee #666; }
+input.txt:hover, input.txt:focus, textarea:hover, textarea:focus{ border-color:#09C; background:#F5F9FD; }
+.radio{ margin-top:-1px; border:none; vertical-align:middle; }
+.checkbox{ height:14px; border:none; vertical-align:middle; }
+.btn{ margin:3px 0; padding:2px 5px; *padding:4px 5px 1px; border-color:#ddd #666 #666 #ddd; background:#DDD; color:#000; cursor:pointer; }
+.sgbtn{ margin-left:20px; padding:3px 7px; *padding:4px 7px 2px; border:1px solid #B5CFD9; background:#F2F9FD; color:#666; font-size:12px; font-weight:400; }
+	.sgbtn:hover{ text-decoration:none; }
+.bigarea{ margin-left:5px; width:230px; height:120px; }
+.opt{ clear:both; overflow:hidden; }
+	.opt th{ padding:5px 0; font-weight:700; text-align:left; }
+	.opt td{ padding-bottom:10px; }
+	.opt .txt, .opt textarea{ vertical-align:middle; margin-right:10px; width:180px; }
+	.opt select{ vertical-align:middle; margin-right:10px; }
+	.opt .area{ height:80px; }
+	.opt .bigarea { width: 500px; height: 80px; }
+	.opt label{ margin-right:20px; }
+	.opt p{ float:left; line-height:180%; }
+/* title */
+h3{ font-size:14px; }
+	h3 .btn{ margin-left:10px; vertical-align:middle; }
+.mainbox{ margin:10px 0; padding:20px; text-align:left;}
+-->
+</style>
+
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="mainbox">
+<h3 style="margin-bottom:10px;">修改接口配置<a href="module_main.php" class="sgbtn">返回模块列表</a></h3>
+<form action="api_ucenter.php" method="post">
+	<input name="dopost" type="hidden" value="edit" />
+    <table class="opt">
+    <tr>
+        <th colspan="2">ID: {dede:var.uc_setings.appid/}</th>
+    </tr>
+    <tr>
+        <th colspan="2">服务端地址:</th>
+    </tr>
+    <tr>
+        <td><input type="text" class="txt" name="uc_setings[ucapi]" value="{dede:var.uc_setings.ucapi/}" /></td>
+        <td>在您 UCenter   地址或者目录改变的情况下，修改此项，一般情况请不要改动<br />
+				  例如: http://www.site.com/uc_server (最后不要加'/')。</td>
+    </tr>
+    <tr>
+        <th colspan="2">服务端 IP:</th>
+    </tr>
+    <tr>
+        <td><input type="text" class="txt" name="uc_setings[ucip]" value="{dede:var.uc_setings.ucip/}" /></td>
+        <td>正常情况下留空即可。如果由于域名解析问题导致 UCenter 与该应用通信失败，请尝试设置为该应用所在服务器的 IP 地址。</td>
+    </tr>
+    <tr>
+        <th colspan="2">通信密钥:</th>
+    </tr>
+    <tr>
+        <td><input type="text" class="txt" name="uc_setings[authkey]" value="{dede:var.uc_setings.authkey/}" /></td>
+        <td>只允许使用英文字母及数字，限 64 字节。应用端的通信密钥必须与此设置保持一致，否则该应用将无法与 UCenter 正常通信。</td>
+    </tr>
+    <tr>
+        <th colspan="2">连接方式:</th>
+    </tr>
+    <tr>
+        <td>      
+        <select name="uc_setings[connect]" onChange="if(this.value==''){document.getElementById('ucmysql').style.display = 'none';}else{document.getElementById('ucmysql').style.display = '';}">
+			<option value="mysql" <?php if(!empty($_vars['uc_setings']['connect'])) echo 'selected="selected"';?>> 数据库方式(MySQL) </option>
+			<option value="" <?php if(empty($_vars['uc_setings']['connect'])) echo 'selected="selected"';?>> 接口方式(fsockopen) </option>
+        </select>
+        </td>
+        <td>请根据您的服务器网络环境选择适当的连接方式。</td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <table id="ucmysql" class="opt" <?php if(empty($_vars['uc_setings']['connect'])) echo 'style="display:none;"';?>>
+                <tr>
+                    <th colspan="2">数据库服务器:</th>
+                </tr>
+                <tr>
+                    <td>
+                    <input type="text" class="txt" name="uc_setings[dbhost]" value="{dede:var.uc_setings.dbhost/}" />				
+                    </td>
+                    <td>默认:localhost, 如果 MySQL 端口不是默认的 3306，请填写如下形式：127.0.0.1:6033。</td>
+                </tr>
+                
+                <tr>
+                    <th colspan="2">数据库用户名:</th>
+                </tr>
+                <tr>
+                    <td>
+                    <input type="text" class="txt" name="uc_setings[dbuser]" value="{dede:var.uc_setings.dbuser/}" />	
+                    </td>
+                    <td>登录uc服务端的数据库用户名。</td>		
+                </tr>
+                
+                <tr>
+                    <th colspan="2">数据库密码:</th>
+                </tr>                
+                <tr>
+                    <td>
+                    <input type="text" class="txt" name="uc_setings[dbpass]" value="********" />	
+                    </td>
+                    <td>登录uc服务端数据库使用的密码。</td>		
+                </tr>
+                
+                <tr>
+                    <th colspan="2">数据库名:</th>
+                </tr>                
+                <tr>
+                    <td>
+                    <input type="text" class="txt" name="uc_setings[dbname]" value="{dede:var.uc_setings.dbname/}" />	
+                    </td>
+                    <td>登录uc服务端的数据库名称。</td>		
+                </tr>
+                
+                <tr>
+                    <th colspan="2">数据库表前缀:</th>
+                </tr>                
+                <tr>
+                    <td>
+                    <input type="text" class="txt" name="uc_setings[dbtablepre]" value="{dede:var.uc_setings.dbtablepre/}" />	
+                    </td>
+                    <td>uc服务端使用的数据库表前缀,一不般为 uc_ 。</td>		
+                </tr>
+            </table>            
+        </td>
+    </tr>    
+    
+    <tr>
+        <th colspan="2">正确的配置信息:</th>
+    </tr>
+    <tr>
+        <th>
+            <textarea class="area" onFocus="this.select()">
+define('UC_CONNECT', '{dede:var.uc_setings.connect/}');
+define('UC_DBHOST', '{dede:var.uc_setings.dbhost/}');
+define('UC_DBUSER', '{dede:var.uc_setings.dbuser/}');
+define('UC_DBPW', '********');
+define('UC_DBNAME', '{dede:var.uc_setings.dbname/}');
+define('UC_DBCHARSET', 'gbk');
+define('UC_DBTABLEPRE', '`{dede:var.uc_setings.dbname/}`.uc_');
+define('UC_DBCONNECT', '0');
+define('UC_KEY', '{dede:var.uc_setings.authkey/}');
+define('UC_API', '{dede:var.uc_setings.ucapi/}');
+define('UC_CHARSET', 'gbk');
+define('UC_IP', '{dede:var.uc_setings.ucip/}');
+define('UC_APPID', '{dede:var.uc_setings.appid/}');
+define('UC_PPP', '20');
+            </textarea>
+        </th>
+        <td>当应用的 UCenter 配置信息丢失时可复制左侧的代码到应用的配置文件中</td>
+    </tr>
+</table>
+<div class="opt"><input type="submit" name="submit" value=" 提 交 " class="btn" tabindex="3" /></div>
+    
+</form>
+</div>
+</body>
+</html>

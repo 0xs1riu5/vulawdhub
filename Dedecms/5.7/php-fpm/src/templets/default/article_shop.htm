@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field.keywords/}" />
+<meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+	function CheckLogin(){
+	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("{dede:global.cfg_cmsurl/}/member/ajax_feedback.php");
+	  DedeXHTTP = null;
+	}
+	function postBadGood(ftype,fid)
+	{
+		var taget_obj = document.getElementById(ftype+fid);
+		var saveid = GetCookie('badgoodid');
+		if(saveid != null)
+		{
+			 var saveids = saveid.split(',');
+			 var hasid = false;
+			 saveid = '';
+			 j = 1;
+			 for(i=saveids.length-1;i>=0;i--)
+			 {
+			 	  if(saveids[i]==fid && hasid) continue;
+			 	  else {
+			 	  	if(saveids[i]==fid && !hasid) hasid = true;
+			 	  	saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+			 	  	j++;
+			 	  	if(j==10 && hasid) break;
+			 	  	if(j==9 && !hasid) break;
+			 	  }
+			 }
+	     if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+	     else saveid += ','+fid;
+			 SetCookie('badgoodid',saveid,1);
+		}
+		else
+		{
+			SetCookie('badgoodid',fid,1);
+		}
+		//document.write("feedback.php?action="+ftype+"&fid="+fid);
+		//return;
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("{dede:global.cfg_phpurl/}/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+	  DedeXHTTP = null;
+	}
+-->
+</script>
+</head>
+<body class="productview">
+{dede:include filename="head2.htm"/}
+<!-- /header -->
+<div class="w960 center clear mt1">
+	<div class="pleft">
+		<div class="place">
+			<strong>当前位置:</strong> {dede:field name='position'/}
+		</div><!-- /place -->
+		<div class="viewbox">
+			<div class="title">
+				<h2>{dede:field name='title'/}</h2>
+			</div><!-- /title -->
+			<div class="infolist">
+                <small>信息类型：</small><span>{dede:field.infotype/}</span>
+                <small>测试：</small><span>{dede:field.vocation/}</span>
+				<small>商品原价：</small><span>{dede:field.price/}元</span>
+				<small>优惠价格：</small><span class="fc-f60">{dede:field.trueprice/}元</span>
+				<small>品牌：</small><span>{dede:field.brand/}</span>
+                <small>单位：</small><span>{dede:field.units/}</span>
+				<small>上架日期：</small><span>{dede:field.pubdate function="MyDate('y-m-d H:i',@me)"/}</span>
+				<small>人气：</small><span><script src="{dede:field name='phpurl'/}/count.php?view=yes&aid={dede:field name='id'/}&mid={dede:field name='mid'/}" type='text/javascript' language="javascript"></script></span>
+                <form id="formcar" name="formcar" method="post" action="{dede:field name='phpurl'/}/posttocar.php">
+                <input type="hidden" name="id" value="{dede:field.id/}" />
+                <input type="hidden" name="title" value="{dede:field.title/}" />
+                <input type="hidden" name="price" value="{dede:field.trueprice/}" />
+                <input type="hidden" name="units" value="{dede:field.units/}" />
+                <small>购物车：</small><span><a href="{dede:field name='phpurl'/}/car.php" target="_blank">查看购物车</a></span>
+                <small>购买：</small><span><button type="submit" name="button" class="btn-2">放入购物车</button></span>
+                </form>
+
+			</div><!-- /info -->
+			<div class="picview">
+				<img src={dede:field.litpic/}>
+			</div><!-- /info -->
+			<div class="labeltitle">
+				<strong>商品介绍</strong>
+			</div>
+			<div class="content">
+                 <div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top;">{dede:myad name='contentMidPicAD'/}</div>
+			　　{dede:field.body/}
+			</div>
+			<div class="boxoff">
+				<strong>------分隔线----------------------------</strong>
+			</div>
+			<div class="handle">
+				<div class="context">
+					<ul>
+						<li>{dede:prenext get='pre'/}</li>
+						<li>{dede:prenext get='next'/}</li>
+					</ul>
+				</div><!-- /context -->
+				<div class="actbox">
+					<ul>
+						<li id="act-fav"><a href="{dede:field name='phpurl'/}/stow.php?aid={dede:field.id/}" target="_blank">收藏</a></li>
+						<li id="act-err"><a href="{dede:field name='phpurl'/}/erraddsave.php?aid={dede:field.id/}&title={dede:field.title/}" target="_blank">挑错</a></li>
+						<li id="act-pus"><a href="{dede:field name='phpurl'/}/recommend.php?aid={dede:field.id/}" target="_blank">推荐</a></li>
+						<li id="act-pnt"><a href="#" target="_blank" onClick="window.print();">打印</a></li>
+					</ul>
+				</div><!-- /actbox -->
+			</div><!-- /handle -->
+		</div><!-- viewbox -->
+
+<!-- //AJAX评论区 -->
+{dede:include file='ajaxfeedback.htm' /}
+
+	</div><!-- /pleft -->
+
+	<div class="pright">
+        <div>
+          <dl class="tbox">
+				<dt><strong>栏目列表</strong></dt>
+				<dd>
+					<ul class="d6">
+                      {dede:channel type='son' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a></li>"}
+		<li><a href='[field:typeurl/]'>[field:typename/]</a></li>{/dede:channel}
+					</ul>
+				</dd>
+			</dl>
+        </div>
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
+        	<div class="infos_userinfo">
+ 			{dede:memberinfos}
+			<dl class="tbox">
+				<dt><strong>发布者资料</strong></dt>
+				<dd>
+					<a href="[field:spaceurl /]" class="userface"><img src="[field:face/]" width="52" height="52" /></a>
+					<a href='[field:spaceurl /]' class="username">[field:uname/]</a>
+					<span class="useract">
+						<a href="[field:spaceurl /]" class="useract-vi">查看详细资料</a>
+                        <a href="[field:spaceurl /]&action=guestbook" class="useract-pm">发送留言</a>
+						<a href="[field:spaceurl /]&action=newfriend" class="useract-af">加为好友</a>
+					</span>
+					<span class="userinfo-sp"><small>用户等级:</small>[field:rankname /]</span>
+					<span class="userinfo-sp"><small>注册时间:</small>[field:jointime function="MyDate('Y-m-d H:m',@me)"/]</span>
+					<span class="userinfo-sp"><small>最后登录:</small>[field:logintime function="MyDate('Y-m-d H:m',@me)"/]</span>
+				</dd>
+			</dl>
+			{/dede:memberinfos}
+   	 	</div>
+         
+		<div class="productrange mt1">
+			<dl class="tbox">
+				<dt><strong>推荐商品</strong></dt>
+				<dd>
+					<ul class="f1">
+                    {dede:arclist flag='c' titlelen=42 row=8}
+						<li>
+							<a href="[field:arcurl/]">[field:title/]</a>
+							<span><small>好评:</small>[field:scores/]</span>
+							<span><small>人气:</small>[field:click/]</span>
+						</li>
+                    {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div>
+        
+		<div class="comment mt1">
+			<dl class="tbox">
+				<dt><strong>热门商品</strong></dt>
+				<dd>
+					<ul class="e3">
+                    {dede:arclist row=10 orderby=click type='image.'}
+						<li>
+							<a href="[field:arcurl/]" class="preview"><img src="[field:litpic/]" alt="[field:title function='html2text(@me)'/]"/></a>
+							<a href="[field:arcurl/]" class="title">[field:title/]</a>
+							<span class="intro">人气:<span class="fc-f90">[field:click/]</span></span>
+						</li>
+                    {/dede:arclist}
+
+					</ul>
+				</dd>
+			</dl>
+		</div>
+    <div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
+
+	</div><!-- /pright -->
+</div>
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
+
+</body>
+</html>

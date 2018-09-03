@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>管理员帐号--更改帐号</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
+  <tr>
+    <td height="19" background="images/tbg.gif" bgcolor="#E7E7E7"> 
+      <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr> 
+          <td width="24%" style="padding-left:10px;"><b><strong>更改帐号</strong></b> </td>
+          <td width="76%" align="right"><strong><a href="sys_admin_user.php"><u>管理帐号</u></a></strong></td>
+        </tr>
+      </table></td>
+   </tr>
+  <tr>
+  <td height="215" align="center" valign="top" bgcolor="#FFFFFF">
+	<form name="form1" action="sys_admin_user_edit.php" method="post">
+	<input type="hidden" name="dopost" value="saveedit" />
+	<input type="hidden" name="id" value="<?php echo $row['id']?>" />
+        <table width="98%" border="0" cellspacing="1" cellpadding="1">
+          <tr> 
+            <td width="16%" height="30">用户登录ID：</td>
+            <td width="84%" style="text-align:left;"><?php echo $row['userid']?></td>
+          </tr>
+          <tr> 
+            <td height="30">用户笔名：</td>
+            <td style="text-align:left;">
+            	<input name="uname" type="text" id="uname" size="16" value="<?php echo $row['uname']?>" style="width:200px" /> &nbsp;（发布文章后显示责任编辑的名字）
+            </td>
+          </tr>
+          <tr> 
+            <td height="30">用户密码：</td>
+            <td style="text-align:left;">
+            	<input name="pwd" type="text" id="pwd" size="16" style="width:200px" /> &nbsp;（留空则不修改，只能用'0-9a-zA-Z.@_-!'以内范围的字符）
+            </td>
+          </tr>
+          <tr> 
+            <td height="30">用户类型：</td>
+            <td style="text-align:left;">
+			  <select name='usertype' style='width:200px'>
+			  	<?php
+			  	$dsql->SetQuery("Select * from #@__admintype order by rank asc");
+			  	$dsql->Execute("ut");
+			  	while($myrow = $dsql->GetObject("ut"))
+			  	{
+			  		if($row['usertype']==$myrow->rank) echo "<option value='".$myrow->rank."' selected='1'>".$myrow->typename."</option>\r\n";
+			  		else echo "<option value='".$myrow->rank."'>".$myrow->typename."</option>\r\n";
+			  	}
+			  	?>
+			  </select>
+         </td>
+          </tr>
+          <tr> 
+            <td height="30">负责频道：</td>
+            <td style="text-align:left;">
+			<select name="typeids[]" id="typeid" size='10' style="width:200px" multiple="true">
+        <option value="0" class='alltype'>--所有频道--</option>
+				<?php echo $typeOptions?>
+       </select>(按 Ctrl 可以进行多选)
+			 </td>
+          </tr>
+          <tr> 
+            <td height="30">真实姓名：</td>
+            <td style="text-align:left;"><input name="tname" type="text" id="tname" size="16" style="width:200px" value="<?php echo $row['tname']?>" /> &nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="30">电子邮箱：</td>
+            <td style="text-align:left;"><input name="email" type="text" id="email" size="16" style="width:200px" value="<?php echo $row['email']?>" /> &nbsp;</td>
+          </tr>
+           <tr> 
+            <td height="30">安全验证串：</td>
+            <td style="text-align:left;">
+            	<input name="safecode" type="text" id="safecode" size="16" style="width:200px" />
+            	<input name="randcode" type="hidden" value="<?php echo $randcode; ?>" />
+            	 &nbsp;
+            	(复制本代码： <font color='red'><?php echo $safecode;  ?></font> )
+            </td>
+          </tr>
+          <tr> 
+            <td height="60">&nbsp;</td>
+            <td>
+            	<input type="submit" name="Submit" value=" 保存用户 " class="coolbg np" />
+            </td>
+          </tr>
+        </table>
+      </form>
+	  </td>
+</tr>
+</table>
+</body>
+</html>

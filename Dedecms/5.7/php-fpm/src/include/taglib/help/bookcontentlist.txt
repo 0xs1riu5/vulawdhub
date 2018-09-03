@@ -1,0 +1,19 @@
+连载图书最新内容调用
+>>dede>>
+{dede:bookcontentlist row='12' booktype='-1' orderby='lastpost' author='' keyword=''}
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+<tr>
+<td width='40%'>
+[[field:cataloglink/]] [field:booklink/]</td>
+<td width='40%'>[field:contentlink/]</td>
+<td width='20%'>[field:lastpost function="GetDateMk(@me)"/]</td>
+</tr>
+</table>
+{/dede:bookcontentlist}
+>>dede>>
+这个标签和booklist实际是完全相同的，只是默认底层模板不同
+row='12' 调用记录条数
+booktype='-1' 图书类型，0 图书、1 漫画，默认全部
+orderby='lastpost' 排序类型，当按排序类型为 commend 表示推荐图书
+author=''  作者
+keyword='' 关键字（用 , 分开多个关键字）
