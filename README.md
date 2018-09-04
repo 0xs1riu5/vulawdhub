@@ -24,10 +24,8 @@ pip install docker-compose
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # 安装docker
-brew install docker
+brew cask install docker
 
-#安装docker-compose
-brew install docker-compose
 
 ```
 
