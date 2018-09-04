@@ -12,5 +12,6 @@ COPY src/ /app
 
 RUN set -x \ 
     && chmod -R 777 /app \
+    && apk update \
     && apk add php5-json php5-mcrypt php5-xml php5-ctype
 
