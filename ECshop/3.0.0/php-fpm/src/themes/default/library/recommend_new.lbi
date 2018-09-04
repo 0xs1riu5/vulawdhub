@@ -1,0 +1,24 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">  <div class="clear0"></div>
+<!-- {if $new_goods} -->
+<!-- {if $cat_rec_sign neq 1} -->
+<DIV class="alls_t"><SPAN>新品速递<B>New Express</B></SPAN></DIV>
+<div id="show_new_area" class="clearfix goodsBox all_mid">
+  <!-- {/if} -->
+  <!--{foreach from=$new_goods item=goods}-->
+  <div class="goodsItem"> <span class="news"></span> <a href="{$goods.url}"><img src="{$goods.thumb}" alt="{$goods.name|escape:html}" class="goodsimg" /></a><br />
+    <p><a href="{$goods.url}" title="{$goods.name|escape:html}">{$goods.short_style_name}</a></p>
+         <!-- {if $show_marketprice} -->
+         <font class="market_s">{$goods.market_price}</font> 
+          <!-- {/if} -->
+          <!--{if $goods.promote_price neq "" } -->
+          <font class="shop_s">{$lang.promote_price}{$goods.promote_price}</font> 
+          <!--{else}-->
+          <font class="shop_s">{$lang.shop_prices}：{$goods.shop_price}</font><br />
+          <!--{/if}--></div>
+  <!--{/foreach}-->
+  <!-- {if $cat_rec_sign neq 1} -->
+  <div class="clear0"></div>
+</div>
+ <div class="clear10"></div>
+<!-- {/if} -->
+<!-- {/if} -->

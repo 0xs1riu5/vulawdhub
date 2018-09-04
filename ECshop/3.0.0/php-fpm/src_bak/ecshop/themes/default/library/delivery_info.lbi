@@ -1,0 +1,18 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="hd">{$order_info.shipping_name}：{$order_info.invoice_no}</div>
+<ul class="bd">
+  <!--此处只需显示两条具体信息，只循环两条-->
+  <!--{foreach from=$logistics_info item=item}-->
+  <li>
+    <span class="info">{$item.AcceptTime}</span><br>
+    <span class="time">{$item.AcceptStation}</span>
+  </li>
+  <!--{/foreach}-->
+  <!--此处只需显示两条具体信息，只循环两条-->
+
+  <!--此信息为固定文案，只需链接数据-->
+  <li>
+    以上为最新跟踪信息，<a href="user.php?act=delivery_info&order_sn={$order_info.order_sn}" class="link-blue">查看全部</a>
+  </li>
+  <!--此信息为固定文案，只需链接数据-->
+</ul>

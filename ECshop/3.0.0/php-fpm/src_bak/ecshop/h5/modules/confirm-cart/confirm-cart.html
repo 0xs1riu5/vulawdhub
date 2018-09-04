@@ -1,0 +1,133 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="ConfirmCartController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            确认订单
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <!-- Address -->
+    <div class="confirm-address" ng-click="touchAddress()" ng-if="goods && goods.length">
+        <div class="address-contact" ng-if="consignee">
+            {{consignee.name}}&nbsp;{{consignee.mobile}}
+        </div>
+        <div class="address-detail" ng-if="consignee">
+            <span ng-repeat="value in consignee.regions track by $index">
+                {{value.name}}
+            </span>
+            {{consignee.address}}
+        </div>
+        <div class="address-create" ng-if="!consignee">
+            请填写地址
+        </div>
+        <img class="address-arrow" src="image/nav-right.png"/>
+    </div>
+
+    <!-- Goods -->
+    <div class="confirm-goods" ng-if="goods && goods.length">
+        <div class="goods-item" ng-repeat="goods in goods track by $index" ng-click="touchProduct(goods)">
+            <div class="item-photo">
+                <img ng-src="image/default-photo.png" lazy-img="{{goods.product.photos[0].large}}"/>
+            </div>
+            <div class="item-info">
+                <div class="info-name">
+                    {{goods.product.name}}
+                </div>
+                <div class="info-attr">
+                    {{goods.property}}
+                </div>
+                <div class="info-price">
+                    {{goods.price| currency:"￥"}}
+                </div>
+                <div class="info-amount">
+                    x{{goods.amount}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="confirm-form" ng-if="goods && goods.length">
+        <div class="form-item" ng-click="touchExpress()">
+            <div class="item-title">
+                配送方式
+            </div>
+            <div class="item-value">
+                {{express ? express.name + '(' + (express.fee | currency:"￥")+ ')' : '选择配送方式'}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+        <div class="form-item" ng-click="touchInvoice()">
+            <div class="item-title">
+                发票类型
+            </div>
+            <div class="item-value">
+                {{invoiceType ? invoiceType.name : '不开发票'}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+        <div class="form-item" ng-click="touchCashgift()">
+            <div class="item-title">
+                使用红包
+            </div>
+            <div class="item-value">
+                {{cashgift ? '￥' + cashgift.value : '不使用红包'}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+        <div class="form-item" ng-if="scoreInfo">
+            <div class="item-title">
+                使用积分
+            </div>
+            <div class="item-input">
+                <input type="text" ng-class="{active: maxUseScore > 0}" placeholder="填写积分" ng-disabled="maxUseScore <= 0" ng-model="input.score" ng-change="refreshScore()"/>
+                <div class="input-tips" ng-if="maxUseScore > 0">
+                    您当前可用 {{scoreInfo.score}} 积分，本订单最多可以使用{{maxUseScore}}积分，每积分抵扣 {{scoreInfo.rule}} 元
+                </div>
+                <div class="input-tips" ng-if="maxUseScore <= 0">
+                    无可用积分
+                </div>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="item-textarea">
+                <textarea type="text" placeholder="买家留言" ng-model="input.comment" ng-change="refreshComment()"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total -->
+    <div class="confirm-summury" ng-if="goods && goods.length">
+        <div class="summury-total">
+            订单总额 <span class="total-price">+ {{priceInfo.total_price | currency:"￥"}}</span>
+        </div>
+        <div class="summury-detail">
+            商品总额 <span class="total-price">+ {{priceInfo.product_price | currency:"￥"}}</span>
+        </div>
+        <div class="summury-detail">
+            运费金额 <span class="total-price">+ {{(priceInfo.shipping_price | currency:"￥")||( express.fee | currency:"￥")}}</span>
+        </div>
+        <div class="summury-detail" ng-repeat="promo in priceInfo.promos track by $index">
+            {{ formatPromo(promo.promo) }} <span class="total-price">- {{promo.price | currency:"￥"}}</span>
+        </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="confirm-submit" ng-if="goods && goods.length">
+        <div class="submit-total">
+            <div class="total-price">{{priceInfo.total_price | currency:"￥"}}</div>
+            <div class="total-discount">已优惠{{all_discount | currency:"￥"}}</div>
+        </div>
+        <div class="submit-button dark" ng-class="{active: canPurchase}" ng-click="touchSubmit()">
+            提交订单并支付
+        </div>
+    </div>
+
+</div>
+

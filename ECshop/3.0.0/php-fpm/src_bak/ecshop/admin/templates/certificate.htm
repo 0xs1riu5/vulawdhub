@@ -1,0 +1,105 @@
+<!-- $Id: sitemap.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+{include file="pageheader.htm"}
+<div class="main-div">
+<p style="padding: 0 10px">{$lang.license_notice}</p>
+</div>
+<div class="main-div">
+<table width="100%">
+<tr>
+    <td class="label">{$lang.label_shopex}</td>
+    <td></td>
+</tr>
+<tr>
+    <td class="label">{$lang.label_shopex_id}</td>
+    <td>{$certi.passport_uid}</td>
+</tr>
+<tr>
+    <td class="label">{$lang.label_certificate}</td>
+    <td></td>
+</tr>
+<tr>
+    <td class="label">{$lang.label_node_id}</td>
+    <td>{$certi.node_id}</td>
+</tr>
+<tr>
+    <td class="label">{$lang.label_certificate_id}</td>
+    <td>
+    {$certi.certificate_id}
+    </td>
+</tr>
+<tr>
+    <td></td>
+    <td>
+    <form method="POST" action="" enctype="multipart/form-data" id="certificateForm" name="certificateForm">
+    {if !$certi.certificate_id}
+    <input type="button" class="button" onclick="get_certificate();" value="{$lang.yunqi_certicate}"/>
+    {else}
+    <input type="button" value="{$lang.download_license}" class="button" onclick="certi('download');"/>&nbsp;&nbsp;
+    <input type="button" value="{$lang.delete_certificate}" class="button" onclick="certi('delete');"/> <span style="color:red;">删除证书后，将无法使用“云起物流”，“天工收银”，需要重新激活系统才能使用！</span>
+    {/if}
+    </form>
+    </td>
+    <td>
+    </td>
+</tr>
+
+</table>
+</div>
+
+<div class="main-div">
+<table width="100%">
+<tr>
+    <td class="label">{$lang.label_bindrelation}</td>
+    {if !$is_bind}<td width="300px"><a href="certificate.php?act=apply_bindrelation" target="_blank" class="button">{$lang.apply_bindrelation}</a></td>{/if}
+    <td><a href="certificate.php?act=accept_bindrelation" target="_blank" class="button">{$lang.accept_bindrelation}</a></td>
+    <td></td>
+</tr>
+</table>
+</div>
+<div class="main-div">
+    <table width="100%">
+        <tr>
+            <td class="label">{$lang.label_bindrelation_crm}</td>
+            {if $is_bind_crm!=true}<td width="300px"><a href="certificate.php?act=apply_bindrelation" target="_blank" class="button">{$lang.apply_bindrelation}</a></td>{/if}
+            <td><a href="certificate.php?act=accept_bindrelation" target="_blank" class="button">{$lang.accept_bindrelation}</a></td>
+            <td>支持多平台多店铺的会员统一管理，短信营销，数据分析等，<a href="http://yunqi.shopex.cn/products/crm" target="_blank">点击了解详情</a></td>
+            <td></td>
+        </tr>
+        {if $is_bind_crm==true}
+        <tr>
+            <td class="label"></td>
+            <td>已同步订单：<font color="green">{$bind_crm_order_push}</font></td>
+            <td>未同步订单：<font color="#8b0000">{$bind_crm_order_push_no}</font></td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td>已同步会员：<font color="green">{$bind_crm_member_push}</font></td>
+            <td>未同步会员：<font color="#8b0000">{$bind_crm_member_push_no}</font></td>
+        </tr>
+        {/if}
+    </table>
+</div>
+<div class="main-div">
+<table width="100%">
+<tr>
+    <td class="label">{$lang.label_my_version}</td>
+    <td>{$message}</td>
+    <td></td>
+</tr>
+</table>
+</div>
+<script language="JavaScript">
+function certi(act){
+    var cform = document.getElementById('certificateForm');
+    if(act == 'delete'){
+        cform.action='certificate.php?act=delete';
+        if(confirm('删除证书后，将无法使用“云起物流”，“天工收银”，需要重新激活系统才能使用！')){
+            cform.submit();
+        }
+    }else if(act =='download'){
+        cform.action='certificate.php?act=download';
+        cform.submit();
+    }
+}
+</script>
+{include file="pagefooter.htm"}

@@ -1,0 +1,40 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="TeegonController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goHome()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            天工收银
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="app-content">
+        <div class="payment-header">
+            <div class="header-title">订单 #{{paymentModel.order.sn}}，请您尽快付款。</div>
+            <div class="header-total">合计：<em>{{paymentModel.order.total| currency:"￥"}}</em></div>
+        </div>
+        <div class="payment-list" ng-if="paymentModel.isLoaded">
+            <div class="list-item " ng-class="{active: isSelected(payment)}" ng-repeat="payment in teegonTypes track by $index" ng-click="touchSelect(payment)">
+                <div class="item-checkbox">
+                </div>
+                <div class="item-content">
+                    <div class="content-desc">
+                        {{payment.desc}}
+                    </div>
+                    <div class="content-title">
+                        {{payment.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="payment-submit" ng-click="touchSubmit()" ng-if="teegonTypes.length > 0">
+            确认支付
+        </div>
+    </div>
+
+</div>
+

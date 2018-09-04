@@ -1,0 +1,5 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<ul>
+  <!--{foreach from=$articles item=article_item}--><li>
+  <a href="{$article_item.url}" title="{$article_item.title|escape:html}">{$article_item.short_title}</a> <span>{$article_item.add_time}</span></li>
+  <!--{/foreach}--></ul>

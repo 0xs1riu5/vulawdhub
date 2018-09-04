@@ -1,0 +1,322 @@
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  -->
+<style>
+	*{margin: 0;padding: 0;border: 0;}
+	body{font:75%/1.5 Microsoft Yahei;}
+	input:-webkit-autofill {
+		background: #fff;
+	}
+	input,button{
+		font-family: Microsoft Yahei;
+	}
+	.Btn-a {
+		display: block;
+		color: #FFF;
+		width: 180px;
+		font-size: 18px;
+		line-height: 51px;
+		text-align: center;
+		background-color: #F18030;
+		border: 0;
+		border-radius: 4px;
+		letter-spacing: 4px;
+		margin-top: 0px;
+		box-shadow: 0 1px 0 #ccc;
+	}
+	input, textarea {outline: 0;}
+	.Btn-a:focus { outline: 0 none; }
+	.Btn-a span { display: block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+	.Btn-a:disabled,.Btn-a.Disabled { background: #fafafa; color: #cccccc; }
+	.Btn-a:disabled [class|=Icon] { opacity: 0.3; }
+
+	.Login form { padding:0; width: 100%;}
+	.Login h2 { text-align: center; color: white; font-size: 14px; margin-bottom: 60px; }
+	.Login .Controls {position: relative;border-bottom: 1px solid #ccc; }
+	.Login .wbordernone { border-bottom: none; position:relative;}
+	.Login .Error { position: relative; }
+	.Login .Error .Alert-info { line-height: 26px; margin-top: calc(-24px - 13px); margin-left: 200px; display: inline; white-space: nowrap; }
+	.Login input[type=text], .Login input[type=password] {
+		background-color: #fff;
+		color: #8a8a8a;
+		width: 100%;
+		height: 49px;
+		line-height: 49px;
+		text-indent: 50px;
+		box-shadow: inset 30px 30px 0 20px #fff;
+	}
+	.Controls .iconphone { display: block; width:20px; height: 20px; position:absolute; left:15px; top:15px; z-index: 10;}
+
+	.Login input[type=text] + .Ico, .Login input[type=password] + .Ico { position: absolute; }
+	.Login input[type=text].Error, .Login input[type=password].Error { border: 1px solid #dc4409; color: #dc4409; }
+	.Login input[type=text].Error + .Ico, .Login input[type=password].Error + .Ico { background-image: url(http://desktop.linkquick.cn/statics/img/adminicons.png); background-position: 0px -113px; width: 12px; height: 12px; right: 3px; top: 11px; }
+	.Login a { color: white;text-decoration: none; }
+	.Login .Bside{margin-top:12px; overflow: hidden;}
+	.Login .Bside input[type="checkbox"] { float: left; width: 15px;height: 15px; margin:2px 8px 0 0;}
+	.Login .Bside label { color:#666; float: left;}
+	.Login .Bside a { display: block; text-align: right; color: #A1A1A1; }
+	.Login .Justify button { cursor: pointer;width:100%; border-radius:5px; margin-top:20px;}
+	.Login .Justify a { float: right; font-size: 14px; line-height: 36px; }
+
+	.Alert-info { border: 1px solid #e48169; background-color: #ffffe8; display: none; color: #dc4409; position: absolute; margin-top: calc(-22px - 12px); padding: 5px 12px; line-height: 22px; }
+	.Alert-info.Hover { display: block; }
+	.Alert-info:after { content: '\0020'; position: absolute; left: -12px; top: calc(50% - 6px); width: 0; height: 0; border: 6px dashed transparent; border-right-style: solid; border-right-color: #e48169; }
+	.Alert-info:before { content: '\0020'; position: absolute; left: -10px; top: calc(50% - 5px); z-index: 2; width: 0; height: 0; border: 5px dashed transparent; border-right-style: solid; border-right-color: #ffffe8; }
+
+	.tip-txt {position: absolute; left: 1em; top: 1em; color: #bcbcbc; font-size: 14px;}
+	.clearfix {display: block; *zoom: 1; _height: 1%;}
+	.clearfix:after {clear: both; content: "\0020"; display: block;}
+
+	.validate-box {
+		background-color: #000;
+		border-radius: 4px;
+		opacity: .8;
+		font-size: 14px;
+		color: #fff;
+		width: 8em;
+		padding: 0 1em;
+		text-align: center;
+		z-index: 9999;
+		position: absolute;
+		left: 50%;
+		margin-left: -70px;
+		top: 50%;
+		margin-top: -22px;
+	}
+	.validate-box .v-inner {
+		padding: 1em 0;
+	}
+	.clearfix {
+		display: block;
+		_height: 1%;
+		*zoom: 1;
+	}
+	.clearfix:after {
+		clear: both;
+		display: block;
+		content: "\0020";
+	}
+	.forminput { border:1px solid #ddd; border-radius:5px; overflow: hidden;}
+
+	.login-panel .Bside {
+		margin-top: 12px;
+		overflow: hidden;
+	}
+	.login-panel .Bside input[type="checkbox"] {
+		float: left;
+		width: 15px;
+		height: 15px;
+		margin: 2px 8px 0 0;
+	}
+	.Login .Bside .link-forget{
+		float:left;
+	}
+	.Login .Bside .link-home{
+		float: right;
+	}
+</style>
+</head>
+
+<body class="Login clearfix" id="login">
+
+<!--提示模板 start-->
+<script type="text/x-jquery-tmpl" id="dialog-user-fatol">
+  <div class="validate-box">
+      <div class="v-inner">
+          <p>{prompt}</p>
+      </div>
+  </div>
+  </script>
+<!--提示模板 end-->
+
+<form action="authorize" method="post">
+	<div class="forminput">
+		<input name="remember-me" type="hidden" value="true">
+		<input type="hidden" name="callback" value="$callback" />
+		<input type="hidden" name="_runtime_state" value="{{.runtime}}" />
+		<div class="Controls">
+			<svg class="iconphone" width="20px" height="20px" viewBox="0 0 20 20">
+				<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<g id="2-copy-2" transform="translate(-505.000000, -357.000000)" fill="#666">
+						<path d="M517.388314,366.868305 C519.068314,366.001784 520.220053,364.252653 520.220053,362.231784 C520.220053,359.350479 517.883966,357.014392 515.002662,357.014392 C512.121357,357.014392 509.78527,359.350479 509.78527,362.231784 C509.78527,364.252653 510.936575,366.001784 512.616575,366.868305 C508.246575,367.938305 505.002662,371.879175 505.002662,376.57961 C505.002662,376.81961 505.197009,377.014392 505.437444,377.014392 C505.677444,377.014392 505.872227,376.81961 505.872227,376.57961 C505.872227,371.537001 509.960053,367.449175 515.002662,367.449175 C520.04527,367.449175 524.133096,371.537001 524.133096,376.57961 C524.133096,376.81961 524.327444,377.014392 524.567879,377.014392 C524.807879,377.014392 525.002662,376.81961 525.002662,376.57961 C525.002662,371.879175 521.758749,367.938305 517.388314,366.868305 L517.388314,366.868305 Z M510.654835,362.231784 C510.654835,359.830479 512.601357,357.883957 515.002662,357.883957 C517.403966,357.883957 519.350488,359.830479 519.350488,362.231784 C519.350488,364.632653 517.403966,366.57961 515.002662,366.57961 C512.601357,366.57961 510.654835,364.632653 510.654835,362.231784 L510.654835,362.231784 Z" id="id" sketch:type="MSShapeGroup"></path>
+					</g>
+				</g>
+			</svg>
+			<input type="text" name="username" data-error-format-msg="手机格式错误" data-error-msg="手机号不能为空" value="" id="phone" placeholder="请填写您注册的邮箱或手机号"> <i class="Ico"></i>
+			<label class="tip-txt" for="phone"></label>
+		</div>
+		<div class="Controls">
+			<svg class="iconphone" width="20px" height="20px" viewBox="0 0 20 20">
+				<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<g id="2-copy-2" transform="translate(-505.000000, -407.000000)" fill="#666">
+						<path d="M515,418.304324 C514.12782,418.304324 513.421091,418.888119 513.421091,419.608723 C513.421091,419.995004 513.624357,420.341947 513.947394,420.580774 L513.947394,421.782554 C513.947394,422.262857 514.418637,422.652187 515.00003,422.652187 C515.581302,422.652187 516.052667,422.262857 516.052667,421.782554 L516.052667,420.580774 C516.375703,420.341947 516.579,419.995004 516.579,419.608723 C516.57897,418.888119 515.87221,418.304324 515,418.304324 L515,418.304324 L515,418.304324 Z M522.368454,414.391327 L521.315788,414.391327 L521.315788,412.217421 C521.315788,409.335657 518.488418,407 515,407 C511.511582,407 508.684212,409.335657 508.684212,412.217421 L508.684212,414.391327 L507.631576,414.391327 C506.178003,414.391327 505,415.364503 505,416.565234 L505,424.826193 C505,426.026824 506.178003,427 507.631576,427 L522.368424,427 C523.821422,427 525,426.026899 525,424.826193 L525,416.565234 C525.00003,415.364478 523.821422,414.391327 522.368454,414.391327 L522.368454,414.391327 L522.368454,414.391327 Z M515,407.869583 C517.906571,407.869583 520.263152,409.816309 520.263152,412.217396 L520.263152,414.391302 L509.737544,414.391302 L509.737544,412.217396 L509.736848,412.217396 C509.736848,409.816309 512.093459,407.869583 515,407.869583 L515,407.869583 L515,407.869583 Z M523.947364,424.826093 C523.947364,425.546622 523.240604,426.130392 522.368454,426.130392 L507.631606,426.130392 C506.759396,426.130392 506.052667,425.546622 506.052667,424.826093 L506.052667,416.565234 C506.052667,415.84468 506.759426,415.260835 507.631606,415.260835 L522.368454,415.260835 C523.240635,415.260835 523.947364,415.844705 523.947364,416.565234 L523.947364,424.826093 L523.947364,424.826093 L523.947364,424.826093 Z" id="pw" sketch:type="MSShapeGroup"></path>
+					</g>
+				</g>
+			</svg>
+			<input type="password" name="password" id="pwd" value="" data-error-msg="密码不能为空" placeholder="请输入密码">
+			<label class="tip-txt" for="pwd"></label>
+		</div>
+
+		<div class="Controls wbordernone" id="captchas_div">
+			<svg class="iconphone" width="20px" height="20px" viewBox="0 0 20 20">
+				<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<g id="2-copy-2" transform="translate(-505.000000, -457.000000)" fill="#666">
+						<path d="M514.992364,462.720402 C514.752337,462.720402 514.558125,462.879933 514.558125,463.077076 L514.558125,468.784241 C514.558125,468.981384 514.752337,469.140915 514.992364,469.140915 C515.232364,469.140915 515.426576,468.981384 515.426576,468.784241 L515.426576,463.077076 C515.426576,462.879933 515.232364,462.720402 514.992364,462.720402 L514.992364,462.720402 Z M524.979837,460.500513 C524.421168,460.552589 523.839891,460.580179 523.242853,460.580179 C519.219511,460.580179 515.906875,459.331741 515.474864,457.726607 L515.426603,457.726607 L515.426603,457.369955 C515.426603,457.173147 515.232391,457.013259 514.992391,457.013259 C514.752364,457.013259 514.558152,457.17317 514.558152,457.369955 L514.558152,457.726629 L514.509891,457.726629 C514.077853,459.331763 510.76519,460.580201 506.741821,460.580201 C506.14481,460.580201 505.563533,460.552589 505.004891,460.500536 L505.004891,461.214799 C505.015217,461.215737 505.025462,461.216808 505.035815,461.217746 C505.015408,461.592723 505.004891,461.974732 505.004891,462.363705 C505.004891,470.440558 509.476196,476.988237 514.992391,476.988237 C520.50856,476.988237 524.979864,470.440558 524.979864,462.363705 C524.979864,461.974732 524.969321,461.592723 524.948913,461.217746 C524.959266,461.216808 524.969511,461.215759 524.979864,461.214799 L524.979864,460.500513 L524.979837,460.500513 Z M514.992364,476.274866 C509.956196,476.274866 505.873315,470.046652 505.873315,462.363705 C505.873315,461.994085 505.882962,461.631317 505.901576,461.27529 C506.178125,461.287299 506.458315,461.293638 506.741793,461.293638 C510.588886,461.293638 513.851549,460.163281 514.992364,458.597634 C516.133152,460.163281 519.395842,461.293638 523.242853,461.293638 C523.526386,461.293638 523.806576,461.287299 524.083125,461.27529 C524.101739,461.631317 524.111386,461.994107 524.111386,462.363705 C524.111386,470.046629 520.028533,476.274866 514.992364,476.274866 L514.992364,476.274866 Z M514.992364,469.85433 C514.752337,469.85433 514.558125,470.014196 514.558125,470.211004 L514.558125,470.924375 C514.558125,471.121518 514.752337,471.281094 514.992364,471.281094 C515.232364,471.281094 515.426576,471.121518 515.426576,470.924375 L515.426576,470.211004 C515.426576,470.014196 515.232364,469.85433 514.992364,469.85433 L514.992364,469.85433 Z" id="code" sketch:type="MSShapeGroup"></path>
+					</g>
+				</g>
+			</svg>
+			<input id="yzm" name="captchas" type="text" data-error-msg="验证码不能为空" class="Inp-v" placeholder="输入验证码"/> <i class="Ico"></i>
+			<label class="tip-txt" for="yzm"></label>
+			<div class="" style="position: absolute;right:8px;top:8px;" id="number_div" >
+				<img style="cursor: pointer;" src="captchas?point_size=28&code_len=4" class="Img-v" width="102" height="34"/>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="Controls Justify" style="border: 0 ; overflow:hidden ">
+		<button type="submit" class="Btn-a">登录</button>
+	</div>
+	<div class="Controls Bside" style=" border: 0">
+		<a class="link-forget cl-link-blue"  target="_blank" href="get_password.php?act=forget_pwd">忘记密码？</a>
+		<a class="link-home cl-link-blue" href="privilege.php?act=login" id="localLogin">返回本地登录&gt;&gt;</a>
+	</div>
+
+</form>
+<!--<script type="text/javascript" src="/omni/assets/auth/js/jquery-1.8.2.min.js"></script>-->
+<!--<script type="text/javascript" src="/omni/assets/auth/js/j.validate.js"></script>-->
+<!--<script type="text/javascript" src="/omni/assets/auth/js/auth.js"></script>-->
+
+<script>
+
+	var itself = parent.localUrl;
+	var local  = document.getElementById('localLogin');
+	local.onclick = function(){
+		if(itself!==undefined){
+			parent.window.location.href = itself;
+		}
+	};
+	/*
+	function clearLabel () {
+		this.parent().siblings('.Controls').each(function (idx, el) {
+			if ($(el).children('input').val() === '') {
+				$(el).children('.tip-txt').show();
+			}
+		});
+
+		this.siblings('.tip-txt').hide();
+	}
+
+	function hfLabel () {
+		if (this.val() == '') {
+			this.siblings('.tip-txt').show();
+		}
+	}
+
+	$('.Controls input').focus(function () {
+		clearLabel.call($(this));
+	}).blur(function () {
+		hfLabel.call($(this));
+	});
+
+	$('.Controls .tip-txt').click(function () {
+		$(this).siblings('input').focus();
+	});
+
+	$('#login form').submit(function(e){
+		var self = $(this);
+		var input = $(this).find('input:text:visible, input:password:visible');
+		for(var i = 0, j = input.length; i < j; i++) {
+			el = input.eq(i);
+			if(!el.val()) {
+				//el.addClass('Error').get(0).focus();
+				$(getTemplate($('#dialog-user-fatol').html(), {prompt: el.data('error-msg')})
+				).appendTo($(document.body));
+				closeDialog();
+				el.focus();
+				return false;
+			}
+			if (el.attr('name') === 'username') {
+
+
+			}
+		}
+		return true;
+	});
+
+	$('.Img-v').bind('click', function (e) {
+		$(this).attr('src', 'captchas?point_size=28&code_len=4&img_id=' + Math.random());
+		e.stopPropagation();
+	});
+
+	var rSelector = /^[#.]([\w-]+)/;
+	//模版解析编译
+	function getTemplate (tmplStr, data) {
+		if (rSelector.test(tmplStr)) {
+			tmplStr = $(tmplStr).html();
+		}
+		return tmplStr && tmplStr.replace(/\{([a-z]+)\}/i, function (val, v1) {
+				return data[v1] || '';
+			});
+	};
+
+	//定时关闭对话框
+	function closeDialog () {
+		var dialog = $('.validate-box'),
+			mask = $('#J_mask'),
+			dialog_hide = $('#J_dialog_hide');
+
+		function close () {
+			dialog.remove();
+			mask.hide();
+			dialog_hide.hide();
+			clearTimeout(timer);
+		}
+		var timer = setTimeout(close, 2000);
+	}
+
+	var login_failed_msg = {{.error}};
+	var login_need_captchas = {{.login_need_captchas}};
+	if(login_need_captchas){
+		document.getElementById('captchas_div').style.display='';
+		document.getElementById('number_div').style.display='';
+	}
+	if(login_failed_msg == "failed_too_many"){
+		$(getTemplate($('#dialog-user-fatol').html(), {prompt: '登陆失败，登录错误次数过多'})).appendTo($(document.body));
+		closeDialog();
+	}
+	if(login_failed_msg == "captchas_timeout"){
+		$(getTemplate($('#dialog-user-fatol').html(), {prompt: '登陆失败，验证码超时'})).appendTo($(document.body));
+		closeDialog();
+	}
+	if(login_failed_msg == "captchas_not_match"){
+		$(getTemplate($('#dialog-user-fatol').html(), {prompt: '登陆失败，验证码不匹配!'})).appendTo($(document.body));
+		closeDialog();
+	}
+	if(login_failed_msg == "captchas_not_empty"){
+		$(getTemplate($('#dialog-user-fatol').html(), {prompt: '登陆失败，验证码不能为空!'})).appendTo($(document.body));
+		closeDialog();
+	}
+	if(login_failed_msg == "username_password_not_match"){
+		$(getTemplate($('#dialog-user-fatol').html(), {prompt: '登陆失败，您的账号或密码不正确'})).appendTo($(document.body));
+		closeDialog();
+	}
+	/*
+	 var login_failed_msg = "$login_failed_msg";
+	 if(login_failed_msg && login_failed_msg != 'undefined') {
+	 $('#login .Controls:eq(1)').addClass('Error').find('.' + login_failed_msg).show();
+	 }
+
+	 if(typeof($login_need_captchas) != "undefined"){
+	 var login_need_captchas = $login_need_captchas;
+	 if(login_need_captchas){
+	 document.getElementById('captchas_div').style.display='';
+	 }
+	 }
+	 */
+
+</script>
+</body>
+</html>

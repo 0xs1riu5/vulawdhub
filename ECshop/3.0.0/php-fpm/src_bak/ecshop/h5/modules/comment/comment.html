@@ -1,0 +1,62 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="CommentController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          全部评价
+        </div>
+    </div>
+
+    <div class="app-content" infinite-scroll='loadMore()'>
+
+        <!-- Header -->
+        <div class="comment-header">
+            <div class="header-item" ng-class="{active: currentTab == TAB_ALL}" ng-click="touchTabAll()">
+                <span>全部</span>
+            </div>
+            <div class="header-item" ng-class="{active: currentTab == TAB_GOOD}" ng-click="touchTabGood()">
+                <span>好评</span>
+            </div>
+            <div class="header-item" ng-class="{active: currentTab == TAB_MEDIUM}" ng-click="touchTabMedium()">
+                <span>中评</span>
+            </div>
+            <div class="header-item" ng-class="{active: currentTab == TAB_BAD}" ng-click="touchTabBad()">
+                <span>差评</span>
+            </div>
+        </div>
+
+        <!-- List -->
+        <div class="comment-list" ng-if="comments && comments.length">
+            <div class="comment-item" ng-repeat="comment in comments track by $index" ng-click="touchComment(comment)">
+                <div class="item-info">
+                    <span class="user">{{comment.is_anonymous ? '匿名用户' : comment.author.nickname}}</span>
+                    <span class="rate">{{formatGrade(comment.grade)}}</span>
+                    <span class="time">{{comment.created_at | localTime}}</span>
+                </div>
+                <div class="item-body">
+                    {{comment.content}}
+                </div>
+                <div class="comment-line" ng-if="comment !== comments[comments.length-1]"></div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="isEmpty">
+            <div class="empty-item">
+                <img class="item-logo" ng-src="image/logo-comment-empty.png"/>
+                <div class="item-text">暂无任何评价</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="isLoaded && isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="isLoaded && isLastPage">
+            全部加载完毕
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,34 @@
+<!-- $Id: agency_list.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+
+{include file="pageheader.htm"}
+
+<form method="post" action="database.php?act=cleardata" name="clearForm" onsubmit="return confirmClear();">
+<div class="list-div" id="listDiv">
+{if !$yunqi_login}
+<table id="page-table" cellspacing="0">
+  <tr>
+    <th>{$lang.manager_username}</th>
+    <td><input type="text" name="username"></td>
+  </tr>
+  <tr>
+    <th>{$lang.manager_password}</th>
+    <td><input type="password" name="password"></td>
+  </tr>
+</table>
+{/if}
+<center>
+    <input name="clear" type="submit" id="btnSubmit" value="{$lang.clear_demo_data}" class="button" />
+</center>
+</div>
+</form>
+<script type="text/javascript">
+	function confirmClear() {
+		if (confirm("{$lang.confirm_clear_demo}")) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+</script>
+
+{include file="pagefooter.htm"}

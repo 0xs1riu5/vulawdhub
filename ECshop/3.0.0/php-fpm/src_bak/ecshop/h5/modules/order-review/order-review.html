@@ -1,0 +1,71 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="OrderReviewController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" ng-src="image/nav-left.png"/>
+
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            订单评价
+        </div>
+    </div>
+
+    <div class="app-content" ng-if="isLoaded">
+
+        <!-- Goods -->
+        <div class="review-goods">
+            <div class="goods-item" ng-repeat="goods in order.goods track by $index">
+                <div class="item-photo">
+                    <img ng-src="image/default-photo.png" lazy-img="{{goods.product.default_photo.large}}"/>
+                </div>
+                <div class="item-info">
+                    <div class="info-name">
+                        {{goods.product.name}}
+                    </div>
+                    <div class="info-attr">
+                        {{goods.property}}
+                    </div>
+                    <div class="info-grade" ng-click="touchGood(goods)">
+                        <img class="grade-icon" ng-src="image/face-smile-on.png" ng-if="ENUM.ORDER_GRADE.GOOD == goods.review.grade"/>
+                        <img class="grade-icon" ng-src="image/face-smile-off.png" ng-if="ENUM.ORDER_GRADE.GOOD != goods.review.grade"/>
+                        <span class="grade-name">
+                            好评
+                        </span>
+                    </div>
+                    <div class="info-grade" ng-click="touchMedium(goods)">
+                        <img class="grade-icon" ng-src="image/face-normal-on.png" ng-if="ENUM.ORDER_GRADE.MEDIUM == goods.review.grade"/>
+                        <img class="grade-icon" ng-src="image/face-normal-off.png" ng-if="ENUM.ORDER_GRADE.MEDIUM != goods.review.grade"/>
+                        <span class="grade-name">
+                            中评
+                        </span>
+                    </div>
+                    <div class="info-grade" ng-click="touchBad(goods)">
+                        <img class="grade-icon" ng-src="image/face-sad-on.png" ng-if="ENUM.ORDER_GRADE.BAD == goods.review.grade"/>
+                        <img class="grade-icon" ng-src="image/face-sad-off.png" ng-if="ENUM.ORDER_GRADE.BAD != goods.review.grade"/>
+                        <span class="grade-name">
+                            差评
+                        </span>
+                    </div>
+                </div>
+                <div class="item-textarea">
+                    <textarea type="text" placeholder="请在此输入评价" ng-model="goods.review.content"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="review-anon" ng-class="{active: isAnonymous}" ng-click="touchSetAnonymous()">
+            <div class="item-checkbox"></div>
+            <div class="item-title">
+                 匿名评论
+            </div>
+        </div>
+
+        <div class="review-submit" ng-click="touchSubmit()">
+            提交
+        </div>
+
+    </div>
+
+</div>

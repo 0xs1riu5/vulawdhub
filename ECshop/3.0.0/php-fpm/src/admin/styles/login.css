@@ -1,0 +1,565 @@
+body{
+	width:100%;
+	height:979px;
+	font-family:"Microsoft YaHei",Georgia;
+	font-size:12px;
+  margin:0;
+	padding:0;
+}
+ul,li{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+a {
+	text-decoration: none;
+}
+.content{
+	width:380px;
+	position:relative;
+}
+*+html .content{
+	margin-top:60px;
+}
+.content h1{
+	width:233px;
+	height:128px;
+	background:url(loginlogo1.png) no-repeat;
+	text-indent:-999999px;
+	position:absolute;
+	top:100px;
+	left:130px;
+}
+
+.content .button { width:300px; height:28px; line-height:28px; margin:10px 40px 0 40px;}
+.content .button a { display:block; width:150px; float:right;font:normal 12px/28px simsun;color:#90d5fd; text-align:right; text-decoration:underline;}
+.content .authorize,.content .authorize a { display:block; width:110px; margin:0 auto;background:url(zhongshen.png) no-repeat;text-indent:40px; font-size:14px;color: #fff;
+        text-decoration: none; }
+.content .noauthorize,.content .noauthorize a { display:block; float:left;width:110px;background:url(shouquan.png) no-repeat;text-indent:40px; font-size:14px;color: #fff;
+    text-decoration: none;}
+.content .greencard,.content .greencard a { display:block;width:110px; margin:0 auto;background:url(greencard-new.png) no-repeat;text-indent:40px; font-size:14px;color: #fff;
+    text-decoration: none;}
+
+.content .button img { border:none;}
+
+.content .body {
+    position: relative;
+	width: 380px;
+    height: auto;
+    padding: 0;
+    padding-bottom: 40px;
+    background: url(../images/btm-clound.png) no-repeat bottom center;
+    margin-top: 50px;
+}
+.content .body .import {
+    width: 300px;
+    background: rgba(255,255,255,.8);
+    border: none;
+    border-radius: 0;
+    color: #A1A1A1;
+    padding: 35px 25px 20px;
+    margin-left: 15px;
+    overflow: hidden;
+}
+
+.content .body ul li {
+  margin: 5px 0
+}
+.content .inputstylefocus{
+	border:none;
+	width:156px;
+	height:22px;
+	background:url(logininput.png) no-repeat 0 -27px;
+	padding:5px 3px 0 3px;
+	color:#000;
+
+}
+.content .inputstyleyz{
+	border:none;
+	width:106px;
+	height:22px;
+	background:url(logininput.png) no-repeat -54px;
+	padding:5px 3px 0 3px;
+	color:#999;
+
+}
+.content .inputstyleyzfocus{
+	border:none;
+	width:106px;
+	height:22px;
+	background:url(logininput.png) no-repeat 0 -81px;
+	padding:5px 3px 0 3px;
+	color:#000;
+
+}
+.loginbtn,.loginbtnfocus {
+	display: block;
+    width: 100%;
+    line-height: 51px;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #FFF;
+    text-align: center;
+    background-color: #1970b8;
+    border-radius: 5px;
+    padding: 0;
+    border: 0;
+	cursor: pointer;
+}
+.message{
+	position:absolute;
+	top:95px;
+	left:0;
+	width:380px;
+	height:40px;
+	line-height:40px;
+	background:url(warning.gif) no-repeat 25px;
+	color:#fb8420;
+	font-size:14px;
+	text-indent:50px;
+}
+
+.cloud-message{
+  top:124px;
+}
+
+/*登录页修改*/
+.login-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #212a2c url(../images/login-bg.png) no-repeat center center;
+    background-size: cover;
+}
+.shopex-logo {
+    height: 44px;
+    padding: 40px 0 40px 50px;
+}
+.shopex-logo img {
+    width: 150px;
+    height: 44px;
+    padding:0;
+}
+.content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%,-50%);
+	-moz-transform: translate(-50%,-50%);
+	-ms-transform: translate(-50%,-50%);
+	-o-transform: translate(-50%,-50%);
+	transform: translate(-50%,-50%);
+}
+.line-shop {
+	width:380px;
+}
+.line-shop img {
+	width:380px;
+	height:44px;
+}
+.copyright {
+    width: 100%;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    bottom: 30px;
+}
+.auto-login {
+    margin-top: 12px;
+    overflow: hidden;
+}
+.auto-login input[type="checkbox"] {
+    float: left;
+    width: 15px;
+    height: 15px;
+    margin: 2px 8px 0 0;
+}
+.auto-login a {
+	display: block;
+	float:right;
+	width:80px;
+    text-align: right;
+    color: #A1A1A1;
+}
+.import-msg {
+	border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.import-msg .ipt {
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+.ipt-name {
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    z-index: 10;
+}
+.ipt input[type="text"],.ipt input[type="password"] {
+	background-color: #fff;
+    color: #8a8a8a;
+    width: 100%;
+    height: 49px;
+    line-height: 49px;
+    text-indent: 50px;
+    box-shadow: inset 30px 30px 0 20px #fff;
+    border:0;
+    padding:0;
+}
+.verifycode-img {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width:102px;
+	height:34px;
+}
+.verifycode-img img {
+	width:102px;
+	height:34px;
+	cursor:pointer;
+}
+.clound {
+	width:300px;
+	padding:10px 25px;
+	margin-left:15px;
+	background:#e4dfdb;
+	border:0;
+}
+.clound h3 {
+	margin:0;
+	font:normal 12px/30px "microsoft yahei";
+	color:#a1a1a1;
+}
+.clound span {
+	display: inline-block;
+	margin-left:10px;
+	color:#c2bfbd;
+}
+.clound img {
+	width:46px;
+	height:46px;
+	margin:10px 30px 0 30px;
+	cursor:pointer;
+}
+/*云起登录页*/
+.yq_login-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #212a2c url(../images/cloud_login.png) no-repeat center center;
+    background-size: cover;
+}
+.yq-logo img {
+	width:206px;
+	height:66px;
+    margin: 0 87px;
+}
+.yq-logo p {
+	text-align: center;
+	font: 16px/30px 'microsoft yahei';
+	color:#7f8084;
+}
+.cloud-loginbtn,.cloud-loginbtnfocus {
+	display: block;
+    width: 100%;
+    line-height: 51px;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #FFF;
+    text-align: center;
+    background-color: #f18030;
+    border-radius: 5px;
+    padding: 0;
+    border: 0;
+	cursor: pointer;
+}
+.cloud-passw {
+	margin-top:12px;
+  overflow: hidden;
+}
+.cloud-passw a {
+	display:inline-block;
+	color:#7e7e7e;
+}
+.content .cloud-body {
+	background:none;
+  padding-bottom: 0;
+  width: 350px;
+  margin: 0 15px;
+  margin-top: 50px;
+}
+.cloud-form {
+	width: 300px;
+	background: rgba(255,255,255,.8);
+	border: none;
+	border-radius: 0;
+	color: #A1A1A1;
+	padding: 35px 25px 20px;
+	overflow: hidden;
+}
+.cloudform-iframe {
+	width:300px;
+	height:223px;
+}
+.no-account {
+	width:350px;
+    padding:25px 0;
+	background: rgba(112,120,140,.75);
+	text-align: center;
+}
+.no-account>p {
+	height:24px;
+	line-height: 24px;
+	margin:0;
+	font-size:14px;
+	color:#fff;
+}
+.no-account>a {
+	display: block;
+    border: 1px solid #fff;
+    height: 40px;
+    width: 300px;
+    margin: 10px auto 0;
+    border-radius: 5px;
+    font: 14px/40px 'Microsoft Yahei';
+    color: #fff;
+}
+/*云起激活页面*/
+.ecshop-logo{
+  width: 900px;
+  height: 65px;
+  margin: 0 auto;
+  padding-top: 70px;
+}
+.ecshop-logo img{
+  width: 230px;
+  height: 65px;
+}
+.panel-hint {
+    position: fixed;
+    top: 20%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    margin: 0 auto;
+    width: 795px;
+    height: 502px;
+    background: #fff;
+    -webkit-box-shadow: 0px 3px 15px rgba(0,0,0,.3);
+    -moz-box-shadow: 0px 3px 15px rgba(0,0,0,.3);
+    box-shadow: 0px 3px 15px rgba(0,0,0,.3);
+    color:#515153;
+}
+.panel-icloud{
+  /*display: none;*/
+  width: 820px;
+  height: 425px;
+  background: #fff;
+  border-radius: 5px;
+  padding: 20px 40px;
+}
+.panel-icloud .panel-cross{
+  text-align: right;
+  color: #7e7e7e;
+}
+.panel-icloud .panel-cross span{
+  cursor: pointer;
+}
+
+.panel-icloud .panel-cross a{
+  color: #7e7e7e;
+  text-decoration:none;
+}
+.panel-icloud .panel-title .tit{
+  font-size: 22px;
+  font-weight: bold;
+}
+.panel-icloud .panel-title p{
+  font-size: 14px;
+}
+.panel-icloud .panel-left{
+  text-align: center;
+  float: left;
+  width: 300px;
+  padding: 84px 70px 30px 30px;
+  border-right: 1px dashed #ddd;
+}
+.panel-icloud .panel-left span{
+  color: #f07f2f;
+  font-size: 20px;
+}
+.panel-icloud .panel-left p{
+  color: #f07f2f;
+  font-size: 14px;
+  padding-bottom: 80px;
+}
+.panel-icloud .panel-left a{
+  display: block;
+  color: #f07f2f;
+  width: 100%;
+  height: 50px;
+  font-size: 14px;
+  line-height: 50px;
+  border-radius: 5px;
+  background: #fff7f2;
+  border: 1px solid #f79327;
+}
+.panel-icloud .panel-left a:hover{
+  text-decoration: none;
+}
+.panel-icloud .panel-right{
+  float: left;
+  width: 300px;
+  height: 282px;
+  padding: 0 30px 0 70px;
+}
+.panel-icloud .panel-right h5{
+  display: block;
+  width: 70px;
+  height: 24px;
+  margin: 0 auto;
+  background: url(../images/icloud-sm.png) no-repeat;
+  text-indent: -9999px;
+}
+.panel-icloud .panel-right iframe{
+  width: 300px;
+  height: 225px;
+}
+
+/*遮罩*/
+.mask-black{
+  /*display: none;*/
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(51,51,51,.8);
+}
+.cloud_installbg {
+  width: 100%;
+  height: 100%;
+  background: #212a2c url(../images/authorize-yqbg.jpg) no-repeat center center;
+  background-size: cover;
+}
+
+
+
+/*login page --by evelyn*/
+.btn-outline{
+display: block;
+cursor: pointer;
+border: 1px solid #ddd;
+line-height: 50px;
+height: 50px;
+width: 300px;
+color: #fff;
+margin-top: 10px;
+border-radius: 5px;
+background-color: transparent;
+}
+.login-hd{
+padding: 40px 0 40px 50px;
+}
+.center-wrap{
+position: absolute;
+top: 50%;
+left: 50%;
+-webkit-transform: translate(-50%,-50%);
+-moz-transform: translate(-50%,-50%);
+-ms-transform: translate(-50%,-50%);
+-o-transform: translate(-50%,-50%);
+transform: translate(-50%,-50%);
+text-align: center;
+}
+.center-wrap .bd-logo p{
+color: #7f8084;
+}
+.center-wrap .bd-logo img {
+width: 206px;
+height: 65px;
+}
+.login-panel {
+width: 300px;
+background: rgba(255,255,255,.85);
+border: none;
+border-radius: 0;
+color: #A1A1A1;
+padding: 35px 25px 20px;
+overflow: hidden;
+margin-top: 50px;
+}
+.login-panel input[type=text], .login-panel input[type=password] {
+-webkit-appearance: none;
+font-family: Microsoft Yahei;
+border: none;
+background-color: #fff;
+color: #8a8a8a;
+width: 100%;
+height: 48px;
+line-height: 49px;
+text-indent: 50px;
+box-shadow: inset 30px 30px 0 20px #fff;
+}
+.login-panel .bside input[type="checkbox"] {
+float: left;
+width: 15px;
+height: 15px;
+margin: 2px 8px 0 0;
+}
+.login-panel .bside label {
+color: #666;
+float: left;
+}
+.login-panel .bside a {
+font-size: 12px;
+color: #7e7e7e;
+float: right;
+text-decoration: none;
+display: inline-block;
+text-align: right;
+}
+.login-cloud{
+margin: 0 auto;
+width: 300px;
+padding: 15px 25px 20px;
+background: rgba(112,120,140,.75);
+}
+.login-cloud .hd{
+position: relative;
+color: #fff;
+line-height: 2;
+}
+.login-cloud .hd span{
+color: #c2bfbd;
+}
+.login-cloud img{
+width: 100%;
+cursor: pointer;
+}
+.login-panel .main{
+border-radius: 5px;
+overflow: hidden;
+height: 260px;
+}
+.copy-right{
+position: fixed;
+width: 100%;
+color: #efefef;
+bottom: 30px;
+font-size: 12px;
+text-align: center;
+}
+.error-hint{
+display: inline-block;
+margin-bottom: 10px;
+text-align: left;
+font-size: 12px;
+color: #9A9A9A;
+}

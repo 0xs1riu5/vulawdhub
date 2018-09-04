@@ -1,0 +1,43 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="foot-body">
+  <div class="bads"><img src="images/bottom.jpg"></div>
+  <div class="clear10"></div>
+  <!--底部导航 start-->
+ <!--{if $helps}-->
+    <div class="foot-help">
+      <!-- {foreach from=$helps item=help_cat name=foo} -->
+        {if $smarty.foreach.foo.iteration < 5}
+        <dl>
+          <dt class="xs-{$smarty.foreach.foo.iteration}">{$help_cat.cat_name}</dt>
+            <!-- {foreach from=$help_cat.article item=item} -->
+          <dd><a href="{$item.url}" target="_blank" title="{$item.title|escape:html}">{$item.short_title}</a></dd>
+          <!-- {/foreach} --> 
+        </dl>
+        {/if} 
+        <!-- {/foreach} --> 
+        <div class="foot-weixin">
+          <div class="weixin-txt">关注demo微信</div>
+          <div class="weixin-pic">
+            <img src="images/weixin.jpg">
+          </div>
+        </div>
+    </div>
+    <!--{/if}--> 
+    
+   
+  <!--底部导航 end-->
+  <div class="blank"></div>
+  <!--版权 start-->
+<div class="footer_info"> {$copyright}
+      {$shop_address} {$shop_postcode}<br />
+      {foreach from=$lang.p_y item=pv}{$pv}{/foreach}{$licensed}<br />
+      {if $stats_code}
+      <div >{$stats_code}</div>
+      {/if}
+    </div>
+  <div class="clear10"></div>
+</div>
+ 
+
+ 
+

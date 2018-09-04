@@ -1,0 +1,59 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="MyFavoriteController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            我的收藏
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <!-- Favorite -->
+    <div class="app-content" infinite-scroll='myFavoriteModel.loadMore()'>
+
+        <div class="favorite-list" ng-if="myFavoriteModel.products && myFavoriteModel.products.length">
+            <div class="list-item" ng-repeat="product in myFavoriteModel.products track by $index">
+                <div class="item-photo" ng-click="touchProduct(product)">
+                    <img ng-src="{{product.default_photo.large}}"/>
+                </div>
+                <div class="item-info">
+                    <div class="info-delete" ng-click="touchDelete(product)">
+                        <img src="image/ind-delete.png">
+                    </div>
+                    <div class="info-name">
+                        {{product.name}}
+                    </div>
+                    <div class="info-attr" >
+                        <div class="info-text">
+                            销量：{{product.sales_count}}&nbsp;&nbsp;库存：{{product.good_stock}}
+                        </div>
+                    </div>
+                    <div class="info-price">
+                        <span class="price-shop">{{product.current_price| currency:"￥"}}</span>
+                        <span class="price-market">{{product.price| currency:"￥"}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="myFavoriteModel.isEmpty">
+            <div class="empty-item">
+                <img class="item-logo" ng-src="image/logo-favorite-empty.png"/>
+                <div class="item-text">暂无任何收藏</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="myFavoriteModel.isLoaded && myFavoriteModel.isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="myFavoriteModel.isLoaded && myFavoriteModel.isLastPage">
+            全部加载完毕
+        </div>
+
+    </div>
+
+</div>

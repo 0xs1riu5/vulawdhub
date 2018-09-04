@@ -1,0 +1,75 @@
+<div class="app-container with-navbar" ng-controller="MyBalanceController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            可用资金
+        </div>
+    </div>
+
+    <div class="app-content">
+        <div class="balance-content">
+            <div class="withdraw-header">
+                <img class="balance-icon" src="image/e15_rmb.png"/>
+            </div>
+            <div class="balance-title"> 可用资金</div>
+            <div class="balance-amount"><span class="balance-yuan">¥</span>{{balanceModel.balanceAmount}}</div>
+            <div class="withdraw" ng-click="touchWithDraw()">
+                提现
+            </div>
+            <div class="withdraw-history" ng-click="touchWithDrawHistory()">
+                提现记录
+            </div>
+
+            <div class="balance-detail" ng-click="touchBalanceDetail()">
+                查看资金明细
+            </div>
+        </div>
+
+        <!-- Dialog -->
+        <div id="dialog" ng-show="showDialog">
+            <div class="mask" ng-click="touchDialogCancel()">
+            </div>
+            <div class="withdraw-dialog">
+                <div class="dialog-title">
+                    提现
+                </div>
+                <div class="dialog-content">
+                    <div class="item-input">
+                        <div class="withdraw-title">提现金额</div>
+                        <div class="withdraw-group">
+                            <div class="control-label">¥</div>
+                            <input type="number" class="input_money" placeholder="" maxlength="10"
+                                   ng-model="input.withdraw"/>
+                        </div>
+                        <div class="horizontal-line"></div>
+                        <div class="withdraw-money-header">
+                            <div class="input-tips">
+                                可提金额 ¥{{balanceModel.balanceAmount}}
+                            </div>
+                            <div class="withdraw-all" ng-click="touchWithDrawAll()">
+                                全部提现
+                            </div>
+                        </div>
+                        <input type="text" class="input_memo" placeholder="填写银行名称和银行卡号" ng-model="input.memo"/>
+                    </div>
+                </div>
+                <div class="dialog-button">
+
+                    <div class="button left" ng-click="touchDialogCancel()">
+                        取消
+                    </div>
+                    <div class="button right" ng-click="touchDialogConfirm()">
+                        确认
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

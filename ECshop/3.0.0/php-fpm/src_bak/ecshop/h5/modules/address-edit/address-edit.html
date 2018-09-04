@@ -1,0 +1,99 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="AddressEditController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          收货地址
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="address-form">
+      <div class="form-item">
+        <div class="item-title">
+          联系姓名
+        </div>
+        <div class="item-input">
+          <input type="text" placeholder="填写姓名" ng-model="name"/>
+        </div>
+      </div>
+      <div class="form-item">
+        <div class="item-title">
+          联系电话
+        </div>
+        <div class="item-input">
+          <input type="text" placeholder="填写手机号" ng-model="mobile"/>
+        </div>
+      </div>
+      <div class="form-item" ng-click="touchPickerShow()">
+        <div class="item-title">
+          所在地区
+        </div>
+        <div class="item-select" ng-if="!regions">
+          省、市、区
+        </div>
+        <div class="item-value" ng-if="regions">
+          {{formatRegions(regions)}}
+        </div>
+        <img class="item-arrow" src="image/nav-right.png"/>
+      </div>
+      <div class="form-item">
+        <div class="item-title">
+          详细地址
+        </div>
+        <div class="item-textarea">
+          <textarea type="text" placeholder="填写详细地址" ng-model="address"></textarea>
+        </div>
+      </div>
+      <!-- <div class="form-item" ng-class="{active: isDefault}" ng-click="touchSetDefault()">
+        <div class="item-title">
+          设置默认
+        </div>
+        <div class="item-checkbox"></div>
+      </div> -->
+    </div>
+
+    <!-- Picker -->
+    <div class="address-mask" ng-show="showPicker" ng-animate="{enter: 'mask-anim-enter', leave: 'mask-anim-leave'}" ng-click="touchPickerCancel()"></div>
+    <div class="address-picker" ng-show="showPicker" ng-animate="{enter: 'picker-anim-enter', leave: 'picker-anim-leave'}">
+      <div class="picker-header">
+        {{pickerRegionName || '请选择地区'}}
+      </div>
+      <div class="picker-list">
+        <div class="list-loading" ng-if="addressEditModel.isLoading">
+          正在加载...
+        </div>
+        <div class="list-item" ng-repeat="region in pickerData track by $index" ng-click="touchPickerRegion(region)" ng-if="pickerData && pickerData.length">
+          {{region.name}}
+          <img class="item-arrow" src="image/nav-right.png" ng-if="region.regions && region.regions.length"/>
+        </div>
+      </div>
+      <div class="picker-cancel" ng-click="touchPickerCancel()">
+        取消
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="address-action">
+      <div class="bar-cancel" ng-click="touchCancel()">
+        取消
+      </div>
+        <div class="bar-save" ng-click="touchSave()">
+            保存
+        </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="address-bar" ng-if="addressEditModel.consignee">
+        <div class="bar-delete" ng-click="touchDelete()">
+            删除地址
+        </div>
+    </div>
+
+</div>
+

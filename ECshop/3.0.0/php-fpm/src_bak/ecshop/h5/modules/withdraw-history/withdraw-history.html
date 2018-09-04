@@ -1,0 +1,83 @@
+<div class="app-container with-navbar with-loader" ng-controller="WithDrawHistoryController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" ng-src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          提现记录
+        </div>
+    </div>
+
+    <div class="app-content" infinite-scroll='withDrawHistoryModel.loadMore()'>
+
+        <div class="withdraw-history-list" ng-if="withDrawHistoryModel.withdraws && withDrawHistoryModel.withdraws.length">
+            <div class="list-item" ng-repeat="withdraw in withDrawHistoryModel.withdraws track by $index" >
+                <div class="item-header">
+                    <div class="header-status blue" ng-if="withdraw.status == ENUM.WITHDRAW_STATUS.WAIT">待处理</div>
+                    <div class="header-status greed" ng-if="withdraw.status == ENUM.WITHDRAW_STATUS.FINISH">已完成</div>
+                    <div class="header-status gray" ng-if="withdraw.status == ENUM.WITHDRAW_STATUS.CANCEL">已取消</div>
+                    <div class="header-status red" ng-if="withdraw.status == ENUM.WITHDRAW_STATUS.CANCEL">已取消</div>
+                    <div class="header-money" >¥{{withdraw.cash}}</div>
+                </div>
+                <div class="item-header">
+                    <div class="admin-memo" >{{withdraw.admin_memo?withdraw.admin_memo:" "}}</div>
+                    <div class="header-money" >提现金额</div>
+                </div>
+                <div class="horizontal-line"></div>
+                <div class="item-footer">
+                    <div class="footer-time">
+                            申请时间：{{withdraw.update_at?withdraw.update_at:withdraw.create_at | localTime}}
+                    </div>
+                    <div class="member-memo">
+                        会员备注：{{withdraw.member_memo?withdraw.member_memo:" "}}
+                    </div>
+                    <div class="footer" ng-if="withdraw.status == ENUM.WITHDRAW_STATUS.WAIT" ng-click="touchCancel(withdraw)">
+                        <div class="footer-button dark" >
+                            取消提现
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="withDrawHistoryModel.isEmpty">
+            <div class="empty-item">
+                <img class="item-logo" ng-src="image/logo-order-empty.png"/>
+                <div class="item-text">暂无任何提现记录</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="withDrawHistoryModel.isLoaded && withDrawHistoryModel.isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="withDrawHistoryModel.isLoaded && withDrawHistoryModel.isLastPage">
+            全部加载完毕
+        </div>
+
+        <!-- Dialog -->
+        <div id="dialog" ng-show="showDialog">
+            <div class="mask">
+            </div>
+            <div class="dialog danger">
+                <div class="dialog-title">
+                    确认取消
+                </div>
+                <div class="dialog-content">
+                    是否取消该提现
+                </div>
+                <div class="dialog-button">
+                    <div class="button left" ng-click="touchDialogCancel()">
+                        取消
+                    </div>
+                    <div class="button right" ng-click="touchDialogConfirm()">
+                        确认
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

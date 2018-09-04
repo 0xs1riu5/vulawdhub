@@ -1,0 +1,65 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="CashgiftSelectController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          选择红包
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <!-- Cashgift -->
+    <div class="app-content" infinite-scroll='cashgiftSelectModel.loadMore()'>
+
+      <div class="cashgift-list" ng-if="cashgiftSelectModel.isLoaded">
+          <div class="list-item" ng-class="{active: !selectedId}" ng-click="touchClear()">
+              <div class="item-checkbox"></div>
+              <div class="item-tips">
+                  不使用红包
+              </div>
+          </div>
+      </div>
+
+      <!-- Cashgift -->
+      <div class="cashgift-list" ng-if="cashgiftSelectModel.cashgifts && cashgiftSelectModel.cashgifts.length">
+          <div class="list-item" ng-class="{active: selectedId == cashgift.id}" ng-repeat="cashgift in cashgiftSelectModel.cashgifts track by $index" ng-click="touchCashgift(cashgift)">
+              <div class="item-checkbox"></div>
+              <div class="item-info">
+                  <div class="info-name">{{cashgift.name}}</div>
+                  <div class="info-condition">满￥{{cashgift.condition}}可使用</div>
+                  <div class="info-expires">有效期：{{cashgift.expires  | localTime}}</div>
+              </div>
+              <div class="item-value">
+                  ￥<em>{{cashgift.value}}</em>
+              </div>
+          </div>
+      </div>
+
+      <div class="empty" ng-if="cashgiftSelectModel.isEmpty">
+          <div class="empty-item">
+              <img class="item-logo" ng-src="image/logo-cashgift-empty.png"/>
+              <div class="item-text">暂无任何可用红包</div>
+          </div>
+      </div>
+
+      <div class="loading-more" ng-if="cashgiftSelectModel.isLoaded && cashgiftSelectModel.isLoading">
+          正在加载...
+      </div>
+      <div class="loading-more" ng-if="cashgiftSelectModel.isLoaded && cashgiftSelectModel.isLastPage">
+          全部加载完毕
+      </div>
+
+      <div class="cashgift-bar fixed-bottom">
+        <div class="bar-confirm active" ng-click="touchConfirm()">
+          确认
+        </div>
+      </div>
+
+    </div>
+
+</div>
+

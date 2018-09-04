@@ -1,0 +1,144 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="ProfileController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-title">
+            个人中心
+        </div>
+    </div>
+
+    <div class="app-content">
+        <div class="profile-head">
+            <img class="head-avatar" ng-src="image/default-avatar.png" lazy-img="{{user.avatar.thumb}}"/>
+
+            <div class="head-info" ng-click="touchSignin()">
+                <div class="info-name">{{isSignIn() ? userName: '点击登录'}}</div>
+                <div class="info-grade" ng-if="isSignIn()">{{user.rank ? user.rank.name : '默认等级'}}</div>
+            </div>
+        </div>
+
+        <div class="profile-item" ng-click="touchAllOrders()">
+            <img class="item-icon" src="image/icon-order.png"/>
+
+            <div class="item-name">我的订单</div>
+            <div class="item-desc">查看全部订单</div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-menu">
+            <div class="menu-item" ng-click="touchOrderCreated()">
+                <img class="item-icon" src="image/status-created.png"/>
+
+                <div class="item-badge" ng-if="cartModel.subtotal && cartModel.subtotal.created > 0">
+                    {{cartModel.subtotal.created}}
+                </div>
+                <div class="item-text">待付款</div>
+            </div>
+            <div class="menu-item" ng-click="touchOrderPayed()">
+                <img class="item-icon" src="image/status-paied.png"/>
+
+                <div class="item-badge" ng-if="cartModel.subtotal && cartModel.subtotal.paid > 0">
+                    {{cartModel.subtotal.paid}}
+                </div>
+                <div class="item-text">待发货</div>
+            </div>
+            <div class="menu-item" ng-click="touchOrderDelivering()">
+                <img class="item-icon" src="image/status-delivering.png"/>
+
+                <div class="item-badge" ng-if="cartModel.subtotal && cartModel.subtotal.delivering > 0">
+                    {{cartModel.subtotal.delivering}}
+                </div>
+                <div class="item-text">待收货</div>
+            </div>
+            <div class="menu-item" ng-click="touchOrderDelivered()">
+                <img class="item-icon" src="image/status-deliveried.png"/>
+
+                <div class="item-badge" ng-if="cartModel.subtotal && cartModel.subtotal.deliveried > 0">
+                    {{cartModel.subtotal.deliveried}}
+                </div>
+                <div class="item-text">待评价</div>
+            </div>
+        </div>
+
+        <div class="profile-item" ng-click="touchFav()">
+            <img class="item-icon" src="image/icon-favorite.png"/>
+
+            <div class="item-name">我的收藏</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-item" ng-click="touchAddress()">
+            <img class="item-icon" src="image/icon-address.png"/>
+
+            <div class="item-name">收货地址</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-item" ng-click="touchScore()">
+            <img class="item-icon" src="image/icon-score.png"/>
+            <div class="item-name">我的积分</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-item" ng-click="touchCashGift()">
+            <img class="item-icon" src="image/icon-cashgift.png"/>
+            <div class="item-name">我的红包</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-item" ng-click="touchBonus()" ng-if="authorize">
+            <img class="item-icon" src="image/e0_recommend.png"/>
+            <div class="item-name">我的推荐</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-item" ng-click="touchBalance()" ng-if="authorize">
+            <img class="item-icon" src="image/e0_balance.png"/>
+            <div class="item-name">我的资金</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-item" ng-click="touchHelps()">
+            <img class="item-icon" src="image/icon-article.png"/>
+            <div class="item-name">使用帮助</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-item" ng-click="touchPassword()" ng-if="!isWeixin()">
+            <img class="item-icon" src="image/icon-article.png"/>
+
+            <div class="item-name">修改密码</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+        <div class="profile-submit" ng-click="touchSignout()" ng-if="isSignIn()">
+            退出登录
+        </div>
+
+        <div class="tabbar fixed-bottom">
+            <div class="tab" ng-click="goHome()">
+                <img class="tab-icon" src="image/tab-home-normal.png"/>
+            </div>
+            <div class="tab" ng-click="goCategory()">
+                <img class="tab-icon" src="image/tab-category-normal.png"/>
+            </div>
+            <div class="tab" ng-click="goCart()">
+                <img class="tab-icon" src="image/tab-cart-normal.png"/>
+
+                <div class="tab-badge" ng-if="cartModel.total > 0">
+                    {{cartModel.total}}
+                </div>
+            </div>
+            <div class="tab active" ng-click="goProfile()">
+                <img class="tab-icon" src="image/tab-profile-active.png"/>
+            </div>
+        </div>
+    </div>
+</div>

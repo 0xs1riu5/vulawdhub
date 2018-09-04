@@ -1,0 +1,30 @@
+<div class="app-container with-navbar" ng-controller="SearchController">
+
+    <div class="navbar fixed-top">
+        <div class="search-inline">
+            <img class="search-icon" src="image/ind-search.png"/>
+            <form ng-submit="touchSearch()">
+                <input class="search-text" ng-model="currentKeyword" placeholder="请输入您要搜索的商品"></input>
+            </form>
+        </div>
+        <div class="search-cancel" ng-click="goBack()">取消</div>
+    </div>
+
+    <div class="app-content">
+        <div class="search-header" ng-if="history && history.length">
+            <img class="header-icon" src="image/ind-history.png"/>
+            最近搜索
+        </div>
+        <div class="search-keywords" ng-if="history && history.length">
+            <div class="keyword" ng-repeat="keyword in history track by $index" ng-click="touchKeyword(keyword)">{{keyword}}</div>
+        </div>
+        <div class="search-header" ng-if="keywords && keywords.length">
+            <img class="header-icon" src="image/ind-hot.png"/>
+            热门搜索
+        </div>
+        <div class="search-keywords" ng-if="keywords && keywords.length">
+            <div class="keyword" ng-repeat="keyword in keywords track by $index" ng-click="touchKeyword(keyword.content)">{{keyword.content}}</div>
+        </div>
+    </div>
+
+</div>

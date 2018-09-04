@@ -1,0 +1,66 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="InvoiceSelectController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          发票信息
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <!-- Type -->
+    <div class="invoice-type active" ng-if="types && types.length && contents && contents.length">
+      <div class="type-title">
+        发票类型
+      </div>
+      <div class="type-button" >
+        <div class="button" ng-class="{active:selectedType.id == type.id}" ng-repeat="type in types" ng-click="touchType(type)">
+            {{type.name}}
+            <!-- <span ng-if="type.tax > 0">({{type.tax}}%)</span> -->
+        </div>
+      </div>
+      <!-- <div class="type-tips">
+        怕纸质发票丢失？试试电子发票吧！
+      </div> -->
+    </div>
+
+    <!-- Head -->
+    <div class="invoice-head" ng-class="{active: selectedType}" ng-if="types && contents">
+      <div class="head-title">
+        发票抬头
+      </div>
+      <div class="head-input">
+        <input type="text" placeholder="填写个人/公司名称" ng-disabled="noInvoice || !selectedType" ng-model="input.title"/>
+      </div>
+    </div>
+
+    <!-- Detail -->
+    <div class="invoice-detail" ng-class="{active: selectedType}" ng-if="types && contents">
+      <div class="detail-title">
+        发票明细
+      </div>
+      <div class="detail-item" ng-class="{active: selectedContent.id == content.id}" ng-repeat="content in contents" ng-click="touchContent(content)">
+        <div class="item-radio"></div>
+        <div class="item-name">{{content.name}}</div>
+      </div>
+    </div>
+
+    <div class="invoice-detail active">
+      <div class="detail-item" ng-class="{active: noInvoice}" ng-click="touchToggle()">
+        <div class="item-checkbox"></div>
+        <div class="item-name">不要发票</div>
+      </div>
+    </div>
+
+    <div class="invoice-bar fixed-bottom">
+      <div class="bar-confirm" ng-class="{active: selectedType && selectedContent}" ng-click="touchConfirm()">
+        确认
+      </div>
+    </div>
+
+</div>
+

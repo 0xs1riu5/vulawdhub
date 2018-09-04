@@ -1,0 +1,160 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="OrderDetailController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" ng-src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          订单详情
+        </div>
+    </div>
+
+    <div class="app-content" ng-if="isLoaded">
+
+        <!-- Status -->
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.CREATED">
+            <img ng-src="image/icon-order-light.png">等待买家付款
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.PAID">
+            <img ng-src="image/icon-order-light.png">等待卖家发货
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING">
+            <img ng-src="image/icon-order-light.png">等待买家收货
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED">
+            <img ng-src="image/icon-order-light.png">交易成功
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.FINISHED">
+            <img ng-src="image/icon-order-light.png">交易成功
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.CANCELLED">
+            <img ng-src="image/icon-order-light.png">交易取消
+        </div>
+
+        <!-- Address -->
+        <div class="order-address">
+            <div class="address-contact">
+                {{order.consignee.name}} {{order.consignee.mobile || order.consignee.tel}}
+            </div>
+            <div class="address-detail">
+                {{order.consignee.regions}}
+                &nbsp;
+                {{order.consignee.address}}
+            </div>
+        </div>
+
+        <!-- Goods -->
+        <div class="order-goods">
+            <div class="goods-item" ng-repeat="goods in order.goods track by $index">
+                <div class="item-photo">
+                    <img ng-src="image/default-photo.png" lazy-img="{{goods.product.photos[0].large}}" ng-click="touchProduct(goods.product)"/>
+                </div>
+                <div class="item-info">
+                    <div class="info-name">
+                        {{goods.product.name}}
+                    </div>
+                    <div class="info-attr">
+                        {{goods.property}}
+                    </div>
+                    <div class="info-price">
+                        {{goods.product_price| currency:"￥"}}
+                    </div>
+                    <div class="info-amount">
+                        x{{goods.total_amount}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total -->
+        <div class="order-summury">
+            <div class="summury-detail">
+                运费金额 <span class="total-price">+ {{order.shipping.price| currency:"￥"}}</span>
+            </div>
+
+            <div class="summury-detail" ng-repeat="promo in promos track by $index">
+                {{ promo.name }} <span class="total-price">- {{promo.price| currency:"￥"}}</span>
+            </div>
+
+
+            <div class="summury-total">
+                订单总价 <span class="total-price">= {{order.total| currency:"￥"}}</span>
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="order-info">
+            <div class="info-text">
+                订单编号：#{{order.sn}}
+            </div>
+            <div class="info-text">
+                创建时间：{{order.created_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.updated_at">
+                更新时间：{{order.updated_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.paied_at">
+                支付时间：{{order.paied_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.shipping_at">
+                发货时间：{{order.shipping_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.finish_at">
+                完成时间：{{order.finish_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.canceled_at">
+                取消时间：{{order.canceled_at | localTime}}
+            </div>
+        </div>
+
+        <!-- Dialog -->
+        <div id="dialog" ng-show="showDialog">
+            <div class="mask">
+            </div>
+            <div class="dialog danger">
+                <div class="dialog-title">
+                    确认取消
+                </div>
+                <div class="dialog-content">
+                    是否取消该订单
+                </div>
+                <div class="dialog-button">
+                    <div class="button left" ng-click="touchDialogCancel()">
+                        取消
+                    </div>
+                    <div class="button right" ng-click="touchDialogConfirm()">
+                        确认
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="order-submit fixed-bottom">
+            <div class="submit-button dark" ng-if="order.status == ENUM.ORDER_STATUS.CREATED" ng-click="touchPay()">
+                付款
+            </div>
+            <div class="submit-button" ng-if="order.status == ENUM.ORDER_STATUS.CREATED" ng-click="touchCancel()">
+                取消订单
+            </div>
+            <div class="submit-button dark" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING" ng-click="touchConfirm()">
+                确认收货
+            </div>
+            <div class="submit-button dark" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED" ng-click="touchComment()">
+                评价
+            </div>
+            <div class="submit-button" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING" ng-click="touchExpress()">
+                查看物流
+            </div>
+            <div class="submit-button" ng-if="order.status == ENUM.ORDER_STATUS.FINISHED" ng-click="touchExpress()">
+                查看物流
+            </div>
+            <div class="submit-button" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING" ng-click="touchExpress()">
+                查看物流
+            </div>
+        </div>
+
+    </div>
+
+</div>

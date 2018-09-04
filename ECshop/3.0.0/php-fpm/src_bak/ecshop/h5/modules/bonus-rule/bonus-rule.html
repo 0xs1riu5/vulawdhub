@@ -1,0 +1,26 @@
+<div class="app-container with-navbar" >
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" ng-src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          分成规则
+        </div>
+    </div>
+
+    <div class="app-content">
+        <!--<div class="empty" ng-if="!alipay_html">-->
+            <!--<div class="empty-item">-->
+                <!--<div class="item-text">正在处理，请稍候...</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div ng-bind-html="rule_desc"></div>
+
+    </div>
+
+
+
+</div>

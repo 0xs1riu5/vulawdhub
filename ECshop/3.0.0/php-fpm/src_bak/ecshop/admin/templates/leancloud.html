@@ -1,0 +1,124 @@
+{if $full_page}
+<!-- $Id: users_list.htm 17053 2010-03-15 06:50:26Z sxc_shop $ -->
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+
+<div class="form-div" style="height: 25px;padding-top: 10px">
+    <div style="position: absolute;">&nbsp;&nbsp;<a href="leancloud.php?act=edit"><b>{$lang.create_push}</b></a></div>
+    <div style="position: absolute;left: 100px;">
+        <form action="javascript:searchUser()" name="searchForm">
+            &nbsp;&nbsp;
+            <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+            &nbsp;&nbsp;<select name="order_by" style="width: 120px"><option value="0">{$lang.order_by}</option>{html_options options=$order_by }</select>
+            &nbsp;&nbsp;<select name="platform" style="width: 120px"><option value="0">{$lang.platform}</option>{html_options options=$platform }</select>
+            &nbsp;&nbsp;<select name="status" style="width: 120px"><option value="0" selected>{$lang.status}</option>{html_options options=$status }</select>
+            &nbsp;&nbsp;<input  name="title" style="width: 120px" type="text"  value="{$lang.search_content}" />
+            &nbsp;&nbsp;<input type="submit" value="{$lang.button_search}" />
+        </form>
+    </div>
+</div>
+
+<form method="POST" action="leancloud.php" name="listForm" onsubmit="return confirm_bath()">
+
+    <!-- start users list -->
+    <div class="list-div" id="listDiv">
+        {/if}
+        <!--用户列表部分-->
+        <table cellpadding="3" cellspacing="1">
+            <tr>
+                <th><input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox"></th>
+                <th><a href="javascript:listTable.sort('user_id'); ">{$lang.record_id}</a>{$sort_user_id}</th>
+                <th><a href="javascript:listTable.sort('user_name'); ">{$lang.title}</a>{$sort_user_name}</th>
+                <th><a href="javascript:listTable.sort('email'); ">{$lang.link}</a>{$sort_email}</th>
+                <th><a href="javascript:listTable.sort('is_validated'); ">{$lang.platform}</a>{$sort_is_validate}</th>
+                <th>{$lang.status}</th>
+                <th>{$lang.create_time}</th>
+                <th>{$lang.push_time}</th>
+                <th>{$lang.handler}</th>
+            <tr>
+                {foreach from=$push_list item=item}
+            <tr>
+                <td><input type="checkbox" name="checkboxes[]" value="{$item.id}" notice="{if $user.user_money ne 0}1{else}0{/if}"/>{$user.user_id}</td>
+                <td class="first-cell">{$item.id}</td>
+                <td>{$item.title}</td>
+                <td>{$item.link}</td>
+                <td>{$platform.$item.platform}</td>
+                <td>{$status.$item.isPush}</td>
+                <td>{$item.created_at}</td>
+                <td>{$item.updated_at}</td>
+                <td align="center">
+                    <a href="leancloud.php?act=edit&id={$item.id}" title="{$lang.edit}">{$lang.edit}</a>
+                    <a href="leancloud.php?act=resend&id={$item.id}" title="{$lang.resend}">{$lang.resend}</a>
+                    <!--<a href="leancloud.php?act=remove&id={$item.id}" title="{$lang.remove}"><img src="images/icon_drop.gif" border="0" height="16" width="16" /></a>-->
+                    <a href="javascript:" onclick="listTable.remove({$item.id}, '{$lang.drop_confirm}')">{$lang.remove}</a>
+                </td>
+            </tr>
+            {foreachelse}
+            <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+            {/foreach}
+            <tr>
+                <td colspan="2">
+                    <input type="hidden" name="act" value="batch_remove" />
+                    <input type="submit" id="btnSubmit" value="{$lang.batch_remove}" disabled="true" class="button" /></td>
+                <td align="right" nowrap="true" colspan="8">
+                    {include file="page.htm"}
+                </td>
+            </tr>
+        </table>
+
+        {if $full_page}
+    </div>
+    <!-- end users list -->
+</form>
+<script type="text/javascript" language="JavaScript">
+    <!--
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+
+    {foreach from=$filter item=item key=key}
+    listTable.filter.{$key} = '{$item}';
+    {/foreach}
+
+    {literal}
+//    onload = function()
+//    {
+//        document.forms['searchForm'].elements['keyword'].focus();
+//        // 开始检查订单
+//        startCheckOrder();
+//    }
+
+    /**
+     * 搜索用户
+     */
+    function searchUser()
+    {
+        listTable.filter['order_by'] = Utils.trim(document.forms['searchForm'].elements['order_by'].value);
+        listTable.filter['platform'] = document.forms['searchForm'].elements['platform'].value;
+        listTable.filter['status'] = Utils.trim(document.forms['searchForm'].elements['status'].value);
+        listTable.filter['title'] = Utils.trim(document.forms['searchForm'].elements['title'].value);
+        listTable.filter['page'] = 1;
+        listTable.loadList();
+    }
+
+    function confirm_bath()
+    {
+        userItems = document.getElementsByName('checkboxes[]');
+
+        cfm = '{$lang.list_remove_confirm}';
+
+        for (i=0; userItems[i]; i++)
+        {
+            if (userItems[i].checked && userItems[i].notice == 1)
+            {
+                cfm = '{$lang.list_still_accounts}' + '{$lang.list_remove_confirm}';
+                break;
+            }
+        }
+
+        return confirm(cfm);
+    }
+    //-->
+</script>
+{/literal}
+{include file="pagefooter.htm"}
+{/if}

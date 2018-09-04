@@ -1,0 +1,36 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<div class="category_info">
+  <div id="category_tree">
+    <!--{foreach from=$categories item=cat}-->
+    <div class="cat-box">
+      <div class="cat1"><a href="{$cat.url}">{$cat.name|escape:html}</a></div>
+      <!--{if $cat.cat_id }-->
+      <div class="cat2-box">
+      
+        <!--{foreach from=$cat.cat_id item=child}-->
+        <div class="cat2 clearfix">
+          <a class="cat2-link" href="{$child.url}">{$child.name|escape:html}</a>
+          <!--{if $child.cat_id }-->
+          <div class="cat3-block"></div>
+          <div class="cat3-box">
+            
+            <!--{foreach from=$child.cat_id item=childer}-->
+              <a href="{$childer.url}">{$childer.name|escape:html}</a>&nbsp;&nbsp;
+            <!--{/foreach}-->
+          </div>
+          <!-- {/if} -->
+        </div>
+        <!--{/foreach}-->
+        
+      </div>
+      <!-- {/if} -->
+
+    </div>
+    <!--{/foreach}-->
+    <div class="clear0"></div>
+  </div>
+  <div class="clear0"></div>
+</div>
+
+ 

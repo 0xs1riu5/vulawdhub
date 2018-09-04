@@ -1,0 +1,50 @@
+<div class="app-container with-navbar" ng-controller="MyRecommendController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            我推荐的会员
+        </div>
+    </div>
+
+    <div class="app-content">
+        <div class="balance-content">
+
+            <div class="table-responsive" ng-if="myRecommendModel.bonus_info.rules.length">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th style="width:25%">等级</th>
+                        <th style="width:25%">人数</th>
+                        <th style="width:25%">积分分成</th>
+                        <th style="width:25%">现金分成</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="rule in myRecommendModel.bonus_info.rules track by $index" >
+                            <td >{{rule.rank}}</td>
+                            <td>{{rule.recommend_amount}}</td>
+                            <td>{{rule.score_percentage}}</td>
+                            <td>{{rule.price_percentage}}</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="empty" ng-if="myRecommendModel.bonus_info.rules.length == 0">
+                <div class="empty-item">
+                    <img class="item-logo" ng-src="image/member_empty.png"/>
+                    <div class="item-text">您还没有推荐会员</div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

@@ -1,0 +1,62 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="BalanceHistoryController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goProfile()">
+            <img class="button-icon" src="image/nav-left.png"/>
+
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            资金明细
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="app-content" infinite-scroll='myBalanceModel.loadMore()'>
+        <div class="score-filter">
+            <div class="filter-item" ng-class="{active: currentTab == TAB_ALL}" ng-click="touchTabAll()">
+                <span class="text">全部</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentTab == TAB_INCOME}" ng-click="touchTabIncome()">
+                <span class="text">收入</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentTab == TAB_EXPENDITURE}"
+                 ng-click="touchTabExpenditure()">
+                <span class="text">支出</span>
+            </div>
+        </div>
+
+        <!-- Score History -->
+        <div class="balance-list" ng-if="myBalanceModel.balances && myBalanceModel.balances.length">
+            <div class="list-item" ng-repeat="balance in myBalanceModel.balances track by $index">
+                <div class="item-info">
+                    <div class="info_header">
+                        <div class="info-name" ng-if="balance.status == 1">{{'+'+balance.price | currency:""}}</div>
+                        <div class="info-name" ng-if="balance.status == 2">{{'-'+balance.price | currency:""}}</div>
+                        <div class="info-value-income" ng-if="balance.status == 1">收入</div>
+                        <div class="info-value-out" ng-if="balance.status == 2">支出</div>
+                    </div>
+                    <div class="info-memo">{{balance.memo}}</div>
+                    <div class="info-expires">{{balance.create_at|localTime}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="myBalanceModel.isEmpty">
+            <div class="empty-item">
+                <div class="item-text">暂无任何记录</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="myBalanceModel.isLoaded && myBalanceModel.isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="myBalanceModel.isLoaded && myBalanceModel.isLastPage">
+            全部加载完毕
+        </div>
+
+    </div>
+
+</div>
+

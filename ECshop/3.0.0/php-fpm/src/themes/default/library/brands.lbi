@@ -1,0 +1,17 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">  <div class="clear10"></div>
+<div class="brand_t all_t"><span>推荐商品品牌</span> <a class="amore" title="更多" href="../brand.php" target="_blank">更多>></a></div>
+<div class="brand_list"><ul>
+  <!-- {if $brand_list} -->
+  <!-- {foreach from=$brand_list item=brand name="brand_foreach"} -->
+  {if $smarty.foreach.brand_foreach.index <= 16}
+  <!-- {if $brand.brand_logo} --><li>
+  <a href="{$brand.url}"><img src="data/brandlogo/{$brand.brand_logo}" alt="{$brand.brand_name|escape:html} ({$brand.goods_num})" /><br>
+  <span>{$brand.brand_name|escape:html} ({$brand.goods_num})</span> </a></li>
+  <!-- {else} --><li>
+  <a href="{$brand.url}">{$brand.brand_name|escape:html} {if $brand.goods_num}({$brand.goods_num}){/if}</a></li>
+  <!-- {/if} -->
+  {/if}
+  <!-- {/foreach} -->
+  <!-- {/if} --></ul>
+  <div class="clear0"></div>
+</div>

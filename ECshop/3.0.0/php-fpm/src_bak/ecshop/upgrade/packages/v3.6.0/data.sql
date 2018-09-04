@@ -1,0 +1,1 @@
+INSERT INTO `ecs_article` (`cat_id`, `title`, `content`, `author`, `author_email`, `keywords`, `article_type`, `is_open`, `add_time`, `file_url`, `open_type`) VALUES (-2, '关于我们', '请在 文章管理》文章列表》关于我们 修改', '', '', '', 0, 1, UNIX_TIMESTAMP(), '', 0);

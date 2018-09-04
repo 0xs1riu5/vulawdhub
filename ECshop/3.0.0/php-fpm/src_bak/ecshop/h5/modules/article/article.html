@@ -1,0 +1,23 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="ArticleController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            {{title}}
+        </div>
+    </div>
+
+    <div class="app-content">
+
+        <div class="profile-item" ng-repeat="article in articles track by $index" ng-click="touchArticle(article)">
+            <img class="item-icon" src="image/icon-article.png"/>
+            <div class="item-name">{{article.title}}</div>
+            <div class="item-desc"></div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="CategoryController">
+
+    <div class="navbar fixed-top">
+        <div class="search" ng-click="touchSearch()">
+            <img class="search-icon" src="image/ind-search.png"/>
+            <span class="search-text">请输入您要搜索的商品</span>
+        </div>
+    </div>
+
+    <div class="app-content">
+
+      <div class="category-side" ng-if="categories && categories.length">
+        <div class="side-item" ng-class="{active: selectedSide.id == item.id}" ng-repeat="item in categories track by $index" ng-click="touchSide(item)">
+          {{item.name}}
+        </div>
+      </div>
+      <div class="category-main" ng-if="categories && categories.length">
+        <div class="main-item" ng-click="touchMain()">
+          全部
+        </div>
+        <div class="main-item" ng-repeat="item in subCategories track by $index" ng-click="touchMain(item)">
+          {{item.name}}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tabbar fixed-bottom">
+      <div class="tab" ng-click="goHome()">
+        <img class="tab-icon" src="image/tab-home-normal.png"/>
+      </div>
+      <div class="tab active" ng-click="goCategory()">
+        <img class="tab-icon" src="image/tab-category-active.png"/>
+      </div>
+      <div class="tab" ng-click="goCart()">
+        <img class="tab-icon" src="image/tab-cart-normal.png"/>
+        <div class="tab-badge" ng-if="cartModel.total > 0">
+            {{cartModel.total}}
+        </div>
+      </div>
+      <div class="tab" ng-click="goProfile()">
+        <img class="tab-icon" src="image/tab-profile-normal.png"/>
+      </div>
+    </div>
+
+</div>

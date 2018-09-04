@@ -1,0 +1,50 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="AddressSelectController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          选择地址
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="app-content">
+
+      <!-- Address -->
+      <div class="address-list" ng-if="addressSelectModel.consignees && addressSelectModel.consignees.length">
+        <div class="list-item" ng-class="{active: selectedId == consignee.id}" ng-repeat="consignee in addressSelectModel.consignees track by $index" ng-click="touchConsignee(consignee)">
+          <div class="item-checkbox"></div>
+          <div class="item-info">
+            <div class="info-contact">
+              {{consignee.name}} {{consignee.mobile}}
+              <span class="contact-default" ng-if="consignee.is_default">默认</span>
+            </div>
+            <div class="info-detail">
+              <span ng-repeat="value in consignee.regions track by $index">
+                  {{value.name}}
+              </span>
+              {{consignee.address}}
+            </div>
+          </div>
+
+
+          <div class="item-edit" ng-click="touchModify(consignee)">
+            <img src="image/ind-edit.png"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="address-bar fixed-bottom">
+        <div class="bar-create" ng-click="touchCreate()">
+          添加收货地址
+        </div>
+      </div>
+
+    </div>
+
+</div>
+

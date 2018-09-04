@@ -1,0 +1,29 @@
+
+<div class="signup-form">
+	<div class="signup-field">
+		<input type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" class="field-input" placeholder="请输入手机号" ng-model="state.mobile"/>
+	</div>
+
+	<div class="signup-hline"></div>
+
+	<div class="signup-field-code">
+		<input type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" class="field-input" placeholder="请输入手机验证码" ng-model="state.mobile_code"/>
+		<div class="{{paraclass}}" ng-click="toucheMobileCode()">{{paracont}}</div>
+	</div>
+</div>
+
+<div class="signup-form">
+	<div class="signup-field">
+		<input type="password" class="field-input" placeholder="设置密码" ng-model="state.mobile_password"/>
+	</div>
+
+	<div class="signup-hline"></div>
+
+	<div class="signup-field">
+		<input type="password" class="field-input" placeholder="确认密码" ng-model="state.mobile_password2"/>
+	</div>
+</div>
+
+<div class="signup-tips">6-20位数字/字母/符号</div>
+
+<div class="signup-submit" ng-click="touchforgetMobile()">确定</div>

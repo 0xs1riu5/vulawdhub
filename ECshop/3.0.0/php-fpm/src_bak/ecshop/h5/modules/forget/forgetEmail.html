@@ -1,0 +1,16 @@
+<div class="app-container with-navbar" ng-controller="ForgetController">
+    <div class="app-content" ng-if="!success">
+    	<div class="forget-form">
+    		<div class="forget-field">
+    			<input class="field-input" placeholder="请输入您的邮箱" ng-model="input.email"/>
+    		</div>
+    	</div>
+    	<div class="forget-tips">我们将发送密码修改链接到您绑定的邮箱</div>
+    	<div class="forget-submit" ng-click="touchSendMail()">发送邮件</div>
+    </div>
+    <div class="app-content" ng-if="success">
+	    <div class="forget-email">密码修改链接已发送至</div>
+	    <div class="forget-email">{{email}}</div>
+    	<div class="forget-submit" ng-click="touchBackLogin()">去登录</div>
+    </div>
+</div>

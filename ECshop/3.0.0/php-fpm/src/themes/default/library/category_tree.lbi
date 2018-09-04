@@ -1,0 +1,21 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="box boxcategory">
+  <div class="box_1">
+    <h3><span class="text">商品全部分类</span></h3>
+    <div id="category_tree">
+      <!--{foreach from=$categories item=cat}-->
+      <dl>
+        <dt><a href="{$cat.url}">{$cat.name|escape:html}</a></dt>
+        <!--{foreach from=$cat.cat_id item=child}-->
+        <dd><a href="{$child.url}">{$child.name|escape:html}</a></dd>
+        <!--{foreach from=$child.cat_id item=childer}-->
+        <dd>&nbsp;&nbsp;<a href="{$childer.url}">{$childer.name|escape:html}</a></dd>
+        <!--{/foreach}-->
+        <!--{/foreach}-->
+      </dl>
+      <!--{/foreach}-->
+      <div class="clear0"></div>
+    </div>
+  </div>
+</div>
+<div class="blank5"></div>

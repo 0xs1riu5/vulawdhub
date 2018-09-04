@@ -1,0 +1,29 @@
+<div class="app-container with-navbar" ng-controller="ExpressSelectController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          配送方式
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="app-content">
+
+      <!-- Express -->
+      <div class="express-list" ng-if="vendors && vendors.length">
+        <div class="list-item" ng-class="{active: selectedId == vendor.id}" ng-repeat="vendor in vendors track by $index" ng-click="touchVendor(vendor)">
+          <div class="item-checkbox"></div>
+          <div class="item-name">{{vendor.name}}</div>
+          <div class="item-price">{{vendor.fee | currency:"￥"}}</div>
+        </div>
+      </div>
+
+    </div>
+
+</div>
+

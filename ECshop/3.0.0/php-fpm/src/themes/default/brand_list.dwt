@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,global.js,compare.js'}
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<!--当前位置 start-->
+<div class="block box">
+ <div id="ur_here">
+  <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+ </div>
+</div>
+<!--当前位置 end-->
+<div class="blank"></div>
+<div class="block clearfix">
+  <!--right start-->
+  <div class="AreaR">
+     <!-- TemplateBeginEditable name="通栏广告区域（宽750px）" -->
+     <!-- TemplateEndEditable -->
+     <div class="blank5"></div>
+      <h3 class="border"><span><!--{$lang.all_brand}--></span></h3>
+     <div id="brandList" class="clearfix">
+     <!-- {foreach from=$brand_list name="brand_list_foreach" item=brand_data} -->
+		  <div class="brandBox">
+			<h4><span>{$brand_data.brand_name}</span>({$brand_data.goods_num})</h4>
+			<!-- {if $brand_data.brand_logo} -->
+			  <div class="brandLogo">
+        <a href="{$brand_data.url}"><img src="data/brandlogo/{$brand_data.brand_logo}" alt="{$brand_data.brand_name|escape:html} ({$brand_data.goods_num})" /></a>
+				</div>
+			<!-- {/if} -->
+			 <p title="{$brand_data.brand_desc}">{$brand_data.brand_desc}</p> 
+			</div>
+		<!-- {/foreach} -->	
+
+     </div>
+     <div class="blank5"></div>
+     <div class="dashed"></div>
+  </div>
+  <!--right end-->
+</div>
+<div class="blank"></div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

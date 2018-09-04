@@ -1,0 +1,137 @@
+<div class="app-container with-navbar with-loader" ng-controller="MyOrderController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" ng-src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          我的订单
+        </div>
+    </div>
+
+    <div class="app-content" infinite-scroll='myOrderModel.loadMore()'>
+
+        <div class="order-filter">
+            <div class="filter-item" ng-class="{active: currentTab == TAB_ALL}" ng-click="touchTabAll()">
+                <span class="text">全部</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentTab == TAB_CREATED}" ng-click="touchTabCreated()">
+                <span class="text">待付款</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentTab == TAB_PAID}" ng-click="touchTabPaid()">
+                <span class="text">待发货</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentTab == TAB_DELIVERING}" ng-click="touchTabDelivering()">
+                <span class="text">待收货</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentTab == TAB_DELIVERIED}" ng-click="touchTabDeliveried()">
+                <span class="text">待评价</span>
+            </div>
+        </div>
+
+        <div class="order-list" ng-if="myOrderModel.orders && myOrderModel.orders.length">
+            <div class="list-item" ng-repeat="order in myOrderModel.orders track by $index" >
+                <div class="item-header">
+                    <div class="header-sn">#{{order.sn}}</div>
+                    <div class="header-status" ng-if="order.status == ENUM.ORDER_STATUS.CREATED">等待买家付款</div>
+                    <div class="header-status" ng-if="order.status == ENUM.ORDER_STATUS.PAID">等待卖家发货</div>
+                    <div class="header-status" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING">等待买家收货</div>
+                    <div class="header-status" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED">交易成功</div>
+                    <div class="header-status" ng-if="order.status == ENUM.ORDER_STATUS.FINISHED">交易成功</div>
+                    <div class="header-status" ng-if="order.status == ENUM.ORDER_STATUS.CANCELLED">交易取消</div>
+                </div>
+                <div class="order-goods" ng-click="touchOrder(order)">
+                    <div class="goods-item" ng-repeat="goods in order.goods track by $index">
+                        <div class="item-photo">
+                            <img ng-src="image/default-photo.png" lazy-img="{{goods.product.photos[0].large}}"/>
+                        </div>
+                        <div class="item-info">
+                            <div class="info-name">
+                                {{goods.product.name}}
+                            </div>
+                            <div class="info-attr">
+                                {{goods.property}}
+                            </div>
+                            <div class="info-price">
+                                {{goods.product_price| currency:"￥"}}
+                            </div>
+                            <div class="info-amount">
+                                x{{goods.total_amount}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-footer">
+                    <div class="footer-sum">
+                        <span class="sum">
+                            合计：{{order.total  | currency:"￥"}}
+                        </span>
+                        <span class="sum" ng-if="order.shipping && order.shipping.price">
+                            （运费：{{order.shipping.price  | currency:"￥"}}）
+                        </span>
+                    </div>
+                    <div class="footer-button dark" ng-if="order.status == ENUM.ORDER_STATUS.CREATED" ng-click="touchPay(order)">
+                        付款
+                    </div>
+                    <div class="footer-button" ng-if="order.status == ENUM.ORDER_STATUS.CREATED" ng-click="touchCancel(order)">
+                        取消订单
+                    </div>
+                    <div class="footer-button dark" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING" ng-click="touchConfirm(order)">
+                        确认收货
+                    </div>
+                    <div class="footer-button dark" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED" ng-click="touchComment(order)">
+                        评价
+                    </div>
+                    <div class="footer-button" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING" ng-click="touchExpress(order)">
+                        查看物流
+                    </div>
+                    <div class="footer-button" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED" ng-click="touchExpress(order)">
+                        查看物流
+                    </div>
+                    <div class="footer-button" ng-if="order.status == ENUM.ORDER_STATUS.FINISHED" ng-click="touchExpress(order)">
+                        查看物流
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="myOrderModel.isEmpty">
+            <div class="empty-item">
+                <img class="item-logo" ng-src="image/logo-order-empty.png"/>
+                <div class="item-text">暂无任何订单</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="myOrderModel.isLoaded && myOrderModel.isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="myOrderModel.isLoaded && myOrderModel.isLastPage">
+            全部加载完毕
+        </div>
+
+        <!-- Dialog -->
+        <div id="dialog" ng-show="showDialog">
+            <div class="mask">
+            </div>
+            <div class="dialog danger">
+                <div class="dialog-title">
+                    确认取消
+                </div>
+                <div class="dialog-content">
+                    是否取消该订单
+                </div>
+                <div class="dialog-button">
+                    <div class="button left" ng-click="touchDialogCancel()">
+                        取消
+                    </div>
+                    <div class="button right" ng-click="touchDialogConfirm()">
+                        确认
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

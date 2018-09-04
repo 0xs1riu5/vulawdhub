@@ -1,0 +1,129 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="HomeController">
+
+    <div class="navbar fixed-top">
+        <div class="search" ng-click="touchSearch()">
+            <img class="search-icon" ng-src="image/ind-search.png"/>
+            <span class="search-text">请输入您要搜索的商品</span>
+        </div>
+    </div>
+
+    <div class="app-content" infinite-scroll='loadMore()'>
+
+        <!-- Banner -->
+        <div class="home-banner swiper-container" ng-if="banners && banners.length">
+            <div class="swiper-wrapper">
+                <div class="banner-slide swiper-slide" ng-repeat="banner in banners track by $index" ng-click="touchBanner(banner)">
+                    <img ng-src="{{banner.photo.large || 'image/default-photo.png'}}" class="slide-image"/>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- Menu -->
+        <div class="home-menu" ng-if="banners && banners.length">
+            <div class="menu-item" ng-click="goCategory()">
+                <img class="item-icon" ng-src="image/home-category.png"/>
+                <div class="item-text">分类</div>
+            </div>
+            <div class="menu-item" ng-click="goMyOrder()">
+                <img class="item-icon" ng-src="image/home-order.png"/>
+                <div class="item-text">订单</div>
+            </div>
+            <div class="menu-item" ng-click="goMyFavorite()">
+                <img class="item-icon" ng-src="image/home-favorite.png"/>
+                <div class="item-text">收藏</div>
+            </div>
+            <div class="menu-item" ng-click="goCart()">
+                <img class="item-icon" ng-src="image/home-cart.png"/>
+                <div class="item-text">购物车</div>
+            </div>
+        </div>
+
+        <!-- Notice -->
+        <div class="home-notice" ng-if="notices && notices.length">
+            <img class="notice-icon" ng-src="image/home-notice.png"/>
+            <div class="notice-vline"></div>
+            <div class="notice-slide swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" ng-repeat="notice in notices track by $index" ng-click="touchNotice(notice)">
+                        {{notice.title}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category -->
+        <!-- <div class="home-category" ng-if="categories && categories.length">
+            <div class="category-item" ng-repeat="category in categories track by $index" ng-click="touchCategory(category)">
+                <img class="item-photo" ng-src="image/default-photo.png" lazy-img="{{category.photo.large}}"/>
+                <div class="item-mask"></div>
+                <div class="item-text">{{category.name}}</div>
+            </div>
+        </div> -->
+
+        <!-- Editor Choices -->
+        <div class="home-product" ng-if="editorChoice && editorChoice.length">
+            <div class="product-header" ng-click="touchEditorChoice()">
+                <!-- <img class="header-arrow" ng-src="image/nav-right.png"/> -->
+                <div class="header-title">精品推荐</div>
+            </div>
+            <div class="product-item" ng-repeat="product in editorChoice track by $index" ng-click="touchProduct(product)">
+                <div class="item-photo">
+                    <img ng-src="image/default-photo.png" lazy-img="{{product.default_photo.large}}"/>
+                </div>
+                <div class="item-name">{{product.name || '-'}}</div>
+                <div class="item-price">{{product.current_price | currency:"￥"}}</div>
+            </div>
+        </div>
+
+        <!-- New arrival -->
+        <div class="home-product" ng-if="newArrival && newArrival.length">
+            <div class="product-header" ng-click="touchNewArrival()">
+                <!-- <img class="header-arrow" ng-src="image/nav-right.png"/> -->
+                <div class="header-title">新品上架</div>
+            </div>
+            <div class="product-item" ng-repeat="product in newArrival track by $index" ng-click="touchProduct(product)">
+                <div class="item-photo">
+                    <img ng-src="image/default-photo.png" lazy-img="{{product.default_photo.large}}"/>
+                </div>
+                <div class="item-name">{{product.name || '-'}}</div>
+                <div class="item-price">{{product.current_price | currency:"￥"}}</div>
+            </div>
+        </div>
+
+        <!-- Top sale -->
+        <div class="home-product" ng-if="topSale && topSale.length">
+            <div class="product-header" ng-click="touchTopSale()">
+                <!-- <img class="header-arrow" ng-src="image/nav-right.png"/> -->
+                <div class="header-title">销量排行</div>
+            </div>
+            <div class="product-item" ng-repeat="product in topSale track by $index" ng-click="touchProduct(product)">
+                <div class="item-photo">
+                    <img ng-src="image/default-photo.png" lazy-img="{{product.default_photo.large}}"/>
+                </div>
+                <div class="item-name">{{product.name || '-'}}</div>
+                <div class="item-price">{{product.current_price | currency:"￥"}}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tabbar fixed-bottom">
+      <div class="tab active" ng-click="goHome()">
+        <img class="tab-icon" ng-src="image/tab-home-active.png"/>
+      </div>
+      <div class="tab" ng-click="goCategory()">
+        <img class="tab-icon" ng-src="image/tab-category-normal.png"/>
+      </div>
+      <div class="tab" ng-click="goCart()">
+        <img class="tab-icon" ng-src="image/tab-cart-normal.png"/>
+        <div class="tab-badge" ng-if="cartModel.total > 0">
+            {{cartModel.total}}
+        </div>
+      </div>
+      <div class="tab" ng-click="goProfile()">
+        <img class="tab-icon" ng-src="image/tab-profile-normal.png"/>
+      </div>
+    </div>
+
+</div>

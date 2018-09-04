@@ -1,0 +1,35 @@
+<div class="app-container with-navbar" ng-controller="WithDrawSuccessController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goHome()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          提现
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="withdraw-success">
+        <img class="info-icon" src="image/e15_wait.png"/>
+        <div class="info-text">提现申请已提交</div>
+        <div class="info-tips">请等待后台人员审核</div>
+
+        <div class="withdraw-info">
+            <div class="withdraw-amount">
+                提现金额  ¥{{withdraw}}
+            </div>
+            <div class="withdraw-memo">
+                备注  {{member_memo}}
+            </div>
+        </div>
+
+        <div class="info-button" ng-click="goHome()">
+            完成
+        </div>
+    </div>
+
+</div>
+

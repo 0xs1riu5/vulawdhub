@@ -1,0 +1,116 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="CartController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left">
+        </div>
+        <div class="navbar-title">
+            购物车（{{cartModel.total}}）
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <!-- Cart item -->
+    <div class="app-content">
+
+        <div class="cart-list" ng-if="cartModel.isLoaded" ng-repeat="group in cartModel.groups track by $index">
+            <div class="list-item " ng-class="{active: isSelected(goods)}" ng-repeat="goods in group.goods track by $index">
+                <div class="item-checkbox" ng-click="touchSelect(goods)">
+                </div>
+                <div class="item-photo" ng-click="touchProduct(goods.product)">
+                    <img ng-src="{{goods.product.default_photo.large}}"/>
+                </div>
+                <div class="item-info">
+
+                    <div class="info-name">
+                        {{goods.product.name}}
+                    </div>
+                    <div class="info-attr" >
+                        {{goods.property}}
+                    </div>
+                    <div class="info-price">
+                        ￥{{goods.price | number:2}}
+                    </div>
+                    <div class="info-amount">
+                        <div class="amount-button" ng-class="{active: goods.amount > 1}" ng-click="touchAmountSub(goods)">
+                            <img src="image/ind-sub.png">
+                        </div>
+                        <div class="amount-count" ng-class="{active: goods.amount > 0}">
+                            {{goods.amount}}
+                        </div>
+                        <div class="amount-button" ng-class="{active: goods.amount > 0}" ng-click="touchAmountAdd(goods)">
+                            <img src="image/ind-add.png">
+                        </div>
+                    </div>
+                    <div class="info-delete" ng-click="touchDelete(goods)">
+                        <img src="image/ind-delete.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="cart-submit" ng-if="cartModel.isLoaded && !cartModel.isEmpty">
+            <div class="submit-select" ng-class="{active: isSelectedAll}" ng-click="touchSelectAll()">
+                <div class="select-checkbox">
+                </div>
+                全选
+            </div>
+            <div class="submit-total" ng-class="{active: selectedGoods && selectedGoods.length}">
+                <span class="total-price">{{selectedPrice | currency:"￥"}}</span>
+            </div>
+            <div class="submit-button dark" ng-class="{active: selectedGoods && selectedGoods.length}" ng-click="touchSubmit()">
+                结算（{{selectedAmount}}）
+            </div>
+        </div>
+
+        <!-- Dialog -->
+        <div id="dialog" ng-show="showDialog" ng-if="cartModel.isLoaded">
+            <div class="mask">
+            </div>
+            <div class="dialog danger">
+                <div class="dialog-title">
+                    确认删除
+                </div>
+                <div class="dialog-content">
+                    是否要删除选中商品
+                </div>
+                <div class="dialog-button">
+                    <div class="button left" ng-click="touchDialogCancel()">
+                        取消
+                    </div>
+                    <div class="button right" ng-click="touchDialogConfirm()">
+                        确认
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="cartModel.isEmpty">
+            <div class="empty-item">
+                <img class="item-logo" ng-src="image/icon-cart-empty.png"/>
+                <div class="item-text">您的购物车是空的</div>
+                <div class="item-button" ng-click="goHome()">随便逛逛</div>
+            </div>
+        </div>
+
+        <div class="tabbar fixed-bottom">
+            <div class="tab" ng-click="goHome()">
+                <img class="tab-icon" src="image/tab-home-normal.png"/>
+            </div>
+            <div class="tab" ng-click="goCategory()">
+                <img class="tab-icon" src="image/tab-category-normal.png"/>
+            </div>
+            <div class="tab active" ng-click="goCart()">
+                <img class="tab-icon" src="image/tab-cart-active.png"/>
+                <div class="tab-badge" ng-if="cartModel.total > 0">
+                    {{cartModel.total}}
+                </div>
+            </div>
+            <div class="tab" ng-click="goProfile()">
+                <img class="tab-icon" src="image/tab-profile-normal.png"/>
+            </div>
+        </div>
+    </div>
+
+</div>

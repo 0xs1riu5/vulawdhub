@@ -1,0 +1,62 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="MyAddressController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goProfile()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          地址管理
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="app-content">
+
+      <!-- Address -->
+      <div class="address-list" ng-if="myAddressModel.consignees && myAddressModel.consignees.length">
+        <div class="list-item readonly" ng-repeat="consignee in myAddressModel.consignees track by $index">
+          <div class="item-info">
+            <div class="info-contact">
+              {{consignee.name}} {{consignee.mobile}}
+              <span class="contact-default" ng-if="consignee.is_default">默认</span>
+            </div>
+            <div class="info-detail">
+              <span ng-repeat="value in consignee.regions track by $index">
+                  {{value.name}}
+              </span>
+              {{consignee.address}}
+            </div>
+          </div>
+
+          <div class="item-edit" ng-click="touchModify(consignee)">
+            <img src="image/ind-edit.png"/>
+          </div>
+        </div>
+      </div>
+
+        <div class="empty" ng-if="myAddressModel.isEmpty">
+            <div class="empty-item">
+                <img class="item-logo" ng-src="image/logo-express-empty.png"/>
+                <div class="item-text">暂无任何地址</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="myAddressModel.isLoaded && myAddressModel.isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="myAddressModel.isLoaded && myAddressModel.isLastPage">
+            全部加载完毕
+        </div>
+
+      <div class="address-bar fixed-bottom">
+        <div class="bar-create" ng-click="touchCreate()">
+          添加收货地址
+        </div>
+      </div>
+
+    </div>
+
+</div>
+

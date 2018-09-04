@@ -1,0 +1,165 @@
+<!-- $Id: shop_config.htm 16865 2009-12-10 06:05:32Z sxc_shop $ -->
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,../js/region.js"}
+<style>
+    .td_b_r{
+        border-bottom:1px solid #dddddd;
+        border-right:1px solid #dddddd;
+        height: 35px;
+    }
+    .td_b{
+        border-bottom:1px solid #dddddd;
+        height: 35px;
+    }
+    .td_add{
+        background-color: #f3fff6;
+        height: 35px;
+    }
+    /* css注释：只对table td标签设置红色边框样式 */
+</style>
+<div class="tab-div">
+    <!-- tab bar -->
+    <div id="tabbar-div">
+        <p>
+            {foreach from=$group_list item=group name="bar_group"}<span class="{if $smarty.foreach.bar_group.iteration eq 1}tab-front{else}tab-back{/if}" id="{$group.code}-tab">{$group.name}</span>{/foreach}
+        </p>
+    </div>
+    <!-- tab body -->
+    <div id="tabbody-div">
+        {foreach from=$group_list item=group name="body_group"}
+        <table width="100%" id="{$group.code}-table" {if $smarty.foreach.body_group.iteration neq 1}style="display:none"{/if}>
+        {foreach from=$group.items item=items name="group_items"}
+        <tr><td>
+            <div style="width:100%;border:solid 1px #dddddd;">
+                <form action={$items.submit} method="post" enctype="multipart/form-data">
+                    <table cellspacing="0px" width="100%"  style ="border-collapse:collapse">
+                        <tr style="background-color: #f4f4f4" height="35px">
+                            <th colspan="2" align="left" style="padding-left: 10px"><font size="2"> {$items.title}{if $items.url} <a href="{$items.url}" target="_blank"><span style="background-color: #2F9DB5; border-radius: 3px;color: white;padding-left: 5px;padding-right: 5px">访问官网</span></a>{/if}</font></th>
+                        <tr>
+                        <tr><th height="15px"></th><td></td></tr>
+                        {foreach from=$items.vars item=param name="group_items"}
+                        <tr>
+                            <th width="20%" style="padding-right: 5%" align="right">{$param.name}：</th>
+                            <td height="45px">
+                                {if $param.type eq file}
+                                <input type="{$param.type}" style="width:200px;line-height:30px;" name="value[{$param.code}]" value="{$param.value}"/>
+                                {elseif $param.type eq radio}
+                                <input type="{$param.type}"  name="value[{$param.code}]" value="1" {if $param.value eq 1}checked="cheked"{/if}/>是
+                                <input type="{$param.type}"  name="value[{$param.code}]" value="0" {if $param.value eq 0}checked="cheked"{/if}/>否
+                                {else}
+                                <input type="{$param.type}" style="padding-left: 5px;width:98%;height:30px;border-radius: 2px;border: 1px solid #dddddd" name="value[{$param.code}]" value="{$param.value}"/>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/foreach}
+                        <tr>
+                            <th height="15px"></th>
+                            <td><input type="text" name="code" value="{$items.code}" style="display:none"></td>
+                        </tr>
+                        <tr style="border-top:1px solid #f1f1f1">
+                            <th width="20%"></th>
+                            <td align="right" height="35px" style="padding-right: 1%"><input type="submit" name="submit" style="background-color: #dcdcdc;width: 80px;height: 28px;border-radius: 2px;border: 1px solid #bcb8c7"></td>
+                        <tr>
+                    </table>
+                </form>
+            </div>
+            </br></br>
+        </td></tr>
+        {/foreach}
+        </table>
+        {/foreach}
+    </div>
+</div>
+{insert_scripts files="tab.js,validator.js"}
+{literal}
+<script language="JavaScript">
+    region.isAdmin = true;
+    onload = function()
+    {
+        // 开始检查订单
+        startCheckOrder();
+    }
+    var ReWriteSelected = null;
+    var ReWriteRadiobox = document.getElementsByName("value[209]");
+
+    for (var i=0; i<ReWriteRadiobox.length; i++)
+    {
+        if (ReWriteRadiobox[i].checked)
+        {
+            ReWriteSelected = ReWriteRadiobox[i];
+        }
+    }
+
+    function ReWriterConfirm(sender)
+    {
+        if (sender == ReWriteSelected) return true;
+        var res = true;
+        if (sender != ReWriteRadiobox[0]) {
+            var res = confirm('{$rewrite_confirm}');
+        }
+
+        if (res==false)
+        {
+            ReWriteSelected.checked = true;
+        }
+        else
+        {
+            ReWriteSelected = sender;
+        }
+        return res;
+    }
+</script>
+<script language="JavaScript">
+    <!--
+    onload = function()
+    {
+        // 开始检查订单
+        startCheckOrder();
+    }
+    function check_del()
+    {
+        if (confirm('{$lang.trash_img_confirm}'))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * 安装Flash样式模板
+     */
+    function setupFlashTpl(tpl, obj)
+    {
+        window.current_tpl_obj = obj;
+        if (confirm(setupConfirm))
+        {
+            Ajax.call('flashplay.php?is_ajax=1&act=install', 'flashtpl=' + tpl, setupFlashTplResponse, 'GET', 'JSON');
+        }
+    }
+
+    function setupFlashTplResponse(result)
+    {
+        if (result.message.length > 0)
+        {
+            alert(result.message);
+        }
+
+        if (result.error == 0)
+        {
+            var tmp_obj = window.current_tpl_obj.parentNode.parentNode.previousSibling;
+            while (tmp_obj.nodeName.toLowerCase() != 'tr')
+            {
+                tmp_obj = tmp_obj.previousSibling;
+            }
+            tmp_obj = tmp_obj.getElementsByTagName('center');
+            tmp_obj[0].appendChild(document.getElementById('current_theme'));
+        }
+
+    }
+    //-->
+</script>
+{/literal}
+{include file="pagefooter.htm"}

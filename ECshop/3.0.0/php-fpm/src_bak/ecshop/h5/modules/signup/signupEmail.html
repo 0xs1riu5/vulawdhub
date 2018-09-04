@@ -1,0 +1,25 @@
+<div class="signup-form">
+	<div class="signup-field">
+		<input class="field-input" placeholder="用户名" ng-model="state.username"/>
+	</div>
+</div>
+<div class="signup-tips">3-25位英文与数字</div>
+<div class="signup-form">
+	<div class="signup-field">
+		<input type="password" class="field-input" placeholder="设置密码" ng-model="state.password"/>
+	</div>
+	<div class="signup-hline"></div>
+	<div class="signup-field">
+		<input type="password" class="field-input" placeholder="确认密码" ng-model="state.password2"/>
+	</div>
+</div>
+<div class="signup-tips">6-20位数字/字母/符号</div>
+<div class="signup-form">
+	<div class="signup-field">
+		<input class="field-input"type="email"  placeholder="邮箱地址" ng-model="state.email"/>
+	</div>
+</div>
+<div class="signup-tips">如：username@company.com</div>
+
+<div class="signup-submit" ng-click="touchSignup()">注册</div>
+<div class="signup-license" ng-click="touchLicense()">点击注册表示同意<span class="license">《用户协议》</span></div>

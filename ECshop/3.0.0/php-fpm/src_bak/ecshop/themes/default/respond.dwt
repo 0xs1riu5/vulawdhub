@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js'}
+<style type="text/css">
+p a{color:#006acd; text-decoration:underline;}
+</style>
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+<div class="blank"></div>
+<div class="block">
+  <div class="box">
+   <div class="box_1">
+    <h3><span>{$lang.system_info}</span></h3>
+    <div class="boxCenterList RelaArticle" align="center">
+      <div style="margin:20px auto;">
+      <p style="font-size: 14px; font-weight:bold; color: red;">{$message}</p>
+        <div class="blank"></div>
+        <!--{if $virtual_card}-->
+        <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+        <!--{foreach from=$virtual_card item=vgoods}-->
+          <!--{foreach from=$vgoods.info item=card}-->
+            <tr>
+            <td bgcolor="#FFFFFF">{$vgoods.goods_name}</td>
+            <td bgcolor="#FFFFFF">
+            <!--{if $card.card_sn}--><strong>{$lang.card_sn}:</strong>{$card.card_sn}<!--{/if}-->
+            <!--{if $card.card_password}--><strong>{$lang.card_password}:</strong>{$card.card_password}<!--{/if}-->
+            <!--{if $card.end_date}--><strong>{$lang.end_date}:</strong>{$card.end_date}<!--{/if}-->
+            </td>
+            </tr>
+          <!--{/foreach}-->
+        <!--{/foreach}-->
+        </table>
+        <!--{/if}-->
+        <a href="{$shop_url}">{$lang.back_home}</a>
+      </div>
+    </div>
+   </div>
+  </div>
+</div>
+<div class="blank"></div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

@@ -1,0 +1,65 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="MyScoreController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goProfile()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            我的积分
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="app-content" infinite-scroll='myScoreModel.loadMore()'>
+
+        <div class="score-header">
+            <div class="header-title" >
+                <img src="image/ind-score.png"/> 当前可用积分
+            </div>
+            <div class="header-point" >
+                {{myScoreModel.score}}
+            </div>
+        </div>
+
+        <div class="score-filter">
+            <div class="filter-item" ng-class="{active: currentTab == TAB_ALL}" ng-click="touchTabAll()">
+                <span class="text">全部</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentTab == TAB_INCOME}" ng-click="touchTabIncome()">
+                <span class="text">收入</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentTab == TAB_EXPENDITURE}" ng-click="touchTabExpenditure()">
+                <span class="text">支出</span>
+            </div>
+        </div>
+
+        <!-- Score History -->
+        <div class="score-list" ng-if="myScoreModel.history && myScoreModel.history.length">
+            <div class="list-item" ng-repeat="history in myScoreModel.history track by $index">
+                <div class="item-info">
+                    <div class="info-name">{{history.reason}}</div>
+                    <div class="info-value">{{history.change}}</div>
+                    <div class="info-expires">{{history.created_at | localTime}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="myScoreModel.isEmpty">
+            <div class="empty-item">
+                <div class="item-text">暂无任何记录</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="myScoreModel.isLoaded && myScoreModel.isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="myScoreModel.isLoaded && myScoreModel.isLastPage">
+            全部加载完毕
+        </div>
+
+    </div>
+
+</div>
+

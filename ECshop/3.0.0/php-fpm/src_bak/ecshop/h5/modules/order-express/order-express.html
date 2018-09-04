@@ -1,0 +1,38 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="OrderExpressController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" ng-src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          物流信息
+        </div>
+    </div>
+
+    <div class="app-content">
+
+        <div class="order-express">
+            <div class="express-header">
+                <div class="header-item">
+                    <span class="item-title">信息来源</span>
+                    <span class="item-content">{{orderExpressModel.info.vendor_name}}</span>
+                </div>
+                <div class="header-item">
+                    <span class="item-title">运单编号</span>
+                    <span class="item-content">{{orderExpressModel.info.code}}</span>
+                </div>
+            </div>
+            <div class="express-status" ng-if="orderExpressModel.info.status && orderExpressModel.info.status.length">
+                <div class="status-item first" ng-repeat="status in orderExpressModel.info.status track by $index">
+                    <div class="item-title">{{status.content}}</div>
+                    <div class="item-content">{{status.datetime}}</div>
+                    <div class="item-vline"></div>
+                    <div class="item-dot"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

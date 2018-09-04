@@ -1,0 +1,29 @@
+<div class="app-container with-navbar" ng-controller="ForgetController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+        	找回密码
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="app-content">
+        <div class="signup-filter">
+            <div class="signup-item" ng-class="{active: currentTab == TAB_MOBILE}" ng-click="touchTabMobile()">
+                <span class="text">手机号</span>
+            </div>
+            <div class="signup-item" ng-class="{active: currentTab == TAB_EMAIL}" ng-click="touchTabEmail()">
+                <span class="text">邮箱</span>
+            </div>
+        </div>
+
+        <div ng-show='forgetMobile.show' ng-include="'modules/forget/forgetMobile.html'"></div>
+        <div ng-hide='forgetMobile.show' ng-include="'modules/forget/forgetEmail.html'"></div>
+    </div>
+
+</div>

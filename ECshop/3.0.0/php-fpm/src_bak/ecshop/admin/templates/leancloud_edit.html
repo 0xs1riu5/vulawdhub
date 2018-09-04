@@ -1,0 +1,119 @@
+<!-- $Id: sms_send_ui.htm 16697 2009-09-24 03:57:47Z liuhui $ -->
+{include file="pageheader.htm"}
+
+<div class="main-div" id="sms-send">
+    <form method="POST" action="leancloud.php?act=do_edit" name="msg_edit" onsubmit="return validate();">
+        <table >
+            <tr>
+                <td class="label">{$lang.edit_title}</td>
+                <td><input name="msg[title]" type="text" style="width: 202px" value="{$params.title}"/>
+                    <input name="msg[id]" type="text" value="{$params.id}" hidden>
+                    <input name="msg[link_type]" id="link_type" type="text" value="{$params.link_type}" hidden>
+                    {$lang.phone_notice}
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.edit_content}</td>
+                <td><textarea name="msg[content]" rows="6" style="width: 200px">{$params.content}</textarea>{$lang.require_field} 请确保推送内容不会超过500个字</td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.edit_platform}</td>
+                <td><select name="msg[platform]">
+                    <option value='0'>{$lang.edit_select}</option>
+                    {html_options options=$platform selected=$params.platform}
+                </select></td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.edit_push_type}</td>
+                <td><select name="msg[send_type]" id="send_type" onchange="change()">
+                    {html_options options=$push_type selected=$params.push_type}
+                </select></td>
+            </tr>
+            {if $params.push_type == '1'}<tr id="show_time" style="display: table-row">{else}<tr id="show_time" style="display:none">{/if}
+            <td class="label">{$lang.edit_push_time}</td>
+            <td><input type="datetime-local" name="msg[push_time]" value="{$params.at_time}"/></td>
+        </tr>
+            <tr>
+                <td class="label">{$lang.edit_link}</td>
+                <td><select name="msg[link]" id="link" onchange="change_link()">
+                    <option value='0'>{$lang.edit_select}</option>
+                    {html_options options=$links selected=$params.link_code}
+                </select>
+                    {if $params.link_type}<input type="text" id="link_arg" name="msg[link_arg]" style="width: 250px;"  value="{$params.link_value}"/>{else}<input type="text" id="link_arg" name="msg[link_arg]" style="width: 250px;display: none"  value=""/>
+                    {/if}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="submit" value="{$lang.button_submit}" class="button" />
+                    <input type="reset" value="{$lang.button_reset}" class="button" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript" language="JavaScript">
+    {literal}
+    function change(){
+        var obj = document.getElementById('send_type'); //定位id
+        var index = obj.selectedIndex; // 选中索引
+        var value = obj.options[index].value; // 选中值
+        var link = document.getElementById('show_time'); //定位id
+        if(value == 1){
+            link.style.display='table-row';
+        }else{
+            link.style.display='none';
+        }
+    }
+    function change_link(){
+        var f = document['msg_edit'];
+        var obj = document.getElementById('link'); //定位id
+        var index = obj.selectedIndex; // 选中索引
+        var value = obj.options[index].value; // 选中值
+        var link_arg = document.getElementById('link_arg'); //定位id
+        var link_type =f.elements['link_type'];
+        console.error(value);
+        if(value.indexOf(":id") > 0 ){
+            link_arg.style.display='inline';
+            link_arg.value = '{$lang.edit_input_id}';
+            link_type.value= 'id';
+        }else if(value.indexOf("?k=关键字") > 0 ){
+            link_arg.style.display='inline';
+            link_arg.value = '{$lang.edit_input_keywords}';
+            link_type.value= 'key_words';
+        }else if(value == 'user-defined'){
+            link_arg.style.display='inline';
+            link_arg.value = '自定义内容';
+        }else{
+            link_arg.style.display='none';
+        }
+    }
+
+    function  validate() {
+        var f = document['msg_edit'];
+        var title = f.elements['msg[title]'].value;
+        var content = f.elements['msg[content]'].value;
+        var platform = f.elements['msg[platform]'].value;
+        var type = f.elements['msg[send_type]'].value;
+        var time = f.elements['msg[push_time]'].value;
+        var link = f.elements['msg[link]'].value;
+        var link_arg = f.elements['msg[link_arg]'].value;
+
+        if(title==''){
+            alert('{$lang.title_null}');
+            return false;
+        }
+        if(content==''){
+            alert('{$lang.content_null}');
+            return false;
+        }
+        if(type==1&&time==''){
+            alert('{$lang.time_null}');
+            return false;
+        }
+    }
+    {/literal}
+
+</script>
+{include file="pagefooter.htm"}

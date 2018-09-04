@@ -1,0 +1,75 @@
+<div class="app-container with-navbar" ng-controller="SearchResultController">
+
+    <div class="navbar fixed-top" ng-if="navStyle == 'default'">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" ng-src="image/nav-left.png"/>
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+          {{navTitle || '搜索结果'}}
+        </div>
+    </div>
+
+    <div class="navbar fixed-top" ng-if="navStyle == 'search'">
+        <div class="search-inline">
+            <img class="search-icon" ng-src="image/ind-search.png"/>
+            <form ng-submit="touchSearch()">
+                <input class="search-text" placeholder="请输入您要搜索的商品" ng-model="$parent.currentKeyword">
+            </form>
+        </div>
+        <div class="search-cancel" ng-click="goBack()">取消</div>
+    </div>
+
+    <div class="app-content" infinite-scroll='loadMore()'>
+        <div class="search-filter">
+            <div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.DEFAULT}" ng-click="touchSortDefault()">
+                <span class="text">综合</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.SALE}" ng-click="touchSortSale()">
+                <span class="text">销量</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.DATE}" ng-click="touchSortDate()">
+                <span class="text">新品</span>
+            </div>
+            <div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.PRICE}" ng-click="touchSortPrice()">
+                <span class="text">价格</span>
+                <div class="arrow">
+                    <img class="ind" ng-class="{active : currentSortKey == ENUM.SORT_KEY.PRICE && (currentSortValue == ENUM.SORT_VALUE.DEFAULT || currentSortValue == ENUM.SORT_VALUE.ASC)}" ng-src="image/ind-arrow-up.png"/>
+                    <img class="ind" ng-class="{active : currentSortKey == ENUM.SORT_KEY.PRICE && (currentSortValue == ENUM.SORT_VALUE.DESC)}" ng-src="image/ind-arrow-down.png"/>
+                </div>
+            </div>
+            <div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.CREDIT}" ng-click="touchSortCredit()">
+                <span class="text">信用</span>
+            </div>
+        </div>
+
+        <div class="search-product" ng-if="products && products.length">
+            <div class="product-item" ng-repeat="product in products track by $index" ng-click="touchProduct(product)">
+                <div class="item-photo">
+                    <img ng-src="image/default-photo.png" lazy-img="{{product.default_photo.large}}"/>
+                </div>
+                <div class="item-name">{{product.name}}</div>
+                <div class="item-footer">
+                    <div class="footer-sales">{{product.sales_count}}人付款</div>
+                    <div class="footer-price">{{product.current_price| currency:"￥"}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="isEmpty">
+            <div class="empty-item">
+                <img class="item-logo" ng-src="image/logo-product-empty.png"/>
+                <div class="item-text">暂无任何商品</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="isLoaded && isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="isLoaded && isLastPage">
+            全部加载完毕
+        </div>
+
+    </div>
+
+</div>

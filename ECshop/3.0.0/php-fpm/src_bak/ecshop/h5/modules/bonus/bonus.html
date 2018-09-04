@@ -1,0 +1,126 @@
+<div class="app-container with-navbar with-loader" ng-controller="BonusController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" ng-src="image/nav-left.png"/>
+
+            <div class="button-text">返回</div>
+        </div>
+        <div class="navbar-title">
+            我的推荐
+        </div>
+        <div class="navbar-right" >
+            <div class="button-text">推荐分成</div>
+
+        </div>
+    </div>
+
+    <div class="app-content" infinite-scroll='myBonusModel.loadMore()'>
+
+        <div class="bonus_header">
+            <div class="money_header">
+                <div class="recommend">
+                    <div class="bonus_recommend_title">已推荐</div>
+                    <div class="bonus_amount">{{myBonusModel.bonus_info?myBonusModel.bonus_info.recommend_amount:0}}</div>
+                </div>
+                <div class="line"></div>
+                <div class="recommend">
+                    <div class="bonus_recommend_title">已分成</div>
+                    <div class="bonus_amount">{{myBonusModel.bonus_info?myBonusModel.bonus_info.bonus_amount:0}}</div>
+                </div>
+                <div class="bonus_rules">
+                    <div class="name" ng-click="touchRules()">分成规则</div>
+                    <img class="item-arrow" src="image/nav-right.png"/>
+                </div>
+            </div>
+            <div class="horizontal-line"></div>
+            <div class="bonus_bottom">
+                <div class="bonus_action_header" ng-click="touchMyBalance()">
+                    <div class="money">可用资金</div>
+                    <img class="item-arrow" src="image/nav-right.png"/>
+                </div>
+                <div class="line"></div>
+                <div class="bonus_action_header">
+                    <div class="money" ng-click="touchRecommend()">我推荐的会员 </div>
+                    <img class="item-arrow" src="image/nav-right.png"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="bonus-list" ng-if="myBonusModel.bonuses && myBonusModel.bonuses.length">
+            <div class="list-item" ng-repeat="bonus in myBonusModel.bonuses track by $index">
+                <div class="bonus" ng-click="touchBonus(bonus)">
+                    <div class="bonus_status_header">
+                        <div class="bonus_status" ng-if="bonus.status !=1">
+                            {{getBonusStatus(bonus.status)}}
+                        </div>
+
+                        <div class="bonus_status_success" ng-if="bonus.status ==1">
+                            {{getBonusStatus(bonus.status)}}
+                        </div>
+                        <div class="bonus_sn">
+                            订单号：{{bonus.order_sn}}
+                        </div>
+                    </div>
+                    <div class="horizontal-line"></div>
+                    <div class="bonus_cash">
+                        <div class="bonus_title">现金</div>
+                        <div class="bonus_detail">{{(bonus.cash?bonus.cash:0.00)|number:2}}</div>
+
+                    </div>
+                    <div class="line"></div>
+                    <div class="bonus_cash">
+                        <div class="bonus_title">积分</div>
+                        <div class="bonus_detail">{{bonus.score?bonus.score:0}} </div>
+                    </div>
+
+                    <div class="bonus_right">
+                        <div class="bonus_type">{{getBonusType(bonus.type)}}</div>
+                        <div class="bonus_time">{{bonus.time|localTime}}</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty" ng-if="myBonusModel.isEmpty">
+        <div class="empty-item">
+            <img class="item-logo" ng-src="image/logo-order-empty.png"/>
+
+            <div class="item-text">暂无任何推荐订单</div>
+        </div>
+    </div>
+
+    <div class="loading-more" ng-if="myBonusModel.isLoaded && myBonusModel.isLoading">
+        正在加载...
+    </div>
+    <div class="loading-more" ng-if="myBonusModel.isLoaded && myBonusModel.isLastPage">
+        全部加载完毕
+    </div>
+
+    <!-- Dialog -->
+    <div id="dialog" ng-show="showDialog">
+        <div class="mask">
+        </div>
+        <div class="dialog danger">
+            <div class="dialog-title">
+                确认取消
+            </div>
+            <div class="dialog-content">
+                是否取消该订单
+            </div>
+            <div class="dialog-button">
+                <div class="button left" ng-click="touchDialogCancel()">
+                    取消
+                </div>
+                <div class="button right" ng-click="touchDialogConfirm()">
+                    确认
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>

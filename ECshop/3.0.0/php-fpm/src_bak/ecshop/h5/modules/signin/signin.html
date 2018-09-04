@@ -1,0 +1,53 @@
+<div class="app-container with-navbar" ng-controller="SigninController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goHome()">
+            <img class="button-icon" src="image/nav-left.png"/>
+            <div class="button-text">取消</div>
+        </div>
+        <div class="navbar-title">
+        	用户登录
+        </div>
+    </div>
+
+    <div class="app-content">
+		<div class="signin-form">
+			<div class="signin-field">
+				<img class="field-icon" src="image/ind-username.png"/>
+				<input class="field-input" placeholder="请输入用户名/邮箱/手机号" ng-model="username"/>
+			</div>
+			<div class="signin-hline"></div>
+			<div class="signin-field">
+				<img class="field-icon" src="image/ind-password.png"/>
+				<input type="password" class="field-input" placeholder="请输入密码" ng-model="password"/>
+			</div>
+		</div>
+		<div class="signin-submit" ng-click="touchSignin()">
+			登录
+		</div>
+		<div class="signin-other">
+			<div class="other-item abs-left" ng-click="touchSignup()">快速注册</div>
+			<div class="other-item abs-right" ng-click="touchForget()">忘记密码?</div>
+		</div>
+		<div class="signin-social" ng-if = "isWeixin()" >
+			<div class="social-header">
+				<div class="header-line"></div>
+				<div class="header-label">第三方登录</div>
+			</div>
+			<div class="social-itemset">
+	    		<div class="itemset-item" ng-click="touchWeixin()" >
+	    			<img class="item-icon" src="image/wechat.png"/>
+	    			<div class="item-text">微信</div>
+	    		</div>
+<!-- 				<div class="itemset-item" ng-click="touchQQ()">
+					<img class="item-icon" src="image/qq.png"/>
+					<div class="item-text">QQ</div>
+				</div> -->
+			</div>
+
+
+
+		</div>
+	</div>
+
+</div>

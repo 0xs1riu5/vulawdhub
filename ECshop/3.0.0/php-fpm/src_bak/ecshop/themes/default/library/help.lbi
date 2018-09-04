@@ -1,0 +1,21 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="footArticle">
+  <div class="tts"><span>我的服务<b>Wine service</b></span><A href="#top" title="到顶部" ></A></div>
+  <!--{if $helps}-->
+  <!-- {foreach from=$helps item=help_cat} -->
+  <dl>
+    <dt><a href='{$help_cat.cat_id}' title="{$help_cat.cat_name}">{$help_cat.cat_name}</a></dt>
+    <!-- {foreach from=$help_cat.article item=item} -->
+    <dd><a href="{$item.url}" title="{$item.title|escape:html}">{$item.short_title}</a></dd>
+    <!-- {/foreach} -->
+  </dl>
+  <!-- {/foreach} -->
+  <dl class=fArt_e>
+    <H3>客服热线</H3>
+    <P>400 888 8888 <BR>
+      （仅收市话费） </P>
+    <H4>周一至周日 9:00-20:00 </H4>
+  </dl>
+  <!--{/if}-->
+  <div class="clear0"></div>
+</div>
