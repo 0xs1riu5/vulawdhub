@@ -1,0 +1,19 @@
+version: '2'
+services:
+  php5-ecshop_2.7.3:
+    build: ./php-fpm
+    image: s1r1u5/ecshop:2.7.3
+    restart: always
+    links: 
+        - mysql_ecshop2:db
+    ports:
+        - 80:80
+    depends_on:
+        - mysql_ecshop2
+
+  mysql_ecshop2:
+    build: ./mysql
+    image: s1r1u5/mysql_ecshop:2.7.3
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+
