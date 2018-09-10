@@ -1,0 +1,21 @@
+version: '2'
+services:
+
+  php5-app_emlog5:
+    build: ./php-fpm
+    image: s1riu5/emlog:5.2.1
+    restart: always
+    links: 
+        - mysql-emlog5:db
+    ports:
+        - 8001:80
+    depends_on:
+        - mysql-emlog5
+
+
+  mysql-emlog5:
+      build: ./mysql
+      image: s1riu5/mysql_emlog:5.2.1
+      environment:
+        MYSQL_ROOT_PASSWORD: "123456"
+
