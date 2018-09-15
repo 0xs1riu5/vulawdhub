@@ -1,0 +1,21 @@
+version: '2'
+services:
+
+  php5-app_drupal7:
+    build: ./php-fpm
+    image: s1riu5/drupal:7.59
+    restart: always
+    links: 
+        - mysql-drupal7:db
+    ports:
+        - 8001:80
+    depends_on:
+        - mysql-drupal7
+
+
+  mysql-drupal7:
+      build: ./mysql
+      image: s1riu5/mysql_drupal:7.59
+      environment:
+        MYSQL_ROOT_PASSWORD: "123456"
+
