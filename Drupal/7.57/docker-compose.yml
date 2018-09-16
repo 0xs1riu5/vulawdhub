@@ -3,7 +3,7 @@ services:
 
   php5-app_drupal7:
     build: ./php-fpm
-    image: s1riu5/drupal:7.59
+    image: s1riu5/drupal:7.57
     restart: always
     links: 
         - mysql-drupal7:db
@@ -15,7 +15,7 @@ services:
 
   mysql-drupal7:
       build: ./mysql
-      image: s1riu5/mysql_drupal:7.59
+      image: s1riu5/mysql_drupal:7.57
       environment:
         MYSQL_ROOT_PASSWORD: "123456"
 
