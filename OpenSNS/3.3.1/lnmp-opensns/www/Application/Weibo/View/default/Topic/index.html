@@ -1,0 +1,223 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/topic.css" rel="stylesheet"/>
+    <link href="__CSS__/weibo.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{:getRootUrl()}Addons/InsertXiami/_static/css/xiami.css">
+</block>
+
+<block name="header">
+    <include file="Public/_nav"/>
+</block>
+
+<block name="body">
+    <div class="topics">
+        <div class="row">
+            <div class="topic-head-info">
+                <div class="cover-wrap pull-left">
+                    <img src="<if condition='$topic.logo neq 0'>{$topic.logo|getThumbImageById=180,180}<else/>__IMG__/topicavatar.png</if>">
+                </div>
+                <div class="info-wrap pull-left">
+                    <p class="t-name text-more">#{$topic.name}#</p>
+                    <p class="t-intro text-more">{:L('_LEAD_')}{:L('_COLON_')}{$topic.intro|default=L('_TOPIC_RECOMMEND_')}</p>
+                    <p>
+                        <a href="javascript:" class="common-btn send-topic-wb" data-role="show_quick"><i class="iconfont icon-fabu"></i>发动态</a>
+                       <!-- <a href="javascript:" class="common-btn notice">关注</a>-->
+                        <a href="javascript:" class="common-btn share" id="topic_shareBtn">{:L('_SHARE_')}</a>
+                        <a href="javascript:" class="common-btn follow" data-value="{$status}" data-role="topic-follow">
+                           <if condition="$status eq 0">
+                               {:L('_FOLLOW_')}
+                               <else/>
+                               {:L('_UN_FOLLOW_')}
+                           </if>
+                        </a>
+                        <if condition="check_auth('Weibo/Topic/beAdmin')">
+                            <a href="javascript:" class="common-btn compete" onclick="to_be_number_one({$topic['id']})">{:L('_PRESENT_RUSH_')}</a>
+                        </if>
+                    </p>
+                </div>
+            </div>
+            <div class="topic-holder">
+                <p class="h-title">话题主持人</p>
+                <eq name="host.status" value="1">
+                    <div class="have-holder">
+                        <div class="h-avatar pull-left">
+                            <img class="avatar-img" src="{$host.avatar128}">
+                        </div>
+                        <div class="h-info pull-left">
+                            <p><a class="named" href="{$host.space_url}">{$host.nickname}</a></p>
+                            <p class="intro-self">
+                                <if condition="$host['signature'] eq ''">{:L('_NO_IDEA_')}
+                                    <else/>
+                                    <attr title="{$host.signature}">{$host.signature}</attr>
+                                </if>
+                            </p>
+                            <p>
+                                <if condition="is_login() && $host['uid'] != get_uid()">
+                                    {:W('Common/Follow/follow',array('follow_who'=>$host['uid']))}
+                                    <else/>
+                                    <if condition="$host['uid'] == get_uid()">
+                                        <a class="topic-btn" disabled="disabled">{:L('_SELF_')}</a>
+                                    </if>
+                                </if>
+                            </p>
+                        </div>
+                    </div>
+                </eq>
+
+                <eq name="host.status" value="0">
+                    <div class="clearfix no-holder">
+                        <p><i class="iconfont icon-leiben"></i></p>
+                        <p style="margin: 0">暂无主持</p>
+                        <h5 style="margin-top: 0">{:L('_WAIT_FOR_YOU_')}</h5>
+                    </div>
+                    <else/>
+                </eq>
+            </div>
+        </div>
+        <!--话题信息结束-->
+        <!--话题动态开始-->
+        <div class="t-content row">
+            <div class="left-wb pull-left">
+                <include file="_quickweibo"/>
+                <include file="loadweibo"/>
+                <div class="text-right">
+                    {:getPagination($total_count,10)}
+                </div>
+            </div>
+            <div class="right-card pull-left">
+                <div class="border line2 row">
+                    <div class="line2-lefd col-xs-6">
+                        <div class="numder">{$topic.read_count}</div>
+                        <div class="beizu">{:L('_READ_')}</div>
+                    </div>
+                    <div class="line2-lefd col-xs-6">
+                        <div class="numder">{$topic.weibo_num}</div>
+                        <div class="beizu">{:L('_COMMENT_')}</div>
+                    </div>
+                    <!--   <div class="line2-lefd">
+                           <div class="numder">{$total_sub|default=0}</div>
+                           <div class="beizu">粉丝</div>
+                       </div>-->
+                </div>
+                <if condition="$topic['qrcode'] neq 0">
+                    <div class="border public-clear">
+                        <h4 class="shaoshao">{:L('_TOPIC_TWO_DIMENSION_CODE_')}</h4>
+
+                        <div class="shayh">
+                            <img src="{$topic.qrcode|getThumbImageById=220,220}" width="220" height="220">
+                        </div>
+                    </div>
+                </if>
+                <if condition="check_auth('Weibo/Topic/editTopic',$topic['uadmin']) and is_login()">
+                    <div class="common_block_border">
+                        <h4 class="common_block_title">{:L('_ADMIN_PANEL_')}</h4>
+
+                        <div class="clearfix">
+
+                            <div class="clearfix col-md-12 margin_bottom_10">
+                                <form role="form" action="{:U('editTopic')}" method="post" class="ajax-form">
+                                    <div class="form-group">
+                                        <div class="margin_bottom_10">{:L('_TIP_PRESENTER_SETTINGS_')}</div>
+                                        <input name="id" type="hidden" value="{$topic.id}">
+                                        <label for="avatar">{:L('_TOPIC_PIC_')}(180px*180px)</label>
+
+                                        <div>
+                                            {:W('Common/UploadImage/render',array(array('id'=>'avatar','name'=>'logo','value'=>$topic['logo'],'width'=>200,'height'=>200)))}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="qrcode">{:L('_TOPIC_TWO_DIMENSION_CODE_')}(220px*220px)</label>
+
+                                        <div>
+                                            {:W('Common/UploadImage/render',array(array('id'=>'qrcode','name'=>'qrcode','width'=>'100','height'=>'100','value'=>$topic['qrcode'])))}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="intro">{:L('_TOPIC_LEAD_')}</label>
+                                        <textarea class="form-control" id="intro" name="intro" placeholder="{:L('_PLACEHOLDER_TOPIC_LEAD_')}">{$topic['intro']}</textarea>
+                                    </div>
+                                    <if condition="check_auth('Weibo/Topic/editTopic')">
+                                        <div class="margin_bottom_10">{:L('_TIP_ADMIN_SETTINGS_')}</div>
+                                        <div class="form-group">
+                                            <label for="intro">{:L('_PRESENTER_UID_')}</label>
+                                            <input type="text" class="form-control" id="uadmin" name="uadmin" placeholder="{:L('_PLACEHOLDER_INPUT_PRESENTER_UID_')}"
+                                                   value="{$topic['uadmin']}">
+                                        </div>
+                                        <div class="form-group">
+                                            <eq name="topic.is_top" value="1">
+                                                <input type="checkbox" value="1" id="top" name="is_top" checked><label for="top">{:L('_TOPIC_RECOMMEND_YES_OR_NOT_')}</label>
+                                                <else/>
+                                                <input type="checkbox" value="1" id="top" name="is_top"><label
+                                                    for="top">{:L('_TOPIC_RECOMMEND_YES_OR_NOT_')}</label>
+                                            </eq>
+                                        </div>
+                                    </if>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">
+                                            {:L('_SETTINGS_')}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </if>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script src="__JS__/weibo.js"></script>
+    <script>
+        $(function () {
+            var wb_shareBtn = document.getElementById("topic_shareBtn");
+            wb_url = document.URL, //获取当前页面地址，也可自定义例：wb_url = "http://www.bluesdream.com"
+                    wb_appkey = "",
+                    wb_title = document.title,
+                    wb_ralateUid = "{:C('SHARE_WEIBO_ID')}",
+                    wb_pic = "",
+                    wb_language = "zh_cn";
+            wb_shareBtn.setAttribute("href", "http://service.weibo.com/share/share.php?url=" + wb_url + "&appkey=" + wb_appkey + "&title=" + wb_title + "&pic=" + wb_pic + "&ralateUid=" + wb_ralateUid + "&language=" + wb_language + "");
+        });
+
+        var SUPPORT_URL = "{:addons_url('Support://Support/doSupport')}";
+
+        $(function () {
+            weibo_bind();
+        });
+
+        $('[data-role="show_quick"]').click(function () {
+            $(".weibo_post_box").slideToggle("slow");
+        });
+
+        $('[data-role="topic-follow"]').click(function () {
+            var topic_id={$topic['id']};
+            var url=U('Weibo/Topic/followTopic');
+            var status=$(this).attr('data-value');
+            $.post(url,{topic_id:topic_id,status:status},function (msg) {
+                if(msg.status)
+                {
+                    if(status==1){
+                        $('[data-role="topic-follow"]').html('关注') ;
+                        $('[data-role="topic-follow"]').attr('data-value',0);
+                        toast.success(L('_CANCEL_')+L('_FOLLOW_')+msg.info);
+                    }else{
+                        $('[data-role="topic-follow"]').html('已关注') ;
+                        $('[data-role="topic-follow"]').attr('data-value',1);
+                        toast.success(L('_FOLLOW_')+msg.info);
+                    }
+                }else{
+                    toast.error(msg.info);
+                }
+            })
+        })
+
+    </script>
+    <link rel="stylesheet" href="__CSS__/photoswipe.css">
+    <link rel="stylesheet" href="__CSS__/default-skin/default-skin.css">
+    <script src="__JS__/photoswipe.min.js"></script>
+    <script src="__JS__/photoswipe-ui-default.min.js"></script>
+</block>

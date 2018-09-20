@@ -1,0 +1,41 @@
+<link type="text/css" rel="stylesheet" href="{:getRootUrl()}Addons/Report/_static/css/report.css"/>
+<!-- 模态框HTML -->
+<form class="ajax-form" method="post"  data-role="eject" action="{:addons_url('Report://Report/addReport',array('param'=>http_build_query($param)))}">
+    <if condition="!is_login()"><div class="need_login_tip">{:L('_REPORT_NOT_LOGIN_')}</div></if>
+    <div style="padding-bottom:45px">
+        <span class="col-md-2 pad0" style="font-size: 14px;height: 32px;padding-top: 2px">{:L('_REPORT_REASON_')}：</span>
+    <span class="col-md-10 pad0">
+        <select data-role="select"  name="reason" class="chosen-select form-control" tabindex="-1">
+            <volist name="reason" id="vl">
+                <option value="{$vl}">{$vl}</option>
+            </volist>
+        </select></span>
+    </div>
+    <div>
+        <p><textarea class="form-control "  data-role="textarea" name="content" style="height: 6em;" placeholder="{:L('_REPORT_DETAIL_')}..."></textarea></p>
+    </div>
+
+    <div style="height: 40px;margin-left: 18px;width: 140px ">
+    <span>
+        <p class="pull-left" style="margin-right: 5px" >
+            <input type="submit" data-role="submitreport" value="{:L('_OK_')}" class="btn btn-primary send_box" <if condition="!is_login()">disabled="disabled"</if>>
+
+        </p>
+    </span>
+    <span>
+        <p class="pull-left" style="margin-left: 5px;">
+            <input type="button" value="{:L('_CANCEL_')}"  class="btn btn-primary send_box" data-role="cancel" data-dismiss="modal">
+        </p>
+    </span>
+    </div>
+</form>
+<script>
+    $(document).ready(function(){
+        $('[data-role="submitreport"]').click(function(){
+            $('[data-dismiss="modal"]').click();
+        });
+    });
+</script>
+
+
+

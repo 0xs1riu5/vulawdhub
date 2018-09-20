@@ -1,0 +1,156 @@
+<extend name="Config/base"/>
+<block name="style">
+    <style>
+        .jcrop-holder > div > div {
+            border-radius: 50%;
+        }
+    </style>
+</block>
+<block name="body">
+    <script>
+        function center_toggle(name) {
+            var show = $('#' + name + '_panel').css('display');
+            $('.center_panel').hide();
+            $('.center_arrow_right').show();
+            $('.center_arrow_bottom').hide()
+            if (show == 'none') {
+                $('#' + name + '_panel').show();
+                $('#' + name + '_toggle_right').hide();
+                $('#' + name + '_toggle_bottom').show()
+            } else {
+                $('#' + name + '_toggle_right').show();
+                $('#' + name + '_toggle_bottom').hide()
+            }
+        }
+    </script>
+    <div id="center">
+        <div id="center_base">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="nav nav-secondary">
+                        <li class="active"><a href="#base" data-toggle="tab">{:L('_DATA_BASIC_')}</a></li>
+                        <li><a href="#default" data-toggle="tab">{:L('_SETTING_PERSONAL_PAGE_DISPLAY_')}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="base">
+                    <div class="row">
+                        <div class="col-xs-12" style="padding-left: 40px;margin-top: 10px;">
+                            <div class="title" style="font-size: 18px;line-height: 50px;">{:L('_IDENTITY_OWNED_')}</div>
+                            <table class="col-xs-12">
+                                <tbody>
+                                <volist name="already_roles" id="role">
+                                    <tr style="line-height: 40px;">
+                                        <td style="width: 20%">{$role.title}</td>
+                                        <td style="width: 50%">{$role.user_status}</td>
+                                        <td style="width: 30%"><neq name="role.user_role_status" value="0"><eq name="role.can_login" value="1"><a data-role="changeLoginRole" data-id="{$role.id}">{:L('_LOGIN_CHANGE_')}</a><else/>{:L('_LOGIN_NOW_')}</neq></eq></td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-12" style="padding-left: 40px;margin-top: 20px;">
+                            <div class="title" style="font-size: 18px;line-height: 50px;">{:L('_IDENTITY_CAN_OWNED_')}</div>
+                            <table class="col-xs-12">
+                                <tbody>
+                                <volist name="can_have_roles" id="role">
+                                    <tr style="line-height: 40px;">
+                                        <td style="width: 20%">{$role.title}</td>
+                                        <td style="width: 80%"><a data-role="hold_role" data-id="{$role.id}">{:L('_IDENTITY_OWN_')}</a></td>
+                                    </tr>
+                                </volist>
+                                <volist name="can_up_roles" id="role">
+                                    <tr style="line-height: 40px;">
+                                        <td style="width: 20%">{$role.title}</td>
+                                        <td style="width: 80%"><a data-role="up_role" data-url="{:U('Ucenter/Member/upRole',array('role_id'=>$role['id']))}">{:L('_IDENTITY_UPGRADE_')}</a></td>
+                                    </tr>
+                                </volist>
+                                <if condition="!count($can_have_roles)&&!count($can_up_roles)">
+                                    <div style="width: 100%;margin-left: 60px;color: #cdcdcd;font-size: 18px;">{:L('_IDENTITY_NONE_')}{:L('_EXCLAMATION_')}</div>
+                                </if>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="default" style="margin-top: 30px;">
+                    <form action="__SELF__" method="post" class="ajax-form form-horizontal">
+                        <div class="form-group">
+                            <label for="show_role" class="col-xs-3 control-label" style="text-align: right;">
+                                {:L('_PERSONAL_PAGE_DISPLAY_IDENTITY_')}{:L('_COLON_')}
+                            </label>
+
+                            <div class="col-xs-4">
+
+                                <select class="form-control" id="show_role" name="show_role">
+                                    <volist name="already_roles" id="onerole">
+                                        <if condition="$onerole['id'] eq $show_role">
+                                            <option value="{$onerole.id}" selected>{$onerole.title|htmlspecialchars}</option>
+                                            <else/>
+                                            <option value="{$onerole.id}">{$onerole.title|htmlspecialchars}</option>
+                                        </if>
+
+                                    </volist>
+                                </select>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="col-xs-5"><span class="input-tips">{:L('_IDENTITY_DISPLAY_DEFAULT_')}</span></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-xs-10">
+                                <button type="submit" class="btn btn-primary">{:L('_SAVE_')}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            $('[data-role="changeLoginRole"]').click(function(){
+                var role_id=$(this).attr('data-id');
+                $.post(U('Ucenter/Member/changeLoginRole'),{role_id:role_id},function(data){
+                    if(data.status){
+                        if(data.url!=undefined){
+                            toast.success("{:L('_REDIRECT_AFTER_IDENTITY_CHANGE_')}{:L('_WAVE_')}");
+                            setTimeout(function(){
+                                window.location.href=data.url;
+                            },1500);
+                        }else{
+                            toast.success("{:L('_SUCCESS_IDENTITY_LOGIN_')}{:L('_EXCLAMATION_')}");
+                            setTimeout(function(){
+                                window.location.reload();
+                            },1500);
+                        }
+                    }else{
+                        handleAjax(data);
+                    }
+                });
+            });
+            $('[data-role="hold_role"]').click(function(){
+                var role_id=$(this).attr('data-id');
+                $.post(U('Ucenter/Member/registerRole'),{role_id:role_id},function(data){
+                    if(data.status){
+                        toast.success("{:L('_REDIRECT_AFTER_IDENTITY_OWN_')}{:L('_WAVE_')}");
+                        setTimeout(function(){
+                            window.location.href=data.url;
+                        },1500);
+                    }else{
+                        handleAjax(data);
+                    }
+                });
+            });
+            $('[data-role="up_role"]').click(function(){
+                var url=$(this).attr('data-url');
+                var myModalTrigger = new ModalTrigger({
+                    'type':'ajax',
+                    'url':url,
+                    'title':"{:L('_IDENTITY_UPGRADE_2_')}"
+                });
+                myModalTrigger.show();
+            });
+        });
+    </script>
+</block>

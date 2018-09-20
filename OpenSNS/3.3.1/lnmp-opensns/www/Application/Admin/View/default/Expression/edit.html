@@ -1,0 +1,41 @@
+<extend name="Public/base"/>
+
+<block name="body">
+
+    <div class="main-title">
+        <h2>{:L("_EDIT_EXPRESSION_PACKAGE_")}</h2>
+    </div>
+    <form action="{:U('admin/expression/editPackage')}" method="post" class="ajax-form">
+        <div style="padding: 15px">
+        <input type="hidden" name="name" class="" value="{$name}">
+
+        <div class="form-item" style="margin-bottom: 20px;">
+            <div class="controls">
+               {:L("_NAME_")}<input type="text" name="title" class="" value="{$title}">
+                <span class="check-tips">{:L("_THE_CHINESE_NAME_OF_THE_EXPRESSION_")}</span>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="form-item">
+            <button class="btn submit-btn" id="submit" type="submit" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+        </div>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+
+    <script type="text/javascript">
+        Think.setValue("type", {$info.type|default=0});
+        Think.setValue("group", {$info.group|default=0});
+        //导航高亮
+        highlight_subnav('{:U('Config/index')}');
+    </script>
+</block>
+
+
+
+

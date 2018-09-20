@@ -1,0 +1,46 @@
+<div style="">
+    <php>
+
+    $schedule = $param['type_value'];
+    if($schedule['type_key'] == 4){
+    $type_value = $schedule['type_value'];
+    }
+</php>
+
+    <input name="type_value" type="text" placeholder="请输入decimal保留位数" class="text input-large form-control" style="width: 400px"
+           value="{$type_value}"/>
+</div>
+
+
+
+<script>
+    var option = {
+        language: "zh-CN",
+        autoclose: true,
+        format: 'yyyy-mm-dd hh:ii'
+    }
+    var $input = $('[name="type_value"]');
+    $(function () {
+
+        if($('[name="type_key"]').val() == 4){
+            $input.show();
+        }else {
+            $input.hide();
+        }
+
+        var time = "{:time_format(time())}";
+        $('[name="type_key"]').change(function () {
+            var $this = $(this);
+            var val = $this.val();
+            if (val > 0) {
+                if (val == 4) {
+                    $input.show();
+                } else {
+                    $input.hide();
+
+                }
+            }
+
+        })
+    })
+</script>

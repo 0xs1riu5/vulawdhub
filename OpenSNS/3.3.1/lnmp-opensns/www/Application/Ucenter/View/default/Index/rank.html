@@ -1,0 +1,79 @@
+<extend name="Base/common"/>
+
+<block name="style">
+    <link href="__CSS__/usercenter.css" rel="stylesheet" type="text/css"/>
+</block>
+<block name="header">
+    <br/>
+</block>
+<block name="body">
+    <div class="col-xs-12 usercenter">
+        <div class="uc">
+            <include file="_top"/>
+            <div class="uc-cont">
+                <div class="nav-wrap">
+                    <include file="_top_menu"/>
+                </div>
+                <div class="cont-wrap common-cont-wrap">
+                    <div class="row">
+                        <div class="col-xs-12 uc_fans">
+                            <ul class="nav nav-pills ucenter-tab">
+                                <li <eq name="tab" value="rank"> class="active"</eq>><a href="{:U('Ucenter/Index/rank',array('uid'=>$user_info['uid']))}"
+
+                            >
+                                {:L('_TANK_OWNED_')}</a></li>
+                                <if condition="$user_info['uid'] eq is_login()">
+                                    <li <eq name="tab" value="rankVerifyWait"> class="active"</eq>><a href="{:U('Ucenter/Index/rankVerifyWait')}"
+
+                                >
+                                    {:L('_RANK_WAIT_AUDIT_')}</a></li>
+                                    <li <eq name="tab" value="rankVerifyFailure"> class="active"</eq>><a href="{:U('Ucenter/Index/rankVerifyFailure')}"
+
+                                >
+                                    {:L('_RANK_APPLY_FAILED_')}</a></li>
+                                    <li <eq name="tab" value="rankVerify"> class="active"</eq>><a href="{:U('Ucenter/Index/rankVerify')}"
+
+                                >
+                                    {:L('_RANK_APPLY_')}</a></li>
+                                </if>
+                            </ul>
+                        </div>
+                    </div>
+                    <if condition="count($rankList) eq 0"><p class="text-muted"
+                                                             style="text-align: center; font-size: 3em;">
+                        <br><br>
+                        {:L('_RANK_NONE_')}{:L('_WAVE_')}
+                        <br><br><br>
+                    </p></if>
+                    <div style="margin: 20px 0 20px 20px;">
+                        <volist name="rankList" id="rank">
+                            <div class="row">
+                                <div class="col-xs-2" style="margin-top: 30px;text-align: center;">
+                                    <empty name="rank.label_content"><img style="width: 18px;" class="rank-icon" src="{$rank.logo_url}" title="{$rank.title}" alt="{$rank.title}"/><else/><span class="label label-badge rank-label" title="{$rank.title}" style="background: {$rank.label_bg} !important;color:{$rank.label_color} !important;">{$rank.label_content}</span>
+                                    </empty>
+                                </div>
+                                <div class="col-xs-8">
+                                    <div>
+                                        {:L('_RANK_NAME_')}{:L('_COLON_')}{$rank.title}
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        {:L('_REASON_')}{:L('_COLON_')}{$rank.reason}
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        {:L('_APPLY_TIME_')}{:L('_COLON_')}{$rank.create_time|friendlyDate}
+                                    </div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <eq name="tab" value="rankVerifyWait"> <a class="btn btn-primary" href="{:U('Ucenter/Index/rankVerifyCancel',array('rank_id'=>$rank['rank_id']))}">{:L('_APPLY_CANCEL_')}</a> </eq>
+                                    <eq name="tab" value="rankVerifyFailure"> <a class="btn btn-primary" href="{:U('Ucenter/Index/rankVerify',array('rank_user_id'=>$rank['id']))}">{:L('_APPLY_RE_')}</a> </eq>
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</block>
+

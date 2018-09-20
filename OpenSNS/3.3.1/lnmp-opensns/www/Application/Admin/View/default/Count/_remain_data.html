@@ -1,0 +1,16 @@
+<volist name="remainList" id="remain">
+    <tr>
+        <td>{$remain.date_str}</td>
+        <td>{$remain.reg_num}</td>
+        <td>
+            <notEmpty name="remain.day">
+                <ul>
+                    <volist name="remain.day" id="remain_day" key="key">
+                        <li class="day day{$key}" style="width:{$remain_day.width};" title="{$remain_day.value} {$remain_day.num}个">{$remain_day.value}</li>
+                    </volist>
+                </ul>
+            </notEmpty>
+
+        </td>
+    </tr>
+</volist>

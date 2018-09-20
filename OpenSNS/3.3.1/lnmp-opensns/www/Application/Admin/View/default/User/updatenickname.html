@@ -1,0 +1,44 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <!-- 标题栏 -->
+    <div class="tab-wrap with-padding">
+        <ul class="nav nav-tabs">
+
+            <li><a href="{:U('updatepassword')}">{:L("_CHANGE_PASSWORD_")}</a></li>
+            <li class="active"><a href="{:U('updatenickname')}">{:L("_MODIFY_NICKNAME_")}</a></li>
+        </ul>
+
+    </div>
+    <div class="with-padding">
+        <!-- {:L("_CHANGE_PASSWORD_")}表单 -->
+        <form action="{:U('User/submitNickname')}" method="post" class="form-horizontal" autocomplete="off">
+            <div class="form-item">
+                <label class="item-label">{:L("_PASSWORD_")}{:L("_COLON_")}<span class="check-tips">{:L("_PLEASE_ENTER_THE_PASSWORD_")}</span></label>
+
+                <div class="controls">
+                    <input type="password" name="password" class="text input-large form-control" autocomplete="off"
+                           style="width: 400px"/>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_NICKNAME_")}{:L("_COLON_")}<span class="check-tips">{:L("_PLEASE_ENTER_A_NEW_NICKNAME_")}</span></label>
+
+                <div class="controls">
+                    <input type="text" name="nickname" class="text input-large form-control" autocomplete="off"
+                           style="width: 400px"
+                           value="{:get_username()}"/>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="with-padding">
+        <button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">{:L("_RECOGNITION_WITH_SPACE_")}</button>
+        <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+</block>

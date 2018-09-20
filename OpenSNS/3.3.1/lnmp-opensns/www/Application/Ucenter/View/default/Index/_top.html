@@ -1,0 +1,39 @@
+<div class="uc_top_bg">
+    <if condition="$user_info['cover_id']">
+        <img class="uc_top_img_bg" src="{$user_info['cover_path']}" style="width: 100%;height: 100%">
+        <else/>
+        <img class="uc_top_img_bg" src="__IMG__/user_top_default_bg.jpg" style="width: 100%;height: 100%">
+    </if>
+    <if condition="is_login() && $user_info['uid'] eq is_login()">
+        <div class="change_cover"><a data-type="ajax" data-url="{:U('Ucenter/Public/changeCover')}" data-toggle="modal" data-title="{:L('_UPLOAD_PERSONAL_COVER_')}" style="color: white;"><img class="img-responsive" src="__CORE_IMAGE__/fractional.png"></a>
+        </div>
+    </if>
+    <div class="avt-wrap">
+        <a href="{$user_info.space_url}" title="">
+            <img src="{$user_info.avatar128}" class="avatar-img img-responsive top_img"/>
+        </a>
+        <p> <a ucard="{$user_info.uid}" class="n-name" href="{$user_info.space_url}" title="">{$user_info.nickname|htmlspecialchars}</a></p>
+        <p class="f-l">
+            <span><a href="{:U('Ucenter/Index/fans',array('uid'=>$user_info['uid']))}" title="{:L('_FANS_NUMBER_')}">{$user_info.fans}</a>{:L('_FANS_')}</span>
+            <span class="fen-ge">/</span>
+            <span><a href="{:U('Ucenter/Index/following',array('uid'=>$user_info['uid']))}" title="{:L('_FOLLOWERS_NUMBER_')}">{$user_info.following}</a>{:L('_FOLLOWERS_')}</span>
+        </p>
+        <div class="bottom-wrap row">
+            <div class="col-xs-8 text-more">
+                {:L('_SIGNATURE_')}{:L('_COLON_')}
+                <if condition="$user_info['signature'] eq ''">
+                    {:L('_NO_IDEA_')}
+                    <else/>
+                    <attr title="{$user_info.signature}">{$user_info.signature}</attr>
+                </if>
+            </div>
+            <if condition="is_login() && $user_info['uid'] != get_uid()">
+            <div class="col-xs-4 bt-group">
+                {:W('Common/Follow/follow',array('follow_who'=>$user_info['uid']))}
+                <button type="button" class="btn btn-default" onclick="talker.start_talk({$user_info['uid']},{$has_wukong})">{:L('_CHAT_')}
+                </button>
+            </div>
+            </if>
+        </div>
+    </div>
+</div>

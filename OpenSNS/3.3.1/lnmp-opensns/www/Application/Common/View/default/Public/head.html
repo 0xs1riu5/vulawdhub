@@ -1,0 +1,70 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+{:hook('syncMeta')}
+
+<include file="Public/seo"/>
+
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" media="screen" />
+
+<!-- zui -->
+<link href="__ZUI__/css/zui.css" rel="stylesheet">
+
+<link href="__ZUI__/css/zui-theme.css" rel="stylesheet">
+<link href="__PUBLIC__/static/os-icon/simple-line-icons.min.css" rel="stylesheet">
+<link href="__PUBLIC__/static/os-loading/loading.css" rel="stylesheet">
+<link href="__PUBLIC__/css/core.css" rel="stylesheet"/>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/js/ext/magnific/magnific-popup.css"/>
+<!--<script src="__PUBLIC__/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/com/com.functions.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/js/core.js"></script>-->
+<script src="__PUBLIC__/js.php?f=js/jquery-2.0.3.min.js,js/com/com.functions.js,static/os-loading/loading.js,js/core.js,js/com/com.toast.class.js,js/com/com.ucard.js"></script>
+
+
+
+<block name="style"><!--Style--></block>
+<!--合并前的js-->
+<include file="Public/var"/>
+
+<!-- Bootstrap库 -->
+<!--
+<php>$js[]=urlencode('/static/bootstrap/js/bootstrap.min.js');</php>
+
+&lt;!&ndash; 其他库 &ndash;&gt;
+<script src="__STATIC__/qtip/jquery.qtip.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Core/js/ext/slimscroll/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="__STATIC__/jquery.iframe-transport.js"></script>
+-->
+<!--CNZZ广告管家，可自行更改-->
+<!--<script type='text/javascript' src='http://js.adm.cnzz.net/js/abase.js'></script>-->
+<!--CNZZ广告管家，可自行更改end-->
+<!-- 自定义js -->
+<!--<script src="__PUBLIC__/js.php?get={:implode(',',$js)}"></script>-->
+
+<php>
+    D('Pushing')->doRun();
+    $key = C('DATA_AUTH_KEY');
+    $timestamp = time();
+    $signature = md5(is_login().$timestamp.$key);
+
+</php>
+<script>
+    //全局内容的定义
+    var _ROOT_ = "__ROOT__";
+    var MID = "{:is_login()}";
+    var SIGNATURE = "{$signature}";
+    var TIMESTAMP = "{$timestamp}";
+    var MODULE_NAME="<php>echo MODULE_NAME;</php>";
+    var ACTION_NAME="<php>echo ACTION_NAME;</php>";
+    var CONTROLLER_NAME ="<php>echo CONTROLLER_NAME;</php>";
+    var initNum = "{:modC('WEIBO_NUM',140,'WEIBO')}";
+    function adjust_navbar(){
+        $('#sub_nav').css('top',$('#nav_bar').height());
+        $('#main-container').css('padding-top',$('#nav_bar').height()+$('#sub_nav').height()+20)
+    }
+</script>
+
+<audio id="music" src="" autoplay="autoplay"></audio>
+<!-- 页面header钩子，一般用于加载插件CSS文件和代码 -->
+{:hook('pageHeader')}

@@ -1,0 +1,35 @@
+<ul class="nav nav-tabs">
+    <php>
+        switch($tab){
+            case 'edit':
+                $editClass="active";
+                break;
+            case 'score':
+                $scoreClass="active";
+                break;
+            case 'rank':
+                $rankClass="active";
+                break;
+            case 'field':
+                $fieldClass="active";
+                break;
+            case 'fieldRegister':
+                $fieldRegisterClass="active";
+                break;
+            case 'module':
+                $moduleClass="active";
+                break;
+            default:
+                break;
+        }
+    </php>
+    <li class="{$editClass}"><a href="{:U('Role/editRole', array('id'=>$this_role['id']))}">
+        <if condition="empty($is_edit)">{:L("_NEW_IDENTITY_")}</if>
+        <if condition="$is_edit eq 1">{:L("_EDIT_IDENTITY_")}</if>
+    </a></li>
+    <li class="{$scoreClass}"><a href="{:U('Role/configScore',array('id'=>$this_role['id']))}">{:L("_USER_INTEGRAL_CONFIGURATION_")}</a></li>
+    <li class="{$rankClass}"><a href="{:U('Role/configRank',array('id'=>$this_role['id']))}">{:L("_TITLE_AND_LABEL_CONFIGURATION_")}</a></li>
+    <li class="{$fieldClass}"><a href="{:U('Role/configField',array('id'=>$this_role['id']))}">{:L("_EXTENDED_DATA_CONFIGURATION_")}</a></li>
+    <li class="{$fieldRegisterClass}"><a href="{:U('Role/configField',array('id'=>$this_role['id'],'type'=>1))}">{:L("_FILL_IN_THE_DATA_CONFIGURATION_REGISTER_")}</a></li>
+    <li class="{$moduleClass}"><a href="{:U('Role/configModule',array('id'=>$this_role['id']))}">模块权限</a></li>
+</ul>

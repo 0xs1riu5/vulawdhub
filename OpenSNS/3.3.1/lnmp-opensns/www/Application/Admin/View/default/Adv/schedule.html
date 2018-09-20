@@ -1,0 +1,82 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <script src="__BTS__/plugins/zui.js"></script>
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/js/ext/magnific/magnific-popup.css"/>
+    <!-- 标题 -->
+    <div class="main-title">
+        <h2>
+            广告排期查看
+        </h2>
+    </div>
+
+
+
+
+    <!-- 数据表格 -->
+    <div class="with-padding">
+        <div class="calendar" id="calendar"></div>
+    </div>
+    <!-- 分页 -->
+    <script type="text/javascript" src="__ALTE__/plugins/jQueryUI/jquery-ui.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="__ALTE__/plugins/fullcalendar/fullcalendar.min.css"/>
+    <link rel="stylesheet" href="__ALTE__/plugins/fullcalendar/fullcalendar.print.css" media="print">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="__ALTE__/plugins/fullcalendar/fullcalendar.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //Date for the calendar events (dummy data)
+            var date = new Date();
+            var d = date.getDate(),
+                    m = date.getMonth(),
+                    y = date.getFullYear();
+            var events={$events};
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                buttonText: {
+                    today: 'today',
+                    month: 'month',
+                    week: 'week',
+                    day: 'day'
+                },
+                //Random default events
+                events: events,
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar !!!
+                drop: function (date, allDay) { // this function is called when something is dropped
+
+                    // retrieve the dropped element's stored Event Object
+                    var originalEventObject = $(this).data('eventObject');
+
+                    // we need to copy it, so that multiple events don't have a reference to the same object
+                    var copiedEventObject = $.extend({}, originalEventObject);
+
+                    // assign it the date that was reported
+                    copiedEventObject.start = date;
+                    copiedEventObject.allDay = allDay;
+                    copiedEventObject.backgroundColor = $(this).css("background-color");
+                    copiedEventObject.borderColor = $(this).css("border-color");
+
+                    // render the event on the calendar
+                    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                    $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+                    // is the "remove after drop" checkbox checked?
+                    if ($('#drop-remove').is(':checked')) {
+                        // if so, remove the element from the "Draggable Events" list
+                        $(this).remove();
+                    }
+
+                }
+            });
+
+        });
+    </script>
+
+</block>

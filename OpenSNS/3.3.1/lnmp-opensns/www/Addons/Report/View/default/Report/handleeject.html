@@ -1,0 +1,27 @@
+<!-- 模态框HTML -->
+<form class="ajax-form" method="post" action="{:addons_url('Report://Admin/handleReport')}" style="padding:0 10px;">
+    <input type="hidden" name="ids" value="{$ids}">
+    <div>
+    </div>
+    <div>
+        <p><textarea class="form-control " data-role="textarea" name="handleresult" style="height: 6em;"
+                     placeholder="处理结果.."></textarea></p>
+    </div>
+    <div>
+        <label>
+            <input id="unhandle" name="user_choose" value="2" type="radio"checked>已处理
+        </label>
+        <label>
+            <input id="doinghandle" name="user_choose" value="1" type="radio" >处理中
+        </label>
+        <label>
+            <input id="hashandele" name="user_choose" value="0" type="radio">未处理
+        </label>
+
+    </div>
+
+    <div style="height: 40px;margin-top: 15px;">
+        <input type="submit" data-role="submitreport" value="确定" class="btn btn-primary send_box">
+        <input type="button" value="取消" class="btn btn-primary send_box" data-dismiss="modal" style="margin-left: 10px;">
+    </div>
+</form>

@@ -1,0 +1,110 @@
+<extend name="Base/common"/>
+
+<block name="style">
+    <link href="__CSS__/usercenter.css" rel="stylesheet" type="text/css"/>
+</block>
+<block name="header">
+    <br/>
+</block>
+<block name="body">
+    <div class="col-xs-12 usercenter">
+        <div class="uc">
+            <include file="_top"/>
+            <div class="uc-cont">
+                <div class="nav-wrap">
+                    <include file="_top_menu"/>
+                </div>
+                <div class="cont-wrap common-cont-wrap">
+                    <div class="row">
+                        <div class="col-xs-12 uc_fans" style="margin-left: 10px;">
+                            <ul class="nav nav-pills ucenter-tab">
+                                <li <eq name="tab" value="rank"> class="active"</eq>><a href="{:U('Ucenter/Index/rank',array('uid'=>$uid))}"
+
+                            >
+                                {:L('_TANK_OWNED_')}</a></li>
+                                <li <eq name="tab" value="rankVerifyWait"> class="active"</eq>><a href="{:U('Ucenter/Index/rankVerifyWait')}"
+
+                            >
+                                {:L('_RANK_WAIT_AUDIT_')}</a></li>
+                                <li <eq name="tab" value="rankVerifyFailure"> class="active"</eq>><a href="{:U('Ucenter/Index/rankVerifyFailure')}"
+
+                            >
+                                {:L('_RANK_APPLY_FAILED_')}</a></li>
+                                <li <eq name="tab" value="rankVerify"> class="active"</eq>><a href="{:U('Ucenter/Index/rankVerify')}"
+
+                            >
+                                {:L('_RANK_APPLY_')}</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <if condition="count($rankList) eq 0">
+                        <p class="text-muted"
+                           style="text-align: center; font-size: 3em;">
+                            <br><br>
+                            {:L('_RANK_NONE_')}{:L('_WAVE_')}
+                            <br><br><br>
+                        </p>
+                        <else/>
+                        <div style="margin: 20px 0 20px 20px;">
+                            <form class="form-horizontal center_info ajax-form" role="form"
+                                  action="{:U('Ucenter/Index/verify')}" method="post">
+                                <input type="hidden" name="rank_user_id" value="{$old_rank_user['id']}">
+                                <div class="form-group">
+                                    <label class="col-xs-2 control-label">{:L('_RANK_APPLY_')}</label>
+
+                                    <div class="col-xs-10">
+                                        <volist name="rankList" id="rank">
+                                            <div class="col-xs-4 text-center">
+                                                <label class="radio-inline">
+                                                    <attr>
+                                                        <p>
+                                                            <empty name="rank.label_content">
+                                                                <img style="width: 18px;" class="rank-icon" src="{$rank.logo_url}" title="{$rank.title}" alt="{$rank.title}"/>
+                                                                <else/>
+                                                                <span class="label label-badge rank-label" title="{$rank.title}" style="background: {$rank.label_bg} !important;color:{$rank.label_color} !important;">{$rank.label_content}</span>
+                                                            </empty>
+                                                        </p>
+                                                        <p> <input type="radio" name="rank_id" value="{$rank.id}" <if condition="$rank['id'] eq $old_rank_user['rank_id']">checked</if>>{$rank.title}</p>
+
+                                                    </attr>
+                                                </label>
+                                            </div>
+                                        </volist>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="reason" class="col-xs-2 control-label">{:L('_RANK_APPLY_REASON_')}</label>
+
+                                    <div class="col-xs-10">
+                                        <textarea id="reason" name="reason" class="form-control"
+                                                  style="width: 100%; height: 6em;resize: none">{$old_rank_user['reason']}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-xs-10">
+                                        <button type="submit" class="btn btn-primary">{:L('_APPLY_')}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </if>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+           $('[type="submit"]').click(function(e){
+               e.preventDefault();
+               $(this).attr('disabled','disabled');
+               $(this).submit();
+           });
+            $('#reason,[type="radio"]').change(function(){
+                $('[type="submit"]').attr('disabled',false);
+            });
+        });
+    </script>
+</block>
+

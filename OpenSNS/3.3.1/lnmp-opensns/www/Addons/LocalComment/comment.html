@@ -1,0 +1,96 @@
+<php> $cMod = strtoupper($mod);</php>
+<div class="comments"
+     data-del-url="{:tox_addons_url('LocalComment/Index/deleteComment', array('count_model'=>$count_model,'count_field'=>$count_field))}">
+    <header style="border-bottom: none">
+        <h3 style="font-size: 18px">评论 （<span id="total_count" class="text-danger " style="font-size: 28px">{$total_count}</span><span
+                style="font-size: 14px">人参与</span>）</h3>
+    </header>
+    <footer class="clearfix">
+
+        <div class="reply-form">
+
+            <div class="col-xs-2" style="width:80px;">
+                <php>if(is_login()){</php>
+                <a href="{$myInfo.space_url}" class="avatar"><img src="{$myInfo.avatar64}" ucard="{$myInfo.uid}"
+                                                                  class="avatar-img"/></a>
+
+                <php>}</php>
+            </div>
+
+
+            <php>if(is_login()){</php>
+
+            <div class="form col-xs-10">
+                <div style="border: 3px solid #ddd; " class="clearfix">
+                    <div class="form-group" style="margin-bottom: 0 ;">
+                        <textarea style="height:70px;border: none" class="form-control new-comment-text "
+                                  id="local_comment_textarea"
+                                  rows="2" placeholder=""></textarea>
+                    </div>
+                    <div class="clearfix" style="background: #eee">
+                        <div class="pull-left">
+                            <!-- <a href="javascript:" onclick="insertFace($(this))">
+                                 <img class="weibo_type_icon" src="__CORE_IMAGE__/bq.png"/>
+                             </a>-->
+                        </div>
+                        <div class="pull-right">
+                            <a href="javascript:" data-role="send_local_comment" data-path="{$path}"
+                               data-this-url="{$this_url}" data-extra="{$extra}"
+                               data-url="{:tox_addons_url('LocalComment/Index/addComment', array('uid'=>$uid,'count_model'=>$count_model,'count_field'=>$count_field))}"
+                               class="btn  submit-btn" style="">
+                                发表评论
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <php>}</php>
+        </div>
+
+
+    </footer>
+
+    <h3 class="latest">
+        最新评论
+    </h3>
+    <section class="comments-list clearfix margin-top-10">
+        <empty name="list"><div id="empty" class="text-muted text-center" ><i class="icon-inbox"></i> 暂无评论</div></empty>
+        <volist name="list" id="comment">
+            <include file="./Addons/LocalComment/_comment.html"/>
+        </volist>
+        <div class="pager">
+            {$pageHtml}
+        </div>
+    </section>
+</div>
+
+<script>
+    var local_comment_order = "{:modC($cMod.'_LOCAL_COMMENT_ORDER',0)}";
+    var local_comment_count = "{:modC($cMod.'_LOCAL_COMMENT_COUNT',10)}";
+    var local_comment_page = function (app, mod, row_id, page) {
+        $.post("{:tox_addons_url('LocalComment/Index/getCommentList')}", {
+            app: app,
+            mod: mod,
+            row_id: row_id,
+            page: page
+        }, function (res) {
+            $('.comments').find('section').html(res.html);
+            bind_local_comment();
+        }, 'json');
+    }
+
+
+    $(function () {
+        $('#local_comment_textarea').keypress(function (e) {
+            if (e.ctrlKey && e.which == 13 || e.which == 10) {
+                $(this).closest('.form').find("[data-role='send_local_comment']").click();
+            }
+        });
+    })
+
+
+</script>
+<link href="{:getRootUrl()}Addons/LocalComment/_static/css/comment.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="{:getRootUrl()}Addons/LocalComment/_static/js/comment.js"></script>

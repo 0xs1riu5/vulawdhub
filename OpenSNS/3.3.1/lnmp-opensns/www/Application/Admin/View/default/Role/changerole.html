@@ -1,0 +1,55 @@
+<div>
+    <style>
+        .modal-dialog {
+            width: 430px;
+        }
+        .select_box_this {
+            margin: 10px 0 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+    <form id="migration" action="__SELF__" method="post" class="ajax-form">
+        <input type="hidden" name="ids" value="{$ids}">
+        <input type="hidden" name="role_id" value="{$role_id}">
+
+        <div class="select_box_this">
+            <notempty name="role_list">
+                <span>{:L("_SELECTED_USERS_TO_MIGRATE_TO_THE_IDENTITY_")}{:L("_COLON_")}</span>
+                <span>
+                    <select name="role" style="width: 200px;">
+                        <volist name="role_list" id="role">
+                            <option value="{$role.id}">{$role.value}</option>
+                        </volist>
+                    </select>
+                </span>
+                <else/>
+               {:L("_NO_IDENTITY_CAN_BE_MOVED_")}
+            </notempty>
+
+        </div>
+        <div style="width: 100%;text-align: center;">
+            <a class="btn btn-primary" data-role="submit">{:L("_MOBILE_")}</a>
+            <a onclick="$('.close').click();" class="btn btn-default">{:L("_CANCEL_")}</a>
+        </div>
+    </form>
+</div>
+        <script>
+            $(function(){
+               $('[data-role="submit"]').click(function(){
+                   query=$('#migration').serialize();
+                   var url=$('#migration').attr('action');
+                   $.post(url,query,function(msg){
+                       if(msg.status){
+                           toast.success({:L('_MIGRATION_SUCCESS_WITH_SINGLE_')});
+                           setTimeout(function(){
+                               window.location.reload();
+                           },1500);
+                       }else{
+                           handleAjax(msg);
+                       }
+                   },'json');
+               });
+            });
+        </script>

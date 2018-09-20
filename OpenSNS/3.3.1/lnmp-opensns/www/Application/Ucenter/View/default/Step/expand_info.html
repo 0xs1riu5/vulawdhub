@@ -1,0 +1,34 @@
+<div class="tab-pane">
+    <form action="{:U('Ucenter/Member/edit_expandinfo')}" method="post" class="ajax-form">
+
+        <div class="with-padding">
+            <div class="row">
+                <div class="col-xs-9">
+                    <volist name="profile_group_list" id="vo">
+                        <div class="profile_group_title">
+                            {$vo.profile_name}
+                        </div>
+                        <div>
+                            <volist name="vo.fields" id="vl">
+                                <dl>
+                                    {:W('InputRender/inputRender',array($vl,'personal'))}
+                                </dl>
+                            </volist>
+                        </div>
+                    </volist>
+                    <if condition="count($vo['fields']) neq 0">
+                        <input type="submit" value="{:L('_SAVE_')}" id="submit_btn"
+                               class="btn btn-primary expandinfo-sumbit">
+                    </if>
+                    <php> if(check_step_can_skip('expand_info')){</php>
+                    <a href="{:U('Ucenter/member/step', array('step' => get_next_step('expand_info')))}"
+                       style="margin-left: 30px;line-height: 18px;display: inline-block;margin-top: 6px;">{:L('_STEP_')}</a>
+                    <php>}</php>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script type="text/javascript" src="__JS__/expandinfo-form.js"></script>

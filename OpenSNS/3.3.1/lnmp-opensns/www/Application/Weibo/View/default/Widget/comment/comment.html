@@ -1,0 +1,34 @@
+
+<div id="comment_{$comment.id}" class="row weibo_comment" data-weibo-id="{$comment.weibo_id}"
+     data-comment-id="{$comment.id}">
+    <div class="clearfix">
+        <div class="col-xs-1" style="width: 8%">
+            <div class="" style="overflow: hidden;  padding-top: 5px;">
+                <a href="{$comment.user.space_url}" ucard="{$comment.user.uid}">
+                    <img src="{$comment.user.avatar64}" class="avatar-img"/></a>
+            </div>
+        </div>
+        <div class="col-xs-11  comment-content" style="width: 92%;padding-left: 5px;padding-right: 0">
+            <div> <a href="{$comment.user.space_url}"
+                     ucard="{$comment.user.uid}">[nickname:{$comment.user.uid}]</a>：<span class="weibo-comment text-muted">{$comment.content}</span></div>
+
+           <div class="clearfix text-muted">
+               <div class="pull-left ctime">
+                   [time:{$comment.create_time}]
+               </div>
+               <div class="pull-right operate-buttons text-muted">&nbsp;&nbsp;&nbsp;
+                   {:W('Weibo/CommentSupport/support', array(array('table'=>'weibo_comment','row'=>$comment['id'],'weibo_id'=>$comment['weibo_id'],'app'=>'Weibo','uid'=>$comment['uid'],'jump'=>'weibo/index/weibodetail')))}
+                   <if condition="$comment['can_delete']">
+                   &nbsp;<a href="javascript:" data-role="comment_del">{:L('_DELETE_')}</a>
+               </if>
+                   {:hook('report',array('type'=>$MODULE_ALIAS.'/'.L('_COMMENTS_'),'url'=>"Weibo/Index/weiboDetail?id=$comment[weibo_id]#comment_$comment[id]",'data'=>array('comment_id'=>$comment['id'],'weibo-id'=>$weibo['id'])))}
+                   &nbsp;<a href="javascript:" data-role="weibo_reply" data-user-nickname="{$comment.user.real_nickname}">{:L('_REPLY_')}</a>
+
+               </div>
+           </div>
+        </div>
+
+    </div>
+
+
+</div>

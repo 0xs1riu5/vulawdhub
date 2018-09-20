@@ -1,0 +1,40 @@
+<extend name="Public/base"/>
+
+<block name="body">
+
+    <div class="main-title">
+        <h2>{:L("_INSTALL_A_NEW_THEME_")}<span style="font-size: 16px;color: red;"> ({:L("_BEFORE_UPLOADING_THE_THEME_PLEASE_MAKE_SURE_THAT_THE_SYSTEM_DOES_NOT_HAVE_THE_SAME_NAME_IF_THERE_ARE_TWO_THEMES_")}</span></h2>
+    </div>
+    <form action="{:U('Admin/Theme/add')}" enctype="multipart/form-data" method="post">
+        <div style="padding: 15px">
+            <div class="clearfix"></div>
+            <div class="controls">
+                <span id="upload_button" style="width: 100px;height: 30px;background: #B5B5B5;color: #fff;line-height: 30px;text-align: center;cursor: pointer;margin: 10px 0 20px;display: inline-block">{:L("_UPLOAD_THEME_")}</span>
+                <br/>
+                <span id="show_info" style="margin: 15px 30px 20px 0px;display: block;"></span>
+                <input type="file" name="pkg" style="display: none" onchange="$('#show_info').html($(this).val())">
+            </div>
+            <div class="clearfix"></div>
+            <div class="form-item">
+                <button class="btn submit-btn" id="submit" type="submit" target-form="form-horizontal">{:L("_SAFETY_EQUIPMENT_WITH_SPACE_")}</button>
+                <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+            </div>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script>
+        $('#upload_button').click(function () {
+            $('input[type=file]').click();
+        })
+    </script>
+    <script type="text/javascript">
+        //导航高亮
+        highlight_subnav('{:U('Theme/tpls')}');
+    </script>
+</block>
+
+
+
+

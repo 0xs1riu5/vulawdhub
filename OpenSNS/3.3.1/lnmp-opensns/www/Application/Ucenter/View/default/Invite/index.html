@@ -1,0 +1,54 @@
+<extend name="Public/usercenter"/>
+
+<block name="body">
+    <link href="__CSS__/invite.css" type="text/css" rel="stylesheet">
+    <div class="row">
+        <div class="col-xs-12">
+            <p>&nbsp;</p>
+            <h4>{:L('_INV_CODE_GEN_')}</h4>
+            <hr class="oneuser-title-hr"/>
+
+            <include file="_top"/>
+        </div>
+    </div>
+
+
+    <div class="invite_content" style="min-height: 400px;margin-top: 30px;">
+        <if condition="!$invite_type_list"><p class="text-muted" style="text-align: center; font-size: 3em;">
+            <br><br>
+            {:L('_INV_NONE_')}{:L('_WAVE_')}
+            <br><br><br>
+        </p>
+            <else/>
+            <table style="width: 100%">
+                <thead>
+                <tr>
+                    <td>{:L('_INV_TYPE_')}</td>
+                    <td>{:L('_CHARACTER_REGISTER_')}</td>
+                    <td>{:L('_RESUME_')}</td>
+                    <td>{:L('_GAIN_AFTER_SUCCESS_')}</td>
+                    <td>{:L('_PLACES_CAN_USE_')}</td>
+                    <td>{:L('_INV_ED_')}</td>
+                    <td>{:L('_SUCCESS_ED_')}</td>
+                    <td>{:L('_OPERATE_')}</td>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="invite_type_list" id="vl">
+                    <tr>
+                        <td>{$vl.title}</td>
+                        <td>{$vl.roles_show}</td>
+                        <td>{$vl.pay}</td>
+                        <td>{$vl.income}</td>
+                        <td>{$vl.can_num|default=0} 个</td>
+                        <td>{$vl.already_num|default=0} 个</td>
+                        <td>{$vl.success_num|default=0} 个</td>
+                        <td><a data-role="exchange" data-id="{$vl.id}" data-title="{$vl.title}">{:L('_PLACES_EXCHANGE_')}</a><a data-role="create_invite" data-id="{$vl.id}" data-title="{$vl.title}" style="margin-left: 10px;">{:L('_INV_CODE_GEN_')}</a></td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </if>
+    </div>
+    <script type="text/javascript" src="__JS__/invite.js"></script>
+</block>

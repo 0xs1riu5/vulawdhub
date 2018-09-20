@@ -1,0 +1,207 @@
+<!--动态内容列表部分-->
+<link href="__PUBLIC__/Weibo/css/weibo.css" rel="stylesheet"/>
+<script src="__PUBLIC__/Weibo/js/weibo.js"></script>
+<div class="weibo_left">
+
+    <div id="weibo_list">
+        <volist name="list" id="weibo">
+
+
+            <div class="row" id="weibo_{$weibo.id}">
+                <div class="col-xs-12">
+
+                    <div class="col-md-2 col-sm-2 col-xs-12" style="position: relative">
+                        <a class="s_avatar" href="{$weibo.user.space_url}" ucard="{$weibo.user.uid}">
+                            <img src="{$weibo.user.avatar512}"
+                                 class="avatar-img"
+                                 style="width: 64px;"/>
+                        </a>
+                    </div>
+
+                    <div class="col-md-10 col-sm-8 col-xs-12">
+                        <style>
+                            .weibo_content {
+                                border-top: #f5f5f5 1px solid;
+                            }
+                        </style>
+                        <div class="weibo_content">
+                            <div class="weibo_content_sj pull-left hidden-xs"></div>
+
+                            <eq name="weibo.is_top" value="1">
+                                <div class="ribbion-green">
+
+                                </div>
+                            </eq>
+
+                            <p>
+                                <a ucard="{$weibo.user.uid}"
+                                   href="{$weibo.user.space_url}" class="user_name">{$weibo.user.nickname|htmlspecialchars}
+                                </a>
+                                <volist name="weibo['user']['rank_link']" id="vl">
+                                    <if condition="$vl['is_show']">
+                                        <img src="{$vl.logo_url}" title="{$vl.title}" alt="{$vl.title}"
+                                             class="rank_html"/>
+                                    </if>
+                                </volist>
+                                <php>if(is_administrator(is_login()) || $weibo['user']['uid'] == is_login() ){</php>
+
+                    <span class="pull-right" style="margin-right: 20px;">
+
+                      <span class="ss" style="display: none">
+                          <img src="__PUBLIC__/Core/images/mark-aw1.png"/>
+                      </span>
+
+                        <div class="mark_box" style="display: none">
+                            <ul class="nav text-center mark_aw">
+                                <!--  <li><a>收藏</a></li>-->
+                                <if condition="$weibo['can_delete']">
+                                    <li class="weibo-comment-del cpointer" data-weibo-id="{$weibo.id}"><a>{:L('_DELETE_')}</a>
+                                    </li>
+                                </if>
+                            </ul>
+                        </div>
+                        </span>
+
+                                <php>}</php>
+                            </p>
+                            <div class="weibo_content_p">
+                                {$weibo.fetchContent}
+                            </div>
+
+                            <!--                <p class="word-wrap">{$weibo.content|parse_weibo_content}</p>
+                                            <if condition="$weibo['type'] eq 'image'">
+                                                <div class="popup-gallery"  style="width: 550px;">
+                                            <volist name="weibo['weibo_data']['image']" id="vo">
+                                                    <a href="{$vo.big}" title="点击查看大图"><img src="{$vo.small}" width="100" height="100"></a>
+                                            </volist>
+                            </div>
+                            </if>
+                                        -->
+    <span ><a
+            href="{:U('Weibo/Index/weiboDetail',array('id'=>$weibo['id']))}">{$weibo.create_time|friendlyDate}</a> </span>
+
+
+                            <div class="weibo_content_bottom row">
+                                <!--"{:U('bboard/Index/tmldetail',array('topic_id'=>$vo['topic_id']))}"-->
+
+                                  <div class="text-right " data-weibo-id="{$weibo.id}">
+                                      <div class="col-xs-4 text-center">
+
+
+                        {:Hook('support',array('table'=>'weibo','row'=>$weibo['id'],'app'=>'Weibo','uid'=>$weibo['uid'],'jump'=>'weibo/index/weibodetail'))} </div>
+                                      <div class="col-xs-4 text-center">
+{:Hook('repost',array('weiboId'=>$weibo['id']))}
+                                      </div>
+                                      <div class="col-xs-4 text-center">
+                                          <span class=" weibo-comment-link cpointer" data-weibo-id="{$weibo.id}">
+    评论 {$weibo['comment_count']}
+</span>
+                                      </div>
+
+ </div>
+                                </div>
+
+
+                        </div>
+                        <div class="row weibo-comment-list" style="display: none;" data-weibo-id="{$weibo.id}">
+                            <div class="col-xs-12">
+                                <div class=" weibo-comment-block" style="padding: 1em 2em;">
+                                    <div class="weibo-comment-container">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </volist>
+    </div>
+
+</div>
+
+<script>
+    ucard();
+    bind_support();
+    bind_weibo_managment1();
+
+
+    var SUPPORT_URL = "{:addons_url('Support://Support/doSupport')}";
+    var THIS_MODEL_NAME='Weibo';
+    var noMoreNextPage = false;
+    var isLoadingWeibo = false;
+    var currentPage = 1;
+    var url = "{$loadMoreUrl}";
+
+    $(document).ready(function () {
+
+        $('.popup-gallery').each(function () { // the containers for all your galleries
+            $(this).magnificPopup({
+                delegate: 'a',
+                type: 'image',
+                tLoading: '{:L("")} #%curr%...',
+                mainClass: 'mfp-img-mobile',
+                gallery: {
+                    enabled: true,
+                    navigateByImgClick: true,
+                    preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+                },
+                image: {
+                    tError: '<a href="%url%">{:L("_PICTURE_")} #%curr%</a> {:L("_LOAD_CANNOT_")}.',
+                    titleSrc: function (item) {
+                        /*           return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';*/
+                        return '';
+                    }
+                }
+            });
+        });
+    });
+
+    function bind_weibo_managment1() {
+
+        $('.ss').mouseover(function () {
+            if ($(this).parents('.weibo_content').find('.mark_box').css('display') == 'none') {
+                $(this).find('img').attr('src', '__PUBLIC__/Core/images/mark-aw2.png');
+
+            } else
+                $(this).find('img').attr('src', '__PUBLIC__/Core/images/mark-aw3.png');
+        });
+
+        $('.ss').mouseleave(function () {
+            if ($(this).parents('.weibo_content').find('.mark_box').css('display') == 'none') {
+                $(this).find('img').attr('src', '__PUBLIC__/Core/images/mark-aw1.png');
+
+            } else
+
+                $(this).find('img').attr('src', '__PUBLIC__/Core/images/mark-aw4.png');
+
+        });
+        $('.weibo_content').mouseover(function () {
+
+
+            $(this).find('.ss').show();
+
+        });
+
+        $('.ss').click(function () {
+
+            $(this).parents('.weibo_content').find('.mark_box').toggle();
+            if ($(this).parents('.weibo_content').find('.mark_box').css('display') == 'none') {
+                $(this).find('img').attr('src', '__PUBLIC__/Core/images/mark-aw2.png');
+
+
+            } else
+                $(this).find('img').attr('src', '__PUBLIC__/Core/images/mark-aw3.png');
+        });
+        $('.weibo_content').mouseleave(function () {
+
+            $(this).find('.ss').hide();
+            $(this).find('.mark_box').hide();
+        })
+    }
+</script>
+<!--动态内容列表部分结束-->

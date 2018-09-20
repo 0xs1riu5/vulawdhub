@@ -1,0 +1,148 @@
+.calendar
+{
+  margin-bottom: 20px;
+
+  > header
+  {
+    margin-bottom: 10px;
+
+    .btn-toolbar > .btn-group
+    {
+      margin-right: 10px;
+    }
+
+    .calendar-caption
+    {
+      line-height: 30px;
+    }
+  }
+
+  .table
+  {
+    table-layout: fixed;
+    margin-bottom: 0;
+
+    > thead > tr > th,
+    > tbody> tr > td
+    {
+      width: 14.28571428571429%;
+      padding: 0;
+    }
+
+    > thead > tr > th
+    {
+      background-color: @color-back;
+      text-align: center;
+      color: @color-gray;
+    }
+  }
+
+  .day
+  {
+    opacity: .7;
+
+    > .heading
+    {
+      text-align: right;
+      padding: 2px 5px;
+
+      > .month
+      {
+        background-color: lighten(@color-gray, 20%);
+        color: @color-back;
+        border-radius: @border-radius-small;
+        padding: 1px 2px;
+      }
+    }
+
+    > .content
+    {
+      padding: 1px;
+      min-height: 70px;
+      height: 100%;
+    }
+
+    &.drop-to
+    {
+      opacity: 1;
+      background-color: @color-warning-pale;
+    }
+  }
+
+  .cell-day
+  {
+    background-color: @color-gray-pale;
+
+    &.past
+    {
+      > .day > .content
+      {
+        opacity: .7;
+      }
+    }
+
+    &.current-month
+    {
+      background: none;
+
+      > .day
+      {
+        opacity: 1;
+      }
+    }
+
+    &.current
+    {
+      background-color: @color-warning-pale;
+
+      > .day
+      {
+        border: 1px solid @color-gray;
+      }
+
+      > .day > .content
+      {
+        padding: 0;
+      }
+
+      > .day > .heading
+      {
+        background-color: darken(@color-warning-pale, 7%);
+      }
+    }
+  }
+
+  .event
+  {
+    cursor: pointer;
+    padding: 1px 5px;
+    opacity: .9;
+    margin-bottom: 1px;
+    .bg-primary();
+    .transition();
+
+    &:hover
+    {
+      opacity: 1;
+    }
+
+    &.drag-shadow
+    {
+      cursor: move;
+    }
+
+    &.drag-from
+    {
+      opacity: .25;
+    }
+  }
+
+  &.limit-event-title
+  {
+    .event
+    {
+      .nobr();
+      text-overflow: ellipsis;
+    }
+  }
+}

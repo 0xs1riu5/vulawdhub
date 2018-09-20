@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Public/head"/>
+    <link href="__CSS__/home.css" type="text/css" rel="stylesheet">
+    <php> D('Member')->need_login();</php>
+</head>
+<body>
+<include file="Public/header"/>
+<div class="main-wrapper">
+    <!-- 头部 -->
+    <style>
+        .container{
+            width:1140px;max-width: 1140px
+        }
+    </style>
+    <include file="Index/_nav"/>
+    <include file="Public/_after_nav"/>
+
+    <div id="main-container" class="top-bar ">
+        <volist name="showBlocks" id="v">
+            <php>if($v=='slider'){</php>
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-xs-12">
+                        {:W('Common/Adv/render',array(array('name'=>'slider','type'=>2,'width'=>'1120px','height'=>'300px','margin'=>'0 0 15px 0','title'=>'首页轮播图','data'=>array('style'=>1))))}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <php>}else{</php>
+            {:W($v.'/HomeBlock/render')}
+            <php>}</php>
+
+        </volist>
+    </div>
+</div>
+
+
+
+
+<!-- /头部 -->
+
+<!-- 主体 -->
+
+<!-- /主体 -->
+
+<!-- 底部 -->
+<include file="Public/footer"/>
+<!-- /底部 -->
+</body>
+</html>

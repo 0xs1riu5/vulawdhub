@@ -1,0 +1,254 @@
+<extend name="Base/common"/>
+
+
+<block name="body">
+    <style>
+        #main-container {
+            width: 1000px;
+            margin-top: 70px;
+        }
+    </style>
+    <script type="text/javascript" src="__PUBLIC__/js/ajaxfileupload.js"></script>
+    <link href="__CSS__/weibo.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{:getRootUrl()}Addons/InsertXiami/_static/css/xiami.css">
+    <!--动态内容列表部分-->
+    <div class="weibo_middle pull-left">
+        <include file="_quickweibo"/>
+        <!--  筛选部分-->
+        <div class="black-filter row">
+            <div class="s-wb-box" data-role="show-sendBox">
+                <div class="s-wb-icon">
+                    <i class="icon-zs"></i>
+                </div>
+                <p>发动态</p>
+            </div>
+        </div>
+        <div class="weibo-filter-wrap">
+            <div class="add-weibo" data-role="switch_sendBox">
+                <span>{:modC('WEIBO_INFO',L('_TIP_SOMETHING_TO_SAY_'))}</span><i class="send-icon"></i>
+            </div>
+            <php>if(!is_login()) $style='margin-top:0'</php>
+            <div id="weibo_filter">
+                <div class="weibo_icon">
+                    <php>
+                        $show_icon_eye_open=0;
+                        if(count($top_list)){
+                        $hide_ids=cookie('Weibo_index_top_hide_ids');
+                        if(mb_strlen($hide_ids,'utf-8')){
+                        $hide_ids=explode(',',$hide_ids);
+                        foreach($top_list as $val){
+                        if(in_array($val,$hide_ids)){
+                        $show_icon_eye_open=1;
+                        break;
+                        }
+                        }}}
+                        if(count($top_list)){
+                        if($show_icon_eye_open){
+                    </php>
+                    <li data-weibo-id="{$weibo.id}" title="{:L('_SHOW_ALL_TOP_')}{$MODULE_ALIAS}"
+                        data-role="show_all_top_weibo">
+                        <i class="icon icon-eye-open"></i>
+                    </li>
+                    <php>}else{</php>
+                    <li data-weibo-id="{$weibo.id}" title="{:L('_SHOW_ALL_TOP_')}{$MODULE_ALIAS}"
+                        data-role="show_all_top_weibo" style="display: none;">
+                        <i class="icon icon-eye-open"></i>
+                    </li>
+                    <php>}}</php>
+                </div>
+                <volist name="tab_config" id="tab">
+                    <li class="a-wrap">
+                        <a id="{$tab}"
+                        <if condition="in_array($tab,$need_login_tab)">href="javascript:toast.error('请先登录！');"
+                            <else/>
+                            href="{:U('Weibo/Index/index',array('type'=>$tab))}"
+                        </if>
+                        >
+                        <switch name="tab">
+                            <case value="concerned">
+                             <i class="icon icon-flow"></i>
+                                <span>{:L('_MY_FOLLOWING_')}</span>
+                            </case>
+                            <case value="hot">
+                                <i class="icon icon-hot"></i>
+                                <span>{:L('_HOT_WEIBO_')}</span>
+                            </case>
+                            <case value="all">
+                               <i class="icon icon-all"></i>
+                                <span>{:L('_ALL_WEBSITE_WEIBO_')}</span>
+                            </case>
+                            <case value="fav">
+                               <i class="icon icon-my"></i>
+                                <span>{:L('_MY_FAV_')}</span>
+                            </case>
+                        </switch>
+                        </a>
+                    </li>
+                </volist>
+            </div>
+            <script>
+                $('#weibo_filter #{$filter_tab}').addClass('active');
+            </script>
+        </div>
+        <input type="hidden" value="{$smallnav}" id="smallnav">
+        <div class="small-nav" >
+            <li class="list-type select" data-role="select-li">
+                <a id="all_" href="{:U('Weibo/Index/index',array('select'=>'all_'))}">
+                    <p class="mg-bt0">全部</p>
+                </a>
+            </li>
+            <li class="list-type" data-role="select-li">
+                <a id="image" href="{:U('Weibo/Index/index',array('select'=>'image'))}">
+                    <p class="mg-bt0">多图</p>
+                </a>
+            </li>
+
+            <li class="list-type" data-role="select-li">
+                <a id="video" href="{:U('Weibo/Index/index',array('select'=>'video'))}">
+                    <p class="mg-bt0">视频</p>
+                </a>
+            </li>
+            <li class="list-type" data-role="select-li">
+                <a id="musics" href="{:U('Weibo/Index/index',array('select'=>'musics'))}">
+                    <p class="mg-bt0">音乐</p>
+                </a>
+            </li>
+            <li class='small-nav-search'>
+                <div class="search-wrap">
+                    <form style="margin-right: -24px;display: none;" id="search-form" action="{:U('Weibo/Index/search')}" method="post" role="search">
+                        <input class="wb-search" id="search-text" type="text" placeholder="输入关键字" name="keywords" value="">
+                        <i class="icon-search" style="left: -25px;cursor: pointer;" data-role="do-search" ></i>
+                    </form>
+                </div>
+                <div class="animate-wrap" data-role="search-btn">
+                    <i class="icon-search" ></i>
+                </div>
+            </li>
+        </div>
+        <!--筛选部分结束-->
+        <div id="top_list">
+            <volist name="top_list" id="top">
+                {:W('WeiboDetail/detail',array('weibo_id'=>$top,'can_hide'=>1))}
+            </volist>
+        </div>
+        <div id="weibo_list">
+            <php>
+                if($page != 1){
+            </php>
+            <include file="loadweibo"/>
+            <php>
+                }
+            </php>
+
+        </div>
+        <div id="load_more" class="text-center text-muted"
+        <if condition="$page neq 1">style="display:none"</if>
+        >
+        <div id="load_more_text">
+            <div class="sk-cube-grid">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--分页-->
+    <div id="index_weibo_page" style=" <if condition='$page eq 1'>display:none</if>">
+        <div class="text-right">
+            {:getPagination($total_count,10)}
+        </div>
+    </div>
+    </div>
+
+    <!--动态内容列表部分结束-->
+    <!--首页右侧部分-->
+    <include file="_right"/>
+    <!--首页右侧部分结束-->
+</block>
+<block name="script">
+    <script src="__JS__/weibo.js"></script>
+    <script>
+        var tag_id="{$smallnav}";
+        $('.list-type').removeClass('select');
+        $('#'+tag_id).parents('li').addClass('select');
+
+        var SUPPORT_URL = "{:addons_url('Support://Support/doSupport')}";
+        weibo.page = '{$page}';
+        weibo.loadCount = 0;
+        weibo.lastId = parseInt('{$list|reset}') + 1;
+        weibo.url = "{$loadMoreUrl}";
+        weibo.type = "{$type}";
+        $(function () {
+            weibo_bind();
+            //当屏幕滚动到底部时
+            if (weibo.page == 1) {
+                $(window).on('scroll', function () {
+                    if (weibo.noMoreNextPage) {
+                        return;
+                    }
+                    if (weibo.isLoadingWeibo) {
+                        return;
+                    }
+                    if (weibo.isLoadMoreVisible()) {
+                        weibo.loadNextPage();
+                    }
+                });
+                $(window).trigger('scroll');
+            }
+        });
+        $(document).ready(function () {
+            $('[data-role="switch_sendBox"]').click(function () {
+                if (is_login()) {
+                    var wb_cookie = $.cookie("wb_type");
+                    $(".add-weibo").hide();
+                    if (wb_cookie == 'tp_value'){
+                        $("#send_box").show();
+                    }
+                    else{
+                        $(".black-filter").slideToggle();
+                    }
+                } else {
+                    toast.error('请先登录！');
+                }
+            });
+            $('[data-role="show-sendBox"]').click(function () {
+                $("#send_box").show();
+                $("#weibo_content").focus();
+                $(".black-filter").hide();
+                $.cookie('wb_type', 'tp_value',{ expires: 7 });
+            });
+            $('[data-role="open_checkBox"]').click(function () {
+                $(".hide-check-box").fadeToggle("slow");
+            });
+            $('[data-role="close_checkBox"]').click(function () {
+                $(".hide-check-box").fadeToggle("slow");
+            });
+
+            var divNum = $(".c-box").size();
+            if(divNum>4){
+                $('.show-more').css('display','block');
+            }
+            $('[data-role="show_more_link"]').click(function () {
+                $('.gg-check').addClass('c-class');
+                $('.show-more').hide();
+                $('.close-more').show()
+            });
+            $('[data-role="close_more_link"]').click(function () {
+                $('.gg-check').removeClass('c-class');
+                $('.show-more').show();
+                $('.close-more').hide()
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="__CSS__/photoswipe.css">
+    <link rel="stylesheet" href="__CSS__/default-skin/default-skin.css">
+    <script src="__JS__/photoswipe.min.js"></script>
+    <script src="__JS__/photoswipe-ui-default.min.js"></script>
+</block>

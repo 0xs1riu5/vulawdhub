@@ -1,0 +1,397 @@
+<div class="portlet portlet-sortable light bordered" data-id="count_lost">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-share font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">用户流失率统计</span>
+        </div>
+        <div class="actions">
+            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" data-role="delete-portlet">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <table id="table-data" class="table table-bordered table-striped table-hover">
+            <!-- 表头 -->
+            <thead>
+            <tr>
+                <th>日期</th>
+                <th>用户总数</th>
+                <th>流失用户总数</th>
+                <th>新增流失用户数</th>
+                <th>用户流失率</th>
+                <th>创建时间</th>
+            </tr>
+            </thead>
+
+            <!-- 列表 -->
+            <tbody>
+            <volist name="lostList" id="oneLost">
+                <tr>
+                    <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['date']}</td>
+                    <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['user_num']}</td>
+                    <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['lost_num']}</td>
+                    <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['new_lost']}</td>
+                    <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['rate']}</td>
+                    <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['create_time']|time_format}</td>
+                </tr>
+            </volist>
+        </table>
+        <div class="scroller-footer">
+            <div class="btn-arrow-link pull-right">
+                <a href="{:U('Count/index')}">查看更多</a>
+                <i class="icon-arrow-right"></i>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!--ChartJS 图表 Start-->
+<div class="portlet portlet-sortable light bordered consumption" data-id="count_consumption">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-share font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase"><a title="消费人民币">消费用户统计</a>(必须安装官方Pingxx或Recharge模块才能进行有效的消费统计)</span>
+        </div>
+        <div class="actions">
+            <a class="btn btn-circle btn-icon-only btn-default" data-role="delete-portlet">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="checkbox_block pull-left">
+            <label><input type="radio" name="type_show" value="all"/>全部<squre class="total_fee"></squre><squre class="user_num"></squre></label>
+            <label><input type="radio" name="type_show" value="only_fee" checked/>只显示金额<squre class="total_fee"></squre></label>
+            <label><input type="radio" name="type_show" value="only_user"/>只显示用户<squre class="user_num"></squre></label>
+        </div>
+        <div class="chart" data-role="add-line-chart" style="height: 310px;">
+            <canvas id="lineChart" style="height:300px"></canvas>
+            <!--图标插入位置-->
+        </div>
+        <div class="scroller-footer">
+            <div class="btn-arrow-link pull-right">
+                <a href="{:U('Count/consumption')}">查看更多</a>
+                <i class="icon-arrow-right"></i>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+</div>
+<div class="portlet portlet-sortable light bordered" data-id="count_active_day">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-share font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">日活跃用户统计</span>
+        </div>
+        <div class="actions">
+            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" data-role="delete-portlet">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="chart" style="height: 365px;">
+            <canvas id="dayActiveChart" style="height:355px"></canvas>
+        </div>
+        <div class="scroller-footer">
+            <div class="btn-arrow-link pull-right">
+                <a href="{:U('Count/active',array('type'=>'day'))}">查看更多</a>
+                <i class="icon-arrow-right"></i>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="portlet portlet-sortable light bordered" data-id="count_active_week">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-share font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">周活跃用户统计</span>
+        </div>
+        <div class="actions">
+            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" data-role="delete-portlet">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="chart" style="height: 365px;">
+            <canvas id="weekActiveChart" style="height:355px"></canvas>
+        </div>
+        <!--图标插入位置-->
+        <div class="scroller-footer">
+            <div class="btn-arrow-link pull-right">
+                <a href="{:U('Count/active',array('type'=>'week'))}">查看更多</a>
+                <i class="icon-arrow-right"></i>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="portlet portlet-sortable light bordered" data-id="count_active_month">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-share font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">月活跃用户统计</span>
+        </div>
+        <div class="actions">
+            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" data-role="delete-portlet">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="chart" style="height: 365px;">
+            <canvas id="monthActiveChart" style="height:355px"></canvas>
+        </div>
+        <!--图标插入位置-->
+        <div class="scroller-footer">
+            <div class="btn-arrow-link pull-right">
+                <a href="{:U('Count/active',array('type'=>'month'))}">查看更多</a>
+                <i class="icon-arrow-right"></i>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- ChartJS 1.0.1 -->
+<script src="__ALTE__/plugins/chartjs/Chart.min.js"></script>
+<script>
+    window.chartJSMod=function(){
+        return{
+            /* ChartJS
+             * -------
+             * Here we will create a few charts using ChartJS
+             */
+            lineChartOptions:{
+                //Boolean - If we should show the scale at all
+                showScale: true,
+                //Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines: true,
+                //String - Colour of the grid lines
+                scaleGridLineColor: "rgba(0,0,0,.05)",
+                //Number - Width of the grid lines
+                scaleGridLineWidth: 1,
+                //Boolean - Whether to show horizontal lines (except X axis)
+                scaleShowHorizontalLines: true,
+                //Boolean - Whether to show vertical lines (except Y axis)
+                scaleShowVerticalLines: true,
+                //Boolean - Whether the line is curved between points
+                bezierCurve: true,
+                //Number - Tension of the bezier curve between points
+                bezierCurveTension: 0.3,
+                //Boolean - Whether to show a dot for each point
+                pointDot: true,
+                //Number - Radius of each point dot in pixels
+                pointDotRadius: 4,
+                //Number - Pixel width of point dot stroke
+                pointDotStrokeWidth: 1,
+                //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                pointHitDetectionRadius: 20,
+                //Boolean - Whether to show a stroke for datasets
+                datasetStroke: true,
+                //Number - Pixel width of dataset stroke
+                datasetStrokeWidth: 2,
+                //Boolean - Whether to fill the dataset with a color
+                datasetFill: false,
+                //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                maintainAspectRatio: true,
+                //Boolean - whether to make the chart responsive to window resizing
+                responsive: true
+            },
+            //-------------
+            //- LINE CHART -
+            //--------------
+            lineChartData:[],
+            setLineChartData:function(data){
+                chartJSMod.lineChartData = {
+                    all:{
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                fillColor: "#BBB",
+                                strokeColor: "#BBB",
+                                pointColor: "#BBB",
+                                pointStrokeColor : "#9393F7",
+                                data: data.datas.user_num
+                            },
+                            {
+                                fillColor: "#3b8bba",
+                                strokeColor: "#5696BC",
+                                pointColor: "#3b8bba",
+                                pointStrokeColor : "yellow",
+                                data: data.datas.total_fee
+                            }
+                        ]
+                    },
+                    only_user:{
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                fillColor: "#BBB",
+                                strokeColor: "#BBB",
+                                pointColor: "#BBB",
+                                pointStrokeColor : "#9393F7",
+                                data: data.datas.user_num
+                            }
+                        ]
+                    },
+                    only_fee:{
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                fillColor: "#3b8bba",
+                                strokeColor: "#5696BC",
+                                pointColor: "#3b8bba",
+                                pointStrokeColor : "yellow",
+                                data: data.datas.total_fee
+                            }
+                        ]
+                    }
+                };
+            },
+            type:'only_fee',
+            refreshLineChart:function(){
+                $("#lineChart").remove();
+                $('[data-role="add-line-chart"]').append('<canvas id="lineChart" style="height:300px"></canvas>');
+                var lineChartCanvas =$("#lineChart") .get(0).getContext("2d");
+                var lineChart = new Chart(lineChartCanvas);
+                lineChart.Line(chartJSMod.lineChartData[chartJSMod.type], chartJSMod.lineChartOptions);
+            }
+        }
+    }();
+    var consumptionList=eval('('+'{$consumptionList}'+')');
+    var activeList=eval('('+'{$activeList}'+')');
+    var dayLineChartData={
+        labels: activeList.labels,
+        datasets: [
+            {
+                fillColor: "#BBB",
+                strokeColor: "#BBB",
+                pointColor: "#BBB",
+                pointStrokeColor : "#9393F7",
+                data: activeList.datas.num
+            }
+        ]
+    }
+    var weekActiveList=eval('('+'{$weekActiveList}'+')');
+    var weekLineChartData={
+        labels: weekActiveList.labels,
+        datasets: [
+            {
+                fillColor: "#BBB",
+                strokeColor: "#BBB",
+                pointColor: "#BBB",
+                pointStrokeColor : "#9393F7",
+                data: weekActiveList.datas.num
+            }
+        ]
+    }
+    var monthActiveList=eval('('+'{$monthActiveList}'+')');
+    var monthLineChartData={
+        labels: monthActiveList.labels,
+        datasets: [
+            {
+                fillColor: "#BBB",
+                strokeColor: "#BBB",
+                pointColor: "#BBB",
+                pointStrokeColor : "#9393F7",
+                data: monthActiveList.datas.num
+            }
+        ]
+    }
+    var refreshChart=function($tag){
+        switch ($tag){
+            case 'count_consumption':
+                chartJSMod.setLineChartData(consumptionList);
+                chartJSMod.refreshLineChart();
+                break;
+            case 'count_active_day':
+                var lineChartCanvas =$("#dayActiveChart") .get(0).getContext("2d");
+                var lineChart = new Chart(lineChartCanvas);
+                lineChart.Line(dayLineChartData, chartJSMod.lineChartOptions);
+                break;
+            case 'count_active_week':
+                var lineChartCanvas =$("#weekActiveChart") .get(0).getContext("2d");
+                var lineChart = new Chart(lineChartCanvas);
+                lineChart.Line(weekLineChartData, chartJSMod.lineChartOptions);
+                break;
+            case 'count_active_month':
+                var lineChartCanvas =$("#monthActiveChart") .get(0).getContext("2d");
+                var lineChart = new Chart(lineChartCanvas);
+                lineChart.Line(monthLineChartData, chartJSMod.lineChartOptions);
+                break;
+            default :;
+
+        }
+        return true;
+    }
+    $(function(){
+        $('[name="type_show"]').click(function(){
+            chartJSMod.type=$(this).val();
+            chartJSMod.refreshLineChart();
+        });
+    })
+</script>
+<!--ChartJS 图表 End-->
+
+<div class="portlet portlet-sortable light bordered remain" data-id="count_remain">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-share font-blue"></i>
+            <span class="caption-subject font-blue bold uppercase">新注册用户前8日留存率统计</span>
+        </div>
+        <div class="actions">
+            <div class="checkbox_block">
+                <label class="day1_label"><input type="checkbox" name="day_show[]" value="day1" checked/>次日</label>
+                <label class="day2_label"><input type="checkbox" name="day_show[]" value="day2" checked/>2日</label>
+                <label class="day3_label"><input type="checkbox" name="day_show[]" value="day3" checked/>3日</label>
+                <label class="day4_label"><input type="checkbox" name="day_show[]" value="day4" checked/>4日</label>
+                <label class="day5_label"><input type="checkbox" name="day_show[]" value="day5" checked/>5日</label>
+                <label class="day6_label"><input type="checkbox" name="day_show[]" value="day6" checked/>6日</label>
+                <label class="day7_label"><input type="checkbox" name="day_show[]" value="day7" checked/>7日</label>
+                <label class="day8_label"><input type="checkbox" name="day_show[]" value="day8" checked/>8日</label>
+            </div>
+            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" data-role="delete-portlet">
+                <i class="icon-trash"></i>
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <table class="remain-table">
+            <thead>
+            <tr>
+                <th style="width: 80px;">日期</th>
+                <th style="width: 80px;">注册人数</th>
+                <th>留存率</th>
+            </tr>
+            </thead>
+            <tbody id="remain_data">
+                <include file="Count/_remain_data"/>
+            </tbody>
+        </table>
+        <div class="scroller-footer">
+            <div class="btn-arrow-link pull-right">
+                <a href="{:U('Count/remain')}">查看更多</a>
+                <i class="icon-arrow-right"></i>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <script>
+        $(function(){
+            $('[name="day_show[]"]').click(change_show_day);
+        });
+        var change_show_day=function(){
+            $('.day').hide();
+            var day=$('[name="day_show[]"]');
+            day.each(function(){
+                if($(this).is(':checked')){
+                    $('.'+$(this).val()).show();
+                }
+            });
+        }
+    </script>
+</div>

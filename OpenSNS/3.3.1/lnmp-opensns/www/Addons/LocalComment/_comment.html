@@ -1,0 +1,55 @@
+<div class="comment">
+
+
+    <php>
+        if($comment['uid']){
+    </php>
+    <a href="{$comment.user.space_url}" class="avatar "><img src="{$comment.user.avatar64}" ucard="{$comment.user.uid}"
+                                                             class="avatar-img"/>
+        <php>}else{</php>
+        <a href="javascript:" title="游客" class="avatar"><i class="icon-user icon-border icon-2x icon-muted"
+                                                           style="color: #999;width:32px;text-align:center;display: block;"></i></a>
+        <php>}</php>
+    </a>
+
+    <div class="content">
+        <div class="pull-right"><span class="text-muted" title="{$comment.create_time|friendlyDate}">{$comment.create_time|friendlyDate}</span>
+            &nbsp;<!--<strong>#5</strong>--></div>
+                <span class="author">
+
+                       <php>
+                           if($comment['uid']){
+                       </php>
+
+                  <a class="nickname" href="{$comment.user.space_url}"
+                     ucard="{$comment.user.uid}">{$comment.user.nickname}</a>
+                         <php>}else{</php>
+
+                     <a href="javascript:"><strong>游客</strong></a><if condition="$comment['area']">（{$comment.area}）
+                </if>
+                          <php>}</php>
+                </span>
+
+        <p class="text">
+            {$comment.content|parse_comment_content}
+        </p>
+        <div class="actions text-right">
+            <php>
+                if(is_login()){
+            </php>
+            <php>
+                if($comment['uid']){
+            </php>
+            <a href="javascript:" data-role="reply_local_comment" data-nickname="{$comment.user.real_nickname}">回复</a>
+            <php>}</php>
+
+            <php>if(check_auth('deleteLocalComment',$comment['uid'])){</php>
+            <a href="javascript:" data-role="delete_local_comment" data-id="{$comment.id}">删除</a>
+            <php>}</php>
+            <php>
+                }
+            </php>
+
+        </div>
+    </div>
+</div>

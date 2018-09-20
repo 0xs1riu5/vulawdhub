@@ -1,0 +1,117 @@
+<div class="modal fade announce" id="AnnounceModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="myModalLabel">
+                    公告
+                </h2>
+            </div>
+            <div class="modal-body">
+               <div>
+                   <h4>{$announce.title}</h4>
+                   <div>
+                       {$announce.content}
+                   </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+                <neq name="announce.link" value="">
+                    <a type="button" data-role="set-announce-arrive" data-url="{$announce['link']}" class="btn btn-default announce-btn">
+                        查看详情
+                    </a>
+                    <else/>
+                    <a type="button" data-role="set-announce-arrive" class="btn btn-default announce-btn">
+                        了解
+                    </a>
+                </neq>
+                <a type="button" data-role="set-announce-arrive" class="btn btn-default announce-btn">
+                    忽略
+                </a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<php>
+    if(strlen($announce['content'])>400){
+</php>
+<style>
+    .announce .modal-dialog{
+        width: 600px;
+    }
+</style>
+<php>
+    }
+</php>
+
+<script>
+    var announce_id="{$announce['id']}";
+    $(function(){
+        $('#AnnounceModel').modal({
+            backdrop:'static',
+            keyboard:false,
+            show:true
+        });
+        $('[data-role="set-announce-arrive"]').click(function(){
+            un_show_announce();
+            var url=$(this).attr('data-url');
+            if(url!=undefined){
+                window.open(url);
+            }
+            $('#AnnounceModel').modal('hide');
+        });
+    });
+    var un_show_announce=function(){
+        if(is_login()){
+            $.post(U('Core/Announce/setArrive'),{announce_id:announce_id});
+        }else{
+            //设置已读未登录状态记录
+            var unShowAnnounceList=$.cookie('announce_already_list');
+            unShowAnnounceList=un_show_announce_list(unShowAnnounceList,announce_id);
+            $.cookie('announce_already_list',unShowAnnounceList);
+        }
+        //设置已读记录
+        var unShowAnnounceIds=$.cookie('announce_cookie_ids');
+        unShowAnnounceIds=un_show_announce_ids(unShowAnnounceIds,announce_id);
+        $.cookie('announce_cookie_ids',unShowAnnounceIds);
+
+        //设置cookie有效期为10秒，确定这段时间不再读新的公告
+        var date=new Date();
+        date.setTime(date.getTime()+10*1000);
+        $.cookie('announce_un_show_now',1,{expires:date});
+        return true;
+    }
+    var un_show_announce_ids=function(unShow, id) {
+        var newArr = [];
+        if(unShow!=undefined){
+            var attachArr = unShow.split('|');
+            for (var i in attachArr) {
+                if (attachArr[i] !== ''&&attachArr[i]!== id.toString()) {
+                    newArr.push(attachArr[i]);
+                }
+            }
+        }
+        newArr.push(id);
+        unShow=newArr.join(',');
+        return unShow;
+    }
+    var un_show_announce_list=function(unShow, id) {
+        var newArr = [];
+        if(unShow!=undefined){
+            var attachArr = unShow.split('|');
+            for (var i in attachArr) {
+                if (attachArr[i] !== '') {
+                    var oneAnnounce=attachArr[i].split(':');
+                    if(oneAnnounce[0] !== id.toString()){
+                        newArr.push(attachArr[i]);
+                    }
+                }
+            }
+        }
+        var timestamp = Date.parse(new Date());
+        oneAnnounce=[id,timestamp];
+        oneAnnounce=oneAnnounce.join(':');
+        newArr.push(oneAnnounce);
+        unShow=newArr.join('|');
+        return unShow;
+    }
+</script>

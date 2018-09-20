@@ -1,0 +1,100 @@
+<div data-position="one-weibo" style="max-width: 680px;<if condition="$can_hide">[top_hide]</if>" data-role="id_weibo" id="weibo_{$weibo.id}" <if condition="$can_hide">class="top_can_hide"<else/>class=""</if>>
+    <div class="all-wrap">
+        <if condition="$weibo['is_top'] eq 1">
+            <div class="ribbion-green"></div>
+            <elseif condition="$weibo['is_hot'] eq 1"/>
+            <div class="hot-comment-weibo"></div>
+            <elseif condition="$weibo['is_first'] eq 1"/>
+            <div class="new-user-first-weibo"></div>
+        </if>
+        <div class="weibo-content">
+            <div class="content-head">
+                <div class="avat-box pull-left">
+                    <a href="{$weibo.user.space_url}" ucard="{$weibo.user.uid}">
+                        {$weibo.user.avatar_html128}
+                    </a>
+                    <div class="show-follow pull-right">
+                        <div class="follow-btn" style="display: none;">
+                            [follow:{$weibo['uid']}]
+                        </div>
+                    </div>
+                </div>
+                <div class="op-box pull-right">
+                    <div class="op-tb op-top">
+                        <a ucard="{$weibo.user.uid}" href="{$weibo.user.space_url}" class="user_name">
+                            [nickname:{$weibo['uid']}]
+                        </a>
+                        <if condition="modC('SHOW_TITLE',1)">
+                            <small class="font_grey">{$weibo.user.title}</small>
+                        </if>
+                        {:W('Common/UserRank/render',array($weibo['uid']))}
+                        <!--隐藏操作列表-->
+                        <if condition="$can_hide eq 1">
+                            <div class="pull-right show-operate-wrap">
+                                <a class="pull-right iconfont icon-cuo" data-role="hide_top_weibo_list" data-weibo-id="{$weibo['id']}" title="隐藏" style="color: #AEAEAE;"></a>
+                            </div>
+                        </if>
+                    </div>
+                    <div class="op-tb op-bottom">
+                        <a data-hover="查看详情" class="wb-time" href="{:U('Weibo/Index/weiboDetail',array('id'=>$weibo['id']))}">
+                            [time:{$weibo.create_time}]
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="content-info row">
+                {$weibo.fetchContent}
+                <div class="form-where">
+                    <div class="where w-left">
+                        <span>{:L('_FROM_')} <if condition="$weibo['from'] eq ''">{:L('_PC_')} <else/><strong>{$weibo.from}</strong></if></span>
+                        <span>{:hook('giveReward',array('type'=>$MODULE_ALIAS.'/'.$MODULE_ALIAS,'url'=>"Weibo/Index/weiboDetail?id=$weibo[id]",'data'=>array('user-id'=>$weibo['user']['uid'])))}</span>
+                    </div>
+                    <div class="where w-right  bottom-operate" data-weibo-id="{$weibo.id}">
+                        <php>
+                            $weiboCommentTotalCount = $weibo['comment_count'];
+                        </php>
+                        <include file="./Application/Weibo/View/default/Index/_operation.html"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="weibo-bottom weibo-comment-list row" <if condition="modC('SHOW_COMMENT',1)">style="display: block;margin:0;" <else/> style="display: none;" </if> data-weibo-id="{$weibo.id}">
+            <div class="top-triangle-border"></div>
+            <div class="top-triangle-content"></div>
+            <div class="bottom-top">
+                <div class="pull-left left-like-list text-more text-color">
+                    <a title="喜欢" data-role="support-weibo" class="text-color" table="weibo" row="{$weibo['id']}" uid="{$weibo['uid']}" jump="weibo/index/weibodetail">
+                        <i class="weibo_like icon-heart-empty"></i>
+                        <if condition="count($supportedUserList) eq 0">
+                            <span class="support-text">点赞</span>
+                        </if>
+                    </a>
+                    <span id="supporter_Weibo_weibo_{$weibo['id']}">
+                        <if condition="count($supportedUserList) gt 0">
+                            <volist name="supportedUserList" id="one_support">
+                                <if condition="$key egt 1">，</if>
+                                <a ucard="{$one_support['uid']}" href="{$one_support['space_url']}" class="text-color">[nickname:{$one_support['uid']}]</a>
+                            </volist>
+                        </if>
+                    </span>
+                </div>
+                <a class="pull-right right-say-button" data-role="show-comment-input" data-id="{$weibo['id']}"><i class="iconfont icon-you"></i>说一句</a>
+            </div>
+            <div class="comment-list-block">
+                <if condition="modC('SHOW_COMMENT',1)">
+                    <div class=" weibo-comment-block">
+                        <div class="weibo-comment-container">
+                            {:W('Weibo/Comment/someComment',array('weibo_id'=>$weibo['id'],'un_prase_comment'=>$un_prase_comment))}
+                        </div>
+                    </div>
+                </if>
+            </div>
+        </div>
+    </div>
+</if>
+<style>
+    .suofang {MARGIN: auto;WIDTH: 200px;}
+    .suofang img{MAX-WIDTH: 100%!important;HEIGHT: auto!important;width:expression(this.width > 300 ? "300px" :this.width)!important;}
+</style>

@@ -1,0 +1,126 @@
+<extend name="Public/base" />
+<block name="body">
+    <!--<div class="main-title">
+        <if condition="empty($is_edit)">
+            <h2>{:L("_NEW_IDENTITY_")}</h2>
+        </if>
+        <if condition="$is_edit eq 1">
+            <h2>{:L("_EDIT_IDENTITY_")}</h2>
+        </if>
+    </div>-->
+    <div class="tab-wrap with-padding">
+
+        <div class="clearfix">
+            <div class="col-xs-10">
+                <include file="_link"/>
+            </div>
+        </div>
+        <div class="node-list">
+            <!-- 访问授权 -->
+            <div class="tab-pane in">
+
+                <form action="__SELF__" enctype="application/x-www-form-urlencoded" method="POST" class="form-horizontal auth-form">
+                    <label class="item-label">{:L("_ROLE_NAME_")}    <span class="check-tips">（{:L("_CANT_REPEAT_")}）</span></label>
+                    <div class="controls ">
+                        <input type="text" name="title" value="{$data.title}"
+                               class="text input-large form-control" style="width: 400px"/></div>
+
+                    <label class="item-label">{:L("_ENGLISH_LOGO_")}    <span class="check-tips">（{:L("_COMPOSED_BY_ABC_")}）</span></label>
+                    <div class="controls ">
+                        <input type="text" name="name" value="{$data.name}"
+                               class="text input-large form-control" style="width: 400px"/></div>
+
+                    <label class="item-label">{:L("_DESCRIPTION_")}    </label>
+                    <div class="controls ">
+                        <textarea name="description" class="text input-large form-control"
+                                  style="height: 8em;width: 400px;height: 200px">{$data.description}</textarea></div>
+
+                    <label class="item-label">{:L("_GROUP_")}    <span>（{:L('_SAME_GROUP_ROLE_CANNOT_BE_AT_THE_SAME_TIME_')}）</span></label>
+                    <div class="controls ">
+                        <select name="group_id" class="form-control" style="width:auto;">
+                            <volist name="group" id="opt">
+                                <option value="{$opt.id}" <eq name="opt['id']" value="$data['group_id']">selected</eq> >{$opt.title}</option>
+                            </volist>
+                        </select>
+                    </div>
+
+                    <div>
+                        <a data-role="save" >{:L('_NO_GROUP_POINT_I_CREATE_')}</a>
+                    </div>
+
+                    <label class="item-label">{:L("_DEFAULT_USER_GROUP_")}    <span class="check-tips">（{:L("_THE_DEFAULT_USER_REGISTRATION_WHERE_THE_USER_GROUP_CHOOSE_")}）</span></label>
+                    <div class="controls ">
+                        <select name="user_groups[]" style="width: 400px; display: none;" class="chosen-select select2" multiple="multiple">
+                            <volist name="group_list" id="option">
+                                <php>
+                                    $selected = in_array($option['id'],$data['user_groups']) ? 'selected' : '';
+                                </php>
+                                <option value="{$option.id}" {$selected}>{$option.title}</option>
+                            </volist>
+                        </select>
+                    </div>
+
+                    <label class="item-label">{:L("_NEED_TO_BE_INVITED_TO_REGISTER_")}    <span class="check-tips">（{:L("_DEFAULT_IS_OFF_AFTER_OPENING_THE_USER_CAN_BE_INVITED_TO_REGISTER_")}）</span></label>
+                    <div class="controls ">
+                        <label for="id_invite_1"> <input id="id_invite_1" name="invite" value="1" type="radio" <if condition="$data['invite'] eq 1">checked</if>/>
+                            开启</label> &nbsp;&nbsp;&nbsp;&nbsp;            <label for="id_invite_0"> <input id="id_invite_0" name="invite" value="0" type="radio" <if condition="$data['invite'] eq 0">checked</if>/>
+                        关闭</label> &nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+                    <label class="item-label">{:L("_NEED_TO_EXAMINE_")}    <span class="check-tips">（{:L("_DEFAULT_IS_CLOSED_AFTER_THE_USER_AUDIT_TO_HAVE_THE_IDENTITY_OF_THE_")}）</span></label>
+                    <div class="controls ">
+                        <label for="id_audit_1"> <input id="id_audit_1" name="audit" value="1" type="radio" <if condition="$data['audit'] eq 1">checked</if>/>
+                            开启</label> &nbsp;&nbsp;&nbsp;&nbsp;            <label for="id_audit_0"> <input id="id_audit_0" name="audit" value="0" type="radio" <if condition="$data['audit'] eq 0">checked</if>/>
+                        关闭</label> &nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+                    <label class="item-label">状态    </label>
+                    <div class="controls ">
+                        <select name="status" class="form-control" style="width:auto;">
+                            <option value="-1" <if condition="$data['status'] eq -1">selected</if> >{:L("_DELETE_")}</option>
+                            <option value="0" <if condition="$data['status'] eq 0">selected</if> >{:L("_DISABLE_")}</option>
+                            <option value="1" <if condition="$data['status'] eq 1">selected</if> >{:L("_ENABLED_")}</option>
+                            <option value="2" <if condition="$data['status'] eq 2">selected</if> >{:L("_NOT_AUDITED_")}</option>        </select></div>                        <br/>
+
+                    <input type="hidden" name="is_edit" value="{$is_edit}"/>
+                    <input type="hidden" name="group_list" value="{$group_list}"/>
+                    <input type="hidden" name="group" value="{$group}"/>
+                    <input type="hidden" name="data" value="{$data}"/>
+                    <input type="hidden" name="id" value="{$this_role.id}" />
+                    <div style="margin-top: 20px;"></div>
+                    <button type="submit" class="btn submit-btn ajax-post" target-form="auth-form">{:L("_STEP_NEXT_")}</button>
+                    <span style="color: #BABABA;margin: 11px;">{:L("_PLEASE_SAVE_THE_ABOVE_CONFIGURATION_AND_THEN_SWITCH_TO_ANOTHER_INTERFACE_")}</span>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/qtip/jquery.qtip.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/qtip/jquery.qtip.min.css" media="all">
+    <link rel="stylesheet" href="__ALTE__/plugins/select2/select2.min.css">
+    <script src="__ALTE__/plugins/select2/select2.full.min.js"></script>
+    <script>
+        $('[data-role="save"]').click(function() {
+            var url = "{:U('Admin/Role/editGroup')}";
+            var rank = $('input[name="title"]').val();
+            var name = $('input[name="name"]').val();
+            var description = $('textarea[name="description"]').val();
+
+            $.post(url, {rank: rank, name: name, description: description}, function() {
+                window.location.href = url;
+            }, 'json')
+        });
+        $(function(){
+            $(".select2").select2();
+        })
+    </script>
+    <script type="text/javascript" charset="utf-8">
+        +function($){
+            $('select[name="role"]').change(function(){
+                location.href = this.value;
+            });
+            //导航高亮
+            highlight_subnav('{:U('Role/editrole')}');
+        }(jQuery);
+    </script>
+</block>

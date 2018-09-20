@@ -1,0 +1,39 @@
+<extend name="Public/usercenter"/>
+
+<block name="body">
+    <div class="row">
+        <div class="col-xs-12">
+            <p>&nbsp;</p>
+            <h4>{$call}{:L('_DE_THEME_')}</h4>
+            <hr class="oneuser-title-hr"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="text-muted">{:L('_TOTAL_HAVE_1_')} <span class="text-success">{$totalCount}</span> {:L('_FORUM_THEME_2_')}</p>
+            <hr/>
+        </div>
+    </div>
+
+    <volist name="list" id="document">
+        <div class="row">
+            <div class="col-xs-12">
+                <p>
+                    <a class="link-black" href="{:U('Forum/Index/detail',array('id'=>$document['id']))}">{$document.title|htmlspecialchars}</a>
+                </p>
+                <p class="pull-right text-muted">{:L('_READ_')}（{$document.view_count}）<span style="display: inline-block; width: 2em;">&nbsp;</span>{:L('_REPLY_')}（{$document.reply_count}）</p>
+                <p class="text-muted">{$document.create_time|time_format}</p>
+            </div>
+        </div>
+        <hr/>
+    </volist>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="pull-right">
+                {:getPagination($totalCount,20)}
+            </div>
+        </div>
+    </div>
+</block>

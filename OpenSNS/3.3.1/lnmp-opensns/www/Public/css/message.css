@@ -1,0 +1,525 @@
+#message-box .modal-dialog {
+  border-radius: 5px;
+  border: 1px solid #eee;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+  background-color: #fff;
+}
+#message-box .modal-dialog .modal-content {
+  padding: 10px;
+}
+#message-box .modal-dialog .modal-content .message-content > .top {
+  height: 29px;
+  line-height: 20px;
+  font-size: 18px;
+  border-bottom: 1px solid #E5E5E5;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list {
+  height: 650px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list:after {
+  clear: both;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .session-list {
+  float: left;
+  width: 300px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 10;
+  border-right: 1px solid #EEE;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .session-list li {
+  position: relative;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .session-list li a {
+  display: inline-block;
+  width: 100%;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list {
+  width: 580px;
+  float: left;
+  padding-left: 10px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block {
+  height: 100%;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 650px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center .line {
+  text-align: center;
+  color: #A9A9A9;
+  margin: 20px 0;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center ul {
+  list-style-type: none;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li {
+  line-height: 24px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li:before,
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li:after {
+  display: block;
+  height: 0;
+  content: ".";
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li .avatar-box {
+  margin-top: 10px;
+  float: left;
+  margin-right: 10px;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  overflow: hidden;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li .info-box {
+  float: left;
+  width: 350px;
+  min-height: 45px;
+  height: auto;
+  margin-top: 10px;
+  position: relative;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li .info-box .name {
+  font-size: 12px;
+  line-height: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li .info-box .name a {
+  color: #333;
+  text-decoration: none;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li .info-box .name span {
+  color: #999;
+  margin-left: 30px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li .info-box .info {
+  font-size: 12px;
+  line-height: 22px;
+  word-break: break-all;
+  word-wrap: break-word;
+  color: #666;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li.comment_message .avatar-box {
+  margin-top: 0px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li.comment_message .m3-right {
+  width: 450px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li.comment_message .m3-right .m3-top p {
+  margin-bottom: 0;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li.comment_message .m3-right .m3-top .p-name {
+  font-weight: 600;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li.comment_message .m3-right .m3-mid {
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li.comment_message .m3-right .m3-bot {
+  color: #888;
+  margin-top: 5px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center li .expression_pic {
+  display: inline-block;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center .load-more {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center .load-more .do-button {
+  width: 80%;
+  display: inline-block;
+  height: 40px;
+}
+#message-box .modal-dialog .modal-content .message-content .content-list .message-list .list-block .center .no-message p {
+  font-size: 16px;
+  text-align: center;
+  padding: 20px 0;
+  color: #B0B0B0;
+  padding-left: 15px;
+}
+.common-bg {
+  padding: 0 10px;
+  border-radius: 3px;
+  border: 1px solid #f2f2f2;
+  background-color: #f0f2f5;
+}
+.common {
+  height: 30px;
+  width: 100%;
+  line-height: 30px;
+}
+.cheight {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+}
+.message-box .message-content .content-list .session-list li.session1 a {
+  margin: 10px auto;
+  padding: 0 0 0 10px;
+}
+.message-box .message-content .content-list .session-list li.session1 a .message-f {
+  padding: 0 10px;
+  border-radius: 3px;
+  border: 1px solid #f2f2f2;
+  background-color: #f0f2f5;
+  height: 130px;
+}
+.message-box .message-content .content-list .session-list li.session1 a .message-f .top-box {
+  width: 100%;
+  height: 90px;
+  border-bottom: 1px solid #fff;
+  padding: 15px 0;
+}
+.message-box .message-content .content-list .session-list li.session1 a .message-f .top-box .img-wrap {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  padding: 0;
+  position: relative;
+}
+.message-box .message-content .content-list .session-list li.session1 a .message-f .top-box span {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: red;
+  position: absolute;
+  right: 13px;
+  top: 10px;
+  text-align: center;
+  line-height: 20px;
+  color: #fff;
+  display: block;
+}
+.message-box .message-content .content-list .session-list li.session1 a .message-f .top-box .info-box {
+  height: 100%;
+  padding: 0;
+}
+.message-box .message-content .content-list .session-list li.session1 a .message-f .top-box .info-box .title {
+  height: 30px;
+  width: 100%;
+  line-height: 30px;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+}
+.message-box .message-content .content-list .session-list li.session1 a .message-f .top-box .info-box .last-message {
+  height: 30px;
+  width: 100%;
+  line-height: 30px;
+  color: #666;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.message-box .message-content .content-list .session-list li.session1 a .message-f .bottom-box {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  color: #999;
+}
+.message-box .message-content .content-list .session-list li.session2 a {
+  margin: 10px auto;
+  padding: 0 0 0 10px;
+}
+.message-box .message-content .content-list .session-list li.session2 a .message-s {
+  height: 105px;
+  padding: 0 10px;
+  border-radius: 3px;
+  border: 1px solid #f2f2f2;
+  background-color: #f0f2f5;
+}
+.message-box .message-content .content-list .session-list li.session2 a .message-s .title {
+  display: inline-block;
+  background-color: #24c6d5;
+  color: #fff;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+.message-box .message-content .content-list .session-list li.session2 a .message-s .img-wrap {
+  width: 50px;
+  height: 50px;
+}
+.message-box .message-content .content-list .session-list li.session2 a .message-s .time {
+  padding: 0 10px;
+  color: #999;
+}
+.message-box .message-content .content-list .session-list li.session2 a .message-s .info {
+  height: 50px;
+  color: #666;
+  padding: 6px 10px;
+  overflow: hidden;
+}
+.message-box .message-content .content-list .session-list li.session3 {
+  border-bottom: 1px solid #eee;
+}
+.message-box .message-content .content-list .session-list li.session3.current {
+  background-color: #FCFCFC;
+}
+.message-box .message-content .content-list .session-list li.session3 a {
+  height: 75px;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t {
+  width: 100%;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap {
+  padding-right: 5px;
+  padding-left: 5px;
+  height: 100%;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap .img-wrap {
+  height: 80px;
+  padding: 10px 0;
+  position: relative;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap .img-wrap img {
+  width: 60px;
+  height: 60px;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap .img-wrap .badge {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 100%;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap .info {
+  height: 80px;
+  padding: 10px 0;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap .info .up-box {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap .info .up-box .time {
+  color: #999;
+  margin-right: 5px;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap .info .up-box .title {
+  font-weight: 700;
+  font-size: 14px;
+}
+.message-box .message-content .content-list .session-list li.session3 a .message-t .message-wrap .info .down-box {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  color: #999;
+}
+.message-box .message-content .content-list .session-list li.session4 a {
+  margin: 10px auto -5px;
+  padding: 0 0 0 10px;
+}
+.message-box .message-content .content-list .session-list li.session4 a .message-g {
+  padding: 0 10px;
+  border-radius: 3px;
+  border: 1px solid #f2f2f2;
+  background-color: #f0f2f5;
+  padding: 0px;
+  height: 80px;
+}
+.message-box .message-content .content-list .session-list li.session4 a .message-g .img {
+  position: relative;
+}
+.message-box .message-content .content-list .session-list li.session4 a .message-g .img .img-wrap {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  margin-top: 16px;
+}
+.message-box .message-content .content-list .session-list li.session4 a .message-g .img span {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: red;
+  position: absolute;
+  right: 5px;
+  top: 11px;
+  text-align: center;
+  line-height: 20px;
+  color: #fff;
+  display: block;
+}
+.message-box .message-content .content-list .session-list li.session4 a .message-g .info-box {
+  font-size: 20px ;
+  line-height: 80px;
+  padding-left: 17px;
+}
+.message-box .message-content .content-list .session-list li.session4 a .message-g .red-point span {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: red;
+  position: absolute;
+  right: 22px;
+  top: 30px;
+  text-align: center;
+  line-height: 20px;
+  color: #fff;
+  display: block;
+}
+.page-box {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 1000px;
+  background-color: #fff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+  border: 1px solid #eee;
+}
+.page-box .top {
+  background-color: #4F8AD0;
+  height: 50px;
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  line-height: 50px;
+  font-size: 18px;
+  font-weight: 400;
+}
+.page-box .back-box {
+  height: 30px;
+  width: 100%;
+  background-color: #f5f5f5;
+  color: #333;
+  text-align: center;
+  line-height: 30px;
+  position: relative;
+}
+.page-box .back-box i {
+  position: absolute;
+  left: 15px;
+  top: 8px;
+}
+.m1_style {
+  padding: 0 10px;
+  border-radius: 3px;
+  border: 1px solid #f2f2f2;
+  background-color: #f0f2f5;
+  height: 170px;
+  padding: 0;
+}
+.m1_style .title {
+  width: 100%;
+  line-height: 30px;
+  font-size: 16px;
+  color: #333;
+  padding: 0 10px;
+  border-bottom: 1px solid #999;
+}
+.m1_style .content {
+  padding: 5px 10px;
+}
+.m1_style .content p {
+  margin-bottom: 5px;
+}
+.m1_style .time {
+  padding: 0 10px;
+  border-top: 1px solid #999;
+  line-height: 30px;
+}
+.m2_style {
+  height: 75px;
+  padding: 10px 0;
+}
+.m2_style:hover {
+  background-color: #e9edf0;
+}
+.m2_style .content-box {
+  height: 100%;
+  padding: 5px 0;
+  position: relative;
+}
+.m2_style .content-box .time {
+  position: absolute;
+  right: 10px;
+  bottom: 0;
+  color: #999;
+}
+.wrap {
+  width: 550px;
+  height: 500px;
+  max-height: 700px;
+  border: 1px solid #000;
+  margin: 0 auto;
+}
+.wrap .message-content {
+  width: 100%;
+  height: 80px;
+  position: relative;
+}
+.wrap .message-content .img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.wrap .message-content .name {
+  position: absolute;
+  left: 60px;
+  top: 10px;
+}
+.wrap .message-content .text {
+  position: absolute;
+  left: 60px;
+  top: 40px;
+  color: #999;
+  font-size: 14px;
+}
+.wrap .message-content .triangle {
+  position: absolute;
+  bottom: 0;
+  left: 75px;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid #ccc;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+.wrap .comment {
+  width: 100%;
+  height: 100px;
+  position: relative;
+  background-color: #ccc;
+}
+.wrap .comment .img {
+  margin-top: 20px;
+  margin-left: 10px;
+  width: 40px;
+  height: 40px;
+  float: left;
+  border-radius: 100%;
+}
+.wrap .comment .name {
+  position: absolute;
+  left: 60px;
+  top: 15px;
+}
+.wrap .comment .record {
+  position: absolute;
+  left: 60px;
+  top: 40px;
+  color: #999;
+  font-size: 14px;
+}
+.wrap .comment .text {
+  position: absolute;
+  left: 60px;
+  top: 68px;
+  font-size: 14px;
+}

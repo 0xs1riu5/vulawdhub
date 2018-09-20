@@ -1,0 +1,125 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div>
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="{:U('Admin/Index/index')}">首页  </a>
+                    <i class="fa fa-circle"></i>
+                </li>
+                <li>
+                    <span>模块管理</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <include file="Public/_addTo"/>
+            </div>
+        </div>
+
+        <div class="main-title pull-left">
+            <h2 style="border-bottom: 0px;">{:L("_MODULE_MANAGEMENT_")}{:L("_ONLY_THE_MODULE_IN_THE_CLOUD_MARKET_CAN_DETECT_UPDATES_")}</h2>
+        </div>
+        <div class="pull-right">
+            <if condition="$type eq 'installed'">
+                <a href="{:U('Role/moduleRole')}" class="btn btn-warning">管理角色访问权限</a>
+            </if>
+            <a href="{:U('Module/lists',array_merge($_GET,array('refresh'=>2)))}" class="btn btn-success"><i
+                    class="icon-level-up"></i>{:L("_CHECK_FOR_UPDATES_IMMEDIATELY_")}</a>
+            &nbsp;<a
+                href="{:U('Module/lists',array_merge($_GET,array('refresh'=>1)))}" class="btn btn-danger"><i class="icon-undo"></i>
+            {:L("_RESET_ALL_MODULE_INFORMATION_IS_NOT_SYNCHRONIZED_TO_USE_")}</a>&nbsp;
+
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="with-padding  tabbable-custom" style="">
+        <ul class="nav nav-tabs group_nav">
+            <li id="type_all"><a href="{:U('lists',array('type'=>'all'))}">{:L("_ALL_")}</a></li>
+            <li id="type_installed"><a href="{:U('lists',array('type'=>'installed'))}">{:L("_INSTALLED_")}</a></li>
+            <li id="type_uninstalled"><a href="{:U('lists',array('type'=>'uninstalled'))}">{:L("_NOT_INSTALLED_")}</a></li>
+            <li id="type_core"><a href="{:U('lists',array('type'=>'core'))}">{:L("_SYSTEM_MODULE_")}</a></li>
+            <script>
+                $('#type_{$type}').addClass('active');
+            </script>
+        </ul>
+
+        <div class="tab-content">
+            <div class="with-padding">
+                <ul class="module-list">
+                    <volist name="modules" id="vo">
+
+                        <li class="clearfix">
+                            <div class="cover-wrapper">
+                                <empty name="vo.version_info.goods.cover_url">
+                                    <div class="cover-icon">
+                                        <i class="fa-{$vo.icon}"></i>
+                                    </div>
+                                    <else/>
+                                    <img class="cover"
+                                         src="{$vo.version_info.goods.cover_url}"/>
+                                </empty>
+                            </div>
+                            <div class="content-wrapper" style="margin-left: 0!important;background-color: transparent!important;">
+                                <div class="title">
+                                    <a href="{:U('edit?', array('name' => $vo['name']))}">{$vo.alias} <span class="text-muted">{$vo.name}</span></a>
+                                    <div class="pull-right">
+                                        <empty name="vo.token">
+                                            <span class="label label-info">{$vo.version}</span>
+                                            <else/>
+                                            <span class="label label-info">{$vo.version_info.title}</span>
+                                        </empty>
+                                        <empty name="vo.update_list">
+                                            <else/>
+                                            <a style="text-decoration: none" href="javascript:void(0)" data-role="update_btn"
+                                               data-type="ajax"
+                                               data-url="{:U('Cloud/getVersionList',array('token'=>$vo['token']))}"
+                                               data-toggle="modal" data-title={:L("_A_NEW_VERSION_CAN_BE_UPDATED_WITH_DOUBLE_")}><span class=" label label-success ">{:L("_THERE_IS_A_NEW_VERSION_")}{$vo.update_list.0.title}</span></a>
+                                            <script>$(function () {
+                                                $('[data-role="update_btn"]').tooltip('show');
+                                            });
+                                            </script>
+                                        </empty>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-muted text-ellipsis">{$vo.summary}</p>
+                                </div>
+                                <div>{:L("_DEVELOPER_")}{:L('_COLON_')} <a style="color: #666">{$vo.developer}</a></div>                        <div class="clearfix bottom-btns">
+                                <div class="pull-left">
+
+                                    <a class="btn btn-default"
+                                       href="{:U('edit?', array('name' => $vo['name']))}">{:L("_EDIT_")}</a>
+                                    <if condition="$vo['can_uninstall'] ">
+                                        <if condition="$vo['is_setup']">
+                                            <a class="btn btn-danger"
+                                               href="{:U('uninstall', array('id' => $vo['id']))}">{:L("_UNINSTALL_")}</a>
+                                            <else/>
+                                            <a class="btn btn-info"
+                                               href="{:U('install', array('name' => $vo['name']))}">{:L("_INSTALL_")}</a>
+                                        </if>
+
+                                    </if>
+                                    <empty name="vo.update_list">
+                                        <else/>
+                                        <a class="btn btn-success"
+                                           href="{:U('Cloud/updateGoods',array('token'=>$vo['token']))}">{:L("_TO_UPDATE_")}</a>
+                                    </empty>
+                                </div>
+                                <div class="pull-right">
+                                    <empty name="vo.token">
+                                        <span class="label label-circle label-danger">{:L("_LOCAL_MODULE_")}</span>
+                                        <else/>
+                                        <a target="_blank"
+                                           href="{:appstoreU('Appstore/Index/goodsDetail',array('token'=>$vo['token']))}"
+                                           class="btn btn-info">{:L("_GO_TO_THE_CLOUD_MARKET_VIEW_")}</a>
+                                    </empty>
+                                </div>
+                            </div>
+                            </div>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+    </div>
+</block>

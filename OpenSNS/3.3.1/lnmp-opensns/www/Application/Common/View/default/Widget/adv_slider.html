@@ -1,0 +1,121 @@
+<div id="adv_{$pos.id}" class="adv-wrap" style="padding: {$pos.padding};margin:{$pos.margin};">
+    <div class="text-left " style="width:{$pos.width};height:{$pos.height};">
+        <if condition="count($list) gt 0">
+            <switch name="pos.style">
+                <case value="2">
+                    <script src="__PUBLIC__/js/ext/kinmaxshow/js/kinmaxshow.min.js"></script>
+                    <div style="width:{$pos.width};height:{$pos.height}">
+                        <div id="slide_{$pos.id}" style="display: none">
+                            <volist name="list" id="vo">
+                                <div>
+                                    <a href="{$vo.url}" target="_blank" title="{$vo.title}">
+                                        <img style="width:{$pos.width};height:{$pos.height};" src="{$vo.pic|pic}"
+                                             alt="{$vo.title}" class="img-responsive" >
+                                    </a>
+                                </div>
+                            </volist>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            var h_s = "{$pos.height}";
+                            $("#slide_{$pos.id}").kinMaxShow({height: h_s});
+                            $("#slide_{$pos.id}").fadeIn();
+                        })
+                    </script>
+                </case>
+                <default />
+                <script src="__PUBLIC__/js/ext/touchslide/js/jquery.touchSlider.js"></script>
+                <link href="__PUBLIC__/js/ext/touchslide/css/touchslider.css" rel="stylesheet" type="text/css"/>
+                <div class="main_visual"  style="height: {$pos.height};width:{$pos.width};">
+                    <div class="flicking_con">
+                        <volist name="list" id="vo">
+                            <a href="#"></a>
+                        </volist>
+                    </div>
+                    <div class="main_image" >
+                        <ul>
+                            <volist name="list" id="vo">
+                                <li><a style="width:{$pos.width};height:{$pos.height};" href="{$vo.url}" title="{$vo.title}" target="_blank"><img  style="width:{$pos.width};height:{$pos.height};"
+                                                                                                                                                   src="{$vo.pic|pic}"
+                                        alt="{$vo.title}" class="img-responsive"></a></li>
+                            </volist>
+                        </ul>
+                    </div>
+                    <a href="javascript:;" id="btn_prev"><i class="icon-chevron-left"></i></a>
+                    <a href="javascript:;" id="btn_next"><i class="icon-chevron-right"></i></a>
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $(".main_visual").hover(function () {
+                            $("#btn_prev,#btn_next").fadeIn()
+                        }, function () {
+                            $("#btn_prev,#btn_next").fadeOut()
+                        });
+
+                        $dragBln = false;
+
+                        $(".main_image").touchSlider({
+                            flexible: true,
+                            speed: 1000,
+                            btn_prev: $("#btn_prev"),
+                            btn_next: $("#btn_next"),
+                            paging: $(".flicking_con a"),
+                            counter: function (e) {
+                                $(".flicking_con a").removeClass("on").eq(e.current - 1).addClass("on");
+                            }
+                        });
+                        $('.main_visual').fadeIn();
+
+                        $(".main_image").bind("mousedown", function () {
+                            $dragBln = false;
+                        });
+
+                        $(".main_image").bind("dragstart", function () {
+                            $dragBln = true;
+                        });
+
+                        $(".main_image a").click(function () {
+                            if ($dragBln) {
+                                return false;
+                            }
+                        });
+
+                        timer = setInterval(function () {
+                            $("#btn_next").click();
+                        }, 5000);
+
+                        $(".main_visual").hover(function () {
+                            clearInterval(timer);
+                        }, function () {
+                            timer = setInterval(function () {
+                                $("#btn_next").click();
+                            }, 5000);
+                        });
+
+                        $(".main_image").bind("touchstart", function () {
+                            clearInterval(timer);
+                        }).bind("touchend", function () {
+                            timer = setInterval(function () {
+                                $("#btn_next").click();
+                            }, 5000);
+                        });
+
+                    });
+                </script>
+            </switch>
+        </if>
+
+    </div>
+    <if condition="check_auth('Admin/Adv/adv') eq 1">
+        <div class="adv-tool">
+            <a target="_blank" href="{:U('Admin/Adv/editPos?id=' . $pos['id'])}"><i title="设置广告位" class="icon-cog"></i> 设置 </a>
+            <a target="_blank" href="{:U('Admin/Adv/adv?pos_id=' . $pos['id'])}"><i title="管理广告" class="icon-sitemap"></i> 广告 </a>
+            <a target="_blank" href="{:U('Admin/Adv/editAdv?pos_id=' . $pos['id'])}"><i title="新增广告" class="icon-plus"></i> 添加 </a>
+        </div>
+        <div class="adv-size">
+            {$pos.title}  【{$pos.name}】: {$pos.width} * {$pos.height}
+        </div>
+    </if>
+
+</div>

@@ -1,0 +1,45 @@
+<div>
+    <if condition="!$top_list&&!$list">
+        <p class="text-muted" style="text-align: center; font-size: 3em;">
+            <br><br>
+            {:L('_EMPTY_NOW_')}
+            <br><br><br>
+        </p>
+    </if>
+    <style>
+        .weibo_icon {
+            border: 1px solid #f0f0f0;
+            border-right: none;
+        }
+    </style>
+    <link href="__APPLICATION__/Weibo/Static/css/weibo.css" type="text/css" rel="stylesheet"/>
+    <div id="top_list">
+        <volist name="top_list" id="top">
+            {:W('Weibo/WeiboDetail/detail',array('weibo_id'=>$top))}
+        </volist>
+    </div>
+    <div id="weibo_list">
+        <volist name="list" id="weibo">
+            {:W('Weibo/WeiboDetail/detail',array('weibo_id'=>$weibo))}
+        </volist>
+    </div>
+    <div id="index_weibo_page">
+        <div class="text-right">
+            {:getPagination($total_count,10)}
+        </div>
+    </div>
+    <script>
+        var SUPPORT_URL = "{:addons_url('Support://Support/doSupport')}";
+        var THIS_MODEL_NAME = 'Weibo';
+        $(function () {
+                    $('.pswp__ui--hidden').hide();
+                }
+        );
+    </script>
+    <script src="__APPLICATION__/Weibo/Static/js/weibo.js"></script>
+    <link rel="stylesheet" href="__ROOT__/Application/Weibo/Static/css/photoswipe.css">
+    <link rel="stylesheet" href="__ROOT__/Application/Weibo/Static/css/default-skin/default-skin.css">
+    <script src="__ROOT__/Application/Weibo/Static/js/photoswipe.min.js"></script>
+    <script src="__ROOT__/Application/Weibo/Static/js/photoswipe-ui-default.min.js"></script>
+    <script src="__ROOT__/Application/Weibo/Static/js/weibo.js"></script>
+</div>

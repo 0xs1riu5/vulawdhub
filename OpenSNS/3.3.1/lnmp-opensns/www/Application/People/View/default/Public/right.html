@@ -1,0 +1,75 @@
+<div class="find-right">
+    <div class="friend-fous">
+        <div class="friend-head">{$title0}</div>
+        <div class="friend-box">
+            <empty name="right0 ">
+                <div style="text-align: center;padding: 10px;"><span style="font-size: 20px;color:#666;">还没有数据~</span>
+                </div>
+                <else/>
+                <volist name="right0" id="ri">
+                    <div class="friend-pannel">
+                        <div class="smallstar">
+                            <a ucard="{$ri.uid}" href="{$ri.space_url}">
+                                <img src="{$ri.avatar128}" alt="" style="width: 60px;border-radius: 100%;">
+                            </a>
+                        </div>
+                        <div class="friend-wrap">
+                            <div class="unknown-name" style="margin-top: 15px;"><a ucard="{$ri.uid}"
+                                                                                   href="{$ri.space_url}">{$ri.nickname}</a>
+                            </div>
+                            <!--<div class="friend-name">王思聪</div>
+                            <div class="y">也关注</div>-->
+                        </div>
+                        <if condition="$ri['isfollow'] eq 1">
+                            <i class="icon jia icon-collapse-alt" data-role="dofollow" data-value="unfollow"
+                               data-follow-who="{$ri.uid}"></i>
+                            <else/>
+                            <if condition="is_login() && $ri['uid'] != get_uid()">
+                                <i class="icon icon-expand-alt jia" data-role="dofollow" data-value="follow"
+                                   data-follow-who="{$ri.uid}"></i>
+                            </if>
+                        </if>
+                    </div>
+                </volist>
+            </empty>
+            <!-- <div class="more">查看更多></div>-->
+        </div>
+    </div>
+    <div class="suiji">
+        <div class="friend-head">{$title3}</div>
+        <div class="friend-box">
+            <empty name="right3">
+                <div style="text-align: center;padding: 10px;"><span style="font-size: 20px;color:#666;">还没有数据~</span>
+                </div>
+                <else/>
+                <volist name="right3" id="ri">
+                    <div class="friend-pannel">
+                        <div class="smallstar">
+                            <a ucard="{$ri.uid}" href="{$ri.space_url}">
+                                <img src="{$ri.avatar128}" alt="" style="width: 60px;border-radius: 100%;">
+                            </a>
+                        </div>
+                        <div class="friend-wrap">
+                            <div class="unknown-name" style="margin-top: 15px;"><a ucard="{$ri.uid}"
+                                                                                   href="{$ri.space_url}">{$ri.nickname}</a>
+                            </div>
+                            <!--<div class="friend-name">王思聪</div>
+                            <div class="y">也关注</div>-->
+                        </div>
+                        <if condition="$ri['isfollow'] eq 1">
+                            <i class="icon jia icon-collapse-alt" data-role="dofollow" data-value="unfollow"
+                               data-follow-who="{$ri.uid}"></i>
+                            <else/>
+                            <if condition="is_login() && $ri['uid'] != get_uid()">
+                                <i class="icon icon-expand-alt jia" data-role="dofollow" data-value="follow"
+                                   data-follow-who="{$ri.uid}"></i>
+                            </if>
+                        </if>
+                    </div>
+                </volist>
+            </empty>
+
+            <!--<div class="more">查看更多></div>-->
+        </div>
+    </div>
+</div>

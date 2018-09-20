@@ -1,0 +1,110 @@
+<div id="sub_nav">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <a href="{:U($MODULE_INFO['entry'])}" class="navbar-brand logo"><i class="icon-{$brand.icon}"></i>
+
+                <empty name="menu_list.first.title" value="">{$brand.title}
+                    <else/>
+                    {$menu_list.first.title}
+                </empty>
+
+            </a>
+
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-7">
+                    <ul class="nav navbar-nav">
+                        <volist name="menu_list.left" id="menu">
+                            <if condition="$menu['children']">
+                                <!--二级菜单-->
+                                <li id="tab_{$menu.tab}" class="dropdown {$class}">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <neq name="menu.icon" value=""><i class="icon-{$menu.icon}"></i>
+                                        </neq>
+                                        {$menu.title} <i class="icon-caret-down"></i>
+                                    </a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <volist name="menu.children" id="child">
+                                                <li><a href="{$child.href}" class="{$child.class}">
+                                                    <neq name="child.icon" value=""><i
+                                                            class="glyphicon glyphicon-{$child.icon}"></i></neq>
+                                                    {$child.title}</a></li>
+                                            </volist>
+
+                                        </ul>
+                                </li>
+                                <else/>
+                                <!--一级菜单-->
+                                <li id="tab_{$menu.tab}" class="{$menu.li_class}"
+                                        ><a href="{$menu.href}" class="{$menu.a_class}">
+                                    <neq name="menu.icon" value=""><i class="glyphicon glyphicon-{$menu.icon}"></i>
+                                    </neq>
+                                    {$menu.title}</a></li>
+                            </if>
+
+                        </volist>
+                    </ul>
+                    <if condition="$menu_list['right'] neq null">
+                        <ul class="nav navbar-nav navbar-right">
+                            <volist name="menu_list.right" id="menu">
+                                <php>$class=($current==$menu['tab']?'active':'');</php>
+                                <switch name="menu.type">
+                                    <case value="button">
+                                        <a href="{$menu.href}" class="{$menu.a_class}"><i class="icon-{$menu.icon}"></i>{$menu.html}</a>
+                                    </case>
+                                    <case value="search">
+                                        <form style="margin: 5px 0" class="navbar-form navbar-right" action="{$menu.action}"
+                                              method="{$menu.from_method}" role="search">
+                                            <div class="search-input-group new-search-group">
+                                                <button type="submit" class="input-btn">
+                                                    <i class="icon-search"></i></button>
+                                                <input type="text" class="input new-search" placeholder="{$menu.input_title}"
+                                                       name="{$menu.input_name}" value="{$search_keywords}">
+                                            </div>
+                                            </span>
+                                        </form>
+                                    </case>
+                                    <default/>
+                                    <if condition="$menu['children']">
+                                        <!--二级菜单-->
+                                        <li id="tab_{$menu.tab}" class="dropdown {$menu.class}">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <neq name="menu.icon" value=""><i class="icon-{$menu.icon}"></i>
+                                                </neq>
+                                                {$menu.title} <i class="icon-caret-down"></i>
+                                            </a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <volist name="menu.children" id="child">
+                                                        <li><a href="{$child.href}" class="{$child.class}">
+                                                            <neq name="child.icon" value=""><i
+                                                                    class="glyphicon glyphicon-{$child.icon}"></i></neq>
+                                                            {$child.title}</a></li>
+                                                    </volist>
+
+                                                </ul>
+                                        </li>
+                                        <else/>
+                                        <!--一级菜单-->
+                                        <li id="tab_{$menu.tab}" class="{$menu.li_class}">
+                                            <a href="{$menu.href}" class="{$menu.a_class}">
+                                                <neq name="menu.icon" value=""><i
+                                                        class="glyphicon glyphicon-{$menu.icon}"></i>
+                                                </neq>
+                                                {$menu.title}</a></li>
+                                    </if>
+
+                                </switch>
+
+
+                            </volist>
+                        </ul>
+                    </if>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+    </nav>
+</div>
+
+<script>
+    $('#sub_nav #tab_{$current}').addClass('active');
+</script>

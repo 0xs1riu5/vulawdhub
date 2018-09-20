@@ -1,0 +1,393 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/attest.css" rel="stylesheet" type="text/css"/>
+</block>
+<block name="header">
+
+</block>
+<block name="body">
+    <div class="v-wrap id-wrap apply-wrap">
+        <div class="id-head">
+            <p>申请{$attest_type['title']}</p>
+        </div>
+        <div class="flow-path row">
+            <div class="col-xs-8 left-box">
+                <form id="attest-form" method="post">
+                    <input type="hidden" name="id" value="{$attest['id']}">
+                    <input type="hidden" name="change" value="{$change}">
+                    <input type="hidden" name="attest_type_id" value="{$attest_type['id']}"/>
+                    <table>
+                        <neq name="attest_type.fields.child_type" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap"><label>认证分类：</label></td>
+                                <td class="f-wrap">
+                                    <select id="child_type" name="child_type" class="form-control">
+                                        <volist name="attest_type.fields.child_type_option" id="child_option">
+                                            <option value="{$child_option}">{$child_option}</option>
+                                        </volist>
+                                    </select>
+                                </td>
+                                <notEmpty name="attest.child_type">
+                                    <script>
+                                        $('#child_type').val("{$attest['child_type']}");
+                                    </script>
+                                </notEmpty>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <neq name="attest_type.fields.company_name" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap">
+                                    <label>
+                                        <eq name="attest_type.fields.company_name" value="1"><span>*</span></eq>
+                                        <eq name="attest_type.name" value="company">企业<else/>组织机构</eq>名称：
+                                    </label>
+                                </td>
+                                <td class="f-wrap">
+                                    <input type="text" name="company_name" value="{$attest['company_name']}" class="form_check" check-length="2,100" placeholder="名称">
+                                </td>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <neq name="attest_type.fields.name" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap">
+                                    <label>
+                                        <eq name="attest_type.fields.name" value="1"><span>*</span></eq>
+                                        真实姓名：
+                                    </label>
+                                </td>
+                                <td class="f-wrap">
+                                    <input type="text" name="name" value="{$attest['name']}" class="form_check" check-type="Chinese" placeholder="姓名">
+                                </td>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <neq name="attest_type.fields.id_num" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap">
+                                    <label>
+                                        <eq name="attest_type.fields.id_num" value="1"><span>*</span></eq>
+                                        身份证号码：
+                                    </label>
+                                </td>
+                                <td class="f-wrap">
+                                    <input type="text" name="id_num" value="{$attest['id_num']}" class="form_check" check-type="IDCard" placeholder="身份证号码">
+                                </td>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <neq name="attest_type.fields.phone" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap">
+                                    <label>
+                                        <eq name="attest_type.fields.phone" value="1"><span>*</span></eq>
+                                        联系方式：
+                                    </label>
+                                </td>
+                                <td class="f-wrap">
+                                    <input type="text" name="phone" value="{$attest['phone']}" class="form_check" check-type="PhoneOrTelephone" placeholder="手机或带区号的固话">
+                                </td>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <neq name="attest_type.fields.image_type" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap"><label>证件类型：</label></td>
+                                <td class="f-wrap">
+                                    <select id="image_type" name="image_type" class="form-control">
+                                        <volist name="attest_type.fields.image_type_option" id="image_option">
+                                            <option value="{$image_option}">{$image_option}</option>
+                                        </volist>
+                                    </select>
+                                </td>
+                                <notEmpty name="attest.image_type">
+                                    <script>
+                                        $('#image_type').val("{$attest['image_type']}");
+                                    </script>
+                                </notEmpty>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <neq name="attest_type.fields.prove_image" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap">
+                                    <label>
+                                        <eq name="attest_type.fields.prove_image" value="1"><span>*</span></eq>
+                                        <eq name="attest_type.name" value="company">企业<else/>组织机构</eq>证件：
+                                    </label>
+                                </td>
+                                <td class="f-wrap" style="width: auto;">
+                                    <span id="web_uploader_wrapper_gallary_prove_image">上传</span>
+
+                                    <input id="web_uploader_input_gallary_prove_image" type="hidden" value=""  event-node="uploadinput">
+
+                                    <div id="web_uploader_picture_list_gallary_prove_image" class="web_uploader_picture_list">
+                                        <volist name="attest.prove_image" id="p">
+                                            <img class="gallary_thumb" onclick="remove_file(this,'prove_image')" src="{$p|get_cover='path'}">
+                                            <input type="hidden" name="prove_image[]" value="{$p}"/>
+                                        </volist>
+                                    </div>
+                                    <span class="help-block">*点击小图删除，删除后不能再上传</span>
+                                </td>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <neq name="attest_type.fields.image" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap">
+                                    <label>
+                                        <eq name="attest_type.fields.image" value="1"><span>*</span></eq>
+                                        证件正反面照：
+                                    </label>
+                                </td>
+                                <td class="f-wrap" style="width: auto;">
+                                    <span id="web_uploader_wrapper_gallary_image">上传</span>
+
+                                    <input id="web_uploader_input_gallary_image" type="hidden" value=""  event-node="uploadinput">
+
+                                    <div id="web_uploader_picture_list_gallary_image" class="web_uploader_picture_list">
+                                        <volist name="attest.image" id="i">
+                                            <img class="gallary_thumb" onclick="remove_file(this,'image')" src="{$i|get_cover='path'}">
+                                            <input type="hidden" name="image[]" value="{$i}"/>
+                                        </volist>
+                                    </div>
+                                    <span class="help-block">*点击小图删除，删除后不能再上传</span>
+                                </td>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <neq name="attest_type.fields.other_image" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap">
+                                    <label>
+                                        <eq name="attest_type.fields.other_image" value="1"><span>*</span></eq>
+                                        其他证明材料：
+                                    </label>
+                                </td>
+                                <td class="f-wrap" style="width: auto;">
+                                    <span id="web_uploader_wrapper_gallary_other_image">上传</span>
+
+                                    <input id="web_uploader_input_gallary_other_image" type="hidden" value=""  event-node="uploadinput">
+
+                                    <div id="web_uploader_picture_list_gallary_other_image" class="web_uploader_picture_list">
+                                        <volist name="attest.other_image" id="o">
+                                            <img class="gallary_thumb" onclick="remove_file(this,'other_image')" src="{$o|get_cover='path'}">
+                                            <input type="hidden" name="other_image[]" value="{$o}"/>
+                                        </volist>
+                                    </div>
+                                    <span class="help-block">{$attest_type.fields.other_image_tip}</span>
+                                </td>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+
+                        <neq name="attest_type.fields.info" value="0">
+                            <tr class="apply-form">
+                                <td class="title-wrap">
+                                    <label>
+                                        <eq name="attest_type.fields.info" value="1"><span>*</span></eq>
+                                        认证补充：
+                                    </label>
+                                </td>
+                                <td class="f-wrap">
+                                    <textarea type="text" name="info" <eq name="attest_type.fields.info" value="1">class="form_check"</eq>>{$attest['info']}</textarea>
+                                </td>
+                                <td class="tip-txt"></td>
+                            </tr>
+                        </neq>
+                        <tr class="text-center">
+                            <td><a href="javascript:void(0);" data-role="submit" class="app-btn">提交认证</a></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="col-xs-4 right-box">
+                <div class="r-head">认证说明：</div>
+                {$attest_type['description']}
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <link href="__CORE_CSS__/form_check.css" rel="stylesheet" type="text/css">
+    <script src='__CORE_JS__/form_check.js'></script>
+
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor/third-party/webuploader/webuploader.js"></script>
+    <link href="__STATIC__/ueditor/third-party/webuploader/webuploader.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+    <style>
+        .webuploader-pick{
+            padding: 5px 15px;
+        }
+        .gallary_thumb {
+            border: 1px solid #ddd;
+            padding: 2px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+    <script>
+        $(function () {
+            $('[data-role="submit"]').click(function () {
+                var $tag=$(this);
+                if($tag.attr('disabled')=='disabled'){
+                    return false;
+                }
+                $tag.attr('disabled','disabled');
+                var param=$('#attest-form').serialize();
+                var url=U('Ucenter/Attest/apply');
+                $.post(url,param,function (msg) {
+                    $tag.removeAttr('disabled');
+                    handleAjax(msg);
+                })
+            })
+        })
+
+
+        var gallary_num_prove_image="<php>echo count($info['prove_image'])</php>";
+        var gallary_num_image="<php>echo count($info['image'])</php>";
+        var gallary_num_other_image = "<php>echo count($info['other_image'])</php>";
+        $(function () {
+            //prove_image start
+            var id_prove_image = "#web_uploader_wrapper_gallary_prove_image";
+            if($(id_prove_image).length>0){
+                var uploader_gallary_prove_image = WebUploader.create({
+                    // swf文件路径
+                    swf: 'Uploader.swf',
+                    // 文件接收服务端。
+                    server: "{:U('Core/File/uploadPicture',array('session_id'=>session_id()))}",
+                    fileNumLimit: 9,
+                    // 选择文件的按钮。可选。
+                    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                    pick: {'id': id_prove_image, 'multi': true}
+                });
+                uploader_gallary_prove_image.on('beforeFileQueued', function (file) {
+                    if (gallary_num_prove_image >= 8) {
+                        toast.error('图片不能超过9张');
+                        return false;
+                    }
+                });
+                uploader_gallary_prove_image.on('fileQueued', function (file) {
+                    gallary_num_prove_image = parseInt(gallary_num_prove_image) + 1;
+
+                    uploader_gallary_prove_image.upload();
+                    $("#web_uploader_file_name_gallary_prove_image").text('正在上传...');
+                });
+
+                /*上传成功*/
+                uploader_gallary_prove_image.on('uploadSuccess', function (file, ret) {
+                    if (ret.status == 0) {
+                        $("#web_uploader_file_name_gallary_prove_image").text(ret.info);
+                    } else {
+                        $('#web_uploader_input_gallary_prove_image').focus();
+                        $('#web_uploader_input_gallary_prove_image').val(ret.data.file.id);
+                        $('#web_uploader_input_gallary_prove_image').blur();
+                        $("#web_uploader_picture_list_gallary_prove_image").append('<img class="gallary_thumb" onclick="remove_file(this,'+"'prove_image'"+')" src="' + ret.data.file.path + '"/><input type="hidden" name="prove_image[]" value="' + ret.data.file.id + '"/>');
+                    }
+                });
+                //prove_image end
+            }
+
+
+            //image start
+            var id_image = "#web_uploader_wrapper_gallary_image";
+            if($(id_image).length>0) {
+                var uploader_gallary_image = WebUploader.create({
+                    // swf文件路径
+                    swf: 'Uploader.swf',
+                    // 文件接收服务端。
+                    server: "{:U('Core/File/uploadPicture',array('session_id'=>session_id()))}",
+                    fileNumLimit: 9,
+                    // 选择文件的按钮。可选。
+                    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                    pick: {'id': id_image, 'multi': true}
+                });
+                uploader_gallary_image.on('beforeFileQueued', function (file) {
+                    if (gallary_num_image >= 9) {
+                        toast.error('图片不能超过9张');
+                        return false;
+                    }
+                });
+                uploader_gallary_image.on('fileQueued', function (file) {
+                    gallary_num_image = parseInt(gallary_num_image) + 1;
+
+                    uploader_gallary_image.upload();
+                    $("#web_uploader_file_name_gallary_image").text('正在上传...');
+                });
+
+                /*上传成功*/
+                uploader_gallary_image.on('uploadSuccess', function (file, ret) {
+                    if (ret.status == 0) {
+                        $("#web_uploader_file_name_gallary_image").text(ret.info);
+                    } else {
+                        $('#web_uploader_input_gallary_image').focus();
+                        $('#web_uploader_input_gallary_image').val(ret.data.file.id);
+                        $('#web_uploader_input_gallary_image').blur();
+                        $("#web_uploader_picture_list_gallary_image").append('<img class="gallary_thumb" onclick="remove_file(this,' + "'image'" + ')" src="' + ret.data.file.path + '"/><input type="hidden" name="image[]" value="' + ret.data.file.id + '"/>');
+                    }
+                });
+            }
+            //image end
+
+
+            // other_image  start
+            var id_other_image = "#web_uploader_wrapper_gallary_other_image";
+            if($(id_other_image).length>0) {
+                var uploader_gallary_other_image = WebUploader.create({
+                    // swf文件路径
+                    swf: 'Uploader.swf',
+                    // 文件接收服务端。
+                    server: "{:U('Core/File/uploadPicture',array('session_id'=>session_id()))}",
+                    fileNumLimit: 9,
+                    // 选择文件的按钮。可选。
+                    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                    pick: {'id': id_other_image, 'multi': true}
+                });
+                uploader_gallary_other_image.on('beforeFileQueued', function (file) {
+                    if (gallary_num_other_image >= 9) {
+                        toast.error('图片不能超过9张');
+                        return false;
+                    }
+                });
+                uploader_gallary_other_image.on('fileQueued', function (file) {
+                    gallary_num_other_image = parseInt(gallary_num_other_image) + 1;
+
+                    uploader_gallary_other_image.upload();
+                    $("#web_uploader_file_name_gallary_other_image").text('正在上传...');
+                });
+
+                /*上传成功*/
+                uploader_gallary_other_image.on('uploadSuccess', function (file, ret) {
+                    if (ret.status == 0) {
+                        $("#web_uploader_file_name_gallary_other_image").text(ret.info);
+                    } else {
+                        $('#web_uploader_input_gallary_other_image').focus();
+                        $('#web_uploader_input_gallary_other_image').val(ret.data.file.id);
+                        $('#web_uploader_input_gallary_other_image').blur();
+                        $("#web_uploader_picture_list_gallary_other_image").append('<img class="gallary_thumb" onclick="remove_file(this,' + "'other_image'" + ')" src="' + ret.data.file.path + '"/><input type="hidden" name="other_image[]" value="' + ret.data.file.id + '"/>');
+                    }
+                });
+            }
+            //other_image end
+        })
+        function remove_file(obj,str) {
+            $(obj).next().remove();
+            $(obj).remove();
+            switch (str){
+                case 'prove_image':
+                    gallary_num_prove_image = gallary_num_prove_image - 1;
+                    break;
+                case 'image':
+                    gallary_num_image = gallary_num_image - 1;
+                    break;
+                case 'other_image':
+                    gallary_num_other_image = gallary_num_other_image - 1;
+                    break;
+                default:;
+            }
+        }
+    </script>
+</block>

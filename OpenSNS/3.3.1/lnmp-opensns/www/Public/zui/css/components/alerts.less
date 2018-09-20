@@ -1,0 +1,128 @@
+//
+// Alerts
+// --------------------------------------------------
+
+
+// Base styles
+// -------------------------
+
+.alert
+{
+  padding: @alert-padding;
+  margin-bottom: @line-height-computed;
+  border: 1px solid transparent;
+  border-radius: @alert-border-radius;
+  .alert-variant(@alert-default-bg; @alert-default-border; @alert-default-text);
+  .transition;
+
+  // Headings for larger alerts
+  h4
+  {
+    margin-top: 0;
+    // Specified for the h4 to prevent conflicts of changing @headings-color
+    color: inherit;
+  }
+  // Provide class for links that match alerts
+  .alert-link
+  {
+    font-weight: @alert-link-font-weight;
+  }
+
+  // Improve alignment and spacing of inner content
+  > p,
+  > ul
+  {
+    margin-bottom: 0;
+  }
+  > p + p
+  {
+    margin-top: 5px;
+  }
+
+  >[class*="icon-"]
+  {
+    float: left;
+    font-size: 42px;
+    opacity: 0.6;
+    margin-top: -5px;
+    .transition(opacity,@animation-speed-fast,@animation-type);
+  }
+
+  >[class*="icon-"] + .content
+  {
+    margin-left: 50px;
+    min-height: 30px;
+  }
+
+  &.with-icon
+  {
+    width: 100%;
+    display: table;
+
+    >[class*="icon-"], >[class*="icon-"] + .content
+    {
+      float: none;
+      margin: 0;
+      display: table-cell;
+      vertical-align: middle;
+      min-height: 0;
+    }
+
+    >[class*="icon-"]
+    {
+      width: 40px;
+    }
+
+    >[class*="icon-"] + .content
+    {
+      padding-left: 1em;
+    }
+  }
+}
+
+// Block alert
+.alert-block
+{
+    margin: 0;
+    border-radius: 0;
+}
+
+// Dismissable alerts
+//
+// Expand the right padding and account for the close button's positioning.
+
+.alert-dismissable
+{
+ padding-right: (@alert-padding + 20);
+
+  // Adjust close link position
+  .close
+  {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+  }
+}
+
+
+// Alternate styles
+//
+// Generate contextual modifier classes for colorizing the alert.
+
+.alert-success
+{
+  .alert-variant(@alert-success-bg; @alert-success-border; @alert-success-text);
+}
+.alert-info
+{
+  .alert-variant(@alert-info-bg; @alert-info-border; @alert-info-text);
+}
+.alert-warning
+{
+  .alert-variant(@alert-warning-bg; @alert-warning-border; @alert-warning-text);
+}
+.alert-danger
+{
+  .alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text);
+}

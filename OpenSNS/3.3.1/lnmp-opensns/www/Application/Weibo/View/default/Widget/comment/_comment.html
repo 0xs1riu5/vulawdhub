@@ -1,0 +1,33 @@
+<!--comment_detail start-->
+<div id="comment_{$comment.id}" data-role="comment_content_hover" class="row weibo_comment" data-weibo-id="{$comment.weibo_id}"
+     data-comment-id="{$comment.id}">
+    <div class="clearfix">
+        <div class="col-xs-1" style="width: 8%">
+            <div class="" style="overflow: hidden;  padding-top: 5px;">
+                <a href="{$comment.user.space_url}" ucard="{$comment.user.uid}">
+                    <img src="{$comment.user.avatar64}" class="avatar-img"/>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-11  comment-content" style="width: 92%;padding-left: 5px;padding-right: 0;margin-top: 10px;">
+            <a href="{$comment.user.space_url}" ucard="{$comment.user.uid}">[nickname:{$comment.user.uid}]</a>：
+            <span class="weibo-comment text-muted">{$comment.content}</span>
+            <div style="margin-left: 20px;color: #C5C5C5;display: inline-block;">
+                <a id="comment_support_show_{$comment.id}" title="喜欢" data-role="support_btn" table="{$table}" row="{$comment.id}" uid="{$comment.uid}" jump="weibo/index/weibodetail" weibo_id="{$weiboId}" <if condition="$comment['count'] gt 0">class="text-muted show-always"<else/>class="text-muted" style="display:none;"</if>>
+                    <if condition="$comment.supported gt 0">
+                        <i id="support_{$appname}_{$table}_{$comment.id}_icon" class="iconfont icon-dianzan-already"></i>
+                        <else/>
+                        <i id="support_{$appname}_{$table}_{$comment.id}_icon" class="iconfont icon-dianzan"></i>
+                    </if>
+                    <span id="support_{$appname}_{$table}_{$comment.id}_pos"><span id="support_{$appname}_{$table}_{$comment.id}" class="text-muted">{$comment.count}</span> </span>
+                </a>
+                <span id="comment_time_show_{$comment.id}" style="display: none;">●&nbsp;[time:{$comment.create_time}]</span>
+            </div>
+            <div id="comment_action_show_{$comment.id}" class="pull-right operate-buttons text-muted" style="display: none;">
+                <a href="javascript:" data-role="weibo_reply" data-user-nickname="{$comment.user.real_nickname}">{:L('_REPLY_')}</a>&nbsp;|
+                <a title="喜欢" data-role="support_btn" table="{$table}" row="{$comment.id}" uid="{$comment.uid}" jump="weibo/index/weibodetail" weibo_id="{$weiboId}">赞</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--comment_detail end-->

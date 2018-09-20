@@ -1,0 +1,83 @@
+<extend name="Base/common"/>
+
+
+<block name="body">
+    <link href="__CSS__/center.css" type="text/css" rel="stylesheet">
+
+    <div class="alert with-icon alert-info">
+        <i class="icon-info-sign"></i>
+
+        <div class="content">
+            {:L('_ACCOUNT_DEAR_NOT_ACTIVE_1_')}{$nickname}
+            {:L('_COLON_')}
+            {:L('_ACCOUNT_DEAR_NOT_ACTIVE_2_')}“{$email}”
+            {:L('_ACCOUNT_DEAR_NOT_ACTIVE_3_')}
+            {:L('_PERIOD_')}<a href="javascript:" data-role="reSend">
+            {:L('_ACCOUNT_DEAR_NOT_ACTIVE_4_')}</a>
+            {:L('_ACCOUNT_DEAR_NOT_ACTIVE_5_')}<a
+                  data-toggle="modal" data-target="#changeEmail">
+            {:L('_ACCOUNT_DEAR_NOT_ACTIVE_6_')}</a>
+        </div>
+    </div>
+
+    <!-- 模态框HTML -->
+    <div class="modal fade" id="changeEmail">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{:L('_CLOSE_')}</span></button>
+                    <h4 class="modal-title">
+                        {:L('_ACCOUNT_DEAR_NOT_ACTIVE_6_')}</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-horizontal  center_info ">
+                        <div class="form-group">
+                            <label for="account" class="col-xs-2 control-label">{:L('_PLACEHOLDER_EMAIL_INPUT_')}</label>
+
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control pull-left" id="account" name="account"  placeholder="">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-role="changeEmail">{:L('_SAVE_')}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</block>
+
+<block name="script">
+    <script>
+        $(function () {
+            $('[data-role="reSend"]').click(function () {
+                toast.showLoading();
+                $.post("{:U('ucenter/member/reSend')}", {}, function (res) {
+                        if(res.status){
+                            toast.success(res.info);
+                        }else{
+                            toast.error(res.info);
+                        }
+                   toast.hideLoading();
+                })
+            })
+
+            $('[data-role="changeEmail"]').click(function () {
+                toast.showLoading();
+                var email = $(this).parents('#changeEmail').find('#account').val();
+                $.post("{:U('ucenter/member/changeEmail')}", {email:email}, function (res) {
+                   handleAjax(res)
+                    toast.hideLoading();
+                })
+            })
+
+        })
+    </script>
+</block>

@@ -1,0 +1,41 @@
+<!-- Modal -->
+<div id="frm-post-popup" class="white-popup" style="max-width: 745px">
+    <div class="weibo_post_box">
+    <h2>{:L('_REPOST_')}</h2>
+
+    <div class="aline" style="margin-bottom: 10px"></div>
+    <div class="row">
+
+
+        <div class="col-xs-12">
+
+            <div>  <a ucard="{$sourceWeibo.user.uid}" href="{$sourceWeibo.user.space_url}">{$sourceWeibo.user.nickname}</a></div>
+
+            <div>{$sourceWeibo.content|parse_weibo_content}</div>
+
+
+            <br/>
+            <p><textarea class="form-control" id="repost_content" style="height: 6em;"
+                         placeholder="{:L('_PLACEHOLDER_SOMETHING_TO_WRITE_')}">{$weiboContent}</textarea></p>
+            <a href="javascript:" onclick="insertFace($(this))"><img src="__CORE_IMAGE__/bq.png"/></a>
+            <p class="pull-right"><input type="submit" value="{:L('_PUBLISH_')} Ctrl+Enter" data-role="do_send_repost"  data-weibo-id="{$weiboId}"  data-source-id = "{$sourceId}"
+                                         class="btn btn-primary" data-url="{:U('weibo/Index/doSendRepost')}"/></p>
+          <p><input id="becomment" type="checkbox" value="1" name="becomment" >{:L('_PUBLISH_AS_COMMON_')}</p>
+        </div>
+    </div>
+    <div id="emot_content" class="emot_content"></div>
+    <button title="Close (Esc)" type="button" class="mfp-close" style="color: #333;">×</button>
+    </div>
+</div>
+<!-- /.modal -->
+
+        <script>
+        weibo_bind();
+            $(function () {
+                $('#repost_content').keypress(function (e) {
+                if (e.ctrlKey && e.which == 13 || e.which == 10) {
+                    $("[data-role='do_send_repost']").click();
+                }
+            });
+            });
+        </script>

@@ -1,0 +1,30 @@
+<volist name="recommend" id="vl">
+    <div class="col-md-12" data-role="user_fadeout_{$vl.uid}">
+        <div class="col-md-4 pad0">
+
+            <a href="{$vl.space_url}">
+                <img ucard="{$vl.uid}" class="avatar-img" style="width: 60px;" src="{$vl.avatar64}">
+            </a>
+
+        </div>
+        <div class="col-md-8 pad0">
+            <p style="margin-bottom: 0px;font-size: 16px;">
+                <a target="_blank" href="{$vl.space_url}">
+                    <span ucard="{$vl.uid}">{$vl.nickname}</span>
+                </a>
+            </p>
+            <button type="button" class="btn btn-default pad6" data-role="do_follow"
+                    data-uid="{$vl.uid}">
+                <span class="glyphicon glyphicon-plus" style="font-size: 10px"></span>
+                <span>  关注</span>
+
+            </button>
+        </div>
+        <div class="col-md-12 pad0" style="padding-top: 10px">
+            <p style="background-color: #f2f2f5;padding: 10px">
+                {$vl.reason}
+            </p>
+
+        </div>
+    </div>
+</volist>

@@ -1,0 +1,109 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>{:isset($info['id'])?L('_EDIT_WITH_SINGLE_'):L('_NEW_WITH_SINGLE_')}{:L("_BACKGROUND_MENU_")}</h2>
+    </div>
+    <form action="{:U()}" method="post" class="form-horizontal">
+        <div class="with-padding">
+            <div class="form-item">
+                <label class="item-label">{:L("_TITLE_")}<span class="check-tips">{:L("_USED_IN_THE_CONFIGURATION_HEADER_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large form-input-width form-control" name="title" value="{$info.title|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_THE_MODULE_")}<span class="check-tips">{:L("_MODULE_MODULE_MENU_MUST_BE_SELECTED_OTHERWISE_IT_CAN_NOT_BE_EXPORTED_")}</span></label>
+                <div class="controls">
+                    <empty name="modelName">
+                        <select name="module" class="form-select-size form-control">
+                            <option value="">——{:L("_SYSTEM_CORE_MENU_")}—</option>
+                            <volist name="Modules" id="module">
+                                <option value="{$module.name}">{$module.alias}-{$module.name}</option>
+                            </volist>
+                        </select>
+                        <else/>
+                        <select name="module" class="form-select-size form-control">
+                            <option value="{$modelName.module}">{$modelName.title}-{$modelName.module}</option>
+                            <volist name="Modules" id="module">
+                                <option value="{$module.name}">{$module.alias}-{$module.name}</option>
+                            </volist>
+                        </select>
+                    </empty>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_SMALL_ICON_")}<span class="check-tips">{:L("_USED_TO_DISPLAY_THE_LEFT_SIDE_OF_THE_MENU_NOT_TO_SHOW_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-small form-input-width form-control" name="icon" value="{$info.icon|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_SORT_")}<span class="check-tips">{:L("_USED_IN_THE_ORDER_OF_GROUP_DISPLAY_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-small form-input-width form-control" name="sort" value="{$info.sort|default=0}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_LINK_")}<span class="check-tips">（{:L("_U_FUNCTION_ANALYSIS_OF_THE_URL_OR_THE_CHAIN_")}）</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large form-input-width form-control" name="url" value="{$info.url|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_SUPERIOR_MENU_")}<span class="check-tips">{:L("_THE_HIGHER_LEVEL_MENU_")}</span></label>
+                <div class="controls">
+                    <select name="pid" class="form-select-size form-control">
+                        <volist name="Menus" id="menu">
+                            <option value="{$menu.id}">{$menu.title_show}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_GROUPING_")}<span class="check-tips">{:L("_FOR_THE_LEFT_GROUP_TWO_MENU_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text form-input-width form-control input-large" name="group" value="{$info.group|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_WHETHER_TO_HIDE_")}<span class="check-tips"></span></label>
+                <div class="controls">
+                    <label class="radio-inline"><input type="radio" name="hide" value="1">{:L("_YES_")}</label>
+                    <label class="radio-inline"><input type="radio" name="hide" value="0">{:L("_NOT_")}</label>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_ONLY_DEVELOPER_MODE_VISIBLE_")}<span class="check-tips"></span></label>
+                <div class="controls">
+                    <label class="radio-inline"><input type="radio" name="is_dev" value="1">{:L("_YES_")}</label>
+                    <label class="radio-inline"><input type="radio" name="is_dev" value="0">{:L("_NOT_")}</label>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_EXPLAIN_")}<span class="check-tips">{:L("_MENU_DETAILS_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large form-control form-input-width" name="tip" value="{$info.tip|default=''}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-item with-padding">
+            <input type="hidden" name="id" value="{$info.id|default=''}">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        Think.setValue("pid", {$info.pid|default=0});
+
+        Think.setValue("hide", {$info.hide|default=0});
+        Think.setValue("is_dev", {$info.is_dev|default=0});
+        //导航高亮
+        highlight_subnav('{:U('index')}');
+        Think.setValue("module", '{$info.module|default=''}');
+    </script>
+</block>

@@ -1,0 +1,365 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <script src="__ZUI__/js/zui.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/js/ext/magnific/magnific-popup.css"/>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ext/webuploader/js/webuploader.js"></script>
+    <link href="__PUBLIC__/js/ext/webuploader/css/webuploader.css" type="text/css" rel="stylesheet">
+    <!-- 标题 -->
+    <div class="main-title">
+        <h2>
+            {$_meta_title}
+        </h2>
+    </div>
+    <!-- 数据表格 -->
+    <div class="with-padding">
+        <div class="tab-wrap" style="margin-bottom: 5px">
+            <ul class="nav nav-tabs group_nav">
+            </ul>
+        </div>
+
+        <form action="{:U('editadv?pos_id='.$pos['id'])}" method="post" class="form-horizontal">
+            <label class="item-label">所属广告位： </label>
+
+            <div class="controls ">
+                <input type="hidden" name="pos_id" value="{$pos.id}" class="text input-large form-control"
+                       style="width: 400px" placeholder="无需填写" readonly/>
+
+                <p class="lead">{$pos.title}——{$pos.name}——{$pos.path}</p></div>
+
+            <p>
+                <label class="item-label">广告尺寸： </label>  <span class="text-danger" style="font-size: 32px">{$pos.width}</span> X <span class="text-danger" style="font-size: 32px">{$pos.height}</span>
+                请使用最合适宽度的图片获得最佳广告显示效果
+            </p>
+            <input name="type" type="hidden" value="2">
+            <style>
+                .web_uploader_picture_list {
+                    background: #eee;
+                    content: "无图";
+                    margin-top: 10px;
+                    border: 1px solid #eee;
+                    width: 150px;
+                    height: 100px;
+                    overflow: hidden;
+                }
+
+                .web_uploader_picture_list img {
+                    width: 150px;
+                    height: 100px;
+                }
+
+                #data-table {
+                    list-style: none;
+                    padding-left: 0;
+                }
+
+                #data-table li {
+                    padding-bottom: 10px;
+                    border-bottom: 1px dashed #eee;
+                    padding-top: 10px;
+                    background: white;
+                }
+
+                #data-table .dragging {
+                    background-color: #fff4e5;
+                    opacity: 0.35;
+                }
+
+                .data-header {
+                    padding-bottom: 10px;
+                    border-bottom: 1px dashed #eee;
+                }
+            </style>
+            <label class="item-label">图片列表： </label>
+
+            <div class="row data-header">
+                <div class="col-xs-2">图片</div>
+                <div class="col-xs-1">广告标题</div>
+                <div class="col-xs-2">Url链接</div>
+                <div class="col-xs-1">开始生效时间</div>
+                <div class="col-xs-1">失效时间</div>
+                <div class="col-xs-1">打开方式</div>
+                <div class="col-xs-1">排序</div>
+                <div class="col-xs-3">操作</div>
+            </div>
+            <ul id="data-table">
+                <volist name="list" id="vo">
+                    <li class="line row">
+                        <div class="col-xs-2">
+                            <span id="web_uploader_wrapper_{$i}">选择图片</span>
+                            <input id="web_uploader_input_{$i}" name="pic[]" type="hidden" value="{$vo.pic}"
+                                   event-node="uploadinput">
+
+                            <div id="web_uploader_picture_list_{$i}" class="web_uploader_picture_list">
+                                <img src="{$vo.pic|pic}">
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <input type="text" name="title[]" value="{$vo.title}"
+                                   class="text input-large form-control" style="width: 100%"/>
+                        </div>
+                        <div class="col-xs-2">
+                            <input type="text" name="url[]" value="{$vo.url}"
+                                   class="text input-large form-control" style="width:  100%"/>
+                        </div>
+                        <div class="col-xs-1">
+                            <input type="hidden" name="start_time[]" value="{$vo.start_time}"/>
+
+                            <input type="text" data-field-name="start_time"
+                                   class="text input-large form-datetime time form-control"
+                                   style="width: 130px" value="{$vo.start_time|date='Y-m-d H:i',###}"
+                                   placeholder="请选择时间"/>
+
+                        </div>
+                        <div class="col-xs-1">
+                            <input type="hidden" name="end_time[]" value="{$vo.end_time}"/>
+                            <input type="text" data-field-name="end_time"
+                                   class="text input-large form-datetime time form-control"
+                                   style="width: 130px" value="{$vo.end_time|date='Y-m-d H:i',###}"
+                                   placeholder="请选择时间"/>
+                        </div>
+                        <div class="col-xs-1">
+                            <select id="target_{$vo.id}" name="target[]" class="form-control" style="width: 100%">
+                                <option value="_blank" selected>新窗口:_blank</option>
+                                <option value="_self">当前层:_self</option>
+                                <option value="_parent">父框架:_parent</option>
+                                <option value="_top">整个框架:_top</option>
+                            </select>
+                            <script>
+                                $('#target_{$vo.id}').val("{$vo.target}")
+                            </script>
+                        </div>
+
+                        <div class="col-xs-1">
+
+                            <input type="text" name="sort[]" value="{$vo.sort}"
+                                   class=" text input-large form-control" style="width: 80px"/>
+                        </div>
+                        <div class="col-xs-3">
+                            <a class="btn btn-success btn-xs" onclick="builder.add(this)"><i
+                                    class="icon-plus"></i> 添加</a>
+                            <a class="btn btn-danger btn-xs" onclick="builder.remove(this)"><i
+                                    class="icon-trash"></i> 删除</a>
+                            <a href="javascript:" class="btn btn-warning sort-handle btn-xs"><i class="icon-move"></i>
+                                移动
+                            </a>
+                        </div>
+                    </li>
+                </volist>
+            </ul>
+            <br/>
+
+            <div class="form-item">
+                <button class="btn btn-success submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal" style="width: 100px">确定</button>
+                &nbsp;
+                <a class="btn btn-default" href="{:U('adv?pos_id='.$pos['id'])}">返回广告管理</a>
+                &nbsp; <a class="btn btn-danger" onclick="builder.init()">清空并重置
+            </a></div>
+        </form>
+    </div>
+
+    <script id="line-tpl" style="display: none" type="text/html">
+        <li class="line row">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-1">
+                <input type="text" name="title[]" value=""
+                       class="text input-large form-control" style="width: 100%"/>
+            </div>
+            <div class="col-xs-2">
+                <input type="text" name="url[]" value=""
+                       class="text input-large form-control" style="width:  100%"/>
+            </div>
+            <div class="col-xs-1">
+                <php>$start=time();</php>
+                <input type="hidden" name="start_time[]" value="{$start}"/>
+
+                <input type="text" data-field-name="start_time"
+                       class="text input-large form-datetime time form-control"
+                       style="width: 130px" value="{$start|date='Y-m-d H:i',###}"
+                       placeholder="请选择时间"/>
+
+            </div>
+            <div class="col-xs-1">
+                <php>$end=time()+7*60*60*24;</php>
+                <input type="hidden" name="end_time[]" value="{$end}"/>
+                <input type="text" data-field-name="end_time"
+                       class="text input-large form-datetime time form-control"
+                       style="width: 130px" value="{$end|date='Y-m-d H:i',###}"
+                       placeholder="请选择时间"/>
+            </div>
+            <div class="col-xs-1">
+                <select name="target[]" class="form-control" style="width: 100%">
+                    <option value="_blank" selected>新窗口:_blank</option>
+                    <option value="_self">当前层:_self</option>
+                    <option value="_parent">父框架:_parent</option>
+                    <option value="_top">整个框架:_top</option>
+                </select>
+            </div>
+
+            <div class="col-xs-1">
+
+                <input type="text" name="sort[]" value="{$data.sort}"
+                       class=" text input-large form-control" style="width: 80px"/>
+            </div>
+            <div class="col-xs-3">
+                <a class="btn btn-success btn-xs" onclick="builder.add(this)"><i
+                        class="icon-plus"></i> 添加</a>
+                <a class="btn btn-danger btn-xs" onclick="builder.remove(this)"><i
+                        class="icon-trash"></i> 删除</a>
+                <a href="javascript:" class="btn btn-warning sort-handle btn-xs"><i class="icon-move"></i>
+                    移动
+                </a>
+            </div>
+        </li>
+    </script>
+
+
+    <!-- 分页 -->
+    <link href="__BTS__/plugins/datetimepicker/datetimepicker.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__BTS__/plugins/datetimepicker/datetimepicker.min.js"></script>
+
+    <script>
+        var builder = {
+            'uploaders': [],
+            'index': 1,
+            'sortable': function () {
+                $('#data-table').sortable({
+                    trigger: '.sort-handle', selector: 'li', dragCssClass: '', finish: function () {
+                        // builder.sortable();
+                        builder.refresh_order();
+
+                    }
+                });
+            },
+            'refresh_order': function () {
+                $('#data-table li').each(function (index, element) {
+                    $(this).attr('data-order', index);
+                    $(this).find('input[name*=sort]').val($(this).attr('data-order'));
+                })
+            },
+            'init': function () {
+                var $html = $($('#line-tpl').html());
+                $('#data-table').html($html);
+                builder.createWebUpload($html, $html);
+                initTimePicker();
+
+                builder.sortable();
+                builder.refresh_order();
+            },
+            'add': function (obj) {
+                var $this = $(obj);
+                var $html = $($('#line-tpl').html());
+                $html.insertAfter($this.parent().parent());
+                builder.createWebUpload($html, $this.parent().parent());
+                initTimePicker();
+
+                builder.sortable();
+                builder.refresh_order();
+                bind_time_change();
+
+            },
+            'remove': function (obj) {
+                $(obj).parent().parent().remove();
+                builder.sortable();
+                builder.refresh_order();
+
+            },
+            'createWebUpload': function ($html, $parent_parent) {
+                var id = builder.index++;
+                $html.find('div:eq(0)').html(
+                        ' <span id="web_uploader_wrapper_' + id + '">选择图片</span>\
+                <input id="web_uploader_input_' + id + '" name="pic[]" type="hidden" value=""\
+                event-node="uploadinput">\
+                <div id="web_uploader_picture_list_' + id + '" class="web_uploader_picture_list">\
+                </div>'
+                );
+                $html.insertAfter($parent_parent);
+                builder.createUploader(id);
+            },
+            'createUploader': function (id_origin) {
+                var id = "#web_uploader_wrapper_" + id_origin;
+                var uploader = WebUploader.create({
+                    // swf文件路径
+                    swf: 'Uploader.swf',
+                    // 文件接收服务端。
+                    server: U('Core/File/uploadPicture'),
+                    fileNumLimit: 5,
+                    // 选择文件的按钮。可选。
+                    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                    pick: {'id': id, 'multi': false}
+                });
+
+                uploader.on('fileQueued', function (file) {
+                    uploader.upload();
+                    $("#web_uploader_file_name_" + id_origin).text('正在上传...');
+                });
+
+                /*上传成功*/
+                uploader.on('uploadSuccess', function (file, ret) {
+                    if (ret.status == 0) {
+                        $("#web_uploader_file_name_" + id_origin).text(ret.info);
+                        toast.error(ret.info);
+                    } else {
+                        $('#web_uploader_input_' + id_origin).focus();
+                        $('#web_uploader_input_' + id_origin).val(ret.data.file.id);
+                        $('#web_uploader_input_' + id_origin).blur();
+
+                        $("#web_uploader_picture_list_" + id_origin).html('<img src="' + ret.data.file.path + '"/>');
+                    }
+                });
+                builder.uploaders.push(uploader);
+            }
+        };
+
+
+        function initTimePicker() {
+            $('.form-datetime').datetimepicker({
+                language: "zh-CN",
+                autoclose: true,
+                format: 'yyyy-mm-dd hh:ii'
+            });
+            $('.form-date').datetimepicker({
+                language: "zh-CN",
+                minView: 2,
+                autoclose: true,
+                format: 'yyyy-mm-dd'
+            });
+            $('.form-time').datetimepicker({
+                language: "zh-CN",
+                minView: 0,
+                startView: 1,
+                autoclose: true,
+                format: 'hh:ii'
+            });
+            bind_time_change();
+
+        }
+        function bind_time_change() {
+            $('.time').change(function () {
+                var dateString = $(this).val();
+                var date = new Date(dateString);
+                var timestamp = date.getTime();
+                $(this).prev().val(Math.floor(timestamp / 1000));
+            });
+        }
+    </script>
+    <script>
+        $(function () {
+            var children = $('#data-table').children();
+            if (children.length == 0) {
+                builder.init();
+
+            } else {
+                for (var i = 0; i < children.length; i++) {
+                    builder.createUploader(i + 1);
+                }
+
+                builder.index = i + 1;
+                initTimePicker();
+                bind_time_change();
+            }
+
+        })
+    </script>
+</block>

@@ -1,0 +1,87 @@
+<div class="col-xs-3 ">
+    <div class="user-card user-card-area">
+
+        <div class="top_self" style="background: white;height: 70px;border-radius: 3px">
+
+        </div>
+        <div class="user_info" style="padding: 0;background-color: #ffffff;">
+
+            <div class="avatar-bg">
+                <div class="headpic ">
+                    <a href="{$vo.space_url}" ucard="{$vo.uid}">
+                        <img src="{$vo.avatar128}" class="avatar-img" style="width:80px;"/>
+                    </a>
+                </div>
+                <div class="clearfix " style="margin-bottom:8px">
+                    <div class="clearfix text-ellipsis ">
+                        <div class="col-xs-12 nickname" style="text-align: center">
+                        <span class="">
+                            {$vo.title}
+                        <a ucard="{$vo.uid}" href="{$vo.space_url}"
+                           class="user_name">{$vo.nickname|htmlspecialchars}</a>
+
+                            </span><br/>
+
+                               <!--输出用户所在地-->
+                            <span class="text-muted">{$vo.province}
+                            {$vo.city}
+                            {$vo.district}</span>
+
+                        </div>
+
+                    </div>
+                 <!--   <script>
+                        $(function () {
+                            $('#upgrade_' + '{$vo.uid}').tooltip({
+                                        html: true,
+                                        title: '{:L("_CURRENT_STAGE_")}：{$vo.title} <br/>{:L("_NEXT_STAGE_")}：{$vo.level.next}<br/>{:L("_NOW_")}：{$vo.score}<br/>{:L("_NEED_")}：{$vo.level.upgrade_require}<br/>{:L("_NEXT_")}{:L("_NEED_")}： {$vo.level.left}<br/>{:L("_LV_UP_PROGRESS_")}：{$vo.level.percent}% <br/> '
+                                    }
+                            );
+                        })
+                    </script>-->
+
+                </div>
+
+                <div id="upgrade_{$vo.uid}" data-toggle="tooltip" data-placement="bottom" title=""
+                     style="padding-bottom: 10px;padding-top: 0px">
+                    <div style="border-top:1px solid #eee;"></div>
+                <!--    <div style="border-top: 1px solid rgb(3, 199, 3);margin-top: -1px;width: {$vo.level.percent}%;z-index: 9999;">
+
+                    </div>-->
+                </div>
+                <div class="clearfix user-data">
+
+                    <div class="col-xs-4 text-center">
+                        <a href="{:U('Ucenter/index/fans',array('uid'=>$vo['uid']))}" title="{:L('_FANS_')}{:L('_NUMBER_')}">{$vo.fans}</a><br>{:L('_FANS_')}
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <a href="{:U('Ucenter/index/following',array('uid'=>$vo['uid']))}"
+                           title="{:L('_FOLLOWERS_')}{:L('_NUMBER_')}">{$vo.following}</a><br>{:L('_FOLLOWERS_')}
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <if condition="is_login() && $vo['uid'] != get_uid()">
+                            <p class="text-center">
+                                {:W('Common/Follow/follow',array('follow_who'=>$vo['uid'],'btn-before','btn-after'))}
+                            </p>
+                            <else/>
+                            <if condition="$vo['uid'] == get_uid()">
+                                <p class="text-center">
+                                    <a class="" disabled="disabled" style="  line-height: 40px;">
+                                        {:L('_SELF_')}
+                                    </a>
+                                </p>
+                            </if>
+                        </if>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+</script>

@@ -1,0 +1,46 @@
+<style>
+    .modal-dialog {
+        width: 430px;
+    }
+</style>
+
+<div>
+    <form id="exchange_form" action="__SELF__" method="post" class="ajax-form">
+        <input type="hidden" name="invite_id" value="{$id}"/>
+        <div class="form-group clearfix">
+            <label class="col-xs-4 control-label" style="text-align: right;">
+                {:L('_EXCHANGE_COUNT_')}{:L('_COLON_')}
+            </label>
+
+            <div class="col-xs-8">
+                <input type="text" name="exchange_num" class="form-control" value="1">
+                <div style="color: #C3C3C3;">{:L('_EXCHANGE_MAX_1_')} {$can_buy_num} {:L('_EXCHANGE_MAX_2_')} {$long} {:L('_EXCHANGE_MAX_3_')} {$num_buy} {:L('_EXCHANGE_MAX_4_')}</div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div style="width: 100%;text-align: center;">
+            <a class="btn btn-primary" data-role="submit" <if condition="$can_buy_num eq 0">disabled="disabled"</if>>{:L('_EXCHANGE_')}</a>
+            <a onclick="$('.close').click();" class="btn btn-default">{:L('_CANCEL_')}</a>
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        $('[data-role="submit"]').click(function () {
+            if(confirm("{:L('_CONFIRM_EXCHANGE_')}{:L('_QUESTION_')}")){
+                query = $('#exchange_form').serialize();
+                var url = $('#exchange_form').attr('action');
+                $.post(url, query, function (msg) {
+                    if (msg.status) {
+                        toast.success("{:L('_SUCCESS_EXCHANGE_')}{:L('_EXCLAMATION_')}");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        handleAjax(msg);
+                    }
+                }, 'json');
+            }
+        });
+    });
+</script>

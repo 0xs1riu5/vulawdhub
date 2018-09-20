@@ -1,0 +1,286 @@
+html, body {
+  font-size: 14px;
+  font-family: "微软雅黑", Helvetica, Tahoma, Arial, sans-serif;
+  color: #000;
+}
+
+img {
+  border: 0;
+}
+
+.cf:before, .cf:after {
+  display: table;
+  content: "";
+}
+
+.cf:after {
+  clear: both;
+}
+
+.cf {
+  *zoom: 1;
+}
+
+/* 登陆页样式
+------------------------------------------ */
+
+.login-header {
+  height: 50px;
+  line-height: 50px;
+  background-color: #f3f3f3;
+}
+
+.login-body {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  height: 448px;
+  margin-top: -300px;
+  margin-left: -175px;
+}
+
+.login-body .pr {
+  position: relative;
+  height: 448px;
+}
+
+.login-form {
+  margin: 0 auto;
+  padding: 25px 10px 13px;
+
+  .input-group {
+    border: none;
+    .input-group-addon {
+      width: 43px;
+      border: none;
+      background: #000;
+      i {
+        color: rgb(79, 138, 208);
+        font-size: 24px;
+      }
+    }
+    > input {
+      border: none;
+      border-left: none;
+      font-size: 16px;
+      padding: 12px 20px;
+      color: grey;
+      height: auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+     .btn {
+      background-color: white;
+       border: none;
+       font-size: 24px;
+       padding: 6px 14px;
+    }
+  }
+}
+
+
+.logo {
+  display: inline-block;
+  margin-right: 12px;
+  width: 40px;
+  vertical-align: top;
+  margin-left: -20px;
+}
+
+.login-form .check-tips {
+  color: #ff0000;
+  margin-top: 10px;
+}
+.item-box{
+  background-color: #fff;
+  border: 1px solid #d5d5d5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.login-form .item-box .item {
+  border-radius: 5px;
+}
+
+.login-form .item {
+  padding: 3px 10px 3px 12px;
+  border: 1px solid #ececec;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.login-form .focus {
+  border: 1px solid #A6E1F3;
+  box-shadow: 0 0 12px #BAF7FF;
+}
+
+.login-form .icon-login-verifycode {
+  display: inline-block;
+  margin-right: 6px;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  background: url("../images/icon24_login.png") no-repeat;
+}
+
+.login-form .icon-login-verifycode {
+  background-position: -24px 0;
+}
+
+.login-form input {
+
+}
+
+.placeholder_copy {
+  display: none;
+  position: absolute;
+  left: 48px;
+  font-size: 16px;
+  color: #ADADAD;
+}
+
+.placeholder_un {
+  top: 13px;
+}
+
+.placeholder_pwd {
+  top: 69px;
+}
+
+.placeholder_check {
+  top: 125px;
+}
+
+.login-form .focus {
+}
+
+.login-form .verifycode input {
+  width: 166px;
+  font-size: 16px;
+}
+
+.login-form .verifycode img {
+  vertical-align: middle;
+}
+
+.login-form .login_btn_panel {
+  margin: 20px 0 10px;
+}
+
+.login-form .login-btn {
+  width: 100%;
+  height: 48px;
+  font-size: 22px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+  background-color: #1ABC9C;
+  border-radius: 3px;
+  &:hover {
+    background-color: #16a88b;
+  }
+}
+
+
+.login-form .login-btn[disabled] {
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+  cursor: default;
+  box-shadow: none;
+}
+
+.login-form .login-btn .in {
+  display: none;
+}
+
+.login-form .log-in .in {
+  display: inline-block;
+}
+
+.login-form .log-in .on {
+  display: none;
+}
+
+.icon-loading {
+  display: inline-block;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
+  background: url(../images/loading_icon.gif) no-repeat 0 0;
+}
+
+/* 底部 */
+.login-footer {
+  line-height: 2.0;
+  text-align: right;
+  color: #999;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.login-main p {
+  position: fixed;
+  bottom: 0;
+  margin: 0;
+  text-align: center;
+  left: 0;
+  right: 0;
+  background: #30333F;
+}
+
+.footer-link a {
+  color: #2A72C5;
+  text-decoration: none;
+}
+
+.footer-link a:hover {
+  text-decoration: underline;
+}
+
+.footer-link span {
+  color: #2A72C5;
+  margin: 0 4px;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+
+.welcome {
+  color: #1ABC9C;
+  padding: 1px;
+}
+
+.reloadverify {
+  color: #69C3FF;
+}
+
+img.verifyimg {
+  border-radius: 3px;
+  border: 1px solid #ececec;
+  width: 100%;
+  cursor: pointer;
+}
+
+.login-wrap{
+  width: 300px;
+  margin: auto;
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  margin-left: -150px;
+  text-align: center;
+}
+canvas{
+  width: 100%;
+  height: 100%;
+}
+body{
+  background-color: #e9edf0;
+}
+.password{
+  border-top:1px solid #f2f2f2!important; ;
+}

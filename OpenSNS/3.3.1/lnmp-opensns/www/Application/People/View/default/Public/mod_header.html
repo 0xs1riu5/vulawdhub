@@ -1,0 +1,99 @@
+
+
+    <div class="row">
+
+        <if condition="!empty($tag_list)||!empty($role_list)">
+            <div class="col-xs-12">
+                <form id="tag-select" class="form-horizontal" action="{:U('People/Index/index')}" method="post">
+                    <input type="hidden" name="role" data-role="role-id" value="{$role_id}">
+                    <input type="hidden" name="tag" data-role="tag-id" value="{$tag_id}">
+                    <input type="hidden" name="keywords" data-role="keywords" value="{$nickname}">
+                    <div class="common-block margin-bottom-15" style="padding-bottom: 10px;border: 1px solid #ddd;">
+                        <if condition="!empty($role_list)">
+                            <ul class="nav nav-tabs" style="margin-left: -1px;">
+                                <li id="role_tab_">
+                                    <a data-role="select_role" data-id="0" style="border-top: none;padding-top: 9px;">{:L('_ALL_')}</a>
+                                </li>
+                                <volist name="role_list" id="role">
+                                    <li id="role_tab_{$role.id}">
+                                        <a data-role="select_role" data-id="{$role.id}" style="border-top: none;padding-top: 9px;">{$role.title}</a>
+                                    </li>
+                                </volist>
+                            </ul>
+                            <script>
+                                var now_role_id="{$role_id}";
+                                $('#role_tab_'+now_role_id).addClass('active');
+                            </script>
+                        </if>
+                        <div id="tag_list_block" style="overflow: hidden;">
+                            <if condition="!empty($tag_list)">
+                                <volist name="tag_list" id="tag_group">
+                                    <div class="tag-select-block clearfix" style="padding-top:10px;">
+                                        <div class="select-cate">{$tag_group.title}：</div>
+                                        <div class="select-option">
+                                            <volist name="tag_group['tag_list']" id="tag">
+                                                <div class="one_tag"><a data-role="select_tag" data-id="{$tag.id}"
+                                                    <if condition="$tag_id eq $tag['id']">class="tag active"
+                                                        <else/>
+                                                        class="tag"
+                                                    </if>
+                                                    >{$tag.title}</a></div>
+                                            </volist>
+                                        </div>
+                                    </div>
+                                </volist>
+                            </if>
+                        </div>
+                        <div id="show_more_button_block" class="tag-select-block clearfix" style="padding-top:10px;text-align: center;border-top: 1px dashed #CDCDCD;display: none;">
+                            <a href="javascript:void(0);" data-role="show_more_button" act-type="down" style="display: inline-block;width: 100%;">
+                                {:L("_UNFOLD_")}{:L("_ALL_")}<i class="icon-double-angle-down" style="font-size: 16px;margin-left: 5px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </if>
+        <if condition="!empty($tag_list)||!empty($role_list)">
+            <script>
+                var show_height="{:modC('MAX_SHOW_HEIGHT','160','People')}";
+                var tag_list_block_height=$('#tag_list_block').height();
+                var set_tag_list=function(){
+                    $('#tag_list_block').css("height",show_height);
+                    $('#show_more_button_block').show();
+                }
+
+                    if(tag_list_block_height>show_height){
+                        set_tag_list();
+                        $('[data-role="show_more_button"]').click(function(){
+                            var click_type=$(this).attr('act-type');
+                            if(click_type=='down'){
+                                $(this).attr('act-type','up');
+                                $(this).html('{:L("_TEMP_FOLD_")}<i class="icon-double-angle-up" style="font-size: 16px;margin-left: 5px;"></i>');
+                                $('#tag_list_block').animate({"height":tag_list_block_height});
+                            }else{
+                                $(this).attr('act-type','down');
+                                $(this).html('{:L("_UNFOLD_")}{:L("_ALL_")}<i class="icon-double-angle-down" style="font-size: 16px;margin-left: 5px;"></i>');
+                                $('#tag_list_block').animate({"height":show_height});
+                            }
+                        });
+                    }
+
+                    $('[data-role="select_tag"]').click(function () {
+                        var id = $(this).attr('data-id');
+                        $('[data-role="tag-id"]').val(id);
+                        $('#tag-select').submit();
+                    });
+                    $('[data-role="select_role"]').click(function () {
+                        var id = $(this).attr('data-id');
+                        $('[data-role="role-id"]').val(id);
+                        $('[data-role="tag-id"]').val('');
+                        $('#tag-select').submit();
+                    });
+
+
+            </script>
+        </if>
+
+    </div>
+
+

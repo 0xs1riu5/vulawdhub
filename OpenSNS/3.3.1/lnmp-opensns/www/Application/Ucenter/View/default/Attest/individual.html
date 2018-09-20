@@ -1,0 +1,172 @@
+<extend name="Base/common"/>
+<block name="style">
+  <link href="__CSS__/attest.css" rel="stylesheet" type="text/css"/>
+</block>
+<block name="header">
+
+</block>
+<block name="body">
+  <div class="v-wrap id-wrap">
+    <div class="id-head">
+        <p>认证特权</p>
+    </div>
+    <div class="id-liberty row">
+      <if condition="in_array(1,$attest_type['privilege'])">
+        <div class="col-xs-4 id-box">
+          <div class="col-xs-4 box" style="padding: 0 5px">
+            <div class="cover">
+              <img src="__IMG__/attest/p-logo.png" title="" alt="">
+            </div>
+          </div>
+          <div class="col-xs-8 box">
+            <p class="title">专属认证图标</p>
+            <p class="intro">专属图标，显示在头像右下角</p>
+            <div class="band">
+              <if condition="$attest_type['logo'] gt 0">
+                <img src="{$attest_type.logo|get_cover='path'}" alt="">
+                <else/>
+                <img src="__PUBLIC__/images/attest/{$attest_type['id']}-logo.png" alt="">
+              </if>
+            </div>
+          </div>
+        </div>
+      </if>
+      <if condition="in_array(2,$attest_type['privilege'])">
+        <div class="col-xs-4 id-box">
+          <div class="col-xs-4 box" style="padding: 0 5px">
+            <div class="cover">
+              <img src="__IMG__/attest/show.png" title="" alt="">
+            </div>
+          </div>
+          <div class="col-xs-8 box">
+            <p class="title">优先推荐</p>
+            <p class="intro">更多的展示吸粉</p>
+          </div>
+        </div>
+      </if>
+      <if condition="in_array(3,$attest_type['privilege'])">
+        <div class="col-xs-4 id-box">
+          <div class="col-xs-4 box" style="padding: 0 5px">
+            <div class="cover">
+              <img src="__IMG__/attest/other.png" title="" alt="">
+            </div>
+          </div>
+          <div class="col-xs-8 box">
+            <p class="title">各类特权</p>
+            <p class="intro">各类认证特权项</p>
+          </div>
+        </div>
+      </if>
+    </div>
+    <div class="id-head">
+      <p>申请条件</p>
+    </div>
+    <div class="id-liberty id-term row">
+      <if condition="$attest_type['conditions']['avatar'] eq 1">
+        <div class="term-box">
+          <div class="t-cover">
+            <img src="{$user_avatar}" title="头像" alt="" class="avatar-img">
+          </div>
+          <if condition="$avatar_ok">
+            <div class="condition">
+              <i class="iconfont icon-dui"></i>
+              <span>高清头像</span>
+            </div>
+            <a href="javascript:" class="id-btn yes">已符合</a>
+            <else/>
+            <div class="condition">
+              <i class="iconfont icon-cuo"></i>
+              <span>高清头像</span>
+            </div>
+            <a href="{:U('Ucenter/Config/avatar')}" target="_blank" class="id-btn no">去上传</a>
+          </if>
+        </div>
+      </if>
+      <if condition="$attest_type['conditions']['phone'] eq 1">
+        <div class="term-box">
+          <div class="t-cover">
+            <img src="__IMG__/attest/phone.png" title="" alt="">
+          </div>
+          <if condition="$phone_ok">
+            <div class="condition">
+              <i class="iconfont icon-dui"></i>
+              <span>绑定手机号</span>
+            </div>
+            <a href="javascript:" class="id-btn yes">已符合</a>
+            <else/>
+            <div class="condition">
+              <i class="iconfont icon-cuo"></i>
+              <span>绑定手机号</span>
+            </div>
+            <a href="{:U('Ucenter/Config/index')}" target="_blank" class="id-btn no">去绑定</a>
+          </if>
+        </div>
+      </if>
+      <if condition="$attest_type['conditions']['follow'] gt 0">
+        <div class="term-box">
+          <div class="t-cover">
+            <img src="__IMG__/attest/follow.png" title="" alt="">
+          </div>
+          <if condition="$follow_ok">
+            <div class="condition">
+              <i class="iconfont icon-dui"></i>
+              <span>关注>{$attest_type['conditions']['follow']}人</span>
+            </div>
+            <a href="javascript:" class="id-btn yes">已符合</a>
+            <else/>
+            <div class="condition">
+              <i class="iconfont icon-cuo"></i>
+              <span>关注>{$attest_type['conditions']['follow']}人</span>
+            </div>
+            <a href="{:U('People/Index/index')}" target="_blank" class="id-btn no">去关注</a>
+          </if>
+        </div>
+      </if>
+      <if condition="$attest_type['conditions']['fans'] gt 0">
+        <div class="term-box">
+          <div class="t-cover">
+            <img src="__IMG__/attest/fans.png" title="" alt="">
+          </div>
+          <if condition="$fans_ok">
+            <div class="condition">
+              <i class="iconfont icon-dui"></i>
+              <span>粉丝>{$attest_type['conditions']['fans']}人</span>
+            </div>
+            <a href="javascript:" class="id-btn yes">已符合</a>
+            <else/>
+            <div class="condition">
+              <i class="iconfont icon-cuo"></i>
+              <span>粉丝>{$attest_type['conditions']['fans']}人</span>
+            </div>
+            <a href="{:U('Ucenter/Invite/invite')}" target="_blank" class="id-btn no">去邀请</a>
+          </if>
+        </div>
+      </if>
+      <if condition="$attest_type['conditions']['friends'] gt 0">
+        <div class="term-box">
+          <div class="t-cover">
+            <img src="__IMG__/attest/friends.png" title="" alt="">
+          </div>
+          <if condition="$friends_ok">
+            <div class="condition">
+              <i class="iconfont icon-dui"></i>
+              <span>互粉认证用户>{$attest_type['conditions']['friends']}人</span>
+            </div>
+            <a href="javascript:" class="id-btn yes">已符合</a>
+            <else/>
+            <div class="condition">
+              <i class="iconfont icon-cuo"></i>
+              <span>互粉认证用户>{$attest_type['conditions']['friends']}人</span>
+            </div>
+            <a href="{:U('People/Index/index')}" target="_blank" class="id-btn no">去加好友</a>
+          </if>
+        </div>
+      </if>
+    </div>
+    <if condition="$can_apply">
+      <div class="id-attest row">
+        <a href="{:U('Ucenter/attest/apply',array('id'=>$attest_type['id']))}" class="do-attest">申请</a>
+      </div>
+    </if>
+  </div>
+</block>

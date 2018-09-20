@@ -1,0 +1,135 @@
+<link href="__ROOT__/Application/Weibo/Static/css/weibo.css" type="text/css" rel="stylesheet"/>
+<div class="block-bar">
+    <div class="container">
+        <div class="block-body row">
+            <div class="col-xs-6">
+                <div class="common-block">
+                    <h2>
+                        {:modC('WEIBO_SHOW_TITLE1',L('_NEWEST_WEIBO_'),'Weibo')}
+                    </h2>
+                    <div>
+                        <div>
+                            <ul id="weibo-list-1" class="weibo-list clearfix">
+                                <volist name="weibo1" id="weibo">
+                                    <div class="row" id="weibo_{$weibo.id}">
+                                        <div class="col-xs-12">
+                                            <div class="col-md-12 weibo_content" style="padding: 0;position:relative;">
+                                                <div class="" style="padding: 10px 10px 5px 10px">
+                                                    <div class="col-md-2 col-sm-2 col-xs-12 text-center" style="position: relative;padding: 0px">
+                                                        <a class="s_avatar" href="{$weibo.user.space_url}" ucard="{$weibo.user.uid}">
+                                                            <img src="{$weibo.user.avatar512}" class="avatar-img" style="width: 64px;"/>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-10" style="padding: 5px">
+
+                                                        <p>
+                                                            <if condition="modC('SHOW_TITLE',1)">
+                                                                <small class="font_grey">【{$weibo.user.title}】</small>
+                                                            </if>
+                                                            <a ucard="{$weibo.user.uid}" href="{$weibo.user.space_url}" class="user_name">
+                                                                {$weibo.user.nickname|htmlspecialchars}
+                                                            </a>
+                                                            {:W('Common/UserRank/render',array($weibo['uid']))}
+                                                        </p>
+                                                        <div class="weibo_content_p">
+                                                            {$weibo.fetchContent}
+                    <span>
+                        <a href="{:U('Weibo/Index/weiboDetail',array('id'=>$weibo['id']))}">{$weibo.create_time|friendlyDate}</a>
+                    </span>
+                                                            &nbsp;&nbsp;<span>{:L('_FROM_')} <if condition="$weibo['from'] eq ''">{:L('_WEBSITE_SIDE_')} <else/><strong>{$weibo.from}</strong></if></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                    </div>
+                        </div>
+                                </volist>
+
+
+                            </ul>
+<script>
+    $(function(){
+        $('#weibo-list-1').slimScroll({
+            height: '600px'
+        });
+        $('#weibo-list-2').slimScroll({
+            height: '600px'
+        });
+        $('.pswp__ui--hidden').hide();
+    });
+
+</script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="common-block">
+                    <h2>
+                        {:modC('WEIBO_SHOW_TITLE2',L('_HOT_WEIBO_'),'Weibo')}
+                    </h2>
+
+                    <div>
+                        <div>
+                            <ul id="weibo-list-2" class="weibo-list clearfix">
+                                <volist name="weibo2" id="weibo">
+                                    <div class="row" id="weibo_{$weibo.id}">
+                                        <div class="col-xs-12">
+                                            <div class="col-md-12 weibo_content" style="padding: 0;position:relative;">
+                                                <div class="" style="padding: 10px 10px 5px 10px">
+                                                    <div class="col-md-2 col-sm-2 col-xs-12 text-center" style="position: relative;padding: 0px">
+                                                        <a class="s_avatar" href="{$weibo.user.space_url}" ucard="{$weibo.user.uid}">
+                                                            <img src="{$weibo.user.avatar512}" class="avatar-img" style="width: 64px;"/>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-10" style="padding: 5px">
+
+                                                        <p>
+                                                            <if condition="modC('SHOW_TITLE',1)">
+                                                                <small class="font_grey">【{$weibo.user.title}】</small>
+                                                            </if>
+                                                            <a ucard="{$weibo.user.uid}" href="{$weibo.user.space_url}" class="user_name">
+                                                                {$weibo.user.nickname|htmlspecialchars}
+                                                            </a>
+                                                            {:W('Common/UserRank/render',array($weibo['uid']))}
+                                                        </p>
+                                                        <div class="weibo_content_p">
+                                                            {$weibo.fetchContent}
+                    <span>
+                        <a href="{:U('Weibo/Index/weiboDetail',array('id'=>$weibo['id']))}">{$weibo.create_time|friendlyDate}</a>
+                    </span>
+                                                            &nbsp;&nbsp;<span>{:L('_FROM_')} <if condition="$weibo['from'] eq ''">{:L('_WEBSITE_SIDE_')} <else/><strong>{$weibo.from}</strong></if></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(function () {
+        ucard();
+        bind_weibo_popup();
+    })
+
+</script>
+<link rel="stylesheet" href="__ROOT__/Application/Weibo/Static/css/photoswipe.css">
+<link rel="stylesheet" href="__ROOT__/Application/Weibo/Static/css/default-skin/default-skin.css">
+<script src="__ROOT__/Application/Weibo/Static/js/photoswipe.min.js"></script>
+<script src="__ROOT__/Application/Weibo/Static/js/photoswipe-ui-default.min.js"></script>
+<script src="__ROOT__/Application/Weibo/Static/js/weibo.js"></script>

@@ -1,0 +1,50 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<div class="main-title cf">
+		<h2>
+			{:L("_BATCH_IMPORT_")}[{$data.title|default=L('_TOP_MENU_WITH_SINGLE_')}]
+		</h2>
+	</div>
+	<!-- 标签页导航 -->
+<div class="tab-wrap with-padding">
+	<div class="tab-content">
+	<!-- 表单 -->
+	<form id="form" action="{:U('import')}" method="post" class="form-horizontal">
+		<!-- 基础文档模型 -->
+		<div id="tab1" class="tab-pane in tab1">
+			<div class="form-item cf">
+				<label class="item-label">{:L("_IMPORT_CONTENT_")}<span class="check-tips">{:L("_PLEASE_ENTER_IN_THE_INPUT_FORMAT_")}</span></label>
+				<div class="controls">
+					<label class="textarea input-large">
+						<textarea name="tree" class="form-control form-text-area-size"></textarea>
+					</label>
+				</div>
+				<span class="check-tips">{:L("_IMPORT_FORMAT_")}{:L("_COLON_")}{:L("_TITLE_")}|url({:L("_ENTER_KEY_")}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:L("_TITLE_")}|url</span>
+			</div>
+		</div>
+		<div class="form-item cf">
+			<button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+			<a class="btn btn-default btn-return" href="{:U('index?pid='.$pid)}">{:L("_RETURN_WITH_SPACE_")}</a>
+			<input type="hidden" name="pid" value="{$pid}"/>
+			<input type="hidden" name="cate_id" value="{$cate_id|default=0}">
+		</div>
+	</form>
+	</div>
+</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+
+$('#submit').click(function(){
+	$('#form').submit();
+});
+
+
+$(function(){
+	//导航高亮
+	highlight_subnav('{:U('index')}');
+});
+</script>
+</block>

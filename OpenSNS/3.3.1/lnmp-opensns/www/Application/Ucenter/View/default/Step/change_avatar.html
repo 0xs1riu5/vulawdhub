@@ -1,0 +1,6 @@
+
+{:W('Ucenter/UploadAvatar/render',array('uid'=>$uid))}
+
+<php> if(check_step_can_skip('change_avatar')){</php>
+<a href="{:U('Ucenter/member/step', array('step' => get_next_step('change_avatar')))}" style="display: block;position: absolute;z-index: 99;top: 514px;left: 700px;padding: 6px;">{:L('_STEP_')}</a>
+<php>}</php>

@@ -1,0 +1,23 @@
+<a class="btn btn-danger" data-role="addTo"><i class="icon-plus"></i> 添加到常用操作</a>
+<php>$controller = CONTROLLER_NAME;
+    $current = M('Menu')->where("url like '%$controller/" . ACTION_NAME . "' AND pid > 0")->field('id')->find();
+</php>
+<input type="hidden" id="current" value="{$current}">
+
+<script>
+    $('[data-role="addTo"]').click(function () {
+        var id = "{$current['id']}";
+        var url = "{:U('Admin/Index/addTo')}";
+        $.post(url, {id: id}, function (msg) {
+            if (msg.status) {
+                console.log(msg);
+                toast.success(msg.info);
+                /*setTimeout(function () {
+                 window.location.reload();
+                 }, 500);*/
+            } else {
+                toast.error(msg.info);
+            }
+        }, 'json')
+    });
+</script>

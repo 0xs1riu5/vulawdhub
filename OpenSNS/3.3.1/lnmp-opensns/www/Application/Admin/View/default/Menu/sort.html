@@ -1,0 +1,113 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<div class="main-title cf">
+		<h2>
+			{:L("_MENU_SORT_")}[ <a href="{:U('index',array('pid'=>I('pid')))}">{:L("_RETURN_LIST_")}</a> ]
+		</h2>
+	</div>
+	<div class="sort with-padding">
+		<form action="{:U('sort')}" method="post">
+<!-- 			<div class="sort_top">
+				{:L("_SEARCH_")}{:L("_COLON_")}<input type="text"><button class="btn search" type="button">{:L("_SEARCH_")}</button>
+			</div> -->
+			<div class="sort_center">
+				<div class="sort_option">
+					<select value="" size="8" class="form-select-size form-control">
+						<volist name="list" id="vo">
+							<option class="ids" title="{$vo.title}" value="{$vo.id}">{$vo.title}</option>
+						</volist>
+					</select>
+				</div>
+				<div class="sort_btn">
+					<button class="top btn" type="button">{:L("_FIRST_WITH_SPACE_")}</button>
+					<button class="up btn" type="button">{:L("_UPPER_SHIFT_WITH_SPACE_")}</button>
+					<button class="down btn" type="button">{:L("_NEXT_MOVE_WITH_SPACE_")}</button>
+					<button class="bottom btn" type="button">{:L("_AFTER_THE_MOST_WITH_SPACE_")}</button>
+				</div>
+			</div>
+			<div class="sort_bottom">
+				<input type="hidden" name="ids">
+				<button class="sort_confirm btn submit-btn" type="button">{:L("_SURE_WITH_SPACE_")}</button>&nbsp;
+				<button class="sort_cancel btn btn-return" type="button" url="{$Think.cookie.__forward__}">{:L("_RETURN_WITH_SPACE_")}</button>
+			</div>
+		</form>
+	</div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+	//导航高亮
+	highlight_subnav('{:U('Menu/index')}');
+		$(function(){
+			sort();
+			$(".top").click(function(){
+				rest();
+				$("option:selected").prependTo("select");
+				sort();
+			})
+			$(".bottom").click(function(){
+				rest();
+				$("option:selected").appendTo("select");
+				sort();
+			})
+			$(".up").click(function(){
+				rest();
+				$("option:selected").after($("option:selected").prev());
+				sort();
+			})
+			$(".down").click(function(){
+				rest();
+				$("option:selected").before($("option:selected").next());
+				sort();
+			})
+			$(".search").click(function(){
+				var v = $("input").val();
+				$("option:contains("+v+")").attr('selected','selected');
+			})
+			function sort(){
+				$('option').text(function(){return ($(this).index()+1)+'.'+$(this).text()});
+			}
+
+			//重置所有option文字。
+			function rest(){
+				$('option').text(function(){
+					return $(this).text().split('.')[1]
+				});
+			}
+
+			//获取排序并提交
+			$('.sort_confirm').click(function(){
+				var arr = new Array();
+				$('.ids').each(function(){
+					arr.push($(this).val());
+				});
+				$('input[name=ids]').val(arr.join(','));
+				$.post(
+					$('form').attr('action'),
+					{
+					'ids' :  arr.join(',')
+					},
+					function(data){
+						if (data.status) {
+	                        updateAlert(data.info + {:L('_THE_PAGE_WILL_AUTOMATICALLY_JUMP_TO_WALK_THE_WALK_TODAY_WITH_SINGLE_')},'alert-success');
+	                    }else{
+	                        updateAlert(data.info,'alert-success');
+	                    }
+	                    setTimeout(function(){
+	                        if (data.status) {
+	                        	$('.sort_cancel').click();
+	                        }
+	                    },1500);
+					},
+					'json'
+				);
+			});
+
+			//点击取消按钮
+			$('.sort_cancel').click(function(){
+				window.location.href = $(this).attr('url');
+			});
+		})
+	</script>
+</block>

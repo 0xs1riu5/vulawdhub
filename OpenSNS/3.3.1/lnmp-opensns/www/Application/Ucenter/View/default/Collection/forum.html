@@ -1,0 +1,87 @@
+<extend name="Public/usercenter"/>
+
+<block name="body">
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p>&nbsp;</p>
+            <h4>{:L('_MY_FAVORITES_')}</h4>
+            <hr class="oneuser-title-hr"/>
+
+            <ul class="nav nav-pills ucenter-tab">
+                <li
+                <eq name="type" value="forum"> class="active"</eq>
+                ><a href="{:U('Ucenter/Collection/index',array('type'=>'forum'))}">论坛{:L('_COLLECTION_POST_')}</a></li>
+                <li
+                <eq name="type" value="group"> class="active"</eq>
+                ><a href="{:U('Ucenter/Collection/index',array('type'=>'group'))}">群组{:L('_COLLECTION_POST_')}</a></li>
+            </ul>
+
+        </div>
+    </div>
+    <div style="min-height: 400px;margin-top: 30px;">
+        <if condition="!$list"><p class="text-muted" style="text-align: center; font-size: 3em;">
+            <br><br>
+            {:L('_COLLECTION_NONE_')}{:L('_WAVE_')}
+            <br><br><br>
+        </p></if>
+
+        <volist name="list" id="vl">
+            <php>
+                $user = query_user(array('avatar128','avatar64','nickname','uid','space_url'),
+                $vl['uid']);
+            </php>
+            <div class="row">
+                <div class="col-xs-2 text-center">
+                    <p>
+                        <a href="{$user.space_url}">
+                            <img src="{$user.avatar64}" ucard="{$user.uid}" class="avatar-img"/>
+                        </a>
+                    </p>
+                </div>
+                <div class="col-xs-10">
+
+                    <p>
+
+                        <a class="forum_forum_name" href="{:U('Forum/Index/forum',array('id'=>$vl['forum_id']))}"
+                           target="_blank">[{$vl.forum.title}]</a><a class="forum-list-title-link"
+                                                                     title="{$vl.title|htmlspecialchars}"
+                                                                     href="{:U('Forum/Index/detail',array('id'=>$vl['id']))}"
+                                                                     target="_blank">{$vl.title|htmlspecialchars|mb_substr=0,30,'utf-8'}
+                    </a>
+                        <eq name="vl.is_top" value="2"><i class="post_top">{:L('_ALL_SITE_')}</i>
+                            <else/>
+                            <eq name="vl.is_top" value="1"><i class="post_top_forum">{:L('_BOARD_')}</i></eq>
+                        </eq>
+
+
+                    </p>
+
+                    <p class="pull-right text-muted">
+                        <span>{:L('_READ_')}（{$vl.view_count}）</span>
+                        <span style="width: 1em; display: inline-block;">&nbsp;</span>
+                        <span>{:L('_REPLY_')}（{$vl.reply_count}）</span>
+                    </p>
+
+                    <p class="text-muted author">
+                        <a href="{$user.space_url}" ucard="{$user.uid}">{$user.nickname|op_t}</a>
+                        {:L('_PUBLISH_')}{:L('_COLON_')}{$vl.create_time|friendlyDate} |
+                        {:L('_REPLY_')}{:L('_COLON_')}{$vl.last_reply_time|friendlyDate}
+                    </p>
+                </div>
+            </div>
+
+
+            <if condition="$i neq count($list)">
+                <hr class="forum-list-hr"/>
+                <else/>
+                <div class="forum-list-no-hr"></div>
+            </if>
+        </volist>
+        <div class="pull-right">
+            {:getPagination($totalCount,15)}
+        </div>
+    </div>
+
+</block>

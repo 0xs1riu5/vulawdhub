@@ -1,0 +1,65 @@
+@import "../../../../Public/css/var";
+@com-c:@primary-color;
+@f:#fff;
+.user-info-panel {
+  padding: 20px;
+  background-color:@com-c;
+  border-radius: 4px;
+  .avatar-img{
+    border: 3px solid rgba(255,255,255,.2);
+    width: 80px;
+    height: 80px;
+  }
+  .nickname {
+    color: #fff !important;
+    font-size: 16px;
+    margin-top: 10px;
+    display: block;
+    opacity: .7;
+     &:hover{
+       opacity: 1;
+     }
+  }
+}
+.menu {
+  border-radius:4px;
+  overflow: hidden;
+  a,i{
+    color: #666;
+  }
+}
+
+.nav-primary > li > a {
+  border: 1px solid #efefef;
+}
+/*.nav > li > a{
+  padding: 15px 30px;
+}*/
+.nav > li > a:hover, .nav > li > a:focus {
+  color: @com-c;
+  text-decoration: none;
+  background-color: @f;
+  i{
+    color: @com-c!important;
+  }
+}
+.nav-primary > li.active > a, .nav-primary > li.active > a:hover, .nav-primary > li.active > a:focus{
+  background-color: transparent;
+  color: @com-c;
+  border-color: #efefef;
+  border-left: 2px solid @com-c;
+}
+.menu > .nav > li.active > a [class*='icon-'], .menu > .nav > li.active > a:hover [class*='icon-'], .menu > .nav > li.active > a:focus [class*='icon-']{
+  color: @com-c;
+}
+.btn-primary{
+  background-color: @com-c;
+  border-color: @darken-color;
+   &:hover{
+     background-color: @darken-color;
+   }
+}
+.nav-secondary > li.active > a, .nav-secondary > li.active > a:hover, .nav-secondary > li.active > a:focus{
+  color: @com-c;
+  border-color: @com-c;
+}

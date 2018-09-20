@@ -1,0 +1,62 @@
+<div id="content_fans" class="rank-list-block">
+    <volist name="user_fans_list" id="fans">
+        <p class="rank-lists " <eq name="mod" value="0">style="background-color: #f5f5f5"</eq><eq name="mod" value="1">style="background-color: #fafafa"</eq> >
+            {$fans.ranking}
+            <span class="nickname"><a href="{:U('Ucenter/Index/index', array('uid' => $fans['uid']))}" class="face"><img src="{$fans.avatar32}" class="avatar-img"></a><a href="{:U('Ucenter/Index/index', array('uid' => $fans['uid']))}">{$fans.nickname}</a></span>
+            <span class="value c9">{$fans.fans}</span>
+        </p>
+    </volist>
+</div>
+<div id="page_navigation_fans"></div>
+<input type="hidden" id="current_page_fans" />
+<input type="hidden" id="show_per_page_fans" />
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var show_per_page_fans = 10;
+        var number_of_items = $('#content_fans').children().size();
+        var number_of_pages = Math.ceil(number_of_items/show_per_page_fans);
+
+        $('#current_page_fans').val(0);
+        $('#show_per_page_fans').val(show_per_page_fans);
+
+        var navigation_html = '<a class="previous_link" href="javascript:previous_fans();"><< </a>';
+        var current_link = 0;
+        while(number_of_pages > current_link){
+            navigation_html += '<a class="page_link_fans" href="javascript:go_to_page_fans(' + current_link +')" longdesc_fans="' + current_link +'">'+ (current_link + 1) +'</a>';
+            current_link++;
+        }
+        navigation_html += '<a class="next_link" href="javascript:next_fans();"> >></a>';
+
+        $('#page_navigation_fans').html(navigation_html);
+        $('#page_navigation_fans .page_link_fans:first').addClass('active_page');
+        $('#content_fans').children().css('display', 'none');
+        $('#content_fans').children().slice(0, show_per_page_fans).css('display', 'block');
+    });
+
+    function previous_fans(){
+        new_page = parseInt($('#current_page_fans').val()) - 1;
+
+        if($('.active_page').prev('.page_link_fans').length==true){
+            go_to_page_fans(new_page);
+        }
+    }
+
+    function next_fans(){
+        new_page = parseInt($('#current_page_fans').val()) + 1;
+
+        if($('.active_page').next('.page_link_fans').length==true){
+            go_to_page_fans(new_page);
+        }
+    }
+    function go_to_page_fans(page_num){
+        var show_per_page_fans = parseInt($('#show_per_page_fans').val());
+
+        start_from = page_num * show_per_page_fans;
+        end_on = start_from + show_per_page_fans;
+
+        $('#content_fans').children().css('display', 'none').slice(start_from, end_on).css('display', 'block');
+        $('.page_link_fans[longdesc_fans=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
+        $('#current_page_fans').val(page_num);
+    }
+</script>

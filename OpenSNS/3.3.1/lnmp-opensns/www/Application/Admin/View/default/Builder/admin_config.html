@@ -1,0 +1,242 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>{$title}</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <div class="main-title">
+        <h2>{$title}            <if condition="$suggest">（{$suggest}）</if></h2>
+    </div>
+
+    <div class="with-padding">
+        <div class="tab-wrap tabbable-custom" style="margin-bottom: 5px">
+            <ul class="nav nav-tabs group_nav">
+                <volist name="group" id="vGroup">
+                    <li class="<if condition="
+                    $i eq 1">active</if>"><a href="javascript:">{$key}</a></li>
+                </volist>
+            </ul>
+            <div class="tab-content">
+                <form action="{$savePostUrl}" method="post" class="form-horizontal">
+                    <php>if($group){</php>
+                    <!--看板-->
+                    <volist name="group" id="vGroup">
+                        <div class="group_list" style="<if condition='$i neq 1'>display: none;</if>">
+                            <volist name="keyList" id="field">
+                                <php>if(in_array($field['name'],$vGroup)||(is_array($field['name'])&&in_array(implode('|', $field['name']),$vGroup))){</php>
+                                <include file="Builder/_key"/>
+                                <php>}</php>
+                            </volist>
+                        </div>
+                    </volist>
+
+                    <php>}else{</php>
+                    <volist name="keyList" id="field">
+                        <include file="Builder/_key"/>
+                    </volist>
+                    <php>}</php>
+                    <br/>
+
+                    <div class="form-item">
+                        <volist name="buttonList" id="button">
+                            <button {$button.attr}>{$button.title}</button>  &nbsp;
+                        </volist>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</block>
+
+<block name="script">
+    <if condition="$chosen_select2">
+        <link rel="stylesheet" href="__ALTE__/plugins/select2/select2.min.css">
+        <script src="__ALTE__/plugins/select2/select2.full.min.js"></script>
+        <script>
+            $(function(){
+                $(".select2").select2();
+            })
+        </script>
+    </if>
+    <if condition="$has_nestable">
+        <link href="__BTS__/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css"/>
+        <script src="__BTS__/plugins/jquery-nestable/jquery.nestable.js" type="text/javascript"></script>
+        <script src="__BTS__/js/ui-nestable.min.js" type="text/javascript"></script>
+        <script>
+            $('.nestables').find('.dd').nestable({
+                maxDepth:1
+            });
+            $('.nestable_list_one').on('change',function(){
+                var obj=$(this).parents('.nestables');
+                var nestable=new Array();
+                obj.find('.portlet').each(function(index,element){
+                    if ($(element).data('id')) {
+                        nestable[index] =  new Object();
+                        nestable[index]['data-id'] =  $(element).data('id');
+                        nestable[index]['title'] =  $(element).data('title');
+                        nestable[index]['items'] =  $(element).find('.dd').nestable('serialize');
+                        nestable[index]['items'].forEach(function(li){
+                            li['data-id']=li['id'];
+                        });
+                    }
+                });
+                var nestable_str=JSON.stringify(nestable);
+                var flag=obj.data('name');
+                $('[name="'+flag+'"]').val(nestable_str);
+            });
+        </script>
+    </if>
+
+    <if condition="$importDatetimePicker">
+        <link href="__BTS__/plugins/datetimepicker/datetimepicker.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="__BTS__/plugins/datetimepicker/datetimepicker.min.js"></script>
+
+        <script>
+            $('.form-datetime').datetimepicker({
+                language: "zh-CN",
+                autoclose: true,
+                format: 'yyyy-mm-dd hh:ii'
+            });
+            $('.form-date').datetimepicker({
+                language: "zh-CN",
+                minView: 2,
+                autoclose: true,
+                format: 'yyyy-mm-dd'
+            });
+            $('.form-time').datetimepicker({
+                language: "zh-CN",
+                minView: 0,
+                startView:1,
+                autoclose: true,
+                format: 'hh:ii'
+            });
+            $('.time').change(function () {
+                var fieldName = $(this).attr('data-field-name');
+                var dateString = $(this).val();
+                var date = new Date(dateString);
+                var timestamp = date.getTime();
+                $('[name=' + fieldName + ']').val(Math.floor(timestamp / 1000));
+            });
+        </script>
+    </if>
+    <if condition="$colorPicker">
+        <script type="text/javascript" src="__JS__/jquery.simple-color.js"></script>
+        <script>
+            $(function(){
+                $('.simple_color_callback').simpleColor({
+                    boxWidth:20,
+                    cellWidth: 20,
+                    cellHeight: 20,
+                    chooserCSS:{ 'z-index': 500 },
+                    displayCSS: { 'border': 0 ,
+                        'width': '32px',
+                        'height': '32px',
+                        'margin-top': '-32px'
+                    },
+                    onSelect: function(hex, element) {
+                        $('#tw_color').val('#'+hex);
+                    }
+                });
+                $('.simple_color_callback').show();
+                $('.simpleColorContainer').css('margin-left','105px');
+                $('.simpleColorDisplay').css('border','1px solid #DFDFDF');
+            });
+            var setColorPicker=function(obj){
+                var color=$(obj).val();
+                $(obj).parents('.color-picker').find('.simpleColorDisplay').css('background',color);
+            }
+        </script>
+    </if>
+
+    <if condition="$importCheckBox">
+        <script>
+            $(function () {
+                function implode(x, list) {
+                    var result = "";
+                    for (var i = 0; i < list.length; i++) {
+                        if (result == "") {
+                            result += list[i];
+                        } else {
+                            result += ',' + list[i];
+                        }
+                    }
+                    return result;
+                }
+
+                $('.oneplus-checkbox').change(function (e) {
+                    var fieldName = $(this).attr('data-field-name');
+                    var checked = $('.oneplus-checkbox[data-field-name=' + fieldName + ']:checked');
+                    var result = [];
+                    for (var i = 0; i < checked.length; i++) {
+                        var checkbox = $(checked.get(i));
+                        result.push(checkbox.attr('value'));
+                    }
+                    result = implode(',', result);
+                    $('.oneplus-checkbox-hidden[data-field-name=' + fieldName + ']').val(result);
+                });
+            })
+        </script>
+    </if>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.group_nav li a').click(function () {
+                $('.group_list').hide();
+                $('.group_list').eq($(".group_nav li a").index(this)).show();
+                $('.group_nav li').removeClass('active');
+                $(this).parent().addClass('active');
+            })
+        })
+        Think.setValue("type", {$info.type|default=0});
+        Think.setValue("group", {$info.group|default=0});
+        //导航高亮
+        highlight_subnav('{:U('Config / index')}');
+    </script>
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/js/ext/magnific/magnific-popup.css"/>
+    <script type="text/javascript" src="__PUBLIC__/js/ext/magnific/jquery.magnific-popup.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ext/webuploader/js/webuploader.js"></script>
+    <link href="__PUBLIC__/js/ext/webuploader/css/webuploader.css" type="text/css" rel="stylesheet">
+
+
+    <script>
+        $(document).ready(function () {
+            $('.popup-gallery').each(function () { // the containers for all your galleries
+                $(this).magnificPopup({
+                    delegate: 'a',
+                    type: 'image',
+                    tLoading: '{:L("_LOADING_")}#%curr%...',
+                    mainClass: 'mfp-img-mobile',
+                    gallery: {
+                        enabled: true,
+                        navigateByImgClick: true,
+                        preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+
+                    },
+                    image: {
+                        tError: '<a href="%url%">{:L("_PICTURE_")}#%curr%</a>{:L("_COULD_NOT_BE_LOADED_")}',
+                        titleSrc: function (item) {
+                            /*           return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';*/
+                            return '';
+                        },
+                        verticalFit: true
+                    }
+                });
+            });
+            {$myJs}
+        });
+    </script>
+</block>

@@ -1,0 +1,15 @@
+﻿/* main_image */
+.main_visual{overflow:hidden;position:relative;}
+.main_image{height:100%;overflow:hidden;position:relative;}
+.main_image ul{width:100%;height:100%;overflow:hidden;position:absolute;top:0;left:0}
+.main_image li{float:left;width:100%;height:100%;}
+.main_image li span{display:block;width:100%;height:100%}
+.main_image li a{display:block;width:100%;height:100%}
+
+div.flicking_con{position:absolute;bottom:10px;right:20px;z-index:999;height:13px;margin:0 0 0 -50px;}
+div.flicking_con a{float:left;width:13px;height:13px;margin-right:5px;padding:0;background:url('../images/pagination.png') 0 0 no-repeat;display:block;text-indent:-1000px;-webkit-transform: none ;transition: none;}
+div.flicking_con a.on{background-position:0 -13px}
+div.flicking_con a:hover{background-position:0 -26px;}
+#btn_prev,#btn_next{z-index:11111;position:absolute;display:block;top:50%;margin-top:-7px;display: none;}
+#btn_prev{left:20px;}
+#btn_next{right:20px;}

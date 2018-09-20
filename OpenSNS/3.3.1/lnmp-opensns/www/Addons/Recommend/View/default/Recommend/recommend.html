@@ -1,0 +1,104 @@
+<if condition="is_login()">
+    <link rel="stylesheet" type="text/css" href="{:getRootUrl()}Addons/Recommend/Css/recommend.css">
+
+    <div class="common_block_border">
+        <div style="padding-bottom: 35px;">
+        <span class="pull-left biaoti">
+    <span>可能感兴趣的人</span>
+    </span>
+    <span class="pull-right" style="padding-right: 10px;margin-top: 7px">
+    <a class="glyphicon glyphicon-refresh " data-role="change_show"
+       value="{:addons_url('Recommend://Recommend/changerecommend')}">换一换</a>
+    </span>
+        </div>
+
+        <div class="margintop15">
+            <input type="hidden" data-role="recommend_url" value="{:addons_url('Recommend://Recommend/recommend')}">
+
+            <div class="clearfix" data-role="follow_panel">
+                <include file="./Addons/Recommend/View/default/Recommend/_user.html"/>
+            </div>
+        </div>
+
+    </div>
+
+</if>
+
+<script>
+    var recommend_url;
+    var changerecommend_url;
+    $(document).ready(function () {
+        bandDoFollow();
+        recommend_url = $('[data-role="recommend_url"]').val();
+        bandChangeRecommend();
+        changerecommend_url = $('[data-role="change_show"]').attr("value");
+    });
+    function bandDoFollow() {
+        $('[data-role="do_follow"]').unbind('click');
+        $('[data-role="do_follow"]').click(function () {
+            var uid = $(this).attr('data-uid');
+            $.post(recommend_url, {uid: uid}, function (msg) {
+                if (msg.status) {
+                    $('[data-role="user_fadeout_' + uid + '"]').fadeOut(1000);
+                    //封装html，整个用户显示部分。
+                    var html = '<div class="col-md-12" data-role="user_fadeout_' + msg.other_follow.uid + '">' +
+                            '<div class="col-md-4 pad0">' +
+                            '<a href="#">' +
+                            '<img ucard="' + msg.other_follow.uid + '" class="avatar-img" style="width: 60px;" src="' + msg.other_follow.avatar64 + '">' +
+                            '</a>' +
+                            '</div>' +
+                            '<div class="col-md-8 pad0">' +
+                            '<p style="margin-bottom: 0px;font-size: 20px;">' +
+                            '<a target="_blank" href="#">' +
+                            '<span ucard="' + msg.other_follow.uid + '" >' + msg.other_follow.nickname + '</span>' +
+                            '</a>' +
+
+                            '</p>' +
+                            '<button type="button" class="btn btn-default pad6" data-role="do_follow" data-uid="' + msg.other_follow.uid + '">' +
+                            '<span class="glyphicon glyphicon-plus" style="font-size: 10px"></span>' +
+                            '<span>  关注</span>' +
+
+                            '</button>' +
+
+
+                            '</div>' +
+                            '<div class="col-md-12 pad0" style="padding-top: 10px">' +
+                            '<p style="background-color: #f2f2f5;padding: 10px">' +
+                            '<span>' + msg.other_follow.reason + '</span>' +
+
+                            ' </p>' +
+
+
+                            '</div>' +
+                            '</div>';
+
+                    //设置淡入的时间，1S
+                    setTimeout(function () {
+                        $('[data-role="follow_panel"]').append(html);
+                        bandDoFollow();
+                        ucard();
+                    }, 1000);
+                }
+                else {
+                    handleAjax(msg);
+                }
+            });
+        });
+    }
+    function bandChangeRecommend() {
+        $('[data-role="change_show"]').unbind('click');
+        $('[data-role="change_show"]').click(function () {
+            var uid = $(this).attr('data-uid');
+            $.post(changerecommend_url, {}, function (msg) {
+                setTimeout(function () {
+                    $('[ data-role="follow_panel"]').empty();
+                    $('[data-role="follow_panel"]').append(msg.html);
+                    bandDoFollow();
+                    ucard();
+                }, 500);
+
+            });
+
+        });
+    }
+</script>

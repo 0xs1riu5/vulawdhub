@@ -1,0 +1,113 @@
+<extend name="Base/common"/>
+
+<block name="header">
+    <link href="__CSS__/findpeople.css" rel="stylesheet" type="text/css"/>
+    <include file="Public/_nav"/>
+</block>
+<block name="script">
+    <script src="__JS__/follow.js"></script>
+</block>
+<block name="body">
+    <div class="find">
+        <div class="find-left">
+
+            <include file="Public/top"/>
+            <div class="find-ident">
+                <div class="ident-title">
+                    <a href="{:U('People/Index/index')}" style="color:#666;">身份找人</a>
+                </div>
+                <div class="fenlei">
+
+                    <volist name="tag_list" id="ta">
+                        <div class="zhanzhang">{$ta.title}<i class="icon icon-angle-down"></i></div>
+                    </volist>
+                    <volist name="role_list" id="ro">
+                        <div class="kaifa"><a data-role="select_role" data-id="{$ro.id}" style="color:#666;">{$ro.title}</a></div>
+                    </volist>
+                    <div class="dropmenu">
+                        <div class="read">
+                            <form id="tag-select" action="{:U('People/Index/index')}" method="post">
+                                <input type="hidden" name="role" data-role="role-id" value="">
+                                <input type="hidden" name="tag" data-role="tag-id" value="">
+                                <volist name="tag_list" id="tag">
+                                    <div class="read-title">{$tag.title}</div>
+                                    <div class="read-content">
+                                        <volist name="tag['tag_list']" id="t">
+                                            <a data-role="select_tag" data-id="{$t.id}">{$t.title}</a>
+                                            <span>/</span>
+                                        </volist>
+                                    </div>
+                                </volist>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="containt">
+                <volist name="lists.data" id="vo">
+                    <div class="find-pannel">
+                        <div class="pannel-1">
+                            <div class="img">
+                                <a ucard="{$vo.uid}" href="{$vo.space_url}">
+                                    <img src="{$vo.avatar128}" alt="" style="width:80px;border-radius: 100%;">
+                                </a>
+                            </div>
+                            <div class="name">
+                                <a ucard="{$vo.uid}" href="{$vo.space_url}">{$vo.nickname|htmlspecialchars}</a>
+                            </div>
+                            <div class="find-wrap">
+                                <div class="jifen">积分 <span>{$vo.score1|int2str}</span></div>
+                                <!-- <div class="zantong">赞同 <span>2</span></div>-->
+                            </div>
+                        </div>
+                        <div class="pannel-2">
+                            <div class="fans">
+                                <div class="f1">粉丝</div>
+                                <div class="f2">{$vo.fans|int2str}</div>
+                            </div>
+                            <div class="focus">
+                                <div class="fo1">关注</div>
+                                <div class="fo2">{$vo.following|int2str}</div>
+                            </div>
+                        </div>
+                        <div class="pannel-3">
+                            <volist name="isfollow" id="fol">
+                                <if condition="$fol['uid'] eq $vo['uid']">
+                                    <if condition="$fol['is_follow'] eq 1">
+                                        <button class="box" data-role="unfollow" data-follow-who="{$fol['uid']}">已关注</button>
+                                        <else/>
+                                        <if condition="is_login() && $fol['uid'] != get_uid()">
+                                            <button class="box" data-role="follow" data-follow-who="{$fol['uid']}"><span>+</span>关注</button>
+                                            <else/>
+                                            <if condition="$fol['uid'] == get_uid()">
+                                                <p class="text-center">
+                                                    <a class="" disabled="disabled" style="font-size:16px;line-height: 80px;">
+                                                        {:L('_SELF_')}
+                                                    </a>
+                                                </p>
+                                            </if>
+                                            <if  condition="is_login() eq 0">
+                                                <button class="box" data-role="go-login"><span>+</span>关注</button>
+                                            </if>
+                                        </if>
+                                    </if>
+                                </if>
+                            </volist>
+                        </div>
+                    </div>
+                </volist>
+
+                <div class="pull-right">
+                    {$lists.html}
+                </div>
+            </div>
+            <if condition="$lists['count'] eq 0">
+                <div style="font-size:3em;padding:2em 0;color: #ccc;text-align: center">{:L('_NO_ONE_')}</div>
+            </if>
+        </div>
+        <include file="Public/right"/>
+
+    </div>
+
+</block>

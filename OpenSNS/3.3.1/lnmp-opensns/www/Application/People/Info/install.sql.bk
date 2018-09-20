@@ -1,0 +1,9 @@
+INSERT INTO `ocenter_menu` (`title`, `pid`, `sort`, `url`, `hide`, `tip`, `group`, `is_dev`) VALUES
+( '会员展示', 0, 22, 'People/config', 1, '', '', 0);
+
+set @tmp_id=0;
+select @tmp_id:= id from `ocenter_menu` where title = '会员展示';
+
+
+INSERT INTO `ocenter_menu` ( `title`, `pid`, `sort`, `url`, `hide`, `tip`, `group`, `is_dev`, `icon`) VALUES
+( '基本设置', @tmp_id, 0, 'People/config', 0, '', '配置', 0, '');

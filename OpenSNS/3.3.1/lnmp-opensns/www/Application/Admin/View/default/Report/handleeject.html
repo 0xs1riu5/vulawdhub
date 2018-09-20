@@ -1,0 +1,32 @@
+<!-- 模态框HTML -->
+<form class="ajax-form" method="post" action="{:addons_url('Report://Report/addReport')}">
+    <input type="hidden" name="type" value="{$param.type}">
+    <input type="hidden" name="data" value="{$param.data}">
+    <input type="hidden" name="url"  value="{$param.url}">
+    <div style="padding-bottom:45px">
+        <span class="col-md-2 pad0" style="font-size: 14px;height: 32px;padding-top: 2px">{:L("_REPORT_REASONS_")}{:L("_COLON_")}</span>
+    <span class="col-md-10 pad0">
+        <select data-role="select"  name="reason" class="chosen-select form-control" tabindex="-1">
+            <volist name="reason" id="vl">
+                <option value="{$vl}">{$vl}</option>
+            </volist>
+        </select></span>
+    </div>
+    <div>
+        <p><textarea class="form-control "  data-role="textarea" name="content" style="height: 6em;" placeholder="{:L("_DETAILED_DESCRIPTION_")}.."></textarea></p>
+    </div>
+
+    <div style="height: 40px;margin-left: 18px;width: 120px ">
+    <span>
+        <p class="pull-left" style="margin-right: 5px" >
+            <input type="submit" data-role="submitreport" value={:L("_DETERMINATION_WITH_DOUBLE_")} class="btn btn-primary send_box">
+        </p>
+    </span>
+    <span>
+        <p class="pull-left" style="margin-left: 5px;">
+
+            <input type="button" value={:L("_CANCEL_WITH_DOUBLE_")} class="btn btn-primary send_box" >
+        </p>
+    </span>
+    </div>
+</form>

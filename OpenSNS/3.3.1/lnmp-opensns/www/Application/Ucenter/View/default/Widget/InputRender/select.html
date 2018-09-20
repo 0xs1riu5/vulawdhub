@@ -1,0 +1,26 @@
+<eq name="type" value="personal">
+    <div class="form-group">
+        <label for="expand_{$field_id}" class="col-xs-2 control-label" style="text-align: right;">
+            <eq name="required" value="1"><span style="color: #FF0047;vertical-align: middle;">*&nbsp;&nbsp;</span></eq>{$field_name}
+        </label>
+
+        <div class="col-xs-6">
+            <select class="form-control" id="expand_{$field_id}" name="expand_{$field_id}">
+                <volist name="items" id="vl">
+                    <!--增加编辑扩展资料关联字段数据显示-->
+                    <option value="<eq name="vl.join" value="1">{$vl.id}<else/>{$vl.value}</eq>" {$vl.selected}>{$vl.value|htmlspecialchars}</option>
+                </volist>
+            </select>
+            <div class="clearfix"></div>
+            <neq name="input_tips" value=""><span class="input-tips">{$input_tips}</span></neq>
+        </div>
+    </div>
+    <else/>
+    <dt class="expandinfo-dt">
+        {$field_name}：
+    </dt>
+    <dd class="expandinfo-dd">
+        {$selected|htmlspecialchars}
+    </dd>
+</eq>
+<div class="clearfix"></div>

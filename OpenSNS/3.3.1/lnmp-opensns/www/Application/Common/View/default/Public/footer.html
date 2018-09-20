@@ -1,0 +1,62 @@
+<div class="next-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 about-us">
+                <p class="p-head">关于我们</p>
+                {:modC('ABOUT_US',L('_NOT_SET_NOW_'),'Config')}
+            </div>
+            <div class="col-xs-4 text-center">
+                <p style="margin-top: 5px">
+                    <img src="__PUBLIC__/images/code.png" alt="">
+                </p>
+            </div>
+            <div class="col-xs-2 friend">
+                <p class="p-head">友情链接</p>
+                {:W('Common/SuperLinks/superLinks')}
+            </div>
+            <div class="col-xs-2 comp">
+                <p class="p-head">公司</p>
+                {:modC('COMPANY', L('_NOT_SET_NOW_'), 'Config')}
+            </div>
+        </div>
+        <div class="row last-box text-center">
+            <p>
+                <span>浙ICP备12042711号-5 <a href="http://www.opensns.cn" target="_blank">Powered by OpenSNS</a></span>
+                <span>{:modC('COPY_RIGHT',L('_NOT_SET_NOW_'),'Config')}</span>
+            </p>
+            {$count_code}
+        </div>
+    </div>
+</div>
+
+<include file="Public/js"/>
+
+<block name="script"><!-- 用于加载js代码 --></block>
+<script>
+    $(document).ready(function () {
+        $('[data-role="add_more"]').click(function () {
+            $(".footer-bar").fadeToggle();
+            $("#add_more").hide();
+        });
+        $('[data-role="close_more"]').click(function () {
+            $(".footer-bar").fadeToggle();
+            $("#add_more").show("slow");
+        });
+    });
+</script>
+<!-- 页面footer钩子，一般用于加载插件JS文件和JS代码 -->
+{:hook('pageFooter', 'widget')}
+<!-- 调用全站公告部件-->
+{:W('Common/Announce/render')}
+
+<!-- 调用消息部件-->
+{:W('Common/Message/render')}
+<div class="hidden"><!-- 用于加载统计代码等隐藏元素 -->
+    {$count_code}
+    <block name="hidden"></block>
+</div>
+
+<script>
+    // VERSION_NAME 替换为项目的版本，VERSION_CODE 替换为项目的子版本
+  //  new Bugtags('d6023daa6c7467634636c87b3f16213e','8.12','VERSION_CODE');
+</script>

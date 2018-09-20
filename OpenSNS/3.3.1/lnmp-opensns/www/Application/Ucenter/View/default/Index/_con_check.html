@@ -1,0 +1,62 @@
+<div id="content" class="rank-list-block">
+    <volist name="user_list" id="vo" mod="2">
+        <p class="rank-lists " <eq name="mod" value="0">style="background-color: #f5f5f5"</eq><eq name="mod" value="1">style="background-color: #fafafa"</eq> >
+            {$vo.ranking}
+            <span class="nickname"><a href="{:U('Ucenter/Index/index', array('uid' => $vo['uid']))}" class="face"><img src="{$vo.avatar32}" class="avatar-img"></a><a href="{:U('Ucenter/Index/index', array('uid' => $vo['uid']))}">{$vo.nickname}</a></span>
+            <span class="value c9">{$vo.con_check}</span>
+        </p>
+    </volist>
+</div>
+<div id="page_navigation"></div>
+<input type="hidden" id="current_page" />
+<input type="hidden" id="show_per_page" />
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var show_per_page = 10;
+        var number_of_items = $('#content').children().size();
+        var number_of_pages = Math.ceil(number_of_items/show_per_page);
+
+        $('#current_page').val(0);
+        $('#show_per_page').val(show_per_page);
+
+        var navigation_html = '<a class="previous_link" href="javascript:previous();"><< </a>';
+        var current_link = 0;
+        while(number_of_pages > current_link){
+            navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
+            current_link++;
+        }
+        navigation_html += '<a class="next_link" href="javascript:next();"> >></a>';
+
+        $('#page_navigation').html(navigation_html);
+        $('#page_navigation .page_link:first').addClass('active_page');
+        $('#content').children().css('display', 'none');
+        $('#content').children().slice(0, show_per_page).css('display', 'block');
+    });
+
+    function previous(){
+        new_page = parseInt($('#current_page').val()) - 1;
+
+        if($('.active_page').prev('.page_link').length==true){
+            go_to_page(new_page);
+        }
+    }
+
+    function next(){
+        new_page = parseInt($('#current_page').val()) + 1;
+
+        if($('.active_page').next('.page_link').length==true){
+            go_to_page(new_page);
+        }
+    }
+    function go_to_page(page_num){
+        var show_per_page = parseInt($('#show_per_page').val());
+
+        start_from = page_num * show_per_page;
+        end_on = start_from + show_per_page;
+
+        $('#content').children().css('display', 'none').slice(start_from, end_on).css('display', 'block');
+        $('.page_link[longdesc=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
+        $('#current_page').val(page_num);
+    }
+</script>

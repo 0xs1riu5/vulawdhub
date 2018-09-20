@@ -1,0 +1,76 @@
+
+
+<eq name="type" value="personal">
+    <div class="form-group">
+        <label for="expand_{$field_id}" class="col-xs-2 control-label" style="text-align: right;">
+            <eq name="required" value="1"><span style="color: #FF0047;vertical-align: middle;">*&nbsp;&nbsp;</span></eq>{$field_name}
+        </label>
+        <php>
+            $importDatetimePicker = true;
+            //默认为当前时间
+            if(!$field_data){
+            $field_data = date("Y-m-d");
+            }
+        </php>
+        <div class="col-xs-6">
+            <input class="time form-control input-group date form_datetime col-xs-5" id="expand_{$field_id}" name="expand_{$field_id}" size="16" style="position: relative;display: block;" type="text" value="{$field_data}"  placeholder="{:L('_TIME_SELECT_')}" >
+            <neq name="input_tips" value=""> <span class="help-block">{$input_tips}</span></neq>
+        </div>
+    </div>
+    <else/>
+    <dt class="expandinfo-dt">
+        {$field_name}：
+    </dt>
+
+    <dd class="expandinfo-dd">
+        <if condition="($field_data neq null)&&($field_data neq '')">
+            {$field_data}
+            <else/>
+            {:L('')}        </if>
+    </dd>
+</eq>
+<div class="clearfix"></div>
+
+<if condition="$importDatetimePicker">
+    <link href="__ZUI__/lib/datetimepicker/datetimepicker.min.css" rel="stylesheet" type="text/css">
+    <script src="__ZUI__/lib/datetimepicker/datetimepicker.min.js"></script>
+    <script>
+        /*年月日，小时，分选择
+        $('.time').datetimepicker({
+            //language:  'fr',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: 'yyyy-mm-dd hh:ii'
+        });*/
+        $('.time').datetimepicker({
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0,
+            format: 'yyyy-mm-dd'
+        });
+        /*小时，分选择
+        $('.time').datetimepicker({
+            language:  'fr',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 1,
+            minView: 0,
+            maxView: 1,
+            forceParse: 0,
+            format: 'yyyy-mm-dd'
+        });*/
+
+    </script>
+</if>

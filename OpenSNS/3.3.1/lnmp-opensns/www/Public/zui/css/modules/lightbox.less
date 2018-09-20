@@ -1,0 +1,140 @@
+.modal-lightbox
+{
+  .modal-dialog
+  {
+    border: none;
+    position: relative;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: none;
+    max-width: 100%;
+    max-height: 100%;
+    margin-bottom: 0;
+    .transition();
+
+    &:hover,
+    &:focus
+    {
+      .close
+      {
+        .opacity(1);
+      }
+
+      .controller
+      {
+        outline: none;
+        .opacity(.9);
+        > .icon
+        {
+          box-shadow:1px 1px 16px rgba(0, 0, 0, .5);
+        }
+      }
+    }
+  }
+
+  .close
+  {
+    display: block;
+    font-size: 14px;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    background-color: #333;
+    position: absolute;
+    right: -13px;
+    top: -15px;
+    color: #fff;
+    border: 1px solid #fff;
+    -webkit-radius:15px;
+    -moz-border-radius:15px;
+    border-radius:15px;
+    .opacity(.9);
+    -webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, .5);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .5);
+  }
+
+  &.lightbox-full .close {right: 10px; top: 10px;}
+
+  .controller
+  {
+    display: none;
+    height: 100%;
+    line-height: 100%;
+    top: 0;
+    position: absolute;
+    cursor: pointer;
+    padding: 10px 20px;
+    color: #fff;
+    background:none;
+    border: none;
+    .opacity(.05);
+    .transition();
+
+    &.show {display: block}
+
+    > .icon
+    {
+      display: inline-block;
+      -webkit-radius:25px;
+      -moz-border-radius:25px;
+      border-radius:25px;
+      background-color: #333;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      border: 2px solid #fff;
+
+      &:before {font-size: 28px;}
+    }
+
+    &:hover
+    {
+      .opacity(1);
+    }
+
+    &.prev
+    {
+      left: 0;
+    }
+
+    &.next
+    {
+      right: 0;
+    }
+  }
+
+  .caption {display: none}
+
+  &.lightbox-with-caption
+  {
+      .caption
+      {
+          display: block;
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          padding: 10px 15px;
+          color: #fff;
+          background: rgba(0, 0, 0, .15);
+          text-shadow: 1px 1px 0 rgba(0, 0, 0, .3);
+          opacity: .5;
+          text-align: center;
+          .transition();
+      }
+
+      .modal-dialog:hover .caption {opacity: 1; background: rgba(0, 0, 0, .6);}
+  }
+}
+.lightbox-img
+{
+  width: inherit;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  padding: 0;
+  margin: 0 auto;
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  cursor: pointer;
+  .transition();
+}

@@ -1,0 +1,215 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>行为日志</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>{:L("_BEHAVIOR_LOG_")}&nbsp;&nbsp;&nbsp;<sub style="color: red">{:L("_THE_LONGTERM_ACCUMULATION_OF_BEHAVIOR_LOG_WILL_LEAD_TO_THE_WHOLE_SYSTEM_PERFORMANCE_DEGRADATION_")}</sub></h2>
+	</div>
+    <div class="clearfix">
+        <div class="col-xs-8 pd0">
+                <button class="btn ajax-get confirm" url="{:U('clear')}">{:L("_CLEARANCE_WITH_SPACE_")}</button>
+                <button class="btn ajax-post confirm" target-form="ids" url="{:U('remove')}">{:L("_DELETE_WITH_SPACE_")}</button>
+            <button class="btn select">{:L("_SCREEN_")}</button>
+            <button class="btn" data-role="csv" data-url="{:U('admin/action/csv')}">
+                {:L("_EXPORT_CSV_")}
+            </button>
+        </div>
+
+        <div class="col-xs-4">
+            <div class="search-form  pull-right">
+                <div class="input-group" style="width: 200px" >
+                    <input type="text" name="uid" class="search-input form-control" value="{:I('get.uid','','intval')}"
+                           placeholder={:L("_PLEASE_ENTER_THE_USER_UID_WITH_DOUBLE_")}>
+                    <span class="input-group-btn">  <a class="btn btn-default" href="javascript:;" id="search"
+                                                       url="{:U('Action/actionlog')}"><i
+                            class="fa fa-search"></i></a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<!-- 数据列表 -->
+	<div class="data-table with-padding adminlte-os-table">
+	<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		<th class="">{:L("_NO_")}</th>
+		<th class="">{:L("_BEHAVIOR_NAME_")}</th>
+
+		<th class="">{:L("_EXECUTIVE_")}</th>
+        <th>执行者IP</th>
+        <th class="">{:L("_LOG_CONTENT_")}</th>
+		<th class="">{:L("_EXECUTION_TIME_")}</th>
+		<th class="">{:L("_OPERATION_")}</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td><input class="ids" type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+			<td>{$vo.id} </td>
+			<td>{:get_action($vo['action_id'],'title')}</td>
+			<td><a href="{:U('Action/actionlog',array('uid'=>$vo['user_id']))}">{:get_nickname($vo['user_id'])}</a></td>
+            <td>{$vo.ip}</td>
+            <td>{$vo['remark']}</td>
+			<td><span>{$vo.create_time|time_format}</span></td>
+
+			<td><a href="{:U('Action/edit?id='.$vo['id'])}">{:L("_DETAILED_")}</a>
+				<a class="confirm ajax-get" href="{:U('Action/remove?ids='.$vo['id'])}">{:L("_DELETE_")}</a>
+                </td>
+		</tr>
+		</volist>
+		<else/>
+		<td colspan="7" class="text-center"> aOh!{:L("_THERE_IS_NO_CONTENT_")} </td>
+		</notempty>
+	</tbody>
+    </table>
+	</div>
+	<!-- 分页 -->
+	<div class="with-padding">{$_page}</div>
+	<!-- /分页-->
+
+</block>
+<block name="modal">
+    <div class="modal fade" id="select">
+        <div class="modal-dialog modal-sm" style="margin-top: 198px;width: 528px;">
+            <div class="modal-content" style="height: 298px">
+                <link href="__BTS__/plugins/datetimepicker/datetimepicker.css" rel="stylesheet" type="text/css">
+                <script type="text/javascript" src="__BTS__/plugins/datetimepicker/datetimepicker.min.js"></script>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">{:L('_CLOSE_')}</span></button>
+                    <h4 class="modal-title" id="myModalLabel">行为日志筛选</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="ajax-form" method="post" action="{:U('admin/action/actionLog')}">
+
+                        <div style="line-height: 45px;margin-left: 15px">
+                            <label>根据时间筛选</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <input type="text" id="sTime" name="sTime" class="time_d form-control form_check" readonly check-type="Date" value="" placeholder="开始时间" required/>
+                        </div>
+
+                        <div class="col-xs-5">
+                            <input type="text" id="eTime" name="eTime" class="time_d form-control form_check" readonly check-type="Date"  value="" placeholder="截止时间" required/>
+                        </div>
+
+                        <div style="line-height: 45px;margin-left: 15px">
+                            <label>根据行为筛选</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <select name="select">
+                                <option></option>
+                                <volist name="action_list" id="vo">
+                                    <option value="{$vo.id}">{$vo.title}</option>
+                                </volist>
+                            </select>
+                        </div>
+
+                        <div style="height: 40px;margin-left: 18px;width: 120px ">
+                            <span><p class="pull-left" style="margin-right: 5px">
+                                <input type="submit" data-role="submitscreen" value="确定" class="btn btn-primary send_box">
+                            </p></span>
+
+                            <span><p class="pull-left" style="margin-left: 5px;">
+                                <input type="button" value="取消" class="btn btn-primary send_box" data-dismiss="modal">
+                            </p></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('.time').datetimepicker({
+            language:'zh-CN',
+            weekStart:1,
+            todayBtn:1,
+            autoclose:1,
+            todayHighlight:1,
+            startView:2,
+            minView:0,
+            forceParse:0,
+            format: 'yyyy-mm-dd hh:ii'
+        });
+
+        $('.time_d').datetimepicker({
+            language:'zh-CN',
+            weekStart:1,
+            todayBtn:1,
+            autoclose:1,
+            todayHighlight:1,
+            startView:2,
+            minView:0,
+            forceParse:0,
+            format: 'yyyy-mm-dd hh:ii'
+        });
+    </script>
+</block>
+<block name="script">
+<script type="text/javascript">
+$(function(){
+    $("#search").click(function () {
+        var url = $(this).attr('url');
+        var query = $('.search-form').find('input').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+        query = query.replace(/^&/g, '');
+        if (url.indexOf('?') > 0) {
+            url += '&' + query;
+        } else {
+            url += '?' + query;
+        }
+        window.location.href = url;
+    });
+
+    $("#action_add").click(function(){
+		window.location.href = $(this).attr('url');
+	});
+    //回车搜索
+    $(".search-input").keyup(function (e) {
+        if (e.keyCode === 13) {
+            $("#search").click();
+            return false;
+        }
+    });
+
+    //模态框
+    $('.select').click(function () {
+        $('#select').modal();
+    });
+
+    //导出csv
+    $('[data-role="csv"]').click(function(){
+        var data_url=$(this).attr('data-url');
+        var form=$('.ids');
+        if (form.get(0) == undefined) {
+        } else if (form.get(0).nodeName == 'FORM') {
+            query = form.serialize();
+        } else if (form.get(0).nodeName == 'INPUT' || form.get(0).nodeName == 'SELECT' || form.get(0).nodeName == 'TEXTAREA') {
+            query = form.serialize();
+        } else {
+            query = form.find('input,select,textarea').serialize();
+        }
+        data_url+='&'+query;
+        window.open(data_url);
+    });
+})
+</script>
+</block>

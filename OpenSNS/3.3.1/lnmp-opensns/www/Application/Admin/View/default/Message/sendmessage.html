@@ -1,0 +1,109 @@
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.0.3.min.js"></script>
+
+<div>
+    <style>
+        .modal-dialog {
+            width: 600px;
+        }
+
+        .select_box_this {
+            margin: 10px 0 20px;
+            width: 100%;
+            text-align: right;
+            font-size: 16px;
+        }
+
+        .select_box_this .form-group {
+            margin-top: 5px;;
+        }
+    </style>
+    <form id="migration" action="__SELF__" method="post" class="ajax-form">
+
+        <php>if(empty($users)){</php>
+        <div>
+            <label><input type="checkbox" value="systemMessage" name="sendType[]" checked>系统消息</label>&nbsp;&nbsp;
+            <label><input type="checkbox" value="systemEmail" name="sendType[]">邮件</label>&nbsp;&nbsp;
+            <label><input type="checkbox" value="mobileMessage" name="sendType[]">手机短信</label><br/>
+           {:L("_USER_GROUP:_")}{:L("_COLON_")}
+            <volist name="groups" id="one_group">
+                <label style="margin-right: 5px">
+                    <input type="checkbox" name="user_group[]" value="{$one_group['id']}"
+                    <if condition="$aUserGroup eq $one_group['id'] or $aUserGroup eq 0">checked</if>
+                    style="cursor:pointer;">
+                    {$one_group['value']}
+                </label>
+            </volist>
+        </div>
+        <div>
+           {:L("_USER_IDENTITY_")}{:L("_COLON_")}
+            <volist name="roles" id="one_role">
+                <label style="margin-right: 5px">
+                    <input type="checkbox" name="user_role[]" value="{$one_role['id']}"
+                    <if condition="$aRole eq $one_role['id'] or $aRole eq 0 ">checked</if>
+                    style="cursor:pointer;">
+                    {$one_role['value']}
+                </label>
+            </volist>
+
+        </div>
+        <php>}else{</php>
+
+        <div>
+            <label><input type="checkbox" value="systemMessage" name="sendType[]" checked>系统消息</label>&nbsp;&nbsp;
+            <label><input type="checkbox" value="systemEmail" name="sendType[]">邮件</label>&nbsp;&nbsp;
+            <label><input type="checkbox" value="mobileMessage" name="sendType[]">手机短信</label><br/>
+           {:L("_USER_")}{:L("_COLON_")}
+            <volist name="users" id="one_user">
+                <label style="margin-right: 10px">
+                       [{$one_user['uid']}]{$one_user['nickname']}
+                </label>
+            </volist>
+        <input type="hidden" name="uids" value="{$uids}">
+        </div>
+
+        <php>}</php>
+        <div class="form-group clearfix">
+            <input type="text" name="title" class="form-control" placeholder={:L("_THE_TITLE_OF_AN_INCOMING_MESSAGE_WITH_DOUBLE_")}>
+        </div>
+
+        <div class="form-group clearfix">
+                <input type="text" name="url" class="form-control " placeholder={:L("_URL_LINK_TO_ENTER_A_MESSAGE_WITH_DOUBLE_")}>
+        </div>
+
+
+        <div class="form-group">
+            {:W('Common/Ueditor/editor',array('content','content','','100%','200px','','',array('is_load_script'=>1,'zIndex'=>1050)))}
+
+        </div>
+
+
+        <div style="width: 100%;text-align: center;">
+            <a class="btn btn-primary" data-role="submit">{:L("_SEND_OUT_")}</a>
+            <a onclick="$('.close').click();" class="btn btn-default">{:L("_CANCEL_")}</a>
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        $('[data-role="submit"]').click(function () {
+            var query = $('#migration').serialize();
+            var url = $('#migration').attr('action');
+            $.post(url, query, function (msg) {
+                if (msg.status) {
+                    toast.success({:L('_MESSAGE_SENDING_SUCCESS_WITH_SINGLE_')});
+                    setTimeout(function () {
+                        location.reload()
+                       // window.location.href = msg.url;
+                    }, 1500);
+                } else {
+                    handleAjax(msg);
+                }
+            }, 'json');
+        });
+    });
+</script>
+<script type="text/javascript" src="__JS__/common.js"></script>
+<script type="text/javascript" src="__JS__/com/com.toast.class.js"></script>
+<script type="text/javascript" src="__ZUI__/js/zui.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor/ueditor.all.min.js"></script>

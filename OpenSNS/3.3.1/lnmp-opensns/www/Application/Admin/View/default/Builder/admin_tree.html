@@ -1,0 +1,117 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>{$title}</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <!-- 标题 -->
+    <div class="main-title">
+        <h2>
+            {$title|htmlspecialchars}            <if condition="$suggest"><span style="font-size: 14px;">（{$suggest|htmlspecialchars}）</span></if>
+        </h2>
+    </div>
+
+
+    <div class="with-padding">
+
+    <!-- 表格列表-->
+    <div class="tb-unit posr">
+        <div class="tb-unit-bar">
+            <volist name="buttonList" id="button">
+                <{$button.tag} {$button.attr} style="margin-right:5px;">{$button.title|htmlspecialchars}</{$button.tag}>
+            </volist>
+        </div>
+        <div class="category" style="padding: 5px;padding-bottom: 10px;">
+            <div class="hd clearfix">
+                <div class="fold">{:L("_FOLD_")}</div>
+                <div class="order">{:L("_SORT_")}</div>
+                <volist name="keyList" id="field">
+                    <th>{$field.title|htmlspecialchars}</th>
+                </volist>
+                <div class="name">{:L("_NAME_")}</div>
+            </div>
+            <php>
+
+                $tree_list = new Admin\Builder\AdminTreeListBuilder();
+                $tree_list->setLevel($level);
+                $tree_list->setModel($model);
+                $tree_list->tree($tree);
+            </php>
+        </div>
+    </div>
+    <!-- /表格列表-->
+    <!-- 分页 -->
+    <div class="page">
+        {$pagination}
+    </div>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script type="text/javascript">
+        (function($){
+            /* 分类展开收起 */
+            $(".category dd").prev().find(".fold i").addClass("icon-unfold")
+                    .click(function(){
+                        var self = $(this);
+                        if(self.hasClass("icon-unfold")){
+                            self.closest("dt").next().slideUp("fast", function(){
+                                self.removeClass("icon-unfold").addClass("icon-fold");
+                            });
+                        } else {
+                            self.closest("dt").next().slideDown("fast", function(){
+                                self.removeClass("icon-fold").addClass("icon-unfold");
+                            });
+                        }
+                    });
+
+            /* 三级分类删除新增按钮 */
+            $(".category dd dd .add-sub").remove();
+
+            /* 实时更新分类信息 */
+            $(".category")
+                    .on("submit", "form", function(){
+                        var self = $(this);
+                        $.post(
+                                self.attr("action"),
+                                self.serialize(),
+                                function(data){
+                                    /* 提示信息 */
+                                    var name = data.status ? "success" : "error", msg;
+                                    msg = self.find(".msg").addClass(name).text(data.info)
+                                            .css("display", "inline-block");
+                                    setTimeout(function(){
+                                        msg.fadeOut(function(){
+                                            msg.text("").removeClass(name);
+                                        });
+                                    }, 1000);
+                                },
+                                "json"
+                        );
+                        return false;
+                    })
+                    .on("focus","input",function(){
+                        $(this).data('param',$(this).closest("form").serialize());
+
+                    })
+                    .on("blur", "input", function(){
+                        if($(this).data('param')!=$(this).closest("form").serialize()){
+                            $(this).closest("form").submit();
+                        }
+                    });
+        })(jQuery);
+    </script>
+</block>

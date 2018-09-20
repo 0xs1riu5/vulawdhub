@@ -1,0 +1,14 @@
+<if condition="is_login() && $uid != get_uid()">
+
+    <p class="text-center">
+        {:W('Common/Follow/follow',array('follow_who'=>$uid))}
+    </p>
+    <else/>
+    <if condition="$uid == get_uid()">
+        <p class="text-center">
+            <a class="btn btn-primary" disabled="disabled">
+                {:L('_SELF_')}
+            </a>
+        </p>
+    </if>
+</if>

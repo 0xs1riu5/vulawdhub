@@ -1,0 +1,88 @@
+<extend name="Public/base" />
+<block name="body">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<a href="{:U('Admin/Index/index')}">首页  </a>
+				<i class="fa fa-circle"></i>
+			</li>
+			<li>
+				<span>权限管理</span>
+			</li>
+		</ul>
+		<div class="page-toolbar">
+			<include file="Public/_addTo"/>
+		</div>
+	</div>
+
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>{:L('_AUTH_MANAGER_')}</h2>
+	</div>
+
+    <div class="tools auth-botton with-padding">
+        <a id="add-group" class="btn btn-default" href="{:U('createGroup')}">{:L('_ADD_WITH_SPACE_')}</a>
+        <a url="{:U('changestatus',array('method'=>'resumeGroup'))}" class="btn btn-default ajax-post" target-form="ids" >{:L('_ENABLE_WITH_SPACE_')}</a>
+        <a url="{:U('changestatus',array('method'=>'forbidGroup'))}" class="btn btn-default ajax-post" target-form="ids" >{:L('_DISABLE_WITH_SPACE_')}</a>
+        <a  url="{:U('changestatus',array('method'=>'deleteGroup'))}" class="btn ajax-post confirm btn-danger" target-form="ids" >{:L('_DELETE_WITH_SPACE_')}</a>
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        <a class="btn" href="{:U('Admin/menu/index')}">{:L('_MENU_BG_MANAGER_')}</a>
+        <a class="btn btn-success" href="{:U('Admin/menu/add')}">{:L('_MENU_NEW_')}</a>
+        <a class="btn" href="{:U('addNode')}">{:L('_AUTH_FG_NEW_')}</a>
+    </div>
+	<!-- 数据列表 -->
+	<div class="data-table with-padding">
+	<table class="table table-bordered table-striped ">
+    <thead>
+        <tr>
+		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		<th class="">权限组</th>
+		<th class="">描述</th>
+        <th class="">有效期</th>
+		<th class="">授权</th>
+		<th class="">状态</th>
+		<th class="">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}" /></td>
+			<td><a href="{:U('AuthManager/editgroup?id='.$vo['id'])}">{$vo.title}</a> </td>
+			<td><span>{:mb_strimwidth($vo['description'],0,60,"...","utf-8")}</span></td>
+            <td><span>{:$vo['end_time']==2000000000?'永久':time_format($vo['end_time'])}</span></td>
+			<td><a class=" btn btn-danger btn-xs" href="{:U('AuthManager/access?group_name='.$vo['title'].'&group_id='.$vo['id'])}" >后台权限管理</a>
+                <a class=" btn btn-success btn-xs" href="{:U('AuthManager/accessuser?group_name='.$vo['title'].'&group_id='.$vo['id'])}" >前台权限管理</a>
+			<a class=" btn btn-warning btn-xs" href="{:U('AuthManager/user?group_name='.$vo['title'].'&group_id='.$vo['id'])}" >授权成员列表</a>
+			</td>
+			<td>{$vo.status_text}</td>
+			<td><eq name="vo.status" value="1">
+				<a href="{:U('AuthManager/changeStatus?method=forbidGroup&id='.$vo['id'])}" class="ajax-get">禁用</a>
+				<else/>
+				<a href="{:U('AuthManager/changeStatus?method=resumeGroup&id='.$vo['id'])}" class="ajax-get">启用</a>
+				</eq>
+<!--修改内容开始-->
+				<a href="{:U('AuthManager/changeStatus?method=deleteGroup&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+<!--修改内容结束-->
+                </td>
+		</tr>
+		</volist>
+		<else/>
+		<td colspan="6" class="text-center"> {:L('_ADMIN_USER_EMPTY_')} </td>
+		</notempty>
+	</tbody>
+    </table>
+
+	</div>
+    <div class="page">
+        {$_page}
+    </div>
+</block>
+
+<block name="script">
+<script type="text/javascript" charset="utf-8">
+    //导航高亮
+    highlight_subnav('{:U('AuthManager/index')}');
+</script>
+</block>

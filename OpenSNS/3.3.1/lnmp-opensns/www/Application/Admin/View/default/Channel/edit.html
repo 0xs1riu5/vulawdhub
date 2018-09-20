@@ -1,0 +1,90 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<div class="main-title">
+		<h2>
+			{$info['id']?L('_EDIT_WITH_SINGLE_'):L('_NEW_WITH_SINGLE_')}{:L("_NAVIGATION_")}
+			<notempty name="pid">
+				[&nbsp;{:L("_FATHER_NAVIGATION_")}{:L("_COLON_")}<a href="{:U('index','pid='.$pid)}">{$parent.title}</a>&nbsp;]
+			</notempty>
+		</h2>
+	</div>
+	<form action="{:U()}" method="post" class="form-horizontal">
+        <div class="with-padding">
+            <div class="form-item">
+                <label class="item-label">{:L("_NAVIGATION_TITLE_")}<span class="check-tips">{:L("_USED_TO_DISPLAY_TEXT_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large form-control form-input-width" name="title" value="{$info.title|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_NAVIGATION_CONNECTION_")}<span class="check-tips">{:L("_USED_TO_REVERSE_URL_")}，{:L("_SUPPORT_WITH_HTTP_")}{:L("_L_OR_U_FUNCTION_PARAMETER_FORMAT_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large form-control form-input-width" name="url" value="{$info.url|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_FATHER_NAVIGATION_")}<span class="check-tips">{:L("_ONLY_TWO_LEVEL_")}</span></label>
+                <div class="controls">
+                    <select name="pid" class="form-control form-select-size">
+                        <option <empty name="pid" > selected</empty>value="0">{:L("_TOP_MENU_")}</option>
+                        <volist name="pnav" id="p">
+                            <option <eq name="p.id" value="$pid" >selected</eq> value="{$p.id}">{$p.title}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_NEW_WINDOW_OPENS_")}<span class="check-tips">{:L("_WHETHER_THE_NEW_WINDOW_OPENS_THE_LINK_")}</span></label>
+                <div class="controls">
+                    <select name="target" class="form-control form-select-size">
+                        <option value="0" >否</option>
+                        <option value="1"  <eq  name="info.target" value="1">selected</eq>>是</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_ICON_")}<span class="check-tips">{:L("_ENTER_ICON_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large form-control form-input-width" name="icon" value="{$info.icon|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_PRIORITY_")}<span class="check-tips">{:L("_NAVIGATION_DISPLAY_ORDER_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-small form-control form-input-width" name="sort" value="{$info.sort|default='1'}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_TEXT_COLOR_")}<span class="check-tips">{:L("_THE_UPPER_RIGHT_CORNER_OF_THE_LOGO_COLOR_SUPPORTS_ALL_KINDS_OF_CSS_REPRESENTATION_")}）</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-small form-control form-input-width" name="color" value="{$info.color}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_MARK_POINT_COLOR_")}<span class="check-tips">{:L("_THE_UPPER_RIGHT_CORNER_OF_THE_LOGO_COLOR_SUPPORTS_ALL_KINDS_OF_CSS_REPRESENTATION_")}）</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-small form-control form-input-width" name="band_color" value="{$info.band_color}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_MARK_POINT_")}<span class="check-tips">{:L("_THE_UPPER_RIGHT_CORNER_OF_THE_LOGO_NOT_TOO_LONG_NOT_AUTOMATICALLY_HIDDEN_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-small form-control form-input-width" name="band_text" value="{$info.band_text}">
+                </div>
+            </div>
+        </div>
+
+		<div class="form-item with-padding">
+			<input type="hidden" name="id" value="{$info.id|default=''}">
+			<button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+			<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+		</div>
+	</form>
+</block>
+<block name="script">
+<script type="text/javascript" charset="utf-8">
+	//导航高亮
+	highlight_subnav('{:U('index')}');
+</script>
+</block>

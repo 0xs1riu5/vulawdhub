@@ -1,0 +1,170 @@
+<extend name="Public/base"/>
+
+<block name="script">
+    <script type="text/javascript" src="__JS__/highcharts.js"></script>
+</block>
+<block name="body">
+    <include file="_top_nav"/>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat blue">
+                <div class="visual">
+                    <i class="fa fa-comments"></i>
+                </div>
+                <div class="details">
+                    <div class="number"> +
+                        <span data-counter="counterup" data-value="{$count.today_action_log}">{$count.today_action_log}</span>
+                    </div>
+                    <div class="desc"> 今日新用户行为</div>
+                </div>
+                <a class="more" href="{:U('action/actionlog')}"> 查看更多
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat red">
+                <div class="visual">
+                    <i class="fa fa-bar-chart-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number"> +
+                        <span data-counter="counterup" data-value="{$count.today_user}">{$count.today_user}</span></div>
+                    <div class="desc">今日新增用户数</div>
+                </div>
+                <a class="more" href="{:U('user/index')}"> 查看更多
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat purple">
+                <div class="visual">
+                    <i class="fa fa-globe"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="{$count.total_user}">{$count.total_user}</span></div>
+                    <div class="desc"> 总用户数</div>
+                </div>
+                <a class="more" href="{:U('user/index')}"> 查看更多
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat purple">
+                <div class="visual">
+                    <i class="fa fa-globe"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="{$count.now_inline}">{$count.now_inline}</span></div>
+                    <div class="desc"> 当前在线</div>
+                </div>
+                <a class="more" href="{:U('count/nowUserList')}">查看列表（10分钟内发起过请求视为在线）
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">最近{$count['count_day']}天用户增长数</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#settingCount">
+                    <i class="icon-settings"></i>
+                    <!--设置-->
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+            </div>
+        </div>
+        <div class="box-body">
+            <div id="myChart" height="400"></div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <script>
+        $('#main-content').css('left', 0);
+        $(function () {
+            $('#myChart').highcharts({
+                chart: {
+                    type: "spline",
+                    style: {
+                        fontFamily: '"Microsoft Yahei", "宋体"'
+                    }
+                },
+                title: {
+                    text: "{:L('_USER_INCREASE_RECENT_',array('count_day'=>$count['count_day']))}",
+                    x: -20 //center
+                },
+                xAxis: {
+                    categories: eval('{$count.last_day.days}'),
+                    title: {
+                        text: "{:L('_MEMBER_REG_TODAY_')}",
+                        enabled: false
+                    }
+                },
+                yAxis: {
+                    title: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    verticalAlign: 'middle',
+                    borderWidth: 0,
+                    enabled: false
+                },
+                series: [
+                    {
+                        name: "{:L('_MEMBER_REG_TODAY_')}",
+                        data: eval('{$count.last_day.data}'),
+                        enable: true
+                    }
+                ], credits: {enabled: false}
+            });
+        });
+
+
+    </script>
+    {:hook('adminRightBtn', array())}
+</block>
+<block name="modal">
+    {:hook('adminIndexModal', array())}
+    <div class="modal fade" id="settingCount">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">{:L('_CLOSE_')}</span></button>
+                    <h4 class="modal-title">{:L('_STATISTICS_SET_')}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="with-padding">
+                        <label>{:L('_DISPLAY_DAYS_DEFAULT_')} </label><input class="form-control" name="count_day"
+                                                                             value="{$count.count_day}">
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn " data-role="saveCountSetting">
+                        <i class="icon-ok"></i> {:L('_SAVE_')}
+                    </button>
+                    <button class="btn " data-dismiss="modal">
+                        <i class="icon-remove"></i> {:L('_CANCEL_')}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('[data-role=saveCountSetting]').click(function () {
+            $.post("__SELF__", {count_day: $('[name=count_day]').val()}, function (msg) {
+                handleAjax(msg);
+            });
+        })
+    </script>
+</block>

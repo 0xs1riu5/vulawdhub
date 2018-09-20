@@ -1,0 +1,33 @@
+<!--会话列表start-->
+<volist name="message_session_list" id="one_message_session">
+    <li class="session2">
+        <a data-role="open-message-list" data-type="{$one_message_session.type}">
+            <div class="message-s">
+                <div class="row">
+                    <span class="title pull-right">{$one_message_session.detail.title}
+                        <gt name="one_message_session.count" value="0">
+                            <span class="unread-num">{$one_message_session.count}</span>
+                        </gt>
+                    </span>
+                </div>
+                <div class="row ">
+                    <div class=" col-xs-3" style="padding-right: 0">
+                        <img class="img-wrap" src="{$one_message_session.detail.logo}" alt="" title="{$one_message_session.detail.title}">
+                    </div>
+                    <div class="col-xs-9 info text-more">
+                        {$one_message_session.last_message.tip|default='还没有消息哦~~'}
+                    </div>
+                </div>
+                <div class="row text-right time">
+                    {$one_message_session.last_message.create_time|time_format}
+                </div>
+            </div>
+        </a>
+    </li>
+</volist>
+<!--会话列表end-->
+<script>
+    $(function () {
+        message_session.init_message_session();
+    });
+</script>

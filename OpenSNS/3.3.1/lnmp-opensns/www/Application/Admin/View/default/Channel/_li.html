@@ -1,0 +1,82 @@
+<li class="clearfix pLi">
+    <input name="nav[1][sort][]" class="sort" style="display: none">
+
+    <div class="pull-left nav_list">
+
+        <select name="nav[1][type][]" class="form-control nav-type" style="width: 110px;">
+            <option value="module"
+            <if condition="$nav['module_name']">selected</if>
+            >{:L("_SYSTEM_MODULE_")}</option>
+            <option value="custom"
+            <if condition="!$nav['module_name']">selected</if>
+            >{:L("_CUSTOM_")}</option>
+        </select>
+
+        <select name="nav[1][modul][]" class="form-control module"
+                style="width: 110px;<php>if(!$nav['module_name']){</php>display:none<php>}</php>">
+            <php>foreach($module as $k=>$v){</php>
+            <option value="{$v.entry}" data-icon="{$v.icon}"
+            <if condition="strtolower($nav['url']) eq strtolower($v['entry'])">selected</if>
+            >{$v.alias}</option>
+            <php>}unset($k,$v)</php>
+        </select>
+
+        <input name="nav[1][title][]" placeholder={:L("_PLEASE_ENTER_THE_TITLE_WITH_DOUBLE_")}
+               class="form-control title" style="width: 110px;" value="{$nav.title}">
+
+        <input name="nav[1][url][]" placeholder={:L("_PLEASE_ENTER_A_LINK_WITH_DOUBLE_")} class="form-control url"
+               style="width: 300px;<php>if($nav['module_name']){</php>display:none<php>}</php>" value=" {$nav.url}">
+
+    </div>
+    <div class='pull-left' title={:L("__WITH_DOUBLE_")}>
+        <php>
+            $icon = $nav['icon'];
+            if(empty($nav['icon'])){
+            $icon = '';
+            }
+        </php>
+        <select name="nav[1][icon][]" title={:L("__WITH_DOUBLE_")} class="select-os-icon" data-value="{$icon|default='-'}"></select>
+    </div>
+    <div class='pull-left color-chose' title={:L("_SELECT_THE_ICON_BACKGROUND_COLOR_WITH_DOUBLE_")}>
+        <input name="nav[1][color][]" class='simple_color_callback' value="{$nav['color']|default='#000000'}"/>
+    </div>
+    <div class='pull-left new-blank '>
+        <input name="nav[1][target][]" class="target_input" value="{$nav['target']}">
+        <label title={:L("_THE_NEW_WINDOW_OPENS_WITH_DOUBLE_")}><input class="target"
+            <if condition="$nav['target'] eq 1">checked</if>
+            type="checkbox" value="1">{:L("_NEW_WINDOW_OPENS_")}</label>
+    </div>
+
+
+    <div class='pull-left i-list'>
+
+        <a href="javascript:" title={:L("_ADD_A_NAVIGATION_WITH_DOUBLE_")} class="add-one"><i class="icon icon-plus"></i></a>
+        <a href="javascript:"  title={:L("_REMOVE_THIS_NAVIGATION_WITH_DOUBLE_")} class="remove-li"><i class="icon icon-remove"></i></a>
+        <a href="javascript:" title={:L("_ADD_CHILD_NAVIGATION_WITH_DOUBLE_")} class="add-child"><i class="icon icon-sitemap"></i></a>
+        <a href="javascript:" title={:L("_MOBILE_NAVIGATION_SORT_WITH_DOUBLE_")}><i class="icon icon-move sort-handle-1"></i></a>
+        <a href="{:U('Admin/Channel/customEdit',array('pid'=>$nav['pid'],'id'=>$nav['id']))}">编辑</a>
+    </div>
+
+
+    <div class='pull-left band-text'>
+        <input name="nav[1][band_text][]" class="form-control" placeholder={:L("_SIGN_POINTS_WITH_DOUBLE_")}
+               style="width: 110px;" value="{$nav['band_text']}">
+    </div>
+
+    <div class='pull-left color-chose' title={:L("_SELECT_THE_FLAG_COLOR_WITH_DOUBLE_")}>
+        <input name="nav[1][band_color][]" class='simple_color_callback'
+               value="{$nav['band_color']|default='#000000'}"/>
+    </div>
+    <input type="hidden" name="nav[1][image][]" value="{$nav['image']}">
+    <input type="hidden" name="nav[1][remark][]" value="{$nav['remark']}">
+
+    <php>if($nav['child']){</php>
+    <div class="clearfix"></div>
+    <ul class="ul-2" style="display: block;">
+        <volist name="nav['child']" id="child">
+            <include file="_child"/>
+        </volist>
+    </ul>
+
+    <php>}</php>
+</li>

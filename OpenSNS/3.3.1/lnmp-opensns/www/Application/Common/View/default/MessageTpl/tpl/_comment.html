@@ -1,0 +1,21 @@
+<li class="comment_message">
+    <a <if condition="$data['web_url'] neq ''">href="{$data['web_url']}"</if> title="">
+        <div class="m3-left pull-left">
+            <div class="avatar-box">
+                <img src="{$data['user']['avatar64']}" alt="">
+            </div>
+        </div>
+        <div class="m3-right pull-left">
+            <div class="m3-top">
+                <p class="p-name">{$data['user']['nickname']}</p>
+                <div class="p-info">{$data.content.keyword1}</div>
+            </div>
+            <div class="m3-mid">
+                <span style="color:#666;">{$data.content.keyword2}</span>{$data.content.keyword3}
+            </div>
+            <div class="m3-bot">
+                {$data.create_time|friendlyDate}
+            </div>
+        </div>
+    </a>
+</li>

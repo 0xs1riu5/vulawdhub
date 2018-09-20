@@ -1,0 +1,108 @@
+<extend name="Public/base" />
+
+<block name="style">
+	<style>
+		.dragsort {
+		    width:400px;
+		}
+	</style>
+</block>
+
+<block name="body">
+	<!-- 标题栏 -->
+	<div class="main-title cf">
+		<h2><present name="data">{:L("_EDIT_")}<else />{:L("_NEWLY_ADDED_")}</present>{:L("_HOOK_")}</h2>
+	</div>
+
+	<!-- 修改密码表单 -->
+	<form action="{:U('updateHook')}" method="post" class="form-horizontal">
+        <div class="with-padding">
+            <div class="form-item cf">
+                <label class="item-label">{:L("_HOOK_NAME_")}<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" value="{$data.name}" name="name" class="text form-control" style="width: 400px">
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">{:L("_HOOK_DESCRIPTION_")}<span class="check-tips">{:L("_HOOKS_DESCRIPTION_")}</span></label>
+                <div class="controls">
+                    <label class="textarea input-large"><textarea name="description" class="form-control" style="width: 400px" >{$data.description}</textarea></label>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">{:L("_HOOK_TYPE_")}<span class="check-tips">{:L("_THE_MAIN_USE_OF_THE_HOOK_")}</span></label>
+                <div class="controls">
+                    <select name="type" class="form-control" style="width: auto">
+                        <volist name=":C('HOOKS_TYPE')" id="vo">
+                            <option value="{$key}" <eq name="data.type" value="$key"> selected</eq>>{$vo}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <present name="data">
+                <div class="form-item cf">
+                    <label class="item-label">{:L("_HOOK_MOUNTED_PLUGIN_SORTING_")}<span class="check-tips">{:L("_ORDER_PRESERVING_DRAG_EFFECT_WITH_A_HOOK_MOUNT_PLUGIN_EXECUTION_ORDER_")}</span></label>
+                    <div id="drag-container" class="controls" style="position:relative;">
+                        <input type="hidden" name="addons" value="{$data.addons}" style="width: 100%" readonly>
+                        <script>
+                            $(function(){
+                                function updateVal() {
+                                    var sortVal = [];
+                                    $('#hook_sort .kanban-item').each(function(){
+                                        if(typeof $(this).data('id') != 'undefined'){
+                                            sortVal.push($(this).data('id'));
+                                        }
+
+                                    });
+                                    $("input[name='addons']").val(sortVal.join(','));
+
+                                }
+                                $('#hook_sort').kanbans({'drop':updateVal});
+                            })
+                        </script>
+                        <empty name="data.addons">
+                           {:L("_NO_PLUGINS_CANNOT_SORT_")}
+                            <else />
+                            <div id="hook_sort" class="kanbans">
+                                <div class="kanban panel" data-id="addons">
+                                    <div class="panel-heading">
+                                        <strong>{:L("_PLUGIN_SORT_")}</strong>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="kanban-list">
+                                            <volist name=":explode(',',$data['addons'])" id="addons_vo">
+                                                <div class="kanban-item" data-id="{$addons_vo}">
+                                                    {$addons_vo}
+                                                </div>
+                                            </volist>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </empty>
+                    </div>
+                </div>
+            </present>
+        </div>
+
+        <div class="with-padding">
+            <input type="hidden" name="id" value="{$data.id}">
+            <button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+
+	</form>
+
+</div>
+</block>
+
+<block name="script">
+	<present name="data">
+	</present>
+	<script type="text/javascript">
+		$(function(){
+			//导航高亮
+			highlight_subnav('{:U('Addons/hooks')}');
+		})
+	</script>
+</block>

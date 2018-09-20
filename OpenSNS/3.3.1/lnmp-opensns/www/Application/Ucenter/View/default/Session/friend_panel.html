@@ -1,0 +1,57 @@
+<!--开始好友板-->
+<div id="friend_panel_main">
+    <php>
+        $friends=D('Common/Follow')->getAllFriends();
+    </php>
+    <!-- <div>
+         <div class="input-group search-friend">
+             <input type="text" class="form-control" placeholder="用户名">
+             <span class="input-group-addon"><i class="icon icon-search"></i></span>
+         </div>
+     </div>-->
+
+
+    <ul id="friend_list" class="friend_list">
+       <volist name="friends" id="friend">
+            <php>
+                $friend=query_user(array('avatar64','nickname','space_url','uid'),$friend['follow_who'])
+            </php>
+            <li id="friends_li_{$friend.id}">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a target="_blank" uid="{$friend.uid}" title=" {$friend.nickname|op_t}"
+                           onclick="talker.start_talk({$friend.uid});talker.show({$friend.uid})">
+                            <img src="{$friend.avatar64}" class="avatar-img" style="width: 45px;">
+                        </a>
+                    </div>
+                    <div class="col-xs-6" style="padding-left: 0">
+                        <div>
+                            <a style="width: 100%" target="_blank"
+                               title=" {$friend.nickname|op_t}"
+                               href="{$friend.space_url}">
+                                {$friend.nickname}
+                            </a>
+                        </div>
+                        <div>
+                            <a onclick="talker.start_talk({$friend.uid});talker.show({$friend.uid})"><i title="{:L('_TALK_OPEN_')}"
+                                                                             class="icon-chat-dot"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </volist>
+    </ul>
+
+    <script>
+        $(function () {
+            $('#friend_list').slimScroll({
+                height: $('#right_panel').height()
+            });
+            ucard();
+        })
+
+    </script>
+
+
+</div>
+<!--结束聊天版-->

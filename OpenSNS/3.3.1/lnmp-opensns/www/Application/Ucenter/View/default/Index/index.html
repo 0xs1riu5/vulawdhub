@@ -1,0 +1,46 @@
+<extend name="Base/common"/>
+
+<block name="style">
+    <link href="__CSS__/center.css" rel="stylesheet" type="text/css"/>
+    <link href="__CSS__/usercenter.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{:getRootUrl()}Addons/InsertXiami/_static/css/xiami.css">
+</block>
+<block name="header">
+    <br/>
+</block>
+<block name="body">
+    <div class="col-xs-12 usercenter">
+        <div class="uc">
+        <include file="_top"/>
+            <div class="uc-cont">
+                <div class="nav-wrap">
+                    <include file="_top_menu"/>
+                </div>
+                <div class="cont-wrap">
+                    {:W($module.'/UcenterBlock/render',array('uid'=>$user_info['uid'],'page'=>$page,'tab'=>$tab,'stab'=>$stab))}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+//            计算容易距离页面顶部的高度
+            var navoffeset=$(".nav-wrap").offset().top;
+            $(window).scroll(function(){
+//                检测页面滚动的高度
+                var scrollpos=$(window).scrollTop()+50;
+//                当滚动高度超过距离顶部的高度的时候为容器添加想要的样式
+                var marginT = scrollpos - navoffeset;
+                console.log(marginT);
+                if(scrollpos >=navoffeset){
+                    $(".nav-wrap").css('marginTop',marginT + "px");
+                }
+                else {
+                    $(".nav-wrap").css('margin-top','0');
+                }
+            });
+        });
+    </script>
+</block>
+
+

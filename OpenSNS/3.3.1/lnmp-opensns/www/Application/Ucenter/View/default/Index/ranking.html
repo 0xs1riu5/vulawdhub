@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Public/head"/>
+    <link href="__CSS__/ranklist.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="__JS__/jquery.js"></script>
+</head>
+<body>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+
+<!-- 主体 -->
+<body>
+    <div class="banner-wrap"></div>
+    <div class="container" style="overflow: hidden">
+        <div id="page_wrap">
+            <div style="width: 100%;height: 120px"></div>
+            <div class="rank-wrap row">
+                <div class="col-xs-6 rank-left-box">
+                    <!--粉丝排行榜-->
+                    <div class="rank-title">
+                        <span class="ranking"> 粉丝排行榜 </span>
+                        <div class="circle right">
+                            <span class="one-rank">{$fans_rank}</span>
+                            <!--<img src="__IMG__/silk.png" class="silk ">-->
+                        </div>
+                    </div>
+                    <div class=" rank-box">
+                        <div class="rank-cate">
+                            <span class="num">排名</span>
+                            <span class="nickname">昵称</span>
+                            <span class="right">粉丝数</span>
+                        </div>
+
+                        <include file="_fans"/>
+                    </div>
+                    <!--连签排行榜-->
+                    <div class="rank-title continuity">
+                        <span class="ranking"> 连签排行榜 </span>
+                        <div class="circle right">
+                            <span class="one-rank">{$con_check_rank}</span>
+                            <!--<img src="__IMG__/silk.png" class="silk ">-->
+                        </div>
+                    </div>
+                    <div class="rank-box">
+                        <div class="rank-cate">
+                            <span class="num">排名</span>
+                            <span class="nickname">昵称</span>
+                            <span class="right">连签天数</span>
+                        </div>
+
+                        <include file="_con_check"/>
+                    </div>
+                </div>
+                <div class="col-xs-6 rank-right-box">
+                    <!--积分排行榜-->
+                    <div class="rank-title score">
+                        <span class="ranking"> 积分排行榜 </span>
+                        <div class="circle right">
+                            <span class="one-rank">{$score_rank}</span>
+                            <!--<img src="__IMG__/silk.png" class="silk ">-->
+                        </div>
+                    </div>
+                    <div class="rank-box">
+                        <div class="rank-cate">
+                            <span class="num">排名</span>
+                            <span class="nickname">昵称</span>
+                            <span class="right">积分值</span>
+                        </div>
+
+                        <include file="_score1"/>
+                    </div>
+                    <!--累签排行榜-->
+                    <div class="rank-title score total">
+                        <span class="ranking"> 累签排行榜 </span>
+                        <div class="circle right">
+                            <span class="one-rank">{$total_check_rank}</span>
+                            <!--<img src="__IMG__/silk.png" class="silk ">-->
+                        </div>
+                    </div>
+                    <div class="rank-box ">
+                        <div class="rank-cate">
+                            <span class="num">排名</span>
+                            <span class="nickname">昵称</span>
+                            <span class="right">累签天数</span>
+                        </div>
+
+                        <include file="_total_check"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- /主体 -->
+
+<!-- 底部 -->
+<include file="Public/footer"/>
+<!-- /底部 -->
+</body>
+</html>

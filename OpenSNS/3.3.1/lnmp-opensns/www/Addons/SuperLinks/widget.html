@@ -1,0 +1,12 @@
+<if condition="count($list['picture']) neq 0">
+
+            <volist name="list.picture" id="po">
+                <li><a target="_blank" title="{$po.title}" href="{$po.link}"><img src="{$po.path}"/></a></li>
+            </volist>
+</if>
+<if condition="count($list['writing']) neq 0">
+
+		  <volist name="list.writing" id="lo">
+              <li><a target="_blank" title="{$po.title}" href="{$lo.link}">{$lo.title}</a></li>
+          </volist>
+</if>

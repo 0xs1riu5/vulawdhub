@@ -1,0 +1,44 @@
+<div>
+    <style>
+        .modal-dialog {
+            width: 430px;
+        }
+        .select_box_this {
+            margin: 10px 0 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+    <form id="migration" action="__SELF__" method="post" class="ajax-form">
+        <div class="select_box_this">
+            <span>行为：</span>
+            <span>
+                <select name="active_action" style="width: 200px;">
+                    <volist name="action_list" id="action">
+                        <option value="{$action.id}">{$action.title}</option>
+                    </volist>
+                </select>
+            </span>
+        </div>
+        <div class="select_box_this">
+            <span style="color: #DBDADA;">之后将以该行为作为统计活跃度的指标</span>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <a class="btn btn-primary" data-role="submit">确定</a>
+    <a onclick="$('.close').click();" class="btn btn-default">取消</a>
+</div>
+<script>
+    $(function(){
+        $('[name="active_action"]').val("{$now_active_action}")
+        $('[data-role="submit"]').click(function(){
+            var query=$('#migration').serialize();
+            var url=$('#migration').attr('action');
+            $.post(url,query,function(msg){
+                handleAjax(msg);
+            },'json');
+        });
+    });
+</script>

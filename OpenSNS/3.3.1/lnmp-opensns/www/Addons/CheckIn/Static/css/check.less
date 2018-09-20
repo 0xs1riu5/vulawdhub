@@ -1,0 +1,237 @@
+.checkdiv {
+  overflow: hidden;
+  border: 3px solid #f2f2f2;
+  background-color: #FFFFFF;
+  height: 65px;
+  padding: 10px;
+  p{
+    margin-bottom: 0;
+    font-size: 12px;
+  }
+  .ico_calendar {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+  }
+
+  .btn-sign {
+  }
+
+}
+
+.sign-calendar {
+  background-color: #fff;
+  margin-bottom: 0;
+  border-top:none;
+  .cell-day.signed .heading{
+    background:url( '../images/signed.png') center no-repeat ;
+    border-radius: 4px;
+  }
+  .day {
+    & > .heading {
+      text-align: center;
+      line-height: 30px;
+      & > .month {
+        display: none !important;
+      }
+    }
+    & > .content {
+      display: none !important;
+    }
+  }
+}
+.com-btn{
+  position: absolute;
+  top:0;
+  background-color: #1ABC9C;
+  border-top:none ;
+  border-bottom:none ;
+  color: #fff;
+  z-index: 9999;
+  box-shadow: none;
+  text-shadow:none ;
+   i{
+     line-height: 35px;
+   }
+}
+.calendar>header{
+  position: relative;
+  height: 45px;
+  margin-bottom: 0;
+  background-color: #1ABC9C;
+  .btn-prev{
+    left: -5px;
+    border-left:3px solid #17ae95 ;
+    border-right:none ;
+    .com-btn;
+    padding: 5px 5px 5px 2px;
+  }
+  .btn-next{
+    right: -274px;
+    .com-btn;
+    border-right:3px solid #17ae95 ;
+    border-left:none ;
+    padding: 5px 2px 5px 5px;
+  }
+  .btn-today{
+    position: absolute;
+    left: 115px;
+    top: 20px;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    text-shadow: none;
+     &:hover{
+       background-color: transparent;
+       box-shadow: none;
+     }
+    &:focus{
+      background-color: transparent;
+      box-shadow: none;
+    }
+  }
+  .disabled{
+    color: #999!important;
+  }
+  .calendar-caption{
+    margin-left: 105px;
+    color: #fff;
+    line-height: 25px;
+  }
+}
+.week-head{
+  height: 40px;
+  background-color: transparent;
+   th{
+     background-color: transparent!important;
+     border: none!important;
+   }
+}
+.table > thead > tr > th{
+  vertical-align: middle;
+}
+.table-bordered,.table-bordered th, .table-bordered td{
+  border: none;
+}
+.calendar .cell-day.current>.day{
+  border: none;
+  padding:0 5px;
+}
+.calendar .cell-day.current{
+  background-color: transparent;
+}
+.calendar .cell-day.current>.day>.heading{
+  background-color: transparent;
+}
+.show-check {
+  height: 40px;
+  display: inline-block;
+  background-color: #19bca1;
+  color: #fff;
+  line-height: 40px;
+  padding: 0 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  &:hover,&:focus{
+    color: #fff;
+  }
+}
+.time-box{
+  color: #888;
+}
+.calendar-views{
+  border: 1px solid #f2f2f2;
+}
+.checkin-remind {
+  p {
+    margin-bottom: 0
+  }
+  width: 300px;
+  right: 10px;
+  position: absolute;
+  bottom: -13px;
+  background: #fff;
+  box-shadow: 5px 5px 15px #888888;
+  color: #fff;
+  .r-top {
+    background: #F6744A;
+    height: 100px;
+    padding-top: 5px;
+    .r-avatar {
+      padding-right: 0;
+    }
+    .r-info {
+
+      .after-line {
+        &:before {
+          content: "";
+          float: left;
+          width: 1px;
+          border-left: 1px solid #fff;
+          height: 30px;
+          margin-top: -15px;
+          top: 50%;
+          position: absolute;
+          left: 0;
+
+        }
+      }
+    }
+
+  }
+
+  .r-body {
+    color: #999;
+    .r-text {
+      height: 70px;
+      line-height: 70px;
+      font-size: 18px;
+      color: #999;
+    }
+    .r-shop {
+      height: 160px;
+      padding-top: 20px;
+
+      .r-shop-left {
+        margin-left: 10px;
+      }
+      .r-shop-center {
+        margin-left: 5px;
+        padding-top: 20px;
+      }
+      .r-shop-right {
+        margin-right: 10px
+      }
+
+      .r-shop-score {
+        width: 80px;
+        height: 80px;
+        background: url("../images/icon.png")
+      }
+
+      .r-arrow {
+        background: url("../images/arrow.png");
+        width: 108px;
+        height: 17px;
+      }
+    }
+    .r-footer {
+      height: 50px;
+      line-height: 50px;
+      .checkin-btn {
+        &:hover{color: #fff}
+        color: #fff;
+        text-decoration: none;
+        position: absolute;
+        right: 10px;
+        font-size: 14px;
+        padding: 5px 30px;
+        background: #F6744A;
+        border-color: #F6744A;
+        border-radius: 8px;
+        line-height: 25px;
+      }
+    }
+  }
+}

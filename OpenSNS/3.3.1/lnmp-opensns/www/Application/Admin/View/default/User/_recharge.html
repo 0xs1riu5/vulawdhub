@@ -1,0 +1,95 @@
+<form class="frm_change_group" method="post">
+
+
+    <label class="item-label">
+       {:L("_SEARCH_USERS_")}{:L("_COLON_")} <span class="check-tips">{:L("_INPUT_USER_ID_QUERY_")}</span>
+    </label>
+    <input type="text" data-role="searchUser" class="text input-large form-control" style="width: 400px"/>
+<script>
+    $(function () {
+        $('[data-role="searchUser"]').keypress(function (e) {
+            if ( e.which == 13 || e.which == 10) {
+                $(this).blur();
+
+            }
+        });
+        });
+</script>
+
+    <div style="border-top:1px dashed #ccc;margin-top: 15px;margin-bottom: 15px "></div>
+    <strong>{:L("_CURRENTLY_SELECTED_USERS_")}{:L("_COLON_")}</strong>
+
+    <div id="userlist" style="word-wrap: break-word">
+        <volist name="users" id="user">
+            <button class="btn">{$user.space_link} <input type="hidden" name="uid[]" value="{$user.uid}"/></button>
+        </volist>
+    </div>
+
+
+    <div style="border-top:1px dashed #ccc;margin-top: 15px;margin-bottom: 15px "></div>
+
+
+    <volist name="scoreTypes" id="vo">
+<div class="clearfix">
+        <label class="item-label">
+            score{$vo.id}： <span class="check-tips">（{$vo.title}）</span>
+        </label>
+
+        <div>
+        <select class="pull-left form-control" name="action_score{$vo.id}" style="width: 85px;">
+            <option value="inc">{:L("_INCREASE_")}</option>
+            <option value="dec">{:L("_REDUCE_")}</option>
+            <option value="to">{:L("_SET_UP_TO_")}</option>
+        </select>
+            <div  class="input-group pull-left" style="width: 310px;margin-left: 5px;">
+                <input type="text" name="value_score{$vo.id}" value="0" class="text input-large form-control" style="width: 310px;display: inline-block"/><span class="input-group-addon">{$vo.unit}</span>
+            </div>
+
+        </div>
+        </div>
+    </volist>
+
+    <br/>
+
+    <div><a class="btn btn-default submit" url="__SELF__" target-form="frm_change_group">{:L("_SUBMIT_")}</a></div>
+</form>
+<script>
+    function delUser(){
+        $('[data-role="delUser"]').unbind('click');
+        $('[data-role="delUser"]').click(function(){
+            var obj = $(this);
+            obj.remove();
+        })
+    }
+
+    $(function () {
+        delUser();
+        $('[data-role="searchUser"]').blur(function(){
+            var obj = $(this);
+            var val = parseInt(obj.val());
+
+            if(!isNaN(val)){
+                var flag = true;
+                $.each($('#userlist').find('input'), function(i,item){
+                    flag = flag && ($(item).val()==val?false:true);
+                })
+                if(flag){
+                    $.get(U('admin/user/getNickname'),{uid:val},function(res){
+                        obj.parents('form').find('#userlist').append(' <div class="btn" data-role="delUser">'+res.nickname+' <input type="hidden" name="uid[]" value="'+res.uid+'"/></div>');
+                        delUser();
+                        obj.val('')
+                        obj.focus();
+                    },'json')
+                }
+            }
+        })
+
+
+        $('.frm_change_group .submit').click(function () {
+                $.post($(this).attr('url'), $('.frm_change_group').serialize(), function (msg) {
+                    handleAjax(msg);
+                });
+
+        })
+    })
+</script>

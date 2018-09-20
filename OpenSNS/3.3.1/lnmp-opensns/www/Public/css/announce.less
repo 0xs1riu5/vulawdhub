@@ -1,0 +1,46 @@
+@import "var";
+.announce{
+  .modal-dialog{
+    -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .0);
+    box-shadow: 0 0 0 rgba(0, 0, 0, .0);
+    width: 400px;
+    border:none;
+    .modal-header{
+      padding: 7px 15px 5px 0;
+      margin: 0px 10px;
+      h2{
+        padding-bottom: 0;
+        font-size: 16px;
+      }
+    }
+    .modal-body{
+      min-height: 150px;
+      h4{
+        font-weight: 600;
+      }
+    }
+    .modal-footer{
+      padding: 0px!important;
+      border-top:none;
+      .announce-btn{
+        width: 50%;
+        margin-left: 0px;
+        float: left;
+        border: none;
+        padding: 10px;
+        color: #666;
+        text-shadow: none;
+        font-size: 14px;
+        background-color:transparent;
+        &:first-child{
+          background:@primary-color;
+          border-top: 1px solid @primary-color;
+          color: white;
+        }
+        &:last-child{
+          border-top: 1px solid #E5E5E5;
+        }
+      }
+    }
+  }
+}

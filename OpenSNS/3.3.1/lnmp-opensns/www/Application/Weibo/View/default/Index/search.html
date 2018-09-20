@@ -1,0 +1,79 @@
+<extend name="Base/common"/>
+<block name="header">
+    <include file="Public/_nav"/>
+</block>
+
+<block name="body">
+    <style>
+        #main-container {
+            width: 1000px;
+        }
+    </style>
+    <link href="__CSS__/weibo.css" type="text/css" rel="stylesheet"/>
+    <!--动态内容列表部分-->
+    <div class="weibo_middle pull-left" style="width: 680px">
+
+        <div id="weibo_list">
+            <notEmpty name="list">
+                <volist name="list" id="weibo">
+                    {:W('Weibo/WeiboDetail/detail',array('weibo_id'=>$weibo))}
+                </volist>
+                <else/>
+                <p style="width: 100%;text-align: center;font-size: 50px;color: #C7C7C7;margin: 20px 0;">
+                    没有相关内容~
+                </p>
+            </notEmpty>
+        </div>
+        <div id="index_weibo_page">
+            <div class="text-right">
+                {:getPagination($totalCount,$r)}
+            </div>
+        </div>
+    </div>
+
+    <!--动态内容列表部分结束-->
+    <!--搜索页右侧部分-->
+    <include file="_right"/>
+    <!--搜索页侧部分结束-->
+</block>
+<block name="script">
+    <script src="__JS__/weibo.js"></script>
+    <script>
+        var SUPPORT_URL = "{:addons_url('Support://Support/doSupport')}";
+        $(function () {
+            weibo_bind();
+        });
+        $(document).ready(function () {
+            $('[data-role="switch_sendBox"]').click(function () {
+                if (is_login()) {
+                    var wb_cookie = $.cookie("wb_type");
+                    $(".add-weibo").hide();
+                    if (wb_cookie == 'tp_value'){
+                        $("#send_box").show();
+                    }
+                    else{
+                        $(".black-filter").slideToggle();
+                    }
+                } else {
+                    toast.error('请先登录！');
+                }
+            });
+            $('[data-role="show-sendBox"]').click(function () {
+                $("#send_box").show();
+                $("#weibo_content").focus();
+                $(".black-filter").hide();
+                $.cookie('wb_type', 'tp_value',{ expires: 7 });
+            });
+            $('[data-role="open_checkBox"]').click(function () {
+                $(".hide-check-box").fadeToggle("slow");
+            });
+            $('[data-role="close_checkBox"]').click(function () {
+                $(".hide-check-box").fadeToggle("slow");
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="__CSS__/photoswipe.css">
+    <link rel="stylesheet" href="__CSS__/default-skin/default-skin.css">
+    <script src="__JS__/photoswipe.min.js"></script>
+    <script src="__JS__/photoswipe-ui-default.min.js"></script>
+</block>

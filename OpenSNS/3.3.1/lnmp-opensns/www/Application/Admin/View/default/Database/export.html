@@ -1,0 +1,149 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>备份数据库</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <!-- ������-->
+    <div class="main-title">
+        <h2>{:L("_DATA_BACKUP_")}</h2>
+    </div>
+    <!-- /������-->
+
+    <div class="with-padding">
+        <a id="export" class="btn btn-default" href="javascript:;" autocomplete="off">{:L("_IMMEDIATE_BACKUP_")}</a>
+        <a id="optimize" class="btn btn-default" href="{:U('optimize')}">{:L("_OPTIMIZATION_TABLE_")}</a>
+        <a id="repair" class="btn btn-default" href="{:U('repair')}">{:L("_REPAIR_TABLE_")}</a>
+    </div>
+
+    <!-- Ӧ���б�-->
+    <div class="with-padding">
+        <form id="export-form" method="post" action="{:U('export')}">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="48"><input class="check-all" checked="chedked" type="checkbox" value=""></th>
+                        <th>{:L("_TABLE_NAME_")}</th>
+                        <th width="120">{:L("_DATA_QUANTITY_")}</th>
+                        <th width="120">{:L("_DATA_SIZE_")}</th>
+                        <th width="160">{:L("_CREATE_TIME_")}</th>
+                        <th width="160">{:L("_BACKUP_STATE_")}</th>
+                        <th width="120">{:L("_OPERATION_")}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist name="list" id="table">
+                        <tr>
+                            <td class="num">
+                                <input class="ids" checked="chedked" type="checkbox" name="tables[]" value="{$table.name}">
+                            </td>
+                            <td>{$table.name}</td>
+                            <td>{$table.rows}</td>
+                            <td>{$table.data_length|format_bytes}</td>
+                            <td>{$table.create_time}</td>
+                            <td class="info">{:L("_NOT_BACKED_UP_")}</td>
+                            <td class="action">
+                                <a class="ajax-get no-refresh" href="{:U('optimize?tables='.$table['name'])}">{:L("_OPTIMIZATION_TABLE_")}</a>&nbsp;
+                                <a class="ajax-get no-refresh" href="{:U('repair?tables='.$table['name'])}">{:L("_REPAIR_TABLE_")}</a>
+                            </td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <!-- /Ӧ���б�-->
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+    (function($){
+        var $form = $("#export-form"), $export = $("#export"), tables
+            $optimize = $("#optimize"), $repair = $("#repair");
+
+        $optimize.add($repair).click(function(){
+            $.post(this.href, $form.serialize(), function(data){
+                if(data.status){
+                    updateAlert(data.info,'alert-success');
+                } else {
+                    updateAlert(data.info,'alert-error');
+                }
+                setTimeout(function(){
+	                $('#top-alert').find('button').click();
+	                $(that).removeClass('disabled').prop('disabled',false);
+	            },1500);
+            }, "json");
+            return false;
+        });
+
+        $export.click(function(){
+            $export.parent().children().addClass("disabled");
+            $export.html("{:L("_IS_SENDING_A_BACKUP_REQUEST_")}..");
+            $.post(
+                $form.attr("action"),
+                $form.serialize(),
+                function(data){
+                    if(data.status){
+                        tables = data.tables;
+                        $export.html(data.info + {:L("_START_BACKUP_PLEASE_DONT_CLOSE_THIS_PAGE_WITH_DOUBLE_")});
+                        backup(data.tab);
+                        window.onbeforeunload = function(){ return {:L("_IS_THE_BACKUP_DATABASE_PLEASE_DONT_TURN_OFF_WITH_DOUBLE_")} }
+                    } else {
+                        updateAlert(data.info,'alert-error');
+                        $export.parent().children().removeClass("disabled");
+                        $export.html({:L("_IMMEDIATE_BACKUP_WITH_DOUBLE_")});
+                        setTimeout(function(){
+        	                $('#top-alert').find('button').click();
+        	                $(that).removeClass('disabled').prop('disabled',false);
+        	            },1500);
+                    }
+                },
+                "json"
+            );
+            return false;
+        });
+
+        function backup(tab, status){
+            status && showmsg(tab.id, "{:L("_START_BACK_UP_")}..(0%)");
+            $.get($form.attr("action"), tab, function(data){
+                if(data.status){
+                    showmsg(tab.id, data.info);
+
+                    if(!$.isPlainObject(data.tab)){
+                        $export.parent().children().removeClass("disabled");
+                        $export.html({:L("_BACK_UP_CLICK_ON_THE_BACKUP_WITH_DOUBLE_")});
+                        window.onbeforeunload = function(){ return null }
+                        return;
+                    }
+                    backup(data.tab, tab.id != data.tab.id);
+                } else {
+                    updateAlert(data.info,'alert-error');
+                    $export.parent().children().removeClass("disabled");
+                    $export.html({:L("_IMMEDIATE_BACKUP_WITH_DOUBLE_")});
+                    setTimeout(function(){
+    	                $('#top-alert').find('button').click();
+    	                $(that).removeClass('disabled').prop('disabled',false);
+    	            },1500);
+                }
+            }, "json");
+
+        }
+
+        function showmsg(id, msg){
+            $form.find("input[value=" + tables[id] + "]").closest("tr").find(".info").html(msg);
+        }
+    })(jQuery);
+    </script>
+</block>

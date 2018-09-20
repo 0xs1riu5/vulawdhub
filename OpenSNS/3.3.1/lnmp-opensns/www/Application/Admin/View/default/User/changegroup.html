@@ -1,0 +1,40 @@
+<form  class="frm_change_group" method="post">
+    <div style="margin-left: 20px">
+        <strong>{:L("_CURRENTLY_SELECTED_USERS_")}</strong>
+        <div style="word-wrap: break-word">
+            <if condition="count($users) eq 0">
+                {:L("__ALL_USERS_PLEASE_BE_CAREFUL_")}！！)-
+                <input type="hidden" value="1" name="all"/>
+            </if>
+            <volist name="users" id="user">
+                √{$user.nickname}&nbsp;&nbsp;<input type="hidden" name="uid[]" value="{$user.uid}"/>
+            </volist>
+        </div>
+    </div>
+
+    <input type="hidden" value="1" name="do">
+    <div style="border-top:1px dashed #ccc;margin-top: 15px;margin-bottom: 15px "></div>
+    <div style="margin-left: 20px">
+        <strong>{:L("_CHOOSE_THE_USER_GROUP_OF_THESE_USERS_")}</strong>{:L("_THE_GROUP_THAT_WILL_BE_LOST_TO_THE_USER_GROUP_WHICH_IS_OWNED_BY_THE_USER_ALL_USERS_ARE_USING_THE_NEW_SET_OF_USERS_")}：
+        <br/>
+        <volist name="groups" id="group">
+            <label><input type="checkbox" name="gid[]" value="{$group.id}">{$group.title}</label>&nbsp;&nbsp;
+        </volist>
+    </div>
+
+    <div style="border-top:1px dashed #ccc;margin-top: 15px;margin-bottom: 15px "></div>
+    <button class="btn" style="margin: 0 0 10px 20px"><a class="submit" url="__SELF__" target-form="frm_change_group" >{:L("_SUBMIT_")}</a></button>
+</form>
+<script>
+    $(function(){
+            $('.frm_change_group .submit').click(function(){
+                var sure=confirm({:L('_DETERMINE_THE_USER_GROUP_THAT_SET_THESE_USERS?_THIS_OPERATION_CAN_NOT_BE_REDUCED_WITH_SINGLE_')});
+                if(sure){
+                $.post($(this).attr('url'),$('.frm_change_group').serialize(),function(msg){
+                    handleAjax(msg);
+                });
+                }
+            })
+    })
+
+</script>

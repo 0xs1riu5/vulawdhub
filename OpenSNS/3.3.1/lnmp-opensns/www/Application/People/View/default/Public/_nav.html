@@ -1,0 +1,82 @@
+<div id="sub_nav">
+    <php>$logo = get_cover(modC('LOGO',0,'Config'),'path');
+        $logo = $logo?$logo:'__ROOT__/Public/images/logo.png';
+    </php>
+
+    <nav class="navbar navbar-default" >
+        <div class="container"  style="width:1180px;">
+            <a class="navbar-brand logo" href="{:U('index')}"><i class="icon-group"></i> {:L('_FP_')}</a>
+            <ul class="nav navbar-nav navbar-left">
+                <li id="tab_index">
+                    <a href="{:U('index')}">{:L('_FP_BY_TAG_')}</a>
+                </li>
+                <li id="tab_area">
+                    <a href="{:U('area')}">{:L('_FP_BY_AREA_')}</a>
+                </li>
+            </ul>
+            <script>
+                $('#tab_{$tab}').addClass('active');
+                var follower = {
+                    'bind_follow': function () {
+                        $('[data-role="follow"]').unbind('click')
+                        $('[data-role="follow"]').click(function () {
+                            var $this = $(this);
+                            var uid = $this.attr('data-follow-who');
+                            $.post(U('Core/Public/follow'), {uid: uid}, function (msg) {
+                                if (msg.status) {
+
+                                    $this.attr('class', $this.attr('data-before'));
+                                    $this.attr('data-role', 'unfollow');
+                                    $this.html('{:L("_FOLLOWED_")}');
+                                    follower.bind_follow();
+                                    toast.success(msg.info, {:L('_PROMPT_')});
+                                } else {
+                                    toast.error(msg.info,{:L('_PROMPT_')});
+                                }
+                            }, 'json');
+                        })
+
+                        $('[data-role="unfollow"]').unbind('click')
+                        $('[data-role="unfollow"]').click(function () {
+                            var $this = $(this);
+                            var uid = $this.attr('data-follow-who');
+                            $.post(U('Core/Public/unfollow'), {uid: uid}, function (msg) {
+                                if (msg.status) {
+                                    $this.attr('class', $this.attr('data-after'));
+                                    $this.attr('data-role', 'follow');
+                                    $this.html('{:L("_FOLLOWERS_")}');
+                                    follower.bind_follow();
+                                    toast.success(msg.info,{:L('_PROMPT_')});
+                                } else {
+                                    toast.error(msg.info, {:L('_PROMPT_')});
+                                }
+                            }, 'json');
+                        })
+                    }
+                }
+            </script>
+            <!--<form class="navbar-form navbar-right" action=""  method="post" role="search">
+
+                <div class="search-input-group">
+                    <a href="javascript:void(0);"  class="input-btn"><i class="icon-search"></i></a>
+                    <input type="text" class="input" placeholder="" name="" value="">
+                </div>
+                </span>
+            </form>-->
+
+            <form style="margin: 5px 0" class="navbar-form navbar-right" action="{:U('People/Index/index')}" method="post" role="search">
+                <input  type="hidden" name="tag" value="{$tag_id}">
+                <input  type="hidden" name="role" value="{$role_id}">
+                <div class="search-input-group new-search-group">
+                    <button class="input-btn" onclick="$(this).parents('form').submit();">
+                        <i class="icon-search"></i></button>
+                    <input type="text" class="input new-search" placeholder="{:L('_NICKNAME_')}"
+                           name="keywords" value="{$nickname}">
+                </div>
+                </span>
+            </form>
+
+
+        </div>
+    </nav>
+</div>

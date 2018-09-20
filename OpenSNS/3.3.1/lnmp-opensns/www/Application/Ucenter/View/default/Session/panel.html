@@ -1,0 +1,118 @@
+<div id="right_panel" class="friend_panel visible-xs visible-lg">
+    <div id="right_panel_main">
+        <include file="friend_panel"/>
+    </div>
+</div>
+<!--开始聊天板-->
+<div id="chat_box" class="row chat_panel weibo_post_box">
+
+    <div class="col-xs-5">
+        <!-- <div class="chat-left row">
+             <div class="input-group search-friend">
+                 <span class="input-group-addon">@</span>
+                 <input type="text" class="form-control" placeholder="用户名">
+                 <span class="input-group-addon"><i class="icon icon-search"></i></span>
+             </div>
+         </div>-->
+        <div class="row">
+            <script>
+                $(function () {
+                    $('#scrollArea_session').slimScroll({
+                        height: '405px',
+                        alwaysVisible: false
+                    });
+                })
+            </script>
+            <php>
+                $currentSession=D('Common/Talk')->getCurrentSessions();
+                D('Common/TalkPush')->clearAll();
+            </php>
+            <if condition="count($currentSession) neq 0">
+                <script>
+                    $(function () {
+                        talker.open("{$currentSession.0.id}");
+                    })
+                </script>
+            </if>
+            <div id="scrollArea_session">
+                <div id="scrollContainer_session">
+                    <ul id="chat-list" class="chat-list ">
+                        <volist name="currentSession" id="session">
+                            <li id="chat_li_{$session.id}">
+                                <a target="_blank" onclick="talker.open({$session.id})"
+                                   title="{$session.title|op_t}">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <img src="{$session.first_user.avatar64}"
+                                                 class="avatar-img"
+                                                 style="width: 40px;max-width: 200%">
+                                        </div>
+                                        <div class="col-xs-8" style="padding-left: 0">
+                                            <div class="text-more talk-name" style="width: 90%">
+                                                {$session.title}
+                                            </div><span class="btn-close" onclick="talker.exit({$session.id})"><i
+                                                title="{:L('_TALK_CLOSE_')}"
+                                                class="icon-remove"></i></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </volist>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-7 chat-board">
+        <div class="panel_title row"><img id="chat_ico" class="chat_avatar avatar-img"
+                                          src="__PUBLIC__/images/coffee.png">
+
+            <div id="chat_title" class="title pull-left text-more"></div>
+            <div class="control_btns pull-right"><a><i onclick="$('#talker').hide();"
+                                                       class="icon-minus"></i></a><!-- <a
+                ><i class="glyphicon glyphicon-off"></i></a>--></div>
+        </div>
+        <div class="row talk-body ">
+            <div id="scrollArea_chat" class="row ">
+                <div id="scrollContainer_chat">
+                    <div class="text-muted" style="line-height: 258px;text-align: center;font-size: 32px">{:L('_TALK_NONE_')}</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="send_box">
+            <input id="chat_id" type="hidden" value="0">
+            <php>$talk_self=query_user(array('avatar128'));</php>
+            <script>
+                var myhead = "{$talk_self.avatar128}";
+            </script>
+            <textarea id="chat_content" class="form-control"></textarea>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-6">
+                <button class=" btn btn-danger" onclick="talker.exit()"
+                        style="margin: 10px 10px" title="{:L('_TALK_CLOSE_')}"><i class="icon-off"></i>
+                </button>
+                <!--  <button class=" btn btn-success" onclick="chat_exit()"
+                          style="margin: 10px 10px" title="邀请好友"><i class="glyphicon glyphicon-plus"></i>
+                  </button>-->
+                <a href="javascript:" onclick="insertFace($(this))"><i class="icon-smile"></i></a>
+            </div>
+            <div class="col-xs-6">
+
+                <button class="pull-right btn btn-primary" onclick="talker.post_message()"
+                        style="margin: 10px 10px"> {:L('_SEND_')}
+                </button>
+            </div>
+            <div id="emot_content" class="emot_content" style="margin-top: -165px;margin-left: -415px;"></div>
+
+
+        </div>
+    </div>
+
+</div>

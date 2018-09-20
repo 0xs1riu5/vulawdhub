@@ -1,0 +1,33 @@
+
+.tool {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  width: 46px;
+  z-index: 999;
+  > a {
+    display: block;
+    width: 48px;
+    height: 46px;
+    margin-bottom: 10px;
+    background-image: url(../images/newtools.png);
+    border: 1px solid #ddd
+  }
+  a:last-child {
+    margin-bottom: 0;
+  }
+  .go-top {
+    background-position: 0 0;
+    display: none;
+    &:hover {
+      background-position: 0 -46px;
+    }
+  }
+  .admin-view{
+    background-position: 0 -92px;
+    &:hover {
+      background-position: 0 -137px;
+    }
+  }
+
+}

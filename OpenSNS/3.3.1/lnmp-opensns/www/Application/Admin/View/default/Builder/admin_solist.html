@@ -1,0 +1,242 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> {$title|htmlspecialchars}台</title>
+    <link href="/Public/favicon.ico" type="image/x-icon" rel="shortcut icon">
+
+
+    <!--zui-->
+    <link rel="stylesheet" type="text/css" href="/Application/Admin/Static/zui/css/zui.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/Application/Admin/Static/css/admin.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/Application/Admin/Static/css/ext.css" media="all">
+    <!--zui end-->
+
+    <!--
+        <link rel="stylesheet" type="text/css" href="/Application/Admin/Static/css/base.css" media="all">
+        <link rel="stylesheet" type="text/css" href="/Application/Admin/Static/css/common.css" media="all"-->
+    <link rel="stylesheet" type="text/css" href="/Application/Admin/Static/css/module.css">
+    <link rel="stylesheet" type="text/css" href="/Application/Admin/Static/css/style.css" media="all">
+    <!--<link rel="stylesheet" type="text/css" href="/Application/Admin/Static/css/.css" media="all">-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/Public/static/jquery-1.10.2.min.js"></script>
+    <![endif]--><!--[if gte IE 9]><!-->
+    <script type="text/javascript" src="/Public/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="/Application/Admin/Static/js/jquery.mousewheel.js"></script>
+    <!--<![endif]-->
+
+    <script type="text/javascript">
+        var ThinkPHP = window.Think = {
+            "ROOT": "", //当前网站地址
+            "APP": "/index.php?s=", //当前项目地址
+            "PUBLIC": "/Public", //项目公共目录地址
+            "DEEP": "/", //PATHINFO分割符
+            "MODEL": ["3", "1", "html"],
+            "VAR": ["m", "c", "a"],
+            'URL_MODEL': "3"
+        }
+    </script>
+</head>
+<block name="body">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/Core/js/ext/magnific/magnific-popup.css"/>
+
+    <php>
+        foreach($searches as $search){
+            if($_REQUEST[$search['name']])
+        {
+        $show=1;
+        }
+        }
+        //如果inpitid存在就将它加入缓存
+    	if ($_GET['inputid']){
+		S('inputid',$_GET['inputid']);
+		}
+
+    </php>
+    <!-- 按钮工具栏 -->
+    <div class="with-padding">
+    	<if condition="$search">
+    	<div class="fl">
+    	<form id="searchForm" method="get" action="{$searchPostUrl}" class="form-dont-clear-url-param">
+    	
+    	 <volist name="searches" id="search">
+    	 	<!--判断搜索选项是TEXT还是SELECT-->
+			 <if condition="$search['type'] == 'select'">
+			 	<select size="1" name="{$search['name']}" class="form-control" style="width:auto;display:inline;margin-bottom:5px;">
+		      		<option value="">{$search.title}</option>
+		      		<volist name="search['arrvalue']" id="svo">
+		      			<option value="{$svo.id}" <eq name="svo.id" value="$_GET[$search['name']]">selected</eq>>{$svo.value}</option>
+		      		</volist>	
+				</select>
+			 <else/>
+			 	{$search.title}：<input style="float: none;width:80px;display:inline;margin-bottom:5px;" type="text" name="{$search['name']}" class="form-control" value="{$_GET[$search['name']]}">
+			 </if>
+    	 </volist>
+    	<input type="submit" class="btn btn-default" style="margin-bottom:5px" value={:L("_SEARCH_WITH_DOUBLE_")}/>
+		</form>
+		</div> 
+		</if>
+        <div class="fl">
+        	<!--
+<if condition="count($searches) gt 0">
+    <button class="btn submit-btn" url="?status=-1" target-form="ids" style="padding: 6px 16px;" onclick="toggle_search()">{:L("_SEARCH_")}</button>
+</if>.
+-->
+
+            <volist name="buttonList" id="button">
+                <{$button.tag} {$button.attr}>{$button.title|htmlspecialchars}</{$button.tag}>&nbsp;
+            </volist>
+			
+        </div>
+		
+    </div>
+
+    <!-- 数据表格 -->
+    <div class="with-padding">
+        <table class="table table-bordered table-striped ">
+            <!-- 表头 -->
+            <thead>
+            <tr>
+                <th class="row-selected row-selected">
+                    
+                </th>
+                <volist name="keyList" id="field">
+                    <th>{$field.title|htmlspecialchars}</th>
+                </volist>
+            </tr>
+            </thead>
+
+            <!-- 列表 -->
+            <tbody>
+           	<form name="frm"> 
+            <volist name="list" id="e">
+                <tr>
+                    <td><input class="ids" type="radio" value="{$e['id']}" name="ids" onclick="choseids();"> </td>
+                    <volist name="keyList" id="field">
+                        <td>{$e[$field['name']]}</td>
+                    </volist>
+                </tr>
+            </volist>
+			
+            </tbody>
+        </table>
+    </div>
+	<div class="with-padding">
+   {:L("_SELECT_ID_")}：<input type="text" name="txt" id="txt">
+	</form><input type="button" value={:L("_DETERMINATION_WITH_DOUBLE_")} onclick="foo();"> 
+
+    </div>
+    <!-- 分页 -->
+	
+    <div class="with-padding">
+        {$pagination}
+    </div>
+    </div>
+<body> 
+    <script type="text/javascript" src="__JS__/thinkbox/jquery.thinkbox.js"></script>
+	<script> 
+				function choseids() 
+				{ 
+				var v=""; 
+				var check_ids = document.frm.ids; 
+				/*alert(check_ids.value);*/
+				v =check_ids.value; 
+				document.frm.txt.value=v; 
+				} 
+				function foo() 
+				{ 
+				window .close(); 
+				window .opener.document.getElementById("{:S('inputid')}").value=document.getElementById("txt").value 
+				} 
+	</script> 
+    <script type="text/javascript">
+//        //搜索功能
+//        $("#search").click(function () {
+//            var url = $(this).attr('url');
+//            var query = $('.search-form').find('input').serialize();
+//            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+//            query = query.replace(/^&/g, '');
+//            if (url.indexOf('?') > 0) {
+//                url += '&' + query;
+//            } else {
+//                url += '?' + query;
+//            }
+//            window.location.href = url;
+//        });
+        //回车搜索
+//        $(".search-input").keyup(function (e) {
+//            if (e.keyCode === 13) {
+//                $("#search").click();
+//                return false;
+//            }
+//        });
+        function toggle_search(){
+            $('#search_form').toggle('slide');
+        }
+
+
+        $(document).on('submit', '.form-dont-clear-url-param', function(e){
+            e.preventDefault();
+
+            var seperator = "&";
+            var form = $(this).serialize();
+            var action = $(this).attr('action');
+            if(action == ''){
+                action = location.href;
+            }
+            var new_location = action + seperator + form;
+
+            location.href = new_location;
+
+            return false;
+        });
+
+
+    </script>
+
+
+    <script>
+        $(function(){
+            $('.tox-confirm').click(function(e){
+                var text = $(this).attr('data-confirm');
+                var result = confirm(text);
+                if(result) {
+                    return true;
+                } else {
+                    e.stopImmediatePropagation();
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return false;
+                }
+            })
+        });
+
+
+        $(document).ready(function () {
+
+            $('.popup-gallery').each(function () { // the containers for all your galleries
+                $(this).magnificPopup({
+                    delegate: 'a',
+                    type: 'image',
+                    tLoading: '{:L("_LOADING_")}#%curr%...',
+                    mainClass: 'mfp-img-mobile',
+                    gallery: {
+                        enabled: true,
+                        navigateByImgClick: true,
+                        preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+
+                    },
+                    image: {
+                        tError: '<a href="%url%">{:L("_PICTURE_")}#%curr%</a>{:L("_COULD_NOT_BE_LOADED_")}',
+                        titleSrc: function (item) {
+                            /*           return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';*/
+                            return '';
+                        },
+                        verticalFit: true
+                    }
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/Core/js/ext/magnific/jquery.magnific-popup.min.js"></script>
+</block>

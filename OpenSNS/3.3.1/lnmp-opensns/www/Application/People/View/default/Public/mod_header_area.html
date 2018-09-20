@@ -1,0 +1,97 @@
+
+
+    <div class="row">
+
+        <if condition="!empty($tag_arealist)||!empty($role_list)">
+            <div class="col-xs-12">
+                <form id="tag-select" class="form-horizontal" action="{:U('People/Index/index')}" method="post">
+                    <input type="hidden" name="role" data-role="role-id" value="{$role_id}">
+                    <input type="hidden" name="tag" data-role="tag-id" value="{$tag_id}">
+                    <input type="hidden" name="keywords" data-role="keywords" value="{$nickname}">
+                    <div class="common-block margin-bottom-15" style="padding-bottom: 10px;border: 1px solid #ddd;">
+
+                        <div id="tag_list_block" >
+                            <if condition="!empty($tag_arealist)">
+
+
+                                    <div class="tag-select-area-block clearfix" style="padding-top:10px;">
+                                        <!--地区内容-->
+
+                                        <b>
+
+                                          <a class="area_name_1"  href="{:U('Index/area',array('arearank'=>0))}"> 全部</a>
+                                            <a class="area_name_1"  href="javascript:void(0);" onclick="goback()"> {$goback}</a>
+                                        </b>
+
+
+
+                                        <b><a>{$areaname}</a></b><br/>
+                                <volist name="tag_arealist" id="vo">
+
+                                     <a  class="area_name" href="{:U('Index/area',array('arearank'=>$vo['id'],'arealv'=>$vo['level'],'areaname'=>$vo['name']))}">{$vo.name}({$vo.number})</a>
+
+                                    </volist>
+
+                                    </div>
+
+                            </if>
+
+                        </div>
+
+                        <div id="show_more_button_block" class="tag-select-block clearfix" style="padding-top:10px;text-align: center;border-top: 1px dashed #CDCDCD;display: none;">
+                            <a href="javascript:void(0);" data-role="show_more_button" act-type="down" style="display: inline-block;width: 100%;">
+                                {:L("_UNFOLD_")}{:L("_ALL_")}<i class="icon-double-angle-down" style="font-size: 16px;margin-left: 5px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </if>
+        <if condition="!empty($tag_arealist)||!empty($role_list)">
+            <script>
+                var show_height="{:modC('MAX_SHOW_HEIGHT','160','People')}";
+                var tag_arealist_block_height=$('#tag_arealist_block').height();
+                var set_tag_arealist=function(){
+                    $('#tag_arealist_block').css("height",show_height);
+                    $('#show_more_button_block').show();
+                }
+                    if(tag_arealist_block_height>show_height){
+                        set_tag_arealist();
+                        $('[data-role="show_more_button"]').click(function(){
+                            var click_type=$(this).attr('act-type');
+                            if(click_type=='down'){
+                                $(this).attr('act-type','up');
+                                $(this).html('{:L("_TEMP_FOLD_")}<i class="icon-double-angle-up" style="font-size: 16px;margin-left: 5px;"></i>');
+                                $('#tag_arealist_block').animate({"height":tag_arealist_block_height});
+                            }else{
+                                $(this).attr('act-type','down');
+                                $(this).html('{:L("_UNFOLD_")}{:L("_ALL_")}<i class="icon-double-angle-down" style="font-size: 16px;margin-left: 5px;"></i>');
+                                $('#tag_arealist_block').animate({"height":show_height});
+                            }
+                        });
+                    }
+
+                    $('[data-role="select_tag"]').click(function () {
+                        var id = $(this).attr('data-id');
+                        $('[data-role="tag-id"]').val(id);
+                        $('#tag-select').submit();
+                    });
+                    $('[data-role="select_role"]').click(function () {
+                        var id = $(this).attr('data-id');
+                        $('[data-role="role-id"]').val(id);
+                        $('[data-role="tag-id"]').val('');
+                        $('#tag-select').submit();
+                    });
+
+
+
+            </script>
+        </if>
+
+    </div>
+<script>
+    function goback() {
+    history.go(-1);
+    }
+
+</script>

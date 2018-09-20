@@ -1,0 +1,18 @@
+<div id="adv_{$pos.id}" class="adv-wrap" style="padding: {$pos.padding};margin:{$pos.margin};">
+    <div class="text-left " style="width:{$pos.width};height:{$pos.height};">
+        <volist name="list" id="vo">
+           {$vo.code}
+        </volist>
+    </div>
+    <if condition="check_auth('Admin/Adv/adv') eq 1">
+        <div class="adv-tool">
+            <a target="_blank" href="{:U('Admin/Adv/editPos?id=' . $pos['id'])}"><i title="设置广告位" class="icon-cog"></i> 设置 </a>
+            <a target="_blank" href="{:U('Admin/Adv/adv?pos_id=' . $pos['id'])}"><i title="管理广告" class="icon-sitemap"></i> 广告 </a>
+            <a target="_blank" href="{:U('Admin/Adv/editAdv?pos_id=' . $pos['id'])}"><i title="新增广告" class="icon-plus"></i> 添加 </a>
+        </div>
+        <div class="adv-size">
+            {$pos.title} 【{$pos.name}】： {$pos.width} * {$pos.height}
+        </div>
+    </if>
+
+</div>

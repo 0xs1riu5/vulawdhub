@@ -1,0 +1,157 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>菜单管理</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <div class="main-title">
+        <h2>
+            <present name="data">[ {$data.title} ] 子</present>
+            {:L('_MENU_MANAGER_')}
+        </h2>
+    </div>
+
+    <div class="clearfix row with-padding">
+        <div class="col-xs-10">
+            <a class="btn btn-default" href="{:U('add',array('pid'=>I('get.pid',0)))}">{:L('_ADD_WITH_SPACE_')}</a>
+            <button class="btn ajax-post confirm" url="{:U('del')}" target-form="ids">{:L('_DELETE_WITH_SPACE_')}</button>
+            <a class="btn btn-default" href="{:U('import',array('pid'=>I('get.pid',0)))}">{:L('_IMPORT_')}</a>
+            <button class="btn list_sort" url="{:U('sort',array('pid'=>I('get.pid',0)),'')}">{:L('_SORT_')}</button>
+        </div>
+        <!-- 高级搜索 -->
+        <div class="col-xs-2">
+            <div class="search-form fr cf">
+                <div class="sleft">
+                    <div class="input-group">
+                        <input type="text" name="title" class="form-control" value="{:I('title')}"
+                               placeholder="{:L('_MENU_NAME_INPUT_')}">
+                               <span class="input-group-btn">
+                    <a class="btn btn-default" href="javascript:;" id="search" url="__SELF__"><i
+                            class="fa fa-search"></i></a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="with-padding">
+
+        <form class="ids">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox">
+                    </th>
+                    <th>{:L('_ID_')}</th>
+                    <th>{:L('_NAME_')}</th>
+                    <th>{:L('_MENU_SUPERIOR_')}</th>
+                    <th>{:L('_GROUP_')}</th>
+                    <th>{:L('_URL_')}</th>
+                    <th>{:L('_SORT_')}</th>
+                    <th>{:L('_DEV_MODE_ONLY_')}</th>
+                    <th>{:L('_HIDE_')}</th>
+                    <th>{:L('_OPERATE_')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="list">
+                    <volist name="list" id="menu">
+                        <tr>
+                            <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$menu.id}"></td>
+                            <td>{$menu.id}</td>
+                            <td>
+                                <a href="{:U('index?pid='.$menu['id'])}">{$menu.title}</a>
+                            </td>
+                            <td>{$menu.up_title|default=L('_NONE_')}</td>
+                            <td>{$menu.group}</td>
+                            <td>{$menu.url}</td>
+                            <td>{$menu.sort}</td>
+                            <td>
+                                <a href="{:U('toogleDev',array('id'=>$menu['id'],'value'=>abs($menu['is_dev']-1)))}"
+                                   class="ajax-get">
+                                    {$menu.is_dev_text}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{:U('toogleHide',array('id'=>$menu['id'],'value'=>abs($menu['hide']-1)))}"
+                                   class="ajax-get">
+                                    {$menu.hide_text}
+                                </a>
+                            </td>
+                            <td>
+                                <a title="{:L('_EDIT_')}" href="{:U('edit?id='.$menu['id'])}">{:L('_EDIT_')}</a>
+                                <a class="confirm ajax-get" title="{:L('_DELETE_')}" href="{:U('del?id='.$menu['id'])}">{:L('_DELETE_')}</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="10" class="text-center">{:L('_ADMIN_USER_EMPTY_')}</td>
+                </notempty>
+                </tbody>
+            </table>
+        </form>
+        <!-- 分页 -->
+        <div class="page">
+
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        $(function () {
+            //搜索功能
+            $("#search").click(function () {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+            //导航高亮
+
+            //点击排序
+            $('.list_sort').click(function () {
+                var url = $(this).attr('url');
+                var ids = $('.ids:checked');
+                var param = '';
+                if (ids.length > 0) {
+                    var str = new Array();
+                    ids.each(function () {
+                        str.push($(this).val());
+                    });
+                    param = str.join(',');
+                }
+
+                if (url != undefined && url != '') {
+                    window.location.href = url + '/ids/' + param;
+                }
+            });
+        });
+    </script>
+</block>

@@ -1,0 +1,44 @@
+<extend name="Config/base"/>
+
+<block name="body">
+
+    <div id="center">
+        <div id="center_base" class="with-padding" style="padding: 20px">
+
+            <h2>
+                {:L('_SETTINGS_OTHER_')}
+            </h2>
+
+            <div class="row">
+
+
+                <div class="with-padding">
+                    <button data-role="cleanRemember" class="btn btn-large btn-block btn-primary" type="button">{:L('_LOGIN_RECORD_CLEAR_')}
+                    </button>
+                    {:hook('userConfig')}
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</block>
+
+<block name="script">
+    <script>
+        //检查两次输入的密码是否一致
+        $(function () {
+            $('[data-role=cleanRemember]').click(function () {
+                if (confirm("{:L('_LOGIN_RECORD_CLEAR__CONFIRM_')}{:L('_EXCLAMATION_')}")) {
+                    $.get(U('Ucenter/Config/cleanRemember'), '', function (res) {
+                        handleAjax(res);
+                    })
+                }
+            })
+
+
+        })
+    </script>
+</block>

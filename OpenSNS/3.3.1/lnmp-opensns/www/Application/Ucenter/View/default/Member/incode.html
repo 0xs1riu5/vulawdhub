@@ -1,0 +1,50 @@
+<div class="modal-dialog" style="width: 430px;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">×</button>
+            <h4 class="modal-title">
+                <i class="modal-icon icon-null"></i> <span class="modal-title-name">邀请用户才能注册！</span>
+            </h4>
+        </div>
+        <div class="modal-body">
+            <div>
+                <form id="set_code" action="__SELF__" method="post" class="ajax-form">
+                    <div class="form-group clearfix">
+                        <label class="col-xs-4 control-label" style="text-align: right;">
+                            {:L('_INV_CODE_')}{:L('_COLON_')}
+                        </label>
+
+                        <div class="col-xs-8">
+                            <input type="text" name="code" class="form-control" value="">
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div style="width: 100%;text-align: center;">
+                        <a class="btn btn-primary" data-role="submit"
+                           style="padding: 5px 12px;background-color: #1ABC9C;">{:L('_SUBMIT_')}</a>
+                        <a onclick="$('.close').click();" class="btn" style="padding: 5px 12px;background-color: #fff;">{:L('_CANCEL_')}</a>
+                    </div>
+                </form>
+            </div>
+            <script>
+                $(function () {
+                    $('[data-role="submit"]').click(function () {
+                        query = $('#set_code').serialize();
+                        var url = $('#set_code').attr('action');
+                        $.post(url, query, function (msg) {
+                            if (msg.status) {
+                                toast.success("{:L('_SUCCESS_INV_CODE_INPUT_')}");
+                                setTimeout(function () {
+                                    window.location.href = msg.url;
+                                }, 1500);
+                            } else {
+                                handleAjax(msg);
+                            }
+                        }, 'json');
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>

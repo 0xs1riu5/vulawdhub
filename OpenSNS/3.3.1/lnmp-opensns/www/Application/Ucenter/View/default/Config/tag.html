@@ -1,0 +1,111 @@
+<extend name="Config/base"/>
+
+<block name="body">
+
+    <div id="center">
+        <div id="center_base" class="with-padding" style="padding: 20px">
+
+            <h2>
+                {:L('_PERSONAL_TAB_SELECT_')}
+            </h2>
+            <div class="row">
+                <div class="col-xs-12">
+                    <notempty name="tag_list">
+                        <volist name="tag_list" id="tag_group">
+                            <div class="tag-select-block clearfix">
+                                <div class="select-cate">{$tag_group.title}：</div>
+                                <div class="select-option">
+                                    <volist name="tag_group['tag_list']" id="tag">
+                                        <div class="one_tag"><a class="btn btn-default" data-role="add_tag" data-id="{$tag.id}">{$tag.title}</a></div>
+                                    </volist>
+                                </div>
+                            </div>
+                        </volist>
+                        <else/>
+                        <div style="text-align: center;font-size: 22px;color: #B3B3B3;">
+                            <p>
+                                <br/>
+                                <span>{:L('_PERSONAL_TAB_NONE_')}{:L('_WAVE_')}</span>
+                                <br/>
+                            </p>
+                        </div>
+                    </notempty>
+                    <div class="tag-select-block clearfix">
+                        <div class="select-cate">{:L('_PERSONAL_TAB_')}{:L('_COLON_')}</div>
+                        <div class="select-option my-tag-block">
+                            <div data-role="my_tag_block">
+                                <volist name="my_tag" id="tag">
+                                    <div class="one_tag"><span class="btn btn-default">{$tag.title} <a class="icon-remove" data-role="remove_tag" data-id="{$tag.id}"></a></span></div>
+                                </volist>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="tag-select-block clearfix">
+                        <div class="select-option">
+                            <button class="btn btn-primary" data-role="set-tag">{:L('_SAVE_')}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script>
+        var tag_ids="{$my_tag_ids}";
+        $(function(){
+            $('[data-role="add_tag"]').click(function(){
+                var attachId=$(this).attr('data-id');
+                var already_show=upHiddenVal('add',attachId);
+                if(already_show==0){
+                    var title=$(this).html();
+                    $('[data-role="my_tag_block"]').append('<div class="one_tag"><span class="btn btn-default">'+title+' <a class="icon-remove" data-role="remove_tag" data-id="'+attachId+'"></a></span></div>');
+                    bind_remove();
+                }
+            });
+            bind_remove();
+            $('[data-role="set-tag"]').click(function(){
+                $.post(U('Ucenter/Config/tag'),{tag_ids:tag_ids},function(msg){
+                    if(msg.status){
+                        toast.success("{:L('_SUCCESS_SETTINGS_')}{:L('_EXCLAMATION_')}");
+                        setTimeout(function(){
+                            location.reload();
+                        },1500);
+                    }else{
+                        handleAjax(msg);
+                    }
+                },'json');
+            });
+        })
+        function bind_remove(){
+            $('[data-role="remove_tag"]').unbind('click');
+            $('[data-role="remove_tag"]').click(function(){
+                var attachId=$(this).attr('data-id');
+                upHiddenVal('del',attachId);
+                $(this).parents('.one_tag').remove();
+            });
+        }
+        function upHiddenVal(type, attachId) {
+            var attachArr = tag_ids.split(',');
+            var newArr = [];
+            var already_show=0;
+
+            for (var i in attachArr) {
+                if (attachArr[i] !== '' && attachArr[i] !== attachId.toString()) {
+                    newArr.push(attachArr[i]);
+                }
+                if(attachArr[i] === attachId.toString()){
+                    already_show=1;
+                }
+            }
+            type === 'add' && newArr.push(attachId);
+            tag_ids=newArr.join(',');
+            return already_show;
+        }
+    </script>
+</block>

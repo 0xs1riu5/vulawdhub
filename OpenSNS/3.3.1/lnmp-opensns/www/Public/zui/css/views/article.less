@@ -1,0 +1,141 @@
+.article
+{
+  padding: @article-padding;
+
+  > header
+  {
+    h1,
+    h2,
+    h3,
+    {
+      line-height: 1.5;
+    }
+
+    > .abstract,
+    > dl
+    {
+      font-size: @font-size-small;
+      padding: @article-section-padding;
+      background-color: @article-abstract-bg;
+      border-radius: @border-radius-base;
+      color: @article-abstract-color;
+      > p:last-child
+      {
+        margin-bottom: 0;
+      }
+    }
+
+    > dl
+    {
+      border-bottom: 1px solid darken(@article-abstract-bg, 3%);
+      margin: 0;
+      &.pull-right
+      {
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+
+  > footer
+  {
+    border-top: 1px dashed darken(@article-abstract-bg, 10%);
+    > p
+    {
+      padding: @article-section-padding;
+    }
+  }
+}
+
+.article-content
+{
+  font-size: @article-font-size;
+  line-height: @article-line-height;
+
+  padding: @line-height-computed 0;
+
+  h1 
+  {
+    font-size: @article-font-size-h1;
+  }
+  h2 
+  {
+    font-size: @article-font-size-h2;
+  }
+  h3 
+  {
+    font-size: @article-font-size-h3;
+  }
+  h4 
+  {
+    margin-top: 15px;
+    font-size: @article-font-size-h4;
+  }
+  h5 
+  {
+    margin-top: 15px;
+    font-size: @article-font-size-h5;
+  }
+  h6 
+  {
+    margin-top: 15px;
+    font-size: @article-font-size-h6;
+  }
+
+  img
+  {
+    margin: @line-height-computed / 2 0;
+  }
+
+  p
+  {
+    margin: 0;
+
+    > img
+    {
+      margin-right: 10px;
+
+      &[align='right']
+      {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  dl
+  {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  table
+  {
+    width: 100%;
+    margin-bottom: @line-height-computed;
+
+    // Cells
+    th,
+    td
+    {
+      padding: @table-cell-padding;
+      line-height: @line-height-base;
+      vertical-align: top;
+      border-bottom: 1px solid @table-border-color;
+
+      .transition(all,@animation-speed-fast,@animation-type);
+    }
+
+    // Bottom align for column headings
+    > thead > tr > th 
+    {
+      vertical-align: bottom;
+      border-bottom: 1px solid @table-border-color;
+      background-color: @table-head-bg;
+    }
+  }
+}
+
+body.article-content
+{
+  padding: 8px;
+}

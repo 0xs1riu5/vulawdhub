@@ -1,0 +1,13 @@
+<a title="喜欢"
+<if condition="$supported">
+</if> data-role="support_btn" table="{$table}" row="{$row}" uid="{$uid}" jump="{$jump}" weibo_id="{$weibo_id}">
+
+<if condition="$supported">
+    <i id="support_{$app}_{$table}_{$row}_icon" class="icon-thumbs-up"></i>
+    <else/>
+    <i id="support_{$app}_{$table}_{$row}_icon" class="icon-thumbs-o-up"></i>
+</if>
+
+
+<span id="support_{$app}_{$table}_{$row}_pos"><span id="support_{$app}_{$table}_{$row}">{$count}</span> </span>
+</a>

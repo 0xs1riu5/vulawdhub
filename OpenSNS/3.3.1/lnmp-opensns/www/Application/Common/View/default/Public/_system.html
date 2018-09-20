@@ -1,0 +1,27 @@
+<!--换肤插件钩子-->
+{:hook('setSkin')}
+<!--换肤插件钩子 end-->
+<div id="tool" class="tool ">
+    {:hook('tool')}
+    <if condition="check_auth('Core/Admin/View')">
+      <!--  <a href="javascript:;" class="admin-view"></a>-->
+    </if>
+    <a  id="go-top" href="javascript:;" class="go-top "></a>
+
+</div>
+<php>
+    if(is_login()&&(get_login_role_audit()==2||get_login_role_audit()==0)){
+</php>
+<div id="top-role-tip" class="alert alert-danger">
+    {:L('_TIP_ROLE_NOT_AUDITED1_')} <strong>{:L('_TIP_ROLE_NOT_AUDITED2_')}</strong>{:L('_TIP_ROLE_NOT_AUDITED3_')}
+    <a target="_blank" href="{:U('ucenter/config/role')}">{:L('_TIP_ROLE_NOT_AUDITED4_')}</a>
+</div>
+<script>
+    $(function () {
+        $('#top-role-tip').css('margin-top', $('#nav_bar').height() + 15);
+        $('#top-role-tip').css('margin-bottom', -$('#nav_bar').height()+15);
+    });
+</script>
+<php>
+    }
+</php>

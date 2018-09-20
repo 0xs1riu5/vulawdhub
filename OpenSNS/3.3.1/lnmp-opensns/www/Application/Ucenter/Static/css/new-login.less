@@ -1,0 +1,223 @@
+@import "canvas.css";
+@import "../../../../Public/css/var";
+@f:#fff;
+body{
+  font-family: "微软雅黑"!important;
+}
+.main-box{
+  width: 490px;
+  background-color: @f;
+  position: absolute;
+  left: 50%;
+  margin-left: -245px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,.25);
+  border: none;
+  margin-top: 100px;
+   .top-banner{
+     background: @primary-color;
+     height: 130px;
+     width: 100%;
+     border-radius: 5px 5px 0 0;
+     overflow: hidden;
+      p{
+        text-align: center;
+        color: @f;
+      }
+   }
+  .login-wrap{
+    width: 100%;
+    height: auto;
+    padding: 20px 40px;
+     .add-show{
+       top:-10px;
+       right: -10px;
+       border-radius: 0 5px 5px 0;
+     }
+  }
+}
+
+.cut-off{
+  width: 100%;
+  border-top: 1px solid #c2c2c2;
+  position: relative;
+  margin: 40px 0;
+   .chose-other{
+     display: inline-block;
+     padding: 10px 20px;
+     background-color: @f;
+     color: #999;
+     position: absolute;
+     top:-20px;
+     left: 50%;
+     margin-left: -83px;
+   }
+}
+.other-login{
+  text-align: center;
+  span{
+    display: none;
+  }
+}
+.to-register{
+  width: 100%;
+  height:40px;
+  line-height: 40px;
+  border: 1px solid @primary-color;
+  border-radius: 5px;
+  margin-top: 20px;
+  background-color: #f7fafc;
+  color: @primary-color;
+  text-align: center;
+   &:hover{
+     box-shadow: 0 0 5px rgba(0,0,0,.35);
+   }
+   span{
+     color: #333;
+   }
+}
+
+.foot-box{
+  height: 40px;
+  border: 1px solid #eee;
+  background-color: #f9f9f9;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  line-height: 40px;
+  color: #999;
+  a{
+    color: #999;
+  }
+}
+
+.green-btn{
+  background-color: @primary-color!important;
+  border: none!important;
+  padding: 10px 12px;
+  &:hover{
+    background-color: @darken-color!important;
+    border: none!important;
+  }
+}
+
+.all-box{
+  width: 740px;
+  height: 260px;
+  border-radius: 3px;
+  background-color: rgba(0,0,0,.2);
+  position: relative;
+  margin: 300px auto;
+  .head{
+    font-size: 18px;
+    color: @primary-color;
+  }
+  .register-wrap{
+    position: absolute;
+    left: 25px;
+    top:25px;
+    width: 280px;
+    height: 210px;
+    p{
+      color: @f;
+      opacity: .8;
+    }
+    .to-reg{
+      background-color: transparent;
+      width: 230px;
+      height: 35px;
+      margin: 0 auto;
+      border-radius: 3px;
+      border: 1px solid rgba(242,242,242,.8);
+      text-align: center;
+      line-height: 35px;
+      color: @f;
+      box-shadow: 5px 5px 5px  rgba(0,0,0,0.2);
+      transition: all .3s ease;
+      -webkit-transition: all .3s ease;
+      &:hover{
+        box-shadow: none;
+      }
+      i{
+        margin-left: 5px;
+      }
+    }
+    .third-line{
+      background: url("../images/al.png");
+      height: 30px;
+      margin: 15px 0;
+    }
+    .third-login{
+      text-align: center;
+      span{
+        display: none;
+      }
+    }
+  }
+  .login-wrap{
+    position: absolute;
+    right: 25px;
+    top:-25px;
+    width: 385px;
+    height: 310px;
+    border-radius: 3px;
+    background-color: @f;
+    padding:25px;
+    .input-box{
+      width: 335px;
+      height: 35px;
+      position: relative;
+      margin-bottom: 10px;
+      &:after{
+        content: "";
+        display: inline-block;
+        width: 100%;
+        border-bottom: 1px solid #c9c9c9;
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        box-shadow: 2px 2px 2px rgba(0,0,0,.15);
+      }
+      input{
+        border: none;
+        width: 100%;
+        height: 100%;
+        outline: none;
+      }
+      .open-close{
+        position: absolute;
+        right: 0;
+        top: 10px;
+        color: #999;
+      }
+    }
+    .login-btn{
+      width: 70px;
+      height: 35px;
+      line-height: 35px;
+      display: inline-block;
+      background-color: @primary-color;
+      border-radius: 3px;
+      color: @f;
+      border:1px solid @darken-color;
+      transition: all .3s ease;
+      -webkit-transition: all .3s ease;
+      &:hover{
+        background-color: @darken-color;
+      }
+    }
+    .l-around{
+      color: #999;
+      font-size: 12px;
+      margin-right: 10px;
+    }
+  }
+  .code-box{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    img{
+      height: 35px;
+    }
+  }
+}

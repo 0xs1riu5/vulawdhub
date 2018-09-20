@@ -1,0 +1,41 @@
+.show_info {
+  position: absolute;
+  z-index: 1000;
+  right: 9px;
+}
+.send {
+  z-index: 99;
+  position: relative;
+  padding: 0px 10px;
+  height: 25px;
+  background: #da203a;
+  border-radius: 5px;
+  margin: 6px auto 0;
+  color: #fff;
+  line-height: 25px;
+  text-align: center;
+}
+.send .arrow {
+  z-index: 99;
+  position: absolute;
+  top: -6px;
+  left: 16px;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #da203a;
+}
+.send.red {
+  background: #da203a;
+}
+.send.red .arrow {
+  border-bottom: 6px solid #da203a;
+}
+.send.green {
+  background: #2ac25f;
+}
+.send.green .arrow {
+  border-bottom: 6px solid #2ac25f;
+}

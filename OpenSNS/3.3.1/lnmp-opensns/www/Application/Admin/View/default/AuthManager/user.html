@@ -1,0 +1,90 @@
+<!-- 成员授权编辑页面 -->
+<extend name="Public/base" />
+<block name="body">
+<div class="main-title">
+        <h2>{:L("_USER_GROUP_MEMBERSHIP_")}</h2>
+</div>
+<div class="tab-wrap">
+    <div class="with-padding clearfix">
+        <div class="col-xs-10">
+            <ul class="nav nav-tabs">
+                <li><a href="{:U('AuthManager/access',array('group_name'=>I('group_name') ,'group_id'=> I('group_id')))}">{:L("_MANAGEMENT_BACKGROUND_AUTHORIZATION_")}</a></li>
+                <li><a href="{:U('AuthManager/accessUser',array('group_name'=>I('group_name') ,'group_id'=> I('group_id')))}">{:L("_FRONT_DESK_ACCESS_AUTHORIZATION_")}</a></li>
+                <li class="active"><a href="javascript:;">{:L("_MEMBER_DELEGATION_")}</a></li>
+
+            </ul>
+        </div>
+       <div class="col-xs-2 text-right">
+               <select name="group" class="form-control">
+                   <volist name="auth_group" id="vo">
+                       <option value="{:U('AuthManager/user',array('group_id'=>$vo['id'],'group_name'=>$vo['title']))}" <eq name="vo['id']" value="$this_group['id']">selected</eq> >{$vo.title}</option>
+                   </volist>
+               </select>
+       </div>
+    </div>
+
+    <!-- 数据列表 -->
+    <div class="with-padding">
+	<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+		<th class="">UID</th>
+		<th class="">{:L("_NICKNAME_")}</th>
+		<th class="">{:L("_LAST_LOGIN_TIME_")}</th>
+		<th class="">{:L("_LAST_LOGIN_IP_")}</th>
+		<th class="">{:L("_STATE_")}</th>
+		<th class="">{:L("_OPERATION_")}</th>
+		</tr>
+    </thead>
+    <tbody>
+		<volist name="_list" id="vo">
+		<tr>
+			<td>{$vo.uid} </td>
+			<td>{$vo.nickname}</td>
+			<td><span>{$vo.last_login_time|time_format}</span></td>
+			<td><span>{$vo.last_login_ip|long2ip}</span></td>
+			<td>{$vo.status_text}</td>
+			<td><a href="{:U('AuthManager/removeFromGroup?uid='.$vo['uid'].'&group_id='.I('group_id'))}" class="ajax-get">{:L("_RELEASE_AUTHORITY_")}</a>
+
+                </td>
+		</tr>
+		</volist>
+	</tbody>
+    </table>
+
+
+    </div>
+	<div class="main-title">
+		<div class="page_nav fl">
+			{$_page}
+		</div>
+		<div id="add-to-group" class="clearfix">
+            <div class="col-xs-2 pull-right">
+                <form class="add-user" action="{:U('addToGroup')}" method="post" enctype="application/x-www-form-urlencoded" >
+                    <div class="input-group ">
+                        <input class="text input-4x form-control" type="text" name="uid" placeholder="{:L("_PLEASE_ENTER_UID_")},{:L("_COMMA_SEPARATED_IN_ENGLISH_")}">
+                        <input type="hidden" name="group_id" value="{:I('group_id')}">
+                    <span class="input-group-btn">
+                         <button type="submit" class="btn ajax-post" target-form="add-user">{:L("_NEW_GROWTH_WITH_SPACE_")}</button>
+                    </span>
+
+                    </div>
+
+                </form>
+            </div>
+
+		</div>
+	</div>
+
+</div>
+</block>
+
+<block name="script">
+<script type="text/javascript" charset="utf-8">
+	$('select[name=group]').change(function(){
+		location.href = this.value;
+	});
+    //导航高亮
+    highlight_subnav('{:U('AuthManager/index')}');
+</script>
+</block>

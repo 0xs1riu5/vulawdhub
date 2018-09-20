@@ -1,0 +1,64 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <include file="_top_nav"/>
+    <div class="box box-info adminlte-os-table">
+        <div class="box-header with-border">
+            <h3 class="box-title">在线用户列表（当前用户无法下线）</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#settingCount">
+                    <i class="icon-settings"></i>
+                    <!--设置-->
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+            </div>
+        </div>
+        <div class="with-padding" style="margin: 10px;">
+            <div class="fl">
+                <button class="btn btn-default ajax-post btn btn-default" url="{:U('Admin/Count/downUser')}" target-form="ids">下线选中用户</button>&nbsp;
+                <button hide-data="true" class="btn btn-default ajax-post btn btn-default" url="{:U('Admin/Count/downUser',array('all'=>1))}" target-form="ids">下线全部用户</button>&nbsp;
+            </div>
+        </div>
+        <div class="with-padding" style="margin: 10px;">当前有 {$loginCount} 会员在线，{:($totalCount-$loginCount)} 游客，总共 {$totalCount} 人在线</div>
+        <div class="box-body">
+            <table id="table-data" class="table table-bordered table-striped table-hover">
+                <!-- 表头 -->
+                <thead>
+                <tr>
+                    <th class="row-selected row-selected" style="width: 20px">
+                        <input class="check-all" type="checkbox">
+                    </th>
+                    <th>用户</th>
+                    <th>登录时间</th>
+                    <th>session标识</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <!-- 列表 -->
+                <tbody>
+                <volist name="userList" id="oneUser">
+                    <tr>
+                        <td><input class="ids" type="checkbox" value="{$oneUser['id']}" name="ids[]"></td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">
+                            <a href="{:U('Ucenter/Index/index',array('uid'=>$oneUser['uid']))}" target="_blank">
+                                [{$oneUser['uid']}]{$oneUser['nickname']}
+                            </a>
+                        </td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneUser['last_login_time']|time_format}</td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneUser['session_id']}</td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">
+                            <a href="{:U('Admin/Count/downUser',array('ids'=>$oneUser['session_id']))}">下线该用户</a>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+            <!-- 分页 -->
+            <div class="with-padding">
+                {$pagination}
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+</block>

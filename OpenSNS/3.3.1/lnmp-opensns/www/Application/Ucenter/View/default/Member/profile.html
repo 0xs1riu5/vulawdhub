@@ -1,0 +1,71 @@
+<extend name="Base/common" />
+<block name="header">
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h2>{:L('_PW_MODIFY_')}</h2>
+    <p><span><span class="pull-left"></span> </span></p>
+  </div>
+</header>
+</block>
+
+<block name="body">
+
+<section>
+	<div class="col-xs-3">
+        <form class="login-form" action="__SELF__" method="post">
+          <div class="control-group">
+            <label class="control-label" for="inputPassword">{:L('_OLD_PW_')}</label>
+            <div class="controls">
+              <input type="password" id="inputPassword"  class="form-control" placeholder="{:L('_NEW_PW_INPUT_')}"  errormsg="{:L('_PW_ERROR_')}" nullmsg="{:L('_PW_INPUT_ERROR_')}" datatype="*6-20" name="old">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="inputPassword">{:L('_PW_NEW_')}</label>
+            <div class="controls">
+              <input type="password" id="inputPassword"  class="form-control" placeholder="{:L('_NEW_PW_INPUT_')}"  errormsg="{:L('_PW_ERROR_')}" nullmsg="{:L('_PW_INPUT_ERROR_')}" datatype="*6-20" name="password">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="inputPassword">{:L('_PW_CONFIRM_')}</label>
+            <div class="controls">
+              <input type="password" id="inputPassword" class="form-control" placeholder="{:L('_PW_RE_INPUT_PLACEHOLDER_')}" recheck="password" errormsg="{:L('_PW_NOT_SAME_PLACEHOLDER_')}" nullmsg="{:L('_PW_CONFIRM_INPUT_PLACEHOLDER_')}" datatype="*" name="repassword">
+            </div>
+            <div class="controls Validform_checktip text-warning"></div>
+          </div>
+          <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn">{:L('_SUBMIT_')}</button>
+            </div>
+          </div>
+        </form>
+	</div>
+</section>
+</block>
+
+<block name="side"></block>
+<block name="script">
+	<script type="text/javascript">
+
+    	$(document)
+	    	.ajaxStart(function(){
+	    		$("button:submit").addClass("log-in").attr("disabled", true);
+	    	})
+	    	.ajaxStop(function(){
+	    		$("button:submit").removeClass("log-in").attr("disabled", false);
+	    	});
+
+    	$("form").submit(function(){
+    		var self = $(this);
+    		$.post(self.attr("action"), self.serialize(), success, "json");
+    		return false;
+
+    		function success(data){
+    			if(data.status){
+    				window.location.href = data.url;
+    			} else {
+    				self.find(".Validform_checktip").text(data.info);
+    			}
+    		}
+    	});
+	</script>
+</block>

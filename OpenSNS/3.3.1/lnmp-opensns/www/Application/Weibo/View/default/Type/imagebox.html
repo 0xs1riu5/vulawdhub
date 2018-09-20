@@ -1,0 +1,22 @@
+{:W('Common/UploadMultiImage/render',array(array('id'=>'attach_ids','name'=>'attach_ids','value'=>$topic['logo'],'limit'=>9,'isLoadScript'=>1)))}
+
+        <input name="feed_type" value="image" type="hidden">
+        <script>
+            imageUpload = {
+            callback:function(){
+                var unid= '{$unid}';
+                var numobj = $('#upload_num_'+unid);
+                var totalobj = $('#total_num_'+unid);
+                numobj.text(parseInt(numobj.text())+1);
+                totalobj.text(parseInt(totalobj.text())-1);
+
+            },
+                removeCallback:function(){
+                    var unid= '{$unid}';
+                    var numobj = $('#upload_num_'+unid);
+                    var totalobj = $('#total_num_'+unid);
+                    numobj.text(parseInt(numobj.text())-1);
+                    totalobj.text(parseInt(totalobj.text())+1);
+                }
+            }
+        </script>

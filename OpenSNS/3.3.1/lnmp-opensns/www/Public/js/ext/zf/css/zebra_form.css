@@ -1,0 +1,607 @@
+/*******************************
+ *  STYLES FOR ZEBRA_FORM
+ *******************************/
+
+.Zebra_Form, .Zebra_Form label, .Zebra_Form select, .Zebra_Form textarea
+{
+    font-family: inherit;
+    font-size: inherit;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    color: #222;
+}
+
+.Zebra_Form { position: relative }
+.Zebra_Form .clear{
+    clear: both;
+}
+.Zebra_Form div.hidden .text {
+    display: none /* hide the honey pot */
+}
+
+.Zebra_Form label,
+.Zebra_Form .button,
+.Zebra_Form .reset,
+.Zebra_Form input.password,
+.Zebra_Form input.text,
+.Zebra_Form select,
+.Zebra_Form textarea {
+    display: block
+}
+
+.Zebra_Form .button,
+.Zebra_Form .reset,
+.Zebra_Form .submit,
+.Zebra_Form label {
+    font-weight: bold
+}
+
+.Zebra_Form label {
+    color: #222;
+    cursor: pointer
+}
+
+/* labels for checkboxes and radio buttons are not bold */
+.Zebra_Form label.option {
+    font-weight: normal
+}
+
+.Zebra_Form .button,
+.Zebra_Form .reset,
+.Zebra_Form input.password,
+.Zebra_Form input.text,
+.Zebra_Form select,
+.Zebra_Form textarea,
+.Zebra_Form label.button {
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.Zebra_Form .button,
+.Zebra_Form input.password,
+.Zebra_Form .reset,
+.Zebra_Form input.text,
+.Zebra_Form .submit,
+.Zebra_Form select,
+.Zebra_Form textarea,
+.Zebra_Form label.button {
+    border: 1px solid #999
+}
+
+.Zebra_Form input.password,
+.Zebra_Form input.text,
+.Zebra_Form select,
+.Zebra_Form textarea {
+    padding: 6px 5px
+}
+
+.Zebra_Form input.password:focus,
+.Zebra_Form input.text:focus,
+.Zebra_Form textarea:focus {
+}
+
+.Zebra_Form label {
+    margin-bottom: 5px
+}
+
+.Zebra_Form .cell label {
+    margin-bottom: 0
+}
+
+.Zebra_Form select {
+    background: #FFF
+}
+
+.Zebra_Form select option {
+    padding: 0 5px /* same as the select box's horizontal padding or weird behaviour in Firefox */
+}
+
+.Zebra_Form select option.dummy {
+    font-size: 0em /* used when creating nested selects */
+}
+
+.Zebra_Form select.time {
+    float: left;
+    margin-right: 5px
+}
+
+.Zebra_Form input.password,
+.Zebra_Form input.text,
+.Zebra_Form textarea {
+    background: #FFF url('textbox-background.gif') repeat-x top
+}
+
+.Zebra_Form input.password,
+.Zebra_Form input.text {
+    width: 200px
+}
+
+.Zebra_Form input.date {
+    width: 105px;
+    *width: 95px
+}
+
+.Zebra_Form textarea {
+    width: 400px;
+    resize: vertical
+}
+
+.Zebra_Form input.radio,
+.Zebra_Form input.checkbox {
+    *position: relative;
+    *top: -1px
+}
+
+/* only for IE 8 and below */
+.Zebra_Form input.file {
+    border: 1px solid #999\9;
+    background: #FFF url('textbox-background.gif') repeat-x top\9;
+    padding: 4px\9;
+    width: 293px\9
+}
+
+.Zebra_Form .button,
+.Zebra_Form .reset,
+.Zebra_Form .submit,
+.Zebra_Form label.button {
+    padding: 6px 20px;
+    background: #EFEFEF url('button-background.gif') repeat-x top;
+    cursor: pointer;
+    width: 1px; /* thanks to http://jehiah.cz/archive/button-width-in-ie */
+    overflow: visible;
+    width: auto;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -moz-box-shadow: 0 0 2px #AAA;
+    -webkit-box-shadow: 0 0 2px #AAA;
+    box-shadow: 0 0 2px #AAA;
+}
+
+.Zebra_Form .button:hover,
+.Zebra_Form .reset:hover,
+.Zebra_Form .submit:hover,
+.Zebra_Form .submit-hover,
+.Zebra_Form label.button:hover {
+    background: #303740 none;
+    color: #FFF
+}
+
+.Zebra_Form .row {
+    background: #FFF;
+    padding: 10px;
+    margin-bottom: 1px;
+    border-bottom: 1px solid #DEDEDE;
+    line-height: 1.4em
+    /*
+    line height is there to space things nicely but also to avoid the peek-a-boo bug in IE6
+    read more at http://www.dracos.co.uk/code/ie6-css-bug/
+    */
+}
+
+.Zebra_Form .row:before,
+.Zebra_Form .row:after     { content: "\0020"; display: block; height: 0; visibility: hidden; font-size: 0 }
+.Zebra_Form .row:after     { clear: both }
+.Zebra_Form .row           { *zoom: 1 } /* for IE only */
+
+.Zebra_Form table {
+    border-collapse: collapse
+}
+
+.Zebra_Form td {
+    padding: 10px;
+    vertical-align: top
+}
+
+.Zebra_Form .cell {
+    float: left;
+    margin-right: 5px
+}
+
+.Zebra_Form input.inline,
+.Zebra_Form textarea.inline {
+    display: inline /* for when we show the "required" sign after controls that have the labels as tips */
+}
+
+.Zebra_Form .even {
+    background: #F6F6F6
+}
+
+.Zebra_Form .highlight {
+    background: #E9F6F9
+}
+
+.Zebra_Form .last {
+    border-bottom: none
+}
+
+.Zebra_Form input.other {
+    margin-top: 5px
+}
+
+.Zebra_Form .cell input.other {
+    margin: 0 0 0 5px
+}
+
+.Zebra_Form input.other-invisible,
+.Zebra_Form input.other-invisible {
+    display: none
+}
+
+.Zebra_Form .note {
+    font-size: 80%;
+    color: #666;
+    padding-left: 12px;
+    background: url('note.gif') no-repeat left 1px;
+    line-height: 1.2em
+}
+
+.Zebra_Form .note {
+    margin-top: 5px
+}
+
+.Zebra_Form .cell .note {
+    margin: 4px 0 0 5px
+}
+
+.Zebra_Form span.required {
+    color: #C40000;
+    margin-left: 5px;
+    font-size: 110%;
+    font-weight: bold
+}
+
+.Zebra_Form_filename {
+    position: absolute;
+    font-weight: normal;
+    color:#888;
+    overflow: hidden
+}
+
+.Zebra_Form_filename a {
+    font-weight: bold;
+    color: #C40000;
+    text-decoration: none;
+    margin-left: 5px
+}
+
+.Zebra_Form_error_message {
+    position: absolute;
+    z-index: 21;
+    overflow: hidden;
+    background: transparent;
+}
+
+.Zebra_Form_error_message .message {
+    background: #000;
+    padding: 10px 18px 10px 10px;
+    color: #FFF;
+    line-height: inherit;
+    font-size: inherit;
+    font-weight: normal;
+    margin-right: 6px;
+    position: relative;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    -moz-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    *margin-right: 0;
+    max-width: 250px;
+    _width:expression(document.body.clientWidth > 250 ? '250px': 'auto'); /* max-width for IE6 */
+}
+
+.Zebra_Form_error_message .noclose { padding: 10px }
+
+.Zebra_Form_error_message .close {
+    position: absolute;
+    color: #FFF;
+    right: 5px;
+    top: 4px;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: url('close.png') no-repeat;
+    text-indent: -9000px;
+    padding:0;
+    overflow: hidden;
+    *right: 3px;
+    *top: 3px;
+}
+
+.Zebra_Form_error_message .close-ie6 {
+    position: absolute;
+    color: #FFF;
+    right: 4px;
+    top: 2px;
+    text-decoration: none;
+    font-family: arial, sans;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.Zebra_Form_error_message .arrow {
+    position:relative;
+    border-color: #000 transparent transparent transparent;
+    border-style: solid;
+    border-width: 10px;
+    height:0;
+    width:0;
+    left: 0;
+    bottom: 0;
+    z-index: 3;
+    float: left;
+    _border-left-color: pink;
+    _border-bottom-color: pink;
+    _border-right-color: pink;
+    _filter: chroma(color=pink);
+    _margin-bottom: -6px
+}
+
+.Zebra_Form div.error {
+    background: #444 url('ico-warning.png') no-repeat 8px 15px;
+    position: relative;
+    overflow: hidden;
+    _background-image: url('ico-warning.gif')
+}
+
+.Zebra_Form div.error div.zf_container {
+    padding: 15px 65px 15px 35px;
+    border: 2px solid #000;
+    position: relative;
+    overflow: hidden
+}
+
+.Zebra_Form div.error div.zf_container span {
+    color: #FFF;
+    font-weight: bold;
+    font-size: 90%;
+    display: block
+}
+
+.Zebra_Form div.error div.zf_container div.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #333;
+    height: 100%;
+    width: 50px;
+    padding: 15px 0;
+    _top: 2px;
+    _right: 2px;
+    _background: #444
+}
+
+.Zebra_Form div.error div.zf_container div.close a {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url('ico-close.png') no-repeat;
+    text-indent: -9000px;
+    margin-left: 17px;
+    _background-image: url('ico-close.gif')
+}
+
+/* accesskeys */
+.Zebra_Form span.underline {
+    text-decoration: underline;
+    color: #666;
+}
+
+.Zebra_Form .fieldset {
+    background: #666;
+    color: #FFF;
+    padding: 4px
+}
+
+.Zebra_Form_spinner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: url('spinner.gif');
+    margin: 3px 0 0 10px
+}
+
+.Zebra_Form input.disabled,
+.Zebra_Form select.disabled {
+    background: #DEDEDE;
+    color: #BBB
+}
+
+.Zebra_Form input.disabled:hover {
+    background: #DEDEDE;
+    color: #BBB
+}
+
+.Zebra_Form label.disabled {
+    color: #DEDEDE
+}
+
+.Zebra_Form_Placeholder {
+    position: absolute;
+    border: none !important;
+    background: transparent !important;
+    resize: none !important;
+}
+
+.Zebra_Form_Placeholder { color:#9C9CA2 !important }
+::-webkit-input-placeholder { color:#9C9CA2 !important }
+::-moz-placeholder { color:#9C9CA2 !important }
+input:-moz-placeholder { color:#9C9CA2 !important }
+
+.Zebra_Character_Counter {
+    position: absolute;
+    background: #FFF;
+    text-align: right;
+    border: 1px solid #AAA;
+    background: #EAEAEA;
+    color: #222;
+    font-size: 11px;
+    font-weight: normal;
+    padding: 0 2px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    opacity: .8
+}
+
+.show-character-counter { resize: none }
+.Zebra_Character_Counter span { color: #C40000 }
+
+.Zebra_Form .modifier-uppercase { text-transform: uppercase }
+.Zebra_Form .modifier-lowercase { text-transform: lowercase }
+
+.Zebra_Form div.captcha-container { position: relative }
+.Zebra_Form div.captcha-container img { border: 1px solid #CCC }
+.Zebra_Form div.captcha-container a {
+    position: absolute;
+    text-indent: -9000px;
+    display: block;
+    width: 16px;
+    height: 16px;
+    left: 131px;
+    top: 15px;
+    background: #FFF url('ico-refresh.png') no-repeat center center;
+    border: 1px solid #CCC;
+    padding: 2px;
+    _background-image: url('ico-refresh.gif')
+}
+
+.Zebra_Form .Zebra_Form_Input_Prefix {
+    color: #888;
+    padding: 0;
+    margin-right: 2px;
+}
+
+.Zebra_Form input.error,
+.Zebra_Form select.error,
+.Zebra_Form textarea.error {
+    background: #FFEFEF;
+    border-color: #C40000;
+}
+
+/* don't change this! */
+.Zebra_Form input.password { font-family: 'Verdana', 'Tahoma', 'Arial' }
+
+/*******************************
+ *  STYLES FOR ZEBRA_DATEPICKER
+ *******************************/
+
+/*
+
+    Zebra_DatePicker: a lightweight jQuery date picker plugin
+
+    Default theme
+
+    copyright (c) 2011 - 2013 Stefan Gabos
+    http://stefangabos.ro/jquery/zebra-datepicker/
+
+*/
+
+.Zebra_DatePicker *,
+.Zebra_DatePicker *:after,
+.Zebra_DatePicker *:before  { -moz-box-sizing: content-box !important; -webkit-box-sizing: content-box !important; box-sizing: content-box !important }
+
+.Zebra_DatePicker           { position: absolute; background: #666; border: 3px solid #666; display: none; z-index: 100; font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 13px }
+
+.Zebra_DatePicker *         { margin: 0; padding: 0; color: #000; background: transparent; border: none }
+
+/* = GLOBALS
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker table                      { border-collapse: collapse; border-spacing: 0 }
+
+.Zebra_DatePicker td,
+.Zebra_DatePicker th                         { text-align: center; padding: 5px 0 }
+
+.Zebra_DatePicker td                         { cursor: pointer }
+
+.Zebra_DatePicker .dp_daypicker,
+.Zebra_DatePicker .dp_monthpicker,
+.Zebra_DatePicker .dp_yearpicker             { margin-top: 3px }
+
+.Zebra_DatePicker .dp_daypicker td,
+.Zebra_DatePicker .dp_daypicker th,
+.Zebra_DatePicker .dp_monthpicker td,
+.Zebra_DatePicker .dp_yearpicker td         { background: #E8E8E8; width: 30px; border: 1px solid #7BACD2 }
+
+.Zebra_DatePicker,
+.Zebra_DatePicker .dp_header .dp_hover,
+.Zebra_DatePicker .dp_footer .dp_hover { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px }
+
+/* = HEADER
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker .dp_header td             { color: #FFF }
+
+.Zebra_DatePicker .dp_header .dp_previous,
+.Zebra_DatePicker .dp_header .dp_next       { width: 30px }
+
+.Zebra_DatePicker .dp_header .dp_caption    { font-weight: bold }
+.Zebra_DatePicker .dp_header .dp_hover      { background: #222; color: #FFF }
+.Zebra_DatePicker .dp_header .dp_blocked    { color: #888; cursor: default }
+
+/* = DATEPICKER
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker .dp_daypicker th              { background: #FFCC33 }
+.Zebra_DatePicker td.dp_not_in_month            { background: #F3F3F3; color: #CDCDCD; cursor: default }
+.Zebra_DatePicker td.dp_not_in_month_selectable { background: #F3F3F3; color: #CDCDCD; cursor: pointer }
+.Zebra_DatePicker td.dp_weekend                 { background: #D8D8D8 }
+.Zebra_DatePicker td.dp_weekend_disabled        { color: #CCC; cursor: default }
+.Zebra_DatePicker td.dp_selected                { background: #5A4B4B; color: #FFF !important }
+.Zebra_DatePicker td.dp_week_number             { background: #FFCC33; color: #555; cursor: text; font-style: italic }
+
+/* = MONTHPICKER
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker .dp_monthpicker td    { width: 33% }
+
+/* = YEARPICKER
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker .dp_yearpicker td     { width: 33% }
+
+/* = FOOTER
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker .dp_footer            { margin-top: 3px }
+.Zebra_DatePicker .dp_footer .dp_hover  { background: #222; color: #FFF }
+
+/* = SELECT CURRENT DAY
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker .dp_today { color: #FFF; padding: 3px }
+
+/* = CLEAR DATE
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker .dp_clear { color: #FFF; padding: 3px }
+
+/* = SOME MORE GLOBALS (MUST BE LAST IN ORDER TO OVERWRITE PREVIOUS PROPERTIES)
+----------------------------------------------------------------------------------------------------------------------*/
+.Zebra_DatePicker td.dp_current             { color: #C40000 }
+.Zebra_DatePicker td.dp_disabled_current    { color: #E38585 }
+.Zebra_DatePicker td.dp_disabled            { background: #F3F3F3; color: #CDCDCD; cursor: default }
+.Zebra_DatePicker td.dp_hover               { background: #482424; color: #FFF }
+
+/* = ICON
+----------------------------------------------------------------------------------------------------------------------*/
+button.Zebra_DatePicker_Icon                { display: block; position: absolute; width: 16px; height: 16px; background: url('calendar.png') no-repeat left top; text-indent: -9000px; border: none; cursor: pointer; padding: 0; line-height: 0; vertical-align: top }
+button.Zebra_DatePicker_Icon_Disabled       { background-image: url('calendar-disabled.png') }
+
+/* don't set vertical margins! */
+button.Zebra_DatePicker_Icon                { margin: 0 0 0 3px }
+button.Zebra_DatePicker_Icon_Inside         { margin: 0 3px 0 0 }
+
+
+/*thinkox reset*/
+.Zebra_Form .button, .Zebra_Form .reset, .Zebra_Form input.password, .Zebra_Form input.text, .Zebra_Form select, .Zebra_Form textarea, .Zebra_Form label.button{
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+}
+.Zebra_Form .row{
+    border-bottom: none;
+    background: none;
+}
+.Zebra_Form input.password, .Zebra_Form input.text,  .Zebra_Form select, .Zebra_Form textarea{
+    border: #ccc solid 1px !important;
+    background: none;
+}
+/**/

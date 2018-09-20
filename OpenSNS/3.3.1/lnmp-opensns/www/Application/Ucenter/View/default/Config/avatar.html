@@ -1,0 +1,53 @@
+<extend name="Config/base"/>
+<block name="style">
+    <style>
+        .jcrop-holder > div > div {
+            border-radius: 50%;
+        }
+    </style>
+</block>
+<block name="body">
+
+<div id="center">
+<div id="center_base">
+<div class="with-padding" style="padding: 20px">
+    <h2>
+        {:L('_AVATAR_MODIFY2_')}
+    </h2>
+
+
+
+    <php>
+        $user = query_user(array('avatar128'));
+    </php>
+
+    <div class="row">
+
+        <div class="ucenter-avatar col-xs-12">
+
+            <php>if(file_exists('./api/uc_login.lock')){
+                include_once './api/uc_client/client.php';
+                $html = uc_avatar(is_login());
+            </php>
+            {$html}
+            <php>}else{</php>
+
+
+
+            {:W('Ucenter/UploadAvatar/render',array('uid'=>is_login()))}
+
+
+            <php>}</php>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+</div>
+</div>
+
+</block>

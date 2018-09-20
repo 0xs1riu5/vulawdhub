@@ -1,0 +1,74 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="/os/osv3/index.php?s=/admin/index/index.html">首页 </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>模块访问权限管理</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <!-- 标题 -->
+    <div class="main-title">
+        <h2>
+            按身份允许模块前台访问！（都不选表示非登录状态也可访问）
+        </h2>
+    </div>
+    <!-- 数据表格 -->
+    <div class="with-padding adminlte-os-table">
+        <form id="role_module_auth">
+            <table id="table-data" class="table table-bordered table-striped table-hover">
+                <!-- 表头 -->
+                <thead>
+                <tr>
+                    <th>模块标识</th>
+                    <th>模块名</th>
+                    <th>允许访问身份</th>
+                </tr>
+                </thead>
+
+                <!-- 列表 -->
+                <tbody>
+                <volist name="modules" id="one_module">
+                    <tr>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$one_module['name']}</td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$one_module['alias']}</td>
+                        <td style="width:auto;">
+                            <volist name="role_list" id="one_role">
+                                <label style="margin:5px;">
+                                    <input type="checkbox" name="role_module[{$one_module['id']}][]"
+                                           value="{$one_role['id']}"
+                                    <if condition="in_array($one_role['id'],$one_module['auth_role'])">checked</if>
+                                    /> {$one_role['title']}
+                                </label>
+                            </volist>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </form>
+
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post btn-success" id="save-role-module-auth">保存设置</button>
+            <button onclick="javascript:history.back(-1);return false;" class="btn btn-return">返回</button>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#save-role-module-auth').click(function () {
+                var param = $('#role_module_auth').serialize();
+                $.post(U('Admin/Role/moduleRole'), param, function (res) {
+                    handleAjax(res);
+                });
+            });
+        });
+    </script>
+</block>

@@ -1,0 +1,224 @@
+@common-c1:#1ABC9C;
+@f:#fff;
+.common-ab{
+  content: ""attr(data-hover)"";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 42px;
+}
+.banner{
+  background: url("../images/sh-banner.png") no-repeat center;
+  height: 650px;
+  margin-top: 50px;
+  position: relative;
+  overflow: hidden;
+   .banner-box{
+     padding-left: 5px;
+     height: 250px;
+     margin-top: 375px;
+      .info-wrap{
+        height: 100%;
+        padding-left: 0;
+         p{
+           font-size: 20px;
+           color: #6a6a6a;
+         }
+        .btn-group{
+          margin-top: 20px;
+        }
+      }
+   }
+}
+
+.ui-wrap{
+  background-color: @f;
+  padding: 20px 0;
+  .new-ui-wrap{
+    .ui-img{
+      background: url("../images/new-ui.png")no-repeat center;
+      height: 400px;
+    }
+  }
+}
+.ui-info{
+  margin-top: 75px;
+  h3{
+    font-weight: 600!important;
+    color: #6f6f6f;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  p{
+    color: #babbbb;
+    font-size: 16px;
+  }
+  p{
+    margin-bottom: 10px;
+  }
+}
+
+.backstage-wrap{
+  padding: 20px 0;
+  .backstage-img{
+    background: url("../images/new-1.png") no-repeat center;
+    height: 410px;
+  }
+}
+
+.data-wrap{
+  .data-img{
+    background: url("../images/new-2.png") no-repeat center;
+    height: 375px;
+  }
+}
+.message-img{
+  background: url("../images/z.png") no-repeat center;
+  height: 375px;
+}
+.note-img{
+  background: url("../images/x.png") no-repeat center;
+  height: 345px;
+}
+//首页按钮stat
+.sh-btn{
+  padding: 10px 30px;
+  display: block;
+  float: left;
+  border: 1px solid @common-c1;
+  border-radius: 4px;
+  color: @f;
+  position: relative;
+  box-shadow: 0 0 3px rgba(26,188,156,.2);
+}
+.index-btn{
+  overflow: hidden;
+  &:hover{
+    color: @common-c1;
+    &:before{
+      top:-100%;
+    }
+  }
+  &:before{
+    .common-ab;
+    top: 0;
+    background-color: @common-c1;
+    transition: top .3s ease;
+  }
+}
+.online-btn{
+  margin-left: 20px;
+  color: @common-c1;
+  overflow: hidden;
+  &:hover:after{
+    bottom: 0;
+    color: @common-c1;
+  }
+  &:after{
+    .common-ab;
+    bottom: -100%;
+    background-color: @f;
+    transition: all .3s ease;
+  }
+}
+.next-btn{
+  padding: 10px 30px;
+  display: inline-block;
+  border: 1px solid @common-c1;
+  border-radius: 4px;
+}
+.more{
+  background: url("../images/more.png");
+  height: 511px;
+  margin-top: 25px;
+}
+.client-wrap{
+  background-color: @f;
+  padding: 20px 0;
+   .client-box{
+     text-align: center;
+     h1{
+       margin: 20px auto ;
+     }
+     .client{
+       background-color: #e9edf0;
+       padding: 20px 10px;
+        .content{
+          background-color: @f;
+          width: 100%;
+          overflow: hidden;
+          padding: 10px;
+          min-height: 325px;
+          position: relative;
+          text-align: left;
+          &:hover .hide-box{
+            left: 0;
+          }
+          .hide-box{
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.7);
+            transition: all .5s ease;
+            text-align: center;
+             i{
+               color: @f;
+               font-size: 40px;
+               line-height: 355px;
+             }
+          }
+          img{
+            margin: 10px auto;
+            max-height: 40px;
+          }
+          p{
+            color: #909092;
+            span{
+              color: @common-c1;
+              font-size: 16px;
+            }
+          }
+          article{
+            text-align: left;
+            color: #7f7f81;
+            text-indent: 2em;
+          }
+        }
+     }
+   }
+}
+.p-bold{
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  color: #333!important;
+}
+//幽灵按钮
+.ghost-button{margin: 20px auto 0; display: inline-block; width: 180px; height: 50px; line-height: 45px; color: #6f6f6f;border-radius:5px;font-size: 18px; border: 2px solid rgba(26,188,156,0.7);
+  box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;  position: relative; transition: 0.4s ease; -webkit-transition: 0.4s ease; -o-transition: 0.4s ease; -moz-transition: 0.4s ease; }
+.ghost-button:hover{border: 2px solid rgba(26,188,156,1);color:@common-c1;text-decoration: none}
+.ghost-button .line{ position: absolute; display: block; background: none; transition: 0.4s ease; -webkit-transition: 0.4s ease; -o-transition: 0.4s ease; -moz-transition: 0.4s ease; }
+.ghost-button:hover .line{background: #fff;}
+
+.ghost-button .line-top{height: 2px;width: 0;left:-110%;top: -2px;}
+.ghost-button:hover .line-top{width: 96%;left: 2px;}
+
+.ghost-button .line-bottom{width: 0;height: 2px;right: -110px;bottom: -2px;}
+.ghost-button:hover .line-bottom{width: 96%;right: 2px;}
+
+.ghost-button .line-left{height: 0;width: 2px;left: -2px;bottom: -110%}
+.ghost-button:hover .line-left{bottom: 1px;height: 88%;}
+
+.ghost-button .line-right{height: 0;width: 2px;right: -2px;top: -110%}
+.ghost-button:hover .line-right{top: 1px;height: 88%;}
+
+.backstage-info{
+  .ghost-button:hover .line{background: #e9edf0;}
+}
+//首页按钮end

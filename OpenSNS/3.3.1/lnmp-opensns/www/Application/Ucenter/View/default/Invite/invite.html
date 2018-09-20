@@ -1,0 +1,85 @@
+<extend name="Public/usercenter"/>
+
+<block name="body">
+    <link href="__CSS__/invite.css" type="text/css" rel="stylesheet">
+    <div class="row">
+        <div class="col-xs-12">
+            <p>&nbsp;</p>
+            <h4>{:L('_INV_LIST_')}</h4>
+            <hr class="oneuser-title-hr"/>
+
+            <include file="_top"/>
+        </div>
+    </div>
+
+
+    <div class="invite_content" style="min-height: 400px;margin-top: 30px;">
+        <if condition="!$type_list"><p class="text-muted" style="text-align: center; font-size: 18px;">
+            {:L('_INV_NOT_')} <a href="{:U('Ucenter/Invite/index')}" style="text-decoration: underline;">{:L('_INV_CODE_GEN_')}</a> ～
+        </p>
+            <else/>
+            <volist name="type_list" id="val">
+                <div style="font-size: 18px;">{$val.title}</div>
+                <div style="padding-left: 20px;margin-bottom: 30px;">
+                    <table>
+                        <thead>
+                        <tr>
+                            <!--<td>{:L('_INV_CODE_')}</td>-->
+                            <td>{:L('_INV_LINK_')}</td>
+                            <!--<td>{:L('_PLACES_REMIND_')}</td>-->
+                            <td>{:L('_SUCCESS_ED_')}</td>
+                            <!--<td>{:L('_PERIOD_TO_')}</td>-->
+                            <td>{:L('_OPERATE_')}</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="val['codes']" id="vl">
+                            <tr>
+                                <!--<td>{$vl.code}</td>-->
+                                <td class="text-more" style="width: 100%">{$vl.code_url}</td>
+                                <!--<td>{$vl.num|default=0}{:L('_GE_')}</td>-->
+                                <td>{$vl.already_num|default=0} {:L('_GE_')}</td>
+                                <!--<td>{$vl.end_time|time_format}</td>-->
+                                <td>
+                                    <div style="position: relative;">
+                                        <!--<a data-role="copy_code" data-code="{$vl.code}">{:L('_INV_CODE_COPY_')}</a>-->
+                                        <a data-role="copy_code_url" data-code-url="{$vl.code_url}" style="margin-left: 10px;">{:L('_INV_LINK_COPY_')}</a>
+                                        <!--<a data-role="back_copy_code" data-id="{$vl.id}" style="margin-left: 10px;">{:L('_RETURN_TO_')}</a>-->
+                                    </div>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+            </volist>
+        </if>
+
+
+    </div>
+    <script type="text/javascript" src="__JS__/invite.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/ext/zclip/jquery.zclip.min.js"></script>
+    <script>
+        $(function(){
+            $('[data-role="copy_code"]').zclip({
+                copy: function () {
+                    return $(this).attr('data-code');
+                },
+                afterCopy: function () {
+                    $(this).html("{:L('_COPIED_')}");
+                    toast.success("{:L('_SUCCESS_COPY_')}");
+                }
+            });
+            $('[data-role="copy_code_url"]').zclip({
+                copy: function () {
+                    return $(this).attr('data-code-url');
+                },
+                afterCopy: function () {
+                    $(this).html("{:L('_LINK_COPIED_')}");
+                    toast.success("{:L('_SUCCESS_LINK_COPY_')}");
+                }
+            });
+        });
+    </script>
+</block>

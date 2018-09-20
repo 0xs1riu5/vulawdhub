@@ -1,0 +1,12 @@
+&nbsp;
+<volist name="rank_link" id="vl">
+    <if condition="$vl['is_show']">
+        <empty name="vl.label_content">
+            <empty name="vl.logo_url">
+                <else/>
+                <img class="rank-icon" src="{$vl.logo_url}" title="{$vl.title}" alt="{$vl.title}"/>
+            </empty>
+            <else/><span class="label label-badge rank-label" title="{$vl.title}" style="background: {$vl.label_bg} !important;color:{$vl.label_color} !important;">{$vl.label_content}</span>
+        </empty>
+    </if>
+</volist>

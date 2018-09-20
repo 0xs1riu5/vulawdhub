@@ -1,0 +1,124 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>插件管理</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <!-- 标题栏 -->
+    <div class="main-title">
+        <h2>{:L("_PLUGIN_LIST_")}</h2>
+    </div>
+    <div class="with-padding">
+        <a href="{:U('hooks')}" class="btn btn-default">{:L("_HOOK_MANAGEMENT_")}</a>
+
+        <a href="{:U('create')}" class="btn btn-primary">{:L("_QUICK_CREATE_PLUGIN_")}</a>
+    </div>
+
+
+    <div class="with-padding">
+        <div class="tab-wrap tabbable-custom" style="margin-bottom: 5px;margin-top: 10px;">
+            <ul class="nav nav-tabs group_nav">
+                <li id="type_all"><a href="{:U('index',array('type'=>'all'))}">{:L("_ALL_")}</a></li>
+                <li id="type_yes"><a href="{:U('index',array('type'=>'yes'))}">{:L("_NOT_INSTALLED_")}</a></li>
+                <li id="type_no"><a href="{:U('index',array('type'=>'no'))}">{:L("_INSTALLED_")}</a></li>
+                <script>
+                    $('#type_{$type}').addClass('active');
+                </script>
+            </ul>
+            <div class="tab-content">
+                <div class="cards plugin-list" style="padding: 15px">
+                    <notempty name="_list">
+                        <volist name="_list" id="vo">
+                            <div class="pull-left" style="width: 240px;margin-right: 15px">
+                                <div class="card">
+                                    <div class="media-wrapper"><a href="{:U('config',array('id'=>$vo['id']))}"><img src="__IMG__/plugin.png" alt=""></a></div>
+                                    <span class="caption">{$vo.name}</span>
+                                    <div class="card-heading">
+                                        <span class="pull-right"><span class="label" >{$vo.status_text|default=L("_NOT_INSTALLED_WITH_DOUBLE_")}</span> <span class="label label-success">{$vo.version}</span></span>
+                                        <a href="{:U('config',array('id'=>$vo['id']))}"
+                                           class=""><strong>{$vo.title} </strong>  </a>
+                                    </div>
+
+
+
+                                    <div class="card-content text-muted">
+                                        {$vo.description}
+                                    </div>
+                                    <div class="card-actions">
+                                        <div class="text-mute">
+
+                                          {$vo.author}
+
+                                        </div>
+                                    </div>
+                                    <div class="card-actions">
+
+                                        <div class="btn-group">
+
+
+                                            <empty name="vo.uninstall">
+                                                <?php
+                                        $class	= get_addon_class($vo['name']);
+                                        if(!class_exists($class)){
+                                            $has_config = 0;
+                                        }else{
+                                            $addon = new $class();
+                                            $has_config = count($addon->getConfig());
+                                                }
+                                                ?>
+                                                <?php if ($has_config): ?>
+                                                <a class="btn btn-primary" href="{:U('config',array('id'=>$vo['id']))}">{:L("_SET_UP_")}</a>
+                                                <?php endif ?>
+                                                <?php if ($vo['status'] >=0): ?>
+                                                <eq name="vo.status" value="0">
+                                                    <a class="btn btn-primary ajax-get"
+                                                       href="{:U('enable',array('id'=>$vo['id']))}">{:L("_ENABLE_")}</a>
+                                                    <else/>
+                                                    <a class="btn btn-info ajax-get"
+                                                       href="{:U('disable',array('id'=>$vo['id']))}">{:L("_DISABLE_")}</a>
+                                                </eq>
+                                                <?php endif ?>
+                                                {//
+                                                <eq name="vo.author" value="thinkphp">}
+                                                    <a class="btn btn-danger ajax-get"
+                                                       href="{:U('uninstall?id='.$vo['id'])}">{:L("_UNINSTALL_")}</a>
+                                                    {//
+                                                </eq>
+                                                }
+                                                <else/>
+                                                <a class="btn btn-success ajax-get"
+                                                   href="{:U('install?addon_name='.$vo['name'])}">{:L("_INSTALL_")}</a>
+                                            </empty>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </volist>
+                        <else/>
+                        <div class="text-center"> aOh!{:L("_THERE_IS_NO_CONTENT_")}</div>
+                    </notempty>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 数据列表 -->
+    <!-- 分页 -->
+    <div class="with-padding">
+        {$_page}
+    </div>
+</block>

@@ -1,0 +1,54 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>{:L("_HOOK_LIST_")}</h2>
+	</div>
+	<div class="with-padding">
+		<?php if (IS_ROOT): ?>
+			<a class="btn btn-default" href="{:U('addhook')}">{:L("_NEW_GROWTH_WITH_SPACE_")}</a>
+		<?php endif ?>
+	</div>
+
+	<!-- 数据列表 -->
+	<div class="data-table with-padding">
+		<table class="table table-bordered table-striped ">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>{:L("_NAME_")}</th>
+					<th>{:L("_DESCRIPTION_")}</th>
+					<th>{:L("_TYPE_")}</th>
+					<th>{:L("_OPERATION_")}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+					<tr>
+						<td>{$vo.id}</td>
+						<td><a href="{:U('edithook?id='.$vo['id'])}">{$vo.name}</a></td>
+						<td>{$vo.description}</td>
+						<td>{$vo.type_text}</td>
+						<td>
+							<a title={:L("_EDIT_WITH_DOUBLE_")} href="{:U('edithook?id='.$vo['id'])}">{:L("_EDIT_")}</a>
+							<a class="confirm ajax-get" title={:L("_DELETE_WITH_DOUBLE_")} href="{:U('delhook?id='.$vo['id'])}">{:L("_DELETE_")}</a>
+						</td>
+					</tr>
+				</volist>
+			</tbody>
+		</table>        
+	</div>
+	<!-- 分页 -->
+    <div class="with-padding">
+        {$_page}
+    </div>
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		$(function(){
+
+		})
+	</script>
+</block>

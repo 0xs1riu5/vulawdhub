@@ -1,0 +1,168 @@
+<extend name="Base/common"/>
+
+<block name="header">
+    <include file="Public/_nav"/>
+    <link href="__CSS__/weibo.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{:getRootUrl()}Addons/InsertXiami/_static/css/xiami.css">
+    <style>
+        #main-container {
+            width: 1000px;
+        }
+    </style>
+</block>
+
+<block name="body">
+    <div class="detail-wrap">
+        <!--详情页左侧stat-->
+        <div class="d-wrap d-left">
+            <div class="d-title"><p>动态详情</p></div>
+            <div class="d-num">
+                <span class="num-time">{$weibo.create_time|friendlyDate}</span>
+                <php>
+                    $weiboCommentTotalCount = $weibo['comment_count'];
+                </php>
+                <span class="three-num">点赞 {$supported.count}</span>
+                <span class="three-num">评论 {$weiboCommentTotalCount}</span>
+                <span class="three-num">转发 {$weibo.repost_count}</span>
+            </div>
+            <div id="weibo_list">
+                <div class="d-content row" id="weibo_{$weibo.id}">
+                    <div class="fetch-wrap">{$weibo.fetchContent}</div>
+                    <div class="manager-list">
+                        <div class="pull-left">
+                            <if condition="check_auth('Weibo/Index/setTop')">
+                                <eq name="weibo.is_top" value="0">
+                                    <a data-weibo-id="{$weibo.id}" title="{:L('_SET_TOP_')}" data-role="weibo_set_top">
+                                        置顶
+                                    </a>
+                                    <else/>
+                                    <a data-weibo-id="{$weibo.id}" title="{:L('_CANCEL_TOP_')}" data-role="weibo_set_top">
+                                        取消置顶
+                                    </a>
+                                </eq>
+                            </if>
+                            <if condition="$show_hide_button eq 1">
+                                <a data-weibo-id="{$weibo.id}" data-type="dec" title="取消{:L('_HIDE_TOP_')}" data-role="hide_top_weibo">
+                                    取消隐藏
+                                </a>
+                                <elseif condition="$show_hide_button eq 2"/>
+                                <a data-weibo-id="{$weibo.id}" data-type="asc" title="{:L('_HIDE_TOP_')}" data-role="hide_top_weibo">
+                                    隐藏
+                                </a>
+                            </if>
+                        </div>
+                        <div class="pull-right">
+                            {:hook('report',array('type'=>$MODULE_ALIAS.'/'.$MODULE_ALIAS,'url'=>"Weibo/Index/weiboDetail?id=$weibo[id]",'data'=>array('weibo-id'=>$weibo['id'])))}
+                            <if condition="$weibo['can_delete']">
+                                <a data-weibo-id="{$weibo.id}" title="{:L('_DELETE_')}" data-role="del_weibo">
+                                    删除
+                                </a>
+                            </if>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="pull-right">
+                        {:W('Common/Share/detailShare')}
+                    </div>
+                    <div class="row weibo-comment-list" data-weibo-id="{$weibo.id}">
+                        <div class="col-xs-12">
+                            <div class=" weibo-comment-block">
+                                <div class="weibo-comment-container">
+                                    {:W('Comment/detailComment',array('weibo_id'=>$weibo['id']))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--详情页右侧stat-->
+        <div class="d-wrap d-right">
+            <div class="wb-holder">
+                <if condition="$user_info['cover_id']">
+                    <img class="uc_top_img_bg" src="{$user_info['cover_path']}" >
+                    <else/>
+                    <img class="uc_top_img_bg" src="__IMG__/user_top_default_bg.png">
+                </if>
+                <div class="holder-info">
+                    <a href="{$user_info.space_url}">
+                        <div class="holder-avatar">
+                            <img src="{$user_info.avatar128}" class="avatar-img img-responsive top_img"/>
+                        </div>
+                        <p class="holder-name text-more"><a ucard="{$user_info.uid}" href="{$user_info.space_url}" title="">{$user_info.nickname|htmlspecialchars}</a></p>
+                        <p class="holder-name text-more fl-num">
+                            <span><a href="{:U('Ucenter/Index/fans',array('uid'=>$user_info['uid']))}" title="{:L('_FANS_NUMBER_')}">{$user_info.fans}</a>{:L('_FANS_')}</span>
+                            <span class="fen-ge">/</span>
+                            <span><a href="{:U('Ucenter/Index/following',array('uid'=>$user_info['uid']))}" title="{:L('_FOLLOWERS_NUMBER_')}">{$user_info.following}</a>{:L('_FOLLOWERS_')}</span>
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="who-likes">
+                <div class="row" style="margin: 0">
+                    <p class="w-title pull-left">{:L('_TIP_FAVOR_PEOPLE_')}</p>
+                    <p class="pull-right">{:Hook('support',array('table'=>'weibo','row'=>$weibo['id'],'app'=>'Weibo','uid'=>$weibo['uid'],'jump'=>'weibo/index/weibodetail'))}</p>
+                </div>
+
+                <section>
+                    <empty name="supported.data">
+                        <div class="no-like">
+                            <p><i class="iconfont icon-leiben"></i></p>
+                            <p style="margin: 0">{:L('_TIP_FAVOR_NOBODY_')}</p>
+                        </div>
+                    </empty>
+                    <ul class="supported-users clearfix">
+                        <volist name="supported.data" id="vo">
+                            <li class="text-center text-ellipsis col-xs-3">
+                                <a href="{$vo.user.space_url}" target="_blank" ucard="{$vo.uid}">
+                                    <img style="width:64px;" class="avatar-img" src="{$vo.user.avatar128}">
+                                </a>
+                                <br/>
+                                {$vo.user.space_link}
+                            </li>
+                        </volist>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__JS__/weibo.js"></script>
+    <script>
+        var SUPPORT_URL = "{:addons_url('Support://Support/doSupport')}";
+        var auto_open_detail = 1;
+        weibo_bind();
+        $('[data-role="hide_top_weibo"]').unbind('click');
+        $('[data-role="hide_top_weibo"]').click(function () {
+            var weiboId = $(this).attr('data-weibo-id');
+            var type= $(this).attr('data-type');
+            if(type=='asc'){
+                toast.success('隐藏成功！');
+                $(this).html('取消隐藏');
+                $(this).attr('data-type','dec');
+                //写入cookie
+                var unshow_top_weibo=$.cookie('Weibo_index_top_hide_ids');
+                unshow_top_weibo=unshow_top_weibo_ids(unshow_top_weibo,weiboId,'asc');
+                $.cookie('Weibo_index_top_hide_ids',unshow_top_weibo,{expires:365});
+            }else if(type='dec'){
+                toast.success('取消隐藏成功！');
+                $(this).html('隐藏');
+                $(this).attr('data-type','asc');
+                //写入cookie
+                var unshow_top_weibo=$.cookie('Weibo_index_top_hide_ids');
+                unshow_top_weibo=unshow_top_weibo_ids(unshow_top_weibo,weiboId,'desc');
+                if(unshow_top_weibo.length==0){
+                    $.cookie('Weibo_index_top_hide_ids',1,{expires:-1});//删掉cookie
+                }else{
+                    $.cookie('Weibo_index_top_hide_ids',unshow_top_weibo,{expires:365});
+                }
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="__CSS__/photoswipe.css">
+    <link rel="stylesheet" href="__CSS__/default-skin/default-skin.css">
+    <script src="__JS__/photoswipe.min.js"></script>
+    <script src="__JS__/photoswipe-ui-default.min.js"></script>
+</block>

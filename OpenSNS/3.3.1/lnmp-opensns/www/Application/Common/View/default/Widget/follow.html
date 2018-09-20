@@ -1,0 +1,15 @@
+<php>if($is_following && !$is_self){</php>
+<button type="button" class="{$after|default='btn btn-default'}" data-after="{$before|default='btn btn-default'}"  data-before="{$after|default='btn btn-primary'}" data-role="unfollow" data-follow-who="{$follow_who}" style="width: 65px">
+    {:L('_FOLLOWED_')}
+</button>
+<php>}elseif(!$is_following && !$is_self){</php>
+<button type="button" class="{$before|default='btn btn-primary'}" data-after="{$before|default='btn btn-default'}"  data-before="{$after|default='btn btn-primary'}"  data-role="follow" data-follow-who="{$follow_who}" style="width: 65px">
+    <i class="icon-plus"></i>
+    {:L('_FOLLOWERS_')}
+</button>
+<php>}else{</php>
+<button class="btn btn-primary" disabled="disabled" style="width: 65px">
+    {:L('_SELF_')}
+</button>
+<php>}</php>
+

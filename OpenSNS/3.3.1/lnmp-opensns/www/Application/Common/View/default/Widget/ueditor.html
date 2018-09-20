@@ -1,0 +1,32 @@
+
+
+<php> if(\Think\Hook::get('adminEditor') && MODULE_NAME == 'Admin'){</php>
+<label class="textarea">
+    <textarea name="{$name}" id="{$id}">{$default}</textarea>
+    {:hook('adminEditor', array('id'=>$id,'value'=>$default))}
+</label>
+
+<php>}elseif(\Think\Hook::get('editor')){</php>
+
+<label class="textarea">
+    <textarea name="{$name}" id="{$id}">{$default}</textarea>
+    {:hook('editor', array('id'=>$id,'value'=>$default))}
+</label>
+
+<php>}else{</php>
+<script type="text/plain" name="{$name}" id="{$id}" style="width:{$width};height:{$height};{$style}">{$default}</script>
+<script>
+    var  ue_{$id};
+    $(function () {
+    var config = {{$config},'topOffset':$('#nav_bar').height()+$('#sub_nav').height()+5};
+    ue_{$id} = UE.getEditor('{$id}', config);
+    })
+
+
+</script>
+
+<php>if(!$param['is_load_script']){</php>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/ueditor/ueditor.all.min.js"></script>
+<php>}</php>
+<php>}</php>

@@ -1,0 +1,48 @@
+<php>
+    $sideBarUser = query_user(array('nickname', 'uid', 'title', 'score', 'avatar128'), $uid);
+    $call = $call ? $call : L('_I_');
+</php>
+
+<div class="row ">
+    <div class="col-xs-12">
+        <div class="with-padding">
+            <!--关注按钮，在登录状态-->
+            <if condition="is_login() && $uid != get_uid()">
+
+                <p class="text-center">
+
+                    {:W('Common/Follow/follow',array('follow_who'=>$uid))}
+
+                </p>
+            </if>
+            <h3 class="with-padding">
+                {:L('_USER_CENTER_')}
+            </h3>
+            <!--导航栏-->
+            <ul class="nav nav-pills nav-stacked">
+
+                <li id="side_message">
+                    <a href="{:U('Ucenter/Message/message')}">
+                        {:L('_MESSAGE_CENTER_')}
+                        <span class="icon-bullhorn pull-right"></span>
+                    </a>
+                </li>
+                <li id="side_collection">
+                    <a href="{:U('Ucenter/Collection/index')}">
+                        {:L('_MY_FAVORITES_')}
+                        <span class="icon-star pull-right"></span>
+                    </a>
+                </li>
+                <li id="side_invite">
+                    <a href="{:U('Ucenter/Invite/invite')}">
+                        {:L('_FRIENDS_INV_')}
+                        <span class="icon-star pull-right"></span>
+                    </a>
+                </li>
+                <script>
+                    $('#side_' + "{$tabHash}").addClass('active');
+                </script>
+            </ul>
+        </div>
+    </div>
+</div>

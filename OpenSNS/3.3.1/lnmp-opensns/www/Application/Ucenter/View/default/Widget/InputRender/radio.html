@@ -1,0 +1,27 @@
+<eq name="type" value="personal">
+    <div class="form-group">
+        <label for="expand_{$field_id}" class="col-xs-2 control-label" style="text-align: right;">
+            <eq name="required" value="1"><span style="color: #FF0047;vertical-align: middle;">*&nbsp;&nbsp;</span></eq>{$field_name}
+        </label>
+
+        <div class="col-xs-6">
+            <ul class="expandinfo-ul" id="expand_{$field_id}" style="-webkit-padding-start: 0px;">
+                <volist name="items" id="vl">
+                    <li class="expandinfo-li">
+                        <label><input class="radio-inline" style="margin: -2px 3px 0 0" type="radio" name="expand_{$field_id}" value="{$vl.value}" {$vl.checked}>{$vl.value|htmlspecialchars}</label>
+                    </li>
+                </volist>
+            </ul>
+            <div class="clearfix"></div>
+            <neq name="input_tips" value=""> <span class="help-block">{$input_tips}</span></neq>
+        </div>
+    </div>
+    <else/>
+    <dt class="expandinfo-dt">
+        {$field_name}：
+    </dt>
+    <dd class="expandinfo-dd">
+        {$checked|htmlspecialchars}
+    </dd>
+</eq>
+<div class="clearfix"></div>

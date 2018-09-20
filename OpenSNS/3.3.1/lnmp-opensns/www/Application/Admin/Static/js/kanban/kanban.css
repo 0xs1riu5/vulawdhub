@@ -1,0 +1,107 @@
+.kanban-item {
+    padding: 6px 10px;
+    margin-bottom: 5px;
+    background: #fff;
+    border: 1px solid #ddd;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+    -webkit-transition: all .5s cubic-bezier(.175, .885, .32, 1);
+    -o-transition: all .5s cubic-bezier(.175, .885, .32, 1);
+    transition: all .5s cubic-bezier(.175, .885, .32, 1);
+}
+.kanban-item:hover {
+    -webkit-box-shadow: 0 1px 1 rgba(0, 0, 0, .1);
+    box-shadow: 0 1px 1 rgba(0, 0, 0, .1);
+}
+.kanban-item.kanban-item-empty {
+    display: none;
+    color: #808080;
+    border-style: dashed;
+}
+.kanban-item.kanban-item-shadow {
+    display: none;
+    padding: 0;
+    background: #ddd;
+    border: none;
+    border-color: #ddd;
+    -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, .1);
+    -webkit-transition: all .5s cubic-bezier(.175, .885, .32, 1);
+    -o-transition: all .5s cubic-bezier(.175, .885, .32, 1);
+    transition: all .5s cubic-bezier(.175, .885, .32, 1);
+}
+.kanban-item.drag-shadow {
+    width: 250px;
+    cursor: move;
+    background-color: #fff;
+    border-color: #c4c4c4;
+    -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, .25);
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, .25);
+    opacity: .9;
+}
+.kanban-item.drag-from {
+    background-color: #ebf5f9;
+}
+.kanban-list .kanban-item:last-child {
+    margin-bottom: 0;
+}
+.kanban {
+    float: left;
+    width: 250px;
+    margin-right: 10px;
+}
+.kanban.drop-in-empty .kanban-item-empty {
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border: transparent;
+}
+.kanban:last-child {
+    margin-right: 0;
+}
+.kanban > .panel-body {
+    padding: 5px;
+    background: #f1f1f1;
+}
+.kanbans:before,
+.kanbans:after {
+    /* 1 */
+    display: table;
+    content: " ";
+    /* 2 */
+}
+.kanbans:after {
+    clear: both;
+}
+.kanbans:before,
+.kanbans:after {
+    /* 1 */
+    display: table;
+    content: " ";
+    /* 2 */
+}
+.kanbans:after {
+    clear: both;
+}
+.kanbans.dragging .kanban.drop-in {
+    border-color: #c4c4c4;
+    -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, .25);
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, .25);
+}
+.kanbans.dragging .kanban.drop-in .kanban-item-shadow {
+    display: block;
+}
+.kanbans.dragging .kanban .kanban-item.kanban-item-empty {
+    display: block;
+}
+.kanbans.dragging .kanban-item.disable-drop {
+    display: none;
+}
+.kanbans.drop-in .kanban-item.drag-from {
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border: transparent;
+}

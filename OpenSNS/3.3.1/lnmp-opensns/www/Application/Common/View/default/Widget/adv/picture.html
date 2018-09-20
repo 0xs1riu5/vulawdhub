@@ -1,0 +1,122 @@
+<div id="adv_wrap_{$pos.pos}" style="padding: {$pos.padding};margin:{$pos.margin};">
+    <eq name="pos.type" value="1">
+        <if condition="$data['advspic'] neq 0">
+            <a href="{$data.link}"><img style="width:{$pos.width};height:{$pos.height}; " src="{$data.advspic|get_cover='path'}"/></a>
+        </if>
+    </eq>
+    <eq name="pos.type" value="2">
+        <if condition="count($data) gt 0">
+            <switch name="pos.style">
+                <case value="2">
+                    <script src="__PUBLIC__/js/ext/kinmaxshow/js/kinmaxshow.min.js"></script>
+                    <div style="width:{$pos.width};height:{$pos.height}">
+                        <div id="slide_{$pos.pos}">
+                            <volist name="data" id="vo">
+                                <div>
+                                    <a href="{$vo.link}" target="_blank" title="{$vo.title}">
+                                        <img style="width:{$pos.width};height:{$pos.height};" src="{$vo.advspic|get_cover='path'}"
+                                             alt="{$vo.title}" class="img-responsive" style="max-width: 100%">
+                                    </a>
+                                </div>
+                            </volist>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            var h_s = "{$pos.height}";
+                            $("#slide_{$pos.pos}").kinMaxShow({height: h_s});
+                        })
+                    </script>
+                </case>
+                <default/>
+                <script src="__PUBLIC__/js/ext/touchslide/js/jquery.touchSlider.js"></script>
+                <link href="__PUBLIC__/js/ext/touchslide/css/touchslider.css" rel="stylesheet" type="text/css"/>
+                <div class="main_visual" style="height: {$pos.height};width:{$pos.width};">
+                    <div class="flicking_con">
+                        <volist name="data" id="vo">
+                            <a href="#">{$key}</a>
+                        </volist>
+                    </div>
+                    <div class="main_image">
+                        <ul>
+                            <volist name="data" id="vo">
+                                <li><a style="width:{$pos.width};height:{$pos.height};" href="{$vo.link}" title="{$vo.title}" target="_blank"><img
+                                        src="{$vo.advspic|get_cover='path'}"
+                                        alt="{$vo.title}" class="img-responsive"></a></li>
+                            </volist>
+                        </ul>
+                    </div>
+                    <a href="javascript:;" id="btn_prev"><i class="icon-chevron-left"></i></a>
+                    <a href="javascript:;" id="btn_next"><i class="icon-chevron-right"></i></a>
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $(".main_visual").hover(function () {
+                            $("#btn_prev,#btn_next").fadeIn()
+                        }, function () {
+                            $("#btn_prev,#btn_next").fadeOut()
+                        });
+
+                        $dragBln = false;
+
+                        $(".main_image").touchSlider({
+                            flexible: true,
+                            speed: 1000,
+                            btn_prev: $("#btn_prev"),
+                            btn_next: $("#btn_next"),
+                            paging: $(".flicking_con a"),
+                            counter: function (e) {
+                                $(".flicking_con a").removeClass("on").eq(e.current - 1).addClass("on");
+                            }
+                        });
+
+                        $(".main_image").bind("mousedown", function () {
+                            $dragBln = false;
+                        });
+
+                        $(".main_image").bind("dragstart", function () {
+                            $dragBln = true;
+                        });
+
+                        $(".main_image a").click(function () {
+                            if ($dragBln) {
+                                return false;
+                            }
+                        });
+
+                        timer = setInterval(function () {
+                            $("#btn_next").click();
+                        }, 5000);
+
+                        $(".main_visual").hover(function () {
+                            clearInterval(timer);
+                        }, function () {
+                            timer = setInterval(function () {
+                                $("#btn_next").click();
+                            }, 5000);
+                        });
+
+                        $(".main_image").bind("touchstart", function () {
+                            clearInterval(timer);
+                        }).bind("touchend", function () {
+                            timer = setInterval(function () {
+                                $("#btn_next").click();
+                            }, 5000);
+                        });
+
+                    });
+                </script>
+            </switch>
+        </if>
+    </eq>
+    <eq name="pos.type" value="3">
+        <div style="width:{$pos.width};height:{$pos.height};">
+            {$data.advstext}
+        </div>
+    </eq>
+
+    <eq name="pos.type" value="4">
+        {$data.advshtml}
+    </eq>
+    <!-- add more -->
+</div>

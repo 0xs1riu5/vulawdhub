@@ -1,0 +1,126 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>自动升级</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <div class="main-title">
+        <h2>{:L("_AUTOMATIC_UPGRADE_")}</h2>
+    </div>
+    <div class="with-padding" style="width:1000px;overflow-x: scroll;position: absolute">
+        <div class="alert alert-info clearfix">
+            <div class="pull-left">
+                <p>{:L("_CURRENT_REMOTE_LATEST_VERSION_")}<strong>{$version.0.title}</strong></p>
+                <p>{:L("_CURRENT_SYSTEM_VERSION_NUMBER_")}<strong>{$currentVersion}</strong></p>
+            </div>
+
+            <div class="pull-right"><a href="{:U('update',array('refresh'=>1))}" class="btn btn-danger"><i class="icon-refresh"></i> 重新检测</a></div>
+        </div>
+        <p class="alert alert-danger">{:L("_BEFORE_INSTALLING_THE_UPDATE_PLEASE_")}<a target="_blank" href="{:U('database/index?type=export')}">{:L("_BACKUP_DATABASE_")}</a>，{:L("_BACKUP_WEBSITE_SOURCE_CODE_TO_PREVENT_DATA_OR_THE_DEVELOPMENT_OF_THE_TWO_LOSS_")}
+        </p>
+        <p class="alert alert-danger">{:L("_PLEASE_COME_BACK_TO_THE_BACKGROUND_")}<a target="_blank" href="{:U('config/group')}">{:L("_SYSTEM_SETTINGS_")}</a>{:L("_PAGE_CLOSE_THE_SITE._IF_YOU_DO_NOT_WANT_TO_AUTOMATICALLY_UPDATE_PLEASE_MANUALLY_")}<strong>{:L("_OFF_AUTO_UPDATE_")}</strong>。</p>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>
+                   {:L("_VERSION_NAME_")}
+                </th>
+                <th style="width: 100px">
+                   {:L("_VERSION_NUMBER_")}
+                </th>
+                <th style="width: 140px">
+                   {:L("_RELEASE_TIME_")}
+                </th>
+                <th style="width: 140px">{:L("_UPDATE_TIME_")}</th>
+                <th style="width: 100px">{:L("_UPDATE_DESCRIPTION_")}</th>
+                <th style="width: 180px">{:L("_OPERATION_")}</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="version" id="vo">
+
+                <tr class="{$vo.class}">
+                    <td>
+                        {$vo.number}
+                    </td>
+                    <td><a target="_blank" href="{$vo.url}">{$vo.title}</a>{$vo.word}</td>
+                    <td>
+                        <strong>{$vo.name}</strong>
+                    </td>
+                    <td>{$vo.create_time|friendlyDate}</td>
+                    <td>{$vo.update_time|friendlyDate}</td>
+                    <td>
+                        <a data-remote="{:U('Cloud/version',array('name'=>$vo['name']))}" data-toggle="modal" data-title="{$vo.title}-{$vo.name}{:L("_UPDATE_LOG_")}">{:L("_VIEW_DETAILS_")}</a>
+                    </td>
+                    <td>
+                        <if condition="$vo[name] eq $nextVersion['name']">
+                            <a href="{:U('getFileList',array('version'=>$vo['name']))}">{:L("_AUTOMATIC_UPGRADE_")}</a>
+                            <else/>
+                            <if condition="version_compare($vo['name'],$currentVersion) eq 0">
+                                <i class="icon-arrow-left"></i>{:L("_CURRENT_VERSION_")}
+                                <else/>
+                                <if condition="version_compare($vo['name'],$currentVersion) eq -1">
+                                   {:L("_HISTORICAL_VERSION_")}
+                                    <else/>
+                                   {:L("_FUTURE_VERSIONS_")}
+                                </if>
+
+
+                            </if>
+                            &nbsp;|&nbsp;<a href="{$cloud}{:cloudU('Appstore/Update/download',array('number'=>$vo['number']))}" target="_blank">{:L("_MANUAL_DOWNLOAD_")}</a>
+                        </if>
+                      </td>
+                </tr>
+
+            </volist>
+            </tbody>
+
+        </table>
+
+        <div style="margin-top: 10px">
+            <div class="progress progress-striped active hide" style="border-radius: 3px">
+                <div id="progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                     aria-valuemin="0" aria-valuemax="100" style="width:0">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        function writeMessage($data) {
+            $('#message').append($data);
+        }
+        function replaceMessage($data) {
+            $('#message').children().last().remove();
+            $('#message').children().last().remove();
+            $('#message').append($data);
+        }
+        var progress = {
+            'show': function () {
+                $('#progress').parent().show();
+            },
+            'setValue': function ($value) {
+                $('#progress').css('width', $value);
+            },
+            'hide': function () {
+                $('#progress').parent().hide();
+            }
+        }
+    </script>
+</block>

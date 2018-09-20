@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="__CSS__/oc/count.css">
+<div class="with-padding clearfix text-center">
+    <ul id="myTab" class="  nav nav-justified nav-pills new-index-ul " style="width: 950px;">
+        <li>
+            <a href="{:U('Admin/Count/index')}" class="tab_index">网站统计</a>
+        </li>
+        <li>
+            <a href="{:U('Admin/Count/nowUserList')}" class="tab_now_user">在线用户列表</a>
+        </li>
+        <li>
+            <a href="{:U('Admin/Count/active')}" class="tab_active">活跃用户统计</a>
+        </li>
+        <li>
+            <a href="{:U('Admin/Count/remain')}" class="tab_remain">留存率统计</a>
+        </li>
+        <li>
+            <a href="{:U('Admin/Count/lost')}" class="tab_lost">流失率统计</a>
+        </li>
+        <li>
+            <a href="{:U('Admin/Count/consumption')}" class="tab_consumption">充值用户统计</a>
+        </li>
+    </ul>
+</div>
+<script>
+    $(function () {
+        $('.tab_' + "{$now_table}").parent().addClass('active');
+    });
+</script>

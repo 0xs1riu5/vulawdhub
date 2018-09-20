@@ -1,0 +1,147 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>{:L('_CONFIG_MANAGER_')}</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <div class="main-title">
+        <h2>{:L('_CONFIG_MANAGER_')} [
+            <present name="Think.get.group">
+                <a href="{:U('index')}">{:L('_EVERYTHING_')}</a>
+                <else/>
+                <strong>{:L('_EVERYTHING_')}</strong></present>
+            &nbsp;
+            <foreach name="group" item="vo">
+                <neq name="group_id" value="$key">
+                    <a href="{:U('index?group='.$key)}">{$vo}</a>
+                    <else/>
+                    <strong>{$vo}</strong></neq>
+                &nbsp;
+            </foreach>
+            ]
+        </h2>
+    </div>
+
+    <div class="clearfix with-padding row">
+        <div class="col-xs-10">
+            <a class="btn btn-default" href="{:U('add')}">{:L('_ADD_WITH_SPACE_')}</a>
+            <a class="btn btn-default ajax-post confirm" url="{:U('del')}" target-form="ids" >{:L('_DELETE_WITH_SPACE_')}</a>
+            <button class="btn btn-default list_sort" url="{:U('sort?group='.I('group'),'','')}">{:L('_SORT_')}</button>
+            <!-- 高级搜索 -->
+        </div>
+        <div class="col-xs-2">
+            <div class="search-form fr cf">
+                <div class="sleft">
+                    <div class="input-group">
+                        <input type="text" name="name" class="form-control" value="{:I('name')}" placeholder="{:L('_PLACEHOLDER_CONFIG_NAME_INPUT_')}">
+                             <span class="input-group-btn">
+                            <a class="btn btn-default" href="javascript:;" id="search" url="{:U('config/index')}"><i
+                            class="icon-search"></i></a>
+                     </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="with-padding">
+        <table class="table table-bordered table-striped ">
+            <thead>
+            <tr>
+            <tr>
+                <th class="row-selected">
+                    <input class="checkbox check-all" type="checkbox">
+                </th>
+                <th>{:L('_ID_')}</th>
+                <th>{:L('_NAME_')}</th>
+                <th>{:L('_TITLE_')}</th>
+                <th>{:L('_GROUP_')}</th>
+                <th>{:L('_TYPE_')}</th>
+                <th>{:L('_OPERATE_')}</th>
+            </tr>
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="list">
+                <volist name="list" id="config">
+                    <tr>
+                        <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$config.id}"></td>
+                        <td>{$config.id}</td>
+                        <td><a href="{:U('edit?id='.$config['id'])}">{$config.name}</a></td>
+                        <td>{$config.title}</td>
+                        <td>{$config.group|get_config_group}</td>
+                        <td>{$config.type|get_config_type}</td>
+                        <td>
+                            <a title="{:L('_EDIT_')}" href="{:U('edit?id='.$config['id'])}">{:L('_EDIT_')}</a>
+                            <a class="confirm ajax-get" title="{:L('_DELETE_')}" href="{:U('del?id='.$config['id'])}">{:L('_DELETE_')}</a>
+                        </td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="7" class="text-center"> {:L('_ADMIN_USER_EMPTY_')}</td>
+            </notempty>
+            </tbody>
+        </table>
+        <div class="">
+            {$_page}
+        </div>
+    </div>
+
+
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        $(function () {
+            //搜索功能
+            $("#search").click(function () {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+            //点击排序
+            $('.list_sort').click(function () {
+                var url = $(this).attr('url');
+                var ids = $('.ids:checked');
+                var param = '';
+                if (ids.length > 0) {
+                    var str = new Array();
+                    ids.each(function () {
+                        str.push($(this).val());
+                    });
+                    param = str.join(',');
+                }
+
+                if (url != undefined && url != '') {
+                    window.location.href = url + '/ids/' + param;
+                }
+            });
+        });
+    </script>
+</block>

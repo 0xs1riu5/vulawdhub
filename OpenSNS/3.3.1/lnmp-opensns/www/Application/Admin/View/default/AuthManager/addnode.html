@@ -1,0 +1,55 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>{:isset($info['id'])?L('_EDIT_WITH_SINGLE_'):L('_NEW_WITH_SINGLE_')}{:L("_FRONT_RIGHT_NODE_")}</h2>
+    </div>
+    <form action="__SELF__" method="post" class="form-horizontal">
+
+        <div class="with-padding">
+
+
+        <div class="form-item">
+            <label class="item-label">{:L("_TITLE_")}<span class="check-tips">{:L("_USED_IN_THE_CONFIGURATION_HEADER_")}</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large   form-control form-input-width" name="title" value="{$info.title|default=''}">
+
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">{:L("_NODE_IDENTITY_")}<span class="check-tips" >{:L("_USED_TO_DISTINGUISH_RIGHT_FROM_CODE_")}，<span style="color: red">{:L("_UNIQUE_IDENTIFIER_")}</span>）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large  form-control form-input-width" name="name" value="{$info.name|default=''}">
+
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">{:L("_THE_MODULE_")}<span class="check-tips">{:L("_MODULES_OF_THE_RIGHT_NODE_")}</span></label>
+            <div class="controls">
+                <select name="module" class=" form-control form-select-size">
+                    <volist name="Modules" id="module">
+                        <neq name="module.is_setup" value="0">
+                        <option value="{$module.name}" <eq name="module.name" value="$info['module']">selected</eq>>{$module.alias}</option>
+                        </neq>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        </div>
+
+        <div class="form-item with-padding">
+            <input type="hidden" name="id" value="{$info.id|default=''}">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        //导航高亮
+        highlight_subnav('{:U('index')}');
+    </script>
+</block>

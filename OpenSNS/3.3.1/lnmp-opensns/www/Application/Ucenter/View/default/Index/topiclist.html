@@ -1,0 +1,53 @@
+<extend name="Base/common"/>
+
+<block name="style">
+    <link href="__CSS__/usercenter.css" rel="stylesheet" type="text/css"/>
+</block>
+<block name="header">
+    <br/>
+</block>
+<block name="body">
+    <div class="col-xs-12 usercenter">
+        <div class="uc">
+            <include file="_top"/>
+            <div class="uc-cont">
+                <div class="nav-wrap">
+                    <include file="_top_menu"/>
+                </div>
+                <div class="cont-wrap common-cont-wrap">
+                    <h2>话题列表</h2><hr>
+                    <div class="topic-wrap row">
+                        <volist name="topk" id="vo">
+                            <div class="topic-row">
+                                <a href="{:U('Weibo/Topic/index',array('topk'=>$vo['id']))}">
+                                    <div class="topk-wrap pull-left">
+                                        <div class="pull-left">
+                                            <img class="topk-logo"
+                                                 src="<if condition='$vo.logo neq 0'>{$vo.logo|getThumbImageById=85,85}<else/>__ROOT__/Application/Weibo/Static/images/topicavatar.png</if>">
+                                        </div>
+                                        <div class="topk-info pull-right">
+                                            <p class="topk-name">{$vo.name}</p>
+                                            <p>{$vo.intro|default='导语：推荐话题！'|getShortSp=10}</p>
+                                            <div class="row">
+                                                <span class="pull-lfet topk-read">浏览数:<span>&nbsp;{$vo.read_count}</span></span>
+                                                <span class="pull-right topk-weibo">微博数:<span>&nbsp; {$vo.weibo_num}</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </volist>
+
+                    </div>
+                    <div class="pull-right">
+                    {:getPagination($totalCount,10)}
+                </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+</block>
+

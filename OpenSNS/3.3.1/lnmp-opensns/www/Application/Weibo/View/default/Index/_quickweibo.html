@@ -1,0 +1,84 @@
+<if condition="$show_post">
+    <div style="display: none" class="weibo_content weibo-content-post weibo_post_box" id="send_box">
+        <div class="weibo_content_p">
+            <div class="send-top  row" id="input_tip">
+                <p class="pull-right limit-num">
+                    <span>{:modC('WEIBO_NUM',140,'WEIBO')}</span> / <span>{:modC('WEIBO_NUM',140,'WEIBO')}</span>
+                </p>
+            </div>
+            <div class="tare">
+                 <textarea class="form-control weibo-word" id="weibo_content" placeholder="{:modC('WEIBO_INFO',L('_TIP_SOMETHING_TO_SAY_'))}" onfocus="startCheckNum_quick($(this))"
+                           onblur="endCheckNum_quick()"></textarea>
+            </div>
+            <div class="op-wrap">
+                <!--插件-->
+                <div class="pull-left row addons-wrap">
+                    <a title="插入表情" href="javascript:" onclick="insertFace($(this))" data-role="insert_face">
+                        <i class="iconfont icon-biaoqing i-bq" ></i>
+                    </a>
+                    <if condition="modC('CAN_IMAGE',1)">
+                        <a title="插入图片" href="javascript:" id="insert_image" onclick="insert_image.insertImage(this)" data-role="hook_show">
+                            <i class="iconfont icon-tupian i-tp" ></i>
+                        </a>
+                    </if>
+                    <if condition="modC('CAN_TOPIC',1)">
+                        <a title="插入话题" href="javascript:" onclick="insert_topic.InsertTopic(this)">
+                            <i class="iconfont icon-tianjiahuati i-ht"></i>
+                        </a>
+                    </if>
+                    {:hook('weiboType')}
+                    <div id="emot_content" class="emot_content"></div>
+                    <div id="hook_show" class="emot_content"></div>
+                </div>
+
+                <div class="pull-right right-wrong">
+                    <a href="javascript:" class="send-right" data-role="send_weibo" data-url="{:U('Weibo/Index/doSend')}"><i class="iconfont icon-dui"></i></a>
+                    <a href="javascript:" class="send-wrong" data-role="change_back"><i class="iconfont icon-cuo"></i></a>
+                </div>
+                <!--话题-->
+                <div class="pull-right">{:use_topic()}</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var ID_setInterval;
+        function checkNum_quick(obj) {
+            var value = obj.val();
+            var value_length = value.length;
+            var can_in_num = initNum - value_length;
+            if (can_in_num < 0) {
+                value = value.substr(0, initNum);
+                obj.val(value);
+                can_in_num = 0;
+            }
+            var html =  can_in_num + " / "+initNum;
+            $('.limit-num').html(html);
+        }
+        function startCheckNum_quick(obj) {
+            ID_setInterval = setInterval(function () {
+                checkNum_quick(obj);
+            }, 250);
+        }
+        function endCheckNum_quick() {
+            clearInterval(ID_setInterval);
+        }
+
+        $('[data-role="insert_face"]').click(function() {
+            $("#hook_show").css("display", "none");
+            $("#emot_content").css("display", "block");
+        });
+        $('[data-role="hook_show"]').click(function() {
+            $("#emot_content").css("display", "none");
+            $("#hook_show").css("display", "block");
+        });
+        $('[data-role="change_back"]').click(function() {
+           $("#send_box").hide();
+           $(".black-filter").show();
+           $.cookie("wb_type","");
+        })
+    </script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ext/webuploader/js/webuploader.js"></script>
+    <link href="__PUBLIC__/js/ext/webuploader/css/webuploader.css" type="text/css" rel="stylesheet">
+</if>
+
+

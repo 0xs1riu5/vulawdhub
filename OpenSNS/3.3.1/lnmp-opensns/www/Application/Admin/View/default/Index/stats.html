@@ -1,0 +1,489 @@
+<extend name="Public/base"/>
+
+<block name="script">
+    <script src="__BTS__/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+    <script src="__BTS__/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="__JS__/highcharts.js"></script>
+    <script>
+        $(function () {
+            //弹窗内按下某个P的按钮
+            $('[data-role=add-portlet]').click(function () {
+                var column = PortletDraggable.column;
+                var id = $(this).data('id');
+                PortletDraggable.insert_portlet(PortletDraggable.column,id);
+                $('#portlet-removed').append($(this).parent());
+                PortletDraggable.save();
+                $('#portlet_add_list').modal('hide')
+            });
+            //保存统计设置
+            $('[data-role=save-count]').click(function () {
+                $.post(U('Admin/Index/stats'), {
+                    'method': 'saveUserCount',
+                    count_day: $('[name=count_day]').val()
+                }, function (msg) {
+                    handleAjax(msg);
+                });
+            });
+            $('[data-role=delete-portlet]').click(function () {
+                var p = $(this).closest('.portlet');
+                var id = p.data('id');
+                $('#portlet_list').append($('[data-role=add-portlet][data-id=' + id + ']').parent());
+                $('#portlets').append($('.portlet[data-id=' + id + ']'));
+                PortletDraggable.save();
+            });
+            window.portlets = '{$portlets}';
+
+            window.PortletDraggable = function () {
+                return {
+                    data: [],
+                    column: 'c1',//插入的位置
+                    //main function to initiate the module
+                    init: function (portlets) {
+                        if (!jQuery().sortable) {
+                            return;
+                        }
+                        if (typeof(portlets) != 'undefined') {
+                            PortletDraggable.init_from_data(window.portlets);
+                        }
+                        $("#sortable_portlets").sortable({
+                            connectWith: ".portlet",
+                            items: ".portlet",
+                            opacity: 0.8,
+                            handle: '.portlet-title',
+                            coneHelperSize: true,
+                            placeholder: 'portlet-sortable-placeholder',
+                            forcePlaceholderSize: true,
+                            tolerance: "pointer",
+                            helper: "clone",
+                            tolerance: "pointer",
+                            forcePlaceholderSize: !0,
+                            helper: "clone",
+                            cancel: ".portlet-sortable-empty, .portlet-fullscreen", // cancel dragging if portlet is in fullscreen mode
+                            revert: 250, // animation in milliseconds
+                            update: function (b, c) {
+                                if (c.item.prev().hasClass("portlet-sortable-empty")) {
+                                    c.item.prev().before(c.item);
+                                }
+                                PortletDraggable.save();
+
+                            }
+                        });
+                    },
+                    init_from_data: function (data) {
+
+                        if (data == '') {
+
+                            //未设置展示块
+                        } else {
+                            var portlest = JSON.parse(data);
+                            for (var e in portlest.c1) {
+                                PortletDraggable.insert_portlet('c1', portlest.c1[e]);
+                            }
+                            for (var e in portlest.c2) {
+                                PortletDraggable.insert_portlet('c2', portlest.c2[e]);
+                            }
+                            for (var e in portlest.c3) {
+                                PortletDraggable.insert_portlet('c3', portlest.c3[e]);
+                            }
+
+                            //portlet
+                        }
+                    },
+                    insert_portlet: function (column, id) {
+                        $('#sortable_portlets [data-id=' + column + '] .portlet-sortable-empty').before($('#portlets [data-id=' + id + ']'))
+                        $('#portlet_removed').append($('[data-role=add-portlet][data-id=' + id + ']').parent());
+                        refreshChart(id);
+                    },
+                    get_data: function () {
+                        var data = {};
+                        $('#sortable_portlets .column').each(function (index, ele) {
+                            var column = $(ele).data('id');
+                            data[column] = [];
+                            $(ele).find('.portlet').each(function (index, ele) {
+                                if (typeof ($(ele).data('id')) != 'undefined') {
+                                    data[column].push($(ele).data('id'));
+                                }
+                            })
+                        });
+                        PortletDraggable.data = data;
+                        return data;
+                    },
+                    add: function (obj) {
+                        var column = PortletDraggable.column;
+                        var id = $(this).data('id');
+                       console.log('#sortable_portlets [data-id=' + column + '] .portlet-sortable-empty');
+                        PortletDraggable.insert_portlet(PortletDraggable.column,id);
+                        //$('#sortable_portlets [data-id=' + column + '] .portlet-sortable-empty').before($('.portlet[data-id=' + id + ']'))
+                        $('#portlet_removed').append($(obj).parent());
+                    },
+                    save:function(){
+                        var data=PortletDraggable.get_data()
+                        $.post(U('Admin/Index/stats'), {
+                            'method': 'savePortletSort',
+                            'data': JSON.stringify(data)
+                        }, function (msg) {
+
+                        })
+                    }
+                };
+            }();
+            jQuery(document).ready(function () {
+                PortletDraggable.init(portlets);
+
+            });
+        });
+
+    </script>
+</block>
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页 </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>系统统计</span>
+            </li>
+        </ul>
+    </div>
+    <!-- END PAGE BAR -->
+    <!-- BEGIN PAGE TITLE-->
+    <h3 class="page-title"> 系统统计
+        <small>系统和模块的统计数据</small>
+    </h3>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat blue">
+                <div class="visual">
+                    <i class="fa fa-comments"></i>
+                </div>
+                <div class="details">
+                    <div class="number"> +
+                        <span data-counter="counterup" data-value="{$count.today_action_log}">{$count.today_action_log}</span>
+                    </div>
+                    <div class="desc"> 今日新用户行为</div>
+                </div>
+                <a class="more" href="{:U('action/actionlog')}"> 查看更多
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat red">
+                <div class="visual">
+                    <i class="fa fa-bar-chart-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number"> +
+                        <span data-counter="counterup" data-value="{$count.today_user}">{$count.today_user}</span></div>
+                    <div class="desc">今日新增用户数</div>
+                </div>
+                <a class="more" href="{:U('user/index')}"> 查看更多
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat purple">
+                <div class="visual">
+                    <i class="fa fa-globe"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="{$count.total_user}">{$count.total_user}</span></div>
+                    <div class="desc"> 总用户数</div>
+                </div>
+                <a class="more" href="{:U('user/index')}"> 查看更多
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat purple">
+                <div class="visual">
+                    <i class="fa fa-globe"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="{$count.now_inline}">{$count.now_inline}</span></div>
+                    <div class="desc"> 当前在线</div>
+                </div>
+                <a class="more" href="{:U('count/nowUserList')}">查看列表（10分钟内发起过请求视为在线）
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row" id="sortable_portlets">
+        <div class="col-md-6 column sortable" data-id="c1">
+            <div class="portlet portlet-sortable-empty "><a class="add" onclick="PortletDraggable.column='c1'" data-toggle="modal" href="#portlet_add_list"><i
+                    class="icon-plus"></i></a></div>
+        </div>
+        <div class="col-md-6 column sortable" data-id="c2">
+            <div class="portlet portlet-sortable-empty"><a class="add" onclick="PortletDraggable.column='c2'" data-toggle="modal" href="#portlet_add_list"><i class="icon-plus"></i></a></div>
+        </div>
+        <!--<div class="col-md-4 column sortable" data-id="c3">
+            <div class="portlet portlet-sortable-empty"><a class="add" onclick="PortletDraggable.column='c3'" data-toggle="modal" href="#portlet_add_list"><i class="icon-plus"></i></a></div>
+        </div>-->
+    </div>
+    <div class="col-md-6">
+            <div id="portlets">
+                <div class="portlet portlet-sortable light bordered" data-id="info">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-cursor font-purple"></i>
+                            <span class="caption-subject font-purple bold uppercase">相关信息</span>
+                        </div>
+                        <div class="actions">
+                            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" data-role="delete-portlet">
+                                <i class="icon-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="easy-pie-chart">
+                                    <a target="_blank" class="title" href="http://os.opensns.cn/question">
+                                        <div>
+                                            <i class="icon-question" style="font-size:32px;padding: 8px"></i></div>
+                                        {:L('_Q_AND_A_')}
+                                        <i class="icon-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="margin-bottom-10 visible-sm"></div>
+                            <div class="col-md-4">
+                                <div class="easy-pie-chart">
+                                    <a target="_blank" class="title" href="http://os.opensns.cn/book/index/index.html">
+                                        <div>
+                                            <i class="fa fa-book" style="font-size:32px;padding: 10px"></i></div>
+
+                                        {:L('_DOCUMENT_CENTER_')}
+                                        <i class="icon-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="margin-bottom-10 visible-sm"></div>
+                            <div class="col-md-4">
+                                <div class="easy-pie-chart">
+                                    <a target="_blank" class="title" href="http://os.opensns.cn/weibo">
+                                        <div>
+                                            <i class="fa fa-commenting-o" style="font-size:32px;padding: 8px"></i></div>
+                                        {:L('_OFFICIAL_GROUP_')}
+                                        <i class="icon-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet portlet-sortable light bordered" data-id="system">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-share font-blue"></i>
+                            <span class="caption-subject font-blue bold uppercase">{:L('_SYSTEM_INFO_')}</span>
+                        </div>
+                        <div class="actions">
+                            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" data-role="delete-portlet">
+                                <i class="icon-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="scroller" style="height:237px;" data-always-visible="1" data-rail-visible="0">
+                            <table class="table table-bordered table-striped ">
+                                <tr>
+                                    <th style="width: 200px">{:L('_SERVER_OS_')}</th>
+                                    <td>{$Think.const.PHP_OS}</td>
+                                </tr>
+                                <tr>
+                                    <th>{:L('_THINKPHP_VERSION_')}</th>
+                                    <td>{$Think.VERSION}</td>
+                                </tr>
+                                <tr>
+                                    <th>{:L('_RUNTIME_ENVIR_')}</th>
+                                    <td>{$_SERVER['SERVER_SOFTWARE']}</td>
+                                </tr>
+                                <tr>
+                                    <th>{:L('_MYSQL_VERSION_')}</th>
+                                    <php>
+                                        $system_info_mysql = M()->query("select version() as v;");
+                                    </php>
+                                    <td>{$system_info_mysql.0.v}</td>
+                                </tr>
+                                <tr>
+                                    <th>{:L('_LIMIT_UPLOAD_')}</th>
+                                    <td>{:ini_get('upload_max_filesize')}
+
+                                        <a href="http://os.opensns.cn/book/index/read/section_id/93.html"
+                                           target="_blank">{:L('_MODIFY_HOW_TO_')}</a></td>
+                                </tr>
+                                <tr>
+                                    <th>{:L('_OS_VERSION_')}</th>
+                                    <td>{:file_get_contents('./Data/version.ini')}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="portlet portlet-sortable light bordered" data-id="user_increase">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-share font-blue"></i>
+                            <span class="caption-subject font-blue bold uppercase">{:L('_USER_INCREASE_RECENT_',array('count_day'=>$count['count_day']))}</span>
+                        </div>
+                        <div class="actions">
+                            <a class="btn btn-circle btn-icon-only btn-default" data-toggle="modal"
+                               data-target="#setting_count">
+                                <i class="icon-wrench"></i>
+                            </a>
+                            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" data-role="delete-portlet">
+                                <i class="icon-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="scroller" data-always-visible="1" data-rail-visible="0">
+                            <div id="myChart" style="height: 300px;"></div>
+                        </div>
+                        <div class="scroller-footer">
+                            <div class="btn-arrow-link pull-right">
+                                <a href="{:U('Count/index')}">查看更多</a>
+                                <i class="icon-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <include file="_count_file"/>
+                {:hook('adminPortlet')}
+            </div>
+        <script>
+            $(function(){
+                $('#portlets').width( $('#portlets').parent().width());
+            })
+        </script>
+    </div>
+
+
+    <script>
+
+        $('#main-content').css('left', 0);
+        $(function () {
+            $('#myChart').highcharts({
+                width:'300px',
+                height:'300px',
+                chart: {
+                    type: "spline",
+                    style: {
+                        fontFamily: '"Microsoft Yahei", "宋体"'
+                    }
+                },
+                title: false,
+                xAxis: {
+                    categories: eval('{$count.last_day.days}'),
+                    title: {
+                        text: "{:L('_MEMBER_REG_TODAY_')}",
+                        enabled: false
+                    }
+                },
+                yAxis: {
+                    title: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    verticalAlign: 'middle',
+                    borderWidth: 0,
+                    enabled: false
+                },
+                series: [{
+                    name: "{:L('_MEMBER_REG_TODAY_')}",
+                    data: eval('{$count.last_day.data}'),
+                    enable: true
+                }], credits: {enabled: false}
+            });
+        });
+    </script>
+
+</block>
+<block name="modal">
+
+    <div class="modal fade" id="portlet_add_list">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">{:L('_CLOSE_')}</span></button>
+                    <h4 class="modal-title">{:L('_STATISTICS_SET_')}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="with-padding">
+                        <div class="row" id="portlet_list">
+                            <div class="col-md-3">
+                                <a class="btn btn-default btn-block" data-role="add-portlet" data-id="user_increase">用户增长图</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-default btn-block" data-role="add-portlet" data-id="count_lost">用户流失率表</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-default btn-block" data-role="add-portlet" data-id="count_remain">用户留存率图</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-default  btn-block" data-role="add-portlet" data-id="count_consumption">充值用户统计图</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-default  btn-block" data-role="add-portlet" data-id="count_active_day">日活跃统计图</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-default  btn-block" data-role="add-portlet" data-id="count_active_week">周活跃统计图</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-default  btn-block" data-role="add-portlet" data-id="count_active_month">月活跃统计图</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-default btn-block" data-role="add-portlet" data-id="system">系统信息</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a class="btn btn-default  btn-block" data-role="add-portlet" data-id="info">相关信息</a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="display: none" id="portlet_removed"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="setting_count">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">{:L('_CLOSE_')}</span></button>
+                    <h4 class="modal-title">{:L('_STATISTICS_SET_')}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="with-padding">
+                        <label>{:L('_DISPLAY_DAYS_DEFAULT_')} </label><input class="form-control" name="count_day"
+                                                                             value="{$count.count_day}"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn " data-role="save-count">
+                        <i class="icon-ok"></i> {:L('_SAVE_')}
+                    </button>
+                    <button class="btn " data-dismiss="modal">
+                        <i class="icon-remove"></i> {:L('_CANCEL_')}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</block>

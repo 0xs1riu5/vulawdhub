@@ -1,0 +1,211 @@
+//
+// Buttons
+// ==================================================
+
+// Base styles
+// --------------------------------------------------
+
+// Core styles
+.btn
+{
+  font-family: @headings-font-family;
+  display: inline-block;
+  margin-bottom: 0; // For input.btn
+  font-weight: @btn-font-weight;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  .button-size(@padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @border-radius-base);
+  .user-select(none);
+  .transition(all,@animation-speed-slow,@animation-type);
+  @shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 1px rgba(0,0,0,.075);
+  // .box-shadow(@shadow);
+
+  &:focus
+  {
+    .tab-focus();
+  }
+
+  &:hover,
+  &:focus
+  {
+    color: @btn-default-color;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active
+  {
+    outline: none;
+    background-image: none;
+    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] &
+  {
+    cursor: not-allowed;
+    pointer-events: none; // Future-proof disabling of clicks
+    .opacity(.65);
+    .box-shadow(none);
+  }
+
+}
+
+
+// Alternate buttons
+// --------------------------------------------------
+
+// .btn-default,
+.btn
+{
+  .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border);
+  text-shadow: 0 1px 0 #fff; border-color: #ccc;
+}
+.btn-primary
+{
+  .button-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+// Warning appears as orange
+.btn-warning
+{
+  .button-variant(@btn-warning-color; @btn-warning-bg; @btn-warning-border);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+// Danger and error appear as red
+.btn-danger
+{
+  .button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+// Success appears as green
+.btn-success
+{
+  .button-variant(@btn-success-color; @btn-success-bg; @btn-success-border);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+// Info appears as blue-green
+.btn-info
+{
+  .button-variant(@btn-info-color; @btn-info-bg; @btn-info-border);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+
+
+// Link buttons
+// -------------------------
+
+// Make a button look and behave like a link
+.btn-link
+{
+  color: @link-color;
+  font-weight: normal;
+  cursor: pointer;
+  text-shadow: none;
+  box-shadow: none;
+  background: none;
+
+  &,
+  &:active,
+  &[disabled],
+  fieldset[disabled] &,
+  &:hover,
+  &:focus
+  {
+    border-color: transparent;
+    .box-shadow(none);
+  }
+  &:hover,
+  &:focus
+  {
+    color: @link-hover-color;
+  }
+  &[disabled],
+  fieldset[disabled] &
+  {
+    &:hover,
+    &:focus
+    {
+      color: @btn-link-disabled-color;
+      text-decoration: none;
+    }
+  }
+}
+
+// Button Sizes
+// --------------------------------------------------
+.btn-lg
+{
+  // line-height: ensure even-numbered height of button next to large input
+  .button-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @border-radius-base);
+}
+.btn-sm,
+.btn-xs,.btn-mini
+{
+  // line-height: ensure proper height of button next to small input
+  .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @border-radius-base);
+}
+.btn-xs,.btn-mini
+{
+  padding: 1px 5px;
+}
+
+
+// Block button
+// --------------------------------------------------
+
+.btn-block
+{
+  display: block;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+// Vertically space out multiple block buttons
+.btn-block + .btn-block
+{
+  margin-top: 5px;
+}
+
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"]
+{
+  &.btn-block
+  {
+    width: 100%;
+  }
+}
+
+
+// Reposition the caret
+.btn .caret
+{
+  margin-left: 0;
+}
+// Carets in other button sizes
+.btn-lg .caret
+{
+  border-width: @caret-width-large @caret-width-large 0;
+  border-bottom-width: 0;
+}
+// Upside down carets for .dropup
+.dropup .btn-lg .caret
+{
+  border-width: 0 @caret-width-large @caret-width-large;
+}
+
+
+// Checkbox and radio options
+[data-toggle="buttons"] > .btn > input[type="radio"],
+[data-toggle="buttons"] > .btn > input[type="checkbox"]
+{
+  display: none;
+}

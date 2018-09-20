@@ -1,0 +1,43 @@
+<style>
+    .modal-dialog {
+        width: 430px;
+    }
+</style>
+
+<div>
+    <form id="set_code" action="__SELF__" method="post" class="ajax-form">
+        <input type="hidden" name="role_id" value="{$role_id}">
+        <div class="form-group clearfix">
+            <label class="col-xs-4 control-label" style="text-align: right;">
+                {:L('_INV_CODE_')}{:L('_COLON_')}
+            </label>
+
+            <div class="col-xs-8">
+                <input type="text" name="code" class="form-control" value="">
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div style="width: 100%;text-align: center;">
+            <a class="btn btn-primary" data-role="submit">{:L('_SUBMIT_')}</a>
+            <a onclick="$('.close').click();" class="btn btn-default">{:L('_CANCEL_')}</a>
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        $('[data-role="submit"]').click(function () {
+            query = $('#set_code').serialize();
+            var url = $('#set_code').attr('action');
+            $.post(url, query, function (msg) {
+                if (msg.status) {
+                    toast.success("{:L('_ROLE_UPGRADE_')}{:L('_EXCLAMATION_')}");
+                    setTimeout(function () {
+                        window.location.href=msg.url;
+                    }, 1500);
+                } else {
+                    handleAjax(msg);
+                }
+            }, 'json');
+        });
+    });
+</script>

@@ -1,0 +1,161 @@
+<!-- 管理员权限组新增和编辑页面 -->
+<extend name="Public/base"/>
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>主题管理</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <div class="main-title">
+        <h2>{:L("_SUBJECT_CONFIGURATION_")}</h2>
+    </div>
+    <div class="with-padding clearfix">
+        <div class="pull-left"><a href="{:U('Admin/Theme/add')}" class="btn">{:L("_INSTALL_A_NEW_THEME_")}</a></div>
+        <div class="pull-right">
+            <a href="{:U('Theme/tpls',array_merge($_GET,array('refresh'=>2)))}" class="btn btn-success"><i
+                    class="icon-level-up"></i> {:L("_CHECK_FOR_UPDATES_IMMEDIATELY_")}</a>
+
+        </div>
+    </div>
+    <div class="with-padding">
+        <div class="cards plugin-list">
+            <div style="width: 270px;padding: 0 10px;float: left;">
+                <div class="card">
+                    <div class="media-wrapper">
+                        <img src="__ROOT__/Public/images/preview.jpg" style="height: 180px;">
+                    </div>
+                    <span class="caption">Default</span>
+
+                    <div class="card-heading">
+                        <span class="pull-right">
+                            <span class="label label-success" title={:L("_THEME_VERSION_WITH_DOUBLE_")}>2.0.0</span>
+                        </span>
+                        <a href="{:U('Admin/Theme/lookTheme',array('theme'=>'default'))}" target="_blank" title={:L("_CHECK_THE_THEME_WITH_DOUBLE_")}>
+                            <strong>OpenSNS V2{:L("_SYSTEM_DEFAULT_THEME_")}</strong>
+                        </a>
+                    </div>
+                    <div class="card-content text-muted" style="height: 64px;">
+                       {:L("_BUILT_IN_OPENSNS_")} V2{:L("_IN_THE_SYSTEM_IT_IS_THE_BASIS_OF_OTHER_TOPICS_")}
+                    </div>
+                    <div class="card-actions" style="margin-top: 30px;">
+                        <div class="text-mute">
+                           {:L("_DEVELOPER_")}{:L("_COLON_")}{:L("_JIAXING_WANTS_TO_DAY_MDT_INFOTECH_LTD_")}
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <div class="btn-group">
+                            <eq name="now_theme" value="default">
+                                <span style="padding: 4px 12px;display: inline-block;font-size: 16px;color: #A5A5A5;">{:L("_BASIC_THEME_")}</span>
+                                <else/>
+                                <a class="btn btn-primary" data-role="use_this" data-value="default">{:L("_USE_ONLY_THE_BASIC_THEMES_")}</a>
+                            </eq>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <volist name="tplList" id="info">
+                <div style="width: 270px;padding: 0 10px;float: left;">
+                    <div class="card">
+                        <div class="media-wrapper">
+                            <a data-role="use_this" data-value="{$info.file_name}">
+                                <img src="{$info.path}/preview.jpg" style="height: 180px;">
+                            </a>
+                        </div>
+                        <span class="caption">{$info.name}</span>
+
+                        <div class="card-heading">
+                        <span class="pull-right">
+                            <span class="label label-success" title="{:L("_THEME_VERSION_WITH_DOUBLE_")}">{$info.version} </span>
+<empty name="info.update_list">
+    <else/>
+    &nbsp;
+    <a style="text-decoration: none" href="javascript:void(0)" data-role="update_btn"
+       data-type="ajax"
+       data-url="{:U('Cloud/getVersionList',array('token'=>$info['token']))}"
+       data-toggle="modal" data-title={:L("_A_NEW_VERSION_CAN_BE_UPDATED_WITH_DOUBLE_")}><span
+            class=" label label-success ">{:L("_THERE_IS_A_NEW_VERSION_")}{$info.update_list.0.title}</span></a>
+    <script>$(function () {
+        $('[data-role="update_btn"]').tooltip('show');
+    });
+    </script>
+</empty>
+                        </span>
+                            <a href="{:U('Admin/Theme/lookTheme',array('theme'=>$info['file_name']))}" target="_blank" title="{:L("_CHECK_THE_THEME_WITH_DOUBLE_")}">
+                                <strong>{$info.title}</strong>
+                            </a>
+                        </div>
+                        <div class="card-content text-muted" style="height: 64px;">
+                            {$info.summary}
+                        </div>
+                        <div class="card-actions">
+                            <div class="text-mute">
+                               {:L("_DEVELOPER_")}{:L("_COLON_")}{$info.developer}
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <div class="text-mute">
+                               {:L("_TEMPLATE_FILE_NAME_")}{:L("_COLON_")}{$info.file_name}
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <div class="btn-group">
+                                <eq name="now_theme" value="$info.file_name">
+                                    <span class="pull-left"
+                                          style="padding: 4px 12px;color: #3DC86E;display: inline-block;font-size: 16px;">{:L("_IN_USE_")}</span>
+                                    <a class="btn btn-primary"
+                                       href="{:U('Admin/Theme/packageDownload',array('theme'=>$info['file_name']))}"
+                                       style="margin-left: 8px;">{:L("_PACKAGED_DOWNLOAD_")}</a>
+                                    <else/>
+                                    <a class="btn btn-primary" data-role="use_this"
+                                       data-value="{$info.file_name}">{:L("_USE_")}</a>
+                                    <a class="btn btn-primary"
+                                       href="{:U('Admin/Theme/packageDownload',array('theme'=>$info['file_name']))}"
+                                       style="margin-left: 8px;">{:L("_PACKAGED_DOWNLOAD_")}</a>
+                                    <a class="btn btn-primary"
+                                       href="{:U('Admin/Theme/delete',array('theme'=>$info['file_name']))}"
+                                       style="margin-left: 8px;">{:L("_UNINSTALL_DELETE_")}</a>
+                                </eq>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </volist>
+
+        </div>
+        <!-- 数据列表 -->
+        <!-- 分页 -->
+        <div class="with-padding">
+            <div class="pager">
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function () {
+            $('[data-role="use_this"]').click(function () {
+                var theme = $(this).attr('data-value');
+                $.post(U('Admin/Theme/setTheme'), {theme: theme}, function (msg) {
+                    if (msg.status) {
+                        toast.success(msg.info);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        handleAjax(msg);
+                    }
+                }, 'json');
+            });
+        });
+    </script>
+</block>

@@ -1,0 +1,107 @@
+<extend name="Base/common"/>
+
+
+<block name="body">
+    <section>
+
+        <div class="login-form-inbox common_block_border">
+            <div class="login-text"><strong><h1>{:L('_WEBSITE_PW_RESET_')}</h1></strong></div>
+
+            <form class="login-form" id="J_findpwd_form" action="{:U('member/doReset')}" method="post">
+                <input type="hidden" id="inputname" class="form-control" placeholder="UID"
+                       errormsg="UID" nullmsg="UID" datatype="*1-5" name="uid" value="{$_REQUEST.uid|intval}">
+
+                <div class="control-group login-input">
+
+
+                    <div class="controls">
+                        <input type="password" id="inputPassword" class="form-control" placeholder="{:L('_ERROR_INPUT_NEW_PASSWORD_')}"
+                               errormsg="{:L('_PW_ERROR_')}" nullmsg="{:L('_PW_INPUT_ERROR_')}" datatype="*6-20" name="password">
+                    </div>
+                </div>
+                <div class="control-group login-input">
+
+                    <div class="controls">
+                        <input type="password" id="inputPassword" class="form-control" placeholder="{:L('_PW_RE_INPUT_PLACEHOLDER_')}"
+                               errormsg="{:L('_PW_ERROR_')}" nullmsg="{:L('_PW_INPUT_ERROR_')}" datatype="*6-20" name="repassword">
+                    </div>
+                </div>
+                <if condition="check_verify_open('reset')">
+                    <div class="control-group login-input">
+                        <div class="controls">
+                            <input type="text" id="inputPassword" class="form-control" placeholder="{:L('_MI_CODE_NULL_')}"
+                                   errormsg="{:L('_MI_CODE_ERROR_')}" nullmsg="{:L('_MI_CODE_NULL_')}" datatype="*5-5" name="verify">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label"></label>
+
+                        <div class="controls">
+                            <img class="verifyimg reloadverify" alt="{:L('_MI_ALT_')}" src="{:U('verify')}" style="cursor:pointer;">
+                        </div>
+                        <div class="controls Validform_checktip text-warning"></div>
+                    </div>
+                </if>
+                <div class="control-group">
+                    <div class="controls">
+                      <!--  <label class="checkbox" style="float: left">
+                            <input type="checkbox" style="cursor:pointer"> 安全找回
+                        </label>-->
+                        <button type="submit" class="btn btn-primary" style="float: right">{:L('_RESET_')}</button>
+                        <a href="{:U('Member/login')}">{:L('_MI_RE_LOGIN_')}</a>&nbsp;&nbsp;|&nbsp;
+                        <a href="{:U('Member/regjihuo')}">{:L('_EMAIL_NOT_RECEIVED_')}{:L('_QUESTION_')}</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</block>
+
+
+<block name="side"></block>
+<block name="script">
+    <script type="text/javascript">
+
+        $(document)
+                .ajaxStart(function () {
+                    $("button:submit").addClass("log-in").attr("disabled", true);
+                })
+                .ajaxStop(function () {
+                    $("button:submit").removeClass("log-in").attr("disabled", false);
+                });
+
+
+        $(function () {
+            $("form").submit(function () {
+                var self = $(this);
+                $.post(self.attr("action"), self.serialize(), success, "json");
+                return false;
+
+
+                function success(data) {
+                    if (data.status) {
+                        toast.success("{:L('_PW_RESET_')}", "{:L('_TIP_GENTLE_')}");
+                        setTimeout(function () {
+                            window.location.href = data.url
+                        }, 1500);
+                    } else {
+                        toast.error(data.info, "{:L('_TIP_GENTLE_')}");
+                        //self.find(".Validform_checktip").text(data.info);
+                        //刷新验证码
+                        $(".reloadverify").click();
+                    }
+                }
+            });
+
+
+            var verifyimg = $(".verifyimg").attr("src");
+            $(".reloadverify").click(function () {
+                if (verifyimg.indexOf('?') > 0) {
+                    $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+                } else {
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                }
+            });
+        });
+    </script>
+</block>

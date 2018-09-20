@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Public/head"/>
+</head>
+<body>
+<!-- 头部 -->
+<include file="Public/header"/>
+<!-- /头部 -->
+
+<!-- 主体 -->
+<block name="header">
+    <div class="main-wrapper">
+        <br/>
+        <include file="Public/_after_nav"/>
+        <div id="main-container" class="container ">
+            <table style="width: 100%; table-layout: fixed;">
+                <tbody>
+                <tr id="usercenter-sidebar-xs" class="visible-xs">
+                </tr>
+                <tr id="usercenter-sidebar-sm">
+                    <td style="width: 20%; vertical-align: top; background-color: #fff;" id="usercenter-sidebar-td">
+                        <include file="Public/sidebar"/>
+                    </td>
+                    <td id="usercenter-content-td"
+                        style="width: 80%; background-color: #fff; vertical-align: top; padding-left: 50px; padding-right: 50px;">
+                        <div class="container-fluid">
+                            <block name="body"></block>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+</block>
+<!-- /主体 -->
+
+<!-- 底部 -->
+<include file="Public/footer"/>
+<!-- /底部 -->
+
+<script>
+    $(function () {
+        var $sidebar = $('#usercenter-sidebar-td');
+        var $sidebar_xs = $('#usercenter-sidebar-xs');
+        var $sidebar_sm = $('#usercenter-sidebar-sm');
+        var $content = $('#usercenter-content-td');
+
+        function trigger_resp() {
+            var width = $(window).width();
+            if (width < 768) {
+                on_xs();
+            } else {
+                on_sm();
+            }
+        }
+
+        function on_xs() {
+            $sidebar_xs.append($sidebar);
+            $content.css({'padding-left': 0, 'padding-right': 0});
+        }
+
+        function on_sm() {
+            $sidebar_sm.prepend($sidebar);
+            $content.css({'padding-left': '50px', 'padding-right': '50px'});
+        }
+
+        trigger_resp();
+
+        $(window).resize(function () {
+            trigger_resp();
+        })
+    })
+</script>
+
+</body>
+</html>

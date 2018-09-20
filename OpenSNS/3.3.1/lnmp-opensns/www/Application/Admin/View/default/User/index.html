@@ -1,0 +1,203 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>用户列表</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <!-- 标题栏 -->
+    <div class="main-title">
+        <h2>{:L('_USER_LIST_')}</h2>
+    </div>
+    <div class="clearfix">
+        <div class="col-xs-9 pd0">
+            <button class="btn ajax-post" url="{:U('User/changeStatus',array('method'=>'resumeUser'))}"
+                    target-form="ids">{:L('_ENABLED_')}
+            </button>
+            <button class="btn ajax-post" url="{:U('User/changeStatus',array('method'=>'forbidUser'))}"
+                    target-form="ids">{:L('_DISABLE_')}
+            </button>
+            <button class="btn ajax-post confirm" url="{:U('User/changeStatus',array('method'=>'deleteUser'))}"
+                    target-form="ids">{:L('_DELETE_')}
+            </button>
+            <button class="btn " onclick="post_select_form()"
+                    target-form="ids">{:L('_USER_GROUP_SELECT_')}
+            </button>
+            <button class="btn ajax-post" url="{:U('User/emailSuffix')}"
+                    target-form="ids">修改第三方登录邮箱后缀
+            </button>
+            <button class="btn ajax-post confirm" data-confirm="{:L('_PW_RESET_CONFIRM_')}" url="{:U('User/initPass')}" target-form="ids">{:L('_PW_RESET_')}
+            </button>
+            <span style="font-size: 14px;color: #999898;margin-left: 11px;">{:L('_PW_RESET_TIP_')}</span>
+        </div>
+        <script>
+            function post_select_form(){
+                var ids=$('.ids').serialize();
+                var title="{:L('_USER_GROUP_SELECT_')}";
+                var url="{:U('user/changeGroup')}"+'&id='+ids;
+                modalOS({
+                    url: url,
+                    title: title
+                });
+            }
+        </script>
+
+        <!-- 选择搜索方式 -->
+        <div class=" col-xs-1">
+            <select id="seek" name="seek" class="form-control" style="width: 108px">
+                <option value="0" <if condition="$seek eq 0">selected</if> >{:L('_SELECT_WAY_')}</option>
+                <option value="1" <if condition="$seek eq 1">selected</if> >{:L('_UID_')}</option>
+                <option value="2" <if condition="$seek eq 2">selected</if> >{:L('_NICKNAME_')}</option>
+                <option value="3" <if condition="$seek eq 3">selected</if> >{:L('_MAILBOX_')}</option>
+                <option value="4" <if condition="$seek eq 4">selected</if> >{:L('_CELL_PHONE_NUMBER_')}</option>
+            </select>
+            <input type="hidden" name="seek" value="{$seek}"/>
+        </div>
+
+        <!-- 高级搜索 -->
+        <div class="search-form col-xs-2 text-right">
+            <div class="input-group">
+                <input type="text" name="nickname" class="search-input form-control" value="{:I('nickname')}"
+                       placeholder="{:L('_PLACEHOLDER_NONE_')}">
+                                 <span class="input-group-btn">  <a class="btn btn-default" href="javascript:;" id="search" url="{:U('index')}"><i class="fa fa-search"></i></a></span>
+            </div>
+        </div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table with-padding adminlte-os-table">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                <th class="">{:L('_UID_')}</th>
+                <th class="">账号</th>
+                <th class="">{:L("_NICKNAME_")}</th>
+                <th class="">{:L("_OPERATE_")}</th>
+                <th class="">{:L('_LOGIN_COUNT_')}</th>
+                <th class="">{:L('_LAST_LOGIN_TIME_')}</th>
+                <th class="">{:L('_LOGIN_IP_LAST_TIME_')}</th>
+                <th class="">{:L('_STATUS_')}</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <notempty name="_list">
+                <volist name="_list" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.uid}"/></td>
+                        <td>{$vo.uid}</td>
+                        <td>
+                            <if condition="!empty($vo['ext']['username'])">{:L('_USERNAME_')}：{$vo.ext.username}<br></if>
+                            <if condition="!empty($vo['ext']['email'])">{:L('_MAILBOX_')}：{$vo.ext.email}<br></if>
+                            <if condition="!empty($vo['ext']['mobile'])">{:L("_CELL_PHONE_NUMBER_")}：{$vo.ext.mobile}</if>
+                        </td>
+                        <td><a href="{:U('Admin/User/expandinfo_details',array('uid'=>$vo['uid']))}" >{$vo.nickname|op_t}</a></td>
+                        <td>
+                            <eq name="vo.status" value="1">
+                                <a href="{:U('User/changeStatus?method=forbidUser&id='.$vo['uid'])}"
+                                   class="ajax-get">{:L('_DISABLE_')}</a>
+                                <else/>
+                                <a href="{:U('User/changeStatus?method=resumeUser&id='.$vo['uid'])}"
+                                   class="ajax-get">{:L('_ENABLE_')}</a>
+                            </eq>
+                            <a href="{:U('AuthManager/group?uid='.$vo['uid'])}" class="authorize">{:L('_ACCREDIT_')}</a>
+                            <a href="{:U('User/changeStatus?method=deleteUser&id='.$vo['uid'])}"
+                               class="confirm ajax-get">{:L('_DELETE_')}</a>
+                            <a href="{:U('User/initPass?id='.$vo['uid'])}"
+                               class="confirm ajax-get">{:L('_PW_RESET_')}</a>
+                        </td>
+
+
+
+                        <td>{$vo.login}</td>
+                        <td><span>{$vo.last_login_time|time_format}</span></td>
+                        <td><a href="http://ip138.com/ips138.asp?ip={$vo['last_login_ip']|long2ip}">{$vo['last_login_ip']|long2ip}</a>
+                        </td>
+                        <td>{$vo.status_text}</td>
+
+
+
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="12" class="text-center">{:L('哇哦，查无此人')}</td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+    <div class="with-padding">
+        {$_page}
+    </div>
+</block>
+
+<block name="script">
+    <script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+    <script type="text/javascript">
+        //选择搜索方式
+        $("#seek").change(function() {
+            var pick = $(this).val();
+            switch (pick) {
+                case '0':
+                    $(".search-input").attr("placeholder", "{:L('_PLACEHOLDER_NONE_')}");
+                    break;
+                case '1':
+                    $(".search-input").attr("placeholder", "{:L('_PLACEHOLDER_UID_')}");
+                    break;
+                case '2':
+                    $(".search-input").attr("placeholder", "{:L('_PLACEHOLDER_NICKNAME_')}");
+                    break;
+                case '3':
+                    $(".search-input").attr("placeholder", "{:L('_PLACEHOLDER_EMAIL_')}");
+                    break;
+                case '4':
+                    $(".search-input").attr("placeholder", "{:L('_PLACEHOLDER_MOBILE_')}");
+                    break;
+                default:
+                    $(".search-input").attr("placeholder", "{:L('_PLACEHOLDER_NONE_')}");
+            }
+        });
+        //搜索功能
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input').serialize();
+            var seek = $('#seek').serialize();
+
+            if(seek == 'seek=0') {
+                toast.error("请先选择搜索用户的方式!");
+                return false;
+            }
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+
+            seek = seek.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            seek = seek.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query + '&' + seek;
+            } else {
+                url += '?' + query + '&' + seek;
+            }
+            window.location.href = url;
+        });
+        //回车搜索
+        $(".search-input").keyup(function (e) {
+            if (e.keyCode === 13) {
+                $("#search").click();
+                return false;
+            }
+        });
+        //导航高亮
+        highlight_subnav("{:U('User/index')}");
+    </script>
+</block>

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Public/head"/>
+    <link href="__CSS__/home.css" type="text/css" rel="stylesheet">
+    <php> D('Member')->need_login();</php>
+</head>
+<body>
+<include file="Public/header"/>
+<div class="main-wrapper">
+    <!-- 头部 -->
+    <style>
+        .container{
+            width:1140px;max-width: 1140px
+        }
+    </style>
+    <include file="Index/_nav"/>
+    <include file="Public/_after_nav"/>
+
+    <div id="main-container" class="top-bar ">
+        <volist name="showBlocks" id="vo">
+            {:W($vo.'/Search/render', array('keywords' => $keywords))}
+        </volist>
+
+        <div class="row" data-role="no_search" style="display: none">
+            <div class="col-xs-12">
+                <p class="text-muted" style="text-align: center; font-size: 3em;">
+                    <br/><br/>
+                    哇哦~~搜索失败了
+                    <br/><br/><br/>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(function() {
+        $(document).ready(function() {
+            var search = $(".test").css("color");
+            if(!search) {
+                $('[data-role="no_search"]').css("display", "block");
+            }
+        })
+    })
+</script>
+
+
+<!-- /头部 -->
+
+<!-- 主体 -->
+
+<!-- /主体 -->
+
+<!-- 底部 -->
+<include file="Public/footer"/>
+<!-- /底部 -->
+</body>
+</html>

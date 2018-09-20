@@ -1,0 +1,10 @@
+<div id="top_list">
+    <volist name="top_list" id="top">
+        {:W('WeiboDetail/detail',array('weibo_id'=>$top,'can_hide'=>1))}
+    </volist>
+</div>
+<div id="weibo_list">
+    <volist name="list" id="weibo">
+        {:W('WeiboDetail/detail',array('weibo'=>$weibo))}
+    </volist>
+</div>

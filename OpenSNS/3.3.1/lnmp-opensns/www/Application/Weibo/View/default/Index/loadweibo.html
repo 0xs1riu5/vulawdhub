@@ -1,0 +1,8 @@
+<volist name="list" id="weibo">
+    {:W('Weibo/WeiboDetail/detail',array('weibo_id'=>$weibo))}
+</volist>
+<if condition="empty($lastId) eq false">
+    <script>
+        weibo.lastId = '{$lastId}';
+    </script>
+</if>

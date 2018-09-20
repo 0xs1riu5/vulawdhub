@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <include file="Public/head"/>
+    <link href="__CSS__/center.css" type="text/css" rel="stylesheet">
+    <script src="__JS__/jquery.js"></script>
+    <!--<script src="__JS__/canvas.js"></script>-->
+    <include file="Public/js"/>
+</head>
+<body>
+
+<div class="banner">
+    <!--<canvas id="canvas" width="1835" height="950"></canvas>-->
+
+    <div class="logo-box">
+        <php>$logo = get_cover(modC('LOGO',0,'Config'),'path');
+            $logo = $logo?$logo:'__ROOT__/Public/images/logo.png';
+        </php>
+        <a class="navbar-brand logo" href="{:U('Home/Index/index')}"><img src="{$logo}"/></a>
+    </div>
+</div>
+    <div class="login-box">
+        <if condition="$step eq 'start'">
+            <div class="col-xs-9 info-box">
+                <form action="{:U('register')}" method="post">
+                    <ul id="reg_nav" class="nav nav-tabs" style="margin-bottom: 20px;">
+                        <php>if(check_reg_type('email')){</php>
+                        <li <if condition="$regSwitch[0] eq 'email'">class="active"</if>><a href="#email_reg" data-toggle="tab">{:L('_REGISTER_EMAIL_')}</a></li>
+                        <php>}</php>
+                        <php>if(check_reg_type('mobile')){</php>
+                        <li <if condition="$regSwitch[0] eq 'mobile'">class="active"</if>><a href="#mobile_reg" data-toggle="tab">{:L('_REGISTER_PHONE_')}</a></li>
+                        <php>}</php>
+                    </ul>
+
+                    <div class="tab-content">
+                        <php>
+                            if(isset($invite_user)){
+                        </php>
+                        <div class="alert alert-info">{:L('_USER_')} {$invite_user['nickname']} {:L('_REGISTER_INVITE_')}{:C('WEB_SITE')}，{:L('_REGISTER_INFORMATION_FILL_OUT_')}~</div>
+                        <input type="hidden" name="code" value="{$code}">
+                        <php>}else{</php>
+                        <if condition="$open_invite_register">
+                            <div class="alert alert-info" style="margin-top: 0">{:L('_USER_INVITE_FIRST_')}<strong><a data-type="ajax" data-url="{:U('Ucenter/Member/inCode')}" data-title="{:L('_INVITE_CODE_INPUT_')}" data-toggle="modal">{:L('_INVITE_CODE_INPUT_')}</a></strong>，{:L('_REGISTER_INFORMATION_FILL_OUT_')}~</div>
+                        </if>
+                        <php>}</php>
+                        <if condition="count($role_list)==1">
+                            <input id="name" type="hidden" name="role" value="{$role_list[0]['id']}">
+                            <else/>
+                            <div class="form-group" style="margin: 30px 0">
+                                <input id="name" type="hidden" name="role" value="{$role_list[0]['id']}">
+                                <label for="role" class=".sr-only col-xs-12" style="display: none"></label>
+                                <div class="clearfix"></div>
+                                <ul id="role-list" class="nav nav-justified nav-pills">
+                                    <li class="text-center">{:L('_REGISTER_IDENTITY_SELECT_')}</li>
+                                    <volist name="role_list" id="role">
+                                        <li><a onclick="$('#name').val({$role.id});$('#role-list li').removeClass('active');$(this).parent().addClass('active');"><i class="icon-user"></i> {$role.title} </a></li>
+                                    </volist>
+                                </ul>
+                                <script>
+                                    $(function(){
+                                        $('#role-list li').eq(1).addClass('active');
+                                    })
+                                </script>
+                                <span class="help-block"></span>
+                            </div>
+                        </if>
+                        <volist name="regSwitch" id="regSwitch">
+                            <switch name="regSwitch">
+                                <case value="email">
+                                    <!--邮箱注册-->
+                                    <div class="tab-pane <if condition='$key eq 0'>active in</if>" id="email_reg">
+
+                                        <div class="form-group new-form">
+                                            <label for="email" class=".sr-only col-xs-12" style="display: none"></label>
+                                            <span class="new-icon email-icon"></span>
+                                            <input type="text" id="email" class="form-control form_check new-input" check-type="UserEmail" check-url="{:U('ucenter/member/checkAccount')}" <if condition='$key neq 0'>disabled="disabled"</if>
+                                            placeholder="{:L('_PLACEHOLDER_EMAIL_INPUT_')}" value="" name="username">
+                                            <input type="hidden" name="reg_type" value="email" <if condition='$key neq 0'>disabled="disabled"</if>>
+                                        </div>
+                                        <span class="tips">{:L('_EMAIL_INPUT_')}</span>
+
+
+                                        <php>if(modC('EMAIL_VERIFY_TYPE', 0, 'USERCONFIG') == 2){</php>
+
+                                        <div class="form-group new-form">
+                                            <span class="new-icon code-icon"></span>
+                                            <input type="text" class="form-control input-new" placeholder="输入邮箱验证码" <if condition='$key neq 0'>disabled="disabled"</if> name="reg_verify">
+                                            <a class="get-code green-btn" data-role="getVerify">{:L('_EMAIL_VERIFY_')}</a>
+                                            <!--<span class="help-block">{:L('_VERIFY_CODE_INPUT_')}</span>-->
+                                        </div>
+
+                                        <div class="form-group new-form verify-check" style=" display:none;">
+                                            <h3>确认发送验证码</h3>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="lg_lf_fm_verify">
+                                                        <img class="verifyimg reloadverify img-responsive" alt="点击切换" src="{:U('verify',array('id'=>3))}">
+                                                    </div>
+                                                    <div class="col-xs-12 Validform_checktip text-warning lg_lf_fm_tip"></div>
+                                                </div>
+                                                <div class="col-xs-6 input-box">
+                                                    <label for="verifyCode3" class=".sr-only col-xs-12" style="display: none"></label>
+                                                    <span class="new-icon code-icon"></span>
+                                                    <input type="text" id="verifyCode3" class="form-control" placeholder="图片验证码"
+                                                           errormsg="请填写正确的验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button class="btn y-btn" data-role="checkVerify">确定</button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="btn c-btn" data-role="closeVerify">取消</button>
+                                                </div>
+                                            </div>
+                                    </div>
+                                        <php>} else {</php>
+                                        <if condition="check_verify_open('reg')">
+                                            <div class="form-group new-form">
+                                                <label for="verifyCode4" class=".sr-only col-xs-12"
+                                                       style="display: none"></label>
+                                                <span class="new-icon code-icon"></span>
+                                                <input type="text" id="verifyCode4" class="form-control new-input" placeholder="验证码"
+                                                       errormsg="请填写正确的验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+
+                                                <div class="new-code lg_lf_fm_verify">
+                                                    <img class="verifyimg reloadverify img-responsive" alt="点击切换"
+                                                         src="{:U('verify')}">
+                                                </div>
+                                                <div class="col-xs-12 Validform_checktip text-warning lg_lf_fm_tip"></div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <span class="tips">输入验证码</span>
+                                        </if>
+                                        <php>}</php>
+
+                                    </div>
+                                    <!--邮箱注册end-->
+                                </case>
+                                <case value="mobile">
+                                    <!--手机注册-->
+                                    <div class="tab-pane <if condition='$key eq 0'>active in</if>" id="mobile_reg">
+
+                                        <div class="form-group new-form">
+                                            <label for="mobile" class=".sr-only col-xs-12" style="display: none"></label>
+                                            <span class="new-icon phone-icon"></span>
+                                            <input type="text" id="mobile" class="form-control form_check new-input" check-type="UserMobile" check-url="{:U('ucenter/member/checkAccount')}" <if condition='$key neq 0'>disabled="disabled"</if>
+                                            placeholder="{:L('_PLACEHOLDER_PHONE_')}" .
+                                            errormsg="{:L('_ERROR_PHONE_INPUT_')}" value="" name="username">
+
+                                            <input type="hidden" name="reg_type" value="mobile" <if condition='$key neq 0'>disabled="disabled"</if>>
+                                        </div>
+                                        <span class="tips">{:L('_PHONE_INPUT_')}</span>
+
+                                        <php>if(modC('MOBILE_VERIFY_TYPE', 0, 'USERCONFIG') == 1){</php>
+
+                                        <div class="form-group new-form">
+                                            <span class="new-icon code-icon"></span>
+                                            <input type="text" class="form-control new-input" placeholder="{:L('_VERIFY_CODE_')}" name="reg_verify" <if condition='$key neq 0'>disabled="disabled"</if>>
+                                            <a class="get-code green-btn" data-role="getVerify">{:L('_PHONE_VERIFY_')}</a>
+                                        </div>
+                                        <span class="tips">{:L('_VERIFY_CODE_INPUT_')}</span>
+
+                                        <div class="form-group new-form verify-check" style=" display:none;">
+                                            <h3>确认发送验证码</h3>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+
+                                                    <div class="lg_lf_fm_verify">
+                                                        <img class="verifyimg reloadverify img-responsive" alt="点击切换" src="{:U('verify',array('id'=>2))}">
+                                                    </div>
+                                                    <div class="col-xs-12 Validform_checktip text-warning lg_lf_fm_tip"></div>
+                                                </div>
+                                                <div class="col-xs-6 input-box">
+                                                    <label for="verifyCode2" class=".sr-only col-xs-12" style="display: none"></label>
+                                                    <span class="new-icon code-icon"></span>
+                                                    <input type="text" id="verifyCode2" class="form-control" placeholder="图片验证码"
+                                                           errormsg="请填写正确的验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button class="btn y-btn" data-role="checkVerify">确定</button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="btn c-btn" data-role="closeVerify">取消</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <php>} else {</php>
+                                        <if condition="check_verify_open('reg')">
+                                            <div class="form-group new-form">
+                                                <label for="verifyCode5" class=".sr-only col-xs-12"
+                                                       style="display: none"></label>
+                                                <span class="new-icon code-icon"></span>
+                                                <input type="text" id="verifyCode5" class="form-control new-input" placeholder="验证码"
+                                                       errormsg="请填写正确的验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+
+                                                <div class="new-code lg_lf_fm_verify">
+                                                    <img class="verifyimg reloadverify img-responsive" alt="点击切换"
+                                                         src="{:U('verify')}">
+                                                </div>
+                                                <div class="col-xs-12 Validform_checktip text-warning lg_lf_fm_tip"></div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <span class="tips">输入验证码</span>
+                                        </if>
+                                        <php>}</php>
+
+                                    </div>
+                                    <!--手机注册end-->
+                                </case>
+                            </switch>
+                        </volist>
+
+
+
+                        <div class="form-group new-form">
+                            <label for="nickname" class=".sr-only col-xs-12" style="display: none"></label>
+                            <span class="new-icon name-icon"></span>
+                            <input type="text" id="nickname" class="form-control form_check new-input" check-type="Nickname"  check-url="{:U('ucenter/member/checkNickname')}" placeholder="请输入昵称" value="" name="nickname">
+                        </div>
+                        <span class="tips">输入昵称，只允许中文、字母和数字和下划线</span>
+                        <div class="form-group new-form password_block">
+                            <span class="new-icon password-icon"></span>
+                            <input type="password" id="inputPassword" class="form-control new-input" check-length="6,30"  placeholder="请输入密码"  name="password">
+
+                            <div class="input-group-addon show-password green-btn">
+                                <a  href="javascript:void(0);" onclick="change_show(this)">show</a>
+                            </div>
+                        </div>
+                        <span class="tips">请输入密码，6-30位字符</span>
+
+                        <!--<div style="float: left;vertical-align: bottom;margin-top: 12px;color: #848484;">
+                            已有账户， <a href="{:U('Ucenter/Member/login')}" title="" style="color: #03B38B;">登录</a>
+                        </div>-->
+                        <button type="submit" class="btn btn-primary new-btn green-btn">注册</button>
+
+
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-3 right-box">
+                <p class="p1">已有账号？</p>
+                <a href="{:U('Ucenter/Member/login')}"><p class="p2">直接登录</p></a>
+                <p class="p3">使用以下账号直接登录</p>
+                <p class="i-group">
+                    {:hook('syncLogin')}
+                </p>
+            </div>
+        </if>
+        <if condition="$step neq 'start' and $step neq 'finish'">
+            {:W('RegStep/view')}
+        </if>
+        <if condition="$step eq 'finish'">
+            <div class="col-xs-12" style="font-size: 16px;margin-top: 30px;">
+                    <span>感谢您注册 {:modC('WEB_SITE_NAME','OpenSNS开源社交系统','Config')} ，希望你玩的愉快！
+                        <a class="btn y-btn" href="{:U('Ucenter/Config/index')}" title="">完善个人资料</a> 或
+                        <a class="btn y-btn" href="{:U('home/Index/index')}" title="">前往首页</a></span>
+            </div>
+        </if>
+
+    </div>
+<div class="foot">
+    <h4>— 专注社交，从未止步 —</h4>
+</div>
+
+
+
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.new-input').focus(function () {
+                $(this).closest(".new-form").css('marginBottom','15px').next().css('display','block');
+            });
+            $('.new-input').blur(function () {
+                $(this).closest(".new-form").css('marginBottom','30px').next().css('display','none');
+            })
+        })
+    </script>
+    <script type="text/javascript">
+        var step="{$step}";
+        if (MID == 0&&step=='start') {
+            $(document)
+                    .ajaxStart(function () {
+                        $("button:submit").addClass("log-in").attr("disabled", true);
+                    })
+                    .ajaxStop(function () {
+                        $("button:submit").removeClass("log-in").attr("disabled", false);
+                    });
+            $("form").submit(function () {
+                toast.showLoading();
+                var self = $(this);
+//                console.log(self.serialize());
+                $.post(self.attr("action"), self.serialize(), success, "json");
+                return false;
+
+                function success(data) {
+                    if (data.status) {
+                        //toast.success(data.info, '温馨提示');
+                        setTimeout(function () {
+                            window.location.href = data.url
+                        }, 10);
+                    } else {
+                        toast.error(data.info, '温馨提示');
+                        //self.find(".Validform_checktip").text(data.info);
+                        //刷新验证码
+                        $(".reloadverify").click();
+                    }
+                    toast.hideLoading();
+                }
+            });
+
+            function change_show(obj) {
+                if ($(obj).text().trim() == 'show') {
+                    $(obj).html('hide');
+                    $(obj).parents('.password_block').find('input').attr('type', 'text');
+                } else {
+                    $(obj).html('show');
+                    $(obj).parents('.password_block').find('input').attr('type', 'password');
+                }
+            }
+
+
+            function setNickname(obj) {
+                var text = jQuery.trim($(obj).val());
+                if (text != null && text != '') {
+                    $('#nickname').val(text);
+                }
+            }
+
+            $(function () {
+
+                $(".reloadverify").click(function () {
+                    var $this = $(this);
+                    var verifyimg = $this.attr("src");
+                    if (verifyimg.indexOf('?') > 0) {
+                        $this.attr("src", verifyimg + '&random=' + Math.random());
+                    } else {
+                        $this.attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                    }
+                });
+            });
+
+
+
+            $(function () {
+                $("[data-role='getVerify']").click(function () {
+                    var $this = $(this);
+//                    toast.showLoading();
+                    var account = $this.parents('.tab-pane').find('[name="username"]').val();
+                    var type = $this.parents('.tab-pane').find('[name="reg_type"]').val();
+//                    var url = "{:U('ucenter/member/checkAccount')}";
+
+                    $.post(U('ucenter/member/checkAccount'),{account:account,type:type},function(res){
+                        ajaxRerurn(res);
+                        if(res.info == '验证成功') {
+                            $('.verify-check').show();
+                            $('[data-role="closeVerify"]').click(function() {
+                                $('.verify-check').hide();
+                                return false;
+                            })
+                        }
+                    },'json')
+                });
+
+                $('[data-role="checkVerify"]').click(function() {
+                    var $this = $(this);
+//                    toast.showLoading();
+                    var account = $this.parents('.tab-pane').find('[name="username"]').val();
+                    var type = $this.parents('.tab-pane').find('[name="reg_type"]').val();
+                    var verify = $this.parents('.tab-pane').find('[name="verify"]').val();
+
+                    $.post("{:U('ucenter/verify/sendVerify')}", {account: account, type: type, action: 'member',verify:verify}, function (res) {
+                        if (res.status) {
+                            $('.verify-check').hide();
+                            DecTime.obj = $this;
+                            DecTime.time = "{: modC('SMS_RESEND','60','USERCONFIG')}";
+                            $this.attr('disabled',true);
+                            DecTime.dec_time();
+
+                            toast.success(res.info);
+                        }
+                        else {
+                            toast.error(res.info);
+                        }
+                        toast.hideLoading();
+                    })
+                });
+
+                $('#reg_nav li a').click(function(){
+                    $('.tab-pane').find('input').attr('disabled',true);
+                    $('.tab-pane').eq($("#reg_nav li a").index(this)).find('input').attr('disabled',false);
+                })
+                $("[type='submit']").click(function () {
+                    $(this).parents('form').submit();
+                })
+
+                $('[href="#{$type}_reg"]').click()
+
+
+            })
+        }
+
+
+
+        var DecTime = {
+            obj:0,
+            time:0,
+            dec_time : function(){
+                if(this.time > 0){
+                    this.obj.text(this.time--+'S')
+                    setTimeout("DecTime.dec_time()",1000)
+                }else{
+                    this.obj.text("{:L('_EMAIL_VERIFY_')}")
+                    this.obj.attr('disabled',false)
+                }
+
+            }
+        }
+
+    </script>
+    <link href="__CORE_CSS__/form_check.css" rel="stylesheet" type="text/css">
+    <script src='__CORE_JS__/form_check.js'></script>
+    <script>
+        // 验证密码长度
+        $(function(){
+            $('#inputPassword').after('<div class=" show_info" ></div>');
+            $('#inputPassword').blur(function(){
+
+                var obj =$('#inputPassword');
+                var str =  obj.val().replace(/\s+/g, "");
+                var html = '';
+                if (str.length == 0) {
+                    html = '<div class="send red"><div class="arrow"></div>'+"{:L('_EMPTY_CANNOT_')}"+'</div>';
+                } else {
+                    if (typeof (obj.attr('check-length')) != 'undefined') {
+                        var strs = new Array(); //定义一数组
+                        strs = obj.attr('check-length').split(","); //字符分割
+                        if (strs[1]) {
+                            if (strs[1] < str.length || str.length < strs[0]) {
+                                html = '<div class="send red"><div class="arrow"></div>'+"{:L('_LENGTH_ILLEGAL_')}"+'</div>';
+                            }
+                        }
+                        else {
+                            if (strs[0] < str.length) {
+                                html = '<div class="send red"><div class="arrow"></div>'+"{:L('_LENGTH_ILLEGAL_')}"+'</div>';
+                            }
+                        }
+                    }
+                    obj.parent().find('.show_info').html(html);
+                }
+            })
+        })
+    </script>
+</block>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<extend name="Base/common"/>
+<block name="style">
+    <link href="__CSS__/attest.css" rel="stylesheet" type="text/css"/>
+</block>
+<block name="header">
+
+</block>
+<block name="body">
+    <div class="v-wrap">
+        <div class="v-head">
+            认证中心
+            <notEmpty name="attest">
+                <a href="{:U('Ucenter/Attest/process')}">我的认证</a>
+            </notEmpty>
+        </div>
+        <div class="v-type row">
+            <div class="row c-title">认证类型</div>
+            <volist name="attest_type" id="one_type">
+                <div class="col-xs-4 type-box">
+                    <div class="col-xs-5 box">
+                        <div class="cover pull-right">
+                            <a href="{:U('Ucenter/attest/individual',array('id'=>$one_type['id']))}">
+                                <img src="__IMG__/attest/{$one_type['name']}.png" title="{$one_type['title']}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xs-7 box info">
+                        <p class="title"><a href="{:U('Ucenter/attest/individual',array('id'=>$one_type['id']))}">{$one_type['title']}</a></p>
+                        <p class="intro">{$one_type['tips']}</p>
+                        <empty name="attest">
+                            <a href="{:U('Ucenter/attest/individual',array('id'=>$one_type['id']))}" class="apply-btn">申请认证</a>
+                        </empty>
+                    </div>
+                </div>
+            </volist>
+        </div>
+        <div class="v-famous">
+            <div class="row c-title">名人堂</div>
+            <volist name="celebrity" id="one_celebrity">
+                <div class="col-xs-3 f-box">
+                    <div class="col-xs-4 box">
+                        <a href="{$one_celebrity['user']['space_url']}" ucard="{$one_celebrity['uid']}" target="_blank">
+                            {$one_celebrity['user']['avatar_html128']}
+                        </a>
+                    </div>
+                    <div class="col-xs-8 box">
+                        <div class="info">
+                            <p>
+                                <a href="{$one_celebrity['user']['space_url']}" ucard="{$one_celebrity['uid']}" target="_blank">
+                                    {$one_celebrity['user']['nickname']}
+                                </a>
+                            </p>
+                            <p style="color: #666">{$one_celebrity['user']['signature']|default='还没想好O(∩_∩)O'}</p>
+                        </div>
+                    </div>
+                </div>
+            </volist>
+        </div>
+    </div>
+</block>

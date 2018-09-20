@@ -1,0 +1,233 @@
+@import "../../../../Public/css/var";
+
+@f: #fff;
+.container {
+  max-width: 900px;
+  margin-top: 50px !important;
+}
+
+.avt-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  text-align: center;
+  p {
+    margin: 0;
+  }
+  img {
+    width: 90px;
+    border: 3px solid @f;
+    margin: 0 auto 10px;
+  }
+  .n-name {
+    font-size: 22px;
+    color: @f;
+  }
+  .f-l {
+    color: @f;
+    font-size: 16px;
+    a {
+      color: @f;
+      margin-right: 10px;
+    }
+    .fen-ge {
+      margin: 0 20px;
+    }
+  }
+  .bottom-wrap {
+    height: 40px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+    line-height: 40px;
+    padding: 0 10px;
+    text-align: left;
+    margin: 0;
+    color: @f;
+    .text-more {
+      padding-left: 0;
+    }
+    .bt-group {
+      padding: 0;
+      height: 100%;
+      text-align: right;
+      .btn {
+        font-size: 12px;
+        padding: 2px 12px;
+      }
+      .btn-default,.btn-primary {
+        background-color: @primary-color;
+        color: @f;
+        text-shadow: none;
+        border-radius: 4px;
+        border: 2px solid @f;
+        line-height: 30px;
+        width: 75px !important;
+        padding: 0 !important;
+        &:hover {
+          background-color: @darken-color;
+        }
+        &:last-child {
+          background-color: rgba(0, 0, 0, .45);
+          border: 2px solid rgba(255, 255, 255, .45);
+          margin-left: 15px;
+          &:hover {
+            background: rgba(0, 0, 0, .5);
+          }
+        }
+      }
+    }
+  }
+}
+
+.uc-cont {
+  margin-top: 20px;
+  width: 100%;
+  position: relative;
+  .nav-wrap {
+    width: 200px;
+    float: left;
+    margin-right: 20px;
+    background-color: @f;
+  }
+  .cont-wrap {
+    width: 680px;
+    float: left;
+  }
+}
+
+.new-nav {
+  width: 100%;
+  background-color: @f;
+  li {
+    float: none;
+    border-bottom: 1px solid #efefef;
+  }
+}
+
+.common-cont-wrap {
+  background-color: @f;
+  padding: 20px;
+  .nav > li > a:hover, .nav > li > a:focus {
+    color: #0e385a;
+    text-decoration: none;
+    background-color: transparent;
+  }
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+  background-color: transparent !important;
+  color: #1ABC9C !important;
+  border-radius: 0;
+}
+
+.my-num {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1em;
+  vertical-align: baseline;
+  padding: 0 !important;
+  color: #666 !important;
+  strong {
+    margin-right: 5px;
+  }
+}
+
+.my-after:after {
+  color: #ddd;
+  content: "|";
+  margin: 0 15px;
+}
+
+.f-wrap {
+  .list-item {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+    position: relative;
+    line-height: 1;
+    margin: 0;
+    &:nth-last-of-type(2) {
+      border: none;
+    }
+    .avatar-img {
+      width: 60px;
+      float: left;
+    }
+    .f-info {
+      padding: 0 20px;
+    }
+    .f-name {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 10px;
+      font-weight: 400;
+      &:hover {
+        color: @primary-color;
+      }
+    }
+    .f-sig {
+      color: #6d757a;
+      font-size: 12px;
+      max-width: 525px;
+      span {
+        margin-right: 20px;
+      }
+      &:hover {
+        color: #333;
+      }
+    }
+  }
+}
+
+.topic-wrap {
+   .topic-row{
+     width:330px;
+     float: left;
+     padding: 10px;
+     position: relative;
+     .topk-wrap {
+       width: 100%;
+       border: 1px solid #e7e7e7;
+       border-radius: 5px;
+       box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.03);
+       margin: 0px;
+       padding: 5px 15px;
+       .topk-info{
+         color:#8b8b8b;
+         width: 150px;
+         margin: 13px 0 13px 10px;
+         height: 70px;
+         position: relative;
+         .topk-name{
+           color:#535353;
+           font-size: 16px;
+         }
+         p{
+           margin: 0 0 6px;
+         }
+       }
+       .topk-logo {
+         width: 85px;
+         height: 85px;
+         margin-top: 6px;
+       }
+        .topk-read{
+          margin-left: 10px;
+          span{
+            color:#ee5e0f;
+          }
+        }
+       .topk-weibo{
+         margin-right: 12px;
+         span{
+           color:#ee5e0f;
+         }
+       }
+     }
+   }
+
+}

@@ -1,0 +1,27 @@
+<div>
+    <input type="hidden" value="{$audit_ids}" id="ids"/>
+    <textarea id="reason" placeholder="请填写审核失败或禁用原因" class="form-control" style="height: 100px;"></textarea>
+    <div style="width: 100%;text-align: center;margin-top: 10px;">
+        <a class="btn btn-primary" data-role="audit">确定</a>
+        <a onclick="$('.close').click();" class="btn btn-default">取消</a>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('[data-role="audit"]').click(function () {
+            var $tag=$(this);
+            if($tag.attr('disabled')!='disabled'){
+                $tag.attr('disabled','disabled');
+                var ids=$('#ids').val();
+                var reason=$('#reason').val();
+                $.post(U('Admin/Attest/setAuditReason'),{ids:ids,reason:reason},function (msg) {
+                    $tag.removeAttr('disabled');
+                    handleAjax(msg);
+                    if(msg.status){
+                        $('.close').click();
+                    }
+                });
+            }
+        });
+    })
+</script>

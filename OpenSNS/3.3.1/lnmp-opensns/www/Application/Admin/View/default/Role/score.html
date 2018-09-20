@@ -1,0 +1,244 @@
+<extend name="Public/base" />
+<block name="body">
+    <!--<div class="main-title">
+        <h2>{:L("_DEFAULT_INTEGRATION_")}</h2>
+    </div>-->
+    <div class="tab-wrap with-padding">
+
+        <div class="clearfix">
+            <div class="col-xs-10">
+                <include file="_link"/>
+            </div>
+            <div class="col-xs-2 text-right">
+                <select name="role" class="form-control">
+                    <volist name="role_list" id="vo">
+                        <option value="{:U('Role/configScore',array('id'=>$vo['id']))}" <eq name="vo['id']" value="$this_role['id']">selected</eq> >{$vo.title}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="node-list">
+            <!-- 访问授权 -->
+            <div class="tab-pane in">
+                <form action="__SELF__" enctype="application/x-www-form-urlencoded" method="POST" class="form-horizontal auth-form avatar-form">
+                    <div class="col-xs-4">
+                        <div>
+                            <h4>{:L("_DEFAULT_INTEGRATION_AND_AVATAR_")}</h4>
+                            <span>{:L("_USER_DEFAULT_SCORE_AND_AVATAR_CONFIGURATION_")}</span>
+                        </div>
+
+                        <volist name="score_keys" id="score">
+                            <label class="item-label">{$score.title|htmlspecialchars}<span>{:L("_UNIT_WITH_COLON_")}{$score.unit|htmlspecialchars}）</span></label>
+                            <div class="controls ">
+                                <input type="text" name="score{$score.id}" value="{$score.value}" class="text input-large form-control"style="width: 400px"/>
+                            </div>
+                        </volist>
+                    </div>
+
+                    <div class="col-xs-8">
+                        <input type="hidden" name="id" value="{$this_role.id}"/>
+                        <input class="attach" type="hidden" name="avatar_id" value="{$this_role_avatar.avatar}"/>
+                        <input class="attach" type="hidden" name="set_null" value="0"/>
+                        <label class="item-label" style="font-size: 15px;font-weight: 400;">{:L("_UPLOAD_DEFAULT_AVATAR_")}<span style="font-size: 12px;margin-left: 20px;color: rgb(253, 67, 67);">{:L("_PLEASE_UPLOAD_256PX_")}*256px的pn{:L("_G_AVATAR_")}</span></label>
+                        <div class="controls">
+                            <div id="upload_single_image" style="padding-bottom: 5px;">{:L("_SELECT_PICTURES_")}</div>
+                            <php>if($this_role_avatar['avatar']) {</php>
+                            <div data-role="avatar-block">
+                                <div class="avatar">
+                                    <a href="{$this_role_avatar.avatar|getThumbImageById='256','256'}" data-role="avatar256" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                        <img src="{$this_role_avatar.avatar|getThumbImageById='256','256'}">
+                                    </a>
+                                    <div class="img_tips">256px*256px</div>
+                                </div>
+                                <div class="avatar" style="margin-top: 20px;">
+                                    <a href="{$this_role_avatar.avatar|getThumbImageById='128','128'}" data-role="avatar128" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                        <img src="{$this_role_avatar.avatar|getThumbImageById='128','128'}">
+                                    </a>
+                                    <div class="img_tips">128px*128px</div>
+                                </div>
+                                <div class="avatar" style="margin-top: 40px;">
+                                    <a href="{$this_role_avatar.avatar|getThumbImageById='64','64'}" data-role="avatar64" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                        <img src="{$this_role_avatar.avatar|getThumbImageById='64','64'}">
+                                    </a>
+                                    <div class="img_tips">64px*64px</div>
+                                </div>
+                                <div class="avatar" style="margin-top: 52px;">
+                                    <a href="{$this_role_avatar.avatar|getThumbImageById='32','32'}" data-role="avatar32" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                        <img src="{$this_role_avatar.avatar|getThumbImageById='32','32'}">
+                                    </a>
+                                    <div class="img_tips">32px*32px</div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <php>} else {</php>
+                            <div data-role="avatar-block" style="display:none;">
+                                <div class="avatar">
+                                    <a href="{$this_role_avatar.avatar|getThumbImageById='256','256'}" data-role="avatar256" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                        <img src="{$this_role_avatar.avatar|getThumbImageById='256','256'}">
+                                    </a>
+                                    <div class="img_tips">256px*256px</div>
+                                </div>
+                                <div class="avatar">
+                                    <a href="{$this_role_avatar.avatar|getThumbImageById='128','128'}" data-role="avatar128" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                        <img src="{$this_role_avatar.avatar|getThumbImageById='128','128'}">
+                                    </a>
+                                    <div class="img_tips">128px*128px</div>
+                                </div>
+                                <div class="avatar">
+                                    <a href="{$this_role_avatar.avatar|getThumbImageById='64','64'}" data-role="avatar64" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                        <img src="{$this_role_avatar.avatar|getThumbImageById='64','64'}">
+                                    </a>
+                                    <div class="img_tips">64px*64px</div>
+                                </div>
+                                <div class="avatar">
+                                    <a href="{$this_role_avatar.avatar|getThumbImageById='32','32'}" data-role="avatar32" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                        <img src="{$this_role_avatar.avatar|getThumbImageById='32','32'}">
+                                    </a>
+                                    <div class="img_tips">32px*32px</div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <php>}</php>
+
+                            <style>
+                                .avatar{
+                                    float: left;
+                                    margin-left: 30px;
+                                }
+                                .avatar img{
+                                    border-radius: 100%;
+                                }
+                                .img_tips{
+                                    line-height: 30px;
+                                    width: 100%;
+                                    text-align: center;
+                                }
+                            </style>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="post_key" value="{$post_key}"/>
+                    <input type="hidden" name="id" value="{$this_role.id}" />
+                    <div class="col-xs-12" style="margin-top: 20px">
+                        <button type="submit" class="btn submit-btn ajax-post" target-form="avatar-form" data-role="submit_button" style="display: none;">{:L("_SURE_WITH_SPACE_")}</button>
+
+                        <button type="submit" class="btn submit-btn ajax-post" target-form="auth-form">{:L("_STEP_NEXT_")}</button>
+                        <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+                        <button class="btn submit-btn" data-role="set_null">{:L("_USE_SYSTEM_DEFAULT_AVATAR_")}</button>
+                        <span style="color: #BABABA;margin: 11px;">{:L("_PLEASE_SAVE_THE_ABOVE_CONFIGURATION_AND_THEN_SWITCH_TO_ANOTHER_INTERFACE_")}</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</block>
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/qtip/jquery.qtip.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/qtip/jquery.qtip.min.css" media="all">
+    <script type="text/javascript" charset="utf-8">
+        +function($){
+        $('select[name="role"]').change(function(){
+            location.href = this.value;
+        });
+        //导航高亮
+        highlight_subnav('{:U('Role/configscore')}');
+        }(jQuery);
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-role="set_null"]').click(function(){
+                $('[name="set_null"]').val(1);
+                $('[data-role="submit_button"]').click();
+                return false;
+            });
+
+            $('[data-role="do_submit"]').click(function(){
+                $('[name="set_null"]').val(0);
+                $('[data-role="submit_button"]').click();
+                return false;
+            });
+
+            var uploader= WebUploader.create({
+                // 选完文件后，是否自动上传。
+                auto: true,
+                // swf文件路径
+                swf: 'Uploader.swf',
+                // 文件接收服务端。
+                server: "{:U('Role/uploadPicture',array('session_id'=>session_id()))}",
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: '#upload_single_image',
+                // 只允许选择图片文件。
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                }
+            });
+            uploader.on('fileQueued', function (file) {
+                uploader.upload();
+            });
+            /*上传成功*/
+            uploader.on('uploadSuccess', function (file, data) {
+                if (data.status) {
+                    $('[data-role="avatar-block"]').show();
+                    $('[name="avatar_id"]').val(data.id);
+                    $('[data-role="avatar256"]').attr('href',data.path256);
+                    $('[data-role="avatar256"]').find('img').attr('src',data.path256);
+                    $('[data-role="avatar128"]').attr('href',data.path128);
+                    $('[data-role="avatar128"]').find('img').attr('src',data.path128);
+                    $('[data-role="avatar64"]').attr('href',data.path64);
+                    $('[data-role="avatar64"]').find('img').attr('src',data.path64);
+                    $('[data-role="avatar32"]').attr('href',data.path32);
+                    $('[data-role="avatar32"]').find('img').attr('src',data.path32);
+                    uploader.reset();
+                } else {
+                    updateAlert(data.info);
+                    setTimeout(function () {
+                        $('#top-alert').find('button').click();
+                        $(that).removeClass('disabled').prop('disabled', false);
+                    }, 1500);
+                }
+            });
+            $('select[name="role"]').change(function(){
+                location.href = this.value;
+            });
+        })
+        //导航高亮
+        highlight_subnav('{:U('Role/configavatar')}');
+    </script>
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/js/ext/magnific/magnific-popup.css"/>
+    <script type="text/javascript" src="__PUBLIC__/js/ext/magnific/jquery.magnific-popup.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ext/webuploader/js/webuploader.js"></script>
+    <link href="__PUBLIC__/js/ext/webuploader/css/webuploader.css" type="text/css" rel="stylesheet">
+
+    <script>
+        $(document).ready(function () {
+            $('.popup-gallery').each(function () { // the containers for all your galleries
+                $(this).magnificPopup({
+                    delegate: 'a',
+                    type: 'image',
+                    tLoading: '{:L("_LOADING_")}#%curr%...',
+                    mainClass: 'mfp-img-mobile',
+                    gallery: {
+                        enabled: true,
+                        navigateByImgClick: true,
+                        preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+
+                    },
+                    image: {
+                        tError: '<a href="%url%">{:L("_PICTURE_")}#%curr%</a>{:L("_COULD_NOT_BE_LOADED_")}',
+                        titleSrc: function (item) {
+                            /*           return item.el.attr('title') + '<small>by Marsel Van Oosten</small>';*/
+                            return '';
+                        },
+                        verticalFit: true
+                    }
+                });
+            });
+        });
+    </script>
+</block>

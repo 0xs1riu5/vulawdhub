@@ -1,0 +1,174 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <script type="text/javascript" src="__PUBLIC__/js/ajaxfileupload.js"></script>
+    <div class="main-title">
+        <h2>{:L("_UPLOAD_THE_EXPRESSION_PACKAGE_")}</h2>
+    </div>
+    <!--{:U('admin/expression/upload')}-->
+    <!--enctype="multipart/form-data"-->
+    <form class="ajax-form" method="post" action="{:U('Admin/Expression/upload')}" onsubmit=" return checkimgname(this)">
+        <div  style="padding: 15px">
+            <div class="form-item">
+                <div class="controls">
+                    {:L("_NAME_")}<input type="text" name="title" class="" value="">
+                    <span class="check-tips">{:L("_THE_CHINESE_NAME_OF_THE_EXPRESSION_")}</span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="controls">
+                <span class="pull-left" style="margin: 15px 5px 0px 0px;">{:L("_UPLOAD_THE_EXPRESSION_PACKAGE_")}{:L("_COLON_")}</span>
+                <span class="pull-left" id="upload_button"
+                      style="width: 300px;height: 30px;background: #6fa7ce;color: #fff;line-height: 30px;text-align: center;cursor: pointer;margin: 10px 30px 0px 0px;display: inline-block">{:L("_UPLOAD_FILE_")}</span>
+                <span class="pull-left" id="show_info" style="margin: 15px 30px 0px 0px;"></span>
+                <span class="pull-left text-danger" style="margin: 15px 30px 0px 0px;">{:L("_EXPRESSION_ONLY_SUPPORTS_")}<strong>*.zip</strong>{:L("_FORMAT_")}</span>
+                <input type="file" name="pkg" id="pkg" style="display: none" onchange="$('#show_info').html($(this).val());openzip()">
+
+            </div>
+        </div>
+        <input type="button" data-role="submitbtn" class="btn btn-default" style="display: none" >
+
+        <div class="clearfix" id="showdiv">
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script>
+        $('#upload_button').click(function () {
+            $('input[type=file]').click();
+
+        });
+        function delzip(){
+            var file=$('[name="pkg_name"]').val();
+            var filename=file.replace(/.*(\/|\\)/, "");//文件名
+            var name=filename.replace('.zip','');
+            var url="{:U('Admin/Expression/delPackage')}";
+            $.post(url,{name:name},function(a){
+                if(a=='1'){
+                    location.reload();
+                }
+            });
+
+        }
+        function openzip(){
+            $('[data-role="submitbtn"]').click();
+        }
+
+        $('[data-role="submitbtn"]').click(function up(){
+            var flag=1;
+            var file=$('[name="pkg"]').val();
+            var filename=file.replace(/.*(\/|\\)/, "");//文件名
+            var fileExt=(/[.]/.exec(filename)) ? /[^.]+$/.exec(filename.toLowerCase()) : '';//文件后缀
+            if(fileExt!='zip'){
+                toast.error('不支持该后缀的文件!');
+                flag=0;
+            }
+            var name1=filename.replace('.zip','');
+            if(flag==0){}
+            else{
+                var url="{:U('Admin/Expression/openExZip')}";
+
+                $.ajaxFileUpload(
+                        {
+                            url:url,
+                            secureuri:false,
+                            fileElementId:'pkg',
+                            data:{name:name1},
+                            dataType: 'json',
+                            success:function(a){
+                                if(a==0){toast.error('改表情压缩包文件的名称已存在')}
+                                else {
+                                    var arr = eval(a);
+                                    var i = 0;
+                                    var img_html = '<div class="clearfix"></div>';
+                                    for (i = 0; i < arr.length; i++) {
+                                        var filename = arr[i].replace(/.*(\/|\\)/, "");
+                                        var fileExt = (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename.toLowerCase()) : '';
+                                        var name = filename.split('.');
+                                        var imghtml = '<div>' + '<div class="pull-left left">' +
+                                                '<img src="' + arr[i] + '" style="width: 55px;height: 55px;margin: 5px ">' +
+                                                '<input type="hidden" value="' + filename + '" name="imgnamesuf[]">' +
+                                                '<input type="hidden" value="'+name1+'" name="pkg_name">'+
+                                                '</div>' + '<div class ="pull-right right" >' +
+                                                '<img src="__IMG__/close.png"   style="margin-top: 10px;margin-right: 10px;cursor:pointer" onclick="del_img(this)">' +
+                                                '</div>' +
+                                                '<div class="right right">' +
+                                                '<div style="margin-top: 10px">' +
+                                                '<p>' +
+                                                '文件名:' +
+                                                '<span>' + filename +
+                                                '</span>' +
+                                                '</p>' +
+                                                '</div>' +
+                                                '<div>' +
+                                                '<p>' +
+                                                '名称:' +
+                                                '<input type="text" style="width: 80px;height:25px  "value="' + name[0] + '"name="imgname[]">' +
+                                                '</p>' +
+                                                '</div>' +
+                                                '<div>' +
+                                                '<hr style="height:1px;border:none;border-top:1px dashed #0066CC;margin:0px" />' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>';
+                                        img_html += imghtml;
+                                    }
+                                    var expressionhtml =
+                                            '<div id="result" style=" border: 1px solid #ff83e2;width: 300px;margin-left: 98px;margin-top: 0px">'
+                                            + img_html +
+                                            '<div class="form-item" align="center">' +
+                                            ' <button class="btn submit-btn" id="submit"type="submit"  target-form="form-horizontal" >' +
+                                            '{:L("_SURE_WITH_SPACE_")}' + '</button>' +
+                                            ' ' +
+                                            '<input type="button" class="btn btn-return" data-role="cancel" value="取消" onclick="delzip()">' +
+                                            '</div> ' +
+                                            '</div>';
+                                    $('#showdiv').append(expressionhtml);
+                                } },
+                            error: function ()
+                            {
+                                toast.error('上传出错！')
+                            }
+                        }
+                );}
+        });
+        function del_img(obj){
+            $(obj).parent().parent().remove();
+        }
+        function checkimgname(obj){
+            var flag=1;
+            if($('[name="title"]').val().length==0){
+                toast.error('表情的中文名称不能为空');
+                flag=0;
+            }
+
+            $(obj).find('input[name="imgname[]"]').each(function(){
+                if($(this).val().length==0){
+                    toast.error('表情名称不能为空');
+                    flag=0;
+                }
+
+
+            });
+
+            if(flag==1){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+    </script>
+    <script type="text/javascript">
+        Think.setValue("type", {$info.type|default=0});
+        Think.setValue("group",{$info.group|default=0});
+        //导航高亮
+        highlight_subnav('{:U('Config/index')}');
+    </script>
+</block>
+
+
+
+

@@ -1,0 +1,50 @@
+
+<div class="star">
+    <div class="big-star">
+        <div class="title">大明星</div>
+        <div class="star-user">
+            <div class="weixin">
+                <a ucard="{$bigstar.uid}" href="{$bigstar.space_url}">
+                    <img src="{$bigstar.avatar128}" alt=""  style="border-radius: 100%;">
+                </a>
+            </div>
+            <div class="star-name">
+                <span><a ucard="{$bigstar.uid}" href="{$bigstar.space_url}">{$bigstar['nickname']}</a></span>
+
+                <if condition="$bigstar['isfollow'] eq 1">
+                    <i class="icon jia icon-collapse-alt" data-role="dofollow" data-value="unfollow" data-follow-who="{$bigstar.uid}"></i>
+                    <else/>
+                    <if condition="is_login() && $bigstar['uid'] != get_uid()">
+                        <i class="icon icon-expand-alt jia" data-role="dofollow" data-value="follow"  data-follow-who="{$bigstar.uid}"></i>
+                    </if>
+                </if>
+            </div>
+        </div>
+    </div>
+    <div class="sns-star">
+        <div class="sns-title">
+            <span class="span1">社群明星</span>
+            <a href="{:U('Ucenter/Index/ranking')}" class="span2">粉丝榜></a>
+        </div>
+       <volist name="star" id="st">
+        <div class="sns-star-user">
+            <div class="star" >
+                <a ucard="{$st.uid}" href="{$st.space_url}">
+                    <img src="{$st.avatar128}" alt="" style="border-radius: 100%;">
+                </a>
+            </div>
+            <p><a ucard="{$st.uid}" href="{$st.space_url}">{$st.nickname}</a></p>
+            <div class="fans">
+                <span>粉丝: {$st.fans|int2str}</span>
+                <if condition="$st['isfollow'] eq 1">
+                    <i class="icon jia icon-collapse-alt" data-role="dofollow" data-value="unfollow" data-follow-who="{$st.uid}"></i>
+                    <else/>
+                    <if condition="is_login() && $st['uid'] != get_uid()">
+                        <i class="icon icon-expand-alt jia" data-role="dofollow" data-value="follow"  data-follow-who="{$st.uid}"></i>
+                    </if>
+                </if>
+            </div>
+        </div>
+       </volist>
+    </div>
+</div>

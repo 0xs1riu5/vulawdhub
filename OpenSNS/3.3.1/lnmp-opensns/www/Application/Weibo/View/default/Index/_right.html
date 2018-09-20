@@ -1,0 +1,143 @@
+<div class="weibo_right">
+    <!--我的社群stat-->
+    <if condition="is_login()">
+        <div class="my-community">
+            <div class="ck-sign">
+                <php>if(!$check){</php>
+                <img src="__IMG__/checking.png" alt="">
+                <php>}else{</php>
+                <img src="__IMG__/checked.png" alt="">
+                <php>}</php>
+            </div>
+            <p class="notice-head">我的社群</p>
+            <div class="mc-grade row">
+                <div class="col-xs-3 mc-box left-box">
+                    <div class="mc-icon-wrap">
+                        <i class="i-heart"></i>
+                    </div>
+                </div>
+                <div class="col-xs-4 mc-box center-box">
+                    <span>{$today_score}</span>
+                    <p>今日经验</p>
+                </div>
+                <div class="col-xs-5 mc-box text-ellipsis">
+                    <span style="color: #666">{$title.left|intval}</span>
+                    <p style="margin: 0 25px">剩余经验</p>
+                </div>
+            </div>
+            <div class="grade-box">
+                <php>
+                    $title=D('Ucenter/Title')->getCurrentTitleInfo(is_login());
+                </php>
+                <script>
+                    $(function () {
+                        $('#upgrade').tooltip({
+                                    html: true,
+                                    title: '{:L("_CURRENT_LEVEL_")}：{$self.title} <br/>{:L("_NEXT_LEVEL_")}：{$title.next}<br/>{:L("_NOW_")}：{$self.score}<br/>{:L("_NEED_")}：{$title.upgrade_require}<br/>{:L("_LAST_")}： {$title.left}<br/>{:L("_PROGRESS_")}：{$title.percent}% <br/> '
+                                }
+                        );
+                    })
+                </script>
+                <div class="row">
+                    <div class="col-xs-3 l-box"><span>当前等级</span></div>
+                    <div class="col-xs-9 r-box">
+                        <div id="upgrade" class="upgrade" data-toggle="tooltip" data-placement="bottom" title="">
+                            <div class="grade-bottom"></div>
+                            <div class="grade-top" style="width:{$title.percent}%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gg-wrap">
+                    <p class="pull-left">{$self.title}</p>
+                    <p class="pull-right" style="color: #999">{$title.next}</p>
+                </div>
+            </div>
+            <div class="gg-check row">
+                <div class="col-xs-3 c-box" data-role="open_checkBox" style="cursor: pointer">
+                    <php>if(!$check){</php>
+                    <i class="c-icon c-icon-checking"></i>
+                    <p style="color:red;">签到</p>
+                    <php>}else{</php>
+                    <i class="c-icon c-icon-checked"></i>
+                    <p>签到</p>
+                    <php>}</php>
+                </div>
+                <a href="{:U('Ucenter/index/ranking')}">
+                    <div class="col-xs-3 c-box">
+                        <i class="c-icon c-icon-rank"></i>
+                        <p class="pc6">排行</p>
+                    </div>
+                </a>
+                <if condition="$ping || $Charge">
+                    <a href="{$ping?U('Pingxx/index/index'):U('Recharge/index/index')}">
+                        <div class="col-xs-3 c-box">
+                            <i class="c-icon c-icon-ping"></i>
+                            <p class="pc6">充值</p>
+                        </div>
+                    </a>
+                </if>
+
+                <if condition="$shop">
+                    <a href="{:U('Shop/index/index')}">
+                        <div class="col-xs-3 c-box">
+                            <i class="c-icon c-icon-change"></i>
+                            <p class="pc6">兑换</p>
+                        </div>
+                    </a>
+                </if>
+            </div>
+            <div class="show-more" data-role="show_more_link">
+                <i class="icon-angle-down" style="font-size: 20px"></i>
+            </div>
+            <div class="close-more" data-role="close_more_link">
+                <i class="icon-angle-up" style="font-size: 20px"></i>
+            </div>
+        </div>
+    </if>
+    <!--我的社群end-->
+    <!--签到日历stat-->
+    <div class="hide-check-box" style="display: none">
+        <h5>
+            <a href="javascript:">我的签到日历</a>
+            <a href="javascript:" class="pull-right" data-role="close_checkBox">X</a>
+        </h5>
+        {:W('Ucenter/signCalendar/render')}
+        <div class="checkin">
+            {:hook('checkIn')}
+        </div>
+    </div>
+    <!--签到日历end-->
+    <!--热门话题排行start-->
+    <div class="wb-topic">
+        <p class="topic-head">话题排行</p>
+        <div class="topic-content">
+            <ul>
+                <volist name="hot_topic_list" id="one_topic" key="one_topic_key">
+                    <?php
+                            if($one_topic_key<=3){
+                            $one_topic_class='num-top';
+                            }else{
+                            $one_topic_class='';
+                            }
+                        ?>
+                    <li><a href="{:U('Topic/index',array('topk'=>$one_topic['id']))}" title="{$one_topic['name']}">
+                        <div class="num {$one_topic_class}">{$one_topic_key}</div>
+                        <div>{$one_topic['name']}</div>
+                        <div>{$one_topic['weibo_num']}</div>
+                    </a></li>
+                </volist>
+            </ul>
+        </div>
+    </div>
+    <!--热门话题排行end-->
+    {:W('Common/Adv/render',array(array('name'=>'below_self_info','type'=>1,'width'=>'280px','height'=>'100px','margin'=>'0
+    0 10px 0','title'=>'个人资料下方')))}
+    <div style="position: relative">
+        {:hook('weiboSide')}
+        <!--广告位-->
+        {:W('Common/Adv/render',array(array('name'=>'below_checkrank','type'=>1,'width'=>'280px','height'=>'100px','title'=>'签到下方广告')))}
+        <!--广告位end-->
+        {:hook('Advs',array('pos'=>'weibo_right_below_all','type'=>1,'width'=>'280px','height'=>'100px','title'=>'动态右侧底部广告'))}
+    </div>
+</div>

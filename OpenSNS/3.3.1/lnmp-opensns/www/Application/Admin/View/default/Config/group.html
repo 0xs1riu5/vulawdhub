@@ -1,0 +1,226 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>{:L("_WEB_SITE_SETTINGS_")}</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <div class="main-title">
+        <h2>{:L("_WEB_SITE_SETTINGS_")}</h2>
+    </div>
+    <div class="tab-wrap with-padding">
+        <ul class="nav nav-tabs">
+            <volist name="Think.config.CONFIG_GROUP_LIST" id="group">
+
+                <li
+                <eq name="id" value="$key">class="active"</eq>
+                ><a href="{:U('?id='.$key)}">{$group}{:L("_TO_CONFIGURE_")}</a></li>
+
+            </volist>
+        </ul>
+
+    </div>
+    <div class="tab-content with-padding">
+    <div class="col-md-12">
+        <form action="{:U('save')}" method="post" class="form-horizontal">
+            <volist name="list" id="config">
+                <div class="form-item">
+                    <label class="item-label">{$config.title}<span class="check-tips">（{$config.remark}）</span>
+                    </label>
+
+                    <div class="controls">
+                        <switch name="config.type">
+                            <case value="0">
+                                <input type="text" class="text input-small form-control" name="config[{$config.name}]" style="width: 180px"
+                                       value="{$config.value}">
+                            </case>
+                            <case value="1">
+                                <input type="text" class="text input-large form-control" name="config[{$config.name}]" style="width: 400px"
+                                       value="{$config.value}">
+                            </case>
+                            <case value="2">
+                                <label class="textarea input-large">
+                                    <textarea name="config[{$config.name}]" class="form-control" style="width: 400px;height: 200px" >{$config.value}</textarea>
+                                </label>
+                            </case>
+                            <case value="3">
+                                <label class="textarea input-large">
+                                    <textarea name="config[{$config.name}]" class="form-control" style="width: 400px;min-height: 120px;" >{$config.value}</textarea>
+                                </label>
+                            </case>
+                            <case value="4">
+                                <select name="config[{$config.name}]" class="form-control" style="width: auto">
+                                    <volist name=":parse_config_attr($config['extra'])" id="vo">
+                                        <option value="{$key}"
+                                        <eq name="config.value" value="$key">selected</eq>
+                                        >{$vo}</option>
+                                    </volist>
+                                </select>
+                            </case>
+                            <case value="5"><!--增加富文本和非明文-->
+
+                                {:W('Common/Ueditor/editor',array($config['name'],'config['.$config['name'].']',$config['value'],'500px','300px'))}
+                            </case>
+                            <case value="6">
+                                <input type="password" class="text input-large form-control" style="width:400px;" name="config[{$config.name}]" autoComplete="off"
+                                       value="{$config.value}">
+                            </case>
+                            <case value="7">
+                                <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ext/webuploader/js/webuploader.js"></script>
+                                <link href="__PUBLIC__/js/ext/webuploader/css/webuploader.css" type="text/css" rel="stylesheet">
+                                <div class="controls">
+                                    <div id="upload_single_image_{$config.name}" style="padding-bottom: 5px;">{:L("_SELECT_PICTURES_")}</div>
+                                    <input class="attach" type="hidden" name="config[{$config.name}]" value="{$config['value']}"/>
+                                    <div class="upload-img-box">
+                                        <div class="upload-pre-item popup-gallery">
+                                            <notempty name="config.value">
+                                                <div class="each">
+                                                    <a href="{$config.value|get_cover='path'}" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}>
+                                                        <img src="{$config.value|get_cover='path'}">
+                                                    </a>
+                                                    <div class="text-center opacity del_btn" ></div>
+                                                    <div onclick="admin_image.removeImage($(this),'{$config.value}')"  class="text-center del_btn">{:L("_DELETE_")}</div>
+                                                </div>
+                                            </notempty>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(function () {
+                                        var uploader_{$config.name}= WebUploader.create({
+                                            // 选完文件后，是否自动上传。
+                                            auto: true,
+                                            // sw{:L("_F_FILE_PATH_")}
+                                            swf: 'Uploader.swf',
+                                            // 文件接收服务端。
+                                            server: "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+                                            // 选择文件的按钮。可选。
+                                            // 内部根据当前运行是创建，可能是input元素，{:L("_AND_IT_COULD_BE_FLASH_")}.
+                                            pick: '#upload_single_image_{$config.name}',
+                                            // 只允许{:L("_SELECT_PICTURES_")}文件。
+                                            accept: {
+                                                title: 'Images',
+                                                extensions: 'gif,jpg,jpeg,bmp,png',
+                                                mimeTypes: 'image/*'
+                                            }
+                                        });
+                                        uploader_{$config.name}.on('fileQueued', function (file) {
+                                            uploader_{$config.name}.upload();
+                                        });
+                                        /*{:L("_UPLOAD_SUCCESS_")}*/
+                                        uploader_{$config.name}.on('uploadSuccess', function (file, data) {
+                                            if (data.status) {
+                                                $("[name='config[{$config.name}]']").val(data.id);
+                                                $("[name='config[{$config.name}]']").parent().find('.upload-pre-item').html(
+                                                        ' <div class="each"><a href="'+ data.path+'" title={:L("_CLICK_TO_SEE_THE_BIG_PICTURE_WITH_DOUBLE_")}><img src="'+ data.path+'"></a><div class="text-center opacity del_btn" ></div>' +
+                                                                '<div onclick="admin_image.removeImage($(this),'+data.id+')"  class="text-center del_btn">{:L("_DELETE_")}</div></div>'
+                                                );
+                                                uploader_{$config.name}.reset();
+                                            } else {
+                                                updateAlert(data.info);
+                                                setTimeout(function () {
+                                                    $('#top-alert').find('button').click();
+                                                    $(that).removeClass('disabled').prop('disabled', false);
+                                                }, 1500);
+                                            }
+                                        });
+                                    })
+                                </script>
+                            </case>
+
+
+                            <case value="8">
+
+                                <php>
+                                        $config['value_array'] = explode(',', $config['value']);
+                                    $config['extra'] = explode("\r\n", $config['extra']);
+                                    $config['opt'] = array();
+                                    foreach( $config['extra'] as &$val){
+                                    $val =  explode(':', $val);
+                                    $config['opt'][$val[0]] =  $val[1];
+                                    }
+                                </php>
+                                <volist name="config.opt" id="option">
+                                    <php>
+                                        $checked = in_array($key,$config['value_array']) ? 'checked' : '';
+                                        $inputId = "id_$config[name]_$key";
+                                    </php>
+                                    <label for="{$inputId}">
+                                        <input type="checkbox" value="{$key}" id="{$inputId}" class="oneplus-checkbox" data-field-name="{$config.name}" {$checked}/>
+                                        {$option|htmlspecialchars}</label>
+                                </volist>
+                                <input type="hidden" name="config[{$config.name}]" class="oneplus-checkbox-hidden"
+                                       data-field-name="{$config.name}" value="{$config.value}"/>
+
+                                    <script>
+                                        $(function () {
+                                            function implode(x, list) {
+                                                var result = "";
+                                                for (var i = 0; i < list.length; i++) {
+                                                    if (result == "") {
+                                                        result += list[i];
+                                                    } else {
+                                                        result += ',' + list[i];
+                                                    }
+                                                }
+                                                return result;
+                                            }
+
+                                            $('.oneplus-checkbox').change(function (e) {
+                                                var fieldName = $(this).attr('data-field-name');
+                                                var checked = $('.oneplus-checkbox[data-field-name=' + fieldName + ']:checked');
+                                                var result = [];
+                                                for (var i = 0; i < checked.length; i++) {
+                                                    var checkbox = $(checked.get(i));
+                                                    result.push(checkbox.attr('value'));
+                                                }
+                                                result = implode(',', result);
+                                                $('.oneplus-checkbox-hidden[data-field-name=' + fieldName + ']').val(result);
+                                            });
+                                        })
+                                    </script>
+
+                            </case>
+
+
+                        </switch>
+
+                    </div>
+                </div>
+            </volist>
+            <div class="form-item">
+                <label class="item-label"></label>
+
+                <div class="controls">
+                    <empty name="list">
+                        <button type="submit" disabled class="btn submit-btn disabled"
+                                target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}
+                        </button>
+                        <else/>
+                        <button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}
+                        </button>
+                    </empty>
+
+                    <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+</block>
+
+<block name="script">
+
+</block>

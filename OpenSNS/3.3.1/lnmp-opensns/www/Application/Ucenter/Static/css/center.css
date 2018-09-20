@@ -1,0 +1,236 @@
+@import "canvas.css";
+@import "new-config.css";
+.center_line {
+  margin-top: 0;
+  margin-right: 0;
+  border-top: 1px dashed #ccc;
+}
+.position select {
+  width: auto;
+  float: left;
+  max-width: 120px;
+  margin-right: 10px;
+}
+.center_arrow_right,
+.center_arrow_bottom {
+  padding-left: 5px;
+  padding-top: 3px;
+  vertical-align: middle;
+  background: url('../images/info_arrow.png');
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+.center_arrow_bottom {
+  background-position: 18px 0px;
+}
+.center_info input[type=text],
+#center_password input[type=text],
+.center_info input[type=email],
+#center_password input[type=email],
+.center_info [type=password],
+#center_password [type=password] {
+  max-width: 250px;
+}
+.usercenter-verify-icon-list img {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+.expandinfo-noticeinfo {
+  margin-left: 30px;
+  color: #A59F9F;
+}
+.expandinfo-dt {
+  float: left;
+  width: 16.6666666%;
+  margin-right: 10px;
+  text-align: right;
+}
+.expandinfo-dd {
+  float: left;
+  width: 50%;
+}
+.expandinfo-sumbit {
+  margin-left: 20%;
+}
+.expandinfo-ul {
+  list-style-type: none;
+}
+.expandinfo-li {
+  float: left;
+  margin-right: 10px;
+}
+.expandinfo-list {
+  margin: 20px 5px 20px 5px;
+  padding: 0;
+}
+.expandinfo-list .alert {
+  display: none;
+  padding: 3px 8px;
+  text-align: center;
+}
+.input-tips {
+  color: #BBB3B5;
+  font-weight: 200;
+  margin-left: 10px;
+}
+.lh32 {
+  line-height: 32px;
+  height: 32px;
+}
+.user-config .side-menu {
+  background: white;
+}
+.avatar_256 div {
+  width: 256px;
+  height: 256px;
+  overflow: hidden;
+}
+.avatar_128 div {
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+}
+.avatar_64 div {
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+}
+.avatar_256 {
+  display: block;
+  position: absolute;
+  z-index: 99;
+  top: 0;
+  left: 300px;
+  padding: 6px;
+  border-radius: 6px;
+}
+.avatar_128 {
+  display: block;
+  position: absolute;
+  z-index: 99;
+  top: 0px;
+  left: 600px;
+  padding: 6px;
+  border-radius: 6px;
+}
+.avatar_64 {
+  display: block;
+  position: absolute;
+  z-index: 99;
+  top: 230px;
+  left: 600px;
+  padding: 6px;
+  border-radius: 6px;
+}
+.avatar_btn {
+  display: block;
+  position: absolute;
+  z-index: 99;
+  top: 415px;
+  left: 600px;
+  padding: 6px;
+}
+.avatar_select {
+  padding: 10px;
+}
+.avatar_select p {
+  margin: 0;
+}
+.jcrop-holder .avatar-img {
+  border-radius: 0;
+  max-width: none;
+}
+.ucenter-avatar .avatar_256 {
+  left: 300px;
+}
+.ucenter-avatar .avatar_128 {
+  left: 600px;
+}
+.ucenter-avatar .avatar_64 {
+  left: 600px;
+}
+.ucenter-avatar .avatar_btn {
+  left: 460px;
+}
+/*form_check.js 所用到的css*/
+.show_info {
+  position: absolute;
+  z-index: 1000;
+  right: 9px;
+}
+.send {
+  z-index: 99;
+  position: relative;
+  padding: 0px 10px;
+  height: 25px;
+  border-radius: 5px;
+  /* 圆角 */
+  margin: 6px auto 0;
+  color: #fff;
+  line-height: 25px;
+  text-align: center;
+}
+.send.red {
+  background: #da203a;
+}
+.send.green {
+  background: #2ac25f;
+}
+.send .arrow {
+  z-index: 99;
+  position: absolute;
+  top: -6px;
+  left: 16px;
+  /* 圆角的位置需要细心调试哦 */
+  width: 0;
+  height: 0;
+  font-size: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+.send.red .arrow {
+  border-bottom: 6px solid #da203a;
+}
+.send.green .arrow {
+  border-bottom: 6px solid #2ac25f;
+}
+.form-horizontal .has-feedback .form-control-feedback {
+  top: 0;
+  right: auto;
+}
+/*form_check.js 所用到的css end */
+/*tag 用到的css*/
+.tag-select-block {
+  margin-bottom: 10px;
+}
+.tag-select-block .select-cate {
+  width: 100px;
+  float: left;
+  text-align: right;
+  padding-right: 5px;
+  font-size: 15px;
+  line-height: 26px;
+}
+.tag-select-block .select-option {
+  margin-left: 100px;
+}
+.tag-select-block .select-option .one_tag {
+  float: left;
+  margin: 0 10px 5px 0;
+}
+.tag-select-block .select-option .one_tag .btn {
+  padding: 2px 10px;
+}
+.tag-select-block .select-option.my-tag-block {
+  border: #dcdcdc solid 1px;
+  border-top-color: #b5b5b5;
+  padding: 5px;
+  padding-bottom: 10px;
+  background: #fff;
+  max-width: 500px;
+}
+.tag-select-block .select-option.my-tag-block .one_tag .btn {
+  padding-right: 5px;
+}

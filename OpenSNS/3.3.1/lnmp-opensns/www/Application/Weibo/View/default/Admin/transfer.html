@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$meta_title}|{:L('_SNS_BACKSTAGE_MANAGE_')}</title>
+    <link href="__ROOT__/Public/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js"></script>
+    <![endif]--><!--[if gte IE 9]><!-->
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-2.0.3.min.js"></script>
+    <!--<![endif]-->
+    <block name="style"></block>
+    <script type="text/javascript">
+        var ThinkPHP = window.Think = {
+            "ROOT": "__ROOT__", //当前网站地址
+            "APP": "__APP__", //当前项目地址
+            "PUBLIC": "__PUBLIC__", //项目公共目录地址
+            "DEEP": "{:C('URL_PATHINFO_DEPR')}", //PATHINF{:L("_O_SEGMENTATION_")}
+            "MODEL": ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+            "VAR": ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+            'URL_MODEL': "{:C('URL_MODEL')}"
+        }
+        var _ROOT_ = "__ROOT__";
+    </script>
+</head>
+<body>
+    <h1>OpenSNS V2话题转移至V3</h1>
+    <div id="show-list" class="install-database" style="min-height: 800px;">
+    </div>
+    <a id="link" href="{:U('Admin/Weibo/topic')}" class="btn btn-warning" style="display: none;padding: 10px 100px;background: #1ABC9C;color: #fff;text-decoration: inherit;margin-bottom: 100px;">话题管理</a>
+    <a id="do_more" href="{:U('Admin/Weibo/transferTopic')}" class="btn btn-warning" style="display: none;padding: 10px 100px;background: #1ABC9C;color: #fff;text-decoration: inherit;margin-bottom: 100px;">转移下一页</a>
+    <script type="text/javascript">
+        var list   = document.getElementById('show-list');
+        function showmsg(msg,is_last){
+            var li = document.createElement('p');
+            li.innerHTML = msg;
+            list.appendChild(li);
+            if(is_last==1){
+                $('#link').show();
+                $('#link').css('display','inline-block');
+            }else if(parseInt(is_last)>1){
+                var href=$('#do_more').attr('href')+'&page='+is_last;
+                $('#do_more').attr('href',href);
+                $('#do_more').show();
+                $('#do_more').css('display','inline-block');
+                setTimeout(function(){
+                    location.href=href;
+                },500);
+            }
+        }
+    </script>
+</body>
+</html>

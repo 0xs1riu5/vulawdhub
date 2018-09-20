@@ -1,0 +1,67 @@
+<extend name="Public/usercenter"/>
+
+<block name="body">
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p>&nbsp;</p>
+            <h4>{:L('_MESSAGE_CENTER_')}</h4>
+            <hr class="oneuser-title-hr"/>
+
+            <ul class="nav nav-pills ucenter-tab">
+                <li
+                <eq name="tab" value="unread"> class="active"</eq>
+                ><a href="{:U('Ucenter/Message/message',array('tab'=>'unread'))}">{:L('_MESSAGE_UNREAD_')}</a></li>
+                <li
+                <eq name="tab" value="all"> class="active"</eq>
+                ><a href="{:U('Ucenter/Message/message',array('tab'=>'all'))}">{:L('_MESSAGE_ALL_')}</a></li>
+                <li
+                <eq name="tab" value="system"> class="active"</eq>
+                ><a href="{:U('Ucenter/Message/message',array('tab'=>'system'))}">{:L('_MESSAGE_SYSTEM_')}</a></li>
+                <li
+                <eq name="tab" value="user"> class="active"</eq>
+                ><a href="{:U('Ucenter/Message/message',array('tab'=>'user'))}">{:L('_MESSAGE_USER_')}</a></li>
+                <li
+                <eq name="tab" value="app"> class="active"</eq>
+                ><a href="{:U('Ucenter/Message/message',array('tab'=>'app'))}">{:L('_MESSAGE_APP_')}</a></li>
+            </ul>
+
+        </div>
+    </div>
+    <if condition="count($messages) eq 0"><p class="text-muted" style="text-align: center; font-size: 3em;">
+        <br><br>
+        {:L('_MESSAGE_NONE_')}{:L('_WAVE_')}
+        <br><br><br>
+    </p></if>
+    <volist name="messages" id="message">
+        <div class="row message-body">
+            <div class="col-xs-2">
+                <div class="message_icon">
+                    <img style="width: 55%;" class="avatar-img" ucard="{$message.from_uid}"
+                         src="{$message.from_user.avatar64|default='./Public/images/default_avatar_64_64.jpg'}"><br/>
+                    {$message.from_user.space_link|default=L('_VISITOR_')}
+                </div>
+            </div>
+            <div class="col-xs-10">
+                <dl>
+                    <dt>
+                    <div class="row">
+                        <div class="col-xs-9"><a href="{$message.content.web_url}" data-url="{$message.content.web_url}" onclick="Notify.readMessage(this,{$message.id})">{$message.content.title}</a>
+                            <eq name="message.is_read" value="0">
+                                <span class="label label-badge label-info">{:L('_UNREAD_')}</span>
+                            </eq>
+                        </div>
+                        <div class="col-xs-3 message-ctime">{$message.create_time|friendlyDate}</div>
+                    </div>
+                    </dt>
+                    <dd>{$message.content.content}</dd>
+                </dl>
+            </div>
+        </div>
+    </volist>
+    <div class="pull-right">
+        {:getPagination($totalCount)}
+    </div>
+
+</block>

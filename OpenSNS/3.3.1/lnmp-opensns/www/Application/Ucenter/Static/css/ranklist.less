@@ -1,0 +1,245 @@
+#main-container{
+  margin-top: 30px;
+}
+p{
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #111;
+  cursor: pointer;
+  outline: none;
+}
+
+html, body {
+  color: #111;
+}
+
+#page-wrap {
+    .rank-list-title {
+      h3 {
+        font-size: 30px;
+        color: rgb(17, 17, 17);
+        height: 36px;
+        vertical-align: top;
+      }
+    }
+      .no-border {
+        border-right: 0;
+      }
+    }
+
+.right {
+  float: right;
+}
+
+.c9 {
+  color: #999;
+}
+
+.ico-num1 {
+  background: url(../images/number1.png) no-repeat center center;
+}
+
+.ico-num2 {
+  background: url(../images/number2.png) no-repeat center center;
+}
+
+.ico-num3 {
+  background: url(../images/number3.png) no-repeat center center;
+}
+
+.ico-num1, .ico-num2, .ico-num3 {
+  background-size: contain;
+  display: inline-block;
+  width: 35px;
+  height: 45px;
+  margin: 0 8px 0 0;
+  float: left;
+}
+
+.active_page{
+  background: #6fa7ce;
+  color:#fff !important;
+}
+
+#page_navigation, #page_navigation_total, #page_navigation_score, #page_navigation_fans {
+  margin-top: 10px;
+  text-align: right;
+  a{
+    padding:3px;
+    border:1px solid #ddd;
+    margin:2px;
+    color:black;
+    text-decoration:none
+  }
+}
+
+.rank-list-block {
+  min-height: 450px;
+}
+
+.rank-box-null {
+  min-height: 662px;
+}
+
+#page_wrap{
+  background: url("../images/bg.png");
+  height: 1690px;
+  position: relative;
+  margin-top: -175px;
+  .rank-wrap{
+    max-width: 770px;
+    margin: 105px auto 0;
+  }
+  .rank-left-box{
+    padding-right: 15px;
+  }
+  .rank-right-box{
+    padding-left: 50px;
+  }
+}
+.banner-wrap{
+  width: 100%;
+  height: 90px;
+  background:url("../images/rank-bg.png");
+  margin-top: 50px;
+}
+.rank-box  {
+  width: 355px;
+  min-height: 530px;
+  padding: 20px;
+  border: 1px solid #eee;
+  box-shadow: 0 0 1px rgba(0,0,0,.1);
+  margin: 0;
+  background-color: #fff;
+  .rank-cate {
+    height: 27px;
+    line-height: 27px;
+    border-bottom: 1px dashed #E6E7E7;
+    overflow: hidden;
+    zoom: 1;
+    color: #999;
+    .num {
+      float: left;
+      width: 44px;
+      display: inline-block;
+    }
+    .nickname {
+      float: left;
+      display: inline-block;
+    }
+  }
+
+  .rank-lists {
+    height: 44px;
+    line-height: 44px;
+    border-bottom: 1px dashed #E6E7E7;
+    overflow: hidden;
+    position: relative;
+    .num {
+      margin: 0 20px 0 13px;
+    }
+    .nickname {
+      .face {
+        margin: 0 10px 0 0;
+        width: 30px;
+        display: inline-block;
+        a {
+          width: 50px;
+          text-align: center;
+          display: block;
+        }
+      }
+    }
+
+    .value {
+      position: absolute;
+      right: 5px;
+    }
+  }
+}
+
+.rank-title {
+  background-color: #eb933c;
+  height: 60px;
+  position: relative;
+  text-align: center;
+  line-height: 60px;
+  width: 330px;
+  margin-bottom: 20px;
+  &:before{
+    content: "";
+    display: block;
+    border-top:30px solid transparent;
+    border-right:20px solid transparent;
+    border-bottom:30px solid transparent;
+    border-left:20px solid #e9edf0;
+    position: absolute;
+    left: 0;
+  }
+  .ranking {
+    font-size: 22px;
+    color: #fff;
+  }
+
+  .circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background-color: #fff;
+    line-height: 60px;
+    text-align: center;
+    position: absolute;
+    right: -25px;
+    top: -5px;
+    border: 5px solid #eb933c;
+    .one-rank {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .silk {
+      width: 88px;
+      position: absolute;
+      bottom: 10px;
+      right: 5px;
+      max-width: inherit;
+    }
+  }
+}
+.continuity{
+  background-color: #e3a53a;
+  margin-top: 75px;
+  .circle{
+    border: 5px solid #e3a53a;
+  }
+}
+
+.score{
+  background-color: #88c735;
+  margin-left: 25px;
+  margin-top: 25px;
+  &:before{
+    border-top:30px solid transparent;
+    border-right:20px solid #e9edf0;
+    border-bottom:30px solid transparent;
+    border-left:20px solid transparent;
+    position: absolute;
+    left: auto;
+    right: 0;
+  }
+  .circle{
+    right: auto;
+    left: -25px;
+    border: 5px solid #88c735;
+  }
+}
+.total{
+  background-color: #61abe3;
+  margin-top: 75px;
+  .circle{
+    border: 5px solid #61abe3;
+  }
+}

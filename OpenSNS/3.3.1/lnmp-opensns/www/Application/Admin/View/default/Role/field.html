@@ -1,0 +1,140 @@
+<!-- 管理员权限组新增和编辑页面 -->
+<extend name="Public/base"/>
+<block name="body">
+    <!--<div class="main-title">
+        <h2>{:L("_USER_HAS_EXTENDED_DATA_FIELD_CONFIGURATION_")}</h2>
+    </div>-->
+    <div class="tab-wrap with-padding">
+
+        <div class="clearfix">
+            <div class="col-xs-10">
+                <include file="_link"/>
+            </div>
+            <div class="col-xs-2 text-right">
+                <select name="role" class="form-control">
+                    <volist name="role_list" id="vo">
+                        <option value="{:U('Role/configfield',array('id'=>$vo['id']))}"
+                        <eq name="vo['id']" value="$this_role['id']">selected</eq>
+                        >{$vo.title}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <!-- 访问授权 -->
+            <div class="node-list in">
+                <form action="__SELF__" enctype="application/x-www-form-urlencoded" method="POST" class="form-horizontal auth-form">
+                    <div class="col-xs-6">
+                        <div>
+                            <h4>{:L("_USER_HAS_EXTENDED_DATA_FIELD_CONFIGURATION_")}</h4>
+                            <span>{:L("_USER_EXTENDED_DATA_FIELD_CONFIGURATION_")}</span>
+                        </div>
+
+                        <notempty name="field_list">
+                            <volist name="field_list" id="group">
+                                <dl class="checkmod">
+                                    <dt class="hd">
+                                        <label class="checkbox"><input class="auth_fields fields_all" type="checkbox">{$group.profile_name}</label>
+                                    </dt>
+                                    <dd class="bd">
+                                        <present name="group['field_list']">
+                                            <volist name="group['field_list']" id="field">
+                                                <div class="filed_check">
+                                                    <div>
+                                                        <label class="checkbox"
+                                                               title="id：{$field['id']} {:L("_FIELD_TYPE_")}{:L("_COLON_")}{$field['form_type']}">
+                                                        <input class="auth_fields fields_row" type="checkbox"
+                                                               name="fields[]" value="{$field.id}"/>{$field.field_name}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </volist>
+                                        </present>
+                                        <div class="clearfix"></div>
+                                    </dd>
+                                </dl>
+                            </volist>
+                            <else/>
+                            <div style="margin: 10px;color: rgb(255, 81, 81);">{:L("_FIRST_TO_USER_MANAGEMENT_USER_MANAGEMENT_WITH_SPACE_")}中<a href="{:U('admin/user/profile')}" title="" target="_blank" style="color: rgb(255, 81, 81);text-decoration: underline;">{:L("_ADD_USER_EXTENSION_")}</a>~</div>
+                        </notempty>
+                    </div>
+
+                    <input type="hidden" name="id" value="{$this_role.id}"/>
+                    <div class="col-xs-12">
+                        <button type="submit" class="btn submit-btn ajax-post" target-form="auth-form">{:L("_STEP_NEXT_")}</button>
+                        <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+                        <span style="color: #BABABA;margin: 11px;">{:L("_PLEASE_SAVE_THE_ABOVE_CONFIGURATION_AND_THEN_SWITCH_TO_ANOTHER_INTERFACE_")}</span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 成员授权 -->
+            <div class="tab-pane"></div>
+
+            <!-- 分类 -->
+            <div class="tab-pane"></div>
+        </div>
+    </div>
+    <style>
+        .filed_check {
+            width: 200px;
+            float: left;
+            margin: 5px 0;
+        }
+    </style>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/qtip/jquery.qtip.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/qtip/jquery.qtip.min.css" media="all">
+    <script type="text/javascript" charset="utf-8">
+        +function ($) {
+            var fields = [{$this_role.fields}];
+        $('.auth_fields').each(function () {
+            if ($.inArray(parseInt(this.value, 10), fields) > -1) {
+                $(this).prop('checked', true);
+            }
+            if (this.value == '') {
+                $(this).closest('span').remove();
+            }
+        });
+
+        //全选节点
+        $('.fields_all').on('change', function () {
+            $(this).closest('dl').find('dd').find('input').prop('checked', this.checked);
+        });
+        $('.fields_row').on('change', function () {
+            $(this).closest('.filed_check').find('.child_row').find('input').prop('checked', this.checked);
+        });
+
+        $('.checkbox').each(function () {
+            $(this).qtip({
+                content: {
+                    text: $(this).attr('title'),
+                    title: $(this).text()
+                },
+                position: {
+                    my: 'bottom center',
+                    at: 'top center',
+                    target: $(this)
+                },
+                style: {
+                    classes: 'qtip-dark',
+                    tip: {
+                        corner: true,
+                        mimic: false,
+                        width: 10,
+                        height: 10
+                    }
+                }
+            });
+        });
+
+        $('select[name="role"]').change(function () {
+            location.href = this.value;
+        });
+        //导航高亮
+        highlight_subnav('{:U('Role/configfield')}');
+        }(jQuery);
+    </script>
+</block>

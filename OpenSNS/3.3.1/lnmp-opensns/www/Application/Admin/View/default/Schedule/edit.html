@@ -1,0 +1,85 @@
+<div style="">
+    <php>
+
+        $schedule = $param['schedule'];
+        if($schedule['type'] == 1){
+        $type_value = date('Y-m-d h:i',$schedule['type_value'] );
+        }
+        else{
+        $type_value =$schedule['type_value'];
+        }
+    </php>
+
+    <input name="type_value" type="text" class="text input-large form-control" style="width: 400px"
+           value="{$type_value}"/>
+
+    <p style="color: #999;<if condition="$schedule['type'] neq 1 and !empty($schedule['type']) ">display:none</if>">格式为：2016-01-22 11:50</p>
+
+    <p style="color: #999;<if condition="$schedule['type'] neq 2">display:none</if>">以分为单位相乘，每隔多少分钟执行一次，如<span style='color: red'>60*24</span> 表示每隔24小时执行；ps：会有执行时间的误差。</p>
+
+    <p style="color: #999;<if condition="$schedule['type'] neq 3">display:none</if>">
+        “Hourly=30” 表示每个小时的30分执行；<br>
+        “Daily=09:30” 表示每天的09:30执行；<br>
+        “Weekly=5|09:20” 表示每个星期五09：20执行。<br>
+        “Monthly=30|09:20” 表示每个月的30号09:20执行，如当月只有28天则在当月最后一天执行。<br>
+    </p>
+
+</div>
+
+
+
+<script>
+    var option = {
+        language: "zh-CN",
+        autoclose: true,
+        format: 'yyyy-mm-dd hh:ii'
+    }
+    var $input = $('[name="type_value"]');
+    $(function () {
+
+        var $start_div = $('[name="start_time"]').closest('div');
+        var $end_div = $('[name="end_time"]').closest('div');
+
+        if($('[name="type_key"]').val() == 1){
+            $start_div.hide();
+            $start_div.prev().hide();
+            $end_div.hide();
+            $end_div.prev().hide();
+        }
+
+        var time = "{:time_format(time())}";
+        $('[name="type_key"]').change(function () {
+            var $this = $(this);
+            var val = $this.val();
+            if (val > 0) {
+
+                if (val == 1) {
+                    $input.datetimepicker(option);
+                    $start_div.hide();
+                    $start_div.prev().hide();
+                    $end_div.hide();
+                    $end_div.prev().hide();
+                } else {
+                    $input.datetimepicker('remove');
+                    $start_div.show();
+                    $start_div.prev().show();
+                    $end_div.show();
+                    $end_div.prev().show();
+
+                }
+                $input.closest('div').find('p').hide();
+                $input.closest('div').find('p').eq(val - 1).show();
+            }
+
+        })
+    })
+</script>
+
+<php> if($schedule['type'] == 1 || empty($schedule)){</php>
+<script>
+    $(function () {
+        $input.datetimepicker(option);
+    })
+
+</script>
+<php>}</php>

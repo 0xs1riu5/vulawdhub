@@ -1,0 +1,29 @@
+<eq name="type" value="personal">
+    <div class="form-group">
+        <label for="expand_{$field_id}" class="col-xs-2 control-label" style="text-align: right;">
+            <eq name="required" value="1"><span style="color: #FF0047;vertical-align: middle;">*&nbsp;&nbsp;</span></eq>{$field_name}
+        </label>
+
+        <div class="col-xs-6">
+            <input type="text" onblur="check(this,{$field_id})" require="{$required}" min_length="{$validation.min}" max_length="{$validation.max}" text_type="{$child_form_type}" class="form-control" id="expand_{$field_id}" name="expand_{$field_id}" value="{$field_data|htmlspecialchars}">
+            <input type="hidden" class="canSubmit" id="canSubmit_{$field_id}" value="{$canSubmit}">
+            <neq name="input_tips" value=""> <span class="help-block">{$input_tips}</span></neq>
+        </div>
+        <div class="col-xs-4" >
+            <div id="alert_{$field_id}" class="alert alert-danger hide" style="margin-bottom: 0;margin-top: 0!important;"><label id="label_{$field_id}"></label></div>
+        </div>
+    </div>
+<else/>
+    <dt class="expandinfo-dt">
+        {$field_name}：
+    </dt>
+
+    <dd class="expandinfo-dd">
+        <if condition="($field_data neq null)&&($field_data neq '')">
+            {$field_data|htmlspecialchars}
+            <else/>
+            {:L('_NONE_')}
+        </if>
+    </dd>
+</eq>
+<div class="clearfix"></div>

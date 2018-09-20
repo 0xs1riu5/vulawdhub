@@ -1,0 +1,120 @@
+<extend name="Base/common"/>
+
+<block name="style">
+    <link href="__CSS__/people.css" rel="stylesheet" type="text/css"/>
+</block>
+
+<block name="body">
+    <div class="col-xs-12" style="padding-top: 10px;">
+        <php>
+            if(is_login()){
+                $tab_class="col-lg-10 col-md-9";
+        </php>
+        <div class="col-lg-2 col-md-3 col-xs-12 common_block_border" style="float: right;margin-top: 10px;padding: 0;">
+            <div class="clearfix" style="font-size: 14px;padding: 10px 0;line-height: 25px;">
+                <div style="margin-left:20px">
+                    <a href="{$user_info.space_url}" ucard="{$user_info.uid}">
+                        <img src="{$user_info.avatar64}" class="avatar-img" style="width: 45px;height: 45px"/>
+                    </a>
+                    <a ucard="{$user_info.uid}"
+                       href="{$user_info.space_url}" class="user_name" style="margin-left: 10px;">{$user_info.nickname|htmlspecialchars}
+                    </a>
+                </div>
+                <div>
+                    <div class="col-xs-8 pd_lr_5" style="text-align: right">签到排名：</div>
+                    <div class="col-xs-4 pd_lr_5">{$user_info.ranking}</div>
+                </div>
+                <div>
+                    <div class="col-xs-8 pd_lr_5" style="text-align: right">连续签到：</div>
+                    <div class="col-xs-4 pd_lr_5">{$user_info.con_check}</div>
+                </div>
+                <div>
+                    <div class="col-xs-8 pd_lr_5" style="text-align: right">累计签到：</div>
+                    <div class="col-xs-4 pd_lr_5">{$user_info.total_check}</div>
+                </div>
+                <div>
+                    <div class="col-xs-8 pd_lr_5" style="text-align: right">签到状态：</div>
+                    <if condition="$user_info.is_sign egt 1">
+                        <div class="col-xs-4 pd_lr_5">已签到</div>
+                        <div class="col-xs-12 " style="text-align: right">{$user_info['is_sign']|friendlyDate}</div>
+                        <else/>
+                        <div class="col-xs-4 pd_lr_5">未签到</div>
+                    </if>
+                </div>
+                <if condition="$user_info.is_sign eq 0">
+                    <div class="clearfix"></div>
+                    <div style="text-align: center;margin-top: 5px;">
+                        <a class="btn btn-primary" data-role="do_checkin"  style="padding: 5px 40px;">签到</a>
+
+                    </div>
+                    <script>
+                        $(function(){
+                            do_checkin();
+                        })
+
+                        var do_checkin = function () {
+                            $('[data-role="do_checkin"]').click(function () {
+                                var $this = $(this);
+                                $.post("{:addons_url('CheckIn://CheckIn/doCheckIn')}", {}, function (res) {
+                                    if (res.status) {
+                                        $this.remove();
+                                        toast.success(res.info);
+                                    } else {
+                                        handleAjax(res);
+                                        setTimeout(function () {
+                                            location.reload();
+                                        }, 1500);
+                                    }
+                                });
+                            })
+                        }
+                    </script>
+                </if>
+            </div>
+        </div>
+        <php>
+            }
+        </php>
+        <div class="{$tab_class} col-xs-12" style="margin-top: 10px;">
+            <div class="common_block_border clearfix" style="padding-top: 15px;padding-bottom: 30px;">
+                <div class="col-xs-12">
+                    <div style="font-size: 20px;line-height: 30px;float: left;">签到排行榜</div>
+                    <div style="margin-left: 10px;line-height: 20px;margin-top: 10px;float: left;color: #EB7112;">
+                        欢迎 {:C('WEB_SITE')} 小伙伴，坚持签到！
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <table class="ranking_table col-xs-12 pad_0" style="text-align: center;line-height: 35px;">
+                        <thead>
+                        <tr>
+                            <td class="col-xs-1">排名</td>
+                            <td class="col-xs-2">用户</td>
+
+                            <td class="col-xs-2" <if condition="$order eq 'con_check'">style="font-weight:700"</if>><a href="{:addons_url('CheckIn://CheckIn/ranking',array('order'=>'con_check'))}">连续签到天数 <i class="icon icon-chevron-down"></i></a></td>
+                            <td class="col-xs-2"<if condition="$order eq 'total_check'">style="font-weight:700"</if>><a href="{:addons_url('CheckIn://CheckIn/ranking',array('order'=>'total_check'))}">累计签到天数 <i class="icon icon-chevron-down"></i></a></td>
+                            <td class="col-xs-1 pd_lr_5" <if condition="$order eq 'today'">style="font-weight:700"</if>><a href="{:addons_url('CheckIn://CheckIn/ranking',array('order'=>'today'))}">今日签到 <i class="icon icon-chevron-down"></i></a></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="user_list" id="vo">
+                            <tr>
+                                <td>{$vo.ranking}</td>
+                                <td><a ucard="{$vo['uid']}"
+                                       href="{:U('Ucenter/Index/index', array('uid' => $vo['uid']))}"
+                                       target="_blank">{$vo.nickname}</a>
+                                </td>
+                                <td <if condition="$order eq 'con_check'">style="font-weight:700"</if>>{$vo.con_check}</td>
+                                <td <if condition="$order eq 'total_check'">style="font-weight:700"</if>>{$vo.total_check}</td>
+                                <td <if condition="$order eq 'today'">style="font-weight:700"</if>>{$vo.status}</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                    <div class="pull-right">
+                        {:getPagination($totalCount,50)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

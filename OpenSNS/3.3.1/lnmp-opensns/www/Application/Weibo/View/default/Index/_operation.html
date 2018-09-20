@@ -1,0 +1,33 @@
+<div class="col-xs-3 operate-color">
+    <a title="喜欢" data-role="support-weibo" table="weibo" row="{$weibo['id']}" uid="{$weibo['uid']}" jump="weibo/index/weibodetail">
+        <i class="weibo_like icon-heart-empty"></i>
+        <span id="support_Weibo_weibo_{$weibo['id']}_pos"><span id="support_Weibo_weibo_{$weibo['id']}">{$support_count|default=0}</span> </span>
+    </a>
+</div>
+<div class=" col-xs-3 operate-color" data-role="weibo_comment_btn"  data-weibo-id="{$weibo.id}">
+   <i class="os-icon-bubbles"></i> {$weiboCommentTotalCount}
+</div>
+<div class="col-xs-3 operate-color">
+    <php>$sourceId =$weibo['data']['sourceId']?$weibo['data']['sourceId']:$weibo['id']; </php>
+    <a title="{:L('_REPOST_')}"  data-role="send_repost"  href="{:U('Weibo/Index/sendrepost',array('sourceId'=>$sourceId,'weiboId'=>$weibo['id']))}"><i class="os-icon-share-alt"></i> {$weibo.repost_count}</a>
+</div>
+<div class="share_button col-xs-3  operate-color" style="padding: 0px;position: relative;">
+    <span class="cpointer weibo_share_btn_{$weibo.id}" data-weibo-id="{$weibo.id}">
+        <a data-role="weibo_share_btn" class="share-btn" title="分享"><i class="os-icon-share"></i><!--<span class="share_count" title="累计分享0次" style="margin-left: 5px;">0</span>--></a>
+    </span>
+    <div class="share_block" data-url="{:U('Weibo/Index/weibodetail',array('id'=>$weibo['id']),true,true)}" data-text="{$weibo['content']|text}" data-dec="分享动态" style="display: none;">
+        <div class="bdsharebuttonbox" data-tag="share_feedlist">
+            <a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间" data-id="{$weibo.id}">QQ空间</a>
+            <a class="bds_tsina" data-cmd="tsina" title="分享到新浪动态" data-id="{$weibo.id}">新浪动态</a>
+            <a class="bds_tqq" data-cmd="tqq" title="分享到腾讯动态" data-id="{$weibo.id}">腾讯动态</a>
+            <a class="bds_weixin" data-cmd="weixin" title="分享到微信" data-id="{$weibo.id}">微信</a>
+            <a class="bds_sqq" data-cmd="sqq" title="分享到QQ好友" data-id="{$weibo.id}">QQ好友</a>
+            <!--<a class="bds_count" data-cmd="count" style="display: none;"></a>-->
+        </div>
+        <div style="position: relative;">
+            <div class="tip"></div>
+            <div class="tip-xs"></div>
+        </div>
+    </div>
+    <script src="__JS__/bdshare.js"></script>
+</div>

@@ -1,0 +1,51 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>
+            {$pack['id']?L('_EDIT_WITH_SINGLE_'):L('_NEW_WITH_SINGLE_')}{:L("_PATCH_")}
+        </h2>
+    </div>
+    <form action="{:U()}" method="post" class="form-horizontal">
+        <div class="form-item">
+            <label class="item-label">{:L("_PATCH_NAME_")}<span class="check-tips">{:L("_NAME_ENGLISH_PATCH_BLANK_GENERATED_AUTOMATICALLY_ACCORDING_TO_THE_TIME_")}</span></label>
+            <div class="controls">
+                <input type="hidden" class="text input-large" name="title_old" value="{$pack.title|default=''}">
+                <input type="text" class="text input-large form-control" name="title" value="{$pack.title|default=''}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">{:L("_PATCH_SQL_CONTENT_")}<span class="check-tips">{:L("_DIRECTLY_FILL_IN_THE_SQL_STATEMENT_")}）</span></label>
+            <div class="controls">
+                <label class="textarea input-large">
+                    <textarea name="sql" class="form-control">{$pack.sql|default=''}</textarea>
+                </label>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">{:L("_PATCH_NOTES_")}<span class="check-tips">{:L("_USED_IN_THE_TEXT_OF_THE_ROLE_OF_THE_PATCH_")}</span></label>
+            <div class="controls">
+                <label class="textarea input-large ">
+                    <textarea name="des" class="form-control">{$pack.des|default=''}</textarea>
+                </label>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">{:L("_AUTHOR_")}<span class="check-tips">{:L("_FILL_IN_THE_PATCH_")}</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large form-control" name="auth" value="{$pack.auth|default=$db['auth']}">
+            </div>
+        </div>
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+        </div>
+    </form>
+</block>
+<block name="script">
+    <script type="text/javascript" charset="utf-8">
+        //导航高亮
+        $('.side-sub-menu').find("a[href='{:U('index')}']").closest('li').addClass('current');
+    </script>
+</block>
+

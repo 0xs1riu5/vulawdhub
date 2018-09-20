@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Public/head"/>
+    <link href="__CSS__/center.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+<!-- 头部 -->
+
+<!-- /头部 -->
+
+<!-- 主体 -->
+<block name="header">
+    <div class="main-wrapper">
+        <include file="Public/header"/>
+        <br/>
+        <include file="Public/_after_nav"/>
+        <div id="main-container" class="container user-config" style="margin-top: 60px">
+            <div class="row">
+                <div class=" col-xs-3" style="width: 220px">
+                    <div>
+                        <div class="user-info-panel  text-center margin_bottom_10">
+                            <img class="avatar-img" src="{$self.avatar128}">
+                            <a class="nickname" href="{$self.space_url}">{$self.nickname}</a>
+                        </div>
+                    </div>
+                    <div>
+                        <nav class="menu" data-toggle="menu">
+                            <ul class="nav nav-primary side-menu">
+                                <li id="info"><a href="{:U('Config/index')}"><i class="icon-th"></i>
+                                    {:L('_SETTINGS_DATA_')}</a></li>
+                                <li id="short_url"><a href="{:U('Config/shortUrl')}"><i class="icon-link"></i> 个性域名</a>
+                                </li>
+                                <li id="tag"><a href="{:U('Config/tag')}"><i class="icon-tag"></i> {:L('_USER_TAG_')}</a></li>
+                                <li id="avatar"><a href="{:U('Config/avatar')}"><i class="icon-user"></i>
+                                    {:L('_AVATAR_MODIFY_')}</a></li>
+                                <li id="password"><a href="{:U('Config/password')}"><i class="icon-lock"></i>
+                                    {:L('_PASSWORD_MODIFY_')}</a></li>
+                                <eq name="can_show_role" value="1">
+                                    <li id="role"><a href="{:U('Config/role')}"><i class="icon-group"></i>
+                                        {:L('_SETTINGS_IDENTITY_')}</a></li>
+                                </eq>
+                                <li id="score"><a href="{:U('Config/score')}"><i class="icon-bar-chart"></i> {:L('_SCORE_MY_')}</a>
+                                </li>
+                                <li id="process"><a href="{:U('Attest/process',array('go_index'=>1))}"><i class="icon-certificate"></i> 申请认证</a>
+                                </li>
+                                <li id="other"><a href="{:U('Config/other')}"><i class="icon-list-ul"></i> {:L('_OTHER_')}</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <script>
+                            $("#{$tab}").addClass('active');
+                        </script>
+                    </div>
+                </div>
+                <div class="col-xs-9 ">
+                    <div id="usercenter-content-td ">
+                        <div class="container-fluid common_block_border" style="min-height: 600px">
+                            <block name="body"></block>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $(window).resize(function () {
+                $("#main-container").css("min-height", $(window).height() - 343);
+            }).resize();
+        })
+    </script>
+</block>
+<!-- /主体 -->
+
+<!-- 底部 -->
+</div>
+<include file="Public/footer"/>
+<!-- /底部 -->
+
+<script>
+    $(function () {
+        var $sidebar = $('#usercenter-sidebar-td');
+        var $sidebar_xs = $('#usercenter-sidebar-xs');
+        var $sidebar_sm = $('#usercenter-sidebar-sm');
+        var $content = $('#usercenter-content-td');
+
+        function trigger_resp() {
+            var width = $(window).width();
+            if (width < 768) {
+                on_xs();
+            } else {
+                on_sm();
+            }
+        }
+
+        function on_xs() {
+            $sidebar_xs.append($sidebar);
+            $content.css({'padding-left': 0, 'padding-right': 0});
+        }
+
+        function on_sm() {
+            $sidebar_sm.prepend($sidebar);
+        }
+
+        trigger_resp();
+
+        $(window).resize(function () {
+            trigger_resp();
+        })
+    })
+</script>
+
+</body>
+</html>

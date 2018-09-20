@@ -1,0 +1,235 @@
+/*
+右侧好友界面*/
+#friend_has_new {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: red;
+  border-radius: 15px;
+  text-align: center;
+  color: white;
+  width: 10px;
+  height: 10px;
+  display: none;
+}
+.btn-pull {
+  position: fixed;
+  border: 1px solid #939393;
+  background: #9C9C9C;
+  z-index: 9999;
+  padding: 13px 12px 5px 10px;
+  margin-right: 0;
+  bottom: 33px;
+  right: 50px;
+  width: 48px;
+  height: 49px;
+}
+.btn-pull:hover {
+  border: 1px solid #717070;
+  background: #838383;
+}
+.btn-pull i {
+  color: white;
+  font-size: 24px;
+}
+.friend_panel {
+  position: fixed;
+  top: 50%;
+  margin-top: -250px;
+  right: 0;
+  height: 500px;
+  z-index: 999;
+  background: #fff;
+  border: #ccc solid 1px;
+}
+.friend_panel #right_panel_main {
+  border-right: 0;
+}
+.friend_panel #right_panel_main #friend_panel_main {
+  width: 150px;
+  top: 0px;
+  bottom: 0px;
+}
+.friend_panel #right_panel_main #session_panel_main {
+  width: 150px;
+}
+.friend_panel #right_panel_main h2 {
+  border-top-left-radius: 3px;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding-top: 5px;
+  margin-bottom: 0;
+  display: block;
+}
+.friend_panel #right_panel_main .session_spliter {
+  height: 0px;
+  border-bottom: 1px solid #ccc;
+}
+.friend_panel .friend_list {
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 0;
+}
+.friend_panel .friend_list li {
+  list-style: none;
+  padding: 10px;
+}
+.friend_panel .friend_list li a {
+  color: #333 !important;
+  display: inline-block;
+  margin-bottom: 10px;
+  position: relative;
+}
+.friend_panel .friend_list li a .badge_new {
+  position: absolute;
+  top: 0;
+  right: -15px;
+  background: red;
+  border-radius: 15px;
+  text-align: center;
+  color: white;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}
+.friend_panel .friend_list .active {
+  background: #666666;
+}
+.friend_panel .session_more {
+  height: 38px;
+  color: white !important;
+}
+.friend_panel .session_more .active {
+  border: 0 !important;
+}
+.friend_panel .session_more .tab_chat {
+  border-top: 0;
+  border-left: 0;
+  border-bottom-left-radius: 3px;
+  margin-top: 1px;
+}
+.friend_panel .session_more .tab_friend {
+  border-top: 0;
+  border-right: 0;
+  margin-top: 1px;
+}
+.friend_panel .session_more .btn_session_more {
+  color: white !important;
+  text-align: center;
+  padding: 8px 0;
+  margin-left: 0;
+  margin-right: 0;
+  display: block;
+  margin-top: 1px;
+}
+.friend_panel .session_more .active {
+  color: #029775 !important;
+  background: #ffffff;
+}
+#chat_box {
+  z-index: 1001;
+}
+.chat-board {
+  border-left: 1px solid #ccc;
+  border-bottom: 0;
+}
+.chat_panel {
+  position: fixed;
+  right: 210px;
+  bottom: 30px;
+  background: white;
+  border: 1px solid #ccc;
+  width: 520px;
+  height: 460px;
+}
+.chat_panel .chat-left {
+  background: #fff;
+  padding: 10px 10px;
+  border-bottom: solid 1px #ccc;
+}
+.chat_panel .chat-list {
+  padding: 0;
+}
+.chat_panel .chat-list li {
+  list-style: none;
+}
+.chat_panel .chat-list li .btn-close {
+  display: none;
+  position: absolute !important;
+  top: 0;
+  right: 16px;
+}
+.chat_panel .chat-list li a {
+  font-size: 14px;
+  color: #666;
+  position: relative;
+  display: block;
+}
+.chat_panel .chat-list li a .avatar-img {
+  margin: 5px;
+}
+.chat_panel .chat-list li a .talk-name {
+  line-height: 46px;
+}
+.chat_panel .chat-list li a:hover {
+  background: #f2f2f2;
+}
+.chat_panel .chat-list li a:hover .btn-close {
+  display: inline-block;
+}
+.chat_panel .chat-list .active {
+  background: #f2f2f2;
+}
+.chat_panel .panel_title {
+  position: relative;
+  background: #F4F4F4;
+  height: 35px;
+  border-bottom: 1px solid #ccc;
+}
+.chat_panel .panel_title .title {
+  padding-left: 74px;
+  line-height: 34px;
+  width: 270px;
+}
+.chat_panel .panel_title .control_btns a {
+  display: inline-block;
+  margin: 7px;
+}
+.chat_panel .chat_avatar {
+  position: absolute;
+  top: -32px;
+  left: 5px;
+  width: 64px;
+  border: 1px solid #ccc;
+  padding: 1px;
+  background: white;
+}
+.chat_panel .talk-body {
+  background: white;
+  padding: 0;
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+  margin-bottom: 0;
+  height: 320px;
+}
+.chat_panel .talk-body .talk-avatar {
+  width: 48px;
+  max-width: 200%;
+  margin-right: 10px;
+}
+.chat_panel .talk-body .chat_bubble .bubble_sharp {
+  background: url(../images/bubble_left_chat.png);
+}
+.chat_panel .talk-body .chat_bubble .talk_bubble {
+  border-color: #48b87a;
+  background: #48b87a;
+  color: white;
+}
+.chat_panel .send_box {
+  padding: 0 10px;
+}
+.chat_panel #scrollArea_chat {
+  padding-bottom: 20px;
+}

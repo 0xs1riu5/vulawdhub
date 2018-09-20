@@ -1,0 +1,47 @@
+<volist name="tree" id="list">
+	<dl class="cate-item">
+		<dt class="clearfix">
+			<form action="{:U('add'.$model)}" method="post">
+				<div class="btn-toolbar opt-btn clearfix">
+					<a title={:L("_EDIT_WITH_DOUBLE_")} href="{:U('add'.$model.'?id='.$list['id'].'&pid='.$list['pid'])}">{:L("_EDIT_")}</a>
+					<a title="{$list.status|show_status_op}" href="{:U('set'.$model.'Status?ids='.$list['id'].'&status='.abs(1-$list['status']))}" class="ajax-get">{$list.status|show_status_op}</a>
+					<a title={:L("_DELETE_WITH_DOUBLE_")} href="{:U('set'.$model.'Status?ids='.$list['id'].'&status=-1')}" class="confirm ajax-get">{:L("_DELETE_")}</a>
+					<eq name="canMove" value="true">
+                        <a title={:L("_MOVE_WITH_DOUBLE_")} href="{:U('operate'.$model.'?type=move&from='.$list['id'])}">{:L("_MOBILE_")}</a>
+					</eq>
+                    <eq name="canMerge" value="true">
+                        <a title={:L("_MERGER_WITH_DOUBLE_")} href="{:U('operate'.$model.'?type=merge&from='.$list['id'])}">{:L("_MERGE_")}</a>
+                    </eq>
+
+				</div>
+				<div class="fold"><i></i></div>
+				<div class="order"><input type="text" name="sort" class="form-control text input-mini" value="{$list.sort}"></div>
+
+				<div class="name">
+					<span class="tab-sign"></span>
+					<input type="hidden" name="id" value="{$list.id}">
+					<input type="text" name="title" class="form-control text" style="width: 200px;display: inline-block" value="{$list.title}">
+                    <if condition="$level gt 0">
+                        <a class="add-sub-cate" title={:L("_ADD_A_SUB_CATEGORY_WITH_DOUBLE_")} href="{:U('add'.$model.'?pid='.$list['id'])}">
+                            <i class="icon-plus"></i>
+                        </a>
+                    </if>
+
+					<span class="help-inline msg"></span>
+				</div>
+			</form>
+		</dt>
+
+		<notempty name="list['_']">
+			<dd>
+                <php>
+                    $tree_list = new Admin\Builder\AdminTreeListBuilder();
+                    $tree_list->setLevel($level);
+                    $tree_list->setModel($model);
+                    $tree_list->tree($list['_']);
+                </php>
+			</dd>
+		</notempty>
+	</dl>
+
+</volist>

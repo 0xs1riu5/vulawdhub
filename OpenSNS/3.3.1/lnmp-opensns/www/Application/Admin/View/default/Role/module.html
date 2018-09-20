@@ -1,0 +1,67 @@
+<!-- 管理员权限组新增和编辑页面 -->
+<extend name="Public/base"/>
+<block name="body">
+    <!--<div class="main-title">
+        <h2>{:L("_USER_HAS_EXTENDED_DATA_FIELD_CONFIGURATION_")}</h2>
+    </div>-->
+    <div class="tab-wrap with-padding">
+
+        <div class="clearfix">
+            <div class="col-xs-10">
+                <include file="_link"/>
+            </div>
+            <div class="col-xs-2 text-right">
+                <select name="role" class="form-control">
+                    <volist name="role_list" id="vo">
+                        <option value="{:U('Role/configModule',array('id'=>$vo['id']))}"
+                        <eq name="vo['id']" value="$this_role['id']">selected</eq>
+                        >{$vo.title}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <form id="module-form" url="__SELF__" class="form-horizontal auth-form">
+            <input type="hidden" name="id" value="{$this_role.id}"/>
+            <div style="margin: 0 15px 10px;">
+                <label class="item-label">前台该身份允许访问的模块</label>
+                <div class="controls">
+                    <volist name="modules" id="one_module">
+                        <label style="margin: 5px;">
+                            <input type="checkbox" value="{$one_module['id']}" name="allow_module[]"
+                                   class="oneplus-checkbox">
+                            {$one_module['alias']}
+                        </label>
+                    </volist>
+                </div>
+            </div>
+        </form>
+        <div class="col-xs-12">
+            <button class="btn submit-btn" data-role="module-form">{:L("_STEP_NEXT_")}
+            </button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">
+                {:L("_RETURN_WITH_SPACE_")}
+            </button>
+            <span style="color: #BABABA;margin: 11px;">{:L("_PLEASE_SAVE_THE_ABOVE_CONFIGURATION_AND_THEN_SWITCH_TO_ANOTHER_INTERFACE_")}</span>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript" charset="utf-8">
+        +function ($) {
+            $('[data-role="module-form"]').click(function () {
+                var $tag=$('#module-form');
+                var url=$tag.attr('url');
+                var param=$tag.serialize();
+                console.log(param);
+                $.post(url,param,function (msg) {
+                    handleAjax(msg);
+                })
+            });
+            $('select[name="role"]').change(function () {
+                location.href = this.value;
+            });
+            //导航高亮
+            highlight_subnav('{:U('Role / configmodule')}');
+        }(jQuery);
+    </script>
+</block>

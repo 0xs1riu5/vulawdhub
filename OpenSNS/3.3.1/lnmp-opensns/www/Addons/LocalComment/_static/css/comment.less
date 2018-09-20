@@ -1,0 +1,104 @@
+.comments {
+  #empty{
+    font-size: 32px;border: 1px solid #eee;background:#fbfbfb;padding: 32px;
+    i{
+      font-size: 32px
+    }
+  }
+  > header {
+    // padding-bottom: 10px;
+
+    > .alert {
+      margin-bottom: -10px;
+    }
+    //
+    h1, h2, h3 {
+      margin: 30px 0 20px;
+    }
+  }
+
+  > footer {
+    padding-top: 10px;
+    > .reply-form {
+      > .avatar {
+        display: block;
+        width: 60px;
+        height: 60px;
+        float: left;
+        margin-top: 0px;
+      }
+      > .avatar + .form {
+        padding-left: 15px;
+      }
+      .submit-btn {
+        border: none;
+        background: rgb(47, 174, 47);
+        text-shadow: none;
+        color: white;
+        line-height: 30px;
+        width: 100px;
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+.comment {
+
+  padding: 10px 0;
+  > .avatar,
+  > .content {
+    display: block;
+  }
+
+  > .avatar {
+    width: 60px;
+    height: 60px;
+    float: left;
+    margin-top: 0px;
+  }
+
+  > .avatar + .content {
+    padding-left: 75px;
+  }
+
+  > .content {
+    > .text {
+      padding-top: 5px;
+    }
+
+    > .actions {
+      > a {
+        padding-left: 2px;
+        display: inline-block;
+        padding-right: 5px;
+      }
+    }
+  }
+
+  .nickname {
+    font-size: 14px;
+  }
+  .text {
+    font-size: 16px;
+  }
+
+  > .comments-list {
+
+
+    padding-left: 30px;
+    margin-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 0;
+    > .comment {
+      border: none;
+      &:last-child {
+        padding-bottom: 0;
+      }
+
+    }
+  }
+  .latest{
+    border-top: 1px solid #ddd;
+  }
+}

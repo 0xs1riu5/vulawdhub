@@ -1,0 +1,96 @@
+<extend name="Base/common"/>
+
+<block name="style">
+    <link href="__CSS__/usercenter.css" rel="stylesheet" type="text/css"/>
+</block>
+<block name="header">
+</block>
+<block name="body">
+    <script>
+        function center_toggle(name) {
+            var show = $('#' + name + '_panel').css('display');
+            $('.center_panel').hide();
+            $('.center_arrow_right').show();
+            $('.center_arrow_bottom').hide()
+            if (show == 'none') {
+                $('#' + name + '_panel').show();
+                $('#' + name + '_toggle_right').hide();
+                $('#' + name + '_toggle_bottom').show()
+            } else {
+                $('#' + name + '_toggle_right').show();
+                $('#' + name + '_toggle_bottom').hide()
+            }
+
+        }
+    </script>
+    <div class="col-xs-12 usercenter" style="margin-top: 50px">
+        <div class="uc">
+            <include file="_top"/>
+            <div class="uc-cont">
+                <div class="nav-wrap">
+                    <include file="_top_menu"/>
+                </div>
+                <div class="cont-wrap common-cont-wrap">
+                    <div class="row">
+                        <div class="col-xs-12 uc_information">
+                            <ul class="nav nav-pills ucenter-tab">
+                                <li class="active"><a href="#base" data-toggle="tab">{:L('_DATA_BASIC_')}</a></li>
+                                <volist name="profile_group_list" id="vl">
+                                    <li><a href="#expand_tab_{$vl.id}" data-toggle="tab">{$vl.profile_name}</a></li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="base_info tab-pane active" id="base">
+                            <dl class="dl-horizontal">
+                                <dt>{:L('_NICKNAME_')}{:L('_COLON_')}</dt>
+                                <dd>{$user.nickname}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>{:L('_SEX_')}{:L('_COLON_')}</dt>
+                                <dd>
+                                    <eq name="user.sex" value="1">{:L('_MAN_')}</eq>
+                                    <eq name="user.sex" value="2">{:L('_WOMAN_')}</eq>
+                                    <eq name="user.sex" value="0"> {:L('_SECRECY_')}</eq>
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>{:L('_PLACE_')}{:L('_COLON_')}</dt>
+                                <dd>
+                                    <eq name="user.pos_province" value="0">{:L('_PLACE_')}
+                                        <else/>
+                                        {$user.pos_province}&nbsp;&nbsp;{$user.pos_city}&nbsp;&nbsp;{$user.pos_district}&nbsp;&nbsp;{$user.pos_community}
+                                    </eq>
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>{:L('_SIGNATURE_')}{:L('_COLON_')}</dt>
+                                <dd><eq name="user.signature" value="">{:L('_NO_IDEA_')}<else/>{$user.signature|htmlspecialchars}</eq></dd>
+                            </dl>
+                        </div>
+                        <volist name="profile_group_list" id="group_vl">
+                            <div class="tab-pane" id="expand_tab_{$group_vl.id}">
+                                <div class="panel-body expand_info">
+                                    <volist name="group_vl['info_list']" id="info_vl">
+                                        <dl class="dl-horizontal">
+                                            <dt>{$info_vl.field_name}：</dt>
+                                            <dd>{$info_vl.field_data|default=L('')}</dd>
+                                        </dl>
+                                    </volist>
+                                    <if condition="count($group_vl['info_list']) eq 0"><p class="text-muted"
+                                                                                          style="text-align: center; font-size: 15px;margin: 15px;">
+
+                                        {:L('_MESSAGE_EXPAND_NONE_')}{:L('_EXCLAMATION_')}
+                                    </p></if>
+
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+

@@ -1,0 +1,412 @@
+@f:#fff;
+@f2:#f2f2f2;
+@b3:#333;
+@import "../../../../Public/css/var";
+.main-wrapper{
+  margin-top: 110px;
+}
+.row{
+  margin: 0;
+}
+body{
+  font-size: 14px;
+}
+.common-box(@dif-h){
+  background-color: @f;
+  width: 100%;
+  height: @dif-h;
+}
+.v-wrap{
+  width: 100%;
+  min-height: 589px;
+  .c-title{
+    height: 35px;
+    padding: 0 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .v-head{
+    border-bottom: 1px solid @f2;
+    text-align: center;
+    line-height: 79px;
+    color: @b3;
+    font-size: 18px;
+    .common-box(80px);
+    position: relative;
+    a{
+      position: absolute;
+      right: 10px;
+      bottom: 5px;
+      line-height: 16px;
+      color: #19BCA1;
+      font-size: 16px;
+    }
+  }
+  .v-type{
+    .common-box(225px);
+    border-bottom: 1px solid @f2;
+    padding: 25px 15px;
+    .type-box{
+      height: 140px;
+      padding: 0;
+      .box{
+        height: 100%;
+        .cover{
+          width: 120px;
+          height: 120px;
+          overflow: hidden;
+          margin: 20px 0;
+        }
+      }
+      .info{
+        padding-top: 20px;
+        .title{
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .intro{
+          max-width: 135px;
+          font-size: 13px;
+        }
+        .apply-btn{
+          width: 140px;
+          height: 40px;
+          background-color: @primary-color;
+          color: @f;
+          text-align: center;
+          line-height: 40px;
+          border-radius: 3px;
+          display: block;
+          font-size: 14px;
+          &:hover{
+            background-color: @darken-color;
+          }
+        }
+      }
+    }
+  }
+  .v-famous{
+    .common-box(190px);
+    padding: 25px 15px;
+    .f-box{
+      padding: 0;
+      .box{
+        height: 90px;
+        padding-top: 20px;
+        .cover{
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+          position: relative;
+          img{
+            border-radius: 100%;
+          }
+          .bandage{
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            border-radius: 100%;
+            right: 0;
+            bottom: 0;
+            display: block;
+            text-align: center;
+            line-height: 20px;
+            i{
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+//个人认证样式
+.id-wrap{
+  .id-head{
+    background-color: @f;
+    padding: 0 10px;
+    p{
+      margin: 0;
+      border-bottom: 1px solid @f2;
+      padding: 10px 0;
+    }
+  }
+  .id-attest{
+    padding: 30px 15px;
+    background-color: #ffffff;
+    .do-attest{
+      width: 110px;
+      height: 30px;
+      border-radius: 3px;
+      border: 1px solid #797979;
+      line-height: 28px;
+      text-align: center;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+  .id-liberty{
+    min-height:160px;
+    padding: 25px 15px;
+    background-color: @f;
+    .id-box{
+      padding: 0;
+      .box{
+        height: 110px;
+        .cover{
+          width: 110px;
+          height: 110px;
+          margin: 0 auto;
+        }
+        .title{
+          font-size: 18px;
+        }
+        .intro{
+          color: #666;
+          min-height: 35px;
+        }
+        .band{
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+  }
+  .id-term{
+    min-height: 230px;
+    .term-box{
+      width: 20%;
+      float: left;
+      padding: 0 10px;
+      height: 180px;
+      .t-cover{
+        width: 110px;
+        height: 110px;
+        margin: 0 auto;
+      }
+      .condition{
+        margin: 10px 0;
+        text-align: center;
+        i{
+          margin-right: 10px;
+          font-weight: bold;
+        }
+      }
+      .id-btn{
+        width: 110px;
+        height: 30px;
+        border-radius: 3px;
+        border: 1px solid #797979;
+        line-height: 28px;
+        text-align: center;
+        margin: 0 auto;
+        display: block;
+      }
+      .no{
+        background-color: @primary-color;
+        color: @f;
+        border: none;
+        line-height: 30px;
+      }
+    }
+  }
+}
+//申请流程样式
+.flow-path{
+  background-color: @f;
+  margin: 0;
+  padding: 10px;
+  .left-box{
+    min-height: 200px;
+    padding-top: 20px;
+    border-right: 1px solid @f2;
+    table{
+      width: 100%;
+    }
+    .apply-form{
+      margin-bottom: 15px;
+      display: table;
+      width: 100%;
+      .title-wrap{
+        vertical-align: top;
+        width: 125px;
+        text-align: right;
+        label{
+          font-weight: normal;
+          span{
+            color: red;
+            margin-right: 5px;
+          }
+        }
+      }
+      .f-wrap{
+        width: 400px;
+        position: relative;
+        input,select{
+          outline: none;
+          width: 380px;
+          padding: 0 10px;
+          border: 1px solid #ccc;
+          height: 30px;
+          line-height: 28px;
+          box-shadow: 0 0 3px 0 rgba(0,0,0,0.15) inset;
+          &:focus{
+            border: 1px solid @primary-color;
+          }
+        }
+        textarea{
+          width: 380px;
+          padding: 0 10px;
+          border: 1px solid #ccc;
+          line-height: 28px;
+          box-shadow: 0 0 3px 0 rgba(0,0,0,0.15) inset;
+          &:focus{
+            border: 1px solid @primary-color;
+          }
+        }
+      }
+      .warn-txt{
+        font-size: 13px;
+        color: red;
+        i{
+          margin: 0 5px;
+        }
+      }
+      .tip-txt{
+        span{
+          color: @primary-color;
+        }
+      }
+      .pic-wrap{
+        margin: 0;
+        .l-box{
+          width: auto;
+          height: 75px;
+          border-right: 1px dashed #ccc;
+          padding: 0 10px;
+          float: left;
+          .add-btn{
+            display: inline-block;
+            width: 75px;
+            height: 75px;
+            text-align: center;
+            line-height: 69px;
+            border: 3px dashed @primary-color;
+            color: @primary-color;
+            float: right;
+          }
+        }
+        .r-box{
+          height: 75px;
+          float: left;
+          .pic{
+            padding:0 10px;
+            width: 96px;
+            height: 75px;
+            border-right: 1px dashed #ccc;
+            position: relative;
+            float: left;
+            .top-band{
+              display: inline-block;
+              width: 40px;
+              height: 20px;
+              background: rgba(0,0,0,.3);
+              top:0;
+              left: 10px;
+              font-size: 12px;
+              text-align: center;
+              line-height: 20px;
+              color: @f;
+              position: absolute;
+            }
+          }
+        }
+      }
+    }
+  }
+  .right-box{
+    min-height: 200px;
+    padding-left: 20px;
+    .r-head{
+      font-size: 18px;
+    }
+    .notice{
+      color:red;
+      margin: 20px 0;
+    }
+    ul{
+      list-style: none;
+      li{
+        line-height: 25px;
+      }
+    }
+  }
+}
+.app-btn{
+  width: 140px;
+  height: 40px;
+  display: inline-block;
+  border-radius: 3px;
+  text-align: center;
+  line-height: 40px;
+  color: @f;
+  background-color: @primary-color;
+  margin-top: 20px;
+  &:hover{
+    color: @f;
+    background-color: @darken-color;
+  }
+}
+//认证过程
+.p-wrap{
+  background: @f;
+  padding: 30px 10px;
+  position: relative;
+  .yi{
+    position: absolute;
+    top:0;
+    left: 400px;
+    display: block;
+    font-size: 70px;
+    color: red;
+  }
+  table{
+    width: 100%;
+    position: relative;
+
+    tr{
+      display: block;
+      margin-bottom: 15px;
+      .l-title{
+        vertical-align: top;
+        width: 125px;
+        text-align: right;
+        span{
+          color: red;
+        }
+      }
+      .mi{
+        color: @primary-color;
+        margin-right: 5px;
+      }
+      .image-list{
+        img{
+          border: 1px solid #ddd;
+          padding: 2px;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          width: 150px;
+          height: 150px;
+        }
+      }
+    }
+    .a-btn{
+      display: inline-block;
+      background-color: @primary-color;
+      color: @f;
+      padding: 8px 20px;
+      border-radius: 3px;
+      margin-left: 45px;
+    }
+  }
+}

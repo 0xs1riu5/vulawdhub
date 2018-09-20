@@ -1,0 +1,119 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>行为列表</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <!-- 标题栏 -->
+    <div class="main-title">
+        <h2>{:L("_BEHAVIOR_LIST_")}</h2>
+    </div>
+
+    <div class="with-padding">
+        <div class="row">
+            <div class="col-xs-6">
+                <button class="btn" id="action_add" url="{:U('user/addaction')}">{:L("_NEW_GROWTH_WITH_SPACE_")}</button>
+                <button class="btn ajax-post" target-form="ids"
+                        url="{:U('setstatus',array('status'=>1,'Model'=>'action'))}">{:L("_KAI_WITH_SPACE_")}
+                </button>
+                <button class="btn ajax-post" target-form="ids"
+                        url="{:U('setstatus',array('status'=>0,'Model'=>'action'))}">{:L("_BAN_WITH_SPACE_")}
+                </button>
+                <button class="btn ajax-post confirm" target-form="ids"
+                        url="{:U('setStatus',array('status'=>-1,'Model'=>'action'))}">{:L("_DELETE_WITH_SPACE_")}
+                </button>
+            </div>
+            <div class="col-xs-6 text-right">
+                <form action="__SELF__" id="filter" method="post">
+                    <div class="oneselect">
+                        <div class="title">{:L("_THE_MODULE_")}{:L("_COLON_")}</div>
+                        <div class="select_box">
+                            <select name="module" data-role="select_text" class="form-control"
+                                    onchange="$('#filter').submit()">
+                                <option value="-1">{:L("_ALL_")}</option>
+                                <volist name="module" id="vo">
+
+                                    <if condition="$vo['name'] eq  $current_module">
+                                        <option value="{$vo.name|default=''}" selected>{$vo.alias}</option>
+                                        <else/>
+                                        <option value="{$vo.name|default=''}">{$vo.alias}</option>
+                                    </if>
+
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table with-padding">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th class="row-selected row-selected" style="width: 20px"><input class="check-all" type="checkbox"/>
+                </th>
+                <th class="">{:L("_NO_")}</th>
+                <th class="">{:L("_IDENTIFICATION_")}</th>
+                <th class="">{:L("_NAME_")}</th>
+                <th class="">{:L("_THE_MODULE_")}</th>
+                <th class="">{:L("_INTEGRAL_CHANGE_")}</th>
+                <th class="">{:L("_TYPE_")}</th>
+                <th class="">{:L("_RULE_")}</th>
+                <th class="">{:L("_STATE_")}</th>
+                <th class="">{:L("_OPERATION_")}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="_list" id="vo">
+                <tr>
+                    <td><input class="ids" type="checkbox" name="ids[]" value="{$vo.id}"/></td>
+                    <td>{$vo.id}</td>
+                    <td><a href="{:U('ActionLimit/limitlist',array('action'=>$vo['name']))}" title={:L("_CHECK_THE_LIMIT_WITH_DOUBLE_")}>{$vo.name}</a>
+                    </td>
+                    <td><a href="{:U('editAction?id='.$vo['id'])}">{$vo.title}</a></td>
+                    <td>{$vo.alias}</td>
+                    <td>{$vo.vary}</td>
+                    <td><span>{:get_action_type($vo['type'])}</span></td>
+                    <td>{$vo.remark}</td>
+                    <td>{$vo.status_text}</td>
+                    <td><a href="{:U('User/editAction?id='.$vo['id'])}">{:L("_EDIT_")}</a>
+                        <a href="{:U('User/setStatus?Model=action&ids='.$vo['id'].'&status='.abs(1-$vo['status']))}"
+                           class="ajax-get">{$vo.status|show_status_op}</a>
+                        <a href="{:U('User/setStatus?Model=action&status=-1&ids='.$vo['id'])}" class="confirm ajax-get">{:L("_DELETE_")}</a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+    </div>
+    <!-- 分页-->
+    <div class="with-padding">{$_page}</div>
+    <!-- /分页-->
+
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(function () {
+            $("#action_add").click(function () {
+                window.location.href = $(this).attr('url');
+            })
+        })
+    </script>
+</block>

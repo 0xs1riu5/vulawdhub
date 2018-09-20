@@ -1,0 +1,100 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <include file="_top_nav"/>
+    <div class="box box-info adminlte-os-table">
+        <div class="box-header with-border">
+            <h3 class="box-title">用户流失率</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#settingCount">
+                    <i class="icon-settings"></i>
+                    <!--设置-->
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+            </div>
+        </div>
+        <div class="box-body">
+            <table id="table-data" class="table table-bordered table-striped table-hover">
+                <!-- 表头 -->
+                <thead>
+                <tr>
+                    <th class="row-selected row-selected" style="width: 20px">
+                        <input class="check-all" type="checkbox">
+                    </th>
+                    <th>日期</th>
+                    <th>用户总数</th>
+                    <th>流失用户总数</th>
+                    <th>新增流失用户数</th>
+                    <th>用户流失率</th>
+                    <th>创建时间</th>
+                </tr>
+                </thead>
+
+                <!-- 列表 -->
+                <tbody>
+                <volist name="lostList" id="oneLost">
+                    <tr>
+                        <td><input class="ids" type="checkbox" value="{$oneLost['id']}" name="ids[]"></td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['date']}</td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['user_num']}</td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['lost_num']}</td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['new_lost']}</td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['rate']}</td>
+                        <td style="width:auto;max-width: 150px;" class="text-ellipsis">{$oneLost['create_time']|time_format}</td>
+                    </tr>
+                </volist>
+            </table>
+            <!-- 分页 -->
+            <div class="with-padding">
+                {$pagination}
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+</block>
+<block name="modal">
+    <div class="modal fade" id="settingCount">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">关闭</span></button>
+                    <h4 class="modal-title">设置流失率计算标准</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="with-padding">
+                        <label>流失标准（多少天未登录算作流失）</label>
+                        <input class="form-control" name="lost_long" value="{$lost_long}">
+                    </div>
+                    <div class="with-padding" style="text-align: center;color: #B3B3B3;">
+                        <span>修改只影响后续统计</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn " data-role="saveCountSetting">
+                        <i class="icon-ok"></i> 保存
+                    </button>
+                    <button class="btn " data-dismiss="modal">
+                        <i class="icon-remove"></i> 取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var before_lost_long="{$lost_long}";
+        $('[data-role=saveCountSetting]').click(function () {
+            $.post("__SELF__", {lost_long: $('[name=lost_long]').val()}, function (msg) {
+                if(msg.status!=1){
+                    $('[name=lost_long]').val(before_lost_long);
+                }else{
+                    before_lost_long=$('[name=lost_long]').val();
+                    $('[data-dismiss="modal"]').click();
+                }
+                handleAjax(msg);
+            });
+        })
+    </script>
+</block>

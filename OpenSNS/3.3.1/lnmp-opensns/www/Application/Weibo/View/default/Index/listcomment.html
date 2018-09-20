@@ -1,0 +1,9 @@
+<volist name="list" id="comment">
+    <include file="./Application/Weibo/View/default/Widget/comment/_comment.html"/>
+</volist>
+<php>
+    $pageCount = ceil($weiboCommentTotalCount / 10);
+</php>
+<div class="pager" style="margin: 11px 20px 0;">
+    {:getPageHtml('weibo_page',$pageCount,array('weibo_id'=>$weiboId,'position'=>'weibo-list'),$page)}
+</div>

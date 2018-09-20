@@ -1,0 +1,94 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>还原数据库</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <!-- ������ -->
+    <div class="main-title">
+        <h2>{:L("_DATA_BACKUP_")}</h2>
+    </div>
+    <!-- /������ -->
+
+    <!-- Ӧ���б� -->
+    <div class="with-padding">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th width="200">{:L("_BACKUP_NAME_")}</th>
+                    <th width="80">{:L("_VOLUME_NUMBER_")}</th>
+                    <th width="80">{:L("_COMPRESSION_")}</th>
+                    <th width="80">{:L("_DATA_SIZE_")}</th>
+                    <th width="200">{:L("_BACKUP_TIME_")}</th>
+                    <th>{:L("_STATE_")}</th>
+                    <th width="120">{:L("_OPERATION_")}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="data">
+                    <tr>
+                        <td>{$data.time|date='Ymd-His',###}</td>
+                        <td>{$data.part}</td>
+                        <td>{$data.compress}</td>
+                        <td>{$data.size|format_bytes}</td>
+                        <td>{$key}</td>
+                        <td>-</td>
+                        <td class="action">
+                            <a class="db-import" href="{:U('import?time='.$data['time'])}">{:L("_REDUCTION_")}</a>&nbsp;
+                            <a class="ajax-get confirm" href="{:U('del?time='.$data['time'])}">{:L("_DELETE_")}</a>
+                        </td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+    <!-- /{:L("_APPLICATION_LIST_")}-->
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        $(".db-import").click(function(){
+            var self = this, status = ".";
+            $.get(self.href, success, "json");
+            window.onbeforeunload = function(){ return {:L("_RESTORING_DATABASE_PLEASE_DONT_TURN_OFF_WITH_DOUBLE_")} }
+            return false;
+        
+            function success(data){
+                if(data.status){
+                    if(data.gz){
+                        data.info += status;
+                        if(status.length === 5){
+                            status = ".";
+                        } else {
+                            status += ".";
+                        }
+                    }
+                    $(self).parent().prev().text(data.info);
+                    if(data.part){
+                        $.get(self.href, 
+                            {"part" : data.part, "start" : data.start}, 
+                            success, 
+                            "json"
+                        );
+                    }  else {
+                        window.onbeforeunload = function(){ return null; }
+                    }
+                } else {
+                    updateAlert(data.info,'alert-error');
+                }
+            }
+        });
+    </script>
+</block>

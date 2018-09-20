@@ -1,0 +1,96 @@
+<extend name="Base/common"/>
+<block name="header">
+    <include file="Public/_nav"/>
+</block>
+
+<block name="body">
+    <style>
+        #main-container {
+            width: 880px;
+        }
+    </style>
+    <link href="__CSS__/weibo.css" type="text/css" rel="stylesheet"/>
+    <div class="col-xs-12">
+        <div class="common-block">
+            <div class="with-padding">
+                <div class="text-center margin-top-15">
+                    <ul class="nav nav-primary nav-time">
+                        <li id="type_1"><a href="{:U('topic?type=1')}"> {:L('_HOT_24_')}</a></li>
+                        <li id="type_2"><a href="{:U('topic?type=2')}"> {:L('_HOT_7_')}</a></li>
+                    </ul>
+                    <script>
+                        $('#type_{$type}').addClass('active');
+                    </script>
+                </div>
+                <div>
+                    <ul class="topic-list">
+                        <section class="items">
+                            <volist name="topics" id="vo">
+                                <div class="item">
+                                    <div class="item-content">
+                                        <div class="media pull-left">
+                                            <div class="media-place-holder">
+                                                <neq name="vo.logo" value="0">
+                                                    <img src="{$vo.logo|getThumbImageById=100,100}"/>
+                                                    <else/>
+                                                    <img src="/Application/Weibo/Static/images/topicavatar.png"/>
+                                                </neq>
+                                            </div>
+                                        </div>
+                                        <div class="text">
+                                            <div class="item-heading text-ellipsis">
+                                                <php>
+                                                    switch($vo['top_num']) {
+                                                    case 1:$band='label label-danger';
+                                                    break;
+                                                    case 2:$band='label label-warning';
+                                                    break;
+                                                    case 3:$band='label label-success';
+                                                    break;
+                                                    default:$band='';
+                                                    }
+                                                </php>
+                                                <h4><span class="{$band}">Top {$vo.top_num}</span>&nbsp; <a href="{:U('index',array('topk'=>$vo['id']))}">#{$vo.name|text}#</a>
+                                                </h4>
+                                            </div>
+                                            {$vo.intro|default=L('_CHAT_TOGETHER_')|text}
+                                        </div>
+                                        <div class="item-footer">
+                                            <i class="icon-comments-alt"></i>
+                                            {$vo.weibos}</a>&nbsp;&nbsp;&nbsp;&nbsp; <i class="icon-eye-open"></i>
+                                                {$vo.read_count}&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <neq name="vo.uadmin" value="0">
+                                                <span class="text-muted">{:L('_PRESENTER_')}{:L('_COLON_')}{$vo.user.space_link}</span>
+                                                <else/>
+                                                {:L('_PRESENTER_')}{:L('_COLON_')}{:L('_WAIT_FOR_YOU_')}
+                                            </neq>
+                                        </div>
+                                    </div>
+                                </div>
+                            </volist>
+                        </section>
+                    </ul>
+                </div>
+                <div class="pull-right">
+                    {:getPagination($totalCount,10)}
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <!--首页右侧部分-->
+    <div class="weibo_right col-xs-4">
+
+        <div>
+
+        </div>
+
+    </div>
+    <!--首页右侧部分结束-->
+</block>
+<block name="script">
+    <script src="__JS__/weibo.js"></script>
+</block>

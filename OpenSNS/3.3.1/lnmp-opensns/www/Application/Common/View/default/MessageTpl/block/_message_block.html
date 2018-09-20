@@ -1,0 +1,31 @@
+<div id="message_block_{$message_session_info.name}" class="list-block">
+    <div class="center">
+        <notEmpty name="message_list">
+            <ul class="load-more-block">
+                <volist name="message_list" id="one_message">
+                    <eq name="one_message.line" value="1">
+                        <div class="line">
+                            ——————以上为新消息——————
+                        </div>
+                        <hr>
+                        <else/>
+                        {$one_message.html}
+                    </eq>
+                </volist>
+            </ul>
+            <div class="load-more">
+                <a data-role="load-more" class="do-button" data-session="{$message_session_info.name}" data-already="{$now_count}">加载更多...</a>
+            </div>
+            <else/>
+            <div class="no-message">
+                <p>还没有消息~</p>
+            </div>
+        </notEmpty>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        message_session.init_message_list();
+    })
+</script>

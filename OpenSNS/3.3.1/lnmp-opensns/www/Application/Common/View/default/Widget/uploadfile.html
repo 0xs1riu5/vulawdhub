@@ -1,0 +1,70 @@
+<php>if(!$isLoadScript){</php>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ext/webuploader/js/webuploader.js"></script>
+<link href="__PUBLIC__/js/ext/webuploader/css/webuploader.css" type="text/css" rel="stylesheet">
+<php>}</php>
+
+<div id="file_list_{$id}">
+    <empty name="file">
+        <else/><div>{$file.name} <a onclick="remove_file_{$id}(this,{$file.id})"><i class="icon-trash"></i></a> </div>
+    </empty>
+
+</div>
+
+<div id="uploader_{$id}">
+    <div class="btns">
+        <div id="picker">{:L('_FILE_SELECT_')}</div>
+    </div>
+
+</div>
+<input name="{$name}" id="file_upload_{$id}" type="hidden" value="{$value}">
+<script>
+    var id = "#uploader_{$id}";
+    var $list_{$id}=$('#file_list_{$id}');
+    var uploader_{$id} = WebUploader.create({
+
+        // swf文件路径
+        swf: 'Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:U('Core/File/uploadFile')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: id,
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+    // 当有文件被添加进队列的时候
+    uploader_{$id}.on( 'fileQueued', function( file ) {
+        uploader_{$id}.upload();
+        toast.showLoading();
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader_{$id}.on( 'uploadSuccess', function( file ,ret ) {
+
+        if(ret.status==1){
+            toast.success("{:L('_SUCCESS_UPLOAD_')}{:L('_PERIOD_')}");
+            $list_{$id}.html('<div>'+ret.data.file.name+' <a onclick="remove_file_{$id}'+'(this,'+ret.data.file.id+')"><i class="icon-trash"></i></a></div>');
+           $('#file_upload_{$id}').val(ret.data.file.id);
+        }else{
+            toast.error("{:L('_FAIL_UPLOAD_')}{:L('_PERIOD_')}"+ret.info);
+        }
+        console.log(ret)
+
+
+    });
+
+    uploader_{$id}.on( 'uploadError', function( file ) {
+        toast.error("{:L('_ERROR_UPLOAD_')}{:L('_PERIOD_')}")
+    });
+
+    uploader_{$id}.on( 'uploadComplete', function( file ) {
+      toast.hideLoading();
+    });
+
+    function remove_file_{$id}(obj, attachId) {
+        $('#file_upload_{$id}').val('');
+        $(obj).parent('div').remove();
+    }
+</script>

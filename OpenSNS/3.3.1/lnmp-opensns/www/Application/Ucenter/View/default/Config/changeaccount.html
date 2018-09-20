@@ -1,0 +1,127 @@
+<php>if(check_reg_type($type)){</php>
+<div class="modal-body">
+
+    <form class="form-horizontal center_info ajax-form" role="form"
+          action="{:U('ucenter/config/checkVerify')}" method="post">
+        <div class="form-group">
+            <label for="account" class="col-xs-2 control-label">{:L('_INPUT_PLEASE_')}{$cName}</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control pull-left" id="account" name="account"
+                       placeholder="{$cName}">
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label for="verifyCode2" class="col-xs-2 control-label" >输入验证码</label>
+
+            <div class="col-xs-4">
+                <input type="text" id="verifyCode2" class="form-control" placeholder="验证码"
+                       errormsg="请填写正确的验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify" >
+            </div>
+            <div class="col-xs-6 lg_lf_fm_verify">
+                <img class="verifyimg reloadverify img-responsive" alt="点击切换"
+                     src="{:U('verify',array('id'=>$type=='email'?3:2))}"
+                     style="cursor:pointer;width: 150px;">
+            </div>
+            <div class="col-xs-12 Validform_checktip text-warning lg_lf_fm_tip"></div>
+            <div class="clearfix"></div>
+            <a class="pull-left btn btn-default " data-role="getVerify" style="margin-left: 105px;margin-top: 5px">获取{$cName}验证码</a>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <label for="verify" class="col-xs-2 control-label">{$cName}{:L('_VERIFY_CODE_')}</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control" id="verify" placeholder="{:L('_VERIFY_CODE_')}" name="verify">
+            </div>
+        </div>
+
+        <input type="hidden" class="form-control" name="type" value="{$type}">
+        <input type="hidden" class="form-control" name="uid" value="{:is_login()}">
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-xs-10">
+                <button type="submit" data-role="submit" class="btn btn-primary">{:L('_SUBMIT_')}</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+
+        $(".reloadverify").click(function () {
+            var $this = $(this);
+            var verifyimg = $this.attr("src");
+            if (verifyimg.indexOf('?') > 0) {
+                $this.attr("src", verifyimg + '&random=' + Math.random());
+            } else {
+                $this.attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+            }
+        });
+    });
+
+
+    $(function () {
+
+        $("[data-role='getVerify']").click(function () {
+            var $this = $(this);
+            toast.showLoading();
+            var account =$this.parents('.center_info').find('#account').val();
+            var type = $this.parents('.center_info').find('[name="type"]').val();
+
+            var verify = $this.parents('.center_info').find('[name="verify"]').val();
+
+
+            if(account == ''){
+                toast.error('请输入帐号');
+                toast.hideLoading();
+                return false;
+            }
+            if(verify == ''){
+                toast.error('请输入验证码');
+                toast.hideLoading();
+                return false;
+            }
+
+
+
+            $.post("{:U('ucenter/verify/sendVerify')}", {account: account, type: type,action:'config',verify:verify}, function (res) {
+                if(res.status){
+
+                    DecTime.obj = $this
+                    DecTime.time = "{: modC('SMS_RESEND','60','USERCONFIG')}";
+                    $this.attr('disabled',true)
+                    DecTime.dec_time();
+
+                    toast.success(res.info);
+                }
+                else{
+                    toast.error(res.info);
+                }
+                toast.hideLoading();
+            })
+        })
+    })
+
+    var DecTime = {
+        obj:0,
+        time:0,
+        dec_time : function(){
+            if(this.time > 0){
+                this.obj.text(this.time--+'S')
+                setTimeout("DecTime.dec_time()",1000)
+            }else{
+                this.obj.text('获取邮箱验证码')
+                this.obj.attr('disabled',false)
+            }
+
+        }
+    }
+</script>
+<php>}</php>

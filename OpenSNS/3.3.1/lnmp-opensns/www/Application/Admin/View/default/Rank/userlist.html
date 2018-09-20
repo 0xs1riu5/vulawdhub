@@ -1,0 +1,94 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<a href="{:U('Admin/Index/index')}">首页  </a>
+				<i class="fa fa-circle"></i>
+			</li>
+			<li>
+				<span>用户列表</span>
+			</li>
+		</ul>
+		<div class="page-toolbar">
+			<include file="Public/_addTo"/>
+		</div>
+	</div>
+
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>{:L("_USER_LIST_")}</h2>
+	</div>
+	<div class="clearfix with-padding">
+        <!-- 高级搜索 -->
+		<div class="search-form col-md-offset-10 col-xs-2 ">
+			<div class="input-group">
+				<input type="text" name="nickname" class="search-input form-control" value="{:I('nickname')}" placeholder={:L("_PLEASE_ENTER_A_USER_NAME_OR_ID_WITH_DOUBLE_")}>
+				                   <span class="input-group-btn"><a class="btn btn-default" href="javascript:;" id="search" url="{:U('userList')}"><i class="fa fa-search"></i></a></span>
+			</div>
+		</div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table with-padding">
+	<table class="table table-bordered table-striped ">
+    <thead>
+        <tr>
+		<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+		<th class="">UID</th>
+		<th class="">{:L("_NICKNAME_")}</th>
+		<th class="">{:L("_STATE_")}</th>
+		<th class="">{:L("_OPERATION_")}</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+            <td><input class="ids" type="checkbox" name="id[]" value="{$vo.uid}" /></td>
+			<td>{$vo.uid} </td>
+			<td>{$vo.nickname}</td>
+			<td>{$vo.status_text}</td>
+			<td>
+                <a href="{:U('Rank/userRankList?id='.$vo['uid'])}">{:L("_USER_TITLE_LIST_")}</a>
+                <a href="{:U('Rank/userAddRank?id='.$vo['uid'])}">{:L("_ASSOCIATED_NEW_TITLE_")}</a>
+            </td>
+		</tr>
+		</volist>
+		<else/>
+		<td colspan="9" class="text-center"> aOh!{:L("_THERE_IS_NO_CONTENT_")} </td>
+		</notempty>
+	</tbody>
+    </table>
+	</div>
+    <div class="with-padding">
+        {$_page}
+    </div>
+</block>
+
+<block name="script">
+	<script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+	<script type="text/javascript">
+	//搜索功能
+	$("#search").click(function(){
+		var url = $(this).attr('url');
+        var query  = $('.search-form').find('input').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+        query = query.replace(/^&/g,'');
+        if( url.indexOf('?')>0 ){
+            url += '&' + query;
+        }else{
+            url += '?' + query;
+        }
+		window.location.href = url;
+	});
+	//回车搜索
+	$(".search-input").keyup(function(e){
+		if(e.keyCode === 13){
+			$("#search").click();
+			return false;
+		}
+	});
+	</script>
+</block>

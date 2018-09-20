@@ -1,0 +1,148 @@
+<extend name="Public/base"/>
+<block name="script">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="__ALTE__/plugins/daterangepicker/daterangepicker-bs3.css">
+    <script src="__ALTE__/plugins/moment/moment.min.js"></script>
+    <script src="__ALTE__/plugins/daterangepicker/daterangepicker.js"></script>
+    <script>
+        var startDate="{$options.startDate}",
+                endDate="{$options.endDate}";
+        $(function(){
+            $('#reservation').daterangepicker({
+                locale:{
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '开始',
+                    toLabel: '结束',
+                    daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
+                    monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
+                },
+                format: 'YYYY-MM-DD',
+                startDate:startDate,
+                endDate:endDate,
+                maxDate:endDate
+            });
+            $('#reservation').on('apply.daterangepicker',function(ev, picker) {
+                $.post("__SELF__", {startDate:picker.startDate.format('YYYY-MM-DD'),endDate:picker.endDate.format('YYYY-MM-DD')}, function (msg) {
+                    $('#remain_data').html(msg);
+                    change_show_day();
+                    if(msg.status==0){
+                        handleAjax(msg);
+                    }
+                });
+            });
+            $('[name="day_show[]"]').click(change_show_day);
+        });
+        var change_show_day=function(){
+            $('.day').hide();
+            var day=$('[name="day_show[]"]');
+            day.each(function(){
+                if($(this).is(':checked')){
+                    $('.'+$(this).val()).show();
+                }
+            });
+        }
+    </script>
+</block>
+<block name="body">
+    <include file="_top_nav"/>
+    <div class="col-md-9">
+        <div class="box box-info remain">
+            <div class="box-header with-border">
+                <h3 class="box-title">新注册用户前8日留存率统计</h3>
+                <div class="box-tools pull-right">
+                    <div class="checkbox_block">
+                        <label class="day1_label"><input type="checkbox" name="day_show[]" value="day1" checked/>次日</label>
+                        <label class="day2_label"><input type="checkbox" name="day_show[]" value="day2" checked/>2日</label>
+                        <label class="day3_label"><input type="checkbox" name="day_show[]" value="day3" checked/>3日</label>
+                        <label class="day4_label"><input type="checkbox" name="day_show[]" value="day4" checked/>4日</label>
+                        <label class="day5_label"><input type="checkbox" name="day_show[]" value="day5" checked/>5日</label>
+                        <label class="day6_label"><input type="checkbox" name="day_show[]" value="day6" checked/>6日</label>
+                        <label class="day7_label"><input type="checkbox" name="day_show[]" value="day7" checked/>7日</label>
+                        <label class="day8_label"><input type="checkbox" name="day_show[]" value="day8" checked/>8日</label>
+                    </div>
+                </div>
+            </div>
+            <div class="box-body">
+                <button class="btn btn-box-tool" id="reservation" style="line-height: 40px;font-size: 18px;">
+                    <i class="fa fa-calendar"></i>时段选择
+                </button>
+                <table class="remain-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 80px;">日期</th>
+                        <th style="width: 80px;">注册人数</th>
+                        <th>留存率</th>
+                    </tr>
+                    </thead>
+                    <tbody id="remain_data">
+                        <include file="_remain_data"/>
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="box remain">
+            <div class="box-header with-border">
+                <h3 class="box-title">前8日留存率统计标准（以2016-7-16为例）</h3>
+            </div>
+            <div class="box-body">
+                <table class="example-table" style="width: 100%;line-height: 50px;text-align: center;">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;">留存率</th>
+                        <th style="text-align: center;">登录日期</th>
+                        <th style="text-align: center;">统计日期</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>次日留存率</td>
+                        <td>7月17日</td>
+                        <td>7月18日</td>
+                    </tr>
+                    <tr>
+                        <td>2日留存率</td>
+                        <td>7月18日</td>
+                        <td>7月19日</td>
+                    </tr>
+                    <tr>
+                        <td>3日留存率</td>
+                        <td>7月19日</td>
+                        <td>7月20日</td>
+                    </tr>
+                    <tr>
+                        <td>4日留存率</td>
+                        <td>7月20日</td>
+                        <td>7月21日</td>
+                    </tr>
+                    <tr>
+                        <td>5日留存率</td>
+                        <td>7月21日</td>
+                        <td>7月22日</td>
+                    </tr>
+                    <tr>
+                        <td>6日留存率</td>
+                        <td>7月22日</td>
+                        <td>7月23日</td>
+                    </tr>
+                    <tr>
+                        <td>7日留存率</td>
+                        <td>7月23日</td>
+                        <td>7月24日</td>
+                    </tr>
+                    <tr>
+                        <td>8日留存率</td>
+                        <td>7月24日</td>
+                        <td>7月25日</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+</block>

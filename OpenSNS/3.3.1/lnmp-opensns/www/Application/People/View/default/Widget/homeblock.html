@@ -1,0 +1,81 @@
+<div class="block-bar">
+    <div class="container">
+        <div class="block-body row">
+            <div class="col-xs-6">
+                <div class="common-block">
+                    <h2>
+                        {:modC('USER_SHOW_TITLE1',L('_ACTIVE_MEMBER_'),'People')}
+                    </h2>
+
+                    <div>
+                        <div>
+                            <ul class="user-list clearfix">
+                                <volist name="people1" id="v">
+                                    <li>
+                                        <div>
+                                            <div><a href="{$v.user.space_url}">
+                                                <if condition="$v['user']['avatar64'] eq $v['user']['avatar32']">
+                                                    <img class="avatar-img" src="{$v.user.avatar64}" style="width: 64px;height:64px;">
+                                                <else/>
+                                                <img class="avatar-img" src="{$v.user.avatar64}">
+                                                    </if>
+                                            </a>
+                                            </div>
+                                            <div class="user-name">
+                                                <a ucard="{$v.uid}">{$v.user.nickname}</a>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                </volist>
+
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="common-block">
+                    <h2>
+                        {:modC('USER_SHOW_TITLE2',L('_NEW_MEMBER_'),'People')}
+                    </h2>
+
+                    <div>
+                        <div>
+                            <ul class="user-list clearfix">
+                                <volist name="people2" id="v">
+                                    <li>
+                                        <div>
+                                            <div>
+                                                <a href="{$v.user.space_url}">
+
+
+                                                    <if condition="$v['user']['avatar64'] eq $v['user']['avatar32']">
+                                                        <img class="avatar-img" src="{$v.user.avatar64}" style="width: 64px;height:64px;">
+                                                        <else/>
+                                                        <img class="avatar-img" src="{$v.user.avatar64}">
+                                                    </if>
+                                            </div>
+                                            <div class="user-name">
+                                                <a href="{$v.user.space_url}" ucard="{$v.uid}">{$v.user.nickname}</a>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        ucard();
+    })
+</script>

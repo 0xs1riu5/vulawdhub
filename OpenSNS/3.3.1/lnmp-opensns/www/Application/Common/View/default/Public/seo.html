@@ -1,0 +1,15 @@
+<php>
+    $oneplus_seo_meta = get_seo_meta($vars,$seo);
+
+</php>
+<if condition="$oneplus_seo_meta['title']">
+    <title>{$oneplus_seo_meta['title']}</title>
+    <else/>
+    <title>{:modC('WEB_SITE_NAME',L('_OPEN_SNS_'),'Config')}</title>
+</if>
+<if condition="$oneplus_seo_meta['keywords']">
+    <meta name="keywords" content="{$oneplus_seo_meta['keywords']}"/>
+</if>
+<if condition="$oneplus_seo_meta['description']">
+    <meta name="description" content="{$oneplus_seo_meta['description']}"/>
+</if>

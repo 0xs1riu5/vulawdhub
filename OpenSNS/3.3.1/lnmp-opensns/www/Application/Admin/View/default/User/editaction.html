@@ -1,0 +1,210 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title cf">
+        <h2>
+            <if condition="ACTION_NAME eq 'addaction'">{:L("_NEWLY_ADDED_")}
+                <else/>
+               {:L("_EDIT_")}
+            </if>
+           {:L("_BEHAVIOR_")}
+        </h2>
+    </div>
+    <!-- 表单 -->
+    <div class="with-padding">
+        <form id="form" action="{:U('saveAction')}" method="post" class="form-horizontal">
+            <div class="form-item cf">
+                <label class="item-label">{:L("_BEHAVIOR_IDENTIFICATION_")}<span class="check-tips">{:L("_ENTER_THE_BEHAVIOR_TO_IDENTIFY_AN_ENGLISH_LETTER_WITH_SPACE_")}</span></label>
+
+                <div class="controls">
+                    <input type="text" class="text input-large form-control form-input-width" name="name"
+                           value="{$data.name}">
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">{:L("_BEHAVIOR_NAME_")}<span class="check-tips">{:L("_ENTER_THE_ACTION_NAME_")}</span></label>
+
+                <div class="controls">
+                    <input type="text" class="text input-large form-control form-input-width" name="title"
+                           value="{$data.title}">
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">{:L("_BEHAVIOR_TYPE_")}<span class="check-tips">{:L("_CHOICE_BEHAVIOR_TYPE_")}</span></label>
+
+                <div class="controls">
+                    <select name="type" class=" form-control form-select-size">
+                        <volist name=":get_action_type(null,true)" id="vo">
+                            <option value="{$key}">{$vo}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-item cf">
+                <label class="item-label">{:L("_THE_MODULE_")}<span class="check-tips">{:L("_SELECTION_MODULE_")}</span></label>
+
+                <div class="controls">
+                    <select name="module" class=" form-control form-select-size">
+                        <option value="">{:L("_SYSTEM_")}</option>
+                        <volist name="module" id="vo">
+                            <option value="{$vo.name}"
+                            <php> if($vo['name'] == $data['module']){</php>
+                            selected
+                            <php>}</php>
+                            >{$vo.alias}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-item cf">
+                <label class="item-label">{:L("_BEHAVIOR_DESCRIPTION_")}<span class="check-tips">{:L("_INPUT_BEHAVIOR_DESCRIPTION_")}</span></label>
+
+                <div class="controls">
+                    <label class="textarea input-large "><textarea name="remark"
+                                                                   class=" form-control form-text-area-size">{$data.remark}</textarea></label>
+                </div>
+            </div>
+
+
+            <div class="form-item cf">
+                <label class="item-label">{:L("_INTEGRAL_RULE_")}<span class="check-tips">{:L("_ENTER_THE_INTEGRATION_RULE_NOT_WRITE_THE_LOG_ONLY_")}</span></label>
+
+                <div class="controls action_rule">
+                    <php>
+                        $score = D('Ucenter/Score')->getTypeList(array('status'=>1));
+                        $data['rule'] = unserialize( $data['rule']);
+                    </php>
+
+                    <php>if(empty($data['rule'])){</php>
+                   {:L("_NO_RULES_")}
+                    <php>}</php>
+
+                    <div class="clearfix">
+                        <div class="pull-left text-center" style="width: 100px">
+                           {:L("_TABLE_NAME_")}
+                        </div>
+                        <div class="pull-left text-center" style="width: 100px">
+                           {:L("_INTEGRAL_TYPE_")}
+                        </div>
+                        <div class="pull-left text-center" style="width: 100px">
+                           {:L("_INTEGRAL_OPERATION_")}
+                        </div>
+                        <div class="pull-left text-center" style="width: 100px">
+                           {:L("_PERIOD_HOURS_")}
+                        </div>
+                        <div class="pull-left text-center" style="width: 100px">
+                           {:L("_MAXIMUM_LIMIT_SECOND_")}
+                        </div>
+                    </div>
+                    <volist name="data['rule']" id="rule">
+                        <div style="margin-bottom: 10px">
+                            <input class="form-control" name="action_rule[table][]" value="{$rule.table}"
+                                   title={:L("_THE_TABLE_THAT_IS_EXECUTED_THE_DEFAULT_IS_MEMBER_WITH_DOUBLE_")} style="width: 100px;display: inline-block">
+                            <select class="form-control" name="action_rule[field][]" title={:L("_INTEGRAL_OF_EXECUTION_WITH_DOUBLE_")}
+                                    style="width: 100px;display: inline-block">
+                                <option value="0">{:L("_PLEASE_CHOOSE_")}</option>
+                                <volist name="score" id="s">
+                                    <option value="{$s.id}"
+                                    <if condition="$s['id'] eq $rule['field']">selected</if>
+                                    >{$s.title}</option>
+                                </volist>
+                            </select>
+                            <input type="text" name="action_rule[rule][]" title={:L("_THE_INTEGRAL_OPERATION_THE_MINUS_INTEGRAL_WITH_DOUBLE_")} value="{$rule.rule}"
+                                   class=" form-control" style="width: 100px;display: inline-block"/>
+                            <input class="form-control" name="action_rule[cycle][]" title={:L("_PERIOD_WITH_DOUBLE_")} value="{$rule.cycle}"
+                                   style="width: 100px;display: inline-block">
+                            <input class="form-control" name="action_rule[max][]" title={:L("_MAXIMUM_LIMIT_WITH_DOUBLE_")} value="{$rule.max}"
+                                   style="width: 100px;display: inline-block">
+                            <a href="javascript:" data-role="del_rule">{:L("_DELETE_RULE_")}</a>
+
+                        </div>
+                    </volist>
+
+
+                </div>
+                <a href="javascript:" data-role="add_rule">{:L("_NEW_RULES_")}</a>
+            </div>
+
+
+            <div class="form-item cf">
+                <label class="item-label">{:L("_LOG_RULE_")}<span class="check-tips">{:L("_TO_GENERATE_SUPPORT_AND_SUPPORT_THE_RULE_TO_BE_GENERATED_BY_THIS_RULE_")}[{:L("_VARIABLE_")}|{:L("_FUNCTION_")}]。{:L("_CURRENT_VARIABLES_")}{:L("_COLON_")}user,time,model,record,data）</span></label>
+
+                <div class="controls">
+                    <label class="textarea input-large"><textarea name="log" class=" form-control form-text-area-size">{$data.log}</textarea></label>
+                </div>
+            </div>
+
+
+            <div class="form-item">
+                <input type="hidden" name="id" value="{$data.id}"/>
+                <button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+                <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div id="rule_list" style="display: none">
+        <div style="margin-bottom: 10px">
+            <input class="form-control" name="action_rule[table][]" value="member" title={:L("_THE_TABLE_THAT_IS_EXECUTED_THE_DEFAULT_IS_MEMBER_WITH_DOUBLE_")}
+                   style="width: 100px;display: inline-block">
+            <select class="form-control" name="action_rule[field][]" title={:L("_INTEGRAL_OF_EXECUTION_WITH_DOUBLE_")}
+                    style="width: 100px;display: inline-block">
+                <option value="0">{:L("_PLEASE_CHOOSE_")}</option>
+                <volist name="score" id="s">
+                    <option value="{$s.id}">{$s.title}</option>
+                </volist>
+            </select>
+            <input type="text" name="action_rule[rule][]" title={:L("_THE_INTEGRAL_OPERATION_THE_MINUS_INTEGRAL_WITH_DOUBLE_")} value="0" class=" form-control"
+                   style="width: 100px;display: inline-block"/>
+            <input class="form-control" name="action_rule[cycle][]" title={:L("_PERIOD_HOURS_WITH_DOUBLE_")} value="24"
+                   style="width: 100px;display: inline-block">
+            <input class="form-control" name="action_rule[max][]" title={:L("_MAXIMUM_LIMIT_SECOND_WITH_DOUBLE_")} value="1"
+                   style="width: 100px;display: inline-block">
+            <a href="javascript:" data-role="del_rule">{:L("_DELETE_RULE_")}</a>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        Think.setValue('type', {$data.type|default = 1});
+        //导航高亮
+        highlight_subnav('{:U('User / action')}');
+    </script>
+
+    <script>
+        $(function () {
+            rebind();
+        })
+
+        var rebind = function () {
+            add_rule();
+            del_rule();
+        }
+        var add_rule = function () {
+
+            $('[data-role="add_rule"]').unbind('click');
+            $('[data-role="add_rule"]').click(function () {
+                $('.action_rule').append($('#rule_list').html())
+                rebind();
+            })
+
+        }
+
+        var del_rule = function () {
+            $('[data-role="del_rule"]').unbind('click');
+            $('[data-role="del_rule"]').click(function () {
+                $(this).closest('div').remove();
+                rebind();
+            })
+        }
+
+    </script>
+
+
+</block>

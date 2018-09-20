@@ -1,0 +1,145 @@
+<extend name="Public/usercenter"/>
+
+<block name="body">
+    <php>
+        $user = query_user(array('message'));
+    </php>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p>&nbsp;</p>
+            <h4>{:L('_MESSAGE_CENTER_')}</h4>
+            <hr class="oneuser-title-hr"/>
+
+            <ul class="nav nav-pills ucenter-tab">
+                <li
+                <eq name="tab" value="unread"> class="active"</eq>
+                ><a href="{:U('Ucenter/Message/session',array('tab'=>'session'))}">{:L('_CHAT_ALL_')}</a></li>
+
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="row talk-body">
+        <div class="row ">
+            <div class="row talk_source">
+                <i class="talk_blockquote"></i>
+
+                <div class="talk_source_content">
+                    <p class="thinkox-break-word">
+                        {:L('_BRACKETS_LEFT_')}{:L('_TITLE_')}{:L('_BRACKETS_RIGHT_')}{$talk.source_title|op_t}&nbsp;
+                        <a title="{:L('_RETURN_TO_SOURCE_')}" href="{$talk.source_url}">
+                            <i class="glyphicon glyphicon-share-alt"></i>
+                        </a>
+                    </p>
+
+                    <p class="thinkox-break-word">
+                        {:L('_BRACKETS_LEFT_')}{:L('_CONTENT_')}{:L('_BRACKETS_RIGHT_')}{$talk.source_content|op_t}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div id="scrollArea" class="row ">
+            <div id="scrollContainer">
+                <volist name="messages" id="message">
+                    <if condition="$message['uid'] eq $mid">
+                        <div class="row talk_right">
+                            <div class="time"><span
+                                    class="timespan">{$message.create_time|date='m-d h:m:s',###}</span></div>
+                            <div class="row">
+                                <div class="col-xs-9 bubble_outter">
+                                    <h3>{:L('_I_')}</h3>
+                                    <i class="bubble_sharp"></i>
+
+                                    <div class="talk_bubble">
+                                        {$message.content|parse_expression}
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 "><img ucard="{$message.uid}" class="avatar-img talk-avatar"
+                                                            src="{$message.user.avatar128}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <else/>
+                        <div class="row">
+                            <div class="time"><span class="timespan">{$message.create_time|date='m-d h:m:s',###}</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3 "><img ucard="{$message.uid}" class="avatar-img talk-avatar"
+                                                            src="{$message.user.avatar128}"/>
+                                </div>
+
+                                <div class="col-xs-9 bubble_outter">
+                                    <h3>{$message.user.nickname}</h3>
+                                    <i class="bubble_sharp"></i>
+
+                                    <div class="talk_bubble">
+                                        {$message.content|parse_expression}
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </if>
+
+                </volist>
+                <hr/>
+                <div style="text-align: center;color: #666">{:L('_HISTORY_CHAT_LOG_')}</div>
+            </div>
+
+
+        </div>
+        <div class="row weibo_post_box" style="margin-top: 20px">
+            <div class="col-xs-10">
+                <textarea class="form-control" style="width: 100%" id="tt_content" placeholder="{:L('_PLACEHOLDER_SAY_SOMETHING_')}"></textarea>
+                <a href="javascript:" onclick="insertFace($(this))"><img class="weibo_type_icon" src="__STATIC__/image/bq.png"/></a>
+            </div>
+
+            <div class="col-xs-2" style="text-align: right">
+                <button type="submit" class="btn btn-large btn-primary" id="submit-button" onclick="appendMessage()">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    {:L('_REPLY_')}
+                </button>
+            </div>
+            <div id="emot_content" class="emot_content" style="margin-top: 90px;margin-left: 13px;"></div>
+        </div>
+
+        <script>
+            $(function () {
+                op_initTalkBox();
+            });
+            var MID = "{$self.id}";
+            var message_id = "{$message_id}";
+            var talk_id = "{$talk.id}";
+            var myhead = "{$self.avatar128}";
+
+            function appendMessage() {
+                var myDate = new Date();
+                $.post(U('Ucenter/Message/postMessage'), {talk_id: talk_id, content: $('#tt_content').val()}, function (msg) {
+                    if (msg.status) {
+                        op_appendMessage(op_fetchMessageTpl({uid: MID, content:msg.content,
+                            avatar128: myhead,
+                            ctime: myDate.toLocaleTimeString()}, MID));
+                        $('#tt_content').val('');
+                        $('#tt_content').focus();
+                        $('.XT_face').remove();
+                    } else {
+                        handleAjax(msg);
+                    }
+                }, 'json');
+            }
+
+            $('#tt_content').keypress(function (e) {
+                if (e.ctrlKey && e.which == 13 || e.which == 10) {
+                    appendMessage();
+                }
+            });
+
+        </script>
+    </div>
+
+
+</block>

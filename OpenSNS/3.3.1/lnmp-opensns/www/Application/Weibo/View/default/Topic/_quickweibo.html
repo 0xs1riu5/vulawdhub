@@ -1,0 +1,83 @@
+<if condition="is_login() && check_auth('Weibo/Index/doSend')">
+    <div class="row">
+                <div class="weibo_content weibo_post_box" style="margin-bottom: 10px;display: none">
+                    <p class="pull-left">
+                        <if condition="modC('SHOW_TITLE',1)">
+                            <small class="font_grey">【{$self.title}】</small>
+                        </if>
+                        <a ucard="{$self.uid}"
+                           href="{$self.space_url}" class="user_name"> {$self.nickname|htmlspecialchars}
+                        </a>
+                        <volist name="self['rank_link']" id="vl">
+                            <if condition="$vl['is_show']">
+                                <img src="{$vl.logo_url}" title="{$vl.title}" alt="{$vl.title}"
+                                     class="rank_html"/>
+                            </if>
+                        </volist>
+                    </p>
+                    <div class="pull-right show_num_quick">{:L('_TIP_REMAIN_INPUT_')}{:modC('WEIBO_NUM',140,'WEIBO')}{:L('_GE_WORDS_')}</div>
+                    <div class="weibo_content_p">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p><textarea class="form-control weibo_content_quick" id="weibo_content"
+                                             style="height: 6em;"
+                                             placeholder="{:L('_PLACEHOLDER_SOMETHING_TO_WRITE_')}" onfocus="startCheckNum_quick($(this))"
+                                             onblur="endCheckNum_quick()">#{$topic['name']}#</textarea></p>
+
+                                <a href="javascript:" onclick="insertFace($(this))" data-role="insert_face"><img class="weibo_type_icon"
+                                                                                         src="__CORE_IMAGE__/bq.png"/></a>
+
+                                <if condition="modC('CAN_IMAGE',1)">
+                                    <a href="javascript:" id="insert_image" onclick="insert_image.insertImage(this)" data-role="hook_show">
+                                        <img class="weibo_type_icon" src="__IMG__/image.png"/>
+                                    </a>
+                                </if>
+
+                                {:hook('weiboType')}
+                                <p class="pull-right">
+                                    <input type="submit" value="{:L('_PUBLISH_')} Ctrl+Enter" data-role="send_weibo" class="btn btn-primary" data-url="{:U('Weibo/Index/doSend')}"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div id="emot_content" class="emot_content"></div>
+                        <div id="hook_show" class="emot_content"></div>
+                    </div>
+                </div>
+    </div>
+    <script>
+        $('[data-role="insert_face"]').click(function() {
+            $("#hook_show").css("display", "none");
+            $("#emot_content").css("display", "block");
+        });
+        $('[data-role="hook_show"]').click(function() {
+            $("#emot_content").css("display", "none");
+            $("#hook_show").css("display", "block");
+        })
+        var ID_setInterval;
+        function checkNum_quick(obj) {
+            var value = obj.val();
+            var value_length = value.length;
+            var can_in_num = initNum - value_length;
+            if (can_in_num < 0) {
+                value = value.substr(0, initNum);
+                obj.val(value);
+                can_in_num = 0;
+            }
+            var html = "{:L('_TIP_REMAIN_INPUT_')}" + can_in_num + "{:L('_GE_WORDS_')}";
+            $('.show_num_quick').html(html);
+        }
+        function startCheckNum_quick(obj) {
+            ID_setInterval = setInterval(function () {
+                checkNum_quick(obj);
+            }, 250);
+        }
+        function endCheckNum_quick() {
+            clearInterval(ID_setInterval);
+        }
+        $(function () {
+            send_weibo();
+        })
+    </script>
+    <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ext/webuploader/js/webuploader.js"></script>
+    <link href="__PUBLIC__/js/ext/webuploader/css/webuploader.css" type="text/css" rel="stylesheet">
+</if>

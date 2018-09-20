@@ -1,0 +1,82 @@
+<extend name="Base/common"/>
+
+<block name="style">
+    <link href="__CSS__/usercenter.css" rel="stylesheet" type="text/css"/>
+</block>
+<block name="header">
+    <br/>
+</block>
+<block name="body">
+    <div class="col-xs-12 usercenter">
+        <div class="uc">
+            <include file="_top"/>
+            <div class="uc-cont">
+                <div class="nav-wrap">
+                    <include file="_top_menu"/>
+                </div>
+                <div class="cont-wrap common-cont-wrap">
+                    <div class="row">
+                        <div class="col-xs-12 uc_fans">
+                            <ul class="nav nav-pills ucenter-tab">
+                                <li   <eq name="tab" value="following"> class="active"</eq>>
+                                <a class="my-num my-after" href="{:U('Ucenter/Index/following',array('uid'=>$user_info['uid']))}">
+                                    <if condition="$user_info['uid'] eq is_login()"><strong>{$user_info.following}</strong><else/>TA的</if>{:L('_DE_FOLLOWER_')}
+                                </a>
+                                </li>
+
+                                <li <eq name="tab" value="fans"> class="active"</eq>>
+                                <a class="my-num" href="{:U('Ucenter/Index/fans',array('uid'=>$user_info['uid']))}">
+                                    <if condition="$user_info['uid'] eq is_login()"><strong>{$user_info.fans}</strong><else/>Ta的</if>{:L('_DE_FANS_')}
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <if condition="count($fans) eq 0">
+                        <p class="text-muted" style="text-align: center; font-size: 3em;">
+                            {:L('_FANS_NONE_')}{:L('_WAVE_')}
+                        </p>
+                    </if>
+                    <div class="f-wrap">
+                        <volist name="fans" id="fan">
+                            <div class="row list-item" >
+                                <img ucard="{$fan.who_follow}"  class="avatar-img" src="{$fan.user.avatar128}"/>
+                                <div class="f-info pull-left">
+                                    <a class="f-name" href="{$fan.user.space_url}">{$fan.user.nickname}</a>
+                                    <p class="text-more f-sig">
+                                        <if condition="$fan['user']['signature'] eq ''">
+                                            {:L('_NO_IDEA_')}
+                                            <else/>
+                                            {$fan.user.signature}
+                                        </if>
+                                    </p>
+                                    <div class="f-sig">
+                                        <span>
+                                            <i class="iconfont icon-dongtaidongtai"></i>
+                                            {$fan.user.weibocount}
+                                            {:L('_WEIBO_')}
+                                        </span>
+                                        <span>
+                                            <i class="iconfont icon-fensi"></i>
+                                            {$fan.user.fans}
+                                            {:L('_FANS_')}
+                                        </span>
+                                        <span>
+                                            <i class="iconfont icon-guanzhu"></i>
+                                            {$fan.user.following}
+                                            {:L('_FOLLOWERS_')}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </volist>
+                        <div class="pull-right">
+                            {:getPagination($totalCount)}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+

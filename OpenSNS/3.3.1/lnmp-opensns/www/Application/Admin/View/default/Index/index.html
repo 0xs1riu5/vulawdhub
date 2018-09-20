@@ -1,0 +1,512 @@
+<extend name="Public/base"/>
+
+<block name="script">
+    <script src="__BTS__/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+    <script src="__BTS__/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+    <link href="__BTS__/plugins/metro/MetroJs.min.css" type="text/css" rel="stylesheet">
+    <script src="__BTS__/plugins/metro/MetroJs.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="__JS__/highcharts.js"></script>
+    <script type="text/javascript" src="__ALTE__/plugins/jQueryUI/jquery-ui.min.js"></script>
+
+    <script src="__JS__/jquery.simple-color.js"></script>
+    <link rel="stylesheet" href="__CSS__/tile.css" media="all">
+</block>
+<block name="body">
+
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页 </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>仪表盘</span>
+            </li>
+        </ul>
+    </div>
+    <!-- END PAGE BAR -->
+    <!-- BEGIN PAGE TITLE-->
+    <h3 class="page-title"> 仪表盘
+        <small>仪表盘</small>
+    </h3>
+
+    <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="icon-bubble font-green-sharp"></i>
+                <span class="caption-subject font-green-sharp sbold">常用操作</span>
+            </div>
+            <div class="actions">
+                <div class="btn-group">
+                    <a class="btn btn-danger" href="{:U('Index/index',array_merge($_GET,array('refresh'=>1)))}">重置粉丝数（粉丝数不同步的时候使用）</a>
+
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div>
+
+                <div class="tiles tile-group ten-wide ">
+
+                    <volist name="list" id="data" mod="9">
+                        <if condition="$mod eq 8">
+                            <div class="live-tile accent exclude tile-id" id="tile_{$data['id']}" data-speed="750" data-delay="3000" style="width: 151px;background-color: {$data['tile_bg']}">
+                                <a href="{$data.url_vo}"><span class="tile-title">{$data.title_vo}</span></a>
+                                <div class="tile-box">
+                                    <p class="menu"><a href="{$data.url}">
+                                        <i id="icon_set" class="icon-{$data['icon']}"></i>
+                                    </a></p>
+
+                                    <div>
+                                        <a href="{$data.url}">{$data.title}</a>
+                                    </div>
+                                    <div class="tile-setting" data-id="{$data.id}">
+                                        <a><i class="icon-settings"></i></a>
+                                    </div>
+                                    <div class="tile-del">
+                                        <a data-id="{$data.id}" href="javascript:void(0);" onclick="deltile($(this))" >
+                                            <i class="icon-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <else/>
+                            <div class="live-tile accent exclude tile-id" id="tile_{$data['id']}" data-speed="750" data-delay="3000" style="background-color: {$data['tile_bg']}">
+                                <a href="{$data.url_vo}"><span class="tile-title">{$data.title_vo}</span></a>
+                                <div class="tile-box">
+                                    <p class="menu"><a href="{$data.url}">
+                                        <i id="icon_set" class="icon-{$data['icon']}"></i>
+                                    </a></p>
+
+                                    <div>
+                                        <a href="{$data.url}">{$data.title}</a>
+                                    </div>
+                                    <div class="tile-setting" data-id="{$data.id}">
+                                        <a><i class="icon-settings"></i></a>
+                                    </div>
+                                    <div class="tile-del">
+                                        <a data-id="{$data.id}" href="javascript:void(0);" onclick="deltile($(this))" >
+                                            <i class="icon-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </if>
+
+                    </volist>
+
+                </div>
+
+            </div>
+            <!-- Activate live tiles -->
+            <script type="text/javascript">
+                $(function () {
+                    $(".live-tile, .flip-list").not(".exclude").liveTile();
+                    $(".tiles").sortable({
+                        update: function(event, ui) {
+                            var ids = $(this).sortable("toArray");
+                            var url = "{:U('Admin/Index/sortTile')}";
+                            $.post(url, {ids: ids}, function(msg) {
+
+                            })
+                        }
+                    });
+                    $(".tiles").disableSelection();
+                });
+
+                function deltile(tile) {
+                    if (confirm("你确定要删除此常用操作吗？")) {
+                        var id = tile.attr('data-id');
+                        var url = "{:U('Admin/Index/delTile')}";
+                        $.post(url, {id: id}, function (msg) {
+                            if (msg.status) {
+                                toast.success(msg.info);
+                                setTimeout(function () {
+                                    var tileId = tile.attr('data-id');
+                                    if(tileId == msg.tile_id){
+                                        $('#tile_'+tileId).hide();
+                                    }
+                                }, 1000);
+                            } else {
+                                toast.error(msg.info);
+                            }
+                        }, 'json')
+                    }
+                }
+
+                var tile_setting;
+                $('.tile-setting').click(function () {
+                    sessionStorage['id'] = $(this).attr('data-id');
+                    var id = $(this).attr('data-id');
+                    var tile_bg = $('#tile_'+id).css("background-color").colorHex();
+                    var icon = $('#tile_'+id).find("i#icon_set").attr('class');
+
+                    $(".icon-chose").find("i").removeClass().addClass(icon);
+                    $("input[name='icon_chose']").val(icon);
+                    $(".simpleColorDisplay").css("background-color", tile_bg);
+                    $("input[name='color_chose']").val(tile_bg);
+                    $('#tile_setting').modal();
+                });
+
+                //十六进制颜色值的正则表达式
+                var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+                /*RGB颜色转换为16进制*/
+                String.prototype.colorHex = function(){
+                    var that = this;
+                    if(/^(rgb|RGB)/.test(that)){
+                        var aColor = that.replace(/(?:\(|\)|rgb|RGB)*/g,"").split(",");
+                        var strHex = "#";
+                        for(var i=0; i<aColor.length; i++){
+                            var hex = Number(aColor[i]).toString(16);
+                            if(hex === "0"){
+                                hex += hex;
+                            }
+                            strHex += hex;
+                        }
+                        if(strHex.length !== 7){
+                            strHex = that;
+                        }
+                        return strHex;
+                    }else if(reg.test(that)){
+                        var aNum = that.replace(/#/,"").split("");
+                        if(aNum.length === 6){
+                            return that;
+                        }else if(aNum.length === 3){
+                            var numHex = "#";
+                            for(var i=0; i<aNum.length; i+=1){
+                                numHex += (aNum[i]+aNum[i]);
+                            }
+                            return numHex;
+                        }
+                    }else{
+                        return that;
+                    }
+                };
+            </script>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+
+        <div class="col-md-6 col-sm-6">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-cursor font-purple"></i>
+                        <span class="caption-subject font-purple bold uppercase">相关信息</span>
+                    </div>
+
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="easy-pie-chart">
+                                <a target="_blank" class="title" href="http://os.opensns.cn/question">
+                                    <div>
+                                        <i class="icon-question" style="font-size:32px;padding: 8px"></i></div>
+                                    {:L('_Q_AND_A_')}
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="margin-bottom-10 visible-sm"></div>
+                        <div class="col-md-4">
+                            <div class="easy-pie-chart">
+                                <a target="_blank" class="title" href="http://os.opensns.cn/book/index/index.html">
+                                    <div>
+                                        <i class="fa fa-book" style="font-size:32px;padding: 10px"></i></div>
+
+                                    {:L('_DOCUMENT_CENTER_')}
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="margin-bottom-10 visible-sm"></div>
+                        <div class="col-md-4">
+                            <div class="easy-pie-chart">
+                                <a target="_blank" class="title" href="http://os.opensns.cn/weibo">
+                                    <div>
+                                        <i class="fa fa-commenting-o" style="font-size:32px;padding: 8px"></i></div>
+                                    {:L('_OFFICIAL_GROUP_')}
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 col-sm-6">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-share font-blue"></i>
+                        <span class="caption-subject font-blue bold uppercase">{:L('_SYSTEM_INFO_')}</span>
+                    </div>
+
+                </div>
+                <div class="portlet-body">
+                    <div class="scroller" style="height:237px;" data-always-visible="1" data-rail-visible="0">
+                        <table class="table table-bordered table-striped ">
+                            <tr>
+                                <th style="width: 200px">{:L('_SERVER_OS_')}</th>
+                                <td>{$Think.const.PHP_OS}</td>
+                            </tr>
+                            <tr>
+                                <th>{:L('_THINKPHP_VERSION_')}</th>
+                                <td>{$Think.VERSION}</td>
+                            </tr>
+                            <tr>
+                                <th>{:L('_RUNTIME_ENVIR_')}</th>
+                                <td>{$_SERVER['SERVER_SOFTWARE']}</td>
+                            </tr>
+                            <tr>
+                                <th>{:L('_MYSQL_VERSION_')}</th>
+                                <php>
+                                    $system_info_mysql = M()->query("select version() as v;");
+                                </php>
+                                <td>{$system_info_mysql.0.v}</td>
+                            </tr>
+                            <tr>
+                                <th>{:L('_LIMIT_UPLOAD_')}</th>
+                                <td>{:ini_get('upload_max_filesize')}
+
+                                    <a href="http://os.opensns.cn/book/index/read/section_id/93.html"
+                                       target="_blank">{:L('_MODIFY_HOW_TO_')}</a></td>
+                            </tr>
+                            <tr>
+                                <th>{:L('_OS_VERSION_')}</th>
+                                <td>{:file_get_contents('./Data/version.ini')}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+            <div class="with-padding-lg">
+                <div class="count clearfix">
+
+                </div>
+            </div>
+            <div class="with-padding-lg">
+                <div class="" style="width:700px;clear: both;margin: auto">
+                    <div class="hd cf">
+                        <h5>{$addons_config.title}</h5>
+
+                        <div class="title-opt">
+                        </div>
+                    </div>
+                    <div class="bd">
+                        <div class="">
+
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+</div>
+
+
+    <div class="clearfix">
+        <div class="col-xs-4">
+
+        </div>
+        <div class="col-xs-4">
+
+        </div>
+        <div class="col-xs-4">
+
+        </div>
+
+    </div>
+    <script>
+        $('#main-content').css('left', 0);
+        $(function () {
+            $('#myChart').highcharts({
+                chart: {
+                    type: "spline",
+                    style: {
+                        fontFamily: '"Microsoft Yahei", "宋体"'
+                    }
+                },
+                title: {
+                    text: "{:L('_USER_INCREASE_RECENT_',array('count_day'=>$count['count_day']))}",
+                    x: -20 //center
+                },
+                xAxis: {
+                    categories: eval('{$count.last_day.days}'),
+                    title: {
+                        text: "{:L('_MEMBER_REG_TODAY_')}",
+                        enabled: false
+                    }
+                },
+                yAxis: {
+                    title: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    verticalAlign: 'middle',
+                    borderWidth: 0,
+                    enabled: false
+                },
+                series: [{
+                    name: "{:L('_MEMBER_REG_TODAY_')}",
+                    data: eval('{$count.last_day.data}'),
+                    enable: true
+                }], credits: {enabled: false}
+            });
+        });
+
+
+    </script>
+    {:hook('adminRightBtn', array())}
+</block>
+<block name="modal">
+    {:hook('adminIndexModal', array())}
+    <div class="modal fade" id="settingCount">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                            class="sr-only">{:L('_CLOSE_')}</span></button>
+                    <h4 class="modal-title">{:L('_STATISTICS_SET_')}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="with-padding">
+                        <label>{:L('_DISPLAY_DAYS_DEFAULT_')} </label><input class="form-control" name="count_day" value="{$count.count_day}">
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn " data-role="saveCountSetting">
+                        <i class="icon-ok"></i> {:L('_SAVE_')}
+                    </button>
+                    <button class="btn " data-dismiss="modal">
+                        <i class="icon-remove"></i> {:L('_CANCEL_')}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="tile_setting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="">设置图标和颜色</h4>
+                </div>
+                <div class="modal-body" style="height: 100px">
+                    <div class="col-xs-3">
+                        <h4>选择图标</h4>
+                        <div class="pull-left icon-chose" title={:L("__WITH_DOUBLE_")}>
+                            <a class="icon-selector"> <i class=""></i><input name="icon_chose" title={:L("__WITH_DOUBLE_")} type="hidden" value=""></a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4>背景颜色</h4>
+                        <div class="pull-left color-chose" title={:L("_SELECT_THE_ICON_BACKGROUND_COLOR_WITH_DOUBLE_")}>
+                            <input name="color_chose" class="simple_color_callback" value="{default='#000000'}"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn " data-role="saveTileSetting" data-id="{$data.id}" href="javascript:void(0);" onclick="setTile()">
+                        <i class="icon-ok"></i> {:L('_SAVE_')}
+                    </button>
+                    <button class="btn " data-dismiss="modal">
+                        <i class="icon-remove"></i> {:L('_CANCEL_')}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="icon_selector" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">选择图标</h4>
+                </div>
+                <div class="modal-body">
+                    <include file="_icon"/>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function(){
+            initIconSelector();
+            bindColor();
+        });
+
+        $('[data-role=saveCountSetting]').click(function () {
+            $.post("__SELF__", {count_day: $('[name=count_day]').val()}, function (msg) {
+                handleAjax(msg);
+            });
+        });
+
+        function setTile(){
+            var id = sessionStorage['id'];
+            var icon = $("input[name='icon_chose']").val();
+            var tile_bg = $("input[name='color_chose']").val();
+            var url = "{:U('Admin/Index/setTile')}";
+
+            $.post(url, {id: id, icon: icon, tile_bg: tile_bg}, function (msg) {
+                if (msg.status) {
+                    toast.success(msg.info);
+                    setTimeout(function () {
+                        if(id == msg.tile_id){
+                            $('#tile_setting').modal('hide');
+                            $('#tile_'+id).css("background-color", msg.tile_bg).find("i#icon_set").removeClass().addClass("icon-"+msg.tile_icon);
+                        }
+                    }, 500);
+                } else {
+                    toast.error(msg.info);
+                }
+            }, 'json')
+        }
+
+        var icon_selector;
+        function initIconSelector() {
+            $('.icons-list .item span').click(function(){
+                var icon = $(this).attr('class');
+                $('#current').val(icon);
+                icon_selector.find('input').val(icon);
+                icon_selector.find('i').attr('class',icon);
+                $('#icon_selector').modal('hide');
+            });
+            $('.icon-selector').click(function () {
+                icon_selector = $(this);
+                $('#icon_selector').modal();
+            });
+        }
+
+        function bindColor() {
+            $('.simpleColorContainer').remove();
+            $('.simple_color_callback').simpleColor({
+                boxWidth: 15,
+                boxHeight: 15,
+                cellWidth: 15,
+                cellHeight: 15,
+                chooserCSS: { 'z-index': 1200 },
+                displayCSS: { 'border': 0 }
+            });
+        }
+    </script>
+</block>

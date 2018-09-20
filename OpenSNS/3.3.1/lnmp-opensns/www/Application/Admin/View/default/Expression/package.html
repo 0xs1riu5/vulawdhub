@@ -1,0 +1,62 @@
+<extend name="Public/base"/>
+<block name="body">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="{:U('Admin/Index/index')}">首页  </a>
+                <i class="fa fa-circle"></i>
+            </li>
+            <li>
+                <span>表情包列表</span>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <include file="Public/_addTo"/>
+        </div>
+    </div>
+
+    <!-- {:L("_TITLE_")} -->
+    <div class="main-title">
+        <h2>
+            {:L("_EXPRESSION_PACKAGE_LIST_")}
+        </h2>
+    </div>
+    <div class="with-padding">
+        <div class="fl">
+            <a href="{:U('admin/expression/add')}" class="btn btn-default">{:L("_UPLOAD_A_NEW_LOOK_")}</a>
+        </div>
+    </div>
+    <!-- 数据表格 -->
+    <div class="with-padding">
+        <table class="table table-bordered table-striped ">
+            <!-- 表头 -->
+            <thead>
+            <tr>
+                <th>{:L("_CHINESE_NAME_")}</th>
+                <th>{:L("_TITLE_")}</th>
+                <th>{:L("_EXPRESSION_QUANTITY_")}</th>
+                <th>{:L("_STATE_")}</th>
+                <th>{:L("_OPERATION_")}</th>
+            </tr>
+            </thead>
+            <!-- 列表 -->
+            <tbody>
+            <volist name="list" id="e">
+                <tr>
+
+                    <td><a href="{:U('admin/expression/expressionlist',array('name'=>$e['pkg_name']))}">{$e['pkg_title']}</a></td>
+                    <td><a href="{:U('admin/expression/expressionlist',array('name'=>$e['pkg_name']))}">{$e['pkg_name']}</a></td>
+                    <td>{$e['count']}</td>
+                    <td>{$e['status']?L('_ENABLE_WITH_SINGLE_'):L('_DISABLE_WITH_SINGLE_')}</td>
+                    <td>
+                        <php>if($e['pkg_name'] != 'miniblog'){</php>
+                        <a href="{:U('admin/expression/editpackage',array('name'=>$e['pkg_name']))}">{:L("_EDIT_")}</a>&nbsp;|&nbsp;<a class="ajax-get" href="{:U('admin/expression/delpackage',array('name'=>$e['pkg_name']))}">{:L("_DELETE_")}</a>
+                        <php>}</php>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</block>

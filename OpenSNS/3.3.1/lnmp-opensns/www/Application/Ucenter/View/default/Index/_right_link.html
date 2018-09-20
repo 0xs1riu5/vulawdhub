@@ -1,0 +1,55 @@
+<div>
+    <div class="uc_link_block clearfix col-xs-12">
+        <div class="uc_link_top clearfix">
+            <div class="uc_title">
+                <if condition="$uid eq is_login()">{:L('_I_')}<else/>{:L('_TA_')}</if>{:L('_DE_FOLLOWER_')}({$follow_totalCount|default=0})
+            </div>
+            <div class="uc_fl_right uc_more_link"><a href="{:U('following',array('uid'=>$uid))}">{:L('_MORE_')}</a></div>
+        </div>
+        <div class="col-xs-12 uc_link_info">
+            <volist name="follow_default" id="fl">
+                <div class="col-xs-3">
+                    <dl>
+                        <a href="{$fl.user.space_url}">
+                            <dt><img style="width: 64px;height: 64px" ucard="{$fl.user.uid}" src="{$fl.user.avatar64}" class="avatar-img img-responsive">
+                            </dt>
+                            <dd ucard="{$fl.user.uid}" class="text-more" style="width: 100%">{$fl.user.nickname}</dd>
+                        </a>
+                    </dl>
+                </div>
+            </volist>
+            <if condition="count($follow_default) eq 0"><p style="text-align: center; font-size: 24px;">
+                <br><br>
+                {:L('_FOLLOWER_NOTHING_')}{:L('_WAVE_')}
+                <br><br><br>
+            </p></if>
+        </div>
+
+    </div>
+    <div class="uc_link_block clearfix col-xs-12" style="margin-top: 10px;">
+        <div class="uc_link_top clearfix">
+            <div class="uc_title">
+                <if condition="$uid eq is_login()">{:L('_I_')}<else/>{:L('_TA_')}</if>{:L('_DE_FANS_')}({$fans_totalCount|default=0})
+            </div>
+            <div class="uc_fl_right uc_more_link"><a href="{:U('fans',array('uid'=>$uid))}">{:L('_MORE_')}</a></div>
+        </div>
+        <div class="col-xs-12 uc_link_info">
+            <volist name="fans_default" id="fs">
+                <div class="col-xs-3">
+                    <dl>
+                        <a href="{$fs.user.space_url}">
+                            <dt><img style="width: 64px;height: 64px"  ucard="{$fs.user.uid}" src="{$fs.user.avatar64}" class="avatar-img img-responsive">
+                            </dt>
+                            <dd ucard="{$fs.user.uid}" class="text-more" style="width: 100%">{$fs.user.nickname}</dd>
+                        </a>
+                    </dl>
+                </div>
+            </volist>
+            <if condition="count($fans_default) eq 0"><p style="text-align: center; font-size: 24px;">
+                <br><br>
+                {:L('_FANS_NOTHING_')}{:L('_WAVE_')}
+                <br><br><br>
+            </p></if>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="clearfix" style="width: 350px;font-size: 13px;line-height: 23px;">
+    <div class="col-xs-12" style="padding: 1px">
+        <img class="img-responsive" src="{$user.cover_path}">
+    </div>
+    <div class="col-xs-12" style="padding: 2px;margin-top: -25px;">
+        <div class="col-xs-3" style="margin-top: -10px;">
+            {$user.avatar_html64}
+        </div>
+        <div class="col-xs-9" style="padding-top: 25px;padding-right:10px;font-size: 12px;">
+            <div style="font-size: 16px;"><a href="{$user.space_url}" title="">{$user.real_nickname}
+                <if condition="$user['followed'] AND ($user['alias'] neq '')">
+                    <span class="text-danger " style="font-size: 0.8em">{$user.nickname}</span>
+                </if>
+            </a>
+                <if condition="get_uid() AND $not_self AND $user['followed']"><a
+                        onclick="card.set_alias({$user.uid})"><i
+                        class="icon-edit text-danger"></i> </a></if>
+                {$user.rank_link}
+            </div>
+            <div>
+                <a href="{$user.following_url}" title="{:L('_FOLLOWERS_MY_')}" target="_black">{:L('_FOLLOWERS_')}{:L('_COLON_')}{$user.following}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{$user.fans_url}" title="{:L('_FOLLOWERS_MY_')}" target="_black">{:L('_FANS_')}{:L('_COLON_')}{$user.fans}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div>
+                {:L('_SIGNATURE_')}{:L('_COLON_')}
+                <span class="text-muted">
+                    {$user.signature|default=L('_NO_IDEA_')}
+                </span>
+            </div>
+            <div style="margin-bottom: 15px;color: #848484">
+                {$user.tags}
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12" style="background: #f1f1f1;">
+
+
+        <if condition="get_uid() AND $not_self">
+            <button type="button" class="btn btn-default" onclick="talker.start_talk({$user.uid},{$has_wukong})"
+                    style="float: right;margin: 5px 0;padding: 2px 12px;margin-left: 8px;">{:L('_CHAT_')}
+            </button>
+            &nbsp;
+        </if>
+        <eq name="user.followed" value="1">
+            <button type="button" class="btn btn-default" data-before="btn btn-primary" data-after="btn btn-default"
+                    data-role="unfollow" data-follow-who="{$user.uid}"
+                    style="float: right;margin: 5px 0;padding: 2px 12px;"><font title="{:L('_FOLLOWED_CANCEL_')}">{:L('_FOLLOWED_')}</font></button>
+            <else/>
+            <if condition="$not_self">
+                <button type="button" class="btn btn-primary" data-before="btn btn-primary" data-after="btn btn-default"
+                        data-role="follow" data-follow-who="{$user.uid}"
+                        style="float: right;margin: 5px 0;padding: 2px 12px;">{:L('_FOLLOWERS_')}
+                </button>
+            </if>
+        </eq>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<div class="main-title">
+		<h2>{$info['id']?L('_EDIT_WITH_SINGLE_'):L('_NEW_WITH_SINGLE_')}{:L("_TO_CONFIGURE_")}</h2>
+	</div>
+    <div class="with-padding">
+        <form action="{:U()}" method="post" class="form-horizontal">
+            <div class="form-item">
+                <label class="item-label">{:L("_CONFIGURATION_IDENTIFICATION_")}<span class="check-tips">{:L("_C_FUNCTION_CALLS_CAN_ONLY_USE_ENGLISH_AND_CAN_NOT_REPEAT_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large form-control" style="width: 400px" name="name" value="{$info.name|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_CONFIGURATION_HEADER_")}<span class="check-tips">{:L("_USED_IN_THE_CONFIGURATION_HEADER_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large form-control" style="width:400px;" name="title" value="{$info.title|default=''}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_SORT_")}<span class="check-tips">{:L("_USED_IN_THE_ORDER_OF_GROUP_DISPLAY_")}</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-small form-control" style="width: 400px" name="sort" value="{$info.sort|default=0}">
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_CONFIGURATION_TYPE_")}<span class="check-tips">{:L("_THE_SYSTEM_WILL_BE_BASED_ON_DIFFERENT_TYPES_OF_ANALYTICAL_VALUES_")}</span></label>
+                <div class="controls">
+                    <select name="type" class="form-control" style="width:auto;">
+                        <volist name="Think.config.CONFIG_TYPE_LIST" id="type">
+                            <option value="{$key}">{$type}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_CONFIGURATION_GROUPING_")}<span class="check-tips">{:L("_CONFIGURATION_GROUPING_IS_USED_FOR_BATCH_SETTINGS_WITH_SPACE_")}{:L("_NO_GROUPING_IS_NOT_DISPLAYED_IN_THE_SYSTEM_SETTINGS_")}</span></label>
+                <div class="controls">
+                    <select name="group" class="form-control" style="width: auto">
+                        <option value="0">{:L("_NOT_GROUPING_")}</option>
+                        <volist name="Think.config.CONFIG_GROUP_LIST" id="group">
+                            <option value="{$key}">{$group}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_TO_CONFIGURE_")}值<span class="check-tips">{:L("_CONFIGURATION_VALUE_")}</span></label>
+                <div class="controls">
+                    <label class="textarea input-large">
+                        <textarea name="value" class="form-control" style="width: 400px;height: 200px">{$info.value|default=''}</textarea>
+                    </label>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_CONFIGURATION_ITEM_")}<span class="check-tips">{:L("_IF_IT_IS_AN_ENUMERATION_TYPE_TO_CONFIGURE_THE_ITEM_WITH_SPACE_")}</span></label>
+                <div class="controls">
+                    <label class="textarea input-large">
+                        <textarea name="extra" class="form-control" style="width: 400px;height: 200px">{$info.extra|default=''}</textarea>
+                    </label>
+                </div>
+            </div>
+            <div class="form-item">
+                <label class="item-label">{:L("_EXPLAIN_")}<span class="check-tips">{:L("_CONFIGURATION_DETAILS_")}</span></label>
+                <div class="controls">
+                    <label class="textarea input-large">
+                        <textarea name="remark" class="form-control" style="width: 400px;height: 200px">{$info.remark|default=''}</textarea>
+                    </label>
+                </div>
+            </div>
+            <div class="form-item">
+                <input type="hidden" name="id" value="{$info.id|default=''}">
+                <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+                <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+            </div>
+        </form>
+    </div>
+
+</block>
+
+<block name="script">
+	<script type="text/javascript">
+		Think.setValue("type", {$info.type|default=0});
+		Think.setValue("group", {$info.group|default=0});
+		//导航高亮
+		highlight_subnav('{:U('Config/index')}');
+	</script>
+</block>

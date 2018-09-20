@@ -1,0 +1,35 @@
+<php>
+    if(ACTION_NAME=='information'){ $tabClass['user_data'] = 'active'; }
+    elseif(ACTION_NAME=='fans'||ACTION_NAME=='following'){ $tabClass['user_fans'] = 'active'; }
+    elseif(ACTION_NAME=='topiclist'){ $tabClass['user_topic'] = 'active'; }
+    elseif(ACTION_NAME=='rankverify'||ACTION_NAME=='rank'||ACTION_NAME=='rankverifyfailure'||ACTION_NAME=='rankverifywait'){ $tabClass['user_rank'] = 'active'; }
+    else{ $tabClass[$type] = 'active'; }
+</php>
+
+        <style>
+            .nav.navbar-nav li a.active{
+                border-left: 3px solid #1ABC9C;
+            }
+        </style>
+<nav class="navbar navbar-default uc_navbar" role="navigation">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav new-nav">
+            <notempty name="appArr">
+                <volist name='appArr' id='vo'>
+                    <li>
+                        <switch name="vo.key">
+                            <case value="follow"><a href="{:U('following',array('uid'=>$user_info['uid']))}" class="{$tabClass.user_fans}">{$vo.title}</a></case>
+                            <case value="info"> <a href="{:U('information',array('uid'=>$user_info['uid']))}" class="{$tabClass.user_data}">{$vo.title}</a></case>
+                            <case value="rank_title"><a href="{:U('rank',array('uid'=>$user_info['uid']))}" class="{$tabClass.user_rank}">{$vo.title}</a></case>
+                            <case value="topic_list"><a href="{:U('topicList',array('uid'=>$user_info['uid']))}" class="{$tabClass.user_topic}">{$vo.title}</a></case>
+                            <default /><a href="{:U('appList',array('type'=>$key,'uid'=>$user_info['uid']))}"  class="{$tabClass[$key]}">{$vo.title}</a>
+                        </switch>
+                    </li>
+                </volist>
+            </notempty>
+
+        </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+</nav>

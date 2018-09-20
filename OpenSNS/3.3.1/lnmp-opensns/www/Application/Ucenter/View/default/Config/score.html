@@ -1,0 +1,89 @@
+<extend name="Config/base"/>
+
+<block name="body">
+
+    <div id="center">
+        <div id="center_base">
+
+
+            <ul class="nav nav-secondary">
+                <li class="active"><a href="#base" data-toggle="tab">{:L('_SCORE_MY_')}</a></li>
+                <li>
+                    <a href="#level" data-toggle="tab">{:L('_GRADE_EXPERIENCE_')}</a>
+                </li>
+                <li>
+                    <a href="#rule" data-toggle="tab">{:L('_SCORE_RULE_')}</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="base">
+                    <div class="with-padding" style="padding: 20px">
+                        <div class="col-xs-8">
+                            <div class="panel">
+                                <div class="panel-heading">{:L('_SCORE_NOW_')}</div>
+                                <ul class="list-group">
+                                    <volist name="scores" id="vo">
+                                        <li class="list-group-item">{$vo.title}：{$vo.value} {$vo.unit}</li>
+                                    </volist>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tab-pane" id="level">
+                    <div class="with-padding" style="padding: 20px">
+                        <div class="col-xs-8">
+                            <div class="panel">
+                                <div class="panel-heading">{:L('_EXPERIENCE_UPGRADE_')}</div>
+                                <ul class="list-group">
+                                    <li class="list-group-item">{$level}</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-xs-12">
+                            <div>
+                                {:L('_EXPERIENCE_NOW_')}{:L('_COLON_')}{$self.score}
+                            </div>
+                            <div>{:L('_GRADE_NOW_')}{:L('_COLON_')}{$self.title}</div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="tab-pane" id="rule">
+                    <div class="with-padding" style="padding: 20px">
+                        <volist name="action_module" id="m">
+                            <div class="panel">
+                                <div class="panel-heading">{$m.module.alias|default=L('_SYSTEM_')}</div>
+                                <div class="list-group">
+                                    <volist name="m.action" id="vo">
+                                        <if condition="$vo['rule_array'] neq false">
+                                            <a class="list-group-item"><h4 class="list-group-item-heading"><strong>{$vo.title}
+                                                ：</strong></h4>
+                                                <volist name="vo.rule_array" id="r">
+                                                    <p class="list-group-item-text">
+                                                        {:L('_PER_TIMES_')}{:L('_BRACKETS_LEFT_')}{$r.score.title}{:L('_BRACKETS_RIGHT_')}{:L('_BRACKETS_LEFT_')}{$r.rule}{:L('_BRACKETS_RIGHT_')}{$r.score.unit}
+                                                        {:L('_COMMA_')}{:L('_PER_')}{:L('_BRACKETS_LEFT_')}{$r.cycle}{:L('_BRACKETS_RIGHT_')}{:L('__HOUR_MOST_')}{:L('_BRACKETS_LEFT_')}{$r.max}{:L('_BRACKETS_RIGHT_')}{:L('_TIMES_')}</p>
+                                                </volist>
+                                            </a>
+                                        </if>
+                                    </volist>
+                                </div>
+                            </div>
+                        </volist>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+
+
+        </div>
+    </div>
+
+</block>

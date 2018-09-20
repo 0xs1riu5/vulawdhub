@@ -1,0 +1,32 @@
+<php> $config = api('Config/lists');
+    C($config); //添加配置
+    $count_code=C('COUNT_CODE');
+</php>
+<script type="text/javascript">
+    var ThinkPHP = window.Think = {
+        "ROOT": "__ROOT__", //当前网站地址
+        "APP": "__APP__", //当前项目地址
+        "PUBLIC": "__PUBLIC__", //项目公共目录地址
+        "DEEP": "{:C('URL_PATHINFO_DEPR')}", //PATHINFO分割符
+        "MODEL": ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+        "VAR": ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+        'URL_MODEL': "{:C('URL_MODEL')}",
+        'WEIBO_ID': "{:C('SHARE_WEIBO_ID')}"
+    }
+    var cookie_config={
+        "prefix":"{:C('COOKIE_PREFIX')}",// cookie 名称前缀
+        "path" :"{:C('COOKIE_PATH')}", // cookie 保存路径
+        "domain":"{:C('COOKIE_DOMAIN')}" // cookie 有效域名
+    }
+    var Config={
+        'GET_INFORMATION':{:modC('GET_INFORMATION',1,'Config')},
+        'GET_INFORMATION_INTERNAL':{:modC('GET_INFORMATION_INTERNAL',10,'Config')}*1000,
+        'WEBSOCKET_ADDRESS':"{:modC('WEBSOCKET_ADDRESS',gethostbyname($_SERVER['SERVER_NAME']),'Config')}",
+        'WEBSOCKET_PORT':{:modC('WEBSOCKET_PORT',8000,'Config')}
+    }
+    var weibo_comment_order = "{:modC('COMMENT_ORDER',0,'WEIBO')}";
+</script>
+
+<script src="__PUBLIC__/lang.php?module={:strtolower(MODULE_NAME)}&lang={:LANG_SET}"></script>
+
+<script src="__PUBLIC__/expression.php"></script>

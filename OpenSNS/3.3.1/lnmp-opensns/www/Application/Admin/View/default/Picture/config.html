@@ -1,0 +1,152 @@
+<extend name="Public/base"/>
+<block name="body">
+    <section class="content">
+        <div id="main-content">
+
+            <div id="main" style="overflow-y: auto; overflow-x: hidden; min-height: 451px;">
+
+                <!-- nav -->
+                <!-- nav -->
+
+
+                <div class="admin-main-container">
+                    <div class="page-bar">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <a href="{:U('Admin/Index/index')}">首页  </a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <span>图片水印设置</span>
+                            </li>
+                        </ul>
+                        <div class="page-toolbar">
+                            <include file="Public/_addTo"/>
+                        </div>
+                    </div>
+
+                    <div class="main-title">
+                        <h2>图片水印设置 </h2>
+                    </div>
+
+                    <div class="with-padding">
+                        <div class="tab-wrap tabbable-custom" style="margin-bottom: 5px">
+                            <ul class="nav nav-tabs group_nav">
+                            </ul>
+                            <div class="tab-content">
+                                <form id="water-form" url="{:U('Picture/config')}" method="post"class="form-horizontal">
+                                    <label class="item-label">是否开启添加水印 <span class="check-tips">（默认关闭水印）</span></label>
+                                    <div class="controls ">
+                                        <label for="id_WATER_OPEN_1">
+                                            <input id="id_WATER_OPEN_1" name="WATER_OPEN" value="1" type="radio" <if condition="$data['WATER_OPEN'] eq 1">checked=""</if>>
+                                            开启
+                                        </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label for="id_WATER_OPEN_0">
+                                            <input id="id_WATER_OPEN_0" name="WATER_OPEN" value="0" type="radio" <if condition="$data['WATER_OPEN'] eq 0">checked=""</if>>
+                                            关闭
+                                        </label> &nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div>
+                                    <label class="item-label">水印图片 </label>
+                                    <div class="controls">
+                                        <input type="file" id="upload_picture_WATER_IMAGE">
+                                        <input type="hidden" name="WATER_IMAGE" id="cover_id_WATER_IMAGE" value="{$data['WATER_IMAGE']}"/>
+                                        <div class="upload-img-box" style="  margin-top: 10px; display: inline-block; border: 1px solid #62C8B4;">
+                                            <notempty name="data['WATER_IMAGE']">
+                                                <div class="upload-pre-item" >
+                                                    <img src="{$data['WATER_IMAGE']}"  ondblclick="removePicture_WATER_IMAGE(this)"/>
+                                                </div>
+                                            </notempty>
+                                        </div>
+                                    </div>
+                                    <style>
+                                        #upload_picture_WATER_IMAGE{
+                                            background: #62C8B4;
+                                            border-radius: 3px!important;
+                                            border: 1px solid #0CD8B0;
+                                            text-align: center;
+                                            color: white;
+                                        }
+                                    </style>
+                                    <link type="text/css" src="__STATIC__/uploadify/uploadify.css"/>
+                                    <script type="application/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+                                    <script type="text/javascript">
+                                        //上传图片
+                                        /* 初始化上传插件 */
+                                        $("#upload_picture_WATER_IMAGE").uploadify({
+                                            "height"          : 30,
+                                            "swf"             : "__STATIC__/uploadify/uploadify.swf",
+                                            "fileObjName"     : "download",
+                                            "buttonText"      : "上传图片",
+                                            "uploader"        : "{:U('Admin/Picture/uploadWater',array('session_id'=>session_id()))}",
+                                            "width"           : 120,
+                                            'removeTimeout'   : 1,
+                                            'fileTypeExts'    : '*.jpg; *.png; *.gif;',
+                                            "onUploadSuccess" : uploadPicture_WATER_IMAGE,
+                                        'onFallback' : function() {
+                                            alert('未检测到兼容版本的Flash.');
+                                        }
+                                        });
+
+                                        function uploadPicture_WATER_IMAGE(file, data){
+                                            var data = $.parseJSON(data);
+                                            var src = '';
+                                            if(data.status){
+                                                src = data.url || '__ROOT__' + data.path
+                                                $("#cover_id_WATER_IMAGE").parent().find('.upload-img-box').html(
+                                                        '<div class="upload-pre-item" val="' + data.id + '"><img src="__ROOT__' + src + '" ondblclick="removePicture_WATER_IMAGE(this)"/></div>'
+                                                );
+                                                $("#cover_id_WATER_IMAGE").val(src);
+
+                                            } else {
+                                                updateAlert(data.info);
+                                                setTimeout(function(){
+                                                    $('#top-alert').find('button').click();
+                                                    $(that).removeClass('disabled').prop('disabled',false);
+                                                },1500);
+                                            }
+                                        }
+                                        function removePicture_WATER_IMAGE(o){
+                                            $(o).parent().remove();
+                                            $('#cover_id_WATER_IMAGE').val('');
+                                        }
+
+                                    </script>
+                                    <label class="item-label">水印位置 <span class="check-tips">（水印在原图的位置）</span></label>
+                                    <div class="controls ">
+                                        <select id="select_WATER_SPACE" name="WATER_SPACE" class="form-control" style="width:auto;">
+                                            <option value="1">左上</option>
+                                            <option value="2">中上</option>
+                                            <option value="3">右上</option>
+                                            <option value="4">左中</option>
+                                            <option value="5">中间</option>
+                                            <option value="6">右中</option>
+                                            <option value="7">左下</option>
+                                            <option value="8">中下</option>
+                                            <option value="9">右下</option>
+                                        </select>
+                                        <script>
+                                            var water_space="{$data['WATER_SPACE']}";
+                                            $('#select_WATER_SPACE').val(water_space);
+                                        </script>
+                                    </div>
+                                    <br>
+
+                                    <div class="form-item">
+                                        <button class="btn submit-btn ajax-post btn-success" id="submit" type="submit"
+                                                target-form="form-horizontal">确定
+                                        </button>
+                                        &nbsp;
+                                        <button onclick="javascript:history.back(-1);return false;"
+                                                class="btn btn-return">返回
+                                        </button>
+                                        &nbsp;
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</block>

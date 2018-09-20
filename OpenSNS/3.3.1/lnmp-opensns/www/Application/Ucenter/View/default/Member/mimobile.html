@@ -1,0 +1,143 @@
+<extend name="Base/common"/>
+
+
+<block name="body">
+    <section>
+
+
+        <div class="common_block_border login-form-inbox " style="margin-top: 100px">
+            <div class="login-text"><strong><h1>{:L('_SEND_MAIL_PASSWORD_FOUND_MOBILE_')}</h1></strong></div>
+            <form class="login-form" id="J_findpwd_form" action="{:U('Member/miMobile')}" method="post">
+
+                <div class="control-group login-input">
+
+
+                    <div class="controls">
+                        <input type="text" id="inputEmail" class="form-control" placeholder="{:L('_MI_MOBILE_PLACEHOLDER_')}"
+                               ajaxurl="/member/checkUserEmailUnique.html" errormsg="{:L('_MI_EMAIL_ERROR_')}" nullmsg="{:L('_MI_EMAIL_')}"
+                               datatype="e" value="" name="mobile">
+                    </div>
+                </div>
+
+
+
+
+
+                    <div class="control-group login-input tab-pane">
+
+
+                        <div class="form-group">
+
+                            <div class="col-xs-4" style="padding: 0">
+                                <input type="text" id="verifyCode2" class="form-control" placeholder="验证码"
+                                       errormsg="请填写正确的验证码" nullmsg="请填写验证码" datatype="*5-5" name="verify">
+                            </div>
+                            <div class="col-xs-8 lg_lf_fm_verify">
+                                <img class="verifyimg reloadverify img-responsive" alt="点击切换"
+                                     src="{:U('verify',array('id'=>2))}"
+                                     style="cursor:pointer;">
+                            </div>
+                            <div class="col-xs-12 Validform_checktip text-warning lg_lf_fm_tip"></div>
+                            <div class="clearfix"></div>
+                        </div>
+
+
+
+
+                        <div class="controls ">
+                            <input type="hidden" name="reg_type" value="mobile">
+                            <input type="text" id="inputPassword" class="form-control" placeholder="{:L('_MI_CODE_')}"
+                                   errormsg="{:L('_MI_CODE_ERROR_')}" nullmsg="{:L('_MI_CODE_NULL_')}" datatype="*5-5" name="verify">
+                        </div>
+                        <a class="btn btn-default " data-role="getVerify" style="margin-top: 10px;">获取验证码</a>
+                    </div>
+
+                <a class="btn btn-default" href="{:U('Member/login')}">{:L('_MI_RE_LOGIN_')}</a>
+                <php>if(check_reg_type('email')){</php>
+                <a class="btn btn-default" href="{:U('Member/mi')}">邮箱密码找回</a>
+                <php>}</php>
+                <button type="submit" class="btn btn-primary pull-right" style="float: right">{:L('_MI_FOUND_')}</button>
+            </form>
+        </div>
+    </section>
+</block>
+
+
+<block name="side"></block>
+<block name="script">
+    <script type="text/javascript">
+        $(function () {
+
+            $(".reloadverify").click(function () {
+                var $this = $(this);
+                var verifyimg = $this.attr("src");
+                if (verifyimg.indexOf('?') > 0) {
+                    $this.attr("src", verifyimg + '&random=' + Math.random());
+                } else {
+                    $this.attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                }
+            });
+        });
+
+        
+        $(document)
+                .ajaxStart(function () {
+                    $("button:submit").addClass("log-in").attr("disabled", true);
+                })
+                .ajaxStop(function () {
+                    $("button:submit").removeClass("log-in").attr("disabled", false);
+                });
+
+
+        $(function () {
+            $("form").submit(function () {
+                var self = $(this);
+                $.post(self.attr("action"), self.serialize(), success, "json");
+                return false;
+
+                function success(data) {
+                    handleAjax(data);
+                }
+            });
+            $("[data-role='getVerify']").click(function () {
+                var account = $('[name="mobile"]').val();
+
+                var type = $(this).parents('.tab-pane').find('[name="reg_type"]').val();
+
+                var verify = $(this).parents('.tab-pane').find('[name="verify"]').val();
+
+/*
+                if(account == ''){
+                    toast.error('请输入帐号');
+                    toast.hideLoading();
+                    return false;
+                }
+                if(verify == ''){
+                    toast.error('请输入验证码');
+                    toast.hideLoading();
+                    return false;
+                }
+*/
+
+
+
+
+                $.post("{:U('Ucenter/verify/sendVerifyFindPsw')}", {
+                    account: account,
+                    type: type,
+                    action: 'member',
+                    verify: verify
+                }, function (res) {
+                    if (res.status) {
+                        toast.success(res.info);
+                    }
+                    else {
+                        toast.error(res.info);
+                    }
+                })
+            })
+
+
+        });
+    </script>
+</block>

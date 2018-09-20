@@ -1,0 +1,217 @@
+<extend name="Config/base"/>
+
+<block name="body">
+<script>
+    function center_toggle(name) {
+        var show = $('#' + name + '_panel').css('display');
+        $('.center_panel').hide();
+        $('.center_arrow_right').show();
+        $('.center_arrow_bottom').hide()
+        if (show == 'none') {
+            $('#' + name + '_panel').show();
+            $('#' + name + '_toggle_right').hide();
+            $('#' + name + '_toggle_bottom').show()
+        } else {
+            $('#' + name + '_toggle_right').show();
+            $('#' + name + '_toggle_bottom').hide()
+        }
+
+    }
+</script>
+<div id="center">
+<div id="center_base">
+<div>
+
+
+<div id="center_account">
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav nav-secondary">
+                <li class="active"><a href="#base" data-toggle="tab">{:L('_DATA_BASIC_')}</a></li>
+                <volist name="profile_group_list" id="vl">
+                    <li>
+                        <a href="#expand_tab_{$vl.id}" data-toggle="tab">{$vl.profile_name}</a>
+                    </li>
+                </volist>
+            </ul>
+
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="base">
+            <div class="with-padding" style="padding: 20px">
+                <div class="row">
+                    <div class="col-xs-8 center_info form-horizontal">
+                        <php>if(check_reg_type('username')){</php>
+                        <div class="form-group">
+                            <label for="aUsername" class="col-xs-2 control-label">{:L('_USERNAME_')}</label>
+
+                            <div class="col-xs-10">
+                                <php>if($accountInfo['username']){</php>
+                                <span class="lh32">{$accountInfo['username']}</span>
+                                <php>}else{</php>
+                                <input type="text" class="form-control pull-left" id="aUsername" value=""
+                                       placeholder="{:L('_USER_NAME_NOT_SET_')}{:L('_WAVE_')}">
+                                <a class="pull-left lh32 saveUsername" style="margin-left: 10px">{:L('_SETTINGS_')}</a>
+                                <script>
+                                    $(function () {
+                                        $('.saveUsername').click(function () {
+                                            var username = $(this).prev().val();
+                                            if (!username) {
+                                                toast.error("{:L('_USERNAME_NOT_EMPTY_')}{:L('_EXCLAMATION_')}");
+                                                return false;
+                                            }
+                                            if (confirm("{:L('_USERNAME_SET_ONCE_')}{:L('_QUESTION_')}")) {
+                                                $.post("{:U('ucenter/config/saveUsername')}", {username: username}, function (res) {
+                                                    handleAjax(res);
+                                                })
+                                            }
+                                        })
+                                    })
+                                </script>
+                                <php>}</php>
+                            </div>
+                        </div>
+
+                        <php>}</php>
+
+                        <php>if(check_reg_type('email')){</php>
+                        <div class="form-group">
+                            <label for="aEmail" class="col-xs-2 control-label">{:L('_EMAIL_')}</label>
+
+                            <div class="col-xs-10">
+
+                                {$accountInfo.email|default=L('_SET_NOT_')}
+                                <a class=" lh32 " style="margin-left: 10px"
+                                   data-remote="{:U('ucenter/config/changeaccount',array('tag'=>'email'))}"
+                                   data-toggle="modal">{:L('_EMAIL_MODIFY_')}</a>
+                            </div>
+                        </div>
+                        <php>}</php>
+
+                        <php>if(check_reg_type('mobile')){</php>
+
+                        <div class="form-group">
+                            <label for="aMobile" class="col-xs-2 control-label">{:L('_PHONE_')}</label>
+
+                            <div class="col-xs-10">
+                                {$accountInfo.mobile|default=L('_SET_NOT_')}
+
+                                <a class=" lh32 " style="margin-left: 10px"
+                                   data-remote="{:U('ucenter/config/changeaccount',array('tag'=>'mobile'))}"
+                                   data-toggle="modal">{:L('_PHONE_MODIFY_')}</a>
+                            </div>
+                        </div>
+                        <php>}</php>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <form class="form-horizontal center_info ajax-form" role="form"
+                              action="{:U('Ucenter/Config/index')}" method="post">
+                            <div class="form-group">
+                                <label for="nickname" class="col-xs-2 control-label">{:L('_NICKNAME_')}</label>
+
+                                <div class="col-xs-10">
+                                    <input type="text" class="form-control" id="nickname" name="nickname"
+                                           value="{$user.nickname|op_t}"
+                                           placeholder="{:L('_NICKNAME_')}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">{:L('_SEX_')}</label>
+
+                                <div class="col-xs-10">
+                                    <label class="radio-inline">
+                                        <input name="sex" type="radio" value="1"
+                                        <eq name="user.sex" value="1"> checked</eq>
+                                       >{:L('_MAN_')}
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input name="sex" type="radio" value="2"
+                                        <eq name="user.sex" value="2"> checked</eq>
+                                       >{:L('_WOMAN_')}
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input name="sex" type="radio" value="0"
+                                        <eq name="user.sex" value="0"> checked</eq>
+                                       >{:L('_SECRECY_')}
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group position">
+                                <label for="email" class="col-xs-2 control-label">{:L('_PLACE_')}</label>
+
+                                <div class="col-xs-10">
+                                    {:hook('J_China_City',array('province'=>$user['pos_province'],'city'=>$user['pos_city'],'district'=>$user['pos_district'],'community'=>$user['pos_community']))}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signature" class="col-xs-2 control-label">{:L('_SIGNATURE_')}</label>
+
+                                <div class="col-xs-10">
+                                    <textarea id="signature" name="signature" class="form-control"
+                                              style="width: 100%; height: 6em;resize: none">{$user.signature|htmlspecialchars}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-xs-10">
+                                    <button type="submit" class="btn btn-primary">{:L('_SAVE_')}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+            <volist name="profile_group_list" id="vo">
+
+                <div class="tab-pane" id="expand_tab_{$vo.id}">
+                    <form action="{:U('Config/edit_expandinfo')}" method="post" class="ajax-form">
+                    <div class="with-padding">
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <input type="hidden" name="profile_group_id" value="{$vo.id}">
+                                <div>
+                                    <volist name="vo.fields" id="vl">
+                                        <dl>
+                                            {:W('InputRender/inputRender',array($vl,'personal'))}
+                                        </dl>
+                                    </volist>
+                                </div>
+                                <if condition="count($vo['fields']) neq 0">
+                                    <input type="submit" value="{:L('_SAVE_')}" id="submit_btn"
+                                           class="btn btn-primary expandinfo-sumbit">
+                                    <else/>
+                                    <span class="expandinfo-noticeinfo">{:L('_MESSAGE_EXPAND_NONE_')}{:L('_EXCLAMATION_')}</span>
+                                </if>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+
+            </volist>
+
+    </div>
+
+
+</div>
+</div>
+
+
+</div>
+</div>
+
+
+</div>
+<script type="text/javascript" src="__JS__/expandinfo-form.js"></script>
+</block>

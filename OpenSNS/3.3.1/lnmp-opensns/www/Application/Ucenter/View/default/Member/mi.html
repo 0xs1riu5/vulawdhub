@@ -1,0 +1,79 @@
+<extend name="Base/common"/>
+
+
+<block name="body">
+    <section>
+
+
+        <div class="common_block_border login-form-inbox " style="margin-top: 100px">
+            <div class="login-text"><strong><h1>{:L('_SEND_MAIL_PASSWORD_FOUND_EMAIL_')}</h1></strong></div>
+            <form class="login-form" id="J_findpwd_form" action="{:U('Member/mi')}" method="post">
+
+                <div class="control-group login-input">
+
+
+                    <div class="controls">
+                        <input type="text" id="inputEmail" class="form-control" placeholder="{:L('_MI_EMAIL_PLACEHOLDER_')}"
+                               ajaxurl="/member/checkUserEmailUnique.html" errormsg="{:L('_MI_EMAIL_ERROR_')}" nullmsg="{:L('_MI_EMAIL_')}"
+                               datatype="e" value="" name="email">
+                    </div>
+                </div>
+                    <div class="control-group login-input">
+                        <div class="controls">
+                            <input type="text" id="inputPassword" class="form-control" placeholder="{:L('_MI_CODE_')}"
+                                   errormsg="{:L('_MI_CODE_ERROR_')}" nullmsg="{:L('_MI_CODE_NULL_')}" datatype="*5-5" name="verify">
+                        </div>
+                    </div>
+                    <div class="control-group login-input">
+                        <div class="controls">
+                            <img class="verifyimg reloadverify" alt="{:L('_MI_ALT_')}" src="{:U('verify')}" style="cursor:pointer;">
+                        </div>
+                        <div class="controls Validform_checktip text-warning"></div>
+                    </div>
+                <a class="btn btn-default" href="{:U('Member/login')}">{:L('_MI_RE_LOGIN_')}</a>
+                <php>if(check_reg_type('mobile')){</php>
+                <a class="btn btn-default" href="{:U('Member/mimobile')}">手机密码找回</a>
+                <php>}</php>
+                <button type="submit" class="btn btn-primary pull-right" style="float: right">{:L('_MI_FOUND_')}</button>
+            </form>
+        </div>
+    </section>
+</block>
+
+
+<block name="side"></block>
+<block name="script">
+    <script type="text/javascript">
+
+        $(document)
+                .ajaxStart(function () {
+                    $("button:submit").addClass("log-in").attr("disabled", true);
+                })
+                .ajaxStop(function () {
+                    $("button:submit").removeClass("log-in").attr("disabled", false);
+                });
+
+
+        $(function () {
+            $("form").submit(function () {
+                var self = $(this);
+                $.post(self.attr("action"), self.serialize(), success, "json");
+                return false;
+
+                function success(data) {
+                    handleAjax(data);
+                }
+            });
+
+
+            var verifyimg = $(".verifyimg").attr("src");
+            $(".reloadverify").click(function () {
+                if (verifyimg.indexOf('?') > 0) {
+                    $(".verifyimg").attr("src", verifyimg + '&random=' + Math.random());
+                } else {
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/, '') + '?' + Math.random());
+                }
+            });
+        });
+    </script>
+</block>

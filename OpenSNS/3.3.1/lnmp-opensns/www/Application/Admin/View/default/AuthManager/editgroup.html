@@ -1,0 +1,71 @@
+<extend name="Public/base" />
+<!-- 管理员{:L("_USER_GROUP_")}新增和编辑页面 -->
+<block name="body">
+	<div class="main-title">
+		<h2>{$auth_group['id']?'编辑':'新增'}权限组</h2>
+	</div>
+
+    <div class="with-padding">
+        <form action="{:U('AuthManager/descriptionGroup')}" enctype="application/x-www-form-urlencoded" method="POST"
+              class="form-horizontal">
+            <div class="form-item">
+                <label for="auth-title" class="item-label">权限组</label>
+                <div class="controls">
+                    <input id="auth-title" type="text" name="title" class="text input-large  form-control form-input-width" value="{$auth_group.title}"/>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="auth-description" class="item-label">描述</label>
+                <div class="controls">
+                    <label class="textarea input-large "><textarea id="auth-description" class="form-control form-text-area-size" type="text" name="description">{$auth_group.description}</textarea></label>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="end_time" class="item-label">过期时间(空为永久)</label>
+                <div class="controls">
+                    <input type="hidden" id="end_time" name="end_time" value="2000000000">
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" data-field-name="end_time" class="text form-datetime time form-control pull-left" style="width: 282px" value="{$auth_group.end_time|time_format}" placeholder="请选择过期时间">
+                    </div>
+                </div>
+            </div>
+            <div class="form-item" style="margin-top: 10px;">
+                <input type="hidden" name="id" value="{$auth_group.id}" />
+                <button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">{:L("_SURE_WITH_SPACE_")}</button>
+                <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">{:L("_RETURN_WITH_SPACE_")}</button>
+            </div>
+        </form>
+    </div>
+
+<block>
+<block name="script">
+<script type="text/javascript" charset="utf-8">
+    //导航高亮
+    highlight_subnav('{:U('AuthManager/index')}');
+</script>
+    <link href="__BTS__/plugins/datetimepicker/datetimepicker.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__BTS__/plugins/datetimepicker/datetimepicker.min.js"></script>
+
+    <script>
+        $('.form-datetime').datetimepicker({
+            language: "zh-CN",
+            autoclose: true,
+            format: 'yyyy-mm-dd hh:ii'
+        });
+        $('.time').change(function () {
+            var fieldName = $(this).attr('data-field-name');
+            var dateString = $(this).val();
+            if(dateString==''){
+                $('[name=' + fieldName + ']').val(2000000000);
+                return true;
+            }
+            var date = new Date(dateString);
+            var timestamp = date.getTime();
+            $('[name=' + fieldName + ']').val(Math.floor(timestamp / 1000));
+            return true;
+        });
+    </script>
+</block>
