@@ -17,6 +17,13 @@ RUN groupadd awd \
     && chown awd:awd -R /opt/mysql /www \
     && cd /opt/mysql/bin \
     && ./mysqld --initialize-insecure --user=awd --basedir=/opt/mysql --datadir=/opt/mysql/data \
+    && ln -s /opt/mysql/bin/* /usr/local/bin/ \
+    && echo "[mysqld]\nuser = awd\nsecure-file-priv = \"\"" > /etc/my.cnf \
+    && cp ../support-files/mysql.server /etc/init.d/mysql \
+    && chmod 755 /etc/init.d/mysql \
+    && /etc/init.d/mysql start \
+    && echo "GRANT ALL ON *.* TO root@'%' IDENTIFIED BY 'shadow' WITH GRANT OPTION;Delete FROM mysql.user Where User='root' and Host='localhost'; FLUSH PRIVILEGES" | mysql \
+    && /etc/init.d/mysql stop \
     && wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.40.tar.gz -P /tmp \
     && tar -zxvf /tmp/pcre-8.40.tar.gz -C /tmp \
     && cd /tmp/pcre-8.40 \
@@ -40,7 +47,6 @@ RUN groupadd awd \
     && sed -i "s/^;date.timezone =$/date.timezone = \"Asia\/Shanghai\"/" /usr/local/php/etc/php.ini \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && ln -s /opt/mysql/bin/* /usr/local/bin/ \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shangha" > /etc/timezone \
@@ -48,8 +54,8 @@ RUN groupadd awd \
     && chmod -R 777 data \
     && cd /tmp \
     && rm -rf * \
-    && chmod a+x /usr/local/bin/docker-entrypoint.sh \
-    && ln -s /usr/local/bin/docker-entrypoint.sh /entrypoint.sh  
+    && chmod a+x /usr/local/bin/docker-entrypoint.sh
 
 
 ENTRYPOINT ["docker-entrypoint.sh"]
+
