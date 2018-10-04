@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  golang:
+    image: s1riu5/golang:1.11
+    build: ./golang
+    ports:
+      - "28088:28088"
+      - "28080:28080"
+    links:
+      - mysql:db
+
+  mysql:
+    image: s1riu5/mysql:8.0
+    build: ./mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=shadow
