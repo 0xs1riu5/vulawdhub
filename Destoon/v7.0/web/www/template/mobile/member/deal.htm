@@ -1,0 +1,357 @@
+{template 'header', 'member'}
+{if $action == 'update'}
+	{if $step == 'detail'}
+		<div id="head-bar">
+		<div class="head-bar">
+		<div class="head-bar-back">
+		<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+		</div>
+		<div class="head-bar-title">订单详情</div>
+		<div class="head-bar-right">		
+		</div>
+		</div>
+		<div class="head-bar-fix"></div>
+		</div>
+		{template 'goods', 'chip'}
+		<div class="main">
+			{if $td[logistic]}
+			<div class="head bd-b"><strong>快递信息</strong></div>
+			<div class="content">
+			邮编：{$td[buyer_postcode]}<br/>
+			地址：{$td[buyer_address]}<br/>
+			姓名：{$td[buyer_name]}<br/>
+			手机：{$td[buyer_mobile]}<br/>
+			{if $td[send_time]}
+			发货日期：{$td[send_time]}<br/>
+			快递类型：{$td[send_type]}<br/>
+			快递单号：{$td[send_no]}{if $td[send_type] && $td[send_no]} &nbsp; <a href="###" class="b" onclick="Ds('express_t');$('#express').load(AJPath+'?mid={$mid}&action=express&moduleid=2&auth={$auth}');">[快递追踪]</a>{/if}<br/>
+			快递状态：{$_send_status[$td[send_status]]}<br/>
+			<div id="express_t" style="display:none;"><div id="express" style="font-size:12px;">正在查询...</div></div>
+			{/if}
+			</div>
+			{else}
+			<div class="head bd-b"><strong>验证信息</strong></div>
+			<div class="content">
+			密码：{$td[password]}<br/>
+			手机：{$td[buyer_mobile]}<br/>
+			</div>
+			{/if}
+			<div class="head bd-b"><strong>订单详情</strong></div>
+			<div class="content">
+				联系卖家：<a href="{userurl($td[seller], 'file=contact')}" target="_blank" class="b">{$td[seller]}</a><br/>
+				下单时间：{$td[adddate]}<br/>
+				最后更新：{$td[updatedate]}<br/>
+				{if $td[send_time]}
+				发货时间：{$td[send_time]}<br/>
+				{/if}
+				订单状态：{$_status[$td[status]]}<br/>
+				{if $td[buyer_reason]}
+				退款理由：{$td[buyer_reason]}<br/>
+				{/if}
+				{if $td[refund_reason]}
+				操作原因：{$td[refund_reason]}<br/>
+				{/if}
+				{if $td[status] == 6}
+				<div class="blank-20"></div>
+				<div><a href="?mid={$mid}&itemid={$td[itemid]}&action=update&step=pay"><div class="btn-green">付 款</div></a></div>
+				<div class="blank-20"></div>
+				{/if}
+			</div>
+		</div>
+	{elseif $step == 'express'}
+		<div id="head-bar">
+		<div class="head-bar">
+		<div class="head-bar-back">
+		<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+		</div>
+		<div class="head-bar-title">快递信息</div>
+		<div class="head-bar-right">
+		<a href="?mid={$mid}&action=update&step=detail&itemid={$itemid}"><span>订单</span></a>
+		</div>
+		</div>
+		<div class="head-bar-fix"></div>
+		</div>
+		{template 'goods', 'chip'}
+		<div class="main">
+			<div class="head bd-b"><strong>快递信息</strong></div>
+			<div class="content">
+				发货日期：{$td[send_time]}<br/>
+				快递类型：{$td[send_type]}<br/>
+				快递单号：{$td[send_no]}<br/>
+				快递状态：{$_send_status[$td[send_status]]}<br/>
+				追踪结果：<br/>
+				<div id="express" style="font-size:12px;">正在查询...</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		$(function(){
+			$('#express').load(AJPath+'?mid={$mid}&action=express&moduleid=2&auth={$auth}');
+		});
+		</script>
+	{elseif $step == 'pay'}
+		<div id="head-bar">
+		<div class="head-bar">
+		<div class="head-bar-back">
+		<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+		</div>
+		<div class="head-bar-title">订单支付</div>
+		<div class="head-bar-right">
+		<a href="?mid={$mid}&action=update&step=detail&itemid={$itemid}"><span>订单</span></a>
+		</div>
+		</div>
+		<div class="head-bar-fix"></div>
+		</div>
+		{template 'goods', 'chip'}
+		<form method="post" action="?" id="pay_form" onsubmit="return pay_check();">
+		<input type="hidden" name="mid" value="{$mid}"/>
+		<input type="hidden" name="action" value="{$action}"/>
+		<input type="hidden" name="step" value="{$step}"/>
+		<input type="hidden" name="itemid" value="{$itemid}"/>
+		<input type="hidden" id="fee" value="{$td[total]}"/>
+		<div id="mymoney" style="display:none;">
+			<div class="blank-20"></div>
+			<div class="list-set">
+				<ul>
+					<li><div><span><b>{$_money}</b>{$DT[money_unit]}</span>账户余额</div></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="payword" style="display:none;">
+			<div class="blank-20"></div>
+			<div class="list-inp bd-t bd-b">
+				<div><input type="password" name="password" id="password" placeholder="支付密码：" autocomplete="new-password" onblur="window.scrollTo(0,0);"/></div>
+			</div>
+		</div>
+
+		<div id="paytype" style="display:none;">
+			<div class="blank-20"></div>
+			{php $PAYLIST = get_paylist();}
+			<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+			<div class="list-pay">
+				<ul>
+				{loop $PAYLIST $k $v}
+				<li onclick="var bk=$('#bank').val();if(bk=='{$v[bank]}'){return;}$('#check-'+bk).attr('class', 'check');$('#check-{$v[bank]}').attr('class', 'checked');$('#bank').val('{$v[bank]}');"><div><em class="{if $k}check{else}checked{/if}" id="check-{$v[bank]}"></em><img src="{DT_PATH}api/pay/{$v[bank]}/icon.png" width="24" height="24"/>{$v[name]} {if $v[percent]>0}<span>手续费 {$v[percent]}%</span>{/if}</div></li>
+				{/loop}
+				</ul>
+			</div>
+		</div>
+
+		<div class="blank-20"></div>
+		<div class="list-btn"><input type="submit" name="submit" value="立即支付" class="btn-green"/></div>
+		<div class="blank-20"></div>
+		</form>
+		<script type="text/javascript">
+		function pay_check() {
+			var money = $('#fee').val();
+			if(money > {$_money}) {
+				Go('charge.php?action=pay&reason=group|{$itemid}|{$mid}&amount='+money+'&bank='+$('#bank').val());
+				return false;
+			}
+			if(money > {$DT[quick_pay]}){
+				if(Dd('password').value.length < 6) {
+					Dmsg('请填写支付密码', 'password');
+					return false;
+				}
+			}
+			return true;
+		}
+		window.setInterval(
+			function() {
+				var money = $('#fee').val();
+				if(money > {$_money} || {$_money} < 0.01) {
+					$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+				} else {
+					$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+				}
+			}, 
+		500);
+		</script>
+	{elseif $step == 'remind'}
+		<div id="head-bar">
+		<div class="head-bar">
+		<div class="head-bar-back">
+		<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+		</div>
+		<div class="head-bar-title">提醒发货</div>
+		<div class="head-bar-right">
+		<a href="?mid={$mid}&action=update&step=detail&itemid={$itemid}"><span>订单</span></a>
+		</div>
+		</div>
+		<div class="head-bar-fix"></div>
+		</div>
+		<form action="message.php" method="post" id="remind">
+		<input type="hidden" name="action" value="send" />
+		<input type="hidden" name="forward" value="{$MOD[mobile]}deal.php?mid={$mid}&action=update&step=detail&itemid={$itemid}"/>
+		<input type="hidden" name="touser" value="{$td[seller]}" />
+		<input type="hidden" name="title" value="[发货提醒]{$MODULE[$mid][name]}订单(ID:{$itemid})已经付款，请尽快发货"/>
+		<textarea name="content" style="display:none;">
+		{$td[seller]}，您好：<br/>
+		订单 <a href="{$MOD[mobile]}group.php?mid={$mid}&action=update&step=detail&itemid={$itemid}" target="_blank">{$td[title]} (ID:{$itemid})</a> 已经付款。请尽快发货！
+		</textarea>
+		</form>	
+		<script type="text/javascript">Dd('remind').submit();</script>
+	{elseif $step == 'refund'}
+		<div id="head-bar">
+		<div class="head-bar">
+		<div class="head-bar-back">
+		<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+		</div>
+		<div class="head-bar-title">申请退款</div>
+		<div class="head-bar-right">
+		<a href="?mid={$mid}&action=update&step=detail&itemid={$itemid}"><span>订单</span></a>
+		</div>
+		</div>
+		<div class="head-bar-fix"></div>
+		</div>
+		{template 'goods', 'chip'}
+		<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+		<form method="post" action="?" onsubmit="return check();" id="dform">
+		<input type="hidden" name="forward" value="{$forward}"/>
+		<input type="hidden" name="mid" value="{$mid}"/>
+		<input type="hidden" name="action" value="{$action}"/>
+		<input type="hidden" name="step" value="{$step}"/>
+		<input type="hidden" name="itemid" value="{$itemid}"/>
+		<div class="ui-form">
+		<p>退款原因<em>*</em><b id="dcontent"></b></p>
+		</div>
+		<input type="hidden" name="content" id="content"/>
+		<ul class="ui-editor-toolbar">
+		<li class="ui-editor-img"><div id="editor-picker"></div></li>
+		<li class="ui-editor-bold" id="editor-bold" editor-action="bold">B</li>
+		<li class="ui-editor-italic" id="editor-italic" editor-action="italic">I</li>
+		<li class="ui-editor-underline" id="editor-underline" editor-action="underline">U</li>
+		</ul>
+		<div class="ui-editor-content" id="editor"></div>
+		<script type="text/javascript" src="{DT_MOB}static/js/editor.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			$('#editor').DEditor({
+				editorid: 'editor',
+				textareaid: 'content',
+				server:'{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=editor'
+			});
+		});
+		</script>
+		<div class="ui-form">
+		<p>支付密码<em>*</em><b id="dpassword"></b></p>
+		<div>{template 'password', 'chip'}</div>
+		<div class="blank-20"></div>
+		<div><input type="submit" name="submit" value="申请退款" class="btn-blue"/></div>
+		<div class="blank-20"></div>
+		</div>
+		</form>
+	<script type="text/javascript">
+	function check() {
+		var len = FCKLen();
+		if(len < 10) {
+			Dmsg('退款原因不能少于10个字，当前已输入'+len+'个字', 'content');
+			return false;
+		}
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+		return confirm('您确认您提供的退款原因无误，并申请退款吗？');
+	}
+	</script>
+	{/if}
+{elseif $action == 'express'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">我的快递</div>
+<div class="head-bar-right">
+<a href="?mid={$mid}"><span>订单</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><span class="f_r">{$v[dstatus]}</span><a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=express"><strong>{$v[send_type]}</strong></a></li>
+<li><em class="f_r">{$v[updatetime]}</em><span>{$v[send_no]}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title" onclick="Dsheet('<a href=&#34;?mid={$mid}&action=express&#34;><span>我的快递</span></a>', '取消');">{$MODULE[$mid][name]}订单 &#9662;</div>
+<div class="head-bar-right">
+<a href="javascript:window.scrollTo(0,0);$('#deal-{$mid}-search').slideToggle(300);"><img src="{DT_MOB}static/img/icon-search.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div id="deal-{$mid}-search" style="display:none;">
+<div class="ui-form sch">
+<form action="?" data-ajax="false">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="action" value="{$action}"/>
+<div class="blank-20"></div>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+<div class="blank-10"></div>
+</form>
+</div>
+</div>
+<div class="list-menu">
+	<ul>
+	<a href="?mid={$mid}&action=index"><li{if !in_array($nav, array(0,1,2,4,5,6))} class="on"{/if}>全部订单</li></a>
+	<a href="?mid={$mid}&nav=6"><li{if $nav==6} class="on"{/if}>待付款</li></a>
+	<a href="?mid={$mid}&nav=0"><li{if $nav==0} class="on"{/if}>已付款</li></a>
+	<a href="?mid={$mid}&nav=1"><li{if $nav==1} class="on"{/if}>已发货</li></a>
+	<a href="?mid={$mid}&nav=2"><li{if $nav==2} class="on"{/if}>已消费</li></a>
+	<a href="?mid={$mid}&nav=4"><li{if $nav==4} class="on"{/if}>待退款</li></a>
+	<a href="?mid={$mid}&nav=5"><li{if $nav==5} class="on"{/if}>已退款</li></a>
+	</ul>
+</div>
+<div class="blank-20"></div>
+{loop $lists $v}
+<div class="order-t bd-b bd-t">
+<em>{$v[dstatus]}</em>{$v[addtime]} <a href="{userurl($v[seller], 'file=contact')}">{$v[seller]}</a>
+</div>
+<div class="list-img">
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=detail"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_MOB}static/img/80x60.png{/if}" width="80" height="60" alt="" onerror="this.src='{DT_MOB}static/img/80x60.png';"/></a>
+<ul>
+<li><a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=detail"><strong>{$v[title]}</strong></a></li>
+<li><b class="f_r">{$DT[money_sign]}{$v[amount]}</b><span>{$DT[money_sign]}{$v[price]}x{$v[number]}</span></li>
+</ul>
+</div>
+<div class="order-b">
+{if $v[status] == 0}
+{if $v[logistic]}
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=remind">提醒发货</a>
+{/if}
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=refund">申请退款</a>
+{elseif $v[status] == 1}
+{if $v[lefttime]}	
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=receive&page={$page}" onclick="return confirm('您确定已经收到商家货物且质量与数量无误吗？此操作将不可撤销');">确认收货</a>
+{if $v[send_type] && $v[send_no]}
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=express&page={$page}">快递追踪</a>
+{/if}
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=refund">申请退款</a>
+{else}
+{/if}
+{elseif $v[status] == 2}
+{if $v[lefttime]}
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=used&page={$page}" onclick="return confirm('您确定已在商家消费且质量与数量无误吗？此操作将不可撤销');">确认消费</a> 
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=refund">申请退款</a> 
+{else}
+{/if}
+{elseif $v[status] == 6}
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=pay">立即付款</a> 
+{/if}
+<a href="?mid={$mid}&itemid={$v[itemid]}&action=update&step=detail">订单详情</a>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{template 'footer', 'member'}

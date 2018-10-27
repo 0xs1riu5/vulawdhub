@@ -1,0 +1,120 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="{$back_link}" data-direction="reverse"><span>取消</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+
+<style type="text/css">
+.award_fee {padding:0 16px 16px 0;display:table;width:100%;background:#FFFFFF;}
+.award_fee div {padding:6px 16px;border:#DDDDDD 2px solid;background:#FFFFFF;border-radius:6px;margin:16px 0 0 16px;float:left;cursor:pointer;}
+.award_fee b {font-size:16px;}
+.award_fee div:hover {border:#E94657 2px solid;color:#E94657;}
+.award_user {padding:16px 0 0 16px;background:#FFFFFF;display:table;width:100%;}
+.award_user img {border-radius:50%;width:32px;height:32px;float:left;margin:0 16px 16px 0;}
+</style>
+
+<form method="post" action="award.php" data-ajax="false" id="pay_form" onsubmit="return pay_check();">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<div class="blank-20"></div>
+<div class="list-set">
+	<ul>
+		<li><div><a href="{$forward}">{$title}</a></div></li>
+	</ul>
+</div>
+{if $awards}
+<div class="blank-20"></div>
+<div class="award_fee bd-t bd-b">{loop $awards $v}<div onclick="$('#fee').val('{$v}');"><b>{$v}</b>{$DT[money_unit]}</div>{/loop}</div>
+{/if}
+<div class="blank-20"></div>
+<div class="list-set">
+	<ul>
+		<li><div><span><input type="text" name="fee" id="fee" value="{if $awards}{$awards[0]}{else}1{/if}" style="width:80px;text-align:center;font-size:16px;font-weight:bold;"/> {$DT[money_unit]}</span>打赏金额</div></li>
+	</ul>
+</div>
+
+<div id="mymoney" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-set">
+		<ul>
+			<li><div><span><b>{$_money}</b>{$DT[money_unit]}</span>账户余额</div></li>
+		</ul>
+	</div>
+</div>
+
+<div id="payword" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-inp bd-t bd-b">
+		<div><input type="password" name="password" id="password" placeholder="支付密码：" autocomplete="new-password" onblur="window.scrollTo(0,0);"/></div>
+	</div>
+</div>
+
+<div id="paytype" style="display:none;">
+	<div class="blank-20"></div>
+	{php $PAYLIST = get_paylist();}
+	<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+	<div class="list-pay">
+		<ul>
+		{loop $PAYLIST $k $v}
+		<li onclick="var bk=$('#bank').val();if(bk=='{$v[bank]}'){return;}$('#check-'+bk).attr('class', 'check');$('#check-{$v[bank]}').attr('class', 'checked');$('#bank').val('{$v[bank]}');"><div><em class="{if $k}check{else}checked{/if}" id="check-{$v[bank]}"></em><img src="{DT_PATH}api/pay/{$v[bank]}/icon.png" width="24" height="24"/>{$v[name]} {if $v[percent]>0}<span>手续费 {$v[percent]}%</span>{/if}</div></li>
+		{/loop}
+		</ul>
+	</div>
+</div>
+
+<div class="blank-20"></div>
+<div class="list-btn"><input type="submit" name="submit" value="立即打赏" class="btn-green"/></div>
+<div class="blank-20"></div>
+<!--{php $tags=tag("table=finance_award&condition=mid=$mid AND tid=$itemid&pagesize=1000&order=itemid desc&template=null");}-->
+{if $tags}
+<div class="list-set">
+	<ul>
+		<li><div>打赏记录</div></li>
+	</ul>
+</div>
+<div class="award_user">
+{loop $tags $t}
+<img src="{useravatar($t[username])}"/>
+{/loop}
+</div>
+{/if}
+</form>
+<script type="text/javascript">
+function pay_check() {
+	var money = $('#fee').val();
+	if(money > {$_money}) {
+		Go('charge.php?action=pay&reason=award|{$mid}|{$itemid}|'+money+'&amount='+money+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(Dd('fee').value < 0.01) {
+		Dmsg('请填写打赏金额', 'fee');
+		return false;
+	}
+	if(money > {$DT[quick_pay]}){
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+	}
+	return true;
+}
+window.setInterval(
+	function() {
+		var money = $('#fee').val();
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+		} else {
+			$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+		}
+	}, 
+500);
+</script>
+{template 'footer', 'member'}

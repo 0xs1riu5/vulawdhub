@@ -1,0 +1,52 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">上传头像</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('<a href=&#34;?action=delete&#34;><span style=&#34;color:red&#34;>删除</span></a>', '取消', '确定要删除个人头像吗？');"><span>删除</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main" style="padding:64px 0;">
+<div style="background:url('{useravatar($_username, 'large')}&reload={$DT_TIME}') no-repeat center center;background-size:128px 128px;width:128px;height:128px;border-radius:50%;margin:0 auto;" id="avatar"><div id="avatar-picker"></div></div>
+</div>
+<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+<script type="text/javascript">
+var tm = {DT_TIME};
+var avataru = WebUploader.create({
+	auto: true,
+    server: '?action=upload',
+    pick: '#avatar-picker',
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    },
+    resize: false
+});
+avataru.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+avataru.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '上传成功' : '上传中...'+p+'%');
+});
+avataru.on( 'uploadSuccess', function(file, data) {
+    if(data.error) {
+		Dtoast(data.message, '', 5);
+	} else {
+		$('#avatar').css("background", "url('{useravatar($_username, 'large')}&reload="+(++tm)+"') no-repeat center center");
+	}
+});
+avataru.on( 'uploadError', function(file, data) {
+    Dtoast(data.message, '', 5);
+});
+avataru.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+</script>
+{template 'footer', 'member'}

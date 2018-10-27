@@ -1,0 +1,67 @@
+{template 'header', 'member'}
+{if $itemid==1}<div class="warn">尊敬的用户，为了保证信息的真实有效，请先<strong>绑定微信</strong>，绑定之后即可发布信息</div>{/if}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab_on" id="action"><a href="?action=index"><span>微信关注</span></a></td>
+</tr>
+</table>
+</div>
+<table cellpadding="10" cellspacing="1" class="tb">
+{if $W}
+<tr>
+<td class="tl">绑定帐号</td>
+<td class="tr"><img src="{$W[headimgurl]}" alt="" title="{$W[nickname]}" width="80" height="80" /></td>
+</tr>
+<tr>
+<td class="tl">接收通知</td>
+<td class="tr">
+{if $W[push]}
+<span class="f_green">已开启</span> <a href="?action=push" class="t" onclick="return confirm('确定要关闭吗？您的微信将无法收到订单状态等重要通知');">关闭</a>
+{else}
+<span class="f_red">已关闭</span> <a href="?action=push" class="t">开启</a>
+{/if}
+</td>
+</tr>
+<tr>
+<td class="tl">上次访问</td>
+<td class="tr">{timetodate($W[visittime], 5)}</td>
+</tr>
+{if $timeout}
+<tr>
+<td class="tl"></td>
+<td class="tr f_red">您已超过48小时未访问微信了，暂时无法收到系统通知</td>
+</tr>
+{/if}
+<tr>
+<td class="tl">积分规则</td>
+<td class="tr">每日签到赠送{$WX[credit]}{$DT[credit_unit]} {if $sign}<span class="f_green">今日已签</span>{else}<span class="f_red">今日未签</span>{/if}</td>
+</tr>
+<tr>
+<td class="tl"></td>
+<td class="tr">
+{if $sign}
+用微信扫描下面的二维码使用更多微信服务<br/>
+<img src="{DT_PATH}api/weixin/qrcode.php" width="200" height="200" style="margin:10px 0 0 0;"/></a>
+{else}
+用微信扫描下面的二维码或者直接发送内容为“签到”的消息<br/>
+<img src="{DT_PATH}api/weixin/qrcode_sign.php?auth={$auth}" width="200" height="200" style="margin:10px 0 0 0;"/></a>
+{/if}
+</td>
+</tr>
+{else}
+<tr>
+<td class="tl">当前状态</td>
+<td class="tr">您还没有绑定微信帐号，无法享受微网站、消息接收、积分赠送等微信特权</td>
+</tr>
+<tr>
+<td class="tl"></td>
+<td class="tr">
+用微信扫描下面的二维码添加关注并绑定<br/>
+<img src="{DT_PATH}api/weixin/qrcode_bind.php?auth={$auth}" width="200" height="200" style="margin:10px;"/>
+<script type="text/javascript">setTimeout('window.location.reload();', 1790000);</script>
+</td>
+</tr>
+{/if}
+<script type="text/javascript">s('weixin');</script>
+{template 'footer', 'member'}

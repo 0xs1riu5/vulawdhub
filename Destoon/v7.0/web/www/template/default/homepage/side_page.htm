@@ -1,0 +1,12 @@
+{if $file == 'introduce'}
+<div class="side_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="side_body">
+<ul>
+{loop $TYPE $t}
+<li id="page_{$t[itemid]}"{if $itemid==$t[itemid]} class="f_b"{/if}><a href="{$t[linkurl]}" title="{$t[alt]}">{$t[title]}</a></li>
+{/loop}
+<li id="page_credit"><a href="{userurl($username, 'file=credit')}">诚信档案</a></li>
+<li id="page_contact"><a href="{userurl($username, 'file=contact')}">联系方式</a></li>
+</ul>
+</div>
+{/if}

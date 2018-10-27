@@ -1,0 +1,13 @@
+{loop $PPT $p}
+<div class="sort">
+	<div class="sort-k">{$p[name]}</div>
+	<div class="sort-v">
+		<ul>
+		{loop $p[options] $o}
+		<li><a href="{$MOD[linkurl]}{rewrite('search.php?catid='.$catid.'&ppt_'.$p[oid].'='.urlencode($o))}">{$o}</a></li>
+		{/loop}
+		</ul>
+	</div>
+	<div class="c_b"></div>
+</div>
+{/loop}

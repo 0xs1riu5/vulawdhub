@@ -1,0 +1,20 @@
+<table cellpadding="0" cellspacing="0" width="700" align="center">
+<tr>
+<td><a href="{DT_PATH}" target="_blank"><img src="{if $DT[logo]}{$DT[logo]}{else}{DT_SKIN}image/logo.gif{/if}" style="margin:10px 0;border:none;" alt="{$DT[sitename]} LOGO" title="{$DT[sitename]}"/></a></td>
+</tr>
+<tr>
+<td style="border-top:solid 1px #DDDDDD;border-bottom:solid 1px #DDDDDD;padding:10px 0;line-height:200%;font-family:'Microsoft YaHei',Verdana,Arial;font-size:14px;color:#333333;">
+Hi, {$touser}：<br/>
+您在<a href="{DT_PATH}" target="_blank" style="color:#005590;">{$DT[sitename]}</a>收到了新的站内信（{$title}），内容如下：<br/><br/>
+{$content}<br/><br/>
+原始信件：<a href="{$MODULE[2][linkurl]}message.php?action=show&itemid={$itemid}" target="_blank"style="color:#005590;">{$MODULE[2][linkurl]}message.php?action=show&itemid={$itemid}</a><br/>
+{if $fromuser}发件会员：<a href="{userurl($fromuser)}" target="_blank" style="color:#005590;">{$fromuser}</a><br/>{/if}
+发送时间：{timetodate($addtime, 6)}<br/>
+</td>
+</tr>
+<tr>
+<td style="line-height:22px;padding:10px 0;font-family:'Microsoft YaHei',Verdana,Arial;font-size:12px;color:#666666;">
+请注意：此信件系根据您的设置自动发送，如果不希望接收，请点<a href="{$MODULE[2][linkurl]}message.php?action=setting" target="_blank" style="color:#005590;">这里取消</a>
+</td>
+</tr>
+</table>

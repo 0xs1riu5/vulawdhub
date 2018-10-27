@@ -1,0 +1,23 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">会员升级</div>
+<div class="head-bar-right">
+<a href="account.php"><span>账户</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="blank-35"></div>
+<div class="list-set">
+<ul>
+{loop $GROUPS $k $v}{if $k > 4}
+<li><div><span>{if $v[fee]}{$DT[money_sign]}{$v[fee]}{$DT[money_unit]}/年{else}免费{/if}</span><a href="{if isset($UP[$k])}account.php?action=grade&groupid={$v[groupid]}{else}javascript:Dtoast('不支持升级该组');{/if}" rel="external">{$v[groupname]}</a></div></li>
+{/if}{/loop}
+</ul>
+</div>
+<div class="blank-35"></div>
+{template 'footer', 'member'}

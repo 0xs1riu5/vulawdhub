@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>{if $seo_title}{$seo_title}{else}{if $head_title}{$head_title}{$DT[seo_delimiter]}{/if}{$COM[company]}{/if}</title>
+{if $head_keywords}<meta name="keywords" content="{$head_keywords}"/>{/if}
+{if $head_description}<meta name="description" content="{$head_description}"/>{/if}
+<meta name="template" content="{$template}"/>
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width"/>
+<meta http-equiv="Cache-Control" content="no-siteapp"/>
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+<meta name="format-detection" content="telephone=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="{$COM[company]}"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<link rel="apple-touch-icon-precomposed" href="{DT_MOB}apple-touch-icon-precomposed.png"/>
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="128x128" href="{DT_MOB}apple-touch-icon-precomposed.png">
+<meta name="msapplication-TileImage" content="{DT_MOB}apple-touch-icon-precomposed.png">
+<meta name="msapplication-TileColor" content="#007AFF">
+<link rel="shortcut icon" type="image/x-icon" href="{DT_PATH}favicon.ico"/>
+<link rel="bookmark" type="image/x-icon" href="{DT_PATH}favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="{DT_MOB}static/lib/jquery/jquery.mobile.custom.structure.min.css"/>
+<link rel="stylesheet" type="text/css" href="{DT_MOB}static/style.css"/>
+<link rel="stylesheet" type="text/css" href="{DT_STATIC}{$MODULE[4][moduledir]}/skin/mobile.css"/>
+<link rel="stylesheet" type="text/css" href="{$HSPATH}mobile.css"/>
+<script type="text/javascript" src="{DT_MOB}static/lib/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+$(document).bind("mobileinit", function() {
+	$.mobile.ajaxEnabled = false;
+});
+var Dbrowser = '{$DT_MOB[browser]}',AJPath = '',DTPath = '{DT_PATH}',DTMob = '{DT_MOB}';
+var DMURL = document.location.protocol+'//'+location.hostname+(location.port ? ':'+location.port : '')+'/';
+if(DTPath.indexOf(DMURL) != -1) {DMURL = DTPath;}
+AJPath = DMURL+'ajax.php';
+{if !DT_DEBUG}
+if(!('ontouchend' in document && window.location.href.indexOf('device.php') == -1) window.location='{DT_MOB}api/device.php';
+//if((!('ontouchend' in document) || !document.ontouchend) && window.location.href.indexOf('device.php') == -1) window.location='{DT_MOB}api/device.php';
+{/if}
+</script>
+<script type="text/javascript" src="{DT_MOB}static/lib/jquery/jquery.mobile.custom.min.js"></script>
+<script type="text/javascript" src="{DT_MOB}static/js/common.js"></script>
+{if $JS}
+{loop $JS $js}
+<script type="text/javascript" src="{DT_MOB}static/js/{$js}.js"></script>
+{/loop}
+{/if}
+<script type="text/javascript" src="{DT_MOB}static/js/fix.js"></script>
+</head>
+<body>
+<div data-role="page">
+<div class="ui-toast"></div>
+<div class="ui-mask"></div>
+<div class="ui-sheet"></div>
+{if $share_icon && $share_icon != 'auto'}<div class="share_icon"><img src="{$share_icon}"/></div>{/if}

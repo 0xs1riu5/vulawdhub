@@ -1,0 +1,117 @@
+{if $user_status == 3}
+<ul>
+{if $member}
+	<li class="f_b t_c" style="padding:3px 0 5px 0;font-size:14px;"><a href="{$member[linkurl]}" target="_blank" title="{$member[company]}&#10;{$member[mode]}">{$member[company]}</a></li>
+	{if $member[vip]}
+	<li class="f_orange" style="padding:5px 0 0 12px;"><img src="{DT_SKIN}image/vip_{$member[vip]}.gif" alt="{VIP}" title="{VIP}:{$member[vip]}级" align="absmiddle"/> [{VIP}第{vip_year($member[fromtime])}年] 指数:{$member[vip]}</li>
+	{/if}
+	{if $member[validated] || $member[vcompany] || $member[vtruename] || $member[vbank] || $member[vmobile] || $member[vemail]}
+	<li class="f_green" style="padding-top:6px;padding-bottom:6px;">
+	{if $member[vcompany]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_company.gif" width="16" height="16" align="absmiddle" title="通过工商认证"/>{/if}
+	{if $member[vtruename]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_truename.gif" width="16" height="16" align="absmiddle" title="通过实名认证"/>{/if}
+	{if $member[vbank]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_bank.gif" width="16" height="16" align="absmiddle" title="通过银行帐号认证"/>{/if}
+	{if $member[vmobile]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_mobile.gif" width="16" height="16" align="absmiddle" title="通过手机认证"/>{/if}
+	{if $member[vemail]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_email.gif" width="16" height="16" align="absmiddle" title="通过邮件认证"/>{/if}
+	{if $member[validated]}&nbsp;<img src="{DT_STATIC}file/image/check-ok.png" align="absmiddle"/> 通过{$member[validator]}认证{/if}
+	&nbsp;<a href="{userurl($member[username], 'file=credit')}">[诚信档案]</a>
+	</li>
+	{/if}
+	{if $member[deposit]}
+	<li class="f_green">已缴纳 <strong>{$member[deposit]}</strong> {$DT[money_unit]}保证金</li>
+	{/if}
+	<li style="padding-top:6px;padding-bottom:6px;">
+	<span>联系人</span>{$member[truename]}({gender($member[gender])})&nbsp;{$member[career]}&nbsp;
+	{if $member[username] && $DT[im_web]}{im_web($member[username].'&mid='.$moduleid.'&itemid='.$itemid)}&nbsp;{/if}
+	{if $member[qq] && $DT[im_qq]}{im_qq($member[qq])}&nbsp;{/if}
+	{if $member[wx] && $DT[im_wx]}{im_wx($member[wx], $member[username])}&nbsp;{/if}
+	{if $member[ali] && $DT[im_ali]}{im_ali($member[ali])}&nbsp;{/if}
+	{if $member[skype] && $DT[im_skype]}{im_skype($member[skype])}&nbsp;{/if}
+	</li>
+	<li><span>会员</span> [{if online($member[userid])==1}<font class="f_red">当前在线</font>{else}<font class="f_gray">当前离线</font>{/if}] <a href="{$MODULE[2][linkurl]}friend.php?action=add&username={$member[username]}">[加为商友]</a> <a href="{$MODULE[2][linkurl]}message.php?action=send&touser={$member[username]}">[发送信件]</a></li>
+	{if $member[mail]}<li><span>邮件</span>{anti_spam($member[mail])}</li>{/if}
+	{if $member[telephone]}<li><span>电话</span>{anti_spam($member[telephone])}</li>{/if}
+	{if $member[mobile]}<li><span>手机</span>{anti_spam($member[mobile])}</li>{/if}
+	<li><span>地区</span>{area_pos($member[areaid], '-')}</li>
+	{if $member[address]}<li title="{$member[address]}"><span>地址</span><a href="{DT_PATH}api/address.php?auth={encrypt($member[address].'|'.$member[company], DT_KEY.'MAP')}" target="_blank">{$member[address]}</a></li>{/if}
+{else}
+	<li class="f_b t_c" style="font-size:14px;"><a href="{userurl('')}" target="_blank">{$item[company]}</a></li>
+	<li style="padding-top:3px;">
+	<span>联系人</span>{$item[truename]}&nbsp;
+	{if $item[username] && $DT[im_web]}{im_web($item[username].'&mid='.$moduleid.'&itemid='.$itemid)}&nbsp;{/if}
+	{if $item[qq] && $DT[im_qq]}{im_qq($item[qq])}&nbsp;{/if}
+	{if $item[wx] && $DT[im_wx]}{im_wx($item[wx], $item[username])}&nbsp;{/if}
+	{if $item[ali] && $DT[im_ali]}{im_ali($item[ali])}&nbsp;{/if}
+	{if $item[skype] && $DT[im_skype]}{im_skype($item[skype])}&nbsp;{/if}
+	&nbsp;&nbsp;<strong class="f_red">未注册</strong>
+	</li>
+	{if $item[email]}<li><span>邮件</span>{anti_spam($item[email])}</li>{/if}
+	{if $item[telephone]}<li><span>电话</span>{anti_spam($item[telephone])}</li>{/if}
+	{if $item[mobile]}<li><span>手机</span>{anti_spam($item[mobile])}</li>{/if}
+	<li><span>地区</span>{area_pos($item[areaid], '&nbsp;')}</li>
+	{if $item[address]}<li title="{$item[address]}"><span>地址</span><a href="{DT_PATH}api/address.php?auth={encrypt($item[address].'|'.$item[company], DT_KEY.'MAP')}" target="_blank">{$item[address]}</a></li>{/if}
+	</li>
+{/if}
+</ul>
+{elseif $user_status == 2}
+<div class="px14 t_c">
+<table cellpadding="6" cellspacing="6" width="100%">
+<tr>
+<td class="f_b"><div style="padding:6px;border:#40B3FF 1px solid;background:#E5F5FF;">查看该信息联系方式需支付{$name} <strong class="f_red">{$fee}</strong> {$unit}</div></td>
+</tr>
+<tr>
+<td>我的{$name}余额 <strong class="f_blue">{if $currency=='money'}{$_money}{else}{$_credit}{/if}</strong> {$unit}</td>
+</tr>
+{if $MOD[fee_period]}
+<tr>
+<td>支付后可查看<strong class="f_red">{$MOD[fee_period]}</strong>分钟，过期重新计费</td>
+</tr>
+{/if}
+<tr>
+<td><input type="button" value="立即支付" class="btn-green" onclick="Go('{$pay_url}');"/></td>
+</tr>
+</table>
+</div>
+{elseif $user_status == 1}
+<div class="px14 t_c">
+<table cellpadding="6" cellspacing="6" width="100%">
+<tr>
+<td class="f_b"><div style="padding:6px;border:#FFC600 1px solid;background:#FFFEBF;">您的会员级别没有查看联系方式的权限</div></td>
+</tr>
+<tr>
+<td>获得更多商业机会，建议<span class="f_red">升级</span>会员级别</td>
+</tr>
+{if $DT[telephone]}
+<tr>
+<td>咨询电话：{$DT[telephone]}</td>
+</tr>
+{/if}
+<tr>
+<td><input type="button" value="立即升级" class="btn-green" onclick="Go('{$MODULE[2][linkurl]}grade.php');"/></td>
+</tr>
+</table>
+</div>
+{elseif $user_status == 0}
+<br/>
+<div class="px14 t_c">
+<table cellpadding="5" cellspacing="5" width="100%">
+<tr>
+<td class="f_b">
+<div style="padding:6px;border:#FFC600 1px solid;background:#FFFEBF;">
+您还没有登录，请登录后查看详情
+</div>
+</td>
+</tr>
+<tr>
+<td><input type="button" value="立即登录" class="btn-blue" onclick="Go('{$MODULE[2][linkurl]}{$DT[file_login]}');"/></td>
+</tr>
+<tr>
+<td><input type="button" value="免费注册" class="btn-green" onclick="Go('{$MODULE[2][linkurl]}{$DT[file_register]}');"/></td>
+</tr>
+</table>
+</div>
+<br/>
+{else}
+<br/><br/><br/>
+<center><img src="{DT_SKIN}image/load.gif"/></center>
+<br/><br/><br/>
+{/if}

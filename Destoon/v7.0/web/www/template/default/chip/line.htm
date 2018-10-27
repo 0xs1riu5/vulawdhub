@@ -1,0 +1,27 @@
+var destoon_userid = {$_userid},destoon_username = '{$_username}',destoon_message = {$_message},destoon_chat = {$_chat},destoon_cart = get_cart(),destoon_member = destoon_guest = '';
+{if $_userid}
+destoon_member += '<img src="{DT_SKIN}image/ico-user.png" align="absmiddle"/><span class="f_b" title="{$MG[groupname]}">{$_truename}</span> &nbsp;|&nbsp; <a href="{$MODULE[2][linkurl]}">商务中心</a> &nbsp;|&nbsp; <a href="{$MODULE[2][linkurl]}message.php">站内信(<span class="head_t" id="destoon_message">{if $_message}<strong>{$_message}</strong>{if $_sound}'+sound('message_{$_sound}')+'{/if}{else}0{/if}</span>)</a>{if $DT[im_web]} &nbsp;|&nbsp; <a href="{$MODULE[2][linkurl]}im.php">新交谈(<span class="head_t" id="destoon_chat">{if $_chat}<strong>{$_chat}</strong>'+sound('chat_new')+'{else}0{/if}</span>)</a>{/if} &nbsp;|&nbsp; <a href="{$MODULE[2][linkurl]}logout.php">退出登录</a>';
+{else}
+	destoon_guest = '<img src="{DT_SKIN}image/ico-user.png" align="absmiddle"/><a href="{$MODULE[2][linkurl]}{$DT[file_login]}">会员登录</a> &nbsp;|&nbsp; <a href="{$MODULE[2][linkurl]}{$DT[file_register]}">免费注册</a> &nbsp;|&nbsp; <a href="{$MODULE[2][linkurl]}send.php">忘记密码</a>';
+	{if $EXT[oauth]}
+	var oauth_site = '{get_cookie('oauth_site')}';
+	var oauth_user = '{get_cookie('oauth_user')}';
+	destoon_member += (oauth_user && oauth_site) ? '<img src="{DT_PATH}api/oauth/'+oauth_site+'/ico.png" align="absmiddle"/><strong>'+oauth_user+'</strong> &nbsp;|&nbsp; <a href="{DT_PATH}api/oauth/'+oauth_site+'/index.php?time={$DT_TIME}">绑定帐号</a> &nbsp;|&nbsp; <a href="javascript:" onclick="oauth_logout();">退出登录</a>' : destoon_guest;
+	{else}
+	destoon_member += destoon_guest;
+	{/if}
+{/if}
+$('#destoon_member').html(destoon_member);
+{if $DT[city]}
+$('#destoon_city').html('{$city_name}');
+{/if}
+{if $DT[max_cart]}
+$('#destoon_cart').html(destoon_cart > 0 ? '<strong>'+destoon_cart+'</strong>' : 0);
+{/if}
+{if $_message}
+Dnotification('new_message', '{$MODULE[2][linkurl]}message.php', '{useravatar($_username, 'large')}', '站内信 ({$_message})', '收到新的站内信件，点击查看');
+{/if}
+{if $_chat}
+Dnotification('new_chat', '{$MODULE[2][linkurl]}im.php', '{useravatar($_username, 'large')}', '新交谈 ({$_chat})', '收到新的对话请求，点击交谈');
+{/if}
+{if $_userid && $DT[pushtime]}window.setInterval('PushNew()',{$DT[pushtime]}*1000);{/if}

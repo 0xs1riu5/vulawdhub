@@ -1,0 +1,53 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $typeid}{$TYPE[$typeid][typename]}{else}公告中心{/if}</div>
+<div class="head-bar-right">
+<a href="javascript:window.scrollTo(0,0);$('#{$ext}-{$typeid}-{$page}-{$itemid}').slideToggle(300);"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div id="{$ext}-{$typeid}-{$page}-{$itemid}" style="display:none;">
+<div class="ui-form sch">
+<form action="{$mob}index.php">
+<div class="blank-20"></div>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+<div class="blank-20"></div>
+</form>
+</div>
+<div class="list-set">
+<ul>
+{loop $_TP[0] $v0}
+<li{if $typeid==$v0[typeid]} style="background:#F6F6F6;"{/if}><div><a href="{$mob}{list_url($v0[typeid])}">{$v0[typename]}</a></div></li>
+{if isset($_TP[1][$v0[typeid]])}
+{loop $_TP[1][$v0[typeid]] $v1}
+<li{if $typeid==$v1[typeid]} style="background:#F6F6F6;"{/if}><div><a href="{$mob}{list_url($v1[typeid])}">&nbsp;&nbsp;&nbsp;&nbsp;{$v1[typename]}</a></div></li>
+{/loop}
+{/if}
+{/loop}
+</ul>
+</div>
+<div class="blank-35 bd-b"></div>
+</div>
+{if $itemid}
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$adddate}&nbsp;&nbsp;有效期：{$fromdate} 至 {$todate}&nbsp;&nbsp;点击：{$hits}</div>
+	<div class="content">{$content}</div>
+</div>
+{else}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><a href="{str_replace($url, $mob, $v[linkurl])}"{if $v[islink]} rel="external" target="_blank"{/if}><strong>{$v[title]}</strong></a></li>
+<li><span class="f_r">{$v[hits]}点击</span><span>{$v[adddate]}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{template 'footer'}

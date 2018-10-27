@@ -1,0 +1,32 @@
+{template 'header'}
+<style type="text/css">.cli {float:left;width:60px;padding:0 0 0 10px;font-size:14px;}</style>
+<script type="text/javascript">
+function gocity(s) {
+	Go('?action=go&'+s);
+}
+</script>
+<div class="m">
+	<table cellpadding="12" cellspacing="0" class="tb">
+	<tr>
+	<th width="58">&nbsp;</th>
+	<th class="t_l px14">
+	<span class="f_r"><a href="javascript:gocity('auto=1');" title="智能选择" class="b">[智能]</a>&nbsp;</span>
+	&nbsp;&nbsp;<a href="javascript:gocity('');"{if $cityid == 0} class="f_b"{/if}>{$L[allcity]}</a>
+	</th>
+	</tr>
+	{loop $lists $k $v}
+	<tr>
+	<td class="f_b t_c px14">{$k}</td>
+	<td>
+		<ul>
+		{loop $v $j $s}
+		<li class="cli"><a href="{if $s[linkurl]}{$s[linkurl]}{else}javascript:gocity('areaid={$s[areaid]}');{/if}"{if $cityid == $s[areaid]} class="f_b"{/if}>{set_style($s[name], $s[style])}</a></li>
+		{/loop}
+		</ul>
+		<div class="c_b"></div>
+	</td>
+	</tr>
+	{/loop}
+	</table>
+</div>
+{template 'footer'}

@@ -1,0 +1,501 @@
+{template 'header'}
+<div class="m0">
+<div class="m">
+<div class="im0">
+<div class="im0l">
+<!--[行业分类]-->
+{php $mid = isset($MODULE[16]) ? 16 : 5;}
+{php $c0 = get_maincat(0, $mid, 1);}
+<ul>
+{loop $c0 $k0 $v0}
+{if $k0 < 16 && $v0[child]}
+{php $_c1 = get_maincat($v0[catid], $mid, 2);}
+{php $c1 = get_maincat($v0[catid], $mid);}
+<li class="cate-{$k0}"><i>&gt;</i>
+<a href="{$MODULE[$mid][linkurl]}{$v0[linkurl]}" target="_blank"><strong>{$v0[catname]}</strong></a> 
+{if $_c1}
+<a href="{$MODULE[$mid][linkurl]}{$_c1[0][linkurl]}" target="_blank"><strong>{$_c1[0][catname]}</strong></a>
+{else}
+<a href="{$MODULE[$mid][linkurl]}{$c1[0][linkurl]}" target="_blank"><strong>{$c1[0][catname]}</strong></a>
+{/if}
+<div>
+{loop $c1 $k1 $v1}
+<dl>
+<dt><a href="{$MODULE[$mid][linkurl]}{$v1[linkurl]}" target="_blank">{set_style($v1[catname], $v1[style])}</a></dt>
+{if $v1[child]}
+{php $c2 = get_maincat($v1[catid], $mid);}
+<dd>
+{loop $c2 $k2 $v2}
+{if $k2}<em>|</em>{/if}<a href="{$MODULE[$mid][linkurl]}{$v2[linkurl]}" target="_blank">{set_style($v2[catname], $v2[style])}</a>
+{/loop}
+</dd>
+{/if}
+</dl>
+{/loop}
+</div>
+</li>
+{/if}
+{/loop}
+</ul>
+</div>
+<div class="im0m">
+	<div>{ad(14)}</div>
+	<div class="im0a">
+		<div>{ad(21)}</div>
+		<div>{ad(22)}</div>
+		<div>{ad(23)}</div>
+		<div>{ad(24)}</div>
+		<div>{ad(25)}</div>
+	</div>
+</div>
+<div class="im0r">
+	<div class="im0u">
+		<div class="user-info" style="background:#FFFFFF;">
+		<script type="text/javascript">
+		var destoon_uname = get_cookie('username');
+		document.write('<a href="{$MODULE[2][linkurl]}avatar.php"><img src="'+DTPath+'api/avatar/show.php?size=large&reload={DT_TIME}&username='+destoon_uname+'"/></a>');
+		document.write('<ul>');
+		if(get_cookie('auth')) {
+			document.write('<li><em><a href="{$MODULE[2][linkurl]}logout.php">退出</a></em><a href="{$MODULE[2][linkurl]}"><strong>Hi,'+destoon_uname+'</strong></a></li>');
+		} else {
+			if(destoon_uname) {
+				document.write('<li><em><a href="{$MODULE[2][linkurl]}{$DT[file_login]}">登录</a></em><a href="{$MODULE[2][linkurl]}"><strong>Hi,'+destoon_uname+'</strong></a></li>');
+			} else {
+				document.write('<li><em><a href="{$MODULE[2][linkurl]}{$DT[file_register]}">注册</a></em><a href="{$MODULE[2][linkurl]}{$DT[file_login]}"><strong>Hi,请登录</strong></a></li>');
+			}
+		}
+		document.write('<li><a href="{$MODULE[2][linkurl]}" class="b">会员中心</a><i>|</i><a href="{$MODULE[2][linkurl]}{$DT[file_my]}" class="b">发布信息</a><i>|</i><a href="{$MODULE[2][linkurl]}biz.php" class="b">商户后台</a></li>');
+		document.write('</ul>');
+		</script>
+		</div>
+		<div id="ian">
+		<div class="ian-h">
+		<ul id="ian-h">
+			<li id="ian-h-1" onmouseover="Tb(this);" class="on"><a href="{$EXT[announce_url]}" target="_blank"><span>网站动态</span></a></li>
+			<li id="ian-h-2" onmouseover="Tb(this);"><a href="{$MODULE[2][linkurl]}" target="_blank"><span>我是买家</span></a></li>
+			<li id="ian-h-3" onmouseover="Tb(this);"><a href="{$MODULE[2][linkurl]}biz.php" target="_blank"><span>我是卖家</span></a></li>
+		</ul>
+		</div>
+		<div id="ian-b-1" class="ian-b" style="display:;">
+		<!--{tag("table=announce&condition=(totime=0 or totime>$today_endtime-86400)&areaid=$cityid&pagesize=3&datetype=2&order=listorder desc,addtime desc&target=_blank")}-->
+		</div>	
+		<div id="ian-b-2" class="ian-b" style="display:none;">
+		<a href="{$MODULE[5][linkurl]}"><div>搜索产品</div></a>
+		<p>&gt;</p>
+		<a href="{$MODULE[2][linkurl]}order.php" target="_blank"><div>我的订单</div></a>
+		<p>&gt;</p>
+		<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid=6&action=add" target="_blank"><div>发布求购</div></a>
+		</div>
+		<div id="ian-b-3" class="ian-b" style="display:none;">
+		<a href="{$MODULE[2][linkurl]}home.php" target="_blank"><div>完善商铺</div></a>
+		<p>&gt;</p>
+		<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid=5&action=add" target="_blank"><div>发布产品</div></a>
+		<p>&gt;</p>
+		<a href="{$MODULE[2][linkurl]}trade.php" target="_blank"><div>订单管理</div></a>
+		</div>
+		</div>
+		<div class="im0g">		
+			{if $DT[max_cart]}<a href="{$MODULE[2][linkurl]}cart.php" target="_blank"><div><em><script type="text/javascript">document.write(get_cart());</script></em><img src="{DT_SKIN}image/grid-cart.png"/><br/>购物车</div></a>{/if}
+			<a href="{$MODULE[2][linkurl]}grade.php" target="_blank"><div><img src="{DT_SKIN}image/grid-vip.png"/><br/>付费会员</div></a>
+			<a href="{$EXT[spread_url]}" target="_blank"><div><img src="{DT_SKIN}image/grid-spread.png"/><br/>排名推广</div></a>
+			{if $EXT[ad_enable]}<a href="{$EXT[ad_url]}" target="_blank"><div><img src="{DT_SKIN}image/grid-ad.png"/><br/>广告投放</div></a>{/if}
+			{if $EXT[gift_enable]}<a href="{$EXT[gift_url]}" target="_blank"><div><img src="{DT_SKIN}image/grid-gift.png"/><br/>积分换礼</div></a>{/if}
+			<a href="{$MODULE[1][linkurl]}sitemap/" target="_blank"><div><img src="{DT_SKIN}image/grid-map.png"/><br/>网站地图</div></a>
+			{if $EXT[mobile_enable]}<a href="{$MODULE[1][linkurl]}api/mobile.php" target="_blank"><div><img src="{DT_SKIN}image/grid-mobile.png"/><br/>手机浏览</div></a>{/if}
+		</div>
+	</div>
+	<div class="im0t">
+		<div id="itrade">
+		<div class="tab-head">
+		<ul id="trade-h">
+			<li id="trade-h-4" onmouseover="Tb(this);" class="on"><a href="{$MODULE[4][linkurl]}" target="_blank"><span>企业</span></a></li>
+			{if isset($MODULE[6])}<li id="trade-h-6" onmouseover="Tb(this);"><a href="{$MODULE[6][linkurl]}" target="_blank"><span>求购</span></a></li>{/if}
+			{if isset($MODULE[7])}<li id="trade-h-7" onmouseover="Tb(this);"><a href="{$MODULE[7][linkurl]}" target="_blank"><span>行情</span></a></li>{/if}
+			{if isset($MODULE[21])}<li id="trade-h-21" onmouseover="Tb(this);"><a href="{$MODULE[21][linkurl]}" target="_blank"><span>头条</span></a></li>{/if}
+			{if isset($MODULE[18])}<li id="trade-h-18" onmouseover="Tb(this);"><a href="{$MODULE[18][linkurl]}" target="_blank"><span>社区</span></a></li>{/if}
+		</ul>
+		</div>
+		<div id="trade-b-4" class="im0t-list" style="display:;">
+		<!--{tag("moduleid=4&condition=vip>0 and catids<>''&areaid=$cityid&pagesize=6&target=_blank&order=fromtime desc&template=list-com")}-->
+		</div>
+		{if isset($MODULE[6])}
+		<div id="trade-b-6" class="im0t-list" style="display:none;">
+		<!--{tag("moduleid=6&condition=status=3&areaid=$cityid&pagesize=6&datetype=2&target=_blank&order=addtime desc")}-->
+		</div>
+		{/if}
+		{if isset($MODULE[7])}
+		<div id="trade-b-7" class="im0t-list" style="display:none;">
+		<!--{tag("moduleid=7&condition=status=3&areaid=$cityid&pagesize=6&datetype=2&target=_blank&order=addtime desc")}-->
+		</div>
+		{/if}
+		{if isset($MODULE[21])}
+		<div id="trade-b-21" class="im0t-list" style="display:none;">
+		<!--{tag("moduleid=21&condition=status=3 and level>0&areaid=$cityid&pagesize=6&datetype=2&target=_blank&order=addtime desc")}-->
+		</div>
+		{/if}
+		{if isset($MODULE[18])}
+		<div id="trade-b-18" class="im0t-list" style="display:none;">
+		<!--{tag("moduleid=18&condition=status=3 and level>0&areaid=$cityid&pagesize=6&datetype=2&target=_blank&order=addtime desc")}-->
+		</div>
+		{/if}
+		</div>
+	</div>
+</div>
+<div class="c_b"></div>
+</div>
+</div>
+</div>
+
+<div class="m">
+	<div class="b10"></div>
+	<div class="head-txt">
+		<span>	
+			 {if isset($MODULE[5])}<a href="{$MODULE[5][linkurl]}">{$MODULE[5][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[6])}<a href="{$MODULE[6][linkurl]}">{$MODULE[6][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[22])}<a href="{$MODULE[22][linkurl]}">{$MODULE[22][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[16])}<a href="{$MODULE[16][linkurl]}">{$MODULE[16][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[17])}<a href="{$MODULE[17][linkurl]}">{$MODULE[17][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[7])}<a href="{$MODULE[7][linkurl]}">{$MODULE[7][name]}</a> &nbsp;|&nbsp;{/if}
+			 <a href="{$MODULE[4][linkurl]}">{$MODULE[4][name]}</a>
+		</span>
+		<strong>行业市场</strong>
+	</div>
+
+	{if isset($MODULE[16]) && $DT[page_mall]}
+	{php $mid = 16;}<!--[商城]-->
+	<div class="im-b im-b-mall">
+		<div class="im-l">
+			<a href="{$MODULE[$mid][linkurl]}"><p>{$MODULE[$mid][name]}</p></a>
+			{php $child = get_maincat(0, $mid, 1);}
+			<ul>
+			{loop $child $i $c}
+			<li><a href="{$MODULE[$mid][linkurl]}{$c[linkurl]}" target="_blank">{set_style($c[catname], $c[style])}</a></li>
+			{/loop}
+			</ul>
+		</div>
+		<div class="im-r im-r-mall">
+		<!--{php $tags=tag("moduleid=$mid&condition=status=3 and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_mall]."&template=null");}-->
+		{loop $tags $i $t}
+		<div>
+		<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="134" height="134" alt=""/></a>
+		<b>{$DT[money_sign]}{$t[price]}</b>
+		<p><a href="{$t[linkurl]}" title="{$t[alt]}" target="_blank">{$t[title]}</a></p>
+		</div>
+		{/loop}
+		</div>
+	</div>
+	{/if}
+
+	{if isset($MODULE[5]) && $DT[page_sell]}
+	{php $mid = 5;}<!--[供应]-->
+	<div class="im-b im-b-sell">
+		<div class="im-l">
+			<a href="{$MODULE[$mid][linkurl]}"><p>{$MODULE[$mid][name]}</p></a>
+			{php $child = get_maincat(0, $mid, 1);}
+			<ul>
+			{loop $child $i $c}
+			<li><a href="{$MODULE[$mid][linkurl]}{$c[linkurl]}" target="_blank">{set_style($c[catname], $c[style])}</a></li>
+			{/loop}
+			</ul>
+		</div>
+		<div class="im-r im-r-sell">
+		<!--{php $tags=tag("moduleid=$mid&condition=status=3 and thumb<>'' and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_sell]."&template=null");}-->
+		{loop $tags $i $t}
+		<div>
+		<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="134" height="134" alt=""/></a>
+		<b>{if $t[price]>0}{$DT[money_sign]}{$t[price]}{else}面议{/if}</b>
+		<p><a href="{$t[linkurl]}" title="{$t[alt]}" target="_blank">{$t[title]}</a></p>
+		</div>
+		{/loop}
+		</div>
+	</div>
+	{/if}
+
+	{if isset($MODULE[22]) && $DT[page_info]}
+	{php $mid = 22;}<!--[招商]-->
+	<div class="im-b im-b-info">
+		<div class="im-l">
+			<a href="{$MODULE[$mid][linkurl]}"><p>{$MODULE[$mid][name]}</p></a>
+			{php $child = get_maincat(0, $mid, 1);}
+			<ul>
+			{loop $child $i $c}
+			<li><a href="{$MODULE[$mid][linkurl]}{$c[linkurl]}" target="_blank">{set_style($c[catname], $c[style])}</a></li>
+			{/loop}
+			</ul>
+		</div>
+		<div class="im-r im-r-info">
+		<!--{php $tags=tag("moduleid=$mid&condition=status=3 and thumb<>'' and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_info]."&template=null");}-->
+		{loop $tags $i $t}
+		<div>
+		<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="134" height="134" alt=""/></a>
+		<a href="{userurl($t[username])}" title="{$t[company]}" target="_blank"><b>{$t[company]}</b></a>
+		<p><a href="{$t[linkurl]}" title="{$t[alt]}" target="_blank">{$t[title]}</a></p>
+		</div>
+		{/loop}
+		</div>
+	</div>
+	{/if}
+
+	{if isset($MODULE[17]) && $DT[page_group]}
+	{php $mid = 17;}<!--[团购]-->
+	<div class="im-b im-b-group">
+		<div class="im-l">
+			<a href="{$MODULE[$mid][linkurl]}"><p>{$MODULE[$mid][name]}</p></a>
+			{php $child = get_maincat(0, $mid, 1);}
+			<ul>
+			{loop $child $i $c}
+			<li><a href="{$MODULE[$mid][linkurl]}{$c[linkurl]}" target="_blank">{set_style($c[catname], $c[style])}</a></li>
+			{/loop}
+			</ul>
+		</div>
+		<div class="im-r im-r-group">
+		<!--{php $tags=tag("moduleid=$mid&condition=status=3 and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_group]."&template=null");}-->
+		{loop $tags $i $t}
+		<div>
+		<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="134" height="134" alt=""/></a>
+		<b>{$DT[money_sign]}{$t[price]}</b>
+		<p><a href="{$t[linkurl]}" title="{$t[alt]}" target="_blank">{$t[title]}</a></p>
+		</div>
+		{/loop}
+		</div>
+	</div>
+	{/if}
+</div>
+
+<div class="m">
+	<div class="head-txt">
+		{if isset($MODULE[21])}
+		<span>	
+			<!--{php $tags=tag("table=category&condition=moduleid=21 and parentid=0&pagesize=10&order=listorder,catid&template=null");}-->
+			{loop $tags $i $t}<a href="{$MODULE[21][linkurl]}{$t[linkurl]}">{$t[catname]}</a> &nbsp;|&nbsp; {/loop}
+			<a href="{$MODULE[21][linkurl]}">更多<i>&gt;</i></a>
+		</span>
+		{/if}
+		<strong>资讯中心</strong>
+	</div>
+	<div class="in-b">
+		<div class="in-l"><!--[图片资讯]-->
+			{if isset($MODULE[21]) && $DT[page_newst]}
+			<!--{php $tags=tag("moduleid=21&condition=status=3 and thumb<>'' and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_newst]."&template=null");}-->
+			{loop $tags $i $t}
+			<div>
+			<p><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></p>
+			<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="160" height="120" alt=""/></a>
+			</div>
+			{/loop}
+			{/if}
+			{if isset($MODULE[11]) && $DT[page_special]}
+			{php $mid = 11;}<!--[专题]-->
+			<!--{php $tags=tag("moduleid=$mid&condition=status=3 and thumb<>'' and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_special]."&template=null");}-->
+			{loop $tags $i $t}
+			<div>
+			<p><a href="{$MODULE[$mid][linkurl]}" target="_blank">[{$MODULE[$mid][name]}]</a> <a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></p>
+			<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="160" height="120" alt=""/></a>
+			</div>
+			{/loop}
+			{/if}
+		
+		</div>
+		<div class="in-m"><!--[资讯]-->
+			{if isset($MODULE[21]) && $DT[page_newsh]}
+			<!--{tag("moduleid=21&condition=status=3 and level=5&areaid=$cityid&order=addtime desc&pagesize=1&target=_blank&template=list-hl")}-->
+			{/if}
+			{if isset($MODULE[21]) && $DT[page_news]}
+			<div class="list-txt">
+			<!--{tag("moduleid=21&condition=status=3 and level>0&areaid=$cityid&pagesize=".$DT[page_news]."&datetype=2&order=addtime desc&target=_blank")}-->
+			</div>
+			<div class="b20 bd-t"></div>
+			<div class="list-txt">
+			<!--{tag("moduleid=21&condition=status=3 and level>0&areaid=$cityid&pagesize=".$DT[page_news]."&datetype=2&page=2&order=addtime desc&target=_blank")}-->
+			</div>
+			{/if}
+		</div>
+		<div class="in-r">
+			{if isset($MODULE[14]) && $DT[page_video]}
+			{php $mid = 14;}<!--[视频]-->
+			<div class="head-txt">
+				<span><a href="{$MODULE[$mid][linkurl]}" target="_blank">更多<i>&gt;</i></a></span><strong>{$MODULE[$mid][name]}</strong>
+			</div>
+			<div class="in-video">			
+			<!--{php $tags=tag("moduleid=$mid&condition=status=3 and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_video]."&template=null");}-->
+			{loop $tags $i $t}
+			<div>
+			<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="136" height="102" alt=""/></a>
+			<p><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></p>
+			</div>
+			{/loop}			
+			</div>
+			{/if}
+			{if isset($MODULE[12]) && $DT[page_photo]}
+			{php $mid = 12;}<!--[图库]-->
+			<div class="head-txt">
+				<span><a href="{$MODULE[$mid][linkurl]}" target="_blank">更多<i>&gt;</i></a></span><strong>{$MODULE[$mid][name]}</strong>
+			</div>
+			<div class="in-photo">			
+			<!--{php $tags=tag("moduleid=$mid&condition=status=3 and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_photo]."&template=null");}-->
+			{loop $tags $i $t}
+			<div>
+			<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="136" height="102" alt=""/></a>
+			<p><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></p>
+			</div>
+			{/loop}			
+			{/if}		
+		</div>
+		<div class="c_b"></div>
+	</div>
+</div>
+
+<div class="m">
+	<div class="head-txt">
+		<span>
+			 {if isset($MODULE[10])}<a href="{$MODULE[10][linkurl]}">{$MODULE[10][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[8])}<a href="{$MODULE[8][linkurl]}">{$MODULE[8][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[13])}<a href="{$MODULE[13][linkurl]}">{$MODULE[13][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[9])}<a href="{$MODULE[9][linkurl]}">{$MODULE[9][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[15])}<a href="{$MODULE[15][linkurl]}">{$MODULE[15][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if isset($MODULE[18])}<a href="{$MODULE[18][linkurl]}">{$MODULE[18][name]}</a> &nbsp;|&nbsp;{/if}
+			 {if $EXT[ad_enable]}<a href="{$EXT[ad_url]}">广告</a> &nbsp;|&nbsp;{/if}
+			 <a href="{$EXT[spread_url]}">推广</a>
+		</span>
+		<strong>企业服务</strong>
+	</div>
+	<div class="ic-b">
+		<div class="ic-l">
+			{if isset($MODULE[13]) && $DT[page_brand]}
+			{php $mid = 13;}<!--[品牌]-->
+			<div class="ic-brand">
+			<a href="{$MODULE[$mid][linkurl]}" target="_blank"><i>{$MODULE[$mid][name]}</i></a>
+			<!--{php $tags=tag("moduleid=$mid&condition=status=3 and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_brand]."&template=null");}-->			
+			<div id="brands">
+			{loop $tags $i $t}
+			<p><a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="150" height="50" alt=""/></a><b><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></b></p>
+			{/loop}
+			</div>
+			</div>
+			{/if}		
+		</div>
+		<div class="ic-m">
+			{if $DT[page_exhibit] && isset($MODULE[8])}
+			{php $mid = 8;}<!--[展会]-->
+			<div class="head-txt">
+				<span><a href="{$MODULE[$mid][linkurl]}" target="_blank">更多<i>&gt;</i></a></span><strong>{$MODULE[$mid][name]}</strong>
+			</div>
+			<div class="list-txt">
+				<!--{php $tags=tag("moduleid=$mid&condition=status=3 and level>0&areaid=$cityid&pagesize=".$DT[page_exhibit]."&order=addtime desc&template=null");}-->
+				<ul>
+				{loop $tags $t}
+				<li title="{$t[alt]} {timetodate($t[fromtime], 'Y年m月d日')}"><span class="f_r">{$t[city]}</span><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></li>
+				{/loop}
+				</ul>
+			</div>
+			{/if}
+			{if isset($MODULE[9]) && $DT[page_job]}
+			{php $mid = 9;}<!--[招聘]-->
+			<div class="head-txt">
+				<span><a href="{$MODULE[$mid][linkurl]}" target="_blank">更多<i>&gt;</i></a></span><strong>招聘</strong>
+			</div>
+			<div class="list-txt">
+				<!--{php $tags=tag("moduleid=$mid&condition=status=3 and level>0&areaid=$cityid&pagesize=".$DT[page_job]."&order=edittime desc&template=null");}-->
+				<ul>
+				{loop $tags $t}
+				<li title="{$t[alt]}"><span class="f_r">{area_pos($t[areaid], '', 1)}</span><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></li>
+				{/loop}
+				</ul>
+			</div>
+			{/if}
+
+		</div>
+		<div class="ic-r">
+			{if isset($MODULE[10]) && $DT[page_know]}
+			{php $mid = 10;}<!--[知道]-->
+			<div class="head-txt">
+				<span><a href="{$MODULE[$mid][linkurl]}" target="_blank">更多<i>&gt;</i></a></span><strong>{$MODULE[$mid][name]}</strong>
+			</div>
+			<div class="list-txt">
+				<!--{php $tags=tag("moduleid=$mid&condition=status=3 and process>0 and credit>0&pagesize=".$DT[page_know]."&order=addtime desc&template=null");}-->
+				<ul>
+				{loop $tags $t}
+				<li title="{$t[alt]}"><span class="f_r"><span class="ic-know-credit">{$t[credit]}</span></span><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></li>
+				{/loop}
+				</ul>
+			</div>
+			{/if}
+			{if isset($MODULE[15]) && $DT[page_down]}
+			{php $mid = 15;}<!--[下载]-->
+			<div class="head-txt">
+				<span><a href="{$MODULE[$mid][linkurl]}" target="_blank">更多<i>&gt;</i></a></span><strong>{$MODULE[$mid][name]}</strong>
+			</div>
+			<div class="ic-down">			
+			<!--{php $tags=tag("moduleid=$mid&condition=status=3 and level>0&areaid=$cityid&order=addtime desc&lazy=$lazy&pagesize=".$DT[page_down]."&template=null");}-->
+			{loop $tags $i $t}
+			<div>
+			<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="136" height="102" alt=""/></a>
+			<p><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></p>
+			</div>
+			{/loop}			
+			{/if}
+		</div>
+		<div class="c_b"></div>
+	</div>
+</div>
+{if isset($MODULE[18]) && $DT[page_club]}
+{php $mid = 18;}<!--[商圈]-->
+<div class="m">
+<div class="ic-club">
+	<div class="ic-club-h">
+		<span>	
+			<!--{php $tags=tag("table=category&condition=moduleid=$mid and parentid=0&pagesize=10&order=listorder,catid&template=null");}-->
+			{loop $tags $i $t}<a href="{$MODULE[$mid][linkurl]}{$t[linkurl]}">{$t[catname]}</a> &nbsp;|&nbsp; {/loop}
+			<a href="{$MODULE[$mid][linkurl]}">更多<i>&gt;</i></a>
+		</span>
+		<a href="{$MODULE[$mid][linkurl]}" target="_blank"><strong>{$MODULE[$mid][name]}</strong></a>
+	</div>
+	<div class="ic-club-b">
+		<!--{php $tags=tag("moduleid=18&table=club_group_18&condition=status=3 AND level>0&areaid=$cityid&order=addtime desc&pagesize=".$DT[page_club]."&template=null");}-->
+		{loop $tags $i $t}
+		<div>
+		<a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}"/></a>
+		<p><a href="{$t[linkurl]}" target="_blank">{$t[title]}圈</a></p>
+		<span>{$t[post]}主题 {$t[fans]}粉丝</span>
+		</div>
+		{/loop}		
+	</div>	
+</div>
+</div>
+{/if}
+{if $DT[page_logo] || $DT[page_text]}
+<div class="m">
+	<div class="head-txt">
+		<span>	
+			<a href="{$EXT[link_url]}{rewrite('index.php?action=reg')}">申请链接</a> &nbsp;|&nbsp;
+			<a href="{$EXT[link_url]}">更多<i>&gt;</i></a>
+		</span>
+		<div class="px16">友情链接</div>
+	</div>
+	{if $DT[page_logo]}<!--[图片链接]-->
+	<!--{php $tags=tag("table=link&condition=status=3 and level>0 and thumb<>'' and username=''&areaid=$cityid&pagesize=".$DT['page_logo']."&order=listorder desc,itemid desc&lazy=$lazy&template=null");}-->
+	<div class="ilink">
+		<ul>
+		{loop $tags $i $t}
+		<li><a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}"><img src="{$t[thumb]}"/></a></li>
+		{/loop}
+		</ul>
+		<div class="c_b"></div>
+	</div>
+	{/if}
+	{if $DT[page_text]}<!--[文字链接]-->
+	<!--{php $tags=tag("table=link&condition=status=3 and level>0 and thumb='' and username=''&areaid=$cityid&pagesize=".$DT['page_text']."&order=listorder desc,itemid desc&template=null");}-->
+	<div class="ilink">
+		<ul>
+		{loop $tags $i $t}
+		<li><a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}">{$t[title]}</a></li>
+		{/loop}
+		</ul>
+		<div class="c_b"></div>
+	</div>
+	{/if}
+</div>
+{/if}
+<script type="text/javascript" src="{DT_STATIC}file/script/marquee.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/index.js"></script>
+{template 'footer'}

@@ -1,0 +1,51 @@
+{template 'header', $template}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+{if $TYPE}
+<a href="javascript:window.scrollTo(0,0);$('#type-{$file}').slideToggle(300);"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $TYPE}
+<div id="type-{$file}" style="display:none;">
+<div class="list-set">
+<ul>
+{loop $_TP[0] $v0}
+<li{if $typeid==$v0[typeid]} style="background:#F6F6F6;"{/if}><div><a href="{userurl($username, 'file='.$file.'&typeid='.$v0['typeid'], $domain)}">{$v0[typename]}</a></div></li>
+{if isset($_TP[1][$v0[typeid]])}
+{loop $_TP[1][$v0[typeid]] $v1}
+<li{if $typeid==$v1[typeid]} style="background:#F6F6F6;"{/if}><div><a href="{userurl($username, 'file='.$file.'&typeid='.$v1['typeid'], $domain)}">&nbsp;&nbsp;&nbsp;&nbsp;{$v1[typename]}</a></div></li>
+{/loop}
+{/if}
+{/loop}
+</ul>
+</div>
+<div class="blank-35 bd-b"></div>
+</div>
+{/if}
+{if $itemid}
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{timetodate($addtime, 3)}&nbsp;&nbsp;点击:{$hits}</div>
+	<div class="content">{$content}</div>
+</div>
+{else}
+	{if $lists}
+	<ul class="list-txt">
+	{loop $lists $v}
+	<li><span>{$v[date]}</span><a href="{$v[linkurl]}">{$v[title]}</a></li>
+	{/loop}
+	</ul>
+	{else}
+	{template 'empty', 'chip'}
+	{/if}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'footer', $template}

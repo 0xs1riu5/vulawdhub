@@ -1,0 +1,28 @@
+<?php
+$names = array (
+  'ad' => '广告代码',
+  'captcha' => '验证码',
+  'catalog' => '行业分类',
+  'club_js' => '商圈二级菜单',
+  'comment' => '评论调用',
+  'contact' => '联系方式收费',
+  'content' => '内容收费',
+  'empty' => '列表为空',
+  'goods' => '订单商品',
+  'guest_contact' => '游客联系方式',
+  'letter' => '字母索引',
+  'line' => '会员状态',
+  'password' => '密码输入',
+  'player' => '视频播放',
+  'poll' => '行业票选',
+  'property_js' => '分类属性JS',
+  'property_list' => '属性列表',
+  'property_search' => '属性搜索',
+  'property_show' => '属性展示',
+  'push' => '消息推送',
+  'question' => '验证问题',
+  'spread' => '推广代码',
+  'vote' => '投票调用',
+  'weibo' => '微博同步',
+);
+?>

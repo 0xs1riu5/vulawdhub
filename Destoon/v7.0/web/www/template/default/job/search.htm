@@ -1,0 +1,146 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$MOD[linkurl]}search.php">搜索</a></div>
+</div>
+<div class="m m2">
+	<div class="m2l">
+		<form action="{$MOD[linkurl]}search.php" id="fsearch">
+		<div class="sort">
+			<div class="sort-k">关键词</div>
+			<div class="sort-v">
+				<input type="text" size="60" name="kw" value="{$kw}"/> &nbsp;				
+				<input type="checkbox" name="level" id="level" value="1"{if $level} checked{/if}/> 推荐 &nbsp;
+				<input type="checkbox" name="vip" id="vip" value="1"{if $vip} checked{/if}/> {VIP} &nbsp;
+			</div>
+			<div class="c_b"></div>
+		</div>
+		<div class="sort">
+			<div class="sort-k">行业</div>
+			<div class="sort-v">
+				{$category_select}
+				<b>地区</b>
+				{$area_select}
+				<b>日期</b>
+				{dcalendar('fromdate', $fromdate, '')} 至 {dcalendar('todate', $todate, '')}
+			</div>
+			<div class="c_b"></div>
+		</div>
+		<div class="sort">
+			<div class="sort-k">待遇</div>
+			<div class="sort-v">
+				<input type="text" size="10" name="minsalary" value="{$minsalary}"/> ~ <input type="text" size="10" name="maxsalary" value="{$maxsalary}"/> &nbsp;
+				<select name="type">
+				{loop $TYPE $k $v}
+				<option value="{$k}"{if $type==$k} selected{/if}>{$v}</option>
+				{/loop}
+				</select> &nbsp;
+				<select name="gender">
+				{loop $GENDER $k $v}
+				<option value="{$k}"{if $gender==$k} selected{/if}>{$v}</option>
+				{/loop}
+				</select> &nbsp;
+				<select name="marriage">
+				{loop $MARRIAGE $k $v}
+				<option value="{$k}"{if $marriage==$k} selected{/if}>{$v}</option>
+				{/loop}
+				</select> &nbsp;
+				<select name="education">
+				{loop $EDUCATION $k $v}
+				<option value="{$k}"{if $education==$k} selected{/if}>{$v}</option>
+				{/loop}
+				</select> &nbsp;
+				<select name="experience">
+				<option value="0"{if $experience==0} selected{/if}>工作经验</option>
+				<script type="text/javascript">
+				for(i=1;i<21;i++) {
+					document.write('<option value="'+i+'"'+(i=={$experience} ? ' selected' : '')+'>'+i+'年以上</option>');
+				}
+				</script>
+				</select>
+			</div>
+			<div class="c_b"></div>
+		</div>
+		{if $CP}{template 'property_search', 'chip'}{/if}		
+		<div class="sort">
+			<div class="sort-k">&nbsp;</div>
+			<div class="sort-v">
+				<input type="submit" value="搜 索" class="btn-blue"/>
+				<input type="button" value="重 搜" class="btn" onclick="Go('{$MOD[linkurl]}search.php');"/>
+			</div>
+			<div class="c_b"></div>
+		</div>
+		</form>
+		{if $page==1 && $kw}
+		{ad($moduleid,$catid,$kw,6)}
+		{load('m'.$moduleid.'_k'.urlencode($kw).'.htm')}
+		{/if}
+		{if $tags}
+		{loop $tags $k $t}
+		<div class="list">
+			<table>
+			<tr align="center">
+				<td width="10"> </td>
+				<td align="left"><h3><span class="f_r">{if $t[vip]}<img src="{DT_SKIN}image/vip_{$t[vip]}.gif" alt="{VIP}" title="{VIP}:{$t[vip]}级"/>{/if}</span><a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}">{$t[title]}</a></h3><a href="{userurl($t[username])}" target="_blank">{$t[company]}</a></td>
+				<td width="150">{$CATEGORY[$t[parentid]][catname]}</td>
+				<td width="150" class="f_orange">
+				{if $t[minsalary] && $t[maxsalary]}
+					{$t[minsalary]}-{$t[maxsalary]}{$DT[money_unit]}/月
+				{elseif $t[minsalary]}
+					{$t[minsalary]}{$DT[money_unit]}/月以上
+				{elseif $t[maxsalary]}
+					{$t[maxsalary]}{$DT[money_unit]}/月以内
+				{else}
+					面议
+				{/if}
+				</td>
+				<td width="120">{area_pos($t[areaid], '')}</td>
+				<td width="100">
+				{if $t[minage] && $t[maxage]}
+					{$t[minage]}-{$t[maxage]}岁
+				{elseif $t[minage]}
+					{$t[minage]}岁以上
+				{elseif $t[maxage]}
+					{$t[maxage]}岁以内
+				{else}
+					不限年龄
+				{/if}
+				</td>
+				<td width="50">{if $t[total]}{$t[total]}人{else}若干{/if}</td>
+				<td width="150" class="f_gray">{timetodate($t[edittime], 5)}</td>
+			</tr>
+			</table>
+		</div>
+		{/loop}		
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+		{else}
+		{template 'empty', 'chip'}
+		{/if}
+	</div>
+	<div class="m2r">
+		{if $kw}
+		<div class="b10"></div>
+		<div class="head-sub"><strong>相关搜索</strong></div>
+		<div class="list-txt">
+			<ul>
+			{loop $MODULE $mod}{if $mod[moduleid]>3 && $mod[moduleid]!=$moduleid && !$mod[islink]}<li><a href="{$mod[linkurl]}{rewrite('search.php?kw='.urlencode($kw))}">在 <span class="f_red">{$mod[name]}</span> 找 {$kw}</a></li>{/if}{/loop}
+			</ul>
+		</div>
+		<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and word<>'$kw' and keyword like '%$keyword%'&pagesize=10&order=total_search desc&template=list-search_relate", -2)}-->
+		{/if}
+		<div class="sponsor">{ad($moduleid,$catid,$kw,7)}</div>
+		<div class="head-sub"><strong>今日排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400&pagesize=9&order=today_search desc&key=today_search&template=list-search_rank")}-->
+		</div>
+		<div class="head-sub"><strong>本周排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400*7&pagesize=9&order=week_search desc&key=week_search&template=list-search_rank")}-->
+		</div>
+		<div class="head-sub"><strong>本月排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400*30&pagesize=9&order=week_search desc&key=week_search&template=list-search_rank")}-->
+		</div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

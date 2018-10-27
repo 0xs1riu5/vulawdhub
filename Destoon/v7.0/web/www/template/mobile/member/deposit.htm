@@ -1,0 +1,126 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action=='add'}增加资金{else}保证金记录{/if}</div>
+<div class="head-bar-right">
+{if $action=='add'}
+<a href="?action=index"><span>取消</span></a>
+{else}
+<a href="?action=add"><span>增加</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='add' && $itemid==1}<div class="warn">尊敬的用户，为了保证信息的真实有效，请先<strong>缴纳保证金</strong>，缴纳之后即可发布信息</div>{/if}
+{if $action=='add'}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="num" id="num" value="1"/>
+<div class="list-inp bd-t bd-b">
+	<div><span class="f_r"><a href="javascript:alter('-');"><b style="font-size:30px;">-</b></a> <input type="text" value="{$amount}" id="amount" style="width:100px;text-align:center;font-size:20px;background:#EEEEEE;" readonly/> <a href="javascript:alter('+');"><b style="font-size:24px;">+</b></a></span>增资金额</div>
+</div>
+
+<div id="mymoney" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-set">
+		<ul>
+			<li><div><span><b>{$_money}</b>{$DT[money_unit]}</span>账户余额</div></li>
+		</ul>
+	</div>
+</div>
+
+<div id="payword" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-inp bd-t bd-b">
+		<div><input type="password" name="password" id="password" placeholder="支付密码：" autocomplete="new-password" onblur="window.scrollTo(0,0);"/></div>
+	</div>
+</div>
+
+<div id="paytype" style="display:none;">
+	<div class="blank-20"></div>
+	{php $PAYLIST = get_paylist();}
+	<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+	<div class="list-pay">
+		<ul>
+		{loop $PAYLIST $k $v}
+		<li onclick="var bk=$('#bank').val();if(bk=='{$v[bank]}'){return;}$('#check-'+bk).attr('class', 'check');$('#check-{$v[bank]}').attr('class', 'checked');$('#bank').val('{$v[bank]}');"><div><em class="{if $k}check{else}checked{/if}" id="check-{$v[bank]}"></em><img src="{DT_PATH}api/pay/{$v[bank]}/icon.png" width="24" height="24"/>{$v[name]} {if $v[percent]>0}<span>手续费 {$v[percent]}%</span>{/if}</div></li>
+		{/loop}
+		</ul>
+	</div>
+</div>
+
+<div class="blank-20"></div>
+<div class="list-btn"><input type="submit" name="submit" value="确认增资" class="btn-green"/></div>
+<div class="blank-20"></div>
+</form>
+{else}
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{$v[addtime]}</span>
+{if $v[amount] < 0}
+<strong style="font-size:24px;color:#FF6600;">{$v[amount]}</strong>
+{else}
+<strong style="font-size:24px;">+{$v[amount]}</strong>
+{/if}
+</li>
+<li><span>备注:{$v[reason]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+<div class="blank-20"></div>
+<div class="list-set">
+	<ul>
+		<li><div><span>{$DT[money_sign]}<b style="font-size:20px;">{$_deposit}</b> {$DT[money_unit]}</span>当前保证金</div></li>
+	</ul>
+</div>
+<div class="blank-20"></div>
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{if $action == 'add'}
+<script type="text/javascript">
+function alter(t) {
+	var num = parseInt(Dd('num').value);
+	if(t == '+') {
+		num++;
+	} else {
+		if(num == 1) return;
+		num--;
+	}
+	Dd('amount').value =  parseFloat(num*{$MOD[deposit]});
+	Dd('num').value = num;
+}
+function check() {
+	var money = $('#amount').val();
+	if(money > {$_money}) {
+		Go('charge.php?action=pay&reason=deposit|'+Dd('num').value+'&amount='+money+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(money > {$DT[quick_pay]}){
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+	}
+	return true;
+}
+window.setInterval(
+	function() {
+		var money = $('#amount').val();
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+		} else {
+			$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+		}
+	}, 
+500);
+</script>
+{/if}
+{template 'footer', 'member'}

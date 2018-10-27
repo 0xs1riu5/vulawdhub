@@ -1,0 +1,54 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$MOD[linkurl]}search.php">搜索</a></div>
+</div>
+<div class="m">
+	<form action="{$MOD[linkurl]}search.php" id="fsearch">
+	<div class="sort">
+		<div class="sort-k">关键词</div>
+		<div class="sort-v">
+			<input type="text" size="60" name="kw" value="{$kw}"/> &nbsp;
+			{loop $sfields $k $v}
+			<input type="radio" name="fields" value="{$k}" id="fd_{$k}"{if $fields==$k} checked{/if}/><label for="fd_{$k}"> {$v}</label> &nbsp;
+			{/loop}
+			<input type="checkbox" name="thumb" id="thumb" value="1"{if $thumb} checked{/if}/>图片 &nbsp;
+			<input type="checkbox" name="vip" id="vip" value="1"{if $vip} checked{/if}/>{VIP} &nbsp;
+		</div>
+		<div class="c_b"></div>
+	</div>
+	<div class="sort">
+		<div class="sort-k">行业</div>
+		<div class="sort-v">
+			{$category_select}
+			<b>地区</b>
+			{$area_select}
+			<b>日期</b>
+			{dcalendar('fromdate', $fromdate, '')} 至 {dcalendar('todate', $todate, '')}
+		</div>
+		<div class="c_b"></div>
+	</div>
+	{if $CP}{template 'property_search', 'chip'}{/if}		
+	<div class="sort">
+		<div class="sort-k">&nbsp;</div>
+		<div class="sort-v">
+			<input type="submit" value="搜 索" class="btn-blue"/>
+			<input type="button" value="重 搜" class="btn" onclick="Go('{$MOD[linkurl]}search.php');"/>
+		</div>
+		<div class="c_b"></div>
+	</div>
+	</form>
+</div>
+<div class="m o_h">
+	<div class="group-list">
+	{if $page==1 && $kw}
+	{ad($moduleid,$catid,$kw,6)}
+	{load('m'.$moduleid.'_k'.urlencode($kw).'.htm')}
+	{/if}
+	{if $tags}
+	{template 'list-'.$module, 'tag'}
+	{else}
+	{template 'empty', 'chip'}
+	{/if}
+	</div>
+</div>
+{template 'footer'}

@@ -1,0 +1,69 @@
+{template 'header'}
+<div class="m m1">
+	<div class="m1l">
+		{if $action == 'diy'}
+		<table cellpadding="16" cellspacing="0" class="tb">
+		<tr>
+		<th align="left">定制订阅</th>
+		</tr>
+		<tr>
+		<td>
+			<form action="index.php">
+			<input type="hidden" name="action" value="{$action}"/>
+			<select name="mid">
+				<option value="0">模块</option>
+				{loop $FD $k $v}
+				<option value="{$v[moduleid]}"{if $mid==$v[moduleid]} selected{/if}>{$v[name]}</option>
+				{/loop}
+			</select>&nbsp;
+			<input type="text" name="kw" size="20" value="{if $kw}{$kw}{else}关键词{/if}" onfocus="if(this.value=='关键词')this.value='';"/>&nbsp;
+			{if $category_select}{$category_select}&nbsp;{/if}
+			{if $area_select}{$area_select}&nbsp;{/if}
+			<input type="submit" value=" 提交 " class="btn-green" style="width:66px;"/>&nbsp;&nbsp;
+			<input type="button" value=" 重设 " class="btn" style="width:66px;" onclick="Go('?action={$action}');"/>
+			</form>
+		</td>
+		</tr>
+		</table>
+		{if $feed_code}
+		<div class="b20">&nbsp;</div>
+		<table cellpadding="16" cellspacing="0" class="tb">
+		<tr>
+		<th width="80">频道</th>
+		<th>订阅地址</th>
+		<th width="60">订阅</th>
+		</tr>
+		<tr align="center">
+		<td class="f_red">{$MODULE[$mid][name]}</td>
+		<td><input type="text" style="width:96%;" value="{$feed_code}" onmouseover="this.select();"/></td>
+		<td><a href="{$feed_code}" target="_blank"><img src="{DT_STATIC}file/image/xml.gif" alt="订阅"/></a></td>
+		</tr>
+		</table>
+		{/if}
+		{else}
+		<table cellpadding="16" cellspacing="0" class="tb">
+		<tr>
+			<th width="80">频道</th>
+			<th>订阅地址</th>
+			<th width="60">订阅</th>
+		</tr>
+		{loop $FD $k $v}
+		<tr align="center">
+		<td><a href="{$v[linkurl]}" target="_blank">{$v[name]}</a></td>
+		<td><input type="text" style="width:96%;" value="{$v[rssurl]}" onmouseover="this.select();"/></td>
+		<td><a href="{$v[rssurl]}" target="_blank"><img src="{DT_STATIC}file/image/xml.gif" alt="订阅"/></a></td>
+		</tr>
+		{/loop}
+		</table>
+		{/if}
+	</div>
+	<div class="m1r side">
+		<ul>
+		<li class="side_li" id="type_all"><a href="./">RSS订阅</a></li>
+		{if $MOD[feed_enable]==2}<li class="side_li" id="type_diy"><a href="index.php?action=diy">定制订阅</a></li>{/if}
+		</ul>
+	</div>
+	<div class="c_b"></div>
+</div>
+<script type="text/javascript">$(function(){$('#type_{if $action=='diy'}diy{else}all{/if}').attr('class', 'side_on');});</script>
+{template 'footer'}

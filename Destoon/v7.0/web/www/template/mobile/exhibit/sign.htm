@@ -1,0 +1,101 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}channel.php" data-transition="slideup"><span>频道</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-form">
+<form method="post" action="sign.php" data-ajax="false" id="sign_form" onsubmit="return sign_check();">
+<input type="hidden" name="forward" value="{$forward}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+
+<p>报名人数<em>*</em><b id="damount"></b></p>
+<div><input type="tel" name="amount" value="1" id="amount" style="width:100px;"/></div>
+
+<p>联系人<em>*</em><b id="dtruename"></b></p>
+<div><input type="text" name="truename" value="{$truename}" id="truename" style="width:50%;"/></div>
+
+<p>手机号码<em>*</em><b id="dmobile"></b></p>
+<div><input type="tel" name="mobile" value="{$mobile}" id="mobile" style="width:50%;"/></div>
+
+<p>公司名称</p>
+<div><input type="text" name="company" id="company" value="{$company}"/></div>
+
+
+<p>所在地区</p>
+<div>{ajax_area_select('areaid', '请选择', $areaid)}</div>
+
+<p>街道地址</p>
+<div><input type="text" name="address" id="address" value="{$address}"/></div>
+
+<p>邮政编码</p>
+<div><input type="tel" name="postcode" id="postcode" value="{$postcode}" style="width:50%;"/></div>
+
+<p>电子邮箱</p>
+<div><input type="email" name="email" id="email" value="{$email}"/></div>
+
+{if $DT[im_qq]}
+<p>QQ</p>
+<div><input type="tel" name="qq" id="qq" value="{$qq}" style="width:50%;" style="width:50%;"/></div>
+{/if}
+
+{if $DT[im_wx]}
+<p>微信</p>
+<div><input type="text" name="wx" id="wx" value="{$wx}" style="width:50%;" style="width:50%;"/></div>
+{/if}
+
+<p>备注事项</p>
+<div><textarea name="content" id="content"></textarea></div>
+
+{if $need_captcha}
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+{/if}
+
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="提交报名" class="btn-blue"/>
+<div class="blank-16"></div>
+
+</form>
+</div>
+{if !$_userid}<script type="text/javascript" src="{DT_STATIC}file/script/guest.js"></script>{/if}
+<script type="text/javascript">
+function sign_check() {
+	var l;
+	var f;
+	f = 'amount';
+	l = parseInt(Dd(f).value);
+	if(l < 1) {
+		Dmsg('请填写报名人数', f);
+		return false;
+	}
+	Dd(f).value = l;
+	f = 'truename';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写联系人', f);
+		return false;
+	}
+	f = 'mobile';
+	l = Dd(f).value.length;
+	if(l < 11) {
+		Dmsg('请填写手机', f);
+		return false;
+	}
+	{if $need_captcha}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', f);
+		return false;
+	}
+	{/if}
+}
+</script>
+{template 'footer'}

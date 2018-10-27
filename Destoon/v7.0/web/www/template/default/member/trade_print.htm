@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>打印订单</title>
+<meta http-equiv="x-ua-compatible" content="ie=7"/>
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+<style type="text/css">
+* {word-break:break-all;font-family:Verdana,Arial;}
+body {margin:0px;font-size:13px;color:#000000;background:#FFFFFF;}
+/* common */
+.m {width:630px;margin:auto;}
+table{border-collapse:collapse;font-size:13px;}
+td{border:#333333 1px solid;}
+</style>
+</head>
+<body>
+<div class="m">
+<table cellpadding="8" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" bgcolor="#FAFAFA" align="center"><strong>收货信息</strong></td>
+</tr>
+<tr>
+<td width="100" align="center">收货地址</td>
+<td>{$td[buyer_address]}{if $td[buyer_postcode]} ({$td[buyer_postcode]}){/if}</td>
+</tr>
+<tr>
+<td align="center">买家姓名</td>
+<td>{$td[buyer_name]}</td>
+</tr>
+<tr>
+<td align="center">买家手机</td>
+<td>{$td[buyer_mobile]}</td>
+</tr>
+<tr>
+<td align="center">会员名称</td>
+<td>{$td[buyer]}</td>
+</tr>
+</table>
+<br/>
+<br/>
+<table cellpadding="8" cellspacing="0" width="100%">
+<tr bgcolor="#FAFAFA" align="center">
+<td>商品名称</td>
+<td width="60">规格</td>
+<td width="60">数量</td>
+<td width="100">买家留言</td>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td align="left" valign="top">{$v[title]}</td>
+<td>{$v[par]}</td>
+<td>{$v[number]}</td>
+<td>{$v[note]}</td>
+</tr>
+{/loop}
+</table>
+<br/>
+<br/>
+<table cellpadding="8" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" bgcolor="#FAFAFA" align="center"><strong>订单信息</strong></td>
+</tr>
+<tr>
+<td width="100" align="center">订单编号</td>
+<td>{$td[itemid]}</td>
+</tr>
+<tr>
+<td align="center">下单时间</td>
+<td>{$td[adddate]}</td>
+</tr>
+<tr>
+<td align="center">卖家名称</td>
+<td>{$td[seller]}</td>
+</tr>
+{if $td[fee_name] && $td[fee]}
+<tr>
+<td align="center">{$td[fee_name]}</td>
+<td>{$DT[money_sign]}{$td[fee]}</td>
+</tr>
+{/if}
+<tr>
+<td align="center">订单总额</td>
+<td>{$DT[money_sign]}{$td[total]}</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript">window.print();</script>
+<br/>
+<br/>
+</div>
+</body>
+</html>

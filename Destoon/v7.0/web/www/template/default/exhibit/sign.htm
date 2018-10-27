@@ -1,0 +1,102 @@
+{template 'header'}
+<div class="m">
+	<div class="nav">当前位置: <a href="{$MODULE[1][linkurl]}">首页</a> &raquo; <a href="{$MOD[linkurl]}">{$MOD[name]}</a> &raquo; <a href="{$linkurl}">{$item[title]}</a> &raquo; 在线报名</div>
+	<form method="post" action="sign.php" id="sign_form" onsubmit="return sign_check();">
+	<input type="hidden" name="forward" value="{$forward}"/>
+	<input type="hidden" name="itemid" value="{$itemid}"/>
+	<table width="100%" cellpadding="8" cellspacing="1" bgcolor="#DDDDDD">	
+	<tr>
+	<td bgcolor="#F3F3F3" align="right"><span class="f_red">*</span> 报名人数</td>
+	<td bgcolor="#FFFFFF"><input type="text" name="amount" value="1" size="5" id="amount"/> <span class="f_red" id="damount"></span></td>
+	</tr>	
+	<tr>
+	<td bgcolor="#F3F3F3" align="right"><span class="f_red">*</span> 联系人</td>
+	<td bgcolor="#FFFFFF"><input type="text" name="truename" size="30" id="truename" value="{$truename}"/> <span class="f_red" id="dtruename"></span></td>
+	</tr>
+	<tr>
+	<td bgcolor="#F3F3F3" align="right"><span class="f_red">*</span> 手机号码</td>
+	<td bgcolor="#FFFFFF"><input type="text" name="mobile" size="30" id="mobile" value="{$mobile}"/> <span class="f_red" id="dmobile"></span></td>
+	</tr>
+	<tr>
+	<td bgcolor="#F3F3F3" align="right">公司名称</td>
+	<td bgcolor="#FFFFFF"><input type="text" name="company" size="30" id="company" value="{$company}"/> <span class="f_red" id="dcompany"></span></td>
+	</tr>
+	<tr>
+	<td bgcolor="#F3F3F3" align="right">通讯地址</td>
+	<td bgcolor="#FFFFFF">{ajax_area_select('areaid', '请选择', $areaid)} <input type="text" size="60" name="address" id="address" value="{$address}"/> <span id="daddress" class="f_red"></span></td>
+	</tr>
+	<tr>
+	<td bgcolor="#F3F3F3" align="right">邮政编码</td>
+	<td bgcolor="#FFFFFF"><input type="text" name="postcode" size="10" id="postcode" value="{$postcode}"/> <span class="f_red" id="dpostcode"></span></td>
+	</tr>
+	<tr>
+	<td bgcolor="#F3F3F3" align="right">电子邮箱</td>
+	<td bgcolor="#FFFFFF"><input type="text" name="email" size="30" id="email" value="{$email}"/> <span class="f_red" id="demail"></span></td>
+	</tr>
+	{if $DT[im_qq]}
+	<tr>
+	<td bgcolor="#F3F3F3" align="right">QQ</td>
+	<td bgcolor="#FFFFFF"><input type="text" size="30" name="qq" id="qq" value="{$qq}"/></td>
+	</tr>
+	{/if}
+	{if $DT[im_wx]}
+	<tr>
+	<td bgcolor="#F3F3F3" align="right">微信</td>
+	<td bgcolor="#FFFFFF"><input type="text" size="30" name="wx" id="wx" value="{$wx}"/></td>
+	</tr>
+	{/if}
+	<tr>
+	<td bgcolor="#F3F3F3" align="right">备注事项</td>
+	<td bgcolor="#FFFFFF">
+	<textarea rows="8" cols="80" name="content" id="content"></textarea><br/><span class="f_red" id="dcontent"></span>
+	</td>
+	</tr>
+	{if $need_captcha}
+	<tr>
+	<td bgcolor="#F3F3F3" align="right"><span class="f_red">*</span> 验证码</td>
+	<td bgcolor="#FFFFFF">{template 'captcha', 'chip'} <span id="dcaptcha" class="f_red"></span></td>
+	</tr>
+	{/if}
+	<tr>
+	<td bgcolor="#F3F3F3"></td>
+	<td bgcolor="#FFFFFF">
+	<input type="submit" name="submit" value=" 提交报名 "/>
+	</td>
+	</tr>
+	</table>
+	</form>	
+</div>
+{if !$_userid}<script type="text/javascript" src="{DT_STATIC}file/script/guest.js"></script>{/if}
+<script type="text/javascript">
+function sign_check() {
+	var l;
+	var f;
+	f = 'amount';
+	l = parseInt(Dd(f).value);
+	if(l < 1) {
+		Dmsg('请填写报名人数', f);
+		return false;
+	}
+	Dd(f).value = l;
+	f = 'truename';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写联系人', f);
+		return false;
+	}
+	f = 'mobile';
+	l = Dd(f).value.length;
+	if(l < 11) {
+		Dmsg('请填写手机', f);
+		return false;
+	}
+	{if $need_captcha}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', f);
+		return false;
+	}
+	{/if}
+}
+</script>
+{template 'footer'}

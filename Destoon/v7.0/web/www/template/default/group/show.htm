@@ -1,0 +1,91 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav"><div><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></div><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20 bd-t"></div>
+</div>
+<div class="m m3">
+	<div class="m3l">
+		<h1 class="title" id="title">{$title}</h1>
+		{if $introduce}<div class="introduce">{$introduce}</div>{/if}
+		<center><img src="{$thumb}" alt="{$title}"/></center>
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div class="content" id="content">{$content}</div>
+		{if $MOD[fee_award]}
+		<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+		{/if}
+		{template 'comment', 'chip'}
+	</div>
+	<div class="m3r">
+		<div class="g_price">
+			<div>原价<br/><span>{$DT[money_sign]}{$marketprice}</span></div>
+			<div>折扣<br/>{$discount}折</div>
+			<div><strong>节省<br/>{$DT[money_sign]}{$savemoney}</strong></div>
+		</div>
+		<div class="b10 c_b">&nbsp;</div>
+		<div class="g_deal" onclick="Go('{$MOD[linkurl]}{rewrite('buy.php?itemid='.$itemid)}');">
+			<div>{$DT[money_sign]}{$iprice}</div>
+		</div>
+		
+		{if $process == 2}
+		<div class="g_timer">
+			本团购结束于
+			<div id="totimer">{timetodate($endtime, 'Y年n月j日 H:i')}</div>
+		</div>
+		<div class="b10 c_b">&nbsp;</div>
+		{else}
+		{if $totime}
+		<div class="g_timer">
+			距离团购结束还有
+			<div id="totimer">&nbsp;&nbsp;</div>
+		</div>
+		<div class="b10 c_b">&nbsp;</div>
+		<script type="text/javascript">
+		var totime = new Date({$jsdate}).getTime();
+		function _totimer() {
+			var t = new Date();
+			var s = Math.floor((totime - t.getTime())/1000);
+			var h = '';
+			var i;
+			if(s > 0) {
+				i = Math.floor(s/86400);	
+				h += '<span>'+i+'</span>天';
+				s = Math.floor(s%86400);
+				i = Math.floor(s/3600);	
+				h += '<span>'+i+'</span>小时';
+				s = Math.floor(s%3600);	
+				i = Math.floor(s/60);			
+				h += '<span>'+i+'</span>分';
+				s = Math.floor(s%60);
+				h += '<span>'+s+'</span>秒';
+			} else {
+				h = '<span class="f_red">团购已结束</span>';
+			}
+			Dd('totimer').innerHTML = h;
+		}
+		_totimer();
+		setInterval("_totimer()", 1000); 
+		</script>
+		{/if}
+		{/if}
+		
+		<div class="g_info">
+			<strong>已经有 <span>{$orders}</span> 人购买</strong>
+			<div>
+			{if $process == 0}
+			正在成团，距离团购人数还差{$left}人
+			{elseif $process == 1}
+			团购已成功，还可以继续购买...
+			{else}
+			团购已结束
+			{/if}
+			</div>
+		</div>
+		<div class="b10">&nbsp;</div>
+		<div class="contact_head">联系方式</div>		
+		<div class="contact_body" id="contact">{template 'contact', 'chip'}</div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{template 'footer'}

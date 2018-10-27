@@ -1,0 +1,49 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('{if $could_sign}<a href=&#34;{$MOD[mobile]}{rewrite('sign.php?itemid='.$itemid)}&#34;><span>在线报名</span></a>|{/if}<a href=&#34;{DT_MOB}api/share.php?mid={$moduleid}&itemid={$itemid}&#34; data-transition=&#34;slideup&#34;><span>分享好友</span></a>|<a href=&#34;{$MOD[mobile]}&#34; data-direction=&#34;reverse&#34;><span>{$MOD[name]}首页</span></a>|<a href=&#34;{DT_MOB}channel.php&#34; data-direction=&#34;reverse&#34;><span>频道列表</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$editdate}{if $MOD[hits]}&nbsp;&nbsp;浏览:<span id="hits">{$hits}</span>{/if}</div>
+	<div class="content">
+	日期:{$fromdate}~{$todate}<br/>
+	城市:{$city}<br/>
+	地址:<a href="{DT_MOB}api/address.php?auth={encrypt($address.'|'.$title, DT_KEY.'MAP')}" rel="external" target="_blank">{$address}</a><br/>
+	展馆:{$hallname}<br/>
+	主办:{$sponsor}<br/>
+	{if $user_status == 3}
+	{if $could_sign}
+	<a href="{$MOD[mobile]}{rewrite('sign.php?itemid='.$itemid)}"><div class="btn-blue" style="margin:10px 0;">在线报名</div></a>
+	{/if}
+	</div>
+	{if $content}<div class="content">{$content}</div>{/if}
+	<div class="head bd-b"><strong>联系方式</strong></div>
+	<div class="contact">
+	姓名:{$truename}<br/>
+	{if $telephone}电话:<a href="tel:{$telephone}">{$telephone}</a><br/>{/if}
+	{if $mobile}手机:<a href="tel:{$mobile}">{$mobile}</a><br/>{/if}
+	{if $fax}传真:{$fax}<br/>{/if}
+	{if $email}邮件:<a href="mailto:{$email}">{$email}</a><br/>{/if}
+	{if $qq}QQ:<a href="http://wpa.qq.com/msgrd?v=3&uin={$qq}&site=qq&menu=yes" target="_blank" rel="external">{$qq}</a><br/>{/if}
+	{if $wx && $DT[im_wx]}微信:<a href="{DT_MOB}api/wx.php?wid={$wx}&username={$username}" target="_blank" rel="external">{$wx}</a><br/>{/if}
+	{if $addr}地址:{$addr}<br/>{/if}
+	</div>
+	{else}
+	{template 'content', 'chip'}
+	{/if}
+	</div>
+	{if $MOD[fee_award]}
+	<div class="award"><a href="{$MODULE[2][mobile]}award.php?mid={$moduleid}&itemid={$itemid}" rel="external"><div>打赏</div></a></div>
+	{/if}
+</div>
+{template 'comment', 'chip'}
+{template 'footer'}

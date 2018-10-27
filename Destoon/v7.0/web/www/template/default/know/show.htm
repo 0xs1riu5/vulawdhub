@@ -1,0 +1,212 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='',img_max_width={$MOD[max_width]};</script>
+<div class="m">
+	<div class="nav">
+	<div><input type="button" value="我要提问" class="btn-blue" onclick="Go('{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&cid={$catid}&action=add');"/></div>
+	<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}
+	</div>
+</div>
+<div class="m">
+	<div class="know_show">
+	<table>
+	<tr>
+	<td valign="top" class="know_show_l">
+	<ul>
+	{if $item[hidden]}
+	<li><strong>匿名</strong></li>
+	<li><img src="{useravatar('', 'large')}" alt="" class="know_avatar"/></li>
+	{else}
+	<li>
+		{if $item[username]}
+		<a href="{$MOD[linkurl]}{rewrite('search.php?username='.$item['username'])}" class="b"><strong>{$item[passport]}</strong></a>
+		{else}
+		<strong title="{hide_ip($item[ip])}">游客</strong>
+		{/if}
+	</li>
+	<li><img src="{useravatar($item[username], 'large')}" alt="" class="know_avatar"/></li>
+	{if $item[username] && $DT[im_web]}<li>{im_web($item[username], 1)}</li>{/if}
+	{/if}
+	<li></li>
+	</ul>
+	</td>
+	<td valign="top">
+		<div class="know_info">
+			<span class="f_r">
+			<a href="javascript:SendFav();" class="b">收藏</a>&nbsp; | &nbsp;
+			<a href="javascript:SendReport();" class="b">举报</a>
+			</span>
+			{timetodate($addtime, 5)} &nbsp; 
+			{if $MOD[hits]}关注：<span id="hits">{$hits}</span> &nbsp; {/if}
+			回答：<span id="answer">{$answer}</span>
+		</div>
+		<div class="b20"></div>
+		<h1 class="title" id="title">{$title}</h1>
+		<div class="info"><span class="f_r f_b"><img src="{DT_SKIN}image/know_{$process}.gif" align="absmiddle"/> {$PROCESS[$process]}</span>
+		<img src="{DT_SKIN}image/ico_reward.gif" align="absmiddle"/> <span class="f_orange">悬赏分：{$credit}</span>
+		<span class="f_gray">
+		{if $process == 1 || $process == 2}
+		- 离问题结束还有 {secondstodate($totime-$DT_TIME)}
+		{elseif $process == 3}
+		- 解决时间 {timetodate($updatetime, 5)}
+		{/if}		
+		</span>
+		</div>
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div id="question" class="content">{$content}</div>
+		{if $addition}
+		<div class="know_addition">
+		<strong>问题补充：</strong><br/>
+		{nl2br($addition)}
+		</div>
+		{/if}
+		{if $process == 1}<br/><a href="#answer"><img src="{DT_SKIN}image/btn_answer.gif" width="90" height="23" alt="我来回答" id="answer_btn" style="display:none;margin:20px;"/></a>{/if}
+	</td>
+	</tr>
+	</table>
+	</div>
+</div>
+{if $aid && $best && $page == 1}
+<div class="m">
+	<div class="know_show">
+	<img src="{DT_SKIN}image/best_{if $E}expert{else}answer{/if}.gif" alt="" class="best_image"/>
+	<table>
+	<tr>
+	<td valign="top" class="know_show_l">
+	<ul>
+	{if $E}
+		<li><a href="{$MOD[linkurl]}{rewrite('expert.php?itemid='.$E['itemid'])}" target="_blank" class="b"><strong>{$E[title]}</strong></a></li>
+		<li><img src="{useravatar($E[username], 'large')}" alt="" class="know_avatar"/></li>
+		{if $DT[im_web]}<li>{im_web($E[username], 1)}</li>{/if}
+		<li class="f_red">知道专家</li>
+		<li title="擅长领域：{$E[major]}"><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid=10&action=add&askto={$E[username]}" target="_blank" class="b">向TA提问</a></li>
+	{else}
+		{if $best[hidden]}
+		<li><strong>匿名</strong></li>
+		<li><img src="{useravatar('', 'large')}" alt=""  class="know_avatar"/></li>
+		{else}
+		<li>
+			{if $best[username]}
+			<a href="{$MOD[linkurl]}{rewrite('search.php?username='.$best['username'])}" class="b"><strong>{$best[passport]}</strong></a>
+			{else}
+			<strong title="{hide_ip($best[ip])}">游客</strong>
+			{/if}
+		</li>
+		<li><img src="{useravatar($best[username], 'large')}" alt="" class="know_avatar"/></li>
+		{if $best[username] && $DT[im_web]}<li>{im_web($best[username], 1)}</li>{/if}
+		{/if}
+	{/if}
+	<li></li>
+	</ul>
+	</td>
+	<td valign="top">
+		<div class="know_info">
+			<span class="f_r">
+			<span id="v_msg"></span>&nbsp;
+			<a href="javascript:" onclick="V(1, {$agree});">支持</a>(<span id="v_{$itemid}_1">{$agree}</span>)&nbsp; | &nbsp;
+			<a href="javascript:" onclick="V(0, {$against});">反对</a>(<span id="v_{$itemid}_0">{$against}</span>)&nbsp; | &nbsp;
+			<a href="javascript:RR({$aid});" class="b">举报</a>
+			</span>
+			{timetodate($best[addtime], 5)}
+		</div>
+		<div id="content" class="content"><div id="A_{$aid}">{template 'content', 'chip'}</div></div>
+		{if $comment}
+		<div class="know_comment">
+		<strong>提问者对答案的评价：</strong><br/>
+		{nl2br($comment)}
+		</div>
+		{/if}
+		{if $MOD[fee_award]}
+		<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+		{/if}
+	</td>
+	</tr>
+	</table>
+	</div>
+</div>
+<script style="text/javascript">
+var v_op = 1;
+var v_nm = 0;
+function V(op, nm) {
+	v_op = op;
+	v_nm = nm;
+	if(get_cookie('best_answer_{$itemid}')) {
+		Inner('v_msg', '您已经对最佳答案表过态了');
+		return;
+	}
+	$.get('{$MOD[linkurl]}answer.php?action=best&itemid={$itemid}&op='+op,
+		function(data) {
+			if(data == -1) {
+				Inner('v_msg', '您已经对最佳答案表过态了');
+			} else if (data == 0) {
+				Inner('v_msg', '参数错误，如有疑问请联系管理员');
+			} else if (data == 1) {
+				if(v_op == 1) {
+					Inner('v_{$itemid}_1', ++v_nm);
+				} else {
+					Inner('v_{$itemid}_0', ++v_nm);
+				}
+				Inner('v_msg', '感谢参与');
+			}
+		}
+	);
+}
+</script>
+{/if}
+{if $answers}
+	{loop $answers $k $v}
+	<div class="m">
+		<div class="know_show">
+		<table>
+		<tr>
+		<td valign="top" class="know_show_l">
+		<ul>
+		{if $v[hidden]}
+		<li id="u_{$v[itemid]}"><strong>匿名</strong></li>
+		<li><img src="{useravatar('', 'large')}" alt=""  class="know_avatar"/></li>
+		{else}
+		<li id="u_{$v[itemid]}">
+			{if $v[username]}
+			<a href="{$MOD[linkurl]}{if $v[expert]}{rewrite('expert.php?username='.$v['username'])}{else}{rewrite('search.php?username='.$v['username'])}{/if}" target="_blank" class="b"><strong>{$v[passport]}</strong></a>
+			{else}
+			<strong title="{hide_ip($item[ip])}">游客</strong>
+			{/if}
+		</li>
+		<li><img src="{useravatar($v[username], 'large')}" alt="" class="know_avatar"/></li>
+		{if $v[username] && $DT[im_web]}<li>{im_web($v[username], 1)}</li>{/if}
+		{/if}
+		{if $v[expert]}<li class="f_red">知道专家</li>{/if}
+		<li></li>
+		</ul>
+		</td>
+		<td valign="top">
+			<div class="know_info">
+				<span class="f_r"><a href="javascript:RR({$v[itemid]});" class="b">举报</a></span>
+				{timetodate($v[addtime], 5)}
+			</div>
+			<div class="content" id="A_{$v[itemid]}">{$v[content]}</div>
+		</td>
+		</tr>
+		</table>
+		</div>
+	</div>
+	{/loop}
+{/if}
+{if $pages}
+<div class="m"><div class="pages">{$pages}</div></div>
+{/if}
+{if $process == 1 || $process == 2}
+<div class="m">
+<script type="text/javascript">show_answer('{$MOD[linkurl]}', {$itemid});</script>
+<a name="answer"></a>
+</div>
+{/if}
+{if $process == 0 || $process == 3}
+<div class="m">{template 'comment', 'chip'}</div>
+{/if}
+<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>
+<script style="text/javascript">
+function RR(id) {
+	SendReport(Dd('A_'+id) ? '{$MOD[name]}回答举报，答案ID:'+id+'\n回答内容:\n'+Dd('A_'+id).innerHTML : '');
+}
+</script>
+{template 'footer'}

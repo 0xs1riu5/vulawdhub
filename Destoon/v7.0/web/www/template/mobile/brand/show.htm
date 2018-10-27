@@ -1,0 +1,30 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('{if $could_message}<a href=&#34;{$MOD[mobile]}{rewrite('message.php?itemid='.$itemid)}&#34; data-transition=&#34;slideup&#34;><span>留言加盟</span></a>|{/if}<a href=&#34;{DT_MOB}api/share.php?mid={$moduleid}&itemid={$itemid}&#34; data-transition=&#34;slideup&#34;><span>分享好友</span></a>|<a href=&#34;{$MOD[mobile]}&#34; data-direction=&#34;reverse&#34;><span>{$MOD[name]}首页</span></a>|<a href=&#34;{DT_MOB}channel.php&#34; data-direction=&#34;reverse&#34;><span>频道列表</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$editdate}{if $MOD[hits]}&nbsp;&nbsp;浏览:<span id="hits">{$hits}</span>{/if}</div>
+	<div class="content">
+	{if $thumb}<center><img src="{$thumb}" alt="{$title}"/></center>{/if}
+	{if $vip}{VIP}:{$vip}级<br/>{/if}
+	{if $homepage}网站:<a href="{$homepage}" target="_blank" rel="external" class="b">{$homepage}</a><br/>{/if}
+	{if $could_message}
+	<a href="{$MOD[mobile]}{rewrite('message.php?itemid='.$itemid)}" data-transition="slideup"><div class="btn-blue" style="margin:10px 0;">留言加盟</div></a>
+	{/if}
+	{$content}
+	</div>
+	<div class="head bd-b"><strong>联系方式</strong></div>
+	<div class="contact">{template 'contact', 'chip'}</div>
+</div>
+{template 'comment', 'chip'}
+{template 'footer'}

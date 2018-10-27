@@ -1,0 +1,63 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td width="110" id="submenu"></td>
+{if $_userid}
+<td class="tab" id="s3"><a href="?mid={$mid}&job={$job}"><span>已通过({$nums[3]})</span></a></td>
+<td class="tab" id="s2"><a href="?mid={$mid}&job={$job}&status=2"><span>审核中({$nums[2]})</span></a></td>
+<td class="tab" id="s1"><a href="?mid={$mid}&job={$job}&status=1"><span>未通过({$nums[1]})</span></a></td>
+{/if}
+</tr>
+</table>
+</div>
+<div class="tt">
+<form action="?">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="job" value="{$job}"/>
+<input type="hidden" name="status" value="{$status}"/>
+{$fields_select}&nbsp;
+<input type="text" size="50" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 置 " class="btn" onclick="Go('?mid={$mid}&job={$job}&status={$status}');"/>
+</form>
+</div>
+<form method="post">
+<div class="ls">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="25"><input type="checkbox" onclick="checkall(this.form);"/></th>
+<th width="60">头像</th>
+<th>会员</th>
+<th>商圈</th>
+<th width="150">加入时间</th>
+<th width="220">加入理由</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td><input type="checkbox" name="itemid[]" value="{$v[itemid]}"/></td>
+<td><img src="{useravatar($v[username])}" width="48" height="48" style="padding:5px;"/></td>
+<td><a href="{userurl($v[username])}" target="_blank">{$v[username]}</a></td>
+<td><a href="{$v[groupurl]}" target="_blank">{$v[groupname]}</a></td>
+<td>{$v[adddate]}</td>
+<td><textarea style="width:200px;height:30px;">{$v[reason]}</textarea></td>
+</tr>
+{/loop}
+</table>
+</div>
+<div class="btns">
+{if $status == 3}
+<input type="submit" value=" 取消审核 " class="btn" onclick="this.form.action='?mid={$mid}&job={$job}&&action=cancel'"/>
+{elseif $status == 2}
+<input type="submit" value=" 通过审核 " class="btn" onclick="this.form.action='?mid={$mid}&job={$job}&&action=check'"/>
+<input type="submit" value=" 拒绝加入 " class="btn" onclick="this.form.action='?mid={$mid}&job={$job}&&action=reject'"/>
+{elseif $status == 1}
+<input type="submit" value=" 通过审核 " class="btn" onclick="this.form.action='?mid={$mid}&job={$job}&&action=check'"/>
+{/if}
+<input type="submit" value=" 删除选中 " class="btn" onclick="if(confirm('确定要删除选中粉丝吗？')){this.form.action='?mid={$mid}&job={$job}&&action=delete'}else{return false;}"/>
+</div>
+</form>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('mid_{$mid}');m('s{$status}');</script>
+{template 'club_js', 'chip'}
+{template 'footer', 'member'}

@@ -1,0 +1,40 @@
+{template 'header'}
+<div class="m m3">
+	<div class="m3l">
+		<div class="top-l">
+		{if $MOD[page_islide]}
+			<!--{tag("moduleid=$moduleid&condition=status=3 and level=2 and thumb!=''&areaid=$cityid&order=".$MOD[order]."&pagesize=".$MOD[page_islide]."&width=420&height=315&target=_blank&template=slide")}-->
+		{/if}
+		</div>
+		<div class="top-r">
+			<div class="headline">
+			<!--{tag("moduleid=$moduleid&condition=status=3 and level=5&areaid=$cityid&order=".$MOD[order]."&pagesize=1&target=_blank&template=list-hl")}-->
+			</div>
+			<div class="subline">
+			<!--{tag("moduleid=$moduleid&condition=status=3 and level=1&areaid=$cityid&order=".$MOD[order]."&pagesize=8&datetype=2&target=_blank")}-->
+			</div>
+		</div>
+		<div class="b16 c_b"></div>
+		{if $MOD[page_icat]}
+		<table cellpadding="0" cellspacing="0" width="100%">
+		{loop $maincat $i $c}
+		{if $i%2==0}<tr>{/if}
+		<td valign="top" width="420">
+			<div class="head-txt"><span><a href="{$MOD[linkurl]}{$c[linkurl]}">更多<i>&gt;</i></a></span><strong>{$c[catname]}</strong></div>
+			<div class="list-txt"><!--{tag("moduleid=$moduleid&catid=".$c[catid]."&condition=status=3&areaid=$cityid&order=".$MOD[order]."&pagesize=".$MOD[page_icat]."&datetype=2&target=_blank")}--></div>
+		</td>
+		{if $i%2==0}<td>&nbsp;</td>{/if}
+		{if $i%2==1}</tr>{/if}
+		{/loop}
+		</table>
+		{/if}
+	</div>
+	<div class="m3r">
+		<div class="head-sub"><strong>点击排行</strong></div>
+		<div class="list-rank"><!--{tag("moduleid=$moduleid&condition=status=3 and addtime>$today_endtime-1800*86400&areaid=$cityid&order=hits desc&key=hits&pagesize=9&template=list-rank")}--></div>
+		<div class="head-sub"><strong>评论排行</strong></div>
+		<div class="list-rank"><!--{tag("moduleid=$moduleid&condition=status=3 and addtime>$today_endtime-1800*86400&areaid=$cityid&order=comments desc&key=comments&pagesize=9&template=list-rank")}--></div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

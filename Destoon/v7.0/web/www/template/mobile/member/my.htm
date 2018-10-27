@@ -1,0 +1,26 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{DT_MOB}my.php" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>我的</span></a>
+</div>
+<div class="head-bar-title">信息管理</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}channel.php" data-transition="slideup"><span>频道</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="list-set">
+<ul>
+{loop $MYMODS $k $v}
+<li><div><a href="{$DT[file_my]}?mid={$v}" rel="external">{$MODULE[$v][name]}管理</a></div></li>
+{/loop}
+{if $MG[resume]}
+{loop $MODULE $k $v}
+{if $v[module] == 'job'}<li><div><a href="{$DT[file_my]}?mid={$k}&job=resume" rel="external">{$v[name]}简历</a></div></li>{/if}
+{/loop}
+{/if}
+</ul>
+</div>
+{template 'footer'}

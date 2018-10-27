@@ -1,0 +1,37 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback('');" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">页面不存在</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}"><img src="{DT_MOB}static/img/icon-index.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title bd-b">您正在请求的页面可能 <span style="color:red;">不存在</span> 或 <span style="color:red;">已经被删除</span></div>
+	<div class="content">
+	&nbsp;<strong>请尝试以下操作：</strong><br/>
+	&nbsp;&bull; 确保浏览器的地址栏中显示的网站地址的拼写和格式正确无误<br/>
+	&nbsp;&bull; 请与网站管理员联系，告诉他们您发现的错误以便网站管理员处理<br/>
+	&nbsp;&bull; <span id="second">30</span>秒后自动返回<a href="{DT_MOB}" class="b">网站首页</a><br/>
+	</div>
+	<meta http-equiv="refresh" content="30;url={DT_MOB}">
+</div>
+<script type="text/javascript">
+var i = 30;
+var interval=window.setInterval(
+	function() {
+		if(i==0) {
+			clearInterval(interval);
+		} else {
+			Dd('second').innerHTML=i;
+			i--;
+		}
+	}, 
+1000);
+</script>
+{template 'footer'}

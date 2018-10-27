@@ -1,0 +1,148 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b">
+	<div>
+		<a href="{$MOD[linkurl]}{rewrite('search.php?action=group&kw='.urlencode($kw))}"{if $action=='group'} class="b"{/if}>商圈搜索</a><em>|</em><a href="{$MOD[linkurl]}{rewrite('search.php?action=post&kw='.urlencode($kw))}"{if $action=='post'} class="b"{/if}>帖子搜索</a><em>|</em><a href="{$MOD[linkurl]}{rewrite('search.php?action=reply&kw='.urlencode($kw))}"{if $action=='reply'} class="b"{/if}>回复搜索</a>
+	</div>
+	<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$MOD[linkurl]}search.php">搜索</a>
+	</div>
+</div>
+<div class="m m2">
+	<div class="m2l">
+		<form action="{$MOD[linkurl]}search.php" id="fsearch">
+		<input type="hidden" name="action" id="action" value="{$action}"/>
+		{if $action == 'group'}
+		<div class="sort">
+			<div class="sort-k">关键词</div>
+			<div class="sort-v">
+				<input type="text" size="60" name="kw" value="{$kw}"/>
+				<b>分类</b>
+				{$category_select}
+			</div>
+			<div class="c_b"></div>
+		</div>
+		{else}
+		<div class="sort">
+			<div class="sort-k">关键词</div>
+			<div class="sort-v">
+				<input type="text" size="60" name="kw" value="{$kw}"/>
+				<b>作者</b>
+				<input type="text" size="10" name="username" value="{$username}"/>
+				<b>日期</b>
+				{dcalendar('fromdate', $fromdate, '')} 至 {dcalendar('todate', $todate, '')}
+			</div>
+			<div class="c_b"></div>
+		</div>
+		{/if}
+		{if $CP}{template 'property_search', 'chip'}{/if}		
+		<div class="sort">
+			<div class="sort-k">&nbsp;</div>
+			<div class="sort-v">
+				<input type="submit" value="搜 索" class="btn-blue"/>
+				<input type="button" value="重 搜" class="btn" onclick="Go('{$MOD[linkurl]}search.php?action={$action}');"/>
+			</div>
+			<div class="c_b"></div>
+		</div>
+		</form>
+		<div class="b20"></div>
+{if $action == 'group'}
+	{if $tags}
+	<div class="group_list">
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr>
+	<th width="48"></th>
+	<th>商圈</th>
+	<th width="100">主题</th>
+	<th width="100">粉丝</th>
+	<th width="100">圈主</th>
+	<th width="100">版主</th>
+	</tr>
+	{loop $tags $k $t}
+	<tr bgcolor="#FFFFFF" align="center">
+	<td height="40"><a href="{$t[linkurl]}"><img src="{$t[thumb]}" width="48" alt="{$t[alt]}"/></a></td>
+	<td align="left"><a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}" class="px14"><strong>{$t[title]}{$MOD[seo_name]}</strong></a>{if $t[introduce]}<p>{$t[introduce]}</p>{/if}</td>
+	<td>{$t[post]}</td>
+	<td>{$t[fans]}</td>
+	<td><a href="{userurl($t[username])}" target="_blank">{$t[username]}</a></td>
+	<td>
+	<select onchange="if(this.value)window.open(this.value);">
+	{if $r[managers]}
+	<option value="">版主列表</option>
+	{loop $r[managers] $manager}
+	<option value="{userurl($manager)}">{$manager}</option>
+	{/loop}
+	{else}
+	<option value="">暂无版主</option>
+	{/if}
+	</select>
+	</td>
+	</tr>
+	{/loop}
+	</table>
+	</div>
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+	{else}
+	{template 'empty', 'chip'}
+	{/if}
+{elseif $action == 'reply'}
+	{if $tags}
+	<div class="club_list">
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr>
+	<th>回复内容</td>
+	<th width="150">回复人</td>
+	<th width="150">回复时间</td>
+	</tr>
+	{loop $tags $k $t}
+	<tr>
+	<td><div><a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}" class="px14">{$t[title]}</a></div></td>
+	<td align="center"><a href="{$MOD[linkurl]}{rewrite('search.php?action='.$action.'&kw='.urlencode($kw).'&username='.$t['username'])}">{$t[username]}</a></td>
+	<td align="center">{$t[adddate]}</td>
+	</tr>
+	{/loop}	
+	</table>
+	</div>
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+	{else}
+	{template 'empty', 'chip'}
+	{/if}
+{else}
+	{if $page==1 && $kw}
+	{ad($moduleid,$catid,$kw,6)}
+	{load('m'.$moduleid.'_k'.urlencode($kw).'.htm')}
+	{/if}
+	{if $tags}
+	{template 'list-'.$module, 'tag'}
+	{else}
+	{template 'empty', 'chip'}
+	{/if}
+{/if}
+	</div>
+	<div class="m2r">
+		{if $kw}
+		<div class="b10"></div>
+		<div class="head-sub"><strong>相关搜索</strong></div>
+		<div class="list-txt">
+			<ul>
+			{loop $MODULE $mod}{if $mod[moduleid]>3 && $mod[moduleid]!=$moduleid && !$mod[islink]}<li><a href="{$mod[linkurl]}{rewrite('search.php?kw='.urlencode($kw))}">在 <span class="f_red">{$mod[name]}</span> 找 {$kw}</a></li>{/if}{/loop}
+			</ul>
+		</div>
+		<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and word<>'$kw' and keyword like '%$keyword%'&pagesize=10&order=total_search desc&template=list-search_relate", -2)}-->
+		{/if}
+		<div class="sponsor">{ad($moduleid,$catid,$kw,7)}</div>
+		<div class="head-sub"><strong>今日排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400&pagesize=9&order=today_search desc&key=today_search&template=list-search_rank")}-->
+		</div>
+		<div class="head-sub"><strong>本周排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400*7&pagesize=9&order=week_search desc&key=week_search&template=list-search_rank")}-->
+		</div>
+		<div class="head-sub"><strong>本月排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400*30&pagesize=9&order=week_search desc&key=week_search&template=list-search_rank")}-->
+		</div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

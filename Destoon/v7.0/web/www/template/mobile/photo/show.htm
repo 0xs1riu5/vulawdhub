@@ -1,0 +1,53 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('<a href=&#34;{DT_MOB}api/share.php?mid={$moduleid}&itemid={$itemid}&#34; data-transition=&#34;slideup&#34;><span>分享好友</span></a>|<a href=&#34;{$MOD[mobile]}{rewrite('view.php?itemid='.$itemid)}&#34; data-transition=&#34;slideup&#34;><span>全部展开</span></a>|<a href=&#34;{$MOD[mobile]}&#34; data-direction=&#34;reverse&#34;><span>{$MOD[name]}首页</span></a>|<a href=&#34;{DT_MOB}channel.php&#34; data-direction=&#34;reverse&#34;><span>频道列表</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$editdate}{if $MOD[hits]}&nbsp;&nbsp;浏览:<span id="hits">{$hits}</span>{/if}</div>
+	{if $user_status == 3}
+	<div class="album" style="margin:0;">
+		<div id="album" style="margin:0;"><img src="{$P[big]}" id="photo_{$itemid}" style="width:100%;" onclick="photo_next({$itemid})"/></div><div style="line-height:30px;font-size:18px;"><span id="photo_page_{$itemid}">{$page}</span> / {$items}</div>
+	</div>
+	<div style="display:none;">
+	{loop $T $i $p}
+	<div id="image_{$itemid}_{$i}">{$p[big]}</div>
+	<div id="intro_{$itemid}_{$i}">{$p[introduce]}</div>
+	{/loop}
+	<div id="cur_{$itemid}">{$page}</div>
+	<div id="max_{$itemid}">{$items}</div>
+	</div>
+	<script type="text/javascript" src="{DT_MOB}static/js/photo.js"></script>
+	<script type="text/javascript">
+	function PhotoLast() {
+		Dtoast('当前已是最后一张');
+	}
+	$(function(){
+		$('#photo_{$itemid}').on('swipeleft',function(){
+			photo_next({$itemid});
+		});
+		$('#photo_{$itemid}').on('swiperight',function(){
+			photo_prev({$itemid});
+		});
+	});
+	</script>
+	<div id="photo_intro" class="content">{$P[introduce]}</div>
+	{else}
+	{template 'content', 'chip'}
+	{/if}
+	{if $content}<div class="content">{$content}</div>{/if}
+	{if $MOD[fee_award]}
+	<div class="award"><a href="{$MODULE[2][mobile]}award.php?mid={$moduleid}&itemid={$itemid}" rel="external"><div>打赏</div></a></div>
+	{/if}
+</div>
+{template 'comment', 'chip'}
+{template 'footer'}

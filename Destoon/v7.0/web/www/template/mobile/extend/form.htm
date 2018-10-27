@@ -1,0 +1,166 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $typeid}{$TYPE[$typeid][typename]}{else}表单问卷{/if}</div>
+<div class="head-bar-right">
+<a href="javascript:window.scrollTo(0,0);$('#{$ext}-{$typeid}-{$page}-{$itemid}').slideToggle(300);"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div id="{$ext}-{$typeid}-{$page}-{$itemid}" style="display:none;">
+<div class="ui-form sch">
+<form action="{$mob}index.php">
+<div class="blank-20"></div>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+<div class="blank-20"></div>
+</form>
+</div>
+<div class="list-set">
+<ul>
+{loop $_TP[0] $v0}
+<li{if $typeid==$v0[typeid]} style="background:#F6F6F6;"{/if}><div><a href="{$mob}{list_url($v0[typeid])}">{$v0[typename]}</a></div></li>
+{if isset($_TP[1][$v0[typeid]])}
+{loop $_TP[1][$v0[typeid]] $v1}
+<li{if $typeid==$v1[typeid]} style="background:#F6F6F6;"{/if}><div><a href="{$mob}{list_url($v1[typeid])}">&nbsp;&nbsp;&nbsp;&nbsp;{$v1[typename]}</a></div></li>
+{/loop}
+{/if}
+{/loop}
+</ul>
+</div>
+<div class="blank-35 bd-b"></div>
+</div>
+{if $itemid}
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$adddate}&nbsp;&nbsp;有效期：{$fromdate} 至 {$todate}&nbsp;&nbsp;点击：{$hits}</div>
+	{if $content}<div class="content">{$content}</div>{/if}
+</div>
+{if $lists}
+<form action="{$mob}index.php" method="post" onsubmit="return check();">		
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="item" value="{$item}"/>
+<div class="ui-form">
+{loop $lists $k $v}
+<p>{$v[name]}{if $v[min]}<em>*</em><b id="dq_{$v[qid]}"></b>{/if}</p>
+<div>
+	{if $v[type] == 0}
+	<input type="text" name="a[{$v[qid]}]" id="q_{$v[qid]}"{$v[extend]}/>
+	{elseif $v[type] == 1}
+	<textarea name="a[{$v[qid]}]" id="q_{$v[qid]}"{$v[extend]}></textarea>
+	{elseif $v[type] == 2}
+	<select name="a[{$v[qid]}]" id="q_{$v[qid]}"{$v[extend]}>
+	<option value="">请选择</option>
+	{loop $v[option] $kk $vv}
+	<option value="{$vv[name]}"{if $vv[on]} selected{/if}>{$vv[name]}</option>
+	{/loop}
+	</select>
+	{elseif $v[type] == 3}
+	<ul id="q_{$v[qid]}"{$v[extend]}>
+	{loop $v[option] $kk $vv}
+	<li class="f_3"><input type="checkbox" name="a[{$v[qid]}][]" value="{$vv[name]}" id="q_{$v[qid]}_{$kk}" {if $vv[on]} checked{/if}/><label for="q_{$v[qid]}_{$kk}">{$vv[name]}{if $vv[name] == '其他'} <input type="text" name="o[{$v[qid]}]" id="other_{$v[qid]}" size="10" onfocus="Dd('q_{$v[qid]}_{$kk}').checked=true;"/>{/if}</label>		
+	</li>
+	{/loop}
+	</ul>
+	{elseif $v[type] == 4}
+	<ul id="q_{$v[qid]}"{$v[extend]}>
+	{loop $v[option] $kk $vv}
+	<li class="f_3"><input type="radio" name="a[{$v[qid]}]" value="{$vv[name]}" id="q_{$v[qid]}_{$kk}" {if $vv[on]} checked{/if}/><label for="q_{$v[qid]}_{$kk}">{$vv[name]}{if $vv[name] == '其他'} <input type="text" name="o[{$v[qid]}]" id="other_{$v[qid]}" size="10" onfocus="Dd('q_{$v[qid]}_{$kk}').checked=true;"/>{/if}</label></li>
+	{/loop}
+	</ul>
+	{/if}
+</div>
+{/loop}
+{if $verify == 1}
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+{/if}
+{if $verify == 2}
+<p>验证问题<em>*</em><b id="danswer"></b></p>
+<div>{template 'question', 'chip'}</div>
+{/if}
+<div class="blank-16"></div>
+<input type="submit" name="submit" class="btn-green" value="提 交"/>
+<div class="blank-32"></div>
+</div>
+{/if}
+{else}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><a href="{str_replace($url, $mob, $v[linkurl])}"><strong>{$v[title]}</strong></a></li>
+<li><span class="f_r">{$v[hits]}点击</span><span>{$v[adddate]}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{if $itemid}
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	{loop $lists $k $v}
+	{if $v[min]}
+	f = 'q_{$v[qid]}';
+	{if $v[type] == 0 || $v[type] == 1}
+	l = Dd(f).value.length;
+	if(l < {$v[min]}) {
+		Dmsg('{$v[name]}最少{$v[min]}字', f);
+		return false;
+	}
+	{if $v[max]}
+	if(l > {$v[max]}) {
+		Dmsg('{$v[name]}最多{$v[max]}字', f);
+		return false;
+	}
+	{/if}
+	{elseif $v[type] == 2}
+	l = Dd(f).value.length;
+	if(l == 0) {
+		Dmsg('请选择{$v[name]}', f);
+		return false;
+	}
+	{elseif $v[type] == 3}
+	l = checked_count(f);
+	if(l < {$v[min]}) {
+		Dmsg('{$v[name]}最少选择{$v[min]}项', f, 1);
+		return false;
+	}
+	{if $v[max]}
+	if(l > {$v[max]}) {
+		Dmsg('{$v[name]}最多选择{$v[max]}项', f, 1);
+		return false;
+	}
+	{/if}
+	{elseif $v[type] == 4}
+	l = checked_count(f);
+	if(l == 0) {
+		Dmsg('请选择{$v[name]}', f, 1);
+		return false;
+	}
+	{/if}
+	{/if}
+	{/loop}
+	{if $verify == 1}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写验证码', f);
+		return false;
+	}
+	{/if}
+	{if $verify == 2}
+	f = 'answer';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请回答验证问题', f);
+		return false;
+	}
+	{/if}
+	return true;
+}
+</script>
+{/if}
+{template 'footer'}

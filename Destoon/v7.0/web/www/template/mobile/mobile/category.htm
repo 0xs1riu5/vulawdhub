@@ -1,0 +1,18 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$MOD[name]}分类</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="list-set">
+<ul>
+{loop $lists $k $v}
+<li><div{if $k==0} style="border:none;"{/if}><a href="{if $v[child]}{DT_MOB}api/category.php?moduleid={$moduleid}&pid={$v[catid]}{else}{$MODULE[$moduleid][mobile]}{$v[linkurl]}{/if}">{$v[catname]}</a></div></li>
+{/loop}
+</ul>
+</div>
+{template 'footer'}

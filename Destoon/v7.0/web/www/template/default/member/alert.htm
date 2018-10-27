@@ -1,0 +1,114 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="add"><a href="?action=list"><span>添加提醒</span></a></td>
+<td class="tab" id="s3"><a href="?action=index"><span>已通过({$nums[3]})</span></a></td>
+<td class="tab" id="s2"><a href="?status=2"><span>审核中({$nums[2]})</span></a></td>
+</tr>
+</table>
+</div>
+{if $action=='add' || $action=='edit'}
+<form method="post" action="?" id="dform">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="post[mid]" value="{$mid}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl">商机类型</td>
+<td class="tr f_b">{$MODULE[$mid][name]}</td>
+</tr>
+<tr>
+<td class="tl">关键词</td>
+<td class="tr"><input type="text" name="post[word]" id="word" size="30" value="{$word}" maxlength="30"/><span id="dword" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">行业分类</td>
+<td class="tr"><div id="catesch"></div>{ajax_category_select('post[catid]', '请选择', $catid, $mid)}<span id="dcatid" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">所在地区</td>
+<td class="tr">{ajax_area_select('post[areaid]', '请选择', $areaid)} <span id="dareaid" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">发送频率</td>
+<td class="tr">
+<select name="post[rate]">
+<option value="0"{if $rate==0} selected{/if}>不限</option>
+<option value="1"{if $rate==1} selected{/if}>1天</option>
+<option value="3"{if $rate==3} selected{/if}>3天</option>
+<option value="7"{if $rate==7} selected{/if}>7天</option>
+<option value="15"{if $rate==15} selected{/if}>15天</option>
+<option value="30"{if $rate==30} selected{/if}>30天</option>
+</select>
+</td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" name="submit" value=" 确 定 " class="btn_g"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">s('alert');m('add');</script>
+{elseif $action=='list'}
+<form method="post" action="?" id="dform">
+<input type="hidden" name="action" value="add"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl"><span class="f_red">*</span> 请选择商机类型</td>
+<td class="tr">
+{loop $mids $k $v}
+<input type="radio" name="mid" value="{$v}" id="mid_{$v}" onclick="Go('?action=add&mid={$v}');"{if $k==0} checked{/if}/><label for="mid_{$v}" onclick="Go('?action=add&mid={$v}');"> {$MODULE[$v][name]}</label>&nbsp;&nbsp;
+{/loop}
+</td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" value="下一步" class="btn_g"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">s('alert');m('add');</script>
+{else}
+<div class="ls">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th>类别</th>
+<th>关键词</th>
+<th>行业</th>
+<th>地区</th>
+<th>添加时间</th>
+<th>上次发送</th>
+<th>频率</th>
+<th width="60">管理</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td><a href="{$MODULE[$v[mid]][linkurl]}" class="t" target="_blank">{$MODULE[$v[mid]][name]}</a></td>
+<td>{if $v[word]}<a href="{$MODULE[$v[mid]][linkurl]}{rewrite('search.php?kw='.urlencode($v[word]))}" class="t" target="_blank">{$v[word]}</a>{else}不限{/if}</td>
+<td>{if $v[catid]}{$v[cate]}{else}不限{/if}</td>
+<td>{if $v[areaid]}<a href="{$MODULE[$v[mid]][linkurl]}{rewrite('search.php?areaid='.$v['areaid'])}"" target="_blank">{area_pos($v[areaid], '-')}</a>{else}不限{/if}</td>
+<td class="f_gray">{timetodate($v[addtime], 5)}</td>
+{if $v[sendtime]}
+<td class="f_gray">{timetodate($v[sendtime], 5)}</td>
+{else}
+<td class="f_gray">从未</td>
+{/if}
+<td class="f_red">{if $v[rate]}{$v[rate]}天{else}不限{/if}</td>
+<td><a href="?action=edit&itemid={$v[itemid]}"><img width="16" height="16" src="image/edit.png" title="修改" alt=""/></a>
+<a href="?action=delete&itemid={$v[itemid]}" onclick="if(!confirm('确定要删除吗？此操作将不可撤销')) return false;"><img width="16" height="16" src="image/delete.png" title="删除" alt=""/></a></td>
+</tr>
+{/loop}
+</table>
+</div>
+{if $MG[alert_limit]}
+<div class="limit">总共可添加 <span class="f_b f_red">{$MG[alert_limit]}</span> 条&nbsp;&nbsp;&nbsp;当前已添加 <span class="f_b">{$limit_used}</span> 条&nbsp;&nbsp;&nbsp;还可以添加 <span class="f_b f_blue">{$limit_free}</span> 条</div>
+{/if}
+<br/>
+<span class="f_gray">&nbsp;&nbsp;<strong>提示</strong>：如果无法正常收到邮件，请将 <span class="f_blue">{$DT[mail_sender]}</span> 加入您的邮件白名单。</span>
+<br/>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('alert');m('s{$status}');</script>
+{/if}
+{template 'footer', 'member'}

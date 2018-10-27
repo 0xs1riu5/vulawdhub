@@ -1,0 +1,47 @@
+{template 'header', $template}
+<style type="text/css">
+.home-head {width:512px;height:84px;overflow:hidden;{if $background}background:#007AFF url('{$background}') no-repeat;{else}background:#007AFF url('{DT_MOB}static/img/home-background.png') no-repeat;background-size:512px 100px;{/if}}
+.home-head img {float:left;border:#FFFFFF 2px solid;border-radius:50%;margin:10px 10px 0 10px;}
+.home-head ul {float:left;margin:16px 0 0 0;}
+.home-head li {height:26px;line-height:26px;color:#FFFFFF;text-shadow:0 1px 1px #FAFAFA;}
+.home-head strong {font-size:16px;font-weight:normal;}
+.home-quick {height:70px;background:#FFFFFF;text-align:center;padding:15px 0;}
+.home-quick li {width:25%;float:left;}
+.home-quick img {width:46px;margin:0 0 6px 0;}
+.home-quick span {display:block;font-size:12px;}
+</style>
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback('{$back_link}', '{$DT_REF}', '{$username}');" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('<a href=&#34;{$MOD[mobile]}&#34; data-direction=&#34;reverse&#34;><span>{$MOD[name]}首页</span></a>|<a href=&#34;{DT_MOB}channel.php&#34; data-direction=&#34;reverse&#34;><span>频道列表</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="home-head">
+{if $logo}<img src="{$logo}" width="60" height="60"/>{/if}
+<ul>
+<li><strong>{$COM[company]}</strong></li>
+<li>{if $COM[vip]}{VIP}{$COM[vip]} 第{$COM[year]}年{else}普通会员{/if}</li>
+</ul>
+</div>
+<div class="home-quick">
+	<ul>
+		<li><a href="{userurl($username, 'file=introduce', $domain)}"><img src="{DT_MOB}static/img/home-introduce.png" width="46" height="46"/><span>{$_MENU[introduce]}</span></a></li>
+		<li><a href="{userurl($username, 'file=news', $domain)}"><img src="{DT_MOB}static/img/home-news.png" width="46" height="46"/><span>{$_MENU[news]}</span></a></li>
+		<li><a href="{userurl($username, 'file=credit', $domain)}"><img src="{DT_MOB}static/img/home-credit.png" width="46" height="46"/><span>{$_MENU[credit]}</span></a></li>
+		<li><a href="{userurl($username, 'file=contact', $domain)}"><img src="{DT_MOB}static/img/home-contact.png" width="46" height="46"/><span>{$_MENU[contact]}</span></a></li>
+	</ul>
+</div>
+<div class="list-set">
+<ul>
+{loop $M $i $m}
+<li><div{if $i==0} style="border:none;"{/if}><a href="{$m[linkurl]}">{$m[name]}</a></div></li>
+{/loop}
+</ul>
+</div>
+{template 'footer', $template}

@@ -1,0 +1,23 @@
+{template 'header'}
+<div class="m">
+	<div class="nav"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$linkurl}">{$item[title]}</a> <i>&gt;</i> 投递简历</div>
+	<form method="post" action="{$MOD[linkurl]}apply.php" id="dform">
+	<input type="hidden" name="itemid" value="{$itemid}"/>
+	<table cellpadding="16" cellspacing="0" class="tf">
+	<tr>
+	<td class="tl">选择简历</td>
+	<td>
+	{loop $lists $k $v}
+	<div class="b10"></div>
+	<div><input type="radio" name="resumeid" value="{$v[itemid]}"{if $k==0} checked{/if}/>  &nbsp;&nbsp;  <a href="{$v[linkurl]}" class="b" target="_blank">{$v[title]}</a></div>
+	{/loop}
+	</td>
+	</tr>
+	<tr>
+	<td class="tl"></td>
+	<td><input type="submit" name="submit" value="投 递" class="btn-green"/>&nbsp;&nbsp;<input type="button" value="取 消" onclick="Go('{$linkurl}');" class="btn"/></td>
+	</tr>
+	</table>
+	</form>	
+</div>
+{template 'footer'}

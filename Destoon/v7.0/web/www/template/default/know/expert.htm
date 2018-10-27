@@ -1,0 +1,67 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav">{if $itemid}<span class="f_r"><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&action=add&askto={$username}" target="_blank" class="b">向TA提问</a></span>{/if}<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$MOD[linkurl]}{rewrite('expert.php?page=1')}">专家</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+</div>
+
+<div class="m">
+	{if $itemid}
+	<table cellpadding="16" cellspacing="0" class="tb bd-t">
+	<tr>
+	<td rowspan="4" align="center">
+	<img src="{useravatar($username, 'large')}" width="100" height="100" alt="" style="margin-bottom:16px;"/>
+	{if $DT[im_web]}{im_web($username, 1)}{/if}	
+	</td>
+	<td align="center" width="100">姓名</td>
+	<td width="350">{$title} <span title="昵称">({$passport})</span></td>
+	<td align="center" width="100">被提问</td>
+	<td width="350">{$ask}</td>
+	</tr>
+	<tr>
+	<td align="center">人气</td>
+	<td>{$hits}</td>
+	<td align="center">被采纳</td>
+	<td>{$best}</td>
+	</tr>
+	<tr>
+	<td align="center">回答</td>
+	<td>{$answer}</td>
+	<td align="center">采纳率</td>
+	<td>{$rate}</td>
+	</tr>		
+	</table>
+	<div class="content">{if $major}<strong>擅长领域</strong>：{$major}<br/>{/if}{$content}</div>
+	<div class="head-txt"><strong>TA的回答</strong></div>
+	<div class="know-list"><!--{tag("moduleid=$moduleid&condition=status=3 and process=3 and expert='$username'&order=updatetime desc&areaid=$cityid&pagesize=".$MOD[page_iresolve]."&datetype=4&template=list-know")}--></div>
+	{else}
+		{if $lists}
+		<table cellpadding="16" cellspacing="0" class="tb">		
+		<tr>
+		<th width="60">头像</th>
+		<th>姓名</th>
+		<th>擅长领域</th>
+		<th width="70">人气</th>
+		<th width="70">被提问</th>
+		<th width="70">回答</th>
+		<th width="70">被采纳</th>
+		{if $DT[im_web]}<th width="40">交谈</th>{/if}
+		<th width="80">提问</th>
+		</tr>
+		{loop $lists $v}
+		<tr bgcolor="#FFFFFF" align="center">
+			<td><a href="{$MOD[linkurl]}{rewrite('expert.php?itemid='.$v['itemid'])}" target="_blank"><img src="{useravatar($v[username])}" width="48" height="48"/></a></td>
+			<td><a href="{$MOD[linkurl]}{rewrite('expert.php?itemid='.$v['itemid'])}" target="_blank" class="b"><strong>{$v[title]}</strong></a></td>
+			<td>{$v[major]}</td>
+			<td>{$v[hits]}</td>
+			<td>{$v[ask]}</td>
+			<td>{$v[answer]}</td>
+			<td>{$v[best]}</td>
+			{if $DT[im_web]}<td>{im_web($v[username])}</td>{/if}
+			<td><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&action=add&askto={$v[username]}" target="_blank" class="b">提问</a></td>
+		</tr>
+		{/loop}	
+		</table>
+		{/if}
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+	{/if}
+</div>
+{template 'footer'}

@@ -1,0 +1,16 @@
+<div class="side_head"><div><strong>{$side_name[$HS]}</strong></div></div>
+<div class="side_body">
+<form action="{$MODULE[4][linkurl]}home.php" onsubmit="return check_kw();">
+<input type="hidden" name="action" value="search"/>
+<input type="hidden" name="homepage" value="{$username}"/>
+<input type="text" name="kw" value="{if $kw}{$kw}{else}输入关键词{/if}" size="25" id="kw" class="inp" onfocus="if(this.value=='输入关键词')this.value='';"/>
+<div style="padding:10px 0 0 0;">
+<select name="file">
+{loop $MENU $k $v}
+{if in_array($menu_file[$k], array('sell', 'buy', 'news', 'credit', 'job', 'photo', 'info', 'brand', 'video', 'mall'))}<option value="{$menu_file[$k]}"{if $file==$menu_file[$k]} selected{/if}>{$v[name]}</option>{/if}
+{/loop}
+</select>&nbsp;
+<input type="submit" value=" 搜 索 " class="sbm"/>
+</div>
+</form>
+</div>

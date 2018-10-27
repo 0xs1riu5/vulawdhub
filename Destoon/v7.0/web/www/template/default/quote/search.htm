@@ -1,0 +1,77 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$MOD[linkurl]}search.php">搜索</a></div>
+</div>
+<div class="m m2">
+	<div class="m2l">
+		<form action="{$MOD[linkurl]}search.php" id="fsearch">
+		<div class="sort">
+			<div class="sort-k">关键词</div>
+			<div class="sort-v">
+				<input type="text" size="60" name="kw" value="{$kw}"/> &nbsp;
+				{loop $sfields $k $v}
+				<input type="radio" name="fields" value="{$k}" id="fd_{$k}"{if $fields==$k} checked{/if}/><label for="fd_{$k}"> {$v}</label> &nbsp;
+				{/loop}
+				{$order_select}
+			</div>
+			<div class="c_b"></div>
+		</div>
+		<div class="sort">
+			<div class="sort-k">分类</div>
+			<div class="sort-v">
+				{$category_select}
+				<b>地区</b>
+				{$area_select}
+				<b>日期</b>
+				{dcalendar('fromdate', $fromdate, '')} 至 {dcalendar('todate', $todate, '')}
+			</div>
+			<div class="c_b"></div>
+		</div>
+		{if $CP}{template 'property_search', 'chip'}{/if}		
+		<div class="sort">
+			<div class="sort-k">&nbsp;</div>
+			<div class="sort-v">
+				<input type="submit" value="搜 索" class="btn-blue"/>
+				<input type="button" value="重 搜" class="btn" onclick="Go('{$MOD[linkurl]}search.php');"/>
+			</div>
+			<div class="c_b"></div>
+		</div>
+		</form>
+		{if $page==1 && $kw}
+		{ad($moduleid,$catid,$kw,6)}
+		{load('m'.$moduleid.'_k'.urlencode($kw).'.htm')}
+		{/if}
+		{if $tags}
+		<div class="catlist">{template 'list-cat', 'tag'}</div>
+		{else}
+		{template 'empty', 'chip'}
+		{/if}
+	</div>
+	<div class="m2r">
+		{if $kw}
+		<div class="b10"></div>
+		<div class="head-sub"><strong>相关搜索</strong></div>
+		<div class="list-txt">
+			<ul>
+			{loop $MODULE $mod}{if $mod[moduleid]>3 && $mod[moduleid]!=$moduleid && !$mod[islink]}<li><a href="{$mod[linkurl]}{rewrite('search.php?kw='.urlencode($kw))}">在 <span class="f_red">{$mod[name]}</span> 找 {$kw}</a></li>{/if}{/loop}
+			</ul>
+		</div>
+		<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and word<>'$kw' and keyword like '%$keyword%'&pagesize=10&order=total_search desc&template=list-search_relate", -2)}-->
+		{/if}
+		<div class="sponsor">{ad($moduleid,$catid,$kw,7)}</div>
+		<div class="head-sub"><strong>今日排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400&pagesize=9&order=today_search desc&key=today_search&template=list-search_rank")}-->
+		</div>
+		<div class="head-sub"><strong>本周排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400*7&pagesize=9&order=week_search desc&key=week_search&template=list-search_rank")}-->
+		</div>
+		<div class="head-sub"><strong>本月排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400*30&pagesize=9&order=week_search desc&key=week_search&template=list-search_rank")}-->
+		</div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

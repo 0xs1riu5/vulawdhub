@@ -1,0 +1,45 @@
+{template 'header'}
+<div class="m m1">
+	<div class="m1l">
+		{if $itemid}
+		<h1 class="title">{$title}</h1>
+		<div class="info f_gray"><span class="f_r c_p"><span onclick="Print();">[打印]</span></span>发布时间：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;有效期：{$fromdate} 至 {$todate}&nbsp;&nbsp;&nbsp;&nbsp;点击：<span id="hits">{$hits}</span></div>
+		<div class="content" id="content">{$content}</div>
+		{else}
+		<table cellpadding="16" cellspacing="0" class="tb">
+		<tr>
+		{if !$typeid}<th width="120">类别</th>{/if}
+		<th>标题</th>
+		<th width="120">点击</th>
+		<th width="120">发布时间</th>
+		</tr>
+		{loop $lists $k $v}
+		<tr align="center">
+		{if !$typeid}<td class="px14"><a href="{$url}{list_url($v[typeid])}">{$v[typename]}</a></td>{/if}
+		<td align="left" class="px14"><a href="{$v[linkurl]}"{if $v[islink]} target="_blank"{/if}>{$v[title]}</a></td>
+		<td class="f_gray">{$v[hits]}</td>
+		<td class="f_gray">{$v[adddate]}</td>
+		</tr>
+		{/loop}
+		</table>
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+		{/if}
+	</div>
+	<div class="m1r side">
+		<ul>
+		<li class="side_li" id="type_0"><a href="{$url}">公告中心</a></li>
+		{loop $_TP[0] $v0}
+		<li class="side_li" id="type_{$v0[typeid]}"><a href="{$url}{list_url($v0[typeid])}">{$v0[typename]}</a></li>
+			{if isset($_TP[1][$v0[typeid]])}
+			{loop $_TP[1][$v0[typeid]] $v1}
+			<li class="side_li" id="type_{$v1[typeid]}"><a href="{$url}{list_url($v1[typeid])}">&nbsp;|-- {$v1[typename]}</a></li>
+			{/loop}
+			{/if}
+		{/loop}
+		</ul>
+		<form action="index.php"><input type="search" name="kw" value="{$kw}" ondblclick="if(this.value){Go('./');}" placeholder="搜索" title="输入关键词，按回车搜索"/></form>
+	</div>
+	<div class="c_b"></div>
+</div>
+<script type="text/javascript">$(function(){$('#type_{$typeid}').attr('class', 'side_on');});</script>
+{template 'footer'}

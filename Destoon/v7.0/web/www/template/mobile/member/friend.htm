@@ -1,0 +1,161 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">商友{if $action=='add'}添加{elseif $action=='edit'}修改{elseif $action=='show'}详情{else}管理{/if}</div>
+<div class="head-bar-right">
+{if $action=='add' || $action=='edit' || $action=='show'}
+<a href="?action=index"><span>取消</span></a>
+{else}
+<a href="?action=add"><span>添加</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='add' || $action=='edit'}
+<form method="post" action="?" id="dform" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<input type="hidden" name="post[style]" value="{$style}"/>
+<div class="ui-form">
+<p>分类</p>
+<div>{$type_select}</div>
+<p>会员</p>
+<div><input type="text" name="post[username]" id="username" value="{$username}" style="width:200px;"/></div>
+<p>姓名<em>*</em><b id="dtruename"></b></p>
+<div><input type="text" name="post[truename]" id="truename" value="{$truename}" style="width:200px;"/></div>
+<p>公司</p>
+<div><input type="text" name="post[company]" id="company" value="{$company}"/></div>
+<p>职位</p>
+<div><input type="text" name="post[career]" id="career" value="{$career}" style="width:200px;"/></div>
+<p>电话</p>
+<div><input type="tel" name="post[telephone]" id="telephone" value="{$telephone}" style="width:200px;"/></div>
+<p>手机</p>
+<div><input type="tel" name="post[mobile]" id="mobile" value="{$mobile}" style="width:200px;"/></div>
+<p>邮件</p>
+<div><input type="email" name="post[email]" id="email" value="{$email}" style="width:200px;"/></div>
+{if $DT[im_qq]}
+<p>QQ</p>
+<div><input type="tel" name="post[qq]" id="qq" value="{$qq}" style="width:200px;"/></div>
+{/if}
+{if $DT[im_wx]}
+<p>微信</p>
+<div><input type="tel" name="post[wx]" id="wx" value="{$wx}" style="width:200px;"/></div>
+{/if}
+{if $DT[im_ali]}
+<p>旺旺</p>
+<div><input type="text" name="post[ali]" id="ali" value="{$ali}" style="width:200px;"/></div>
+{/if}
+{if $DT[im_skype]}
+<p>Skype</p>
+<div><input type="text" name="post[skype]" id="skype" value="{$skype}" style="width:200px;"/></div>
+{/if}
+<p>排序</p>
+<div><input type="tel" name="post[listorder]" id="listorder" value="{$listorder}" style="width:100px;"/></div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="{if $action=='edit'}修改{else}添加{/if}" class="btn-blue"/>
+<div class="blank-32"></div>
+</div>
+{elseif $action=='show'}
+<div class="main content">
+{if $typeid}
+分类：{$TYPE[$typeid][typename]}<br/>
+{/if}
+{if $username}
+会员：<a href="message.php?action=send&touser={$v[username]}"><img width="16" height="16" src="{DT_SKIN}image/msg.gif" title="发送站内信" alt="" align="absmiddle"/></a>&nbsp;{if $DT[im_web]}{im_web($username)}&nbsp;{/if}{$username}<br/>
+{/if}
+姓名：{$truename}<br/>
+公司：{$company}<br/>
+职位：{$career}<br/>
+电话：<a href="tel:{$telephone}" class="b">{$telephone}</a><br/>
+手机：<a href="tel:{$mobile}" class="b">{$mobile}</a><br/>
+主页：<a href="{DT_PATH}api/redirect.php?url={urlencode($homepage)}" class="b" target="_blank">{$homepage}</a><br/>
+邮件：<a href="mailto:{$email}" class="b">{$email}</a><br/>
+{if $qq}
+QQ：{im_qq($qq)}&nbsp;{$qq}<br/>
+{/if}
+{if $wx}
+微信：{im_wx($wx, $username)}&nbsp;{$wx}<br/>
+{/if}
+{if $ali}
+旺旺：{im_ali($ali)}&nbsp;{$ali}<br/>
+{/if}
+{if $skype}
+Skype：{im_skype($v[skype])}&nbsp;{$skype}<br/>
+{/if}
+备注：{$note}<br/>
+<div class="blank-16"></div>
+<input type="button" value="确 定" class="btn-green" onclick="Go('?action=index');"/>
+<div class="blank-16"></div>
+<input type="button" value="修 改" class="btn" onclick="Go('?action=edit&itemid={$itemid}');"/>
+<div class="blank-32"></div>
+</div>
+{else}
+<div class="ui-form sch">
+<form action="?">
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+</form>
+</div>
+<form method="post">
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<input type="checkbox" name="itemid[]" value="{$v[itemid]}" class="dsn" id="checkbox-{$v[itemid]}"/>
+<a href="?action=show&itemid={$v[itemid]}"><img src="{useravatar($v[username], 'large')}" width="60" height="60" alt="" onerror="{DT_PATH}api/avatar/default.jpg';" class="img-circle"/></a>
+<ul>
+<li><em class="check" id="check-{$v[itemid]}"></em><a href="?action=show&itemid={$v[itemid]}"><strong>{if $v[dcompany]}{$v[dcompany]}{else}个人{/if}</strong></a></li>
+<li><em class="sheet" id="sheet-{$v[itemid]}"></em><span>{$v[truename]}{if $v[career]} ({$v[career]}){/if}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+<div id="foot-bar" class="dsn">
+<div class="foot-bar-fix"></div>
+<div class="foot-bar btns">
+<input type="submit" name="submit" value="删除选中" class="btn-red" onclick="if(confirm('确定要删除选中商友吗？')){this.form.action='?action=delete'}else{return false;}"/>
+</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+	if($('#foot-bar input').length == 0) $('.check').hide();
+	$('.list-img em').click(function() {
+		if($(this).attr('class') == 'sheet') {
+			var id = $(this).attr('id').replace('sheet-', '');
+			Dsheet('<a href="?action=edit&itemid='+id+'"><span>修改</span></a>|<a href="?action=delete&itemid='+id+'" onclick="return _delete();"><span style="color:red;">删除</span></a>', '取消');
+		} else {
+			var id = $(this).attr('id').replace('check-', '');
+			if($('#checkbox-'+id).attr('checked')) {
+				$('#checkbox-'+id).attr('checked', false);
+				$(this).attr('class', 'check');
+			} else {
+				$('#checkbox-'+id).attr('checked', true);
+				$(this).attr('class', 'checked');
+			}
+			if($('.checked').length > 0) {
+				$('#foot-bar').fadeIn(300);
+			} else {
+				$('#foot-bar').fadeOut(300);
+			}
+		}
+	});
+});
+</script>
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	if(Dd('truename').value.length < 2) {
+		Dmsg('请填写姓名', 'truename');
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

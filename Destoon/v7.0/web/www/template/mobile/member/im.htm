@@ -1,0 +1,82 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back"><a href="{$back_link}"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a></div>
+<div class="head-bar-title">{if $action=='view'}聊天记录{else}站内交谈{/if}</div>
+<div class="head-bar-right">{if $action=='view'}<a href="?action=index"><span>关闭</span></a>{else}<a href="javascript:$('#chat-new').slideToggle(300);"><span>创建</span></a>{/if}</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='view'}
+<div class="ui-form sch">
+<form action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="chatid" value="{$chatid}"/>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+</form>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img" style="height:54px;">
+<img src="{useravatar($v[name])}" width="30" height="30" alt="" class="img-circle"/>
+<ul>
+<li><span class="f_r">{$v[date]}</span><b>{$v[name]}</b></li>
+</ul>
+</div>
+<div class="main content">{$v[word]}</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="main" style="display:none;" id="chat-new">
+	<div style="width:100%;height:48px;" class="bd-b">
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	<td width="16"></td>
+	<td height="48"><input name="touser" id="touser" placeholder="输入对方用户名" onblur="window.scrollTo(0,0);" style="width:100%;height:28px;line-height:28px;border:none;padding:0;margin:0;font-size:16px;"/></td>
+	<td width="68" onclick="Nchat();"><div style="width:48px;height:28px;line-height:28px;margin-left:10px;background:#1AAD19;border-radius:3px;text-align:center;color:#FFFFFF;font-size:14px;">交谈</div></td>
+	</tr>
+	</table>
+	</div>
+</div>
+<style type="text/css">
+.list-chat {height:48px;padding:10px;}
+.list-chat li {height:24px;line-height:24px;}
+.list-chat ul {margin:0;}
+.list-chat img {margin:0 10px 0 0;width:48px;height:48px;border-radius:4px;}
+.list-chat em {font-style:normal;font-size:10px;color:#FFFFFF;text-align:center;float:right;display:block;width:16px;height:16px;line-height:16px;margin-top:4px;background:#FF0000;border:1px solid #F43531;border-radius:50%;}
+.chat-spin {height:300px;background:#FFFFFF url('{DT_MOB}static/img/spinner.gif') no-repeat center center;background-size:16px 16px;}
+.chat_onl {}
+.chat_off {opacity:0.3;filter:Alpha(Opacity=30);}
+</style>
+<div class="main"><div id="chat-list"><div class="chat-spin" onclick="window.location.reload();"></div></div></div>
+<script type="text/javascript">
+function Nchat() {
+		var len;
+		len = $('#touser').val().length;
+		if(len < 3) {
+			Dtoast('请输入对方用户名');
+			return false;
+		}
+		$('#chat-new').hide();
+		Go('chat.php?touser='+$('#touser').val());
+}
+function Lchat() {
+	$('#chat-list').load('?action=list&reload={$DT_TIME}', function() {
+		$('#chat-list div').on('tap', function(event) {
+			$(this).css('background-color', '#F6F6F6');
+		});
+		$('#chat-list div').on('mouseout', function(event) {
+			$(this).css('background-color', '#FFFFFF');
+		});
+	});
+}
+$(function(){
+	Lchat();
+	setInterval(function() {
+		Lchat();
+	}, 10000);
+});
+</script>
+{/if}
+{template 'footer', 'member'}

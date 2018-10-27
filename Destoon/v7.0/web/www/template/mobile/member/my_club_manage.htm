@@ -1,0 +1,52 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title"{if !$action} onclick="Dsheet('<a href=&#34;?mid={$mid}&#34;><span>我的帖子</span></a>|<a href=&#34;?mid={$mid}&job=group&#34;><span>我的商圈</span></a>|<a href=&#34;?mid={$mid}&job=reply&#34;><span>我的回复</span></a>|<a href=&#34;?mid={$mid}&job=join&#34;><span>加入商圈</span></a>|<a href=&#34;?mid={$mid}&job=fans&#34;><span>粉丝管理</span></a>|<a href=&#34;?mid={$mid}&job=manage&#34;><span>商圈管理</span></a>', '取消');"{/if}>商圈{if $action=='add'}发布{elseif $action=='edit'}修改{else}管理 &#9662;{/if}</div>
+<div class="head-bar-right">
+<a href="?mid={$mid}"><span>取消</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-form sch" style="margin-top:5px;margin-bottom:5px;">
+<form action="?">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="job" value="{$job}"/>
+<input type="hidden" name="status" value="{$status}"/>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+</form>
+</div>
+
+<form method="post">
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><a href="{$v[linkurl]}"><strong>{$v[title]}</strong></a></li>
+<li><span class="f_r">{if $v[rid]}回复{else}帖子{/if}{$MANAGE[$v[typeid]]}</span><span>{$v[date]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+<div id="foot-bar" class="dsn">
+<div class="foot-bar-fix"></div>
+<div class="foot-bar btns">
+{if $MG[delete]}<input type="submit" name="submit" value="删除选中" class="btn-red" onclick="if(confirm('确定要删除选中{$MOD[name]}吗？')){this.form.action='?mid={$mid}&status={$status}&action=delete'}else{return false;}"/>{/if}
+</div>
+</div>
+</form>
+
+<div class="pages">{$pages}</div>
+{if $open_url}
+<script type="text/javascript">
+Dwidget('{$open_url}', '{$open_name}');
+setInterval(function() {
+	if(Dd('Dtop') == null) Go('?mid={$mid}&job={$job}&reload={$DT_TIME}');
+}, 500);
+</script>
+{/if}
+{template 'footer', 'member'}

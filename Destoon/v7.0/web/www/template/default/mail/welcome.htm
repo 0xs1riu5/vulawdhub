@@ -1,0 +1,21 @@
+<table cellpadding="0" cellspacing="0" width="700" align="center">
+<tr>
+<td><a href="{DT_PATH}" target="_blank"><img src="{if $DT[logo]}{$DT[logo]}{else}{DT_SKIN}image/logo.gif{/if}" style="margin:10px 0;border:none;" alt="{$DT[sitename]} LOGO" title="{$DT[sitename]}"/></a></td>
+</tr>
+<tr>
+<td style="border-top:solid 1px #DDDDDD;border-bottom:solid 1px #DDDDDD;padding:10px 0;line-height:200%;font-family:'Microsoft YaHei',Verdana,Arial;font-size:14px;color:#333333;">
+尊敬的会员：<br/>
+恭喜您成功注册成为{$DT[sitename]}会员！<br/>
+以下为您的会员帐号信息：<br/>
+<strong>户名：</strong>{$username}<br/>
+<strong>密码：</strong>{if isset($post[password])}{$post[password]}{else}<i>已加密</i> (如果您忘记了密码，<a href="{$MODULE[2][linkurl]}send.php" target="_blank" style="color:#005590;">请点这里找回</a>){/if}<br/>
+请您妥善保存，切勿告诉他人。<br/>
+如果您在使用过程中遇到任何问题，欢迎随时与我们取得联系。<br/>
+</td>
+</tr>
+<tr>
+<td style="line-height:22px;padding:10px 0;font-family:'Microsoft YaHei',Verdana,Arial;font-size:12px;color:#666666;">
+请注意：此邮件系 <a href="{DT_PATH}" target="_blank" style="color:#005590;">{$DT[sitename]}</a> 自动发送，请勿直接回复。如果此邮件不是您请求的，请忽略并删除
+</td>
+</tr>
+</table>

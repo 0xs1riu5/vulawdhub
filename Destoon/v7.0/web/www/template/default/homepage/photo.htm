@@ -1,0 +1,155 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+{if $itemid}
+	{if $pass}
+	<style type="text/css">
+	.photo_info {color:#F1F1F1;padding:10px 16px;background:#666666;}
+	.photo_info h1 {text-align:left;margin:2px 0;}
+	.photo_info_r {float:right;padding:8px 6px 0 0;}
+	.photo_intro {color:#FFFFFF;padding:10px 16px 0 16px;line-height:160%;text-indent:2em;}
+	.photo_l {background:#333333;}
+	.photo_r {background:#000000;width:120px;text-align:center;}
+	.photo_pos {color:#003278;padding:0 12px 10px 12px;}
+	.thumb_a {border:#666666 1px solid;padding:2px;margin-top:10px;}
+	.thumb_b {border:#FF6600 1px solid;padding:2px;margin-top:10px;}
+	.count_a {font-size:20px;color:#FF6600;}
+	.count_b {font-size:20px;}
+	.photo_all {padding:10px;}
+	.photo_all div {color:#F1F1F1;padding:2px 10px 2px 12px;text-align:left;}
+	#cursor_a {position:absolute;z-index:1000;width:500px;cursor:url('{DT_SKIN}image/prev.cur'),default;}
+	#cursor_b {position:absolute;z-index:1000;width:500px;cursor:url('{DT_SKIN}image/next.cur'),default;margin-left:500px;}
+	</style>
+	{if $view}
+		<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+		<td valign="top" class="photo_l">
+		<a name="p"></a>
+		<div class="photo_info">
+		<div>
+		<h1 class="title" id="title">{$title}</h1>
+		日期：{$adddate}&nbsp;&nbsp;&nbsp;
+		{if $MOD[hits]}点击：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;{/if}
+		图片：{$items}&nbsp;&nbsp;&nbsp;
+		<span onclick="Go('{userurl($username, 'file='.$file.'&itemid='.$itemid, $domain)}#p');" class="c_p">返回大图</span>
+		</div>
+		</div>
+			<div class="photo_all" oncontextmenu="return false">
+			<table width="100%">
+			{loop $T $i $t}
+			{if $i%5==0}<tr align="center">{/if}
+			<td width="20%" valign="top">
+			<a href="{$t[linkurl]}"><img src="{$t[thumb]}" width="160" alt="{$t[introduce]}" class="thumb_a" onmouseover="this.className='thumb_b';" onmouseout="this.className='thumb_a';"/></a>
+			<div>({$t[number]}) {$t[title]}</div>
+			</td>
+			{if $i%5==4}</tr>{/if}
+			{/loop}
+			</table>
+			</div>
+		</td>		
+		</tr>
+		</table>
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+		</div>
+	{else}
+		<table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+		<td valign="top" class="photo_l">
+		<a name="p"></a>
+		<div class="photo_info">
+		<div class="photo_info_r"><span class="count_a">{$page}</span> <span class="count_b">/ {$items}</span></div>
+		<div>
+		<h1 class="title" id="title">{$title}</h1>
+		日期：{$adddate}&nbsp;&nbsp;&nbsp;
+		{if $MOD[hits]}点击：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;{/if}
+		<span onclick="window.open('{DT_PATH}api/view.php?img='+Dd('destoon_photo').src);" class="c_p">查看原图</span>&nbsp;&nbsp;&nbsp;
+		<span onclick="Go('{userurl($username, 'file='.$file.'&itemid='.$itemid.'&view=1', $domain)}#p');" class="c_p">全部图片</span>
+		</div>
+		</div>
+		<div class="b10"></div>
+		<div id="photo">
+		<div><img src="{DT_SKIN}image/spacer.gif" id="cursor_a" onclick="Go('{$prev_photo}#p');" title="上一张"/></a><img src="{DT_SKIN}image/spacer.gif" id="cursor_b" onclick="Go('{$next_photo}#p');" title="下一张"/></div>
+		<div class="t_c"><img src="{$P[src]}" id="destoon_photo" oncontextmenu="return false;" onload="if(this.width>800)this.width=800;if(this.src.indexOf('spacer.gif')!=-1){this.width=800;this.height=1;}"/></div>
+		</div>
+		{if $P[introduce]}<div class="photo_intro">{nl2br($P[introduce])}</div>{/if}
+		<div class="b10"></div>
+		</td>
+		<td valign="top" class="photo_r">
+		<br/><br/><br/>
+		<a href="{$prev_photo}#p"><img src="{DT_SKIN}image/photo_prev.gif" title="上一张"/></a>
+		<br/><br/>
+		<div id="side">
+			{loop $S $k $v}
+			<a href="{$v[linkurl]}#p"><img src="{$v[thumb]}" width="80" height="80" title="{$v[introduce]}" alt="" {if $page==$v[page]}class="thumb_b"{else}class="thumb_a" onmouseover="this.className='thumb_b';" onmouseout="this.className='thumb_a';"{/if}/></a>
+			{/loop}
+		</div>
+		<br/><br/>
+		<a href="{$next_photo}#p"><img src="{DT_SKIN}image/photo_next.gif" title="下一张"/></a>
+		<br/><br/>
+		</td>
+		</tr>
+		</table>
+		</div>
+		<div class="main_head"><div><strong>详细信息</strong></div></div>
+		<div class="main_body">
+			{if $CP}{template 'property_show', 'chip'}{/if}
+			<div class="content" id="content">{$content}</div>
+		</div>
+		{if $could_comment && in_array($moduleid, explode(',', $EXT['comment_module']))}
+		<div id="comment_div" style="display:;">
+			<div class="main_head"><div><span class="f_r px12">共<span id="comment_count">0</span>条&nbsp;&nbsp;</span><strong><span id="message_title">相关评论</span></strong></div></div>
+			<div class="main_body"><script type="text/javascript">Df('{DT_PATH}api/comment.php?mid={$moduleid}&itemid={$itemid}&proxy={$comment_proxy}', 'id="destoon_comment" style="width:100%;"');</script></div>
+		</div>
+		{/if}
+		<script type="text/javascript">$(function(){try{Dd('cursor_a').style.height = Dd('cursor_b').style.height =  Dd('destoon_photo').height+'px';} catch(e) {}});</script>
+	{/if}
+	{else}
+	<br/><br/><br/><br/>
+		<form method="post" action="{DT_PATH}index.php">
+		<input type="hidden" name="homepage" value="{$username}"/>
+		<input type="hidden" name="file" value="{$file}"/>
+		<input type="hidden" name="itemid" value="{$itemid}"/>
+		<table width="300" cellpadding="10" align="center">
+		<tr style="display:none;">
+		<td><input name="iebug" type="text" size="30"/></td>
+		</tr>
+		{if $open == 2}
+		<tr>
+		<td class="px14"><img src="{DT_SKIN}image/ico_lock.gif" width="16" height="16" align="absmiddle"/> <strong>请输入访问密码</strong></td>
+		</tr>
+		{elseif $open == 1}
+		<tr>
+		<td class="px14"><img src="{DT_SKIN}image/ico_lock.gif" width="16" height="16" align="absmiddle"/> <strong>请回答，{$question}？</strong></td>
+		</tr>
+		{/if}
+		<tr>
+		<td><input name="key" type="text" size="30"/>&nbsp;&nbsp;<span class="f_red">{$error}</span></td>
+		</tr>
+		<tr>
+		<td><input type="submit" name="submit" value=" 确 定 " class="sbm"/></td>
+		</tr>
+		</table>
+		</form>
+	<br/><br/><br/><br/><br/>
+	{/if}
+{else}
+	<table cellpadding="10" cellspacing="1" width="100%">
+	{loop $lists $k $v}
+	{if $k%4==0}<tr align="center">{/if}
+	<td valign="top" width="25%">
+	<div class="thumb">
+		<a href="{$v[linkurl]}"><img src="{$v[thumb]}" width="160" height="120" alt="{$v[alt]}" title="{$v[alt]}"/></a>
+		<div><a href="{$v[linkurl]}" title="{$v[alt]}">{$v[title]}</a></div>
+		<p>{$v[items]}图{if $v[open]<3} <img src="{$MODULE[2][linkurl]}image/ico_lock.gif" style="border:none;padding:0;" align="absmiddle" title="访问受限"/>{/if}</p>
+		<p>{timetodate($v[addtime], 3)}</p>
+	</div>
+	</td>
+	{if $k%4==3}</tr>{/if}
+	{/loop}
+	</table>
+	<div class="pages">{$pages}</div>
+{/if}
+</div>
+{if $itemid}<script type="text/javascript">$(function(){Dd('side').style.display = Dd('split').style.display = 'none';});</script>{/if}
+{template 'footer', $template}

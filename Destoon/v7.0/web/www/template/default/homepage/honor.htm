@@ -1,0 +1,62 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+{if $itemid}
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+	<div class="title">{$title}</div>
+	<div class="info">上传时间：{timetodate($addtime, 3)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浏览次数：{$hits}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{$MENU[$menuid][linkurl]}">返回列表</a></div>
+	<div class="content">
+	<table cellpadding="5" cellspacing="1" width="100%" bgcolor="#CCCCCC">
+	<tr>
+	<td bgcolor="#FAFAFA" width="120" class="t_c f_b">发证机构：</td>
+	<td bgcolor="#FFFFFF">&nbsp;&nbsp;{$authority}</td>
+	<td bgcolor="#FAFAFA" width="120" class="t_c f_b">发证时间 ：</td>
+	<td bgcolor="#FFFFFF">&nbsp;&nbsp;{timetodate($fromtime, 3)}</td>
+	</tr>
+	<tr>
+	<td bgcolor="#FAFAFA" class="t_c f_b">上传时间 ：</td>
+	<td bgcolor="#FFFFFF">&nbsp;&nbsp;{timetodate($addtime, 3)}</td>
+	<td bgcolor="#FAFAFA" class="t_c f_b">有效期至 ：</td>
+	<td bgcolor="#FFFFFF">&nbsp;&nbsp;{if $totime}{timetodate($totime, 3)}{else}永久{/if}</td>
+	</tr>
+	</table>
+	</div>
+	
+</div>
+{if $content}
+<div class="main_head"><div><strong>证书介绍</strong></div></div>
+<div class="main_body">
+	<div class="content">{$content}</div>
+</div>
+{/if}
+<div class="main_head"><div><strong>证书图片</strong></div></div>
+<div class="main_body">
+	<br/><center><a href="{$image}" target="_blank"><img src="{$image}" onload="if(this.width>600) this.width=600;" alt="{$title}"/></a></center><br/>
+</div>
+{else}
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+	<div class="px14 lh18">
+	<table cellpadding="2" cellspacing="2" width="100%" align="center">
+	<tr bgcolor="#F1F1F1">
+	<th width="130" height="25">证书</th>
+	<th>证书名称</th>
+	<th>发证机构</th>
+	<th>发证日期</th>
+	<th>到期日期</th>
+	</tr>
+	{loop $lists $k $v}
+	<tr align="center">
+	<td style="padding:10px 0 10px 0;"><a href="{$v[linkurl]}"><img src="{$v[thumb]}" width="100" height="100"/></a></td>
+	<td bgcolor="#FBFBFB"><a href="{$v[linkurl]}">{$v[title]}</a></td>
+	<td>{$v[authority]}</td>
+	<td bgcolor="#FBFBFB" class="f_gray">{timetodate($v[fromtime], 3)}</td>
+	<td class="f_gray">{if $v[totime]}{timetodate($v[totime], 3)}{else}永久{/if}</td>
+	</tr>
+	{/loop}
+	</table>
+	</div>
+	<div class="pages">{$pages}</div>
+</div>
+{/if}
+{template 'footer', $template}

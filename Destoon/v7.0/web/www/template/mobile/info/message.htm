@@ -1,0 +1,143 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}channel.php" data-transition="slideup"><span>频道</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-form">
+<form method="post" action="message.php" data-ajax="false" id="message_form" onsubmit="return message_check();">
+<input type="hidden" name="forward" value="{$forward}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<p>留言主题<em>*</em><b id="dtitle"></b></p>
+<div><input type="text" name="title" value="{$title}" id="title"/></div>
+<p>快捷提问</p>
+<div>
+<select onchange="if(this.value)Dd('content').value+=this.value+'\n';">
+<option value="">请选择常用问题</option>
+{loop $iask $v}
+<option value="{$v}">{dsubstr($v, 40, '..')}</option>
+{/loop}
+</select>
+</div>
+<p>主要内容<em>*</em><b id="dcontent"></b></p>
+<div><textarea name="content" id="content"></textarea></div>
+<p>回复时间</p>
+<div><input type="date" name="date" value="{$date}"/> 前回复</div>
+{if $_userid}
+<p>联系方式</p>
+<div>
+公司：{$company}<br/>
+姓名：{$truename}<br/>
+电话：{$telephone}<br/>
+邮件：{$email}<br/>
+{if $DT[im_qq]}QQ：{$qq}<br/>{/if}
+{if $DT[im_wx]}微信：{$wx}<br/>{/if}
+{if $DT[im_ali]}阿里旺旺：{$ali}<br/>{/if}
+{if $DT[im_skype]}Skype：{$skype}<br/>{/if}
+</div>
+{else}
+<p>公司</p>
+<div><input type="text" name="company" id="company"/></div>
+<p>姓名<em>*</em><b id="dtruename"></b></p>
+<div><input type="text" name="truename" id="truename" style="width:50%;"/></div>
+<p>电话<em>*</em><b id="dtelephone"></b></p>
+<div><input type="tel" name="telephone" id="telephone"/></div>
+<p>邮箱</p>
+<div><input type="email" name="email" id="email"/></div>
+{if $DT[im_qq]}
+<p>QQ</p>
+<div><input type="tel" name="qq" id="qq" style="width:50%;"/></div>
+{/if}
+{if $DT[im_wx]}
+<p>微信</p>
+<div><input type="text" name="wx" id="wx" style="width:50%;"/></div>
+{/if}
+{if $DT[im_ali]}
+<p>阿里旺旺</p>
+<div><input type="text" name="ali" id="ali" style="width:50%;"/></div>
+{/if}
+{if $DT[im_skype]}
+<p>Skype</p>
+<div><input type="text" name="skype" id="skype" style="width:50%;"/></div>
+{/if}
+{/if}
+{if $_userid && $DT[sms]}
+<p>短信通知</p>
+<div><input type="checkbox" name="sendsms" value="1"/> 剩余{$_sms}条</a></div>
+{/if}
+{if $need_question}
+<p>验证问题<em>*</em><b id="danswer"></b></p>
+<div>{template 'question', 'chip'}</div>
+{/if}
+{if $need_captcha}
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+{/if}
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="发送留言" class="btn-blue"/>
+<div class="blank-16"></div>
+{if $MG[message_limit]}
+<div class="content">
+今日可发 <span class="f_b f_red">{$MG[message_limit]}</span> 次<br/>
+当前已发 <span class="f_b">{$limit_used}</span> 次<br/>
+还可以发 <span class="f_b f_blue">{$limit_free}</span> 次<br/>
+</div>
+{/if}
+</form>
+</div>
+{if !$_userid}<script type="text/javascript" src="{DT_STATIC}file/script/guest.js"></script>{/if}
+<script type="text/javascript">
+function message_check() {
+	var l;
+	var f;
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 5 || l > 50) {
+		Dmsg('主题应为5-50字，当前已输入'+l+'字', f);
+		return false;
+	}
+	f = 'content';
+	l = Dd(f).value.length;
+	if(l < 10 || l > 2000) {
+		Dmsg('内容应为10-2000字，当前已输入'+l+'字', f);
+		return false;
+	}
+	{if !$_userid}
+	f = 'truename';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写联系人', f);
+		return false;
+	}
+	f = 'telephone';
+	l = Dd(f).value.length;
+	if(l < 7) {
+		Dmsg('请填写联系电话', f);
+		return false;
+	}
+	{/if}
+	{if $need_captcha}
+	f = 'captcha';
+	l = Dd(f).value;
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', f);
+		return false;
+	}
+	{/if}
+	{if $need_question}
+	f = 'answer';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证问题', f);
+		return false;
+	}
+	{/if}
+}
+</script>
+{template 'footer'}

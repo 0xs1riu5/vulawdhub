@@ -1,0 +1,35 @@
+{template 'header', $template}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $itemid}
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{timetodate($addtime, 3)}&nbsp;&nbsp;点击:{$hits}</div>
+	<div class="content">
+	<img src="{$image}" alt="{$title}"/><br/>
+	发证机构：{$authority}<br/>
+	发证时间 ：{timetodate($fromtime, 3)}<br/>
+	有效期至 ：{if $totime}{timetodate($totime, 3)}{else}永久{/if}<br/>
+	{$content}
+	</div>
+</div>
+{else}
+{loop $lists $v}
+<div class="list-img">
+<a href="{$v[linkurl]}"><img src="{$v[thumb]}" width="60" height="60" alt="" onerror="this.src='{DT_MOB}static/img/60x60.png';"/></a>
+<ul>
+<li><a href="{$v[linkurl]}"><strong>{$v[title]}</strong></a></li>
+<li><span class="f_r">{timetodate($v[fromtime], 3)} 至 {if $v[totime]}{timetodate($v[totime], 3)}{else}永久{/if}</span><span>{$v[authority]}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{template 'footer', $template}

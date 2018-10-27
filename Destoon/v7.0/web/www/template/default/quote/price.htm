@@ -1,0 +1,245 @@
+{template 'header'}
+<div class="m">
+	<div class="nav">
+		<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$MOD[linkurl]}product.php">产品报价</a>
+	</div>
+	<div class="b20 bd-t"></div>
+	<h1 class="title">{$P[title]}</h1>
+	<div class="info t_c">
+	{if $P[n1] && $P[v1]}{$P[n1]}：{$P[v1]}&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+	{if $P[n2] && $P[v2]}{$P[n2]}：{$P[v2]}&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+	{if $P[n3] && $P[v3]}{$P[n3]}：{$P[v3]}&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+	最新报价：{timetodate($P[edittime], 5)}&nbsp;&nbsp;&nbsp;&nbsp;
+	报价次数：<span>{$P[item]}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+	浏览次数：<span id="hits">{$P[hits]}</span>	
+	</div>
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	<td id="chartbox">
+		{if $chart_data}
+		{load('swfobject.js')}
+		<script type="text/javascript" src="{DT_PATH}api/amcharts/amcharts.js"></script>
+		<script type="text/javascript" src="{DT_PATH}api/amcharts/amfallback.js"></script>
+		<div id="chartdiv" style="width:700px;height:400px;background:#FFFFFF;"></div>
+		<script type="text/javascript">
+		var flashVars =
+		{
+			path: "{DT_PATH}api/amcharts/flash/",
+			chart_data: "{$chart_data}",
+			chart_settings: "<settings><hide_bullets_count>18</hide_bullets_count><data_type>csv</data_type><plot_area><margins><left>50</left><right>40</right><top>55</top><bottom>30</bottom></margins></plot_area><grid><x><alpha>10</alpha><approx_count>8</approx_count></x><y_left><alpha>10</alpha></y_left></grid><axes><x><width>1</width><color>0D8ECF</color></x><y_left><width>1</width><color>0D8ECF</color></y_left></axes><indicator><color>0D8ECF</color><x_balloon_text_color>FFFFFF</x_balloon_text_color><line_alpha>50</line_alpha><selection_color>0D8ECF</selection_color><selection_alpha>20</selection_alpha></indicator><zoom_out_button><text_color_hover>FF0F00</text_color_hover></zoom_out_button><help><button><color>FCD202</color><text_color>000000</text_color><text_color_hover>FF0F00</text_color_hover></button><balloon><color>FCD202</color><text_color>000000</text_color></balloon></help><graphs><graph gid='0'><title>{$chart_name}</title><color>0D8ECF</color><color_hover>F08F00</color_hover><line_width>2</line_width><bullet>round</bullet></graph>{$chart_graph}</graphs><labels><label lid='0'><text><![CDATA[<b>{$chart_title}</b>]]></text><y>15</y><text_size>13</text_size><align>center</align></label></labels></settings>"
+		};
+		if(swfobject.hasFlashPlayerVersion("8")) {
+			swfobject.embedSWF("{DT_PATH}api/amcharts/flash/amline.swf", "chartdiv", "100%", "400", "8.0.0", "{DT_PATH}api/amcharts/flash/expressInstall.swf", flashVars);
+		} else {
+			var amFallback = new AmCharts.AmFallback();
+			amFallback.chartSettings = flashVars.chart_settings;
+			amFallback.pathToImages = "{DT_PATH}api/amcharts/images/";
+			amFallback.chartData = flashVars.chart_data;
+			amFallback.type = "line";
+			amFallback.write("chartdiv");
+		}
+		</script>
+		{else}
+		<br/><br/><br/><center class="px16">数据不足，无法生成报表</center><br/><br/><br/>
+		{/if}
+	</td>
+	{if $MARKET || $could_add}
+	<td width="300" valign="top" style="border-left:#DDDDDD 1px solid;">
+		{if $could_add}
+		<div class="price-add">
+		<iframe src="" name="send" id="send" style="display:none;"></iframe>
+		<form method="post" action="{$MOD[linkurl]}price.php" id="dform" target="send" onsubmit="return check();">
+		<input type="hidden" name="itemid" value="{$itemid}"/>
+		<table cellpadding="10" cellspacing="0">
+		{if $MARKET}
+		<tr>
+		<td class="tl">市场</td>
+		<td>
+			<select name="post[market]">
+			{loop $MARKET $k $v}
+			<option value="{$k}"{if $k==$market} selected{/if}>{$v}</option>
+			{/loop}
+			</select>
+		</td>
+		</tr>
+		{/if}
+		<tr>
+		<td class="tl">价格 <span class="f_red">*</span></td>
+		<td><input name="post[price]" type="text" size="10" id="price"/> /{$P[unit]}</td>
+		</tr>
+		<tr>
+		<td class="tl">地区 <span class="f_red">*</span></td>
+		<td>{ajax_area_select('post[areaid]', '请选择', $areaid)}</td>
+		</tr>
+		{if !$_userid}
+		<tr>
+		<td class="tl">公司 <span class="f_red">*</span></td>
+		<td><input name="post[company]" type="text" id="company" size="20"/></td>
+		</tr>
+		<tr>
+		<td class="tl">电话</td>
+		<td><input name="post[telephone]" id="telephone" type="text" size="20"/></td>
+		</tr>
+		{if $DT[im_qq]}
+		<tr>
+		<td class="tl">QQ</td>
+		<td><input name="post[qq]" id="qq" type="text" size="20"/></td>
+		</tr>
+		{/if}
+		{if $DT[im_wx]}
+		<tr>
+		<td class="tl">微信</td>
+		<td><input name="post[wx]" id="wx" type="text" size="20"/></td>
+		</tr>
+		{/if}
+		{/if}
+		<tr>
+		<td class="tl">备注</td>
+		<td><input name="post[note]" type="text" size="20" id="note"/></td>
+		</tr>
+		{if $need_captcha}
+		<tr>
+		<td class="tl">验证码 <span class="f_red">*</span></td>
+		<td>{template 'captcha', 'chip'}<span id="dcaptcha" class="f_red"></span></td>
+		</tr>
+		{/if}
+		<tr>
+		<td class="tl">&nbsp;</td>
+		<td><input type="submit" name="submit" value="我要报价" class="btn-green"/></td>
+		</tr>
+		</table>
+		</form>
+		</div>
+		{load('guest.js')}
+		<script type="text/javascript">
+		function check() {
+			var l;
+			var f;
+			f = 'price';
+			l = parseFloat(Dd(f).value);
+			if(isNaN(l)) {
+				alert('请填写价格');
+				Dd(f).focus();
+				return false;
+			}
+		{if $P[minprice]}
+			if(l < {$P[minprice]}) {
+				alert('报价不能低于{$P[minprice]}');
+				Dd(f).focus();
+				return false;
+			}
+		{/if}
+		{if $P[maxprice]}
+			if(l > {$P[maxprice]}) {
+				alert('报价不能高于{$P[maxprice]}');
+				Dd(f).focus();
+				return false;
+			}
+		{/if}
+			f = 'areaid_1';
+			if(Dd(f).value == 0) {
+				alert('请选择所在地区');
+				return false;
+			}
+		{if !$_userid}
+			f = 'company';
+			l = Dd(f).value.length;
+			if(l < 2) {
+				alert('请填写公司名称');
+				Dd(f).focus();
+				return false;
+			}
+		{/if}
+			f = 'note';
+			l = Dd(f).value.length;
+			if(l > 20) {
+				alert('备注不能超过20个字');
+				Dd(f).focus();
+				return false;
+			}
+		{if $need_captcha}
+			f = 'captcha';
+			if($('#c'+f).html().indexOf('ok.png') == -1) {
+				alert('请填写正确的验证码');
+				Dd(f).focus();
+				return false;
+			}
+		{/if}
+			return true;
+		}
+		</script>
+		{/if}
+		{if $MARKET}
+		<div class="price-market">
+		<form action="{$MOD[linkurl]}price.php">
+		<input type="hidden" name="itemid" value="{$itemid}"/>
+		<ul>
+		<li>&nbsp;<strong>市场比价：</strong></li>
+		{loop $MARKET $k $v}
+		{if $k}<li><input type="checkbox" name="ms[]" value="{$k}"{if in_array($k,$ms)} checked{/if} onclick="this.form.submit();"/> {$v}</li>{/if}
+		{/loop}
+		</ul>
+		</form>
+		</div>
+		{/if}
+	</td>
+	{/if}
+	</tr>
+	</table>
+</div>
+
+<div class="m bd-t">
+	<a name="record"></a>
+	<form action="{$MOD[linkurl]}price.php" id="fsearch">
+	<input type="hidden" name="itemid" value="{$itemid}"/>
+	<table cellpadding="6" cellspacing="6">
+	<tr>
+	<td>&nbsp;
+	公司：<input type="text" size="20" name="kw" value="{$kw}"/>&nbsp;
+	报价日期：{dcalendar('fromdate', $fromdate, '')} 至 {dcalendar('todate', $todate, '')}&nbsp;
+	{ajax_area_select('areaid', '不限地区', $areaid)}&nbsp;
+	{if $MARKET}
+	<select name="market">
+	{loop $MARKET $k $v}
+	<option value="{$k}"{if $k==$market} selected{/if}>{$v}</option>
+	{/loop}
+	</select>&nbsp;
+	{/if}
+	</td>
+	<td><input type="submit" value="搜 索" class="btn"/></td>
+	<td><input type="button" value="重 搜" class="btn" onclick="Go('{$MOD[linkurl]}{rewrite('price.php?itemid='.$itemid)}#record');"/></td>
+	</tr>
+	</table>
+	</form>
+	{if $tags}
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr>
+	<th>价格({$DT[money_unit]})</th>
+	<th>单位</th>
+	<th>报价时间</th>
+	{if $MARKET}<th>市场</th>{/if}
+	<th>地区</th>
+	<th>报价公司</th>
+	<th>备注</th>
+	</tr>
+	{loop $tags $t}
+	<tr align="center">
+	<td class="f_price">{$t[price]}</td>
+	<td>{$P[unit]}</td>
+	<td>{timetodate($t[addtime], 5)}</td>
+	{if $MARKET}<td>{if $t[market]}{$MARKET[$t[market]]}{else}&nbsp;{/if}</td>{/if}
+	<td>{area_pos($t[areaid], '', 2)}</td>
+	<td title="{$t[company]}"><a href="{userurl($t[username], 'file=contact')}" target="_blank">{$t[company]}</a></td>
+	<td title="{$t[note]}">{dsubstr($t[note], 20, '..')}</td>
+	</tr>
+	{/loop}
+	</table>
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+	{/if}
+</div>
+{if $P[content]}
+<div class="m">
+	<div class="content">{$P[content]}</div>
+</div>
+{/if}
+{template 'footer'}

@@ -1,0 +1,46 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('<a href=&#34;{DT_MOB}api/share.php?mid={$moduleid}&itemid={$itemid}&#34; data-transition=&#34;slideup&#34;><span>分享好友</span></a>|<a href=&#34;{$MOD[mobile]}&#34; data-direction=&#34;reverse&#34;><span>{$MOD[name]}首页</span></a>|<a href=&#34;{DT_MOB}channel.php&#34; data-direction=&#34;reverse&#34;><span>频道列表</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$editdate}{if $MOD[hits]}&nbsp;&nbsp;浏览:<span id="hits">{$hits}</span>{/if}&nbsp;&nbsp;下载:{$download}</div>
+	<div class="content">
+		文件类型：{$FILETYPE[$fileext]}<br/>
+		文件大小：{$filesize}{$unit}<br/>
+		{if $user_status == 3}
+		{$content}
+		{else}
+		{template 'content', 'chip'}
+		{/if}
+	</div>
+	{if $user_status == 3}
+		<div class="blank-32"></div>
+		<div class="list-set">
+		<ul>
+			<li><div><a href="{$MOD[mobile]}down.php?itemid={$itemid}" class="b" rel="external">主站下载</a></div></li>
+			{if $MIRROR}
+			{loop $MIRROR $k=>$v}
+			<li><div><a href="{$MOD[mobile]}down.php?mirror={$k}&itemid={$itemid}" class="b" rel="external">{$v[name]}镜像</a></div></li>
+			{/loop}
+			{/if}
+		</ul>
+		</div>
+	{/if}
+	{if $MOD[fee_award]}
+	<div class="award"><a href="{$MODULE[2][mobile]}award.php?mid={$moduleid}&itemid={$itemid}" rel="external"><div>打赏</div></a></div>
+	{/if}
+
+</div>
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'comment', 'chip'}
+{template 'footer'}

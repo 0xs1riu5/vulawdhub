@@ -1,0 +1,117 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="add"><a href="?action=add"><span>添加新闻</span></a></td>
+<td class="tab" id="s3"><a href="?action=index"><span>已发布({$nums[3]})</span></a></td>
+<td class="tab" id="s2"><a href="?status=2"><span>审核中({$nums[2]})</span></a></td>
+<td class="tab" id="s1"><a href="?status=1"><span>未通过({$nums[1]})</span></a></td>
+<td class="tab" id="type"><a href="javascript:Dwidget('type.php?item=news', '[新闻分类]', 600, 300);"><span>新闻分类({$nums[0]})</span></a></td>
+</tr>
+</table>
+</div>
+{if $action=='add' || $action=='edit'}
+<form method="post" action="?" id="dform" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+{if $action=='edit' && $status==1 && $note}
+<tr>
+<td class="tl">拒绝原因</td>
+<td class="tr f_blue">{$note}</td>
+</tr>
+{/if}
+<tr>
+<td class="tl"><span class="f_red">*</span> 新闻标题</td>
+<td class="tr"><input name="post[title]" type="text" id="title" size="40" value="{$title}"/>  {dstyle('post[style]', $style)} <span id="dtitle" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">标题图片</td>
+<td class="tr"><input name="post[thumb]" id="thumb" type="text" size="60" value="{$thumb}" readonly/>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="Dthumb({$moduleid},{$MOD[news_thumb_width]},{$MOD[news_thumb_height]}, Dd('thumb').value, true);" class="t">[上传]</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="_preview(Dd('thumb').value);" class="t">[预览]</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="Dd('thumb').value='';" class="t">[删除]</a></td>
+</tr>
+<tr>
+<td class="tl"><span class="f_red">*</span> 新闻内容</td>
+<td class="tr"><textarea name="post[content]" id="content" class="dsn">{$content}</textarea>
+{deditor($moduleid, 'content', $group_editor, '100%', 300)}<br/><span id="dcontent" class="f_red"></span>
+</td>
+</tr>
+<tr>
+<td class="tl">新闻分类</td>
+<td class="tr"><span id="type_box">{$type_select}</span>&nbsp; <a href="javascript:var type_item='news-{$_userid}',type_name='post[typeid]',type_default='{$L[default_type]}',type_id={$typeid},type_interval=setInterval('type_reload()',500);Dwidget('type.php?item=news', '[新闻分类]', 600, 300);" class="t">[管理分类]</a></td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" name="submit" value="{if $action == 'edit'}修 改{else}添 加{/if}" class="btn_g"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="取 消" class="btn" onclick="history.back(-1);"/></td>
+</tr>
+</table>
+</form>
+{load('clear.js')}
+<script type="text/javascript">s('news');m({if $action=='add'}'add'{else}'s{$status}'{/if});</script>
+{else}
+<form action="?">
+<input type="hidden" name="status" value="{$status}"/>
+<div class="tt">
+&nbsp;<input type="text" size="60" name="kw" value="{$kw}" title="关键词"/> &nbsp;
+{$type_select}&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 置 " class="btn" onclick="Go('?status={$status}');"/>
+</div>
+</form>
+<form method="post">
+<div class="ls">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="20"><input type="checkbox" onclick="checkall(this.form);"/></th>
+<th>分类</th>
+<th>标题</th>
+<th>添加时间</th>
+<th>浏览</th>
+<th width="40">修改</th>
+<th width="40">删除</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td><input type="checkbox" name="itemid[]" value="{$v[itemid]}"/></td>
+<td>&nbsp;<a href="?typeid={$v[typeid]}">{$v[type]}</a>&nbsp;</td>
+<td height="30" align="left">&nbsp;&nbsp;&nbsp;{if $status==3}<a href="{$v[linkurl]}" class="t" target="_blank">{else}<a href="?action=edit&itemid={$v[itemid]}" class="t">{/if}{$v[title]}</a>{if $v[status]==1 && $v[note]} <a href="javascript:" onclick="alert('{$v[note]}');"><img src="image/why.gif" title="未通过原因"/></a>{/if}</td>
+<td class="f_gray" title="更新时间 {$v[editdate]}">{$v[adddate]}</td>
+<td class="f_gray">{$v[hits]}</td>
+<td><a href="?action=edit&itemid={$v[itemid]}"><img width="16" height="16" src="image/edit.png" title="修改" alt=""/></a></td>
+<td><a href="?action=delete&itemid={$v[itemid]}" onclick="if(!confirm('确定要删除吗？此操作将不可撤销')) return false;"><img width="16" height="16" src="image/delete.png" title="删除" alt=""/></a></td>
+</tr>
+{/loop}
+</table>
+</div>
+<div class="btns">
+<input type="submit" value=" 删除选中 " class="btn" onclick="if(confirm('确定要删除选中新闻吗？')){this.form.action='?action=delete'}else{return false;}"/>
+</div>
+</form>
+{if $MG[news_limit]}
+<div class="limit">总共可发 <span class="f_b f_red">{$MG[news_limit]}</span> 条&nbsp;&nbsp;&nbsp;当前已发 <span class="f_b">{$limit_used}</span> 条&nbsp;&nbsp;&nbsp;还可以发 <span class="f_b f_blue">{$limit_free}</span> 条</div>
+{/if}
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('news');m('s{$status}');</script>
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 5 || l > 50) {
+		Dmsg('标题应为5-50字，当前已输入'+l+'字', f);
+		return false;
+	}
+	f = 'content';
+	l = FCKLen();
+	if(l < 50 || l > 5000) {
+		Dmsg('内容应为50-5000字，当前已输入'+l+'字', f);
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

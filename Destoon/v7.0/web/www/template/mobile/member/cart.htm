@@ -1,0 +1,220 @@
+{template 'header', 'member'}
+<link rel="stylesheet" type="text/css" href="{DT_MOB}static/cart.css"/>
+{if $action == 'show'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">购物车</div>
+<div class="head-bar-right">
+<a href="?mid={$mid}"><span>结算</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $code > 0}
+<div class="ui-ok">
+<p>商品已成功加入购物车！ </p>
+<input type="button" value="立即结算" class="btn-green" onclick="Go('?mid={$mid}');"/>
+<input type="button" value="返回商品" class="btn" onclick="Go('{DT_MOB}api/redirect.php?mid={$moduleid}&itemid={$code}');"/>
+</div>
+{else}
+<div class="ui-ko">
+<p>
+	添加失败！
+	{if $code == -1}
+	商品已经下架
+	{elseif $code == -2}
+	商品由您自己发布
+	{else}
+	商品已经下架或由您自己发布
+	{/if} 
+</p>
+<input type="button" value="重新挑选" class="btn" onclick="Go('{if $code == -1}{$MOD[mobile]}{else}{DT_MOB}api/redirect.php?mid={$moduleid}&itemid={$id}{/if}');"/>
+</div>
+{/if}
+{else}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">购物车</div>
+<div class="head-bar-right">
+{if $lists}<a href="javascript:move_muti();"><span>删除</span></a>{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $lists}
+<form method="post" action="buy.php" onsubmit="return Mcheck();">
+<input type="hidden" name="from" value="cart"/>
+<input type="hidden" name="mid" value="{$mid}"/>
+{loop $lists $tags}
+{loop $tags $i $t}
+{if $i == 0}
+<div class="list-seller bd-t bd-b">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="c1"><section><label><input type="checkbox" checked="checked" id="check-{$t[username]}" onclick="Ccheck('{$t[username]}');calculate();" data-check="{$t[username]}"/><i></i></label></section></td>
+<td><div><a href="{userurl($t[username])}" target="_blank">{$t[company]}</a></div></td>
+<td class="c3">
+	{php $promos = get_promos($t[username]);}
+	{if $promos}
+	<a href="{$MODULE[2][mobile]}coupon.php?username={$t[username]}" target="_blank"><span>优惠券</span></a>
+	{/if}
+	<s id="total-{$t[username]}" data-user="{$t[username]}">0.00</s>
+</td>
+</tr>
+</table>
+</div>
+{/if}
+<input type="hidden" id="a1_{$t[key]}" value="{$t[a1]}"/>
+<input type="hidden" id="a2_{$t[key]}" value="{$t[a2]}"/>
+<input type="hidden" id="a3_{$t[key]}" value="{$t[a3]}"/>
+<input type="hidden" id="p1_{$t[key]}" value="{$t[p1]}"/>
+<input type="hidden" id="p2_{$t[key]}" value="{$t[p2]}"/>
+<input type="hidden" id="p3_{$t[key]}" value="{$t[p3]}"/>
+<input type="hidden" id="amount_{$t[key]}" value="{$t[amount]}"/>
+<div class="list-goods bd-b">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="c1"><section><label><input type="checkbox" name="cart[]" value="{$t[key]}" checked="checked" onclick="calculate()" id="check_{$t[key]}" data-check="{$t[username]}"/><i></i></label></section></td>
+<td class="c2"><a href="{$t[mobile]}"><img src="{if $t[thumb]}{$t[thumb]}{else}static/img/nopic-60.png{/if}" width="60" height="60" alt="" onerror="this.src='static/img/nopic-60.png';"/></a></td>
+<td>
+	<p><a href="{$t[mobile]}">{$t[alt]}</a></p>
+	<b>品牌:{if $t[brand]}{$t[brand]}{else}未填写{/if}&nbsp;{if $t[m1]}{$t[n1]}:{$t[m1]}&nbsp;{/if}{if $t[m2]}{$t[n2]}:{$t[m2]}&nbsp;{/if}{if $t[m3]}{$t[n3]}:{$t[m3]}&nbsp;{/if}</b>
+	<div>
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	<td><em>{$DT[money_sign]}<span id="price_{$t[key]}">{$t[price]}</span>{if isset($t[unit]) && $t[unit]}/{$t[unit]}{/if}</em></td>
+	<td class="a1" onclick="alter('{$t[key]}', '-');">-</td>
+	<td class="a2"><input type="tel" name="amounts[{$t[key]}]" value="{$t[a]}" id="number_{$t[key]}" onblur="calculate();"/></td>
+	<td class="a3" onclick="alter('{$t[key]}', '+');">+</td>
+	</tr>
+	</table>
+	</div>
+	<s id="total_{$t[key]}" total-{$t[username]}="1">{$t[price]}</s>
+</td>
+</tr>
+</table>
+</div>
+{/loop}
+{/loop}
+<div class="cart-foot-fix"></div>
+<div class="cart-foot">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="c1"><section><label><input type="checkbox" checked="checked" id="check-all" onclick="Ccheck();calculate();"/><i></i></label></section></td>
+<td class="c2"><p>共<b id="total_good"></b>件，计<b id="total_amount"></b>元</p></td>
+<td class="c3"><input type="submit" value="结算"/></td>
+</tr>
+</table>
+</div>
+</form>
+{else}
+<div class="main">
+	<div class="content"><br/><br/><center>您的 <span class="f_orange">购物车</span> 还是空的，赶快行动吧！<br/><br/>马上去 <a href="{$MOD[mobile]}" class="b">挑选商品</a></center><br/><br/></div>
+</div>
+{/if}
+{/if}
+<script type="text/javascript">
+function Ccheck(key) {
+	$(key ? '[data-check="'+key+'"]' : '[data-check]').each(function(){
+		$(this).prop('checked', $('#check-'+(key ? key : 'all')).prop('checked') ? true : false);
+	});
+}
+function Mcheck() {
+	if(Dd('total_good').innerHTML == '0') {
+		alert('最少需要挑选1件商品');
+		window.scroll(0, 0);
+		return false;
+	}
+    return true;
+}
+function move_muti() {
+	if(Dd('total_good').innerHTML == '0') {
+		alert('未选择商品');
+		return;
+	}
+	if(confirm('确定要删除选中商品吗？')) {
+		var par = 'action=delete&mid={$mid}&ajax=1';
+		$(':checked').each(function(i) {
+			if($(this).attr('id').indexOf('check_') != -1) {
+				par += '&key[]='+$(this).val();
+			}
+		});		
+		$.post('?', par, function(data) {
+			Go('?mid={$mid}&rand={$DT_TIME}');
+		});
+	}
+}
+function move(i) {
+	Dd('check_'+i).checked = false;
+	Dd('check_'+i).disabled = true;
+	Dh('tr_'+i);
+	calculate();
+	$.post('?', 'action=delete&mid={$mid}&ajax=1&key='+i, function(data) {
+		var cart_num = get_cart();
+		$('#destoon_cart').html(cart_num > 0 ? '<strong>'+cart_num+'</strong>' : '0');
+		if(data == 1 && Dd('total_good').innerHTML == '0') Go('?mid={$mid}&rand={$DT_TIME}');
+	});
+}
+function alter(i, t) {
+	if(t == '+') {
+		var maxa = parseFloat(Dd('amount_'+i).value);
+		if(maxa && Dd('number_'+i).value >= maxa) return;
+		Dd('number_'+i).value =  parseInt(Dd('number_'+i).value) + 1;
+	} else {
+		var mina = parseFloat(Dd('a1_'+i).value);
+		if(Dd('number_'+i).value <= mina) return;
+		Dd('number_'+i).value = parseInt(Dd('number_'+i).value) - 1;
+	}
+	calculate();
+}
+function get_price(i) {
+	if(Dd('a2_'+i).value > 0) {
+		if(Dd('a3_'+i).value > 1 && parseInt(Dd('number_'+i).value) > parseInt(Dd('a3_'+i).value)) return Dd('p3_'+i).value;
+		if(Dd('a2_'+i).value > 1 && parseInt(Dd('number_'+i).value) > parseInt(Dd('a2_'+i).value)) return Dd('p2_'+i).value;
+	}
+	return Dd('p1_'+i).value
+}
+function calculate() {
+	var _good = _amount = _total = 0;
+	$(':checked').each(function(i) {
+		if($(this).attr('id').indexOf('check_') != -1) {
+			var key = $(this).val();
+			var num, good, maxa, mina, price;
+			num = parseInt(Dd('number_'+key).value);
+			maxa = parseInt(Dd('amount_'+key).value);
+			mina = parseInt(Dd('a1_'+key).value);
+			if(num < mina) Dd('number_'+key).value = num = mina;
+			if(num > maxa) Dd('number_'+key).value = num = maxa;
+			if(isNaN(num) || num < 0) Dd('number_'+key).value = num = mina;
+			_good++;
+			price = parseFloat(get_price(key));
+			_total = price*num;
+			_amount += _total;
+			Dd('price_'+key).innerHTML = price.toFixed(2);
+			Dd('total_'+key).innerHTML = _total.toFixed(2);
+		}
+	});
+	Dd('total_good').innerHTML = _good;
+	Dd('total_amount').innerHTML = _amount.toFixed(2);
+	$('[data-user]').each(function() {
+		var user = $(this).attr('data-user');
+		var tt = 0;
+		$('[total-'+user+']').each(function() {
+			tt += parseFloat($(this).html());
+		});
+		$(this).html(tt.toFixed(2));
+	});
+}
+{if $lists}$(function(){calculate();});{/if}
+</script>
+{if $DT_PC}
+{template 'footer'}
+{else}
+{template 'footer', 'member'}
+{/if}

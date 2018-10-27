@@ -1,0 +1,116 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+{if $itemid}
+<div class="main_head"><div><strong>{$title}</strong></div></div>
+<div class="main_body">
+	
+		<table width="100%" align="center">
+		<tr>
+		<td width="250" valign="top">
+			<div id="mid_pos"></div>
+			<div id="mid_div" onmouseover="SAlbum();" onmouseout="HAlbum();" onclick="PAlbum(Dd('mid_pic'));">
+			<img src="{$albums[0]}" width="240" height="180" id="mid_pic"/><span id="zoomer"></span>
+			</div>
+			<div class="b5"></div>
+			<div>
+			{loop $thumbs $k $v}<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>{/loop}
+			</div>
+			<div class="b5"></div>
+			<div onclick="PAlbum(Dd('mid_pic'));" class="c_b t_c c_p"><img src="{DT_SKIN}image/ico_zoom.gif" width="16" height="16" align="absmiddle"/> 点击图片查看原图</div>
+		</td>
+		<td width="15"> </td>
+		<td valign="top">
+			<div id="big_div" style="display:none;"><img src="" id="big_pic"/></div>
+			<table width="100%" cellpadding="10" cellspacing="1">
+			<tr>
+			<td width="80" class="f_dblue">产 品：</td>
+			<td>{if $MOD[hits]}<span id="hits" class="f_r">浏览次数：{$hits}</span>{/if}<strong>{$title}</strong>&nbsp;</td>
+			</tr>
+			{if $n1 && $v1}
+			<tr>
+			<td class="f_dblue">{$n1}：</td>
+			<td>{$v1}</td>
+			</tr>
+			{/if}
+			{if $n2 && $v2}
+			<tr>
+			<td class="f_dblue">{$n2}：</td>
+			<td>{$v2}</td>
+			</tr>
+			{/if}
+			{if $n3 && $v3}
+			<tr>
+			<td class="f_dblue">{$n3}：</td>
+			<td>{$v3}</td>
+			</tr>
+			{/if}
+			<tr>
+			<td class="f_dblue">需求数量：</td>
+			<td>{$amount}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">价格要求：</td>
+			<td class="f_b f_orange">{$price}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">包装要求：</td>
+			<td>{$pack}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">所在地：</td>
+			<td>{area_pos($areaid, '')}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">有效期至：</td>
+			<td>{if $todate}{$todate}{else}长期有效{/if}{if $expired} <span class="f_red">[已过期]</span>{/if}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">最后更新：</td>
+			<td>{$editdate}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">&nbsp;</td>
+			<td><a href="#message"><img src="{DT_SKIN}image/btn_price.gif" alt="报价"/></a></td>
+			</tr>
+			</table>
+		</td>
+		</tr>
+		</table>
+	</div>
+
+	<div class="main_head"><div><strong>详细信息</strong></div></div>
+	<div class="main_body">
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div class="content" id="content">{$content}</div>
+	</div>
+	{if $could_price}
+	<div class="main_head"><div><strong><span id="message_title">报价单</span><a name="message"></a></strong></div></div>
+	<div class="main_body"><script type="text/javascript">Df('{$price_url}', 'name="fra" id="fra" style="width:98%;height:488px;"');</script></div>
+	{/if}
+	{if $could_comment && in_array($moduleid, explode(',', $EXT['comment_module']))}
+	<div id="comment_div" style="display:;">
+		<div class="main_head"><div><span class="f_r px12">共<span id="comment_count">0</span>条&nbsp;&nbsp;</span><strong><span id="message_title">相关评论</span></strong></div></div>
+		<div class="main_body"><script type="text/javascript">Df('{DT_PATH}api/comment.php?mid={$moduleid}&itemid={$itemid}&proxy={$comment_proxy}', 'id="destoon_comment" style="width:100%;"');</script></div>
+	</div>
+	{/if}
+	<script type="text/javascript">
+	var content_id = 'content';
+	var img_max_width = {$MOD[max_width]};
+	</script>
+	<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>
+{else}
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+	<table cellpadding="10" cellspacing="1" width="100%" align="center">
+	{loop $lists $k $v}
+	<tr{if $k%2==1} bgcolor="#FBFBFB"{/if}>
+	<td align="left"><a href="{$v[linkurl]}" class="px14">{$v[title]}</a>
+	</td>
+	<td align="center" width="80">{timetodate($v[edittime], 3)}</td>
+	</tr>
+	{/loop}
+	</table>
+	<div class="pages">{$pages}</div>
+</div>
+{/if}
+{template 'footer', $template}

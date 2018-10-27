@@ -1,0 +1,252 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="add"><a href="?action=add"><span>提交问题</span></a></td>
+<td class="tab" id="home"><a href="?action=index"><span>问题列表</span></a></td>
+{if $support}
+<td class="tab" id="support"><a href="?action=support"><span>客服专员</span></a></td>
+{/if}
+</tr>
+</table>
+</div>
+
+{if $action == 'add'}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl"> <span class="f_red">*</span> 分 类</td>
+<td class="tr">{$type_select} <span id="dtypeid" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl"> <span class="f_red">*</span> 标 题</td>
+<td class="tr"><input type="text" size="50" name="title" id="title" value="{$title}"/> [限5-30字之间] <span id="dtitle" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl"> <span class="f_red">*</span> 内 容</td>
+<td class="tr">
+<textarea name="content" id="content" class="dsn">{$content}</textarea>
+{deditor($moduleid, 'content', 'Simple', '100%', 300)}<br/>[限10-5000字之间] <span id="dcontent" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl"> </td>
+<td class="tr"><input type="submit" name="submit" value=" 提 交 " class="btn_g"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">s('ask');m('add');</script>
+{elseif $action == 'edit'}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="forward" value="{$forward}"/>
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<table cellspacing="1" cellpadding="3" class="tb">
+<tr>
+<td class="tl"> <span class="f_red">*</span> 分 类</td>
+<td class="tr">{$type_select} <span id="dtypeid" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl"> <span class="f_red">*</span> 标 题</td>
+<td class="tr"><input type="text" size="50" name="title" id="title" value="{$title}"/> [限5-30字之间] <span id="dtitle" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl"> <span class="f_red">*</span> 内 容</td>
+<td class="tr"><textarea name="content" id="content" class="dsn">{$content}</textarea>
+{deditor($moduleid, 'content', 'Simple', '100%', 200)}<br/>[限10-5000字之间] <span id="dcontent" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" name="submit" value=" 修 改 " class="btn_g"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value=" 返 回 " class="btn" onclick="history.back(-1);"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">s('ask');m('home');</script>
+{elseif $action == 'show'}
+<table cellspacing="1" cellpadding="10" class="tb">
+<tr>
+<td class="tl">问题分类</td>
+<td class="tr">{$TYPE[$typeid][typename]}</td>
+</tr>
+<tr>
+<td class="tl">问题标题</td>
+<td class="tr f_b">{$title}</td>
+</tr>
+{if $qid}
+<tr>
+<td class="tl">来源问题</td>
+<td class="tr"><a href="?action=show&itemid={$qid}" class="t">点击查看</a></td>
+</tr>
+{/if}
+<tr>
+<td class="tl">问题详情</td>
+<td class="tr" style="line-height:180%;">{$content}</td>
+</tr>
+<tr>
+<td class="tl">提交时间</td>
+<td class="tr">{$addtime}</td>
+</tr>
+<tr>
+<td class="tl">受理状态</td>
+<td class="tr">{$dstatus[$status]}</td>
+</tr>
+{if $status > 1}
+<tr>
+<td class="tl">问题回复</td>
+<td class="tr" style="line-height:180%;background:#FAFAFA;">{$reply}</td>
+</tr>
+<tr>
+<td class="tl">受理时间</td>
+<td class="tr f_blue">{$edittime}</td>
+</tr>
+<tr>
+<td class="tl">受理人</td>
+<td class="tr">{$editor}</td>
+</tr>
+<tr>
+<td class="tl">我的评分</td>
+<td class="tr">
+{if $star}
+{$stars[$star]}
+{else}
+<form method="post" action="?action=star&itemid={$itemid}">
+<input type="radio" name="star" value="1" id="star_1" onclick="if(confirm('确定评分为不满意吗？')) Go('?action=star&itemid={$itemid}&star=1');"/><label for="star_1"> 不满意</label>
+<input type="radio" name="star" value="2" id="star_2" onclick="if(confirm('确定评分为基本满意吗？')) Go('?action=star&itemid={$itemid}&star=2');"/><label for="star_2"> 基本满意</label>
+<input type="radio" name="star" value="3" id="star_3" onclick="if(confirm('确定评分为非常满意吗？')) Go('?action=star&itemid={$itemid}&star=3');"/><label for="star_3"> 非常满意</label>
+</form>
+{/if}
+</td>
+</tr>
+{if $star != 3}
+<tr>
+<td class="tl"></td>
+<td class="tr"><input type="button" value=" 继续提问 " class="btn_g" onclick="Go('?action=add&itemid={$itemid}');"/></td>
+</tr>
+{/if}
+{/if}
+</table>
+<script type="text/javascript">s('ask');m('home');</script>
+{elseif $action == 'support'}
+<table cellspacing="1" cellpadding="10" class="tb">
+{if $user[truename]}
+<tr>
+<td class="tl">姓名</td>
+<td class="tr">{$user[truename]} （{if $user[gender]==1}先生{else}女士{/if}）</td>
+</tr>
+{/if}
+{if $user[telephone]}
+<tr>
+<td class="tl">电话</td>
+<td class="tr">{$user[telephone]}</td>
+</tr>
+{/if}
+{if $user[mobile]}
+<tr>
+<td class="tl">手机</td>
+<td class="tr">{$user[mobile]}</td>
+</tr>
+{/if}
+{if $user[fax]}
+<tr>
+<td class="tl">传真</td>
+<td class="tr">{$user[fax]}</td>
+</tr>
+{/if}
+{if $user[mail]}
+<tr>
+<td class="tl">邮件</td>
+<td class="tr">{$user[mail]}</td>
+</tr>
+{/if}
+{if $user[address]}
+<tr>
+<td class="tl">地址</td>
+<td class="tr">{$user[address]}</td>
+</tr>
+{/if}
+{if $user[postcode]}
+<tr>
+<td class="tl">邮编</td>
+<td class="tr">{$user[postcode]}</td>
+</tr>
+{/if}
+<tr>
+<td class="tl">聊天</td>
+<td class="tr">
+{if $user[username] && $DT[im_web]}{im_web($user[username])}&nbsp;{/if}
+{if $user[qq] && $DT[im_qq]}{im_qq($user[qq])}&nbsp;{/if}
+{if $user[wx] && $DT[im_wx]}{im_wx($user[wx], $user[username])}&nbsp;{/if}
+{if $user[ali] && $DT[im_ali]}{im_ali($user[ali])}&nbsp;{/if}
+{if $user[skype] && $DT[im_skype]}{im_skype($user[skype])}&nbsp;{/if}
+</td>
+</tr>
+</table>
+<script type="text/javascript">s('ask');m('support');</script>
+{else}
+<form action="?">
+<div class="tt">
+<input type="text" size="50" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+{$type_select}&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 搜 " class="btn" onclick="Go('?action=index');"/>
+</div>
+</form>
+<div class="ls">
+<table cellspacing="0" cellpadding="10" class="tb">
+<tr>
+<th>流水号</th>
+<th>状态</th>
+<th>分类</th>
+<th>标题</th>
+<th width="150">添加时间</th>
+<th width="150">受理时间</th>
+<th>评分</th>
+<th width="60">修改</th>
+<th width="60">删除</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td>&nbsp;{$v[itemid]}&nbsp;</td>
+<td>&nbsp;{$v[dstatus]}&nbsp;</td>
+<td><a href="?typeid={$v[typeid]}">{$v[type]}</a></td>
+<td align="left"><a href="?action=show&itemid={$v[itemid]}" class="t">{$v[title]}</a></td>
+<td>{$v[adddate]}</td>
+<td>{$v[editdate]}</td>
+<td>{$v[dstar]}</td>
+<td>
+{if $v[status] == 0}<a href="?action=edit&itemid={$v[itemid]}"><img width="16" height="16" src="image/edit.png" title="修改" alt=""/></a>{else}--{/if}
+</td>
+<td>
+{if $v[status] == 0}<a href="?action=delete&itemid={$v[itemid]}" onclick="if(!confirm('确定要删除吗？此操作将不可撤销')) return false;"><img width="16" height="16" src="image/delete.png" title="删除" alt=""/></a>{else}--{/if}
+</td>
+</tr>
+{/loop}
+</table>
+</div>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('ask');m('home');</script>
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	var len;
+	if(Dd('typeid').value == 0) {
+		Dmsg('请选择分类', 'typeid');
+		return false;
+	}
+	len = Dd('title').value.length;
+	if(len < 5 || len > 30) {
+		Dmsg('标题不能少于5个字多于30个字，当前已输入'+len+'个字', 'title');
+		return false;
+	}
+	len = FCKLen();
+	if(len < 10 || len > 5000) {
+		Dmsg('内容不能少于10个字多于5000个字，当前已输入'+len+'个字', 'content');
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

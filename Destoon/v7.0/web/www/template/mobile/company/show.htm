@@ -1,0 +1,59 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$member[company]}</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}"><img src="{DT_MOB}static/img/icon-index.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $content}
+<div class="main">
+	<div class="content">{$content}</div>
+</div>
+{/if}
+<div class="main">
+	<div class="content">
+	公司名称：{$member[company]}<br/>
+	公司地址：<a href="{DT_MOB}api/address.php?auth={encrypt($member[address].'|'.$member[company], DT_KEY.'MAP')}" rel="external" target="_blank">{$member[address]}</a><br/>
+	{if $member[postcode]}
+	邮政编码：{$member[postcode]}<br/>
+	{/if}
+	公司电话：<a href="tel:{$member[telephone]}">{$member[telephone]}</a><br/>
+	{if $member[fax]}
+	公司传真：{$member[fax]}<br/>
+	{/if}
+	{if $member[mail]}
+	电子邮件：<a href="mailto:{$member[mail]}">{$member[mail]}</a><br/>
+	{/if}
+	{if $member[homepage]}
+	公司网址：<a href="{$member[homepage]}" rel="external" target="_blank">{$member[homepage]}</a><br/>
+	{/if}
+	{if $member[truename]}
+	联 系 人：{$member[truename]} （{if $member[gender]==1}先生{else}女士{/if}）<br/>
+	{/if}
+	{if $member[department]}
+	部门(职位)：{$member[department]}{if $member[career]} （{$member[career]}）{/if}<br/>
+	{/if}
+	{if $member[mobile]}
+	手机号码：<a href="tel:{$member[mobile]}">{$member[mobile]}</a><br/>
+	{/if}
+	在线状态：{if online($member[userid])==1}<span class="f_red">在线</span>{else}<span class="f_gray">离线</span>{/if} <a href="{$MODULE[2][mobile]}message.php?action=send&touser={$member[username]}" class="b">发送消息</a>{if $DT[im_web]} <a href="{$MODULE[2][mobile]}chat.php?touser={$member[username]}" class="b">在线交谈</a>{/if}<br/>
+	{if $member[qq] && $DT[im_qq]}QQ:<a href="http://wpa.qq.com/msgrd?v=3&uin={$member[qq]}&site=qq&menu=yes" target="_blank" rel="external">{$member[qq]}</a><br/>{/if}
+	{if $member[wx] && $DT[im_wx]}微信:<a href="{DT_MOB}api/wx.php?wid={$member[wx]}&username={$member[username]}" target="_blank" rel="external">{$member[wx]}</a><br/>{/if}
+	{if $member[ali] && $DT[im_ali]}阿里旺旺:<a href="http://amos.alicdn.com/msg.aw?v=2&uid={$member[ali]}&site=cnalichn&s=6&charset=UTF-8" target="_blank" rel="external">{$member[ali]}</a><br/>{/if}
+	{if $member[skype] && $DT[im_skype]}Skype:{$member[skype]}<br/>{/if}
+	{if $member[type]}公司类型：{$member[type]}<br/>{/if}
+	{if $member[mode]}经营模式：{$member[mode]}<br/>{/if}
+	{if $member[size]}公司规模：{$member[size]}<br/>{/if}
+	{if $member[capital]}注册资本：{$member[capital]}万{$member[regunit]}<br/>{/if}
+	{if $member[regyear]}注册年份：{$member[regyear]}<br/>{/if}
+	{if $member[sell]}销售产品：{$member[sell]}<br/>{/if}
+	{if $member[buy]}采购产品：{$member[buy]}<br/>{/if}
+	</div>
+</div>
+{template 'footer'}

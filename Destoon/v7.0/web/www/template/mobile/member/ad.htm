@@ -1,0 +1,214 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">广告{if $action=='add'||$action=='list'}购买{else}管理{/if}</div>
+<div class="head-bar-right">
+{if $action=='add' || $action=='list'}
+<a href="?action=index"><span>取消</span></a>
+{else}
+<a href="?action=list"><span>购买</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action == 'add'}
+<form method="post" action="?" id="dform" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="pid" value="{$pid}"/>
+<input type="hidden" name="price" value="{$p[price]}" id="price"/>
+
+<div class="blank-20"></div>
+<div class="list-set">
+	<ul>
+		<li><div><span>{$p[name]}</span>广告位名称</div></li>
+		<li><div><span>{$TYPE[$typeid]}</span>广告位类型</div></li>
+		{if $p[introduce]}<li><div><span>{$p[introduce]}</span>广告位介绍</div></li>{/if}
+		{if $p[width] && $p[height]}<li><div><span>{$p[width]}px X {$p[height]}px</span>广告位大小</div></li>{/if}
+	</ul>
+</div>
+
+
+<div class="blank-20"></div>
+<div class="ui-form">
+
+{if $typeid == 1}
+<p>广告代码<em>*</em><b id="dcode"></b></p>
+<div><textarea name="post[code]" id="code" style="height:50px;overflow:visible;"></textarea></div>
+{elseif $typeid == 2}
+<p>链接文字<em>*</em><b id="dtext_name"></b></p>
+<div><input type="text" name="post[text_name]" id="text_name"/></div>
+<p>链接地址<em>*</em><b id="dtext_url"></b></p>
+<div><input type="url" name="post[text_url]" id="text_url"/></div>
+<p>标题提示</p>
+<div><input type="text" name="post[text_title]" id="text_title"/></div>
+{elseif $typeid == 3 || $typeid == 5}
+<p>图片地址<em>*</em><b id="dthumb"></b></p>
+<div><input type="url" name="post[image_src]" id="thumb"/></div>
+<p>链接地址<em>*</em><b id="dimage_url"></b></p>
+<div><input type="url" name="post[image_url]" id="image_url"/></div>
+<p>标题提示</p>
+<div><input type="text" name="post[image_alt]" id="image_alt"/></div>
+{elseif $typeid == 4}
+<p>Flash地址<em>*</em><b id="dflash"></b></p>
+<div><input type="url" name="post[flash_src]" id="flash"/></div>
+<p>循环播放</p>
+<div>
+<input type="radio" name="post[flash_loop]" value="1" checked/> 是&nbsp;&nbsp;
+<input type="radio" name="post[flash_loop]" value="0"/> 否
+</div>
+<p>链接地址</p>
+<div><input type="url" name="post[flash_url]" id="flash_url"/></div>
+{elseif $typeid == 6}
+<p>所属模块</p>
+<div>{$MODULE[$p[moduleid]][name]}</div>
+<p>所属分类</p>
+<div>{ajax_category_select('post[catid]', '请选择', 0, $p[moduleid])}</div>
+<p>关键词</p>
+<div><input type="text" name="post[word]" id="word"/></div>
+{if $p[moduleid] == 4}
+<input type="hidden" name="post[key_id]" id="key_id" value="{$_userid}"/>
+{else}
+<p>信息ID<em>*</em><b id="dkey_id"></b></p>
+<div><input type="tel" name="post[key_id]" id="key_id"/></div>
+{/if}
+{elseif $typeid == 7}
+<p>所属模块</p>
+<div>{$MODULE[$p[moduleid]][name]}</div>
+<p>所属分类</p>
+<div>{ajax_category_select('post[catid]', '请选择', 0, $p[moduleid])}</div>
+<p>关键词</p>
+<div><input type="text" name="post[word]" id="word"/></div>
+<p>广告代码<em>*</em><b id="dcode"></b></p>
+<div><textarea name="post[code]" id="code" style="height:50px;overflow:visible;"></textarea></div>
+{/if}
+
+<p>开始日期<em>*</em><b id="dpostfromtime"></b></p>
+<div>{dcalendar('post[fromtime]', $fromdate)}</div>
+<p>购买时长<em>*</em><b id="dmonth"></b></p>
+<div>
+<select name="month" id="month"{if $price} onchange="CA();"{/if}>
+{loop $months $m}<option value="{$m}">{$m}月</option>{/loop}
+</select>
+</div>
+{if $price}
+<p>广告价格</p>
+<div><span class="f_red">{$p[price]}{$unit}/月</span></div>
+<p>应付总价</p>
+<div><strong style="font-size:20px;color:#FF6600;" id="money">{$p[price]}</strong>{$unit}</div>
+{if $currency == 'money'}
+<p>账户余额</p>
+<div><span class="f_blue">{$_money}</span> {$DT[money_unit]}&nbsp;&nbsp;<a href="charge.php?action=pay" target="_blank" class="b">[充值]</a></div>
+<p>支付密码<em>*</em><b id="dpassword"></b></p>
+<div><input type="password" name="password" id="password" autocomplete="new-password"/></div>
+{else}
+<p>{$DT[credit_name]}余额</p>
+<div><span class="f_blue">{$_credit}</span> {$DT[credit_unit]}&nbsp;&nbsp;<a href="credit.php?action=buy" target="_blank" class="b">[购买]</a></div>
+{/if}
+{/if}
+<p>备注事项</p>
+<div><input type="text" name="post[note]"/></div>
+</div>
+<div class="blank-20"></div>
+<div class="list-btn"><input type="submit" name="submit" value="确定购买" class="btn-green"/></div>
+<div class="blank-20"></div>
+<div class="list-btn"><input type="button" class="btn" value="重新选择" onclick="Dsheet('<a href=&#34;?action=list&#34;><span style=&#34;color:red&#34;>重新选择</span></a>', '取消', '确定要重新选择吗？');"/></div>
+<div class="blank-20"></div>
+</form>
+{elseif $action == 'list'}
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+{loop $lists $k $v}
+<li><div><span>{if $v[price]}{$v[price]}{$DT[money_unit]}/月{else}面议{/if}</span><a href="?action=add&pid={$v[pid]}">{$v[typename]}/{$v[name]}</a></li>
+{/loop}
+</ul>
+</div>
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="list-menu">
+	<ul>
+	<a href="?status=3"><li{if $status==3} class="on"{/if} id="s3">已通过{if !$kw} {$nums[3]}{/if}</li></a>
+	<a href="?status=2"><li{if $status==2} class="on"{/if} id="s2">审核中{if !$kw} {$nums[2]}{/if}</li></a>
+	</ul>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><span class="f_r">{$v[amount]}{if $v[currency]=='money'}{$DT[money_unit]}{else}{$DT[credit_unit]}{/if}</span><strong>{$TYPE[$v[typeid]]}/{$v[title]}</strong></li>
+<li><span class="f_r">{$v[process]}</span><span>{timetodate($v[fromtime], 3)} / {timetodate($v[totime], 3)}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{if $action == 'add'}
+{load('clear.js')}
+<script type="text/javascript">
+function CA() {
+	Dd('money').innerHTML = Dd('price').value*Dd('month').value;
+}
+function check() {
+	var p = Dd('price').value;
+{if $currency == 'money'}
+	if(p*Dd('month').value > {$_money}) {
+		alert('帐户余额不足，请先充值');
+		return false;
+	}
+{else}
+	if(p*Dd('month').value > {$_credit}) {
+		alert('您的{$DT[credit_name]}不足，请先购买');
+		return false;
+	}
+{/if}
+{if $typeid == 1 || $typeid == 7}
+	if(Dd('code').value.length < 5) {
+		Dmsg('请填写广告代码', 'code');
+		return false;
+	}
+{elseif $typeid == 2}
+	if(Dd('text_name').value.length < 2) {
+		Dmsg('请填写链接文字', 'text_name');
+		return false;
+	}
+	if(Dd('text_url').value.length < 10) {
+		Dmsg('请填写链接地址', 'text_url');
+		return false;
+	}
+{elseif $typeid == 3 || $typeid == 5}
+	if(Dd('thumb').value.length < 10) {
+		Dmsg('请填写图片地址或上传图片', 'thumb');
+		return false;
+	}
+{elseif $typeid == 4}
+	if(Dd('flash').value.length < 10) {
+		Dmsg('请填写Flash地址', 'flash');
+		return false;
+	}
+{elseif $typeid == 6}
+	if(Dd('key_id').value.length < 1) {
+		Dmsg('请填写信息ID', 'key_id');
+		return false;
+	}
+{/if}
+	if(Dd('postfromtime').value.replace(/-/g, '') < '{$fromdate}'.replace(/-/g, '')) {
+		Dd('postfromtime').value = '{$fromdate}';
+		Dd('postfromtime').focus();
+		Dmsg('开始投放日期需从{$fromdate}开始', 'postfromtime');
+		return false;
+	}
+{if $price && $currency == 'money'}
+	if(Dd('password').value.length < 6) {
+		Dmsg('请填写支付密码', 'password');
+		return false;
+	}
+{/if}
+}
+</script>
+{/if}
+{template 'footer', 'member'}

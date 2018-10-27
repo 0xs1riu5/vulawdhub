@@ -1,0 +1,21 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">图片列表</div>
+<div class="head-bar-right">
+<a href="{$back_link}" data-direction="reverse" data-transition="slideup"><span>取消</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+<div class="blank-16"></div>
+{loop $T $i $t}
+<a href="{$t[linkurl]}"><img src="{$t[thumb]}" width="100" title="{$t[introduce]}" style="margin:0 0 16px 16px;"/></a>
+{/loop}
+</div>
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'footer'}

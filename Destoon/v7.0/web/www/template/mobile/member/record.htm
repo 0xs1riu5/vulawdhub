@@ -1,0 +1,98 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action == 'login'}登录记录{elseif $action == 'pay'}信息付费{elseif $action == 'award'}打赏记录{else}资金流水{/if}</div>
+<div class="head-bar-right"><a href="charge.php?action=pay"><span>充值</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action == 'login'}
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{$v[area]}</span>
+<strong style="font-size:24px;">{$v[loginip]}</strong>
+</li>
+<li><span class="f_r">{$v[message]}</span><span>{$v[logintime]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{elseif $action == 'pay'}
+<div class="list-tab">
+	<ul>
+		<li><a href="?action=index"><span>资金流水</span></a></li>
+		<li class="on"><a href="?action=pay"><span>信息付费</span></a></li>
+		<li><a href="?action=award"><span>打赏记录</span></a></li>
+	</ul>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{$MODULE[$v[mid]][name]}</span>
+<strong style="font-size:24px;color:#FF6600;">-{$v[fee]}{if $v[currency] == 'money'}{$DT[money_unit]}{else}{$DT[credit_unit]}{/if}</strong>
+</li>
+<li><span class="f_r">{$v[paytime]}</span><span><a href="{DT_PATH}api/redirect.php?mid={$v[mid]}&itemid={$v[tid]}&page=2" target="_blank">{$v[title]}</a></span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{elseif $action == 'award'}
+<div class="list-tab">
+	<ul>
+		<li><a href="?action=index"><span>资金流水</span></a></li>
+		<li><a href="?action=pay"><span>信息付费</span></a></li>
+		<li class="on"><a href="?action=award"><span>打赏记录</span></a></li>
+	</ul>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{$MODULE[$v[mid]][name]}</span>
+<strong style="font-size:24px;color:#FF6600;">-{$v[fee]}{if $v[currency] == 'money'}{$DT[money_unit]}{else}{$DT[credit_unit]}{/if}</strong>
+</li>
+<li><span class="f_r">{$v[paytime]}</span><span><a href="{DT_PATH}api/redirect.php?mid={$v[mid]}&itemid={$v[tid]}&page=2" target="_blank">{$v[title]}</a></span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="list-tab">
+	<ul>
+		<li class="on"><a href="?action=index"><span>资金流水</span></a></li>
+		<li><a href="?action=pay"><span>信息付费</span></a></li>
+		<li><a href="?action=award"><span>打赏记录</span></a></li>
+	</ul>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">余额:{$v[balance]}</span>
+{if $v[amount] < 0}
+<strong style="font-size:24px;color:#FF6600;">{$v[amount]}</strong>
+{else}
+<strong style="font-size:24px;">+{$v[amount]}</strong>
+{/if}
+</li>
+<li><span class="f_r">{$v[addtime]}</span><span>{$v[bank]} / {$v[reason]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{template 'footer', 'member'}

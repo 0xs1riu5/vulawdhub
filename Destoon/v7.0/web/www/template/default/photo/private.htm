@@ -1,0 +1,33 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b"><span class="f_r"><a href="{$MOD[linkurl]}{$CAT[linkurl]}" class="b">返回列表</a></span><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')} <i>&gt;</i> <a href="{$linkurl}">{$title}</a> <i>&gt;</i> 身份验证</div>
+</div>
+<div class="m">
+	<br/><br/><br/>
+	<form method="post" action="{$MOD[linkurl]}private.php">
+	<input type="hidden" name="itemid" value="{$itemid}"/>
+	<input type="hidden" name="page" value="{$page}"/>
+	<table width="300" cellpadding="10" align="center">
+	<tr style="display:none;">
+	<td><input name="iebug" type="text" size="30"/></td>
+	</tr>
+	{if $open == 2}
+	<tr>
+	<td class="px14"><img src="{DT_SKIN}image/ico_lock.gif" width="16" height="16" align="absmiddle"/> <strong>请输入访问密码</strong></td>
+	</tr>
+	{elseif $open == 1}
+	<tr>
+	<td class="px14"><img src="{DT_SKIN}image/ico_lock.gif" width="16" height="16" align="absmiddle"/> <strong>请回答，{$question}？</strong></td>
+	</tr>
+	{/if}
+	<tr>
+	<td><input name="key" type="text" size="30"/>&nbsp;&nbsp;<span class="f_red">{$error}</span></td>
+	</tr>
+	<tr>
+	<td><input type="submit" name="submit" value="立即验证" class="btn-green"/></td>
+	</tr>
+	</table>
+	</form>
+	<br/><br/><br/>
+</div>
+{template 'footer'}

@@ -1,0 +1,28 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">微信联系</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}"><span>关闭</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="content">
+	<br/><br/>
+	{if $wx || $wxqr}
+	<center class="px16">
+	{if $wx}微信帐号：<strong>{$wx}</strong> &nbsp; <a href="javascript:;" onclick="prompt('长按号码可以复制', '{$wx}');"class="b">复制</a>{/if}
+	{if $wxqr}<br/><img src="{$wxqr}" style="margin:32px;"/><br/><span class="px12 f_gray">微信扫码，添加好友</span>{/if}
+	{else}
+	微信帐号不存在
+	{/if}
+	</center>
+	<br/><br/>	
+	</div>
+</div>
+{template 'footer'}

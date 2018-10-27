@@ -1,0 +1,151 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action == 'buy'}短信购买{elseif $action == 'record'}发送记录{else}短信记录{/if}</div>
+<div class="head-bar-right">
+{if $action == 'buy'}
+<a href="?action=index"><span>取消</span></a>
+{elseif $action == 'record'}
+<a href="?action=send"><span>发送</span></a>
+{else}
+<a href="?action=buy"><span>购买</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action == 'buy'}
+<form method="post" action="?" onsubmit="return check();" id="dform">
+<input type="hidden" name="action" value="{$action}"/>
+<div class="main">
+
+<div class="blank-20"></div>
+<div class="list-inp bd-t bd-b">
+	<div><input type="tel" name="total" id="total" placeholder="购买数量：" onblur="window.scrollTo(0,0);"/></div>
+</div>
+
+<div class="blank-20"></div>
+<div class="list-set">
+	<ul>
+		<li><div><span>{$_sms}条</span>可用短信</div></li>
+		<li><div><span>{$fee}{$DT[money_unit]}/条</span>短信单价</div></li>
+		<li><div><span><b style="font-size:20px;color:#FF6600;" id="money">0.00</b>{$DT[money_unit]}</span>应付总额</div></li>
+	</ul>
+</div>
+
+<div id="mymoney" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-set">
+		<ul>
+			<li><div><span><b>{$_money}</b>{$DT[money_unit]}</span>账户余额</div></li>
+		</ul>
+	</div>
+</div>
+
+<div id="payword" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-inp bd-t bd-b">
+		<div><input type="password" name="password" id="password" placeholder="支付密码：" autocomplete="new-password" onblur="window.scrollTo(0,0);"/></div>
+	</div>
+</div>
+
+<div id="paytype" style="display:none;">
+	<div class="blank-20"></div>
+	{php $PAYLIST = get_paylist();}
+	<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+	<div class="list-pay">
+		<ul>
+		{loop $PAYLIST $k $v}
+		<li onclick="var bk=$('#bank').val();if(bk=='{$v[bank]}'){return;}$('#check-'+bk).attr('class', 'check');$('#check-{$v[bank]}').attr('class', 'checked');$('#bank').val('{$v[bank]}');"><div><em class="{if $k}check{else}checked{/if}" id="check-{$v[bank]}"></em><img src="{DT_PATH}api/pay/{$v[bank]}/icon.png" width="24" height="24"/>{$v[name]} {if $v[percent]>0}<span>手续费 {$v[percent]}%</span>{/if}</div></li>
+		{/loop}
+		</ul>
+	</div>
+</div>
+
+<div class="blank-20"></div>
+<div class="list-btn"><input type="submit" name="submit" value="立即购买" class="btn-green"/></div>
+<div class="blank-20"></div>
+</form>
+{elseif $action == 'record'}
+<div class="list-tab">
+	<ul>
+		<li><a href="?action=index"><span>短信记录</span></a></li>
+		<li class="on"><a href="?action=record"><span>发送记录</span></a></li>
+	</ul>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{$v[word]}字/{$v[num]}条</span>
+<strong style="font-size:18px;color:#1AAD19;">{$v[mobile]}</strong>
+</li>
+<li><span class="f_r">{$v[code]}</span><span>{$v[sendtime]}</span></li>
+</ul>
+</div>
+<div class="main bd-b"><div style="padding:10px 16px;font-size:14px;line-height:22px;">{$v[message]}</div></div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="list-tab">
+	<ul>
+		<li class="on"><a href="?action=index"><span>短信记录</span></a></li>
+		<li><a href="?action=record"><span>发送记录</span></a></li>
+	</ul>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">余额:{$v[balance]}</span>
+{if $v[amount] < 0}
+<strong style="font-size:24px;color:#FF6600;">{$v[amount]}</strong>
+{else}
+<strong style="font-size:24px;">+{$v[amount]}</strong>
+{/if}
+</li>
+<li><span class="f_r">{$v[reason]} / {$v[note]}</span><span>{$v[addtime]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{if $action == 'buy'}
+<script type="text/javascript">
+function check() {
+	var k = parseInt(Dd('total').value);
+	if(isNaN(k) || k < 1) {
+		Dmsg('请填写购买数量', 'total');
+		return false;
+	}
+	if(k*{$fee} > {$_money}) {
+		Go('charge.php?action=pay&reason=sms|'+k+'&amount='+k*{$fee}+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(Dd('password').value == '') {
+		Dmsg('请填写支付密码', 'password');
+		return false;
+	}
+}
+window.setInterval(
+	function() {
+		var k = parseInt(Dd('total').value);
+		var money = k > 0 ? (k*{$fee}).toFixed(2) : '0.00';
+		$('#money').html(money);
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#payword').hide();$('#mymoney').hide();$('#paytype').show();
+		} else {
+			$('#payword').show();$('#mymoney').show();$('#paytype').hide();
+		}
+	}, 
+500);
+</script>
+{/if}
+{template 'footer', 'member'}

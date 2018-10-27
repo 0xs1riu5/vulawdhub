@@ -1,0 +1,127 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">运费{if $action=='add'}添加{elseif $action=='edit'}修改{else}模板{/if}</div>
+<div class="head-bar-right">
+{if $action=='add' || $action=='edit'}
+<a href="?mid={$mid}&action=index"><span>取消</span></a>
+{else}
+<a href="?mid={$mid}&action=add"><span>添加</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='add' || $action=='edit'}
+<form method="post" action="?" id="dform" onsubmit="return check();">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<div class="ui-form">
+<p>模板名称<em>*</em><b id="dtitle"></b></p>
+<div><input type="text" name="post[title]" id="title" value="{$title}"/></div>
+<p>快递名称<em>*</em><b id="dexpress"></b></p>
+<div><input type="text" name="post[express]" id="express" value="{$express}"/></div>
+<p>默认运费</p>
+<div><input type="number" name="post[fee_start]" id="fee_start" value="{$fee_start}" style="width:100px;"/></div>
+<p>增加一件商品增加</p>
+<div><input type="number" name="post[fee_step]" id="fee_step" value="{$fee_step}" style="width:100px;"/></div>
+<p>显示顺序</p>
+<div><input type="tel" name="post[listorder]" id="listorder" value="{$listorder}" style="width:100px;"/></div>
+<p>备注信息</p>
+<div><input type="text" name="post[note]" id="note" value="{$note}"/></div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="{if $action=='edit'}修改{else}添加{/if}" class="btn-blue"/>
+<div class="blank-32"></div>
+</div>
+</form>
+{else}
+<form method="post">
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<input type="checkbox" name="itemid[]" value="{$v[itemid]}" class="dsn" id="checkbox-{$v[itemid]}"/>
+<ul>
+<li><em class="check" id="check-{$v[itemid]}"></em><a href="?mid={$mid}&action=edit&itemid={$v[itemid]}"><strong>{$v[title]}</strong></a></li>
+<li><em class="sheet" id="sheet-{$v[itemid]}"></em><span>{$DT[money_sign]}{$v[fee_start]} {$v[express]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+<div id="foot-bar" class="dsn">
+<div class="foot-bar-fix"></div>
+<div class="foot-bar btns">
+<input type="submit" name="submit" value="删除选中" class="btn-red" onclick="if(confirm('确定要删除选中地址吗？')){this.form.action='?mid={$mid}&action=delete'}else{return false;}"/>
+</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+	if($('#foot-bar input').length == 0) $('.check').hide();
+	$('.list-img em').click(function() {
+		if($(this).attr('class') == 'sheet') {
+			var id = $(this).attr('id').replace('sheet-', '');
+			Dsheet('<a href="?mid={$mid}&action=edit&itemid='+id+'"><span>修改</span></a>|<a href="?mid={$mid}&action=delete&itemid='+id+'" onclick="return _delete();"><span style="color:red;">删除</span></a>', '取消');
+		} else {
+			var id = $(this).attr('id').replace('check-', '');
+			if($('#checkbox-'+id).attr('checked')) {
+				$('#checkbox-'+id).attr('checked', false);
+				$(this).attr('class', 'check');
+			} else {
+				$('#checkbox-'+id).attr('checked', true);
+				$(this).attr('class', 'checked');
+			}
+			if($('.checked').length > 0) {
+				$('#foot-bar').fadeIn(300);
+			} else {
+				$('#foot-bar').fadeOut(300);
+			}
+		}
+	});
+});
+</script>
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'areaid_1';
+	if(Dd(f).value == 0) {
+		Dmsg('请选择所在地区', 'areaid', 1);
+		return false;
+	}
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 5) {
+		Dmsg('请填写详细地址', f);
+		return false;
+	}
+	f = 'postcode';
+	l = Dd(f).value.length;
+	if(l < 6) {
+		Dmsg('请填写邮政编码', f);
+		return false;
+	}
+	f = 'truename';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写真实姓名', f);
+		return false;
+	}
+	f = 'mobile';
+	l = Dd(f).value.length;
+	if(l < 11) {
+		Dmsg('请填写手机号码', f);
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

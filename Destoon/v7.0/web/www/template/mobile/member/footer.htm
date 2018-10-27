@@ -1,0 +1,14 @@
+{if $foot}
+<div class="foot-bar-fix"></div>
+<div class="foot-bar">
+<ul>
+<li class="icon-home{if $foot=='home'}-on{/if}"><a href="{DT_MOB}" data-transition="none" data-ajax="false"><span>首页</span></a></li>
+<li class="icon-channel{if $foot=='channel'}-on{/if}"><a href="{DT_MOB}channel.php" data-transition="none"><span>频道</span></a></li>
+<li class="icon-my{if $foot=='my'}-on{/if}"><a href="{$MODULE[2][mobile]}" data-transition="none"><span>我的</span></a>{if $_message || $_chat || $_cart}<em></em>{/if}</li>
+<li class="icon-more{if $foot=='more'}-on{/if}"><a href="{DT_MOB}more.php" data-transition="none"><span>更多</span></a></li>
+</ul>
+</div>
+{/if}
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a></div>
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+	<div class="px14 lh18">
+	<table width="98%" cellpadding="3" cellspacing="3" align="center">
+	{loop $lists $k $v}
+	{if $k%3==0}<tr align="center">{/if}
+	<td width="33%"><a href="{$v[linkurl]}" target="_blank">{$v[title]}</a></td>
+	{if $k%3==2}</tr>{/if}
+	{/loop}
+	</table>
+	</div>
+	<div class="pages">{$pages}</div>
+</div>
+{template 'footer', $template}

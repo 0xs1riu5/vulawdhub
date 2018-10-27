@@ -1,0 +1,56 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav"><div><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></div><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20 bd-t"></div>
+</div>
+<div class="m m3">
+	<div class="m3l">
+	<h1 class="title" id="title">{$title}</h1>
+		<div class="brand_info">
+			<div class="f_r"><img src="{$thumb}" width="{$MOD[thumb_width]}" height="{$MOD[thumb_height]}" alt="{$title}" class="brand_logo"/>
+			<center><img src="{DT_SKIN}image/btn_brand.gif" alt="我要加盟" class="c_p" onclick="Go('{$MOD[linkurl]}{rewrite('message.php?itemid='.$itemid)}');"/></center>
+			{if isset($MODULE[5])}
+			<center><a href="{$MODULE[5][linkurl]}{rewrite('search.php?fields=5&kw='.urlencode($title))}" class="b" target="_blank">查看品牌产品&raquo;</a></center>
+			{/if}
+			{if isset($MODULE[16])}
+			<center><a href="{$MODULE[16][linkurl]}{rewrite('search.php?fields=4&kw='.urlencode($title))}" class="b" target="_blank">购买品牌商品&raquo;</a></center>
+			{/if}
+			</div>
+			<div>
+				<ul>
+				<li><strong>品牌名称</strong>：{$title}</li>
+				<li><strong>公司名称</strong>：{$company}</li>
+				<li><strong>官方主页</strong>：{if $homepage}<a href="{$homepage}" class="b" target="_blank">{$homepage}</a>{else}暂无{/if}</li>
+				<li><strong>所在地区</strong>：{area_pos($areaid, '')}</li>
+				{if $MOD[hits]}<li><strong>浏览次数</strong>：<span id="hits">{$hits}</span></li>{/if}
+				<li><strong>更新日期</strong>：{$editdate}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="c_b"></div>
+		{if $content}
+		<div class="head-txt"><strong>{$MOD[name]}介绍</strong></div>
+		<div class="content" id="content">{$content}</div>
+		{/if}
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		{if $MOD[fee_award]}
+		<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+		{/if}
+		{template 'comment', 'chip'}
+	</div>
+	<div class="m3r">
+		<div class="contact_head">联系方式</div>		
+		<div class="contact_body" id="contact">{template 'contact', 'chip'}</div>
+		{if $username}
+		<div class="head-sub"><strong>该企业其他{$MOD[name]}</strong></div>
+		<div class="list-thumb"><!--{tag("moduleid=$moduleid&condition=status=3 and username='$username'&pagesize=10&order=addtime desc&width=120&height=40&cols=2&template=thumb-brand", -2)}--></div>
+		{else}
+		<div class="head-sub"><strong>同类{$MOD[name]}</strong></div>
+		<div class="list-thumb"><!--{tag("moduleid=$moduleid&condition=status=3&catid=$catid&areaid=$cityid&pagesize=10&order=addtime desc&width=120&height=40&cols=2&template=thumb-brand", -2)}--></div>
+		{/if}
+	</div>
+	<div class="c_b"></div>
+</div>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{template 'footer'}

@@ -1,0 +1,191 @@
+{template 'header', 'member'}
+<link rel="stylesheet" type="text/css" href="{DT_MOB}static/cart.css"/>
+{if $action == 'show'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">提交订单</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-ok">
+<p>订单提交成功！ </p>
+<input type="button" value="支付订单" class="btn-green" onclick="Go('{$forward}');"/>
+<input type="button" value="继续购物" class="btn" onclick="Go('{$MOD[mobile]}');"/>
+<meta http-equiv="refresh" content="5;URL={$forward}"/>
+</div>
+{else}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">确认订单</div>
+<div class="head-bar-right">
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+
+<form method="post" action="{$MOD[mobile]}buy.php" onsubmit="return check();" id="buy">
+<input type="hidden" name="submit" value="1"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+
+<div class="list-goods bd-b">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td width="16"></td>
+<td class="c2"><a href="{$t[mobile]}"><img src="{if $t[thumb]}{$t[thumb]}{else}static/img/nopic-60.png{/if}" width="60" height="60" alt="" onerror="this.src='static/img/nopic-60.png';"/></a></td>
+<td>
+	<p><a href="{$t[mobile]}">{$t[title]}</a></p>
+	<div>
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	<td><em>{$DT[money_sign]}<span id="price_{$t[itemid]}">{$t[price]}</span></em></td>
+	<td class="a1" onclick="alter('{$t[itemid]}', '-');">-</td>
+	<td class="a2"><input type="tel" name="number" value="1" id="number_{$t[itemid]}" onblur="calculate();"/></td>
+	<td class="a3" onclick="alter('{$t[itemid]}', '+');">+</td>
+	</tr>
+	</table>
+	</div>	
+	<s id="total_{$t[itemid]}">{$t[price]}</s>
+</td>
+</tr>
+</table>
+</div>
+<div class="list-pars bd-b">
+<input type="text" name="note" value="" maxlength="100" placeholder="备注：限100字以内" class="pars-note"/>
+</div>
+
+
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+<li><div><span id="total_amount" style="color:red;font-size:16px;font-weight:bold;">{$t[price]}</span>总价</div></li>
+</ul>
+</div>
+
+<div class="blank-20"></div>
+<div class="ui-form">
+{if $t[logistic]}
+<p>收货地址<em>*</em><b><a href="{$MODULE[2][mobile]}address.php" class="b">管理</a></b></p>
+<div>
+<select name="addr" id="addr_0" onchange="Adr(this.value);">
+{loop $address $k $v}
+<option value="{$v[areaid]}|{$v[street]}|{$v[postcode]}|{$v[truename]}|{$v[mobile]}">{$v[address]} ({$v[truename]}) {$v[mobile]}</option>
+{/loop}
+</select>
+</div>
+
+<p>所在地区<em>*</em><b id="dareaid"></b></p>
+<div>{ajax_area_select('add[areaid]', '请选择', $user[areaid])}</div>
+
+<p>街道地址<em>*</em><b id="daddress"></b></p>
+<div><input type="text" name="add[address]" id="address" value="{$user[address]}"/></div>
+
+<p>邮政编码<em>*</em><b id="dpostcode"></b></p>
+<div><input type="tel" name="add[postcode]" id="postcode" value="{$user[postcode]}" style="width:50%;"/></div>
+
+<p>真实姓名<em>*</em><b id="dtruename"></b></p>
+<div><input type="text" name="add[truename]" id="truename" value="{$user[truename]}" style="width:50%;"/></div>
+
+<p>手机号码<em>*</em><b id="dmobile"></b></p>
+<div><input type="tel" name="add[mobile]" id="mobile" value="{$user[mobile]}" style="width:50%;"/></div>
+{else}
+<p>手机号码<em>*</em><b id="dmobile"></b></p>
+<div><input type="tel" name="add[mobile]" id="mobile" value="{$user[mobile]}" style="width:50%;"/></div>
+{/if}
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="立即购买" class="btn-blue"/>
+<div class="blank-16"></div>
+</div>
+</form>
+{/if}
+{if !$_userid}<script type="text/javascript" src="{DT_STATIC}file/script/guest.js"></script>{/if}
+<script type="text/javascript">
+function check() {
+	if(Dd('total_amount').innerHTML == '0.00') {
+		alert('订单总额为0.00，请检查商品数量');
+		window.scroll(0, 0);
+		return false;
+	}
+	var l;
+	var f;
+	{if $t[logistic]}
+	f = 'address';
+	l = Dd(f).value.length;
+	if(l < 5) {
+		Dmsg('请填写街道地址', f);
+		return false;
+	}
+	f = 'postcode';
+	l = Dd(f).value.length;
+	if(l < 6) {
+		Dmsg('请填写邮政编码', f);
+		return false;
+	}
+	f = 'truename';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写真实姓名', f);
+		return false;
+	}
+	f = 'mobile';
+	l = Dd(f).value.length;
+	if(l < 11) {
+		Dmsg('请填写手机号码', f);
+		return false;
+	}
+	{else}
+	f = 'mobile';
+	l = Dd(f).value.length;
+	if(l < 11) {
+		Dmsg('请填写手机号码', f);
+		return false;
+	}
+	{/if}
+	return true;
+}
+{if $t[logistic]}
+function Adr(s) {
+	var t = s.split('|');
+	try {
+		Dd('address').value = t[1];
+		Dd('postcode').value = t[2];
+		Dd('truename').value = t[3];
+		Dd('mobile').value = t[4];
+		load_area(t[0], 1);
+	}
+	catch (e) {}
+}
+{if $address}Adr(Dd('addr_0').value);{/if}
+{/if}
+function alter(i, t) {
+	if(t == '+') {
+		if(Dd('number_'+i).value >= 99) return;
+		Dd('number_'+i).value =  parseInt(Dd('number_'+i).value) + 1;
+	} else {
+		if(Dd('number_'+i).value <= 0) return;
+		Dd('number_'+i).value =  parseInt(Dd('number_'+i).value) - 1;
+	}
+	calculate();
+}
+function calculate() {
+	var itemids = [{$itemid}];
+	var _good = itemid = 0;
+	for(var i = 0; i < itemids.length; i++) {
+		itemid = itemids[i];
+		var num, good;
+		num = parseInt(Dd('number_'+itemid).value);
+		if(isNaN(num) || num < 0) Dd('number_'+itemid).value = num = 1;
+		good = parseFloat(Dd('price_'+itemid).innerHTML)*num;
+		Dd('total_'+itemid).innerHTML = good.toFixed(2);
+		_good += good;
+	}
+	Dd('total_amount').innerHTML = _good.toFixed(2);
+}
+calculate();
+</script>
+{template 'footer', 'member'}

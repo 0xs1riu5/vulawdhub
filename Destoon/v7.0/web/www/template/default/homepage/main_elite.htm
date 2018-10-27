@@ -1,0 +1,21 @@
+<div class="main_head"><div><span class="f_r"><a href="{userurl($username, 'file=sell', $domain)}"><img src="{DT_STATIC}{$MODULE[4][moduledir]}/image/more.gif" title="更多"/></a></span><strong>{$main_name[$HM]}</strong></div></div>
+<div class="main_body">
+<!--{php $tags=tag("moduleid=5&condition=status>2 and username='$username' and elite=1 and thumb<>''&pagesize=".$main_num[$HM]."&order=edittime desc&fields=itemid,title,linkurl,thumb,edittime&template=null");}-->
+<div id="elite" style="height:180px;overflow:hidden;">
+<table cellpadding="0" cellspacing="0" width="100%">
+{loop $tags $i $t}
+{if $i%4==0}<tr align="center">{/if}
+<td valign="top" width="25%" height="220">
+<div class="thumb">
+	<a href="{if $homeurl}{$t[linkurl]}{else}{userurl($username, 'file=sell&itemid='.$t['itemid'], $domain)}{/if}"><img src="{$t[thumb]}" width="160" height="160" alt="{$t[alt]}"/></a>
+	<div><a href="{if $homeurl}{$t[linkurl]}{else}{userurl($username, 'file=sell&itemid='.$t['itemid'], $domain)}{/if}" title="{$t[alt]}">{$t[title]}</a></div>
+	<p>{timetodate($t[edittime], 3)}</p>
+</div>
+</td>
+{if $i%4==3}</tr>{/if}
+{/loop}
+</table>
+</div>
+</div>
+{load('marquee.js')}
+<script type="text/javascript">$(function(){new dmarquee(220, 15, 2000, 'elite');});</script>

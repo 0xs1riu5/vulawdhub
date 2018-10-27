@@ -1,0 +1,53 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">简历详情</div>
+<div class="head-bar-right">
+{if $_username != $username}<a href="{$MOD[mobile]}{rewrite('talent.php?itemid='.$itemid)}"><span>添加</span></a>{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$editdate}{if $MOD[hits]}&nbsp;&nbsp;浏览:<span id="hits">{$hits}</span>{/if}</div>
+	<div class="content">
+	姓名:{$truename}<br/>
+	性别:{if $gender == 1}男{else}女{/if}<br/>
+	生日:{$birthday}<br/>
+	婚姻状况:{if $marriage == 2}已婚{else}未婚{/if}<br/>
+	身高:{$height} cm<br/>
+	体重:{$weight} kg<br/>
+	居住地:{area_pos($areaid, '')}<br/>
+	学历:{$EDUCATION[$education]}<br/>
+	毕业院校:{$school}<br/>
+	专业:{$major}<br/>
+	工作性质:{$TYPE[$type]}<br/>
+	工作经验:{if $experience}{$experience}年{else}无{/if}<br/>
+	行业意向:{$CATEGORY[$parentid][catname]}<br/>
+	职位意向:{$CATEGORY[$catid][catname]}<br/>
+	专业技能:{$skill}<br/>
+	语言水平:{$language}<br/>
+	期望薪资:
+	{if $minsalary && $maxsalary}
+		{$minsalary}-{$maxsalary}{$DT[money_unit]}/月
+	{elseif $minsalary}
+		{$minsalary}{$DT[money_unit]}/月以上
+	{elseif $maxsalary}
+		{$maxsalary}{$DT[money_unit]}/月以内
+	{else}
+		面议
+	{/if}<br/>
+	求职状态:{$SITUATION[$situation]}<br/>
+	</div>
+	{if $content}
+	<div class="head bd-b"><strong>自我鉴定</strong></div>
+	<div class="content">{$content}</div>
+	{/if}
+	<div class="head bd-b"><strong>联系方式</strong></div>
+	<div class="content">{template 'content', 'chip'}</div>
+</div>
+{template 'footer'}

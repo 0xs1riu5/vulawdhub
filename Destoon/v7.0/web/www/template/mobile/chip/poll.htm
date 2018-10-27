@@ -1,0 +1,10 @@
+{loop $polls $i $v}
+<div class="list-img">
+{if $v[linkurl]}<a href="{str_replace(DT_PATH, DT_MOB, $v[linkurl])}" target="_blank"  rel="external">{/if}<img src="{if $v[thumb]}{$v[thumb]}{else}{DT_MOB}static/img/80x60.png{/if}" width="80" height="60" alt="" onerror="this.src='{DT_MOB}static/img/80x60.png';"/>{if $v[linkurl]}</a>{/if}</a>
+<ul>
+<li>{if $v[linkurl]}<a href="{str_replace(DT_PATH, DT_MOB, $v[linkurl])}" target="_blank"  rel="external">{/if}<strong>{$v[title]}</strong>{if $v[linkurl]}</a>{/if}</li>
+<li><span class="f_r">{if in_array($v[itemid], $votes)}已投票{else}<a href="javascript:;" onclick="Poll({$v[itemid]});" class="b">投一票</a>{/if}</span><span>{$v[polls]}票</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}

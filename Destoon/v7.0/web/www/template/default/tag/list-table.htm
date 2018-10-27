@@ -1,0 +1,8 @@
+<table width="100%">
+{loop $tags $i $t}
+{if $i%$cols==0}<tr>{/if}
+<td width="{$percent}">{if $datetype}<span class="f_r">{timetodate($t[addtime], $datetype)}</span>{/if}<a href="{$t[linkurl]}"{if $target} target="{$target}"{/if} title="{$t[alt]}">&#8226; {$t[title]}</a></td>
+{if $i%$cols==($cols-1)}</tr>{/if}
+{/loop}
+</table>
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

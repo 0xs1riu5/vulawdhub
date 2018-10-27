@@ -1,0 +1,230 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="add"><a href="?action=add"><span>添加商友</span></a></td>
+<td class="tab" id="s3"><a href="?action=index"><span>我的商友</span></a></td>
+<td class="tab" id="type"><a href="javascript:Dwidget('type.php?item=friend', '[商友分类]', 600, 300);"><span>商友分类</span></a></td>
+</tr>
+</table>
+</div>
+{if $action == 'add' || $action == 'edit'}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl">分类</td>
+<td class="tr"><span id="type_box">{$type_select}</span>&nbsp; <a href="javascript:var type_item='friend-{$_userid}',type_name='post[typeid]',type_default='{$L[default_type]}',type_id={$typeid},type_interval=setInterval('type_reload()',500);Dwidget('type.php?item=friend', '[商友分类]', 600, 300);" class="t">[管理分类]</a></td>
+</tr>
+<tr>
+<td class="tl">会员</td>
+<td class="tr"><input type="text" size="20" name="post[username]" id="username" value="{$username}"/> <input type="button" class="btn" value="显示资料" onclick="Go('?action=add&username='+Dd('username').value);"/></td>
+</tr>
+<tr>
+<td class="tl"><span class="f_red">*</span> 姓名</td>
+<td class="tr"><input type="text" size="20" name="post[truename]" id="truename" value="{$truename}"/> <span id="dtruename" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">公司</td>
+<td class="tr"><input type="text" size="40" name="post[company]" id="company" value="{$company}"/> {dstyle('post[style]', $style)}</td>
+</tr>
+<tr>
+<td class="tl">职位</td>
+<td class="tr"><input type="text" size="20" name="post[career]" id="career" value="{$career}"/></td>
+</tr>
+<tr>
+<td class="tl">电话</td>
+<td class="tr"><input type="text" size="20" name="post[telephone]" id="telephone" value="{$telephone}"/></td>
+</tr>
+<tr>
+<td class="tl">手机</td>
+<td class="tr"><input type="text" size="20" name="post[mobile]" id="mobile" value="{$mobile}"/></td>
+</tr>
+<tr>
+<td class="tl">主页</td>
+<td class="tr"><input type="text" size="40" name="post[homepage]" id="homepage" value="{$homepage}"/></td>
+</tr>
+<tr>
+<td class="tl">邮件</td>
+<td class="tr"><input type="text" size="30" name="post[email]" id="email" value="{$email}"/></td>
+</tr>
+{if $DT[im_qq]}
+<tr>
+<td class="tl">QQ</td>
+<td class="tr"><input type="text" size="20" name="post[qq]" id="qq" value="{$qq}"/></td>
+</tr>
+{/if}
+{if $DT[im_wx]}
+<tr>
+<td class="tl">微信</td>
+<td class="tr"><input type="text" size="20" name="post[wx]" id="wx" value="{$wx}"/></td>
+</tr>
+{/if}
+{if $DT[im_ali]}
+<tr>
+<td class="tl">旺旺</td>
+<td class="tr"><input type="text" size="20" name="post[ali]" id="ali" value="{$ali}"/></td>
+</tr>
+{/if}
+{if $DT[im_skype]}
+<tr>
+<td class="tl">Skype</td>
+<td class="tr"><input type="text" size="20" name="post[skype]" id="skype" value="{$skype}"/></td>
+</tr>
+{/if}
+<tr>
+<td class="tl">备注</td>
+<td class="tr"><input type="text" size="40" name="post[note]" id="note" value="{$note}"/></td>
+</tr>
+<tr>
+<td class="tl">排序</td>
+<td class="tr f_gray"><input type="text" size="3" name="post[listorder]" id="listorder" value="{$listorder}"/> 请填写数字，数字越大越靠前</td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" name="submit" value="{if $action=='add'}添 加{else}修 改{/if}" class="btn_g"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">s('friend');m({if $action=='add'}'add'{else}'s3'{/if});</script>
+{elseif $action=='show'}
+<table cellpadding="10" cellspacing="1" class="tb">
+{if $typeid}
+<tr>
+<td class="tl">分类</td>
+<td class="tr">{$TYPE[$typeid][typename]}</td>
+</tr>
+{/if}
+{if $username}
+<tr>
+<td class="tl">会员</td>
+<td class="tr"><a href="message.php?action=send&touser={$v[username]}"><img width="16" height="16" src="{DT_SKIN}image/msg.gif" title="发送站内信" alt="" align="absmiddle"/></a>&nbsp;{if $DT[im_web]}{im_web($username)}&nbsp;{/if}{$username}</td>
+</tr>
+{/if}
+<tr>
+<td class="tl">姓名</td>
+<td class="tr">{$truename}</td>
+</tr>
+<tr>
+<td class="tl">公司</td>
+<td class="tr">{$company}</td>
+</tr>
+<tr>
+<td class="tl">职位</td>
+<td class="tr">{$career}</td>
+</tr>
+<tr>
+<td class="tl">电话</td>
+<td class="tr">{$telephone}</td>
+</tr>
+<tr>
+<td class="tl">手机</td>
+<td class="tr">{$mobile}</td>
+</tr>
+<tr>
+<td class="tl">主页</td>
+<td class="tr"><a href="{DT_PATH}api/redirect.php?url={urlencode($homepage)}" class="t" target="_blank">{$homepage}</a></td>
+</tr>
+<tr>
+<td class="tl">邮件</td>
+<td class="tr">{$email}</td>
+</tr>
+{if $qq}
+<tr>
+<td class="tl">QQ</td>
+<td class="tr">{im_qq($qq)}&nbsp;{$qq}</td>
+</tr>
+{/if}
+{if $wx}
+<tr>
+<td class="tl">微信</td>
+<td class="tr">{im_wx($wx, $username)}&nbsp;{$wx}</td>
+</tr>
+{/if}
+{if $ali}
+<tr>
+<td class="tl">旺旺</td>
+<td class="tr">{im_ali($ali)}&nbsp;{$ali}</td>
+</tr>
+{/if}
+{if $skype}
+<tr>
+<td class="tl">Skype</td>
+<td class="tr">{im_skype($v[skype])}&nbsp;{$skype}</td>
+</tr>
+{/if}
+<tr>
+<td class="tl">备注</td>
+<td class="tr">{$note}</td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="button" value="返 回" class="btn_g" onclick="Go('?action=index');"/></td>
+</tr>
+</table>
+<script type="text/javascript">s('friend');m('s3');</script>
+{else}
+<form action="?">
+<div class="tt">
+&nbsp;{$fields_select}&nbsp;
+<input type="text" size="50" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+{$type_select}&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 搜 " class="btn" onclick="Go('?action=index');"/>
+</div>
+</form>
+<table cellpadding="5" cellspacing="1" width="100%" bgcolor="#E8E8E8">
+{loop $lists $k $v}
+{if $k%2==0}<tr>{/if}
+<td valign="top" width="50%" bgcolor="#FFFFFF" onmouseover="this.style.backgroundColor='#F5F5F5';" onmouseout="this.style.backgroundColor='#FFFFFF';" title="{$v[note]}" style="padding:10px;">
+<table cellpadding="2" cellspacing="2" width="100%">
+<tr>
+<td height="24"><span class="f_r"><a href="?action=edit&itemid={$v[itemid]}"><img width="16" height="16" src="image/edit.png" title="修改" alt=""/></a>&nbsp; <a href="?action=delete&itemid={$v[itemid]}" onclick="return confirm('确定要删除吗？此操作将不可撤销');"><img width="16" height="16" src="image/delete.png" title="删除" alt=""/></a></span><a href="?action=show&itemid={$v[itemid]}"><strong>{if $v[dcompany]}{$v[dcompany]}{else}个人{/if}</strong></a></td>
+</tr>
+<tr>
+<td height="22">{$v[truename]}{if $v[career]} ({$v[career]}){/if}</td>
+</tr>
+<tr>
+<td height="20">电话：{$v[telephone]}</td>
+</tr>
+<tr>
+<td height="20">手机：{$v[mobile]}</td>
+</tr>
+<tr>
+<td height="20">
+<span class="f_r" title="添加时间 {$v[adddate]}"><a href="?typeid={$v[typeid]}" class="t">[{$v[type]}]</a></span>
+{if $v[homepage]}<a href="{DT_PATH}api/redirect.php?url={urlencode($v[homepage])}" target="_blank"><img width="16" height="16" src="{DT_SKIN}image/homepage.gif" title="公司主页" alt="" align="absmiddle"/></a>&nbsp;{/if}
+{if $v[username]}<a href="message.php?action=send&touser={$v[username]}"><img width="16" height="16" src="{DT_SKIN}image/msg.gif" title="发送站内信" alt="" align="absmiddle"/></a>&nbsp;{/if}
+{if $v[email]}<a href="mailto:{$v[email]}"><img width="16" height="16" src="{DT_SKIN}image/email.gif" title="发送邮件 {$v[email]}" alt="" align="absmiddle"/></a>&nbsp;{/if}
+{if $v[username] && $DT[im_web]}{im_web($v[username])}&nbsp;{/if}
+{if $v[qq] && $DT[im_qq]}{im_qq($v[qq])}&nbsp;{/if}
+{if $v[wx] && $DT[im_wx]}{im_wx($v[wx], $v[username])}&nbsp;{/if}
+{if $v[ali] && $DT[im_ali]}{im_ali($v[ali])}&nbsp;{/if}
+{if $v[skype] && $DT[im_skype]}{im_skype($v[skype])}&nbsp;{/if}
+</td>
+</tr>
+</table>
+</td>
+{if $k%2==1}</tr>{/if}
+{/loop}
+</table>
+{if $MG[friend_limit]}
+<div class="limit">商友上限 <span class="f_b f_red">{$MG[friend_limit]}</span> 人&nbsp;&nbsp;&nbsp;当前已加 <span class="f_b">{$limit_used}</span> 人&nbsp;&nbsp;&nbsp;还可以加 <span class="f_b f_blue">{$limit_free}</span> 人</div>
+{/if}
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('friend');m('s3');</script>
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	if(Dd('truename').value.length < 2) {
+		Dmsg('请填写姓名', 'truename');
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

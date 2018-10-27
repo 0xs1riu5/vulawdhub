@@ -1,0 +1,40 @@
+</td>
+</tr>
+</table>
+</div>
+<!--[以下为系统关键代码，请勿删除]-->
+<div class="back2top"><a href="javascript:void(0);" title="返回顶部">&nbsp;</a></div>
+<script type="text/javascript">
+$(function(){
+var h1 = $(window).height(),h2 = $('#main').height();
+if(h1 > h2) $('#main').height(h1 - 67);
+if(get_local('m_side') == 'Y' && Dd('side_oh').className == 'side_h') {Dh('side');Dd('side_oh').className = 'side_s';}
+var destoon_message = {$_message};
+var destoon_chat = {$_chat};
+{if $_message && $_sound}
+if(window.location.href.indexOf('message.php') == -1) $('#destoon_space').html(sound('message_{$_sound}'));
+{/if}
+{if $_chat}
+if(window.location.href.indexOf('im.php') == -1) $('#destoon_space').html(sound('chat_new'));
+{/if}
+{if $_message}
+Dnotification('new_message', '{$MODULE[2][linkurl]}message.php', '{useravatar($_username, 'large')}', '站内信 ({$_message})', '收到新的站内信件，点击查看');
+{/if}
+{if $_chat}
+Dnotification('new_chat', '{$MODULE[2][linkurl]}im.php', '{useravatar($_username, 'large')}', '新交谈 ({$_chat})', '收到新的对话请求，点击交谈');
+{/if}
+{if $_userid && $DT[pushtime]}
+window.setInterval('PushNew()',{$DT[pushtime]}*1000);
+{/if}
+if($('#mini_profile').length > 0) {
+	$('#my_profile').mouseover(function(){
+		$('#mini_profile').show('fast');
+		$('#my_profile').bind('mouseleave',function(){ 
+			$('#mini_profile').hide(); 
+		});
+	}); 
+}
+});
+</script>
+</body>
+</html>

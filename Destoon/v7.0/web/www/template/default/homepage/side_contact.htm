@@ -1,0 +1,20 @@
+{if $file != 'contact' && $could_contact}
+<div class="side_head"><div><span class="f_r"><a href="{userurl($username, 'file=contact', $domain)}"><img src="{DT_STATIC}{$MODULE[4][moduledir]}/image/more.gif" title="更多"/></a></span><strong>{$side_name[$HS]}</strong></div></div>
+<div class="side_body">
+<ul>
+<li>联系人：{$COM[truename]}</li>
+{if $COM[telephone]}
+<li title="{$COM[telephone]}">电话：{$COM[telephone]}</li>
+{/if}
+{if $COM[mail]}
+<li title="{$COM[mail]}">邮件：{$COM[mail]}</li>
+{/if}
+{if $COM[mobile]}
+<li title="{$COM[mobile]}">手机：{$COM[mobile]}</li>
+{/if}
+{if $COM[fax]}
+<li title="{$COM[fax]}">传真：{$COM[fax]}</li>
+{/if}
+</ul>
+</div>
+{/if}

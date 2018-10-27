@@ -1,0 +1,51 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action=='bind'}帐号绑定{else}一键登录{/if}</div>
+<div class="head-bar-right">
+{if $action=='bind'}
+<a href="{$DT[file_login]}" onclick="return confirm('确定要取消本次绑定吗？');"><span>取消</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='bind'}
+<div class="blank-20"></div>
+<center><img src="{$avatar}" width="40" height="40" alt="" onerror="this.src='{$nohead}';" class="img-circle"/></center>
+<div class="blank-16"></div>
+<center><strong>{$nickname}</strong></center>
+<div class="blank-20"></div>
+<center style="font-size:12px;color:#999999;">只差一步，绑定后就可以用<a href="{$connect}" class="b" rel="external">{$site}</a>自动登录<a href="{DT_MOB}" class="b">{$site_name}</a>了</center>
+<div class="blank-20"></div>
+<div class="list-btn"><a href="{$DT[file_login]}"><div class="btn-blue">已是会员，请登录自动绑定</div></a></div>
+<div class="blank-20"></div>
+<div class="list-btn"><a href="{$DT[file_register]}"><div class="btn-green">不是会员，请注册自动绑定</div></a></div>
+<div class="blank-20"></div>
+{else}
+{loop $OAUTH $k $v}
+{if $v[enable]}
+{if isset($lists[$k])}
+<div class="list-img">
+<img src="{if $lists[$k][avatar]}{$lists[$k][avatar]}{else}{DT_PATH}api/avatar/default.jpg{/if}" width="60" height="60" alt="" onerror="{DT_PATH}api/avatar/default.jpg';" class="img-circle"/>
+<ul>
+<li><span class="f_r">{$v[name]}</span><strong>{$lists[$k][nickname]}</strong></li>
+<li><span class="f_r"><a href="{DT_PATH}api/oauth/{$k}/connect.php" class="b" target="_blank">更换账号</a></span><em>{$lists[$k][logindate]}</em></li>
+</ul>
+</div>
+{else}
+<div class="list-img">
+<img src="{DT_PATH}api/avatar/default.jpg" width="60" height="60" alt="" class="img-circle"/>
+<ul>
+<li><span class="f_r">{$v[name]}</span><strong>未绑定</strong></li>
+<li><span class="f_r"><a href="{DT_PATH}api/oauth/{$k}/connect.php" class="b" target="_blank">立即绑定</a></span><em>N/A</em></li>
+</ul>
+</div>
+{/if}
+{/if}
+{/loop}
+{/if}
+{template 'footer', 'member'}

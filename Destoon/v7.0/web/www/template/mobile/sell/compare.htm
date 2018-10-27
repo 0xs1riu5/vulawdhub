@@ -1,0 +1,130 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dback('{$MOD[mobile]}');"><span>取消</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<style type="text/css">
+.compare {border-top:#DDDDDD 1px solid;overflow-x:auto;background:#FFFFFF;}
+.compare tr {text-align:center;}
+.compare tr:hover {background:#F1F1F1;}
+.compare th {width:58px;font-weight:normal;border:#DDDDDD 1px solid;border-top:none;letter-spacing:1px;background:#F1F1F1;}
+.compare td {width:169px;padding:16px 10px;border-right:#DDDDDD 1px solid;border-bottom:#DDDDDD 1px solid;}
+.compare div {height:18px;line-height:18px;overflow:hidden;}
+</style>
+<div class="compare">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<th>移除</th>
+{loop $tags $k $v}
+<td data-key="{$k}"><a href="javascript:;" onclick="compare_remove({$k});" class="b">移除</a></td>
+{/loop}
+</tr>
+<tr>
+<th>图片</th>
+{loop $tags $k $v}
+<td data-key="{$k}"><a href="{$v[linkurl]}" target="_blank"><img src="{imgurl($v[thumb])}" width="100" height="100" alt=""/></a></td>
+{/loop}
+</tr>
+<tr>
+<th>标题</th>
+{loop $tags $k $v}
+<td data-key="{$k}"><div><a href="{$v[linkurl]}" target="_blank" title="{$v[alt]}">{$v[title]}</a></div></td>
+{/loop}
+</tr>
+<tr>
+<th>品牌</th>
+{loop $tags $k $v}
+<td data-key="{$k}"><div title="{$v[brand]}">{$v[brand]}</div></td>
+{/loop}
+</tr>
+<tr>
+<th>日期</th>
+{loop $tags $k $v}
+<td data-key="{$k}">{$v[editdate]}</td>
+{/loop}
+</tr>
+<tr>
+<th>公司</th>
+{loop $tags $k $v}
+<td data-key="{$k}"><div><a href="{$v[userurl]}" target="_blank" title="{$v[company]}">{$v[company]}</a></div></td>
+{/loop}
+</tr>
+<tr>
+<th>会员</th>
+{loop $tags $k $v}
+<td data-key="{$k}">
+{if $v[vip]}<img src="{DT_SKIN}image/vip_{$v[vip]}.gif" alt="{VIP}" title="{VIP}:{$v[vip]}级"/>{/if}&nbsp;
+</td>
+{/loop}
+</tr>
+<tr>
+<th>地区</th>
+{loop $tags $k $v}
+<td data-key="{$k}">{area_pos($v[areaid], '', 2)}</td>
+{/loop}
+</tr>
+<tr>
+<th>价格</th>
+{loop $tags $k $v}
+<td data-key="{$k}">{if $v[price]>0}<strong class="f_red">{$v[price]}</strong>{$DT[money_unit]}/{$v[unit]}{else}面议{/if}</td>
+{/loop}
+</tr>
+<tr>
+<th>起订</th>
+{loop $tags $k $v}
+<td data-key="{$k}">{if $v[minamount]}{$v[minamount]} {$v[unit]}{else}未填写{/if}</td>
+{/loop}
+</tr>
+<tr>
+<th>总量</th>
+{loop $tags $k $v}
+<td data-key="{$k}">{if $v[amount]}{$v[amount]} {$v[unit]}{else}未填写{/if}</td>
+{/loop}
+</tr>
+<tr>
+<th>发货</th>
+{loop $tags $k $v}
+<td data-key="{$k}">{if $v[days]}{$v[days]}天内{else}未填写{/if}</td>
+{/loop}
+</tr>
+<tr>
+<th>联系</th>
+{loop $tags $k $v}
+<td data-key="{$k}">&nbsp;
+	{if $v[username] && $DT[im_web]}{im_web($v[username].'&mid='.$moduleid.'&itemid='.$v[itemid])}&nbsp;{/if}
+	{if $v[qq] && $DT[im_qq]}{im_qq($v[qq])}&nbsp;{/if}
+	{if $v[wx] && $DT[im_wx]}{im_wx($v[wx], $v[username])}&nbsp;{/if}
+	{if $v[ali] && $DT[im_ali]}{im_ali($v[ali])}&nbsp;{/if}
+	{if $v[skype] && $DT[im_skype]}{im_skype($v[skype])}</a>&nbsp;{/if}
+</td>
+{/loop}
+</tr>
+<tr>
+<th>询价</th>
+{loop $tags $k $v}
+<td data-key="{$k}"><a href="{$MOD[linkurl]}{rewrite('inquiry.php?itemid='.$v['itemid'])}" target="_blank"><img src="{DT_SKIN}image/inquiry.gif" title="询价" alt=""/></a></td>
+{/loop}
+</tr>
+<tr>
+<th>移除</th>
+{loop $tags $k $v}
+<td data-key="{$k}" data-del="{$k}"><a href="javascript:;" onclick="compare_remove({$k});" class="b">移除</a></td>
+{/loop}
+</tr>
+</table>
+</div>
+<script type="text/javascript">
+function compare_remove(k) {
+	if($('[data-del]').length < 3) {confirm('最少需要保留两条信息');return;}
+	$('[data-key="'+k+'"]').remove();
+}
+</script>
+{template 'footer'}

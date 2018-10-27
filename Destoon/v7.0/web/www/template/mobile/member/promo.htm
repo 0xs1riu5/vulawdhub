@@ -1,0 +1,164 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">促销{if $action=='add'}添加{elseif $action=='edit'}修改{else}管理{/if}</div>
+<div class="head-bar-right">
+{if $action=='add' || $action=='edit'}
+<a href="?action=index"><span>取消</span></a>
+{else}
+<a href="?action=add"><span>添加</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='add' || $action=='edit'}
+<form method="post" action="?" id="dform" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<div class="ui-form">
+<p>优惠名称<em>*</em><b id="dtitle"></b></p>
+<div><input type="text" name="post[title]" id="title" value="{$title}"/></div>
+<p>优惠金额<em>*</em><b id="dprice"></b></p>
+<div><input type="number" name="post[price]" id="price" value="{$price}" style="width:100px;"/></div>
+<p>最低消费<em></em><b id="dcost"></b></p>
+<div><input type="number" name="post[cost]" id="cost" value="{$cost}" style="width:100px;"/></div>
+<p>数量限制<em>*</em><b id="damount"></b></p>
+<div><input type="tel" name="post[amount]" id="amount" value="{$amount}" style="width:100px;"/></div>
+<p>有效时间<em>*</em><b id="dtime"></b></p>
+<div><input type="datetime-local" name="post[fromtime]" value="{str_replace(' ', 'T', $fromtime)}" id="postfromtime" step="1"/></div>
+<div class="blank-16"></div>
+<div><input type="datetime-local" name="post[totime]" value="{str_replace(' ', 'T', $totime)}" id="posttotime" step="1"/></div>
+<p>备注信息</p>
+<div><input type="text" name="post[note]" id="note" value="{$note}"/></div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="{if $action=='edit'}修改{else}添加{/if}" class="btn-blue"/>
+<div class="blank-32"></div>
+</div>
+</form>
+{elseif $action == 'coupon'}
+<div class="list-tab">
+	<ul>
+		<li><a href="?action=index"><span>优惠促销</span></a></li>
+		<li class="on"><a href="?action=coupon"><span>领券记录</span></a></li>
+	</ul>
+</div>
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{$v[price]}</span>
+<strong style="font-size:24px;">{$v[username]}</strong>
+</li>
+<li>
+	<span class="f_r">	
+		{if $v[oid]}
+		<span style="color:green;">已使用</span>
+		{elseif $v[fromtime] > $DT_TIME}
+		<span style="color:gray;">未开始</span>
+		{elseif $v[totime] < $DT_TIME}
+		<span style="color:red;">已过期</span>
+		{else}
+		<span style="color:blue;">待使用</span>
+		{/if}
+	</span>
+	<span>{$v[title]}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="list-tab">
+	<ul>
+		<li class="on"><a href="?action=index"><span>优惠促销</span></a></li>
+		<li><a href="?action=coupon"><span>领券记录</span></a></li>
+	</ul>
+</div>
+<form method="post">
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<input type="checkbox" name="itemid[]" value="{$v[itemid]}" class="dsn" id="checkbox-{$v[itemid]}"/>
+<ul>
+<li><em class="check" id="check-{$v[itemid]}"></em><a href="?action=edit&itemid={$v[itemid]}"><strong>{$v[title]}</strong></a></li>
+<li><em class="sheet" id="sheet-{$v[itemid]}"></em><span>金额：{$v[price]} / 消费：{$v[cost]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+<div id="foot-bar" class="dsn">
+<div class="foot-bar-fix"></div>
+<div class="foot-bar btns">
+<input type="submit" name="submit" value="删除选中" class="btn-red" onclick="if(confirm('确定要删除选中优惠吗？')){this.form.action='?action=delete'}else{return false;}"/>
+</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+	if($('#foot-bar input').length == 0) $('.check').hide();
+	$('.list-img em').click(function() {
+		if($(this).attr('class') == 'sheet') {
+			var id = $(this).attr('id').replace('sheet-', '');
+			Dsheet('<a href="?action=edit&itemid='+id+'"><span>修改</span></a>|<a href="?action=delete&itemid='+id+'" onclick="return _delete();"><span style="color:red;">删除</span></a>', '取消');
+		} else {
+			var id = $(this).attr('id').replace('check-', '');
+			if($('#checkbox-'+id).attr('checked')) {
+				$('#checkbox-'+id).attr('checked', false);
+				$(this).attr('class', 'check');
+			} else {
+				$('#checkbox-'+id).attr('checked', true);
+				$(this).attr('class', 'checked');
+			}
+			if($('.checked').length > 0) {
+				$('#foot-bar').fadeIn(300);
+			} else {
+				$('#foot-bar').fadeOut(300);
+			}
+		}
+	});
+});
+</script>
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	var f;
+	var l;
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写优惠名称', f);
+		return false;
+	}
+	f = 'price';
+	l = parseFloat(Dd(f).value);
+	if(!l || l < 0.1) {
+		Dmsg('请填写优惠金额', f);
+		return false;
+	}
+	f = 'amount';
+	l = parseInt(Dd(f).value);
+	if(!l || l < 1) {
+		Dmsg('请填写数量限制', f);
+		return false;
+	}
+	l = Dd('postfromtime').value.length;
+	if(l != 19) {
+		Dmsg('请选择开始时间', 'time');
+		return false;
+	}
+	l = Dd('posttotime').value.length;
+	if(l != 19) {
+		Dmsg('请选择结束时间', 'time');
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

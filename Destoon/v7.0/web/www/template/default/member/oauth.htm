@@ -1,0 +1,58 @@
+{template 'header', 'member'}
+{if $action=='bind'}
+<div style="text-align:center;">
+<img src="{if $U[avatar]}{$U[avatar]}{else}{DT_PATH}api/oauth/avatar.png{/if}" width="50" style="margin:30px 0 10px 0;border-radius:50%;"/>
+<div style="color:#005590;">{$U[nickname]}</div>
+<div style="padding:20px 0;color:#999999;">只差一步，绑定后就可以用<a href="{DT_PATH}api/oauth/{$U[site]}/connect.php" class="b">{$OAUTH[$U[site]][name]}</a>自动登录<a href="{DT_PATH}" class="b">{$DT[sitename]}</a>了</div>
+<div style="padding:20px 0;"><input type="button" value=" 已是会员，请登录自动绑定 " class="btn_b" style="width:200px;" onclick="Go('{$DT[file_login]}');"/></div>
+<div><input type="button" value=" 不是会员，请注册自动绑定 " class="btn_g" style="width:200px;" onclick="Go('{$DT[file_register]}');"/></div>
+<div style="padding:20px 0;"><a href="{$DT[file_login]}" class="b" onclick="return confirm('确定要取消本次绑定吗？');">取消绑定</a></div>
+</div>
+<script type="text/javascript">Dh('side');Dh('side_oh');</script>
+{else}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab_on" id="action"><a href="?action=index"><span>一键登录</span></a></td>
+</tr>
+</table>
+</div>
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="70">头像</th>
+<th>昵称</th>
+<th width="130">绑定时间</th>
+<th width="130">上次登录</th>
+<th>登录次数</th>
+<th>平台</th>
+<th width="120">操作</th>
+</tr>
+{loop $OAUTH $k $v}
+{if $v[enable]}
+<tr align="center">
+{if isset($lists[$k])}
+<td>{if $lists[$k][url]}<a href="{$lists[$k][url]}" target="_blank">{/if}<img src="{if $lists[$k][avatar]}{$lists[$k][avatar]}{else}{DT_PATH}api/oauth/avatar.png{/if}" width="50" style="margin:10px;"/>{if $lists[$k][url]}</a>{/if}</td>
+<td>{if $lists[$k][url]}<a href="{$lists[$k][url]}" target="_blank" class="b">{/if}{$lists[$k][nickname]}{if $lists[$k][url]}</a>{/if}</td>
+<td>{$lists[$k][adddate]}</td>
+<td>{$lists[$k][logindate]}</td>
+<td>{$lists[$k][logintimes]}</td>
+<td height="30">{$v[name]}</td>
+<td><img src="{DT_PATH}api/oauth/{$k}/ico.png" align="absmiddle"/> <a href="?action=delete&itemid={$lists[$k][itemid]}" class="b" onclick="return confirm('确定要解除绑定吗？');">解除绑定</a></td>
+{else}
+<td>-</td>
+<td>-</td>
+<td>未绑定</td>
+<td>-</td>
+<td>-</td>
+<td height="30">{$v[name]}</td>
+<td><img src="{DT_PATH}api/oauth/{$k}/ico.png" align="absmiddle"/> <a href="{DT_PATH}api/oauth/{$k}/connect.php" class="b">立即绑定</a></td>
+{/if}
+</tr>
+{/if}
+{/loop}
+</table>
+</div>
+{/if}
+<script type="text/javascript">s('oauth');</script>
+{template 'footer', 'member'}

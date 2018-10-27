@@ -1,0 +1,82 @@
+{template 'header', 'member'}
+<div class="main">
+
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">我来回答</div>
+<div class="head-bar-right">
+{if $action=='add'}
+<a href="?mid={$mid}"><span>取消</span></a>
+{else}
+<a href="?mid={$mid}&action=add"><span>发布</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+
+<div class="ui-form">
+<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+<iframe src="" name="send" id="send" style="display:none;"></iframe>
+<form method="post" action="?" id="dform" target="send" onsubmit="return check();">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="job" value="{$job}"/>
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<p>答案内容：<b id="dcontent"></b></p>
+<textarea name="content" id="content" style="width:500px;height:100px;"></textarea>
+<div style="padding-top:10px;"><a href="{$MODULE[2][mobile]}{$DT[file_my]}?mid={$moduleid}&job=answer&action=add&itemid={$itemid}" target="_top" class="b" title="高级模式支持文字排版和图片上传，点击切换">高级模式</a></div>
+<p>参考资料：</p>
+<input type="text" name="url" size="60" id="url"/>
+{if $_userid}
+<p>匿名设定：</p>
+<input type="checkbox" name="hidden" value="1" id="hidden"/> 如果不需要显示您的信息，您可以对回答设定匿名
+{/if}
+
+{if $need_question}
+<p>验证问题<em>*</em><b id="danswer"></b></p>
+<div>{template 'question', 'chip'}</div>
+{/if}
+{if $need_captcha}
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+{/if}
+<div class="blank-16"></div>
+<input type="submit" name="submit" value=" 提交回答 " class="btn-blue"/>&nbsp;&nbsp;
+<a href="{$MOD[mobile]}faq.php#credit" target="_blank" class="b">{$DT[credit_name]}规则</a>
+<div class="blank-32"></div>
+</form>
+
+</div>
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'content';
+	l = Dd(f).value.length;
+	if(l < 5) {
+		Dmsg('内容应最少5字，当前已输入'+l+'字', f);
+		return false;
+	}
+	{if $need_captcha}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', f);
+		return false;
+	}
+	{/if}
+	{if $need_question}
+	f = 'answer';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证问题', f);
+		return false;
+	}
+	{/if}
+}
+
+</script>
+{template 'footer', 'member'}

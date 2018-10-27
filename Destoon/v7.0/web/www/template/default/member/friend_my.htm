@@ -1,0 +1,112 @@
+{template 'header-widget', 'member'}
+<form action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="from" value="{$from}"/>
+<div class="tt">
+{$fields_select}&nbsp;
+<input type="text" size="40" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+<input type="submit" value="搜 索" class="btn"/>
+<input type="button" value="重 搜" class="btn" onclick="Go('friend.php?action={$action}&from={$from}');"/>
+</div>
+</form>
+{if $lists}
+<div class="ls">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="26"></th>
+<th>公司</th>
+<th>姓名</th>
+<th>{if $from=='sms'}手机{else}会员{/if}</th>
+{if $DT[im_web]}<th>在线</th>{/if}
+<th><input type="checkbox" id="c_0" onclick="_check();"/></th>
+</tr>
+{loop $lists $k $v}
+<tr align="center" title="{$v[note]}">
+<td><img src="{useravatar($v[username], 'small')}" width="20" height="20"/></td>
+<td align="left">&nbsp;<a href="{userurl($v[username])}" target="_blank" class="t">{$v[company]}</a></td>
+<td>{$v[truename]}</td>
+<td id="v_{$v[itemid]}">{if $from=='sms'}{$v[mobile]}{else}{$v[username]}{/if}</td>
+{if $DT[im_web]}<td>{im_web($v[username])}</td>{/if}
+<td><input type="checkbox" id="c_{$v[itemid]}" onclick="_send({$v[itemid]});"/></td>
+</tr>
+{/loop}
+</table>
+</div>
+{if $page}<div class="pages">{$pages}</div>{/if}
+<div style="text-align:center;">
+<input type="button" value="确 定" class="btn" onclick="window.parent.cDialog();"/>&nbsp;&nbsp;
+<input type="button" value="关 闭" class="btn" onclick="window.parent.cDialog();"/>
+</div>
+<script type="text/javascript">
+var itemids = [{loop $lists $i $t}{if $i},{/if}'{$t[itemid]}'{/loop}];
+{if $from == 'sms'}
+	function _send(id) {
+		var v = Dd('v_'+id).innerHTML;
+		if(parent.Dd('mob').value && parent.Dd('mob').value.indexOf("\n") == -1) parent.Dd('mob').value = parent.Dd('mob').value+"\n";
+		if(Dd('c_'+id).checked) {
+			if(parent.Dd('mob').value.indexOf(v) == -1) parent.Dd('mob').value = parent.Dd('mob').value+v+"\n";
+		} else {
+			if(parent.Dd('mob').value.indexOf(v) != -1) parent.Dd('mob').value = parent.Dd('mob').value.replace(v+"\n", '');
+		}
+	}
+	function _check() {
+		for(var i = 0; i < itemids.length; i++) {
+			itemid = itemids[i];
+			Dd('c_'+itemid).checked = Dd('c_0').checked ? true :false;
+			_send(itemid);
+		}
+	}
+	if(parent.Dd('mob').value) {
+		s = parent.Dd('mob').value+"\n";
+		for(var i = 0; i < itemids.length; i++) {
+			itemid = itemids[i];
+			f = Dd('v_'+itemid).innerHTML+"\n";
+			if(s.indexOf(f) != -1) Dd('c_'+itemid).checked = true;
+		}
+	}
+{else}
+	var max = {$MOD[maxtouser]};
+	function _send(id) {
+		var v = Dd('v_'+id).innerHTML;
+		if(parent.Dd('touser').value && parent.Dd('touser').value.indexOf(' ') == -1) parent.Dd('touser').value = parent.Dd('touser').value+' ';
+		if(Dd('c_'+id).checked) {
+			if(max && substr_count(parent.Dd('touser').value, ' ') >= max) {
+				Dd('c_'+id).checked = false;
+				return alert('最多可以选择'+max+'个收件人');
+			}
+			if(parent.Dd('touser').value.indexOf(v) == -1) parent.Dd('touser').value = parent.Dd('touser').value+v+' ';
+		} else {
+			if(parent.Dd('touser').value.indexOf(v) != -1) parent.Dd('touser').value = parent.Dd('touser').value.replace(v+' ', '');
+		}
+	}
+	function _check() {
+		for(var i = 0; i < itemids.length; i++) {
+			itemid = itemids[i];
+			if(Dd('c_0').checked) {
+				if(max && substr_count(parent.Dd('touser').value, ' ') >= max) {
+					break;
+				} else {
+					Dd('c_'+itemid).checked = true;
+					_send(itemid);
+				}
+			} else {
+				Dd('c_'+itemid).checked = false;
+				_send(itemid);
+			}
+		}
+	}
+	if(parent.Dd('touser').value) {
+		s = parent.Dd('touser').value+' ';
+		for(var i = 0; i < itemids.length; i++) {
+			itemid = itemids[i];
+			f = Dd('v_'+itemid).innerHTML+' ';
+			if(s.indexOf(f) != -1) Dd('c_'+itemid).checked = true;
+		}
+	}
+{/if}
+</script>
+{else}
+<center>{if $kw}未搜索到商友{else}暂无商友{/if}</center>
+{/if}
+</body>
+</html>

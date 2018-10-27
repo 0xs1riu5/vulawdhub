@@ -1,0 +1,10 @@
+{loop $tags $i $t}
+<div>
+<a href="{$t[linkurl]}"{if $target} target="{$target}"{/if}><img src="{$t[thumb]}" width="{$width}" height="{$height}" alt=""/></a>
+<ul>
+{if $length}<li><a href="{$t[linkurl]}" title="{$t[alt]}"{if $target} target="{$target}"{/if}>{$t[title]}</a></li>{/if}
+{if $datetype}<li><em>{timetodate($t[addtime], $datetype)}</em></li>{/if}
+</ul>
+</div>
+{/loop}
+{if $showpage && $pages}</div><div class="pages">{$pages}{else}<span class="c_b"></span>{/if}

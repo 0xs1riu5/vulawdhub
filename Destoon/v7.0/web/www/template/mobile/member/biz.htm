@@ -1,0 +1,68 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{DT_MOB}my.php" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>我的</span></a>
+</div>
+<div class="head-bar-title">商户后台</div>
+<div class="head-bar-right"></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+{if $MG[trade_order]}
+<li><div><a href="trade.php" rel="external">订单管理</a></div></li>
+{/if}
+{if $MG[group_order]}
+{loop $MODULE $m}
+{if $m[module] == 'group'}
+<li><div><a href="group.php?mid={$m[moduleid]}" rel="external">{$m[name]}订单</a></div></li>
+{/if}
+{/loop}
+{/if}
+{if $MG[promo_limit]>-1}
+<li><div><a href="promo.php" rel="external">优惠促销</a></div></li>
+{/if}
+<li><div><a href="deposit.php" rel="external">保证金</a></div></li>
+{if $MG[alert_limit]>-1}
+<li><div><a href="alert.php" rel="external">贸易提醒</a></div></li>
+{/if}
+{if $MG[sms]}
+{if $DT[sms]}<li><div><a href="sms.php" rel="external">手机短信</a></div></li>{/if}
+{/if}
+{if $MG[mail]}
+<li><div><a href="mail.php" rel="external">邮件订阅</a></div></li>
+{/if}
+{if $MG[spread]}
+<li><div><a href="spread.php" rel="external">排名推广</a></div></li>
+{/if}
+{if $MG[ad]}
+<li><div><a href="ad.php" rel="external">广告预定</a></div></li>
+{/if}
+</ul>
+</div>
+<div class="blank-20"></div>
+{if $MG[homepage]}
+<div class="list-set">
+<ul>
+<li><div><a href="home.php" rel="external">商铺设置</a></li>
+<li><div><a href="style.php" rel="external">模板设置</a></div></li>
+{if ($MG[news_limit]>-1 && $MG[homepage])}
+<li><div><a href="news.php" rel="external">公司新闻</a></div></li>
+{/if}
+{if ($MG[page_limit]>-1 && $MG[homepage])}
+<li><div><a href="page.php" rel="external">公司单页</a></div></li>
+{/if}
+{if ($MG[honor_limit]>-1 && $MG[homepage])}
+<li><div><a href="honor.php" rel="external">荣誉资质</a></div></li>
+{/if}
+{if ($MG[link_limit]>-1 && $MG[homepage])}
+<li><div><a href="link.php" rel="external">友情链接</a></div></li>
+{/if}
+</ul>
+</div>
+<div class="blank-20"></div>
+{/if}
+{template 'footer'}

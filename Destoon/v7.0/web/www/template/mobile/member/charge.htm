@@ -1,0 +1,154 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action == 'record'}支付记录{elseif $action == 'confirm'}支付确认{elseif $action == 'card'}充值卡{else}在线支付{/if}</div>
+<div class="head-bar-right">
+{if $action == 'record'}
+<a href="?action=pay"><span>支付</span></a>
+{else}
+<a href="?action=record"><span>取消</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action == 'record'}
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><span class="f_r">{$v[dstatus]}</span><strong style="font-size:24px;{if $v[status]==1||$v[status]==2}color:#999999;{/if}">￥{$v[amount]}</strong></li>
+<li><span class="f_r">{if $v[repay]}<a href="?action=repay&itemid={$v[itemid]}" class="b">{/if}{$PAY[$v[bank]][name]}{if $v[repay]}</a>{/if}</span><span>{$v[sendtime]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{elseif $action == 'card'}
+<form method="post" action="?" onsubmit="return check_card();">
+<input type="hidden" name="action" value="card"/>
+<div class="blank-20"></div>
+<div class="list-inp bd-t bd-b">
+	<div><input type="number" name="number" id="number" placeholder="卡号：" onblur="window.scrollTo(0,0);"/></div>
+</div>
+
+<div class="blank-20"></div>
+<div class="list-inp bd-t bd-b">
+	<div><input type="text" name="password" id="password" placeholder="密码：" onblur="window.scrollTo(0,0);"/></div>
+</div>
+
+<div class="blank-20"></div>
+<div class="list-btn"><input type="submit" name="submit" value="立即充值" class="btn-green"/></div>
+<div class="blank-20"></div>
+</form>
+<script type="text/javascript">
+function check_card() {
+	if(Dd('number').value.length < 8) {
+		Dmsg('请填写正确的充值卡卡号', 'number');
+		return false;
+	}
+	if(Dd('password').value.length < 6) {
+		Dmsg('请填写正确的充值卡密码', 'password');
+		return false;
+	}
+}
+</script>
+{elseif $action == 'pay'}
+{if $MOD[pay_online]}
+<form method="post" action="?" onsubmit="return check();" id="dform">
+<input type="hidden" name="auto" value="{$auto}"/>
+<input type="hidden" name="reason" value="{$reason}"/>
+<input type="hidden" name="action" value="confirm"/>
+
+<div class="blank-20"></div>
+<div class="list-inp bd-t bd-b">
+	<div><input type="number" name="amount" id="amount" value="{$amount}" placeholder="支付金额：" onblur="window.scrollTo(0,0);"/></div>
+</div>
+<div class="blank-20"></div>
+{if $PAYLIST}
+<input type="hidden" name="bank" value="{$bank}" id="bank"/>
+<div class="list-pay">
+<ul>
+{loop $PAYLIST $k $v}
+<li onclick="var bk=$('#bank').val();if(bk=='{$v[bank]}'){return;}$('#check-'+bk).attr('class', 'check');$('#check-{$v[bank]}').attr('class', 'checked');$('#bank').val('{$v[bank]}');"><div><em class="{if $v[bank]==$bank}checked{else}check{/if}" id="check-{$v[bank]}"></em><img src="{DT_PATH}api/pay/{$v[bank]}/icon.png" width="24" height="24"/>{$v[name]} {if $v[percent]>0}<span>手续费 {$v[percent]}%</span>{/if}</div></li>
+{/loop}
+</ul>
+</div>
+<div class="blank-20"></div>
+<div class="list-btn"><input type="submit" value="下一步" class="btn-green"/></div>
+{else}
+<div class="content">抱歉，系统未设置支付平台，暂时无法在线支付</div>
+{/if}
+{if $MOD[pay_card]}
+<div class="blank-20"></div>
+<div class="list-btn"><input type="button" value="充值卡" class="btn" onclick="Go('?action=card');"/></div>
+{/if}
+{if $MOD[pay_url]}
+<div class="blank-20"></div>
+<div class="list-btn"><input type="button" value="银行汇款" class="btn" onclick="Go('{$MOD[pay_url]}');"/></div>
+{/if}
+<div class="blank-20"></div>
+</form>
+<script type="text/javascript">
+{if $auto}$('body').hide();Dd('dform').submit();{/if}
+function check() {
+	if(!Dd('amount').value) {
+		Dmsg('请填写支付金额', 'amount');
+		return false;
+	}
+{if $mincharge}
+	if(Dd('amount').value < {$mincharge}) {
+		Dmsg('金额最少{$mincharge}', 'amount');
+		return false;
+	}
+{/if}
+	return true;
+}
+</script>
+{/if}
+{elseif $action == 'confirm'}
+<form method="post" action="?" id="dform">
+<input type="hidden" name="goto" value="1"/>
+<input type="hidden" name="action" value="confirm"/>
+<input type="hidden" name="amount" value="{$amount}"/>
+<input type="hidden" name="bank" value="{$bank}"/>
+<input type="hidden" name="reason" value="{$reason}"/>
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+<li><div><span>{$PAY[$bank][name]}</span>支付平台</div></li>
+<li><div><span>{$amount} {$DT[money_unit]}</span>支付金额</div></li>
+<li><div><span>{$fee} {$DT[money_unit]}</span>手续费</div></li>
+<li><div><span>{$charge} {$DT[money_unit]}</span>实收金额</div></li>
+</ul>
+</div>
+<div class="blank-32"></div>
+<div class="list-btn"><input type="submit" value="立即支付" class="btn-green"/></div>
+<div class="blank-20"></div>
+<div class="list-btn"><input type="button" value="返回修改" class="btn" onclick="Go('?action=pay');"/></div>
+<div class="blank-32"></div>
+</form>
+{if $auto}<script type="text/javascript">Dd('dform').submit();</script>{/if}
+{else}
+{if $charge_status == 2}
+<div class="ui-ko">
+<p>支付异常 {$charge_errcode}</p>
+<input type="button" value="确 定" class="btn-green" onclick="Go('?action=record');"/>
+</div>
+{elseif $charge_status == 1}
+<div class="ui-ok">
+<p>支付成功{$charge_amount}{$DT[money_unit]}</p>
+<input type="button" value="确 定" class="btn-green" onclick="Go('?action=record');"/>
+</div>
+{else}
+<div class="ui-ko">
+<p>支付失败</p>
+<input type="button" value="确 定" class="btn-green" onclick="Go('?action=pay');"/>
+</div>
+{/if}
+{if $charge_forward}<script type="text/javascript">setTimeout(function(){Go('{$charge_forward}');}, 2000);</script>{/if}
+{/if}
+{template 'footer', 'member'}

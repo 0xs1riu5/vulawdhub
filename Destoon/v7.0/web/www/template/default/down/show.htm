@@ -1,0 +1,37 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav bd-b"><span class="f_r"><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></span><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20"></div>
+</div>
+<div class="m m3">
+	<div class="m3l">
+		<h1 class="title" id="title">{$title}</h1>
+		<div class="info"><span class="f_r"><img src="{DT_PATH}file/ext/{$fileext}.gif" width="16" height="14" title="{$FILETYPE[$fileext]}" align="absmiddle"/></span>
+		日期：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;
+		{if $MOD[hits]}浏览：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+		下载：<span id="download">{$download}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+		体积：{$filesize}{$unit}&nbsp;&nbsp;&nbsp;&nbsp;
+		{if $could_comment}<a href="{$EXT[comment_url]}{rewrite('index.php?mid='.$moduleid.'&itemid='.$itemid)}">评论：{$comments}</a>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+		</div>
+		<div id="down">{template 'content', 'chip'}</div>
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		{if $content}<div class="content" id="content">{$content}</div>{/if}
+		{if $MOD[fee_award]}<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>{/if}
+		{if $tag}
+			<div class="head-txt"><span><a href="{$MOD[linkurl]}{rewrite('search.php?kw='.urlencode($tag))}">更多<i>&gt;</i></a></span><strong>相关{$MOD[name]}</strong></div>
+			<div class="down-list"><!--{tag("moduleid=$moduleid&condition=status=3 and tag='$tag' and itemid<>$itemid&areaid=$cityid&pagesize=8&datetype=3&order=addtime desc&template=list-down", -2)}--></div>
+		{/if}
+		{template 'comment', 'chip'}
+
+	</div>
+	<div class="m3r">
+		<div class="head-sub"><strong>本类推荐</strong></div>
+		<div class="down-list"><!--{tag("moduleid=$moduleid&condition=status=3 and level>0&catid=$catid&areaid=$cityid&pagesize=10&order=addtime desc&template=list-down")}--></div>
+		<div class="head-sub"><strong>下载排行</strong></div>
+		<div class="list-rank"><!--{tag("moduleid=$moduleid&condition=status=3&catid=$catid&areaid=$cityid&order=download desc&key=download&pagesize=9&template=list-rank")}--></div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{template 'footer'}

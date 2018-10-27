@@ -1,0 +1,56 @@
+<div class="vote">
+<form action="{$MOD[vote_url]}index.php" method="post" target="_blank" id="vote_{$itemid}" onsubmit="return check_vote_{$itemid}();">
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="submit" value="1"/>
+<div id="vote_title_{$itemid}"><a href="{if $linkto}{$linkto}{else}{$linkurl}{/if}"{if $linkto} target="_blank"{/if}>{$title}</a></div>
+<ul>
+{loop $votes $k $v}
+<li><input type="{$type}" name="vote[]" value="{$k}" id="vote_{$itemid}_{$k}"/> <label for="vote_{$itemid}_{$k}"> {$v}</label></li>
+{/loop}
+</ul>
+{if $verify == 1}
+<p>验证码&nbsp;&nbsp;
+{template 'captcha', 'chip'}</p>
+{/if}
+{if $verify == 2}
+<p>验证问题&nbsp;&nbsp;{template 'question', 'chip'}</p>
+{/if}
+<p><input type="submit" value="投票" class="btn-blue" style="width:86px;"/>&nbsp;&nbsp;
+<input type="button" value="结果" class="btn" style="width:86px;" onclick="Go('{$linkurl}');"/></p>
+</form>
+</div>
+<script type="text/javascript">
+function check_vote_{$itemid}() {
+	var c = checked_count('vote_{$itemid}');
+	{if $type=='radio'}
+	if(c == 0) {
+		alert('请选择投票选项');
+		return false;
+	}
+	{else}
+	if(c < {$vote_min}) {
+		alert('最少需要选择{$vote_min}个投票选项');
+		return false;
+	}
+	if(c > {$vote_max}) {
+		alert('最多可选择{$vote_max}个投票选项');
+		return false;
+	}
+	{/if}
+	{if $verify == 1}
+	if($('#ccaptcha').html().indexOf('ok.png') == -1) {
+		alert('请填写验证码');
+		Dd('captcha').focus();
+		return false;
+	}
+	{/if}
+	{if $verify == 2}
+	if($('#canswer').html().indexOf('ok.png') == -1) {
+		alert('请回答验证问题');
+		Dd('answer').focus();
+		return false;
+	}
+	{/if}
+	return true;
+}
+</script>

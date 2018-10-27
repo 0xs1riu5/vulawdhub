@@ -1,0 +1,92 @@
+{template 'header'}
+<div class="m m1">
+	<div class="m1l">
+		<form method="post" action="pay.php" id="pay_form" onsubmit="return pay_check();">
+		<input type="hidden" name="mid" value="{$mid}"/>
+		<input type="hidden" name="itemid" value="{$itemid}"/>
+		<input type="hidden" name="submit" value="1"/>
+		<table cellpadding="16" cellspacing="0" class="tf">
+		<tr>
+		<td class="tl">支付对象</td>
+		<td><a href="{$forward}" class="b px14">{$title}</a></td>
+		</tr>
+		{if $fee == $member_fee}
+		<tr>
+		<td class="tl">应付总额</td>
+		<td><span class="f_price px16">{$fee}</span> {$DT[money_unit]}</td>
+		</tr>
+		{else}
+		<tr>
+		<td class="tl">应付价</td>
+		<td><span class="f_price px16">{$fee}</span> {$DT[money_unit]}</td>
+		</tr>
+		<tr>
+		<td class="tl">会员价</td>
+		<td><span class="f_price px16">{$member_fee}</span> {$DT[money_unit]}</td>
+		</tr>
+		{/if}
+		<tr id="mymoney" style="display:none;">
+		<td class="tl">账户余额</td>
+		<td><span class="f_blue">{$_money}</span> {$DT[money_unit]}</td>
+		</tr>
+		<tr id="payword" style="display:none;">
+		<td class="tl"><span class="f_red">*</span> 支付密码</td>
+		<td>{template 'password', 'chip'}&nbsp;<span id="dpassword" class="f_red"></span></td>
+		</tr>
+		<tr id="paytype" style="display:none;">
+		<td class="tl"><span class="f_red">*</span> 支付方式</td>
+		<td>
+			<table cellspacing="5" cellpadding="5">
+			{php $PAYLIST = get_paylist();}
+			<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+			{loop $PAYLIST $k $v}
+			<tr onclick="$('#bank').val($('#paytype :checked').val());">
+			<td><input type="radio" name="bank" value="{$v[bank]}" id="bank-{$v[bank]}"{if $k==0} checked{/if}/></td>
+			<td><label for="bank-{$v[bank]}" class="c_p"><img src="{DT_PATH}api/pay/{$v[bank]}/logo.gif" alt=""/></label></td>
+			<td>{if $v[percent]>0}手续费 {$v[percent]}%{/if}</td>
+			</tr>
+			{/loop}
+			</table>
+		</td>
+		</tr>
+		<tr>
+		<td class="tl"> </td>
+		<td><input type="submit" name="submit" value="立即支付" class="btn-green"/></td>
+		</tr>
+		</table>
+		</form>
+	</div>
+	<div class="m1r side">
+		<ul>
+		<li class="side_on"><a href="{$forward}">信息支付</a></li>
+		<li class="side_li"><a href="record.php?action=pay" target="_blank">支付记录</a></li>
+		</ul>
+	</div>
+	<div class="c_b"></div>
+</div>
+<script type="text/javascript">
+var money = {$member_fee};
+function pay_check() {
+	if(money > {$_money}) {
+		Go('charge.php?action=pay&reason=pay|{$mid}|{$itemid}&amount='+money+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(money > {$DT[quick_pay]}){
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+	}
+	return true;
+}
+window.setInterval(
+	function() {
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+		} else {
+			$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+		}
+	}, 
+500);
+</script>
+{template 'footer'}

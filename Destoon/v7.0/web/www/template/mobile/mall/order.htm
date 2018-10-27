@@ -1,0 +1,13 @@
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><span class="f_r">成交</span><strong>{hide_name($v[buyer])}</strong></li>
+<li><em class="f_r">x {$v[number]}</em><span>{$v[updatetime]}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="list-empty">暂无交易</div>
+{/if}

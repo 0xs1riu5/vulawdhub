@@ -1,0 +1,19 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b"><span class="f_r"><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&job=join&action=add&gid={$gid}" class="b">加入本圈</a></span><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$MOD[linkurl]}{$GRP[linkurl]}">{$GRP[title]}{$MOD[seo_name]}</a> <i>&gt;</i> 成员</div>
+	<div class="b20"></div>
+</div>
+<div class="m">
+	<div class="thumb">
+		<table width="100%">
+		{loop $lists $k $v}
+		{if $k%10==0}<tr align="center">{/if}
+		<td width="10%" valign="top"><a href="{userurl($v[username])}" target="_blank"><img src="{useravatar($v[username], 'middle')}" width="48" height="48" alt="{$v[username]}"/></a>
+		<ul><li><a href="{userurl($v[username])}" target="_blank">{$v[passport]}</a></li></ul></td>
+		{if $k%10==9}</tr>{/if}
+		{/loop}
+		</table>
+	</div>
+	{if $pages}<div class="pages">{$pages}</div>{/if}		
+</div>
+{template 'footer'}

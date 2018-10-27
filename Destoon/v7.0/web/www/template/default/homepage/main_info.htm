@@ -1,0 +1,19 @@
+<div class="main_head"><div><span class="f_r"><a href="{userurl($username, 'file=info', $domain)}"><img src="{DT_STATIC}{$MODULE[4][moduledir]}/image/more.gif" title="更多"/></a></span><strong>{$main_name[$HM]}</strong></div></div>
+<div class="main_body">
+<!--{php $tags=tag("moduleid=22&condition=status=3 and username='$username'&pagesize=".$main_num[$HM]."&order=edittime desc&template=null");}-->
+	<table cellpadding="10" cellspacing="1" width="100%">
+	{if $tags}
+	{loop $tags $t}
+	<tr>
+	<td class="px14">&middot; <a href="{if $homeurl}{$t[linkurl]}{else}{userurl($username, 'file=info&itemid='.$t[itemid], $domain)}{/if}">{$t[title]}</a></td>
+	<td align="center" width="80" class="f_gray">{timetodate($t[edittime], 3)}</td>
+	</tr>
+	{/loop}
+	{else}
+	<tr>
+	<td>暂无信息</td>
+	</tr>
+	{/if}
+	</table>
+</ul>
+</div>

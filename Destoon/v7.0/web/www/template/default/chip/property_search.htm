@@ -1,0 +1,15 @@
+{loop $PPT $p}
+<div class="sort">
+	<div class="sort-k">{$p[name]}</div>
+	<div class="sort-v">			
+		<input type="hidden" name="ppt_{$p[oid]}" id="ppt_{$p[oid]}" value="{$p[select]}"/>
+		<ul>
+		<li{if $p[select]==''} class="on"{/if}><a href="javascript:;" onclick="Dd('ppt_{$p[oid]}').value='';Dd('fsearch').submit();">全部</a></li>
+		{loop $p[options] $o}
+		<li{if $p[select]==$o} class="on"{/if}><a href="javascript:;" onclick="Dd('ppt_{$p[oid]}').value='{$o}';Dd('fsearch').submit();">{$o}</a></li>
+		{/loop}
+		</ul>
+	</div>
+	<div class="c_b"></div>
+</div>
+{/loop}

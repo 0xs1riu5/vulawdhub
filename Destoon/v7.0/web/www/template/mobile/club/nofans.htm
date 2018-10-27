@@ -1,0 +1,26 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback('');" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">访问受限</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}"><img src="{DT_MOB}static/img/icon-index.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title bd-b">抱歉，{$GRP[title]}圈仅成员可以{if $action=='show'}查看帖子{elseif $action=='post'}发帖{elseif $action=='reply'}回复{else}访问{/if}</div>
+	<div class="content">
+		{if $_userid}
+		&nbsp;&nbsp;1、您还没有加入本圈或者申请正在审核中。 <br/>
+		{else}
+		&nbsp;&nbsp;1、请 <a href="{$MODULE[2][mobile]}{$DT[file_login]}" class="b">登录</a> 或 <a href="{$MODULE[2][mobile]}{$DT[file_register]}" class="b">免费注册</a>。<br/>
+		{/if}
+		&nbsp;&nbsp;2、请检查输入的网址是否正确。 <br/>
+		&nbsp;&nbsp;3、如果不能确认输入的网址，请浏览<a href="{$MOD[mobile]}" class="b">{$MOD[name]}首页</a>来查看所要访问的网址。 <br/>
+	</div>
+</div>
+{template 'footer'}

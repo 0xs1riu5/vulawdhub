@@ -1,0 +1,47 @@
+{loop $tags $k $t}
+<div class="list" id="item_{$t[itemid]}">
+	<table>
+	<tr align="center">
+		<td width="25">&nbsp;<input type="checkbox" id="check_{$t[itemid]}" name="itemid[]" value="{$t[itemid]}" onclick="sell_tip(this, {$t[itemid]});"/> </td>
+		<td width="90"><div><a href="{$t[linkurl]}" target="_blank"><img src="{imgurl($t[thumb])}" width="80" height="80" alt="{$t[alt]}" onmouseover="img_tip(this, this.src);" onmouseout="img_tip(this, '');"/></a></div></td>
+		<td width="10"> </td>
+		<td align="left">
+			<ul>
+			<li><a href="{$t[linkurl]}" target="_blank"><strong class="px14">{$t[title]}</strong></a></li>
+			<li class="f_gray">{$t[introduce]}</li>
+			<li><span class="f_r">{timetodate($t[edittime], $datetype)}&nbsp;&nbsp;</span>[{area_pos($t[areaid], '')}]</li>
+			<li>
+			<span class="f_r f_gray">
+			{if $t[username] && $DT[im_web]}{im_web($t[username].'&mid='.$moduleid.'&itemid='.$t[itemid])}&nbsp;{/if}
+			{if $t[qq] && $DT[im_qq]}{im_qq($t[qq])}&nbsp;{/if}
+			{if $t[wx] && $DT[im_wx]}{im_wx($t[wx], $t[username])}&nbsp;{/if}
+			{if $t[ali] && $DT[im_ali]}{im_ali($t[ali])}&nbsp;{/if}
+			{if $t[skype] && $DT[im_skype]}{im_skype($t[skype])}&nbsp;{/if}</span>
+			{if $t[vip]}<img src="{DT_SKIN}image/vip_{$t[vip]}.gif" alt="{VIP}" title="{VIP}:{$t[vip]}级" align="absmiddle"/> {/if}
+			<a href="{userurl($t[username])}" target="_blank">{$t[company]}</a>&nbsp;
+			<span class="f_gray">
+			{if $t[validated]}<span class="f_green">[已核实]</span>{else}[未核实]{/if}
+			{if !$t[username]} [未注册]{/if}
+			</span>
+			</li>
+			</ul>
+		</td>
+		<td width="10"> </td>
+		<td width="100"> 
+		{if $t[unit] && $t[price]>0}
+			<span class="f_red">{$DT[money_sign]}<strong class="px14">{$t[price]}</strong>/{$t[unit]}</span><br/>
+			{$t[minamount]}{$t[unit]}起订<br/>
+		{else}
+		<span class="f_gray">面议</span><br/>
+		{/if}
+		{if SELL_ORDER && $t[username] && $t[price]>0 && $t[minamount]>0 && $t[amount]>0 && $t[unit]}
+		<a href="{$MODULE[2][linkurl]}buy.php?mid={$moduleid}&itemid={$t[itemid]}" target="_blank"><img src="{DT_SKIN}image/buy.gif" title="购买" class="iq_btn"/></a>
+		{else}
+		<a href="{$MOD[linkurl]}{rewrite('inquiry.php?itemid='.$t['itemid'])}" target="_blank"><img src="{DT_SKIN}image/inquiry.gif" title="询价" class="iq_btn"/></a>
+		{/if}
+		</td>
+	</tr>
+	</table>
+</div>
+{/loop}		
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

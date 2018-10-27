@@ -1,0 +1,10 @@
+{if $share_icon == 'auto'}<div class="share_icon"><img src="{DT_PATH}apple-touch-icon-precomposed.png"/></div>{/if}
+</div>
+{if $api_stats && $stats}
+{php include DT_ROOT.'/api/stats/'.$HOME['stats_type'].'/show.inc.php';}
+{/if}
+{if $api_kf && $kf}
+{php include DT_ROOT.'/api/kf/'.$HOME['kf_type'].'/show.inc.php';}
+{/if}
+</body>
+</html>

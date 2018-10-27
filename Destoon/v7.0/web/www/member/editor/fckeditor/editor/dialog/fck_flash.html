@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Flash Properties</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta content="noindex, nofollow" name="robots">
+		<script src="common/fck_dialog_common.js" type="text/javascript"></script>
+		<script src="common/fck_flash.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		document.write( FCKTools.GetStyleHtml( GetCommonDialogCss() ) ) ;
+		document.write('<script type="text/javascript" src="'+oEditor.FCKConfig.DTPath+'file/script/url2video.js"></scr'+'ipt>') ;
+		</script>
+		<script type="text/javascript">
+		function Dsubmit() {
+			var v = GetE('txtUploadFile').value;
+			if(v == '') {
+				alert('Not Video');
+				return false;
+			}	
+			var file_ext = v.substring(v.lastIndexOf('.')+1, v.length);
+			file_ext = file_ext.toLowerCase();
+			var allow = "mp4|flv|swf|wma|wav|avi|rm|rmvb|ram";
+			if(allow.indexOf(file_ext) == -1){
+				alert('Not '+allow);
+				return false;
+			}
+			document.getElementById('frmUpload').action = oEditor.FCKConfig.UPPath+'?moduleid='+oEditor.FCKConfig.ModuleID+'&from=editor';
+			document.getElementById('frmUpload').submit();
+		}
+		function Dext(v) {return v.substring(v.lastIndexOf('.')+1, v.length).toLowerCase();}
+		function UpdateURL() {
+			var str = url2video(GetE('txtUrl').value);
+			if(str) GetE('txtUrl').value = str;
+		}
+		function GetVHTML() {
+		  var _url = url2video(GetE('txtUrl').value);
+		  var url = _url ? _url : GetE('txtUrl').value;
+		  if(url.length < 20){return '';}
+		  var width = GetE('txtWidth').value;
+		  if(width == ''){GetE('txtWidth').focus();return '';}
+		  var height = GetE('txtHeight').value;
+		  if(height == ''){GetE('txtHeight').focus();return '';}
+		  var autostart = GetE('autostart').checked ? 'true' : 'false';
+		  var vtype = 'application/x-shockwave-flash';
+		  var vetc = 'quality="high" allowfullscreen="true" allowscriptaccess="never"';
+		  var ext = Dext(url);
+		  if(ext == 'rm' || ext == 'rmvb' || ext == 'ram') {
+			vtype = 'audio/x-pn-realaudio-extend';
+			vetc = 'controls="imagewindow,controlpanel,statusbar"';
+		  } else if(ext == 'wma' || ext == 'wav') {
+			vtype = 'application/x-mplayer2';
+			vetc = 'controls="imagewindow,controlpanel,statusbar"';
+		  } else if(ext == 'mp3') {
+			return '<audio src="'+url+'" controls="controls"></audio>';
+		  } else if(ext == 'flv' || ext == 'mp4') {
+			return '<embed FlashVars="xml=<vcastr><channel><item><source>'+url+'</source><duration></duration><title></title></item></channel><config><isAutoPlay>'+autostart+'</isAutoPlay><controlPanelBgColor>0x333333</controlPanelBgColor><isShowAbout>false</isShowAbout></config></vcastr>" quality="high" allowfullscreen="true" width="'+width+'" height="'+height+'" type="application/x-shockwave-flash" extendspage="http://get.adobe.com/flashplayer/" src="'+oEditor.FCKConfig.DTPath+'file/flash/vcastr3.swf"></embed>';
+		  }
+		  return '<embed width="'+width+'" height="'+height+'" type="'+vtype+'" autostart="'+autostart+'" '+vetc+' src="'+url+'"></embed>';
+		}
+		</script>
+	</head>
+	<body scroll="no" style="overflow: hidden">
+		<div id="divInfo">
+			<table cellSpacing="1" cellPadding="1" width="100%" border="0">
+				<tr>
+					<td>
+						<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+							<tr>
+								<td width="100%"><span fckLang="DlgImgURL">URL</span>
+								</td>
+								<td id="tdBrowse" style="DISPLAY: none" noWrap rowSpan="2">&nbsp; <input id="btnBrowse" onclick="BrowseServer();" type="button" value="Browse Server" fckLang="DlgBtnBrowseServer">
+								</td>
+							</tr>
+							<tr>
+								<td vAlign="top"><input id="txtUrl" onblur="UpdateURL();UpdatePreview();" style="WIDTH: 100%" type="text">
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<table cellSpacing="0" cellPadding="0" border="0">
+							<tr>
+								<td nowrap>
+									<span fckLang="DlgImgWidth">Width</span><br>
+									<input id="txtWidth" onkeypress="return IsDigit(event);" type="text" size="3" value="480"/>
+								</td>
+								<td width="10">&nbsp;</td>
+								<td>
+									<span fckLang="DlgImgHeight">Height</span><br>
+									<input id="txtHeight" onkeypress="return IsDigit(event);" type="text" size="3" value="400"/>
+								</td>
+								<td width="15">&nbsp;</td>
+								<td>
+									<span fckLang="DlgFlashChkPlay">Auto Play</span><br>
+									<input type="radio" name="auto" id="autostart" value="1" checked/> <span fckLang="DlgCellWordWrapYes">Yes</span>
+									<input type="radio" name="auto" value="0" id="autostart0"/> <span fckLang="DlgCellWordWrapNo">No</span>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td vAlign="top">
+						<table cellSpacing="0" cellPadding="0" width="100%" border="0">
+							<tr>
+								<td valign="top" width="100%">
+									<table cellSpacing="0" cellPadding="0" width="100%">
+										<tr>
+											<td><span fckLang="DlgImgPreview">Preview</span></td>
+										</tr>
+										<tr>
+											<td id="ePreviewCell" valign="top" class="FlashPreviewArea"><div id="vPreview" style="text-align:center;">&nbsp;</div></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="divUpload" style="DISPLAY: none">
+			<form id="frmUpload" method="post" target="UploadWindow" enctype="multipart/form-data" action="" onsubmit="return Dsubmit();">
+				<span fckLang="DlgLnkUpload">Upload</span><br />
+				<input id="txtUploadFile" style="WIDTH: 100%" type="file" size="40" name="NewFile" onchange="Dsubmit();GetE('btnUpload').disabled=true;"/><br />
+				mp4 mp3 flv swf wma wav rm rmvb ram...
+				<br />
+				<input id="btnUpload" type="submit" value="Send it to the Server" fckLang="DlgLnkBtnUpload" />
+				<script type="text/javascript">
+					document.write( '<iframe name="UploadWindow" style="DISPLAY: none" src="' + FCKTools.GetVoidUrl() + '"></iframe>' ) ;
+				</script>
+			</form>
+		</div>
+		<div id="divAdvanced" style="DISPLAY: none">
+			<TABLE cellSpacing="0" cellPadding="0" border="0">
+				<TR>
+					<td nowrap>
+						<span fckLang="DlgFlashScale">Scale</span><BR>
+						<select id="cmbScale">
+							<option value="" selected></option>
+							<option value="showall" fckLang="DlgFlashScaleAll">Show all</option>
+							<option value="noborder" fckLang="DlgFlashScaleNoBorder">No Border</option>
+							<option value="exactfit" fckLang="DlgFlashScaleFit">Exact Fit</option>
+						</select></td>
+					<td>&nbsp;&nbsp;&nbsp; &nbsp;
+					</td>
+					<td valign="bottom">
+						<table>
+							<tr>
+								<td><input id="chkAutoPlay" type="checkbox" checked></td>
+								<td><label for="chkAutoPlay" nowrap fckLang="DlgFlashChkPlay">Auto Play</label>&nbsp;&nbsp;</td>
+								<td><input id="chkLoop" type="checkbox" checked></td>
+								<td><label for="chkLoop" nowrap fckLang="DlgFlashChkLoop">Loop</label>&nbsp;&nbsp;</td>
+								<td><input id="chkMenu" type="checkbox" checked></td>
+								<td><label for="chkMenu" nowrap fckLang="DlgFlashChkMenu">Enable Flash Menu</label></td>
+							</tr>
+						</table>
+					</td>
+				</TR>
+			</TABLE>
+			<br>
+			&nbsp;
+			<table cellSpacing="0" cellPadding="0" width="100%" align="center" border="0">
+				<tr>
+					<td vAlign="top" width="50%"><span fckLang="DlgGenId">Id</span><br>
+						<input id="txtAttId" style="WIDTH: 100%" type="text">
+					</td>
+					<td>&nbsp;&nbsp;</td>
+					<td vAlign="top" nowrap><span fckLang="DlgGenClass">Stylesheet Classes</span><br>
+						<input id="txtAttClasses" style="WIDTH: 100%" type="text">
+					</td>
+					<td>&nbsp;&nbsp;</td>
+					<td vAlign="top" nowrap width="50%">&nbsp;<span fckLang="DlgGenTitle">Advisory Title</span><br>
+						<input id="txtAttTitle" style="WIDTH: 100%" type="text">
+					</td>
+				</tr>
+			</table>
+			<span fckLang="DlgGenStyle">Style</span><br>
+			<input id="txtAttStyle" style="WIDTH: 100%" type="text">
+		</div>
+	</body>
+</html>

@@ -1,0 +1,60 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-title">{$head_name}</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+
+{if $DT[city]}
+<div class="blank-35"></div>
+<div class="list-set">
+<ul>
+<li><div><span>{$city_name}</span><a href="{DT_MOB}api/city.php">切换分站</a></div></li>
+</ul>
+</div>
+{/if}
+
+<div class="blank-35"></div>
+<div class="list-set">
+<ul>
+<li><div><a href="{DT_MOB}api/about.php">关于网站</a></div></li>
+{if $EXT[announce_enable]}
+<li><div><a href="{$EXT[announce_mob]}">公告中心</a></div></li>
+{/if}
+{if $DT[telephone]}
+<li><div><a href="tel:{$DT[telephone]}">客服电话</a></div></li>
+{/if}
+<li><div><a href="{$EXT[spread_mob]}">排名推广</a></div></li>
+{if $EXT[ad_enable]}
+<li><div><a href="{$EXT[ad_mob]}">广告服务</a></div></li>
+{/if}
+</ul>
+</div>
+<div class="blank-35"></div>
+<div class="list-set">
+<ul>
+<li><div><a href="{DT_MOB}sitemap/">网站地图</a></div></li>
+{if $EXT[gift_enable]}
+<li><div><a href="{$EXT[gift_mob]}">积分换礼</a></div></li>
+{/if}
+{if $EXT[link_enable]}
+<li><div><a href="{$EXT[link_mob]}">友情链接</a></div></li>
+{/if}
+{if $EXT[guestbook_enable]}
+<li><div><a href="{$EXT[guestbook_mob]}">留言反馈</a></div></li>
+{/if}
+{if $EXT[feed_enable]}
+<li><div><a href="{$EXT[feed_mob]}">RSS订阅</a></div></li>
+{/if}
+{if $app}
+<li><div><a href="{$app}" rel="external">安装APP</a></div></li>
+{/if}
+<li><div><a href="{DT_MOB}api/tips.php">技巧提示</a></div></li>
+{if !in_array($DT_MOB[browser], array('app', 'b2b', 'screen'))}
+<li><div><a href="{DT_PATH}api/mobile.php?action=pc" rel="external">电脑版</a></div></li>
+{/if}
+</ul>
+</div>
+<div class="blank-35"></div>
+{template 'footer'}

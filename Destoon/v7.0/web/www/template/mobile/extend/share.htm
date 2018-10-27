@@ -1,0 +1,49 @@
+{template 'header'}
+<style type="text/css">
+.qrcode {height:200px;background:#FFFFFF;text-align:center;padding:16px 0;display:none;}
+.qrcode div {line-height:20px;font-size:12px;color:#666666;}
+.share {height:260px;background:#FFFFFF;text-align:center;}
+.share li {width:25%;float:left;padding:16px 0;}
+.share img {border-radius:16px;width:60px;height:60px;}
+.share span {display:block;font-size:12px;padding-top:6px;}
+</style>
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}channel.php" data-transition="slideup"><span>频道</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="qrcode">
+	<img src="{DT_PATH}api/qrcode.png.php?auth={$auth}" width="140" height="140"/>
+	<div></div>
+</div>
+<div class="share">
+	<ul>
+		<li onclick="{if $DT_MOB[browser] == 'weixin' ||  $DT_MOB[browser] == 'qq'}share_tips();{else}$('.qrcode').hide();$('.qrcode div').html('请用微信扫一扫上面的二维码打开网址<br/>点右上方的分享按钮，选择发送给朋友<br/><a href=&#34;http://app.destoon.com/scan/&#34; rel=&#34;external&#34; style=&#34;color:#007AFF;text-decoration:none;&#34;>如何扫描？</a>');$('.qrcode').slideDown('fast');{/if}"><img src="{DT_STATIC}file/image/share-wx.png"/><span>微信好友</span></li>
+		<li onclick="{if $DT_MOB[browser] == 'weixin' ||  $DT_MOB[browser] == 'qq'}share_tips();{else}$('.qrcode').hide();$('.qrcode div').html('请用微信扫一扫上面的二维码打开网址<br/>点右上方的分享按钮，选择分享到朋友圈<br/><a href=&#34;http://app.destoon.com/scan/&#34; rel=&#34;external&#34; style=&#34;color:#007AFF;text-decoration:none;&#34;>如何扫描？</a>');$('.qrcode').slideDown('fast');{/if}"><img src="{DT_STATIC}file/image/share-py.png"/><span>微信朋友圈</span></li>
+		<li onclick="{if $DT_MOB[browser] == 'weixin' ||  $DT_MOB[browser] == 'qq'}share_tips();{else}$('.qrcode').hide();$('.qrcode div').html('请用手机QQ扫一扫上面的二维码打开链接<br/>点右上方的分享按钮，选择发送给好友<br/><a href=&#34;http://app.destoon.com/scan/&#34; rel=&#34;external&#34; style=&#34;color:#007AFF;text-decoration:none;&#34;>如何扫描？</a>');$('.qrcode').slideDown('fast');{/if}"><img src="{DT_STATIC}file/image/share-qq.png"/><span>QQ好友</span></li>
+		<li onclick="{if $DT_MOB[browser] == 'weixin' ||  $DT_MOB[browser] == 'qq'}share_tips();{else}$('.qrcode').hide();$('.qrcode div').html('请用手机QQ扫一扫上面的二维码打开链接<br/>点右上方的分享按钮，选择分享到QQ空间<br/><a href=&#34;http://app.destoon.com/scan/&#34; rel=&#34;external&#34; style=&#34;color:#007AFF;text-decoration:none;&#34;>如何扫描？</a>');$('.qrcode').slideDown('fast');{/if}"><img src="{DT_STATIC}file/image/share-qzone.png"/><span>QQ空间</span></li>
+		<li onclick="$('.qrcode').hide();"><a href="http://service.weibo.com/share/share.php?title={urlencode($title)}&url={urlencode($linkurl)}&pic={urlencode($pic)}" target="_blank" rel="external"><img src="{DT_STATIC}file/image/share-weibo.png"/><span>新浪微博</span></a></li>
+		<li onclick="$('.qrcode').hide();"><a href="http://www.jiathis.com/send/?webid=tqq&url={urlencode($linkurl)}&title={urlencode($title)}" target="_blank" rel="external"><img src="{DT_STATIC}file/image/share-tqq.png"/><span>腾讯微博</span></a></li>
+		<li onclick="$('.qrcode').hide();"><a href="{$sms}" rel="external"><img src="{DT_STATIC}file/image/share-sms.png"/><span>短信</span></a></li>
+		<li onclick="$('.qrcode').hide();"><a href="mailto:?subject={$title}&body={$linkurl}" rel="external"><img src="{DT_STATIC}file/image/share-email.png"/><span>邮件</span></a></li>
+	</ul>
+</div>
+{if $DT_MOB[browser] == 'weixin' ||  $DT_MOB[browser] == 'qq'}
+<div style="width:100%;height:100%;min-height:1000px;background:#000000;opacity:0.75;position:fixed;z-index:99;left:0;top:0;right:0;text-align:right;display:none;" onclick="Go('{$linkurl}');" id="share-tips"><img src="{DT_STATIC}file/image/share-tips.png" width="165"/></div>
+<script type="text/javascript">
+function share_tips() {
+	$('#share-tips').fadeIn('fast');
+	setTimeout(function() {
+		Go('{$linkurl}');
+	}, 3000);
+}
+</script>
+{/if}
+{template 'footer'}

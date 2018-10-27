@@ -1,0 +1,34 @@
+<p>非会员补充信息</p>
+<div>建议 <a href="{$MODULE[2][mobile]}{$DT[file_login]}" class="b">立即登录</a> 或 <a href="{$MODULE[2][mobile]}{$DT[file_register]}" class="b">注册会员</a> 以便系统长久保存您的联系方式</div>
+<p>公司名称<em>*</em><b id="dcompany"></b></p>
+<div><input name="post[company]" type="text" id="company" value="{$company}"/></div>
+{if $module != 'info'}
+<p>所在地区<em>*</em><b id="dareaid"></b></p>
+<div>{ajax_area_select('post[areaid]', '请选择', $areaid)}</div>
+{/if}
+<p>联系人<em>*</em><b id="dtruename"></b></p>
+<div><input type="text" name="post[truename]" id="truename" value="{$truename}" style="width:50%;"/></div>
+<p>联系手机<em>*</em><b id="dmobile"></b></p>
+<div><input type="tel" name="post[mobile]" id="mobile" value="{$mobile}" style="width:50%;"/></div>
+<p>电子邮件<b id="demail"></b></p>
+<div><input type="email" name="post[email]" id="email" value="{$email}"/></div>
+<p>联系电话<b id="dtelephone"></b></p>
+<div><input type="tel" name="post[telephone]" id="telephone" value="{$telephone}" style="width:50%;"/></div>
+<p>联系地址<b id="daddress"></b></p>
+<div><input type="text" name="post[address]" id="address" value="{$address}"/></div>
+{if $DT[im_qq]}
+<p>QQ</p>
+<div><input type="tel" name="post[qq]" id="qq" value="{$qq}" style="width:50%;"/></div>
+{/if}
+{if $DT[im_wx]}
+<p>微信</p>
+<div><input type="text" name="post[wx]" id="wx" value="{$wx}" style="width:50%;"/></div>
+{/if}
+{if $DT[im_ali]}
+<p>阿里旺旺</p>
+<div><input type="text" name="post[ali]" id="ali" value="{$ali}" style="width:50%;"/></div>
+{/if}
+{if $DT[im_skype]}
+<p>Skype</p>
+<div><input type="text" name="post[skype]" id="skype" value="{$skype}" style="width:50%;"/></div>
+{/if}

@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>Send_Message</title>
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+<link rel="stylesheet" type="text/css" href="{DT_STATIC}{$MODULE[4][moduledir]}/skin/common.css"/>
+<link rel="stylesheet" type="text/css" href="{$HSPATH}style.css" />
+<script type="text/javascript" src="{DT_STATIC}lang/{DT_LANG}/lang.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/config.js"></script>
+<!--[if lte IE 9]><!-->
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery-1.5.2.min.js"></script>
+<!--<![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!-->
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery-2.1.1.min.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="{DT_STATIC}file/script/common.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/page.js"></script>
+<script type="text/javascript">
+if(parent.location == window.location) Go('{userurl($username)}');
+</script>
+</head>
+<body style="background:#FFFFFF;">
+<iframe src="" name="send" id="send" style="display:none;" scrolling="no" frameborder="0"></iframe>
+<form method="post" action="{$MOD[linkurl]}home.php" id="dform" onsubmit="return check();" target="send">
+<input type="hidden" name="job" value="{$job}"/>
+<input type="hidden" name="username" value="{$username}"/>
+<input type="hidden" name="action" value="send"/>
+<table cellpadding="3" cellspacing="3" width="100%">
+<tr>
+<td width="100">主题 <span class="f_red">*</span></td>
+<td><input type="text" name="title" value="{if $job=='inquiry' || $job=='price'}我对贵公司的“{$title}”很感兴趣{elseif $job=='order'}【订购】贵公司的“{$title}”{/if}" id="title" class="pd3" style="width:335px;"/></td>
+</tr>
+<tr>
+<td>内容 <span class="f_red">*</span></td>
+<td>
+<textarea name="content" id="content" style="width:335px;height:100px;">
+{if $job=='inquiry'}
+我公司有意购买此产品，可否提供此产品的报价单和最小起订量？
+
+我还需要了解以下内容：
+
+{elseif $job=='price'}
+请问您对此产品有多大的需求量？是长期有需求吗？
+
+我还需要了解以下内容：
+
+{elseif $job=='order'}
+订货总量：
+
+相关说明：
+
+{/if}
+</textarea></td>
+</tr>
+<tr>
+<td>公司名 </td>
+<td><input type="text" name="company" size="30" id="company" value="{$company}"/></td>
+</tr>
+<tr>
+<td>联系人 <span class="f_red">*</span></td>
+<td><input type="text" name="truename" size="30" id="truename" value="{$truename}"/></td>
+</tr>
+<tr>
+<td>联系电话 <span class="f_red">*</span></td>
+<td><input type="text" name="telephone" size="30" id="telephone" value="{$telephone}"/></td>
+</tr>
+<tr>
+<td>电子邮箱</td>
+<td><input type="text" name="email" size="30" id="email" value="{$email}"/></td>
+</tr>
+{if $DT[im_qq]}
+<tr>
+<td>QQ</td>
+<td><input type="text" size="20" name="qq" id="qq" value="{$qq}"/></td>
+</tr>
+{/if}
+{if $DT[im_wx]}
+<tr>
+<td>微信</td>
+<td><input type="text" size="20" name="wx" id="wx" value="{$wx}"/></td>
+</tr>
+{/if}
+{if $DT[im_ali]}
+<tr>
+<td>阿里旺旺 </td>
+<td><input type="text" size="20" name="ali" id="ali" value="{$ali}"/></td>
+</tr>
+{/if}
+{if $DT[im_skype]}
+<tr>
+<td>Skype </td>
+<td><input type="text" size="20" name="skype" id="skype" value="{$skype}"/></td>
+</tr>
+{/if}
+<tr>
+<td>验证码 </td>
+<td>{template 'captcha', 'chip'} <span id="dcaptcha" class="f_red"></span></td>
+</tr>
+<tr>
+<td> </td>
+<td>
+<input type="submit" name="submit" value=" 确 定 " class="sbm"/>&nbsp;
+<input type="reset" value=" 重 写 " class="sbm"/>
+</td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 5 || l > 50) {
+		alert('主题应为5-50字，当前已输入'+l+'字');
+		Dd(f).focus();
+		return false;
+	}
+	f = 'content';
+	l = Dd(f).value.length;
+	if(l < 10 || l > 2000) {
+		alert('内容应为10-2000字，当前已输入'+l+'字');
+		Dd(f).focus();
+		return false;
+	}
+
+	f = 'truename';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		alert('请填写联系人');
+		Dd(f).focus();
+		return false;
+	}
+	f = 'telephone';
+	l = Dd(f).value.length;
+	if(l < 7) {
+		alert('请填写联系电话');
+		Dd(f).focus();
+		return false;
+	}					
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		alert('请填写正确的验证码');
+		Dd(f).focus();
+		return false;
+	}
+}
+</script>
+</body>
+</html>

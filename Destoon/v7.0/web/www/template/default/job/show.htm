@@ -1,0 +1,90 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav"><div><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></div><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20 bd-t"></div>
+</div>
+<div class="m m3">
+	<div class="m3l">
+	<h1 class="title" id="title">{$title}</h1>
+	<div class="info"><span class="f_r"><img src="{DT_SKIN}image/ico-zoomin.png" width="16" height="16" alt="放大字体" class="c_p" onclick="fontZoom('+');"/>&nbsp;&nbsp;<img src="{DT_SKIN}image/ico-zoomout.png" width="16" height="16"  alt="缩小字体" class="c_p" onclick="fontZoom('-');"/></span>
+	日期：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;
+	{if $MOD[hits]}浏览：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+	</div>
+	<div class="b20"></div>
+	<table cellpadding="8" cellspacing="1" width="100%" bgcolor="#DDDDDD">
+	<tr bgcolor="#FFFFFF">
+	<td width="80">行业</td>
+	<td width="230">{$CATEGORY[$parentid][catname]}</td>
+	<td width="80">职位</td>
+	<td width="230">{$CATEGORY[$catid][catname]}</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+	<td>招聘部门</td>
+	<td>{$department}</td>
+	<td>招聘人数</td>
+	<td>{if $total}{$total}人{else}若干{/if}</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+	<td>工作地区</td>
+	<td>{area_pos($areaid, '')}</td>
+	<td>工作性质</td>
+	<td>{$TYPE[$type]}</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+	<td>性别要求</td>
+	<td>{$GENDER[$gender]}</td>
+	<td>婚姻要求</td>
+	<td>{$MARRIAGE[$marriage]}</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+	<td>学历要求</td>
+	<td>{$EDUCATION[$education]}</td>
+	<td>工作经验</td>
+	<td>{if $experience}{$experience}年以上{else}不限{/if}</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+	<td>年龄要求</td>
+	<td>{if $minage && $maxage}{$minage}-{$maxage}岁{elseif $minage}{$minage}岁以上{elseif $maxage}{$maxage}岁以内{else}不限年龄{/if}</td>
+	<td>待遇水平</td>
+	<td>{if $minsalary && $maxsalary}{$minsalary}-{$maxsalary}{$DT[money_unit]}/月{elseif $minsalary}{$minsalary}{$DT[money_unit]}/月以上{elseif $maxsalary}{$maxsalary}{$DT[money_unit]}/月以内{else}面议{/if}</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+	<td>更新日期</td>
+	<td>{$editdate}</td>
+	<td>有效期至</td>
+	<td>{$todate}{if $expired}<span class="f_red">[已过期]</span>{/if}</td>
+	</tr>
+	</table>		
+	<div class="b20"></div>
+	{if $content}
+	<div class="head-txt"><span><a href="javascript:;" onclick="SendFav({$moduleid}, {$itemid});">收藏<i>&gt;</i></a></span><strong>职位描述</strong></div>
+	<div class="content" id="content">{$content}</div>
+	{/if}
+	{if $CP}{template 'property_show', 'chip'}{/if}
+	{if $username}
+	<center><input type="button" value="职位申请" class="btn-green" onclick="Go('{$MOD[linkurl]}{rewrite('apply.php?itemid='.$itemid)}');"/></center>
+	{/if}
+	{if $com_intro}
+	<div class="head-txt"><span><a href="{userurl($username)}" target="_blank">更多<i>&gt;</i></a></span><strong>公司介绍</strong></div>
+	<div class="content">{$com_intro}</div>
+	{/if}
+	{if $MOD[fee_award]}
+	<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+	{/if}
+	{template 'comment', 'chip'}
+	</div>
+	<div class="m3r">
+		<div class="contact_head">联系方式</div>
+		<div class="contact_body" id="contact">{template 'contact', 'chip'}</div>
+		{if $username}
+		<div class="head-sub"><div><strong>该企业其他招聘</strong></div></div>
+		<div class="list-txt">
+		<!--{tag("moduleid=$moduleid&condition=status=3 and username='$username'&pagesize=10&order=addtime desc", -2)}-->
+		</div>
+		{/if}
+	</div>
+	<div class="c_b"></div>
+</div>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{template 'footer'}

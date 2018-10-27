@@ -1,0 +1,200 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">新闻{if $action=='add'}添加{elseif $action=='edit'}修改{else}管理{/if}</div>
+<div class="head-bar-right">
+{if $action=='add' || $action=='edit'}
+<a href="?action=index"><span>取消</span></a>
+{else}
+<a href="?action=add"><span>添加</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+<form method="post" action="?" id="dform" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<input type="hidden" name="post[style]" value="{$style}"/>
+<div class="ui-form">
+<p>新闻标题<em>*</em><b id="dtitle"></b></p>
+<div><input type="text" name="post[title]" id="title" value="{$title}"/></div>
+<p>标题图片</p>
+<div>
+<input type="hidden" name="post[thumb]" id="thumb" value="{$thumb}"/>
+<div class="ui-form-thumb-show" onclick="thumb_action();"></div>
+<div class="ui-form-thumb-upload"><div id="thumb-picker"></div></div>
+<script type="text/javascript">
+function thumb_action() {
+	Dsheet('<a href="javascript:thumb_delete();"><span style="color:red;">删除图片</span></a>', '取消', '确定要删除图片吗？');
+}
+function thumb_delete() {
+	$('#thumb').val('');
+	$('.ui-form-thumb-show').html('');
+	$('.ui-form-thumb-show').hide();
+	$('.ui-form-thumb-upload').show();	
+}
+function thumb_show(url) {
+	$('#thumb').val(url);
+	$('.ui-form-thumb-show').html('<img src="'+url+'"/>');
+	$('.ui-form-thumb-show').show();
+	$('.ui-form-thumb-upload').hide();	
+} 
+var thumbu = WebUploader.create({
+	auto: true,
+    server: '{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=thumb&width={$MOD[news_thumb_width]}&height={$MOD[news_thumb_height]}',
+    pick: '#thumb-picker',
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    },
+    resize: false
+});
+thumbu.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+thumbu.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '处理中...' : '上传中...'+p+'%');
+});
+thumbu.on('uploadSuccess', function(file, data) {
+    if(data.error) {
+		Dtoast(data.message, '', 5);
+	} else {
+		thumb_show(data.url);
+	}
+});
+thumbu.on('uploadError', function(file, data) {
+    Dtoast(data.message, '', 5);
+});
+thumbu.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+{if $thumb}
+$(function(){
+	thumb_show('{$thumb}');
+});
+{/if}
+</script>
+
+</div>
+
+<p>新闻内容<em>*</em><b id="dcontent"></b></p>
+</div>
+<input type="hidden" name="post[content]" id="content"/>
+<ul class="ui-editor-toolbar">
+<li class="ui-editor-img"><div id="editor-picker"></div></li>
+<li class="ui-editor-bold" id="editor-bold" editor-action="bold">B</li>
+<li class="ui-editor-italic" id="editor-italic" editor-action="italic">I</li>
+<li class="ui-editor-underline" id="editor-underline" editor-action="underline">U</li>
+</ul>
+<div class="ui-editor-content" id="editor">{$content}</div>
+<script type="text/javascript" src="{DT_MOB}static/js/editor.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#editor').DEditor({
+        editorid: 'editor',
+        textareaid: 'content',
+        server:'{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=editor'
+    });
+});
+</script>
+<div class="ui-form">
+
+<p>新闻分类</p>
+<div>{$type_select}</div>
+
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="{if $action == 'edit'}修改{else}添加{/if}" class="btn-blue"/>
+<div class="blank-32"></div>
+</div>
+{else}
+<div class="ui-form sch">
+<form action="?">
+<input type="hidden" name="status" value="{$status}"/>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+</form>
+</div>
+<div class="list-menu">
+	<ul>
+	<a href="?status=3"><li{if $status==3} class="on"{/if} id="s3">已发布{if !$kw} {$nums[3]}{/if}</li></a>
+	<a href="?status=2"><li{if $status==2} class="on"{/if} id="s2">审核中{if !$kw} {$nums[2]}{/if}</li></a>
+	<a href="?status=1"><li{if $status==1} class="on"{/if} id="s1">未通过{if !$kw} {$nums[1]}{/if}</li></a>
+	</ul>
+</div>
+<form method="post">
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<input type="checkbox" name="itemid[]" value="{$v[itemid]}" class="dsn" id="checkbox-{$v[itemid]}"/>
+<a href="{$v[linkurl]}"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_MOB}static/img/80x60.png{/if}" width="80" height="60" alt="" onerror="this.src='{DT_MOB}static/img/80x60.png';"/></a>
+<ul>
+<li><em class="check" id="check-{$v[itemid]}"></em><a href="?action=edit&itemid={$v[itemid]}"><strong>{$v[title]}</strong></a></li>
+<li><em class="sheet" id="sheet-{$v[itemid]}"></em><span>{$v[date]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+<div id="foot-bar" class="dsn">
+<div class="foot-bar-fix"></div>
+<div class="foot-bar btns">
+<input type="submit" name="submit" value="删除选中" class="btn-red" onclick="if(confirm('确定要删除选中新闻吗？')){this.form.action='?status={$status}&action=delete'}else{return false;}"/>
+</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+	if($('#foot-bar input').length == 0) $('.check').hide();
+	$('.list-img em').click(function() {
+		if($(this).attr('class') == 'sheet') {
+			var id = $(this).attr('id').replace('sheet-', '');
+			Dsheet('<a href="?action=edit&itemid='+id+'"><span>修改</span></a>|<a href="?action=delete&itemid='+id+'" onclick="return _delete();"><span style="color:red;">删除</span></a>', '取消');
+		} else {
+			var id = $(this).attr('id').replace('check-', '');
+			if($('#checkbox-'+id).attr('checked')) {
+				$('#checkbox-'+id).attr('checked', false);
+				$(this).attr('class', 'check');
+			} else {
+				$('#checkbox-'+id).attr('checked', true);
+				$(this).attr('class', 'checked');
+			}
+			if($('.checked').length > 0) {
+				$('#foot-bar').fadeIn(300);
+			} else {
+				$('#foot-bar').fadeOut(300);
+			}
+		}
+	});
+});
+</script>
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 5 || l > 50) {
+		Dmsg('标题应为5-50字，当前已输入'+l+'字', f);
+		return false;
+	}
+	f = 'content';
+	l = FCKLen();
+	if(l < 50 || l > 5000) {
+		Dmsg('内容应为50-5000字，当前已输入'+l+'字', f);
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

@@ -1,0 +1,27 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">成员列表</div>
+<div class="head-bar-right">
+<a href="{$MODULE[2][mobile]}{$DT[file_my]}?mid={$moduleid}&job=join&action=add&gid={$gid}" rel="external"><span>加入</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $lists}
+<div class="blank-20"></div>
+<div class="list-set list-set-img">
+<ul>
+{loop $lists $k $v}
+<li><div><img src="{useravatar($v[username], 'middle')}" width="24" height="24"/><a href="{userurl($v[username])}" rel="external">{$v[passport]}</a></div></li>
+{/loop}
+</ul>
+</div>
+{else}
+{template 'empty', 'chip'}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'footer'}

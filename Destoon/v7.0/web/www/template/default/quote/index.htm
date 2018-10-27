@@ -1,0 +1,81 @@
+{template 'header'}
+<div class="m m3">
+	<div class="m3l">
+		<div class="top-l">
+			<div class="headline">
+			<!--{tag("moduleid=$moduleid&condition=status=3 and level=5&areaid=$cityid&order=".$MOD[order]."&pagesize=1&template=list-hl")}-->
+			</div>
+			<div class="subline">
+			<!--{tag("moduleid=$moduleid&condition=status=3 and level=1&areaid=$cityid&order=".$MOD[order]."&pagesize=5&target=_blank")}-->
+			</div>
+		</div>
+		<div class="top-r">
+			<div class="headline">
+			<!--{tag("moduleid=$moduleid&condition=status=3 and level=5&areaid=$cityid&order=".$MOD[order]."&pagesize=1&page=2&template=list-hl")}-->
+			</div>
+			<div class="subline">
+			<!--{tag("moduleid=$moduleid&condition=status=3 and level=1&areaid=$cityid&order=".$MOD[order]."&pagesize=5&page=2&target=_blank")}-->
+			</div>
+		</div>
+		<div class="b16 c_b"></div>
+		{if $MOD[page_icat]}
+		<table cellpadding="0" cellspacing="0" width="100%">
+		{loop $maincat $i $c}
+		{if $i%2==0}<tr>{/if}
+		<td valign="top" width="420">
+			<div class="head-txt"><span><a href="{$MOD[linkurl]}{$c[linkurl]}">更多<i>&gt;</i></a></span><strong>{$c[catname]}</strong></div>
+			<div class="list-txt"><!--{tag("moduleid=$moduleid&catid=".$c[catid]."&condition=status=3&areaid=$cityid&order=".$MOD[order]."&pagesize=".$MOD[page_icat]."&datetype=2&target=_blank")}--></div>
+		</td>
+		{if $i%2==0}<td>&nbsp;</td>{/if}
+		{if $i%2==1}</tr>{/if}
+		{/loop}
+		</table>
+		{/if}
+	</div>
+	<div class="m3r">
+		<div class="head-sub"><span><a href="{$MOD[linkurl]}{rewrite('product.php?page=1')}">更多<i>&gt;</i></a></span><strong>产品报价</strong></div>
+		<!--{php $tags=tag("table=quote_product_$moduleid&condition=1&areaid=$cityid&pagesize=20&order=edittime desc&length=16&template=null");}-->
+		{if $tags}
+		<table cellpadding="3" cellspacing="1" width="100%" bgcolor="#DDDDDD">
+		<tr bgcolor="#EEEEEE">
+		<th>品名</th>
+		<th width="80">价格</th>
+		<th width="30">单位</th>
+		<th width="60">报价数</th>
+		</tr>
+		</table>
+		<div id="products">
+		<table cellpadding="0" cellspacing="0" width="100%">
+		{loop $tags $i $t}
+		<tr bgcolor="#FFFFFF" align="center">
+		<td><a href="{$MOD[linkurl]}{rewrite('price.php?itemid='.$t['itemid'])}" target="_blank" title="{$t[alt]}" class="b">{$t[title]}</a></td>
+		<td{if $i==0} width="86"{/if}><span class="f_red">{$DT[money_sign]}{$t[price]}</span></td>
+		<td{if $i==0} width="36"{/if}>{$t[unit]}</td>
+		<td{if $i==0} width="65"{/if}>{$t[item]}</td>
+		</tr>
+		{/loop}
+		</table>
+		</div>
+		<div class="b10"></div>
+		{/if}
+		<div class="head-sub"><strong>报价企业</strong></div>
+		<div class="list-txt">
+		<!--{php $tags=tag("table=quote_price_$moduleid&condition=username<>''&areaid=$cityid&pagesize=10&order=itemid desc&group=username&template=null");}-->
+		{if $tags}
+		<ul>
+		{loop $tags $i $t}
+		<li><span class="f_r">{area_pos($t[areaid], '/', 1)}</span><a href="{userurl($t[username])}" target="_blank">{$t[company]}</a></li>
+		{/loop}
+		</ul>
+		{/if}		
+		</div>
+		<div class="head-sub"><strong>点击排行</strong></div>
+		<div class="list-rank"><!--{tag("moduleid=$moduleid&condition=status=3 and addtime>$today_endtime-18000*86400&areaid=$cityid&order=hits desc&key=hits&pagesize=9&template=list-rank")}--></div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{load('marquee.js')}
+<script type="text/javascript">
+new dmarquee(22, 20, 1000, 'products');
+</script>
+{template 'footer'}

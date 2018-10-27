@@ -1,0 +1,34 @@
+<div class="m b20" id="footb"></div>
+<div class="m">
+	<div class="foot_page">
+	<a href="{$MODULE[1][linkurl]}">网站首页</a> &nbsp;|&nbsp; 
+	<!--{tag("table=webpage&condition=item=1&areaid=$cityid&order=listorder desc,itemid desc&template=list-webpage")}-->
+	<a href="{$MODULE[1][linkurl]}sitemap/">网站地图</a> &nbsp;|&nbsp; 
+	<a href="{$EXT[spread_url]}">排名推广</a> &nbsp;|&nbsp; 
+	{if $EXT[ad_enable]}<a href="{$EXT[ad_url]}">广告服务</a> &nbsp;|&nbsp; {/if}
+	{if $EXT[gift_enable]}<a href="{$EXT[gift_url]}">积分换礼</a> &nbsp;|&nbsp; {/if}
+	{if $EXT[guestbook_enable]}<a href="{$EXT[guestbook_url]}">网站留言</a> &nbsp;|&nbsp; {/if}
+	{if $EXT[feed_enable]}<a href="{$EXT[feed_url]}">RSS订阅</a> &nbsp;|&nbsp; {/if}
+	 <a href="javascript:SendReport();">违规举报</a>
+	{if $DT[icpno]} &nbsp;|&nbsp; <a href="http://www.miibeian.gov.cn" target="_blank">{$DT[icpno]}</a>{/if}
+	</div>
+</div>
+<div class="m">
+	<div class="foot">
+		<div id="copyright">{$DT[copyright]}</div>
+		{if DT_DEBUG}<div>{debug()}</div>{/if}
+		<div id="powered"><a href="https://www.destoon.com/" target="_blank"><img src="{DT_STATIC}file/image/powered.gif" width="136" height="10" alt="Powered By DESTOON"/></a></div>
+	</div>
+</div>
+<!--[以下为系统关键代码，请勿删除]-->
+<div class="back2top"><a href="javascript:void(0);" title="返回顶部">&nbsp;</a></div>
+<script type="text/javascript">
+{if $destoon_task}
+show_task('{$destoon_task}');
+{else}
+{php include DT_ROOT.'/api/task.inc.php';}
+{/if}
+{if $lazy}$(function(){$("img").lazyload();});{/if}
+</script>
+</body>
+</html>

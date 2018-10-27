@@ -1,0 +1,48 @@
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="80"></th>
+<th>商品信息</th>
+<th width="120">单价</th>
+<th width="100">数量</th>
+<th width="160">买家留言</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td><a href="javascript:_preview('{$v[thumb]}');"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_SKIN}image/nopic60.gif{/if}" width="60" height="60" onerror="this.src=errimg;"/></a></td>
+<td align="left" valign="top" class="f_gray lh18"><a href="{$v[linkurl]}" target="_blank" class="t">{$v[title]}</a><br/>{$v[par]}</td>
+<td>{$v[price]}</td>
+<td>{$v[number]}</td>
+<td><textarea style="width:160px;height:40px;color:#666666;">{$v[note]}</textarea></td>
+</tr>
+{/loop}
+
+<tr>
+<td colspan="4" align="right">订单编号：</td>
+<td>{$td[itemid]}</td>
+</tr>
+{if isset($td[money])}
+<tr>
+<td colspan="4" align="right">订单总额：</td>
+<td>{$td[money]}</td>
+</tr>
+{/if}
+{if $td[fee_name] && $td[fee]}
+<tr>
+<td colspan="4" align="right">{$td[fee_name]}：</td>
+<td>{$td[fee]}</td>
+</tr>
+{/if}
+{if isset($td[discount])}
+<tr>
+<td colspan="4" align="right">优惠金额：</td>
+<td><a href="{$MOD[linkurl]}{if $td[seller]==$_username}promo.php?action=coupon&itemid={$td[cid]}{else}coupon.php?action=my&itemid={$td[cid]}{/if}" target="_blank">-{$td[discount]}</a></td>
+</tr>
+{/if}
+<tr>
+<td colspan="4" align="right">实付金额：</td>
+<td class="f_red px14">{$td[total]}</td>
+</tr>
+</table>
+</div>
+<div class="b10"></div>

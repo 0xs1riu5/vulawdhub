@@ -1,0 +1,57 @@
+{template 'header-widget', 'member'}
+{if $MG[type_limit] > -1}
+<script type="text/javascript">
+var _del = 0;
+</script>
+<form method="post" action="?">
+<input type="hidden" name="item" value="{$item}"/>
+<div class="ls">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="60">删</th>
+<th width="80">排序</th>
+<th width="250">名称</th>
+<th>上级分类</th>
+</tr>
+{loop $lists[0] $k0 $v0}
+<tr>
+<td align="center"><input name="post[{$v0[typeid]}][delete]" type="checkbox" value="1" onclick="if(this.checked){_del++;}else{_del--;}"/></td>
+<td align="center"><input name="post[{$v0[typeid]}][listorder]" type="text" size="5" value="{$v0[listorder]}" maxlength="3"/></td>
+<td><input name="post[{$v0[typeid]}][typename]" type="text" size="20" value="{$v0[typename]}" maxlength="50" style="width:140px;color:{$v0[style]}"/> {$v0[style_select]}</td>
+<td>{$v0[parent_select]}</td>
+</tr>
+{if isset($lists[1][$v0[typeid]])}
+	{loop $lists[1][$v0[typeid]] $k1 $v1}
+	<tr>
+	<td align="center"><input name="post[{$v1[typeid]}][delete]" type="checkbox" value="1" onclick="if(this.checked){_del++;}else{_del--;}"/></td>
+	<td align="center"><input name="post[{$v1[typeid]}][listorder]" type="text" size="5" value="{$v1[listorder]}" maxlength="3"/></td>
+	<td><img src="{DT_PATH}admin/image/tree.gif" align="absmiddle"/><input name="post[{$v1[typeid]}][typename]" type="text" size="20" value="{$v1[typename]}" maxlength="50" style="width:120px;color:{$v1[style]}"/> {$v1[style_select]}</td>
+	<td>{$v1[parent_select]}</td>
+	</tr>
+	{/loop}
+{/if}
+{/loop}
+<tr>
+<td class="f_red" align="center">新增</td>
+<td align="center"><input name="post[0][listorder]" type="text" size="5" value="" maxlength="3"/></td>
+<td><input name="post[0][typename]" type="text" size="20" value="" maxlength="50" style="width:140px;"/> {$new_style}</td>
+<td>{$parent_select}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3"><br/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="submit" value=" 提 交 " onclick="if(_del && !confirm('提示:您选择删除'+_del+'个分类？确定要删除吗？')) return false;" class="btn_g"/>&nbsp;&nbsp;
+<input type="button" value=" 关 闭 " class="btn" onclick="window.parent.cDialog();"/>
+{if $MG[type_limit]}&nbsp;最多可定义 <strong class="f_red">{$MG[type_limit]}</strong> 个分类&nbsp;&nbsp;&nbsp;当前已定义 <strong class="f_blue">{count($types)}</strong> 个&nbsp;&nbsp;&nbsp;{/if}
+<br/>&nbsp;
+</td>
+</tr>
+</table>
+</div>
+</form>
+{else}
+<br/><br/>
+<center class="f_red">抱歉，您没有权限自定义分类</center>
+<br/><br/>
+{/if}
+</body>
+</html>

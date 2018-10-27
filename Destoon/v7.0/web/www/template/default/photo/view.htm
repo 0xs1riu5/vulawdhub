@@ -1,0 +1,37 @@
+{template 'header'}
+<a name="p"></a>
+<div class="m">	
+	<div class="nav"><span class="f_r"><a href="{$linkurl}#p" class="b">返回图集</a></span><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+</div>
+<div class="m">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td valign="top" class="photo_l">
+<div class="photo_info">
+<div>
+<h1 class="title" id="title">{$title}</h1>
+日期：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;
+{if $MOD[hits]}点击：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+{if $could_comment}<a href="{$EXT[comment_url]}{rewrite('index.php?mid='.$moduleid.'&itemid='.$itemid)}"><span style="color:#F1F1F1;">评论：{$comments}</span></a>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+图片：{$items}
+</div>
+</div>
+<div class="photo_all" oncontextmenu="return false">
+<table width="100%">
+{loop $T $i $t}
+{if $i%6==0}<tr align="center">{/if}
+<td width="16.66%" valign="top">
+<a href="{$t[linkurl]}"><img src="{$t[thumb]}" width="160" title="{$t[introduce]}" class="thumb_a" onmouseover="this.className='thumb_b';" onmouseout="this.className='thumb_a';"/></a>
+<div>({$t[number]}) {$t[title]}</div>
+</td>
+{if $i%6==5}</tr>{/if}
+{/loop}
+</table>
+</div>
+<div class="b10"></div>
+</td>
+</tr>
+</table>
+{if $pages}<div class="pages">{$pages}</div>{/if}
+</div>
+{template 'footer'}

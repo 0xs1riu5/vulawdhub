@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>打印简历</title>
+<meta http-equiv="x-ua-compatible" content="ie=7"/>
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+<style type="text/css">
+* {word-break:break-all;font-family:Verdana,Arial;}
+body {margin:0px;font-size:13px;color:#000000;background:#FFFFFF;}
+img {border:none;}
+li {list-style-type:none;}
+ul,form {margin:0px;padding:0px;}
+a:link,a:visited,a:active {color:#006699;text-decoration:none;}
+a:hover {color:#FF6600;text-decoration:none;}
+/* common */
+.m {width:630px;margin:auto;}
+.head {padding:0 0 5px 0;}
+.head div {float:right;font-size:18px;padding:30px 10px 0 0;}
+.content {line-height:180%;padding:20px;}
+.tool {text-align:center;}
+.notice {font-size:12px;text-align:center;color:red;}
+table{border-collapse:collapse;font-size:13px;}
+td{border:#333333 1px solid;}
+</style>
+</head>
+<body>
+<div class="m">
+<h1 align="center">{$truename}个人简历</h1>
+<table cellpadding="6" cellspacing="0" width="100%">
+<tr>
+<td align="center"><div style="width:90px;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</div></td>
+<td><div style="width:150px;">{$truename}</div></td>
+<td align="center"><div style="width:90px;">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</div></td>
+<td><div style="width:150px;">{if $gender == 1}男{else}女{/if}</div></td>
+<td rowspan="5"><img src="{if $thumb}{$thumb}{else}{DT_SKIN}image/nohead.gif{/if}" width="{$MOD[thumb_width]}" height="{$MOD[thumb_height]}" alt="免冠照片"/></td>
+</tr>
+<tr>
+<td align="center">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日</td>
+<td>{$birthday}</td>
+<td align="center">婚姻状况</td>
+<td>{if $marriage == 2}已婚{else}未婚{/if}</td>
+</tr>
+<tr>
+<td align="center">身&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;高</td>
+<td>{$height} cm</td>
+<td align="center">体&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;重</td>
+<td>{$weight} kg</td>
+</tr>
+<tr>
+<td align="center">居 住 地</td>
+<td>{area_pos($areaid, '')}</td>
+<td align="center">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历</td>
+<td>{$EDUCATION[$education]}</td>
+</tr>
+<tr>
+<td align="center">毕业院校</td>
+<td>{$school}</td>
+<td align="center">专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业</td>
+<td>{$major}</td>
+</tr>
+<tr>
+<td align="center">工作性质</td>
+<td>{$TYPE[$type]}</td>
+<td align="center">工作经验</td>
+<td colspan="2">{if $experience}{$experience}年{else}无{/if}</td>
+</tr>
+<tr>
+<td align="center">行业意向</td>
+<td>{$CATEGORY[$parentid][catname]}</td>
+<td align="center">职位意向</td>
+<td colspan="2">{$CATEGORY[$catid][catname]}</td>
+</tr>
+<tr>
+<td align="center">专业技能</td>
+<td>{$skill}</td>
+<td align="center">语言水平</td>
+<td colspan="2">{$language}</td>
+</tr>
+<tr>
+<td align="center">期望薪资</td>
+<td>
+{if $minsalary && $maxsalary}
+	{$minsalary}-{$maxsalary}{$DT[money_unit]}/月
+{elseif $minsalary}
+	{$minsalary}{$DT[money_unit]}/月以上
+{elseif $maxsalary}
+	{$maxsalary}{$DT[money_unit]}/月以内
+{else}
+	面议
+{/if}
+</td>
+<td align="center">求职状态</td>
+<td colspan="2">{$SITUATION[$situation]}</td>
+</tr>
+<tr>
+<td colspan="5" bgcolor="#F0F0F0">&nbsp;&nbsp;&nbsp;&nbsp;<strong>联系方式</strong></td>
+</tr>
+<tr>
+<td align="center">联系手机</td>
+<td>{$mobile}</td>
+<td align="center">电子邮件</td>
+<td colspan="2">{$email}</td>
+</tr>
+<tr>
+<td align="center">联系电话</td>
+<td>{$telephone}</td>
+<td align="center">联系地址</td>
+<td colspan="2">{$address}</td>
+</tr>
+<tr>
+<td align="center">QQ</td>
+<td>{$qq}</td>
+<td align="center">微信</td>
+<td colspan="2">{$wx}</td>
+</tr>
+<tr>
+<td colspan="5" bgcolor="#F0F0F0">&nbsp;&nbsp;&nbsp;&nbsp;<strong>自我鉴定</strong></td>
+</tr>
+<tr>
+<td colspan="5" class="content">{$content}</td>
+</tr>
+</table>
+</div>
+<div class="m" style="font-size:12px;"><br/>简历来源:<a href="{DT_PATH}" style="color:#000000;">{$DT[sitename]}</a>({$linkurl})</div>
+<script type="text/javascript">window.print();</script>
+<br/>
+<br/>
+</div>
+</body>
+</html>

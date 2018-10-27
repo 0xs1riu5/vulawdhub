@@ -1,0 +1,5 @@
+<ul>
+{loop $tags $i $t}
+<li title="搜索{$t[$key]}次 约{$t[items]}条结果"><span class="f_r f_gray">&nbsp;{$MODULE[$t[moduleid]][name]}</span><a href="{rewrite('list.php?mid='.$t['moduleid'].'&kw='.urlencode($t['word']))}">{$t[word]}</a></li>
+{/loop}
+</ul>

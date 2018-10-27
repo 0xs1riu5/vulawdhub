@@ -1,0 +1,113 @@
+{template 'header', 'member'}
+<link rel="stylesheet" type="text/css" href="image/index.css"/>
+<div id="warn">
+{if $_groupid == 4}
+	<div class="warn">尊敬的会员，您的帐号<span class="f_red">正在审核中..</span>，本站部分功能和服务可能受到一定的使用限制，{if $MOD[checkuser]==2}<a href="send.php?action=check" class="t">请点这里验证您的邮箱</a>，系统将自动审核{else}请稍候，等待网站审核<br/>完善的商业信息有助于获得别人的信任，结交潜在的商业伙伴，获取商业机会，增加系统审核通过的概率&nbsp;&nbsp;<a href="edit.php?tab=2" class="t">现在就去完善&raquo;</a>{/if}</div>
+{/if}
+{if $MG[type] && !$_edittime}
+	<div class="warn">贵公司尚未完善详细资料！完善的商业信息有助于获得别人的信任，结交潜在的商业伙伴，获取商业机会&nbsp;&nbsp;<a href="edit.php?tab=2" class="t">现在就去完善&raquo;</a></div>
+{/if}
+{if $vip && $havedays < 30 && $havedays > 0}
+	<div class="warn">尊敬的{$MG[groupname]}，您的{VIP}服务将在 <strong class="f_red">{$havedays}</strong> 天后到期，为了不影响您的正常使用，请您尽快续费&nbsp;&nbsp;<a href="account.php?action=vip" class="t">立即续费&raquo;</a></div>
+{/if}
+</div>
+
+<div class="iuser">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td width="120" valign="top" align="center"><div class="iuser_avatar"><a href="avatar.php"><img src="{useravatar($_username, 'large')}" width="100" height="100"/></a></div></td>
+<td valign="top" width="400">
+<ul>
+<li><span class="f_b px14" title="">欢迎，{$_truename}</span> ({$_username}) <a href="account.php?action=line" title="{if $_online}在线，点击隐身{else}隐身，点击上线{/if}"><img src="{DT_SKIN}image/user_{if $_online}on{else}off{/if}line.png" width="10" height="10" align="absmiddle"/></a></li>
+<li><a href="{$linkurl}" target="_blank">{$_company}</a>({$MG[groupname]})&nbsp;&nbsp;&nbsp;<a href="account.php" class="t">账户详情&raquo;</a></li>
+{if $MOD[vmember]}
+<li>
+<img src="image/{if $validated}v{else}u{/if}_member.gif" width="16" height="16" title="{if $validated}已通过{$validator}认证{else}未通过认证{/if}" align="absmiddle"/> 认证：
+{if $MOD[vemail]}
+<img src="image/{if $vemail}v{else}u{/if}_email.gif" width="16" height="16" title="{if $vemail}已通过{else}未通过{/if}邮件认证" align="absmiddle"/> <a href="validate.php?action=email" class="t">邮件</a> &nbsp;
+{/if}
+{if $MOD[vmobile]}
+<img src="image/{if $vmobile}v{else}u{/if}_mobile.gif" width="16" height="16" title="{if $vmobile}已通过{else}未通过{/if}手机认证" align="absmiddle"/> <a href="validate.php?action=mobile" class="t">手机</a> &nbsp;
+{/if}
+{if $MOD[vbank]}
+<img src="image/{if $vbank}v{else}u{/if}_bank.gif" width="16" height="16" title="{if $vbank}已通过{else}未通过{/if}银行帐号认证" align="absmiddle"/> <a href="validate.php?action=bank" class="t">银行</a> &nbsp;
+{/if}
+{if $MOD[vtruename]}
+<img src="image/{if $vtruename}v{else}u{/if}_truename.gif" width="16" height="16" title="{if $vtruename}已通过{else}未通过{/if}真实姓名认证" align="absmiddle"/> <a href="validate.php?action=truename" class="t">实名</a> &nbsp;
+{/if}
+{if $MOD[vcompany] && $MG[type]}
+<img src="image/{if $vcompany}v{else}u{/if}_company.gif" width="16" height="16" title="{if $vcompany}已通过{else}未通过{/if}公司资料认证" align="absmiddle"/> <a href="validate.php?action=company" class="t">公司</a>
+{/if}
+</li>
+{else}
+<li>上次登录：{timetodate($logintime, 5)}</li>
+{/if}
+</ul>
+</td>
+<td valign="top">
+	<div class="iuser_money">
+	<p class="f_b px14">账户余额</p>
+	<span class="my_money">{$DT[money_sign]}{$my_money}</span> {$DT[money_unit]}
+	&nbsp;&nbsp;
+	<a href="record.php" class="t">流水</a> <span class="f_gray">&nbsp;|&nbsp;</span> 
+	<a href="charge.php?action=pay" class="t" target="_blank">充值</a>
+	</div>	
+</td>
+</tr>
+</table>
+</div>
+<div class="icount">
+<table cellpadding="0" cellspacing="0">
+<tr>
+{if $DT[max_cart]}
+<td onclick="Go('cart.php');"><div>购物车</div><span><script type="text/javascript">document.write(get_cart());</script></span></td>
+{/if}
+<td onclick="Go('message.php');"><div>新消息</div><span>{$_message}</span></td>
+{if $DT[im_web]}
+<td onclick="Go('im.php');"><div>新交谈</div><span>{$_chat}</span></td>
+{/if}
+<td onclick="Go('credit.php');"><div>{$DT[credit_name]}</div><span>{$_credit}</span></td>
+<td onclick="Go('{$DT[file_my]}');"><img src="image/icon_add.png" width="32" height="32"/><br/><span>发布信息</span></td>
+<td onclick="Go('order.php');"><img src="image/icon_order.png" width="32" height="32"/><br/><span>我的订单</span></td>
+<td onclick="Go('favorite.php');"><img src="image/icon_favorite.png" width="32" height="32"/><br/><span>我的收藏</span></td>
+
+</tr>
+</table>
+</div>
+
+<div class="ihead">
+	<strong>系统消息</strong>
+</div>
+<div class="ibody">
+	<div class="isys">
+		<ul>
+		{if $sys}
+		{loop $sys $v}
+		<li><span class="f_r f_gray">{timetodate($v[addtime], 3)}</span>&nbsp;<a href="message.php?action=show&itemid={$v[itemid]}" title="{$v[title]}" class="t">{$v[title]}</a></li>
+		{/loop}
+		{else}
+		<li>&nbsp;暂无消息</li>
+		{/if}
+		</ul>
+	</div>
+</div>
+
+<div class="ihead">
+	<strong>商务便笺</strong>
+</div>
+<div class="ibody">
+	<div class="inote">
+		<form method="post" action="index.php" onsubmit="return check();">
+		<table cellspacing="2" cellpadding="2" width="100%">
+		<tr>
+		<td colspan="2"><textarea name="note" id="note">{$note}</textarea></td>
+		</tr>
+		<tr>
+		<td width="80"><input type="submit" name="submit" value=" 更 新 " class="btn_g"/></td>
+		<td class="f_gray">[可记录一些文字备忘，限5000字]</td>
+		</tr>
+		</table>
+		</form>
+	</div>
+</div>
+{template 'footer', 'member'}

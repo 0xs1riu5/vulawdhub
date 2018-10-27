@@ -1,0 +1,18 @@
+<div class="main_head"><div><span class="f_r"><a href="{userurl($username, 'file=video', $domain)}"><img src="{DT_STATIC}{$MODULE[4][moduledir]}/image/more.gif" title="更多"/></a></span><strong>{$main_name[$HM]}</strong></div></div>
+<div class="main_body">
+<!--{php $tags=tag("moduleid=14&condition=status>2 and username='$username'&pagesize=".$main_num[$HM]."&order=addtime desc&fields=itemid,title,linkurl,thumb,addtime,hits&template=null");}-->
+<table cellpadding="10" cellspacing="1" width="100%">
+{loop $tags $i $t}
+{if $i%4==0}<tr align="center">{/if}
+<td valign="top" width="25%">
+<div class="thumb">
+	<a href="{if $homeurl}{$t[linkurl]}{else}{userurl($username, 'file=video&itemid='.$t['itemid'], $domain)}{/if}"><img src="{$t[thumb]}" width="120" height="90" alt="{$t[alt]}"/></a>
+	<div><a href="{if $homeurl}{$t[linkurl]}{else}{userurl($username, 'file=video&itemid='.$t['itemid'], $domain)}{/if}" title="{$t[alt]}">{$t[title]}</a></div>
+	<p>{$t[hits]}播放</p>
+	<p>{timetodate($t[addtime], 3)}</p>
+</div>
+</td>
+{if $i%4==3}</tr>{/if}
+{/loop}
+</table>
+</div>

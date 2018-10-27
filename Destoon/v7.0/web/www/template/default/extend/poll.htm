@@ -1,0 +1,164 @@
+{if $action == 'show'}
+<!doctype html>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>{$DT[sitename]}</title>
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}style.css"/>
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}extend.css"/>
+<script type="text/javascript" src="{DT_STATIC}lang/{DT_LANG}/lang.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/config.js"></script>
+<!--[if lte IE 9]><!-->
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery-1.5.2.min.js"></script>
+<!--<![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!-->
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery-2.1.1.min.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="{DT_STATIC}file/script/common.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/page.js"></script>
+</head>
+<body oncontextmenu="return false">
+<iframe id="proxy_iframe" src="" style="display:none"></iframe>
+<div id="destoon_poll">
+	<div id="poll_list">
+	{template $template_poll, 'chip'}
+	</div>
+{if $verify}
+	<div class="poll_verify" id="poll_verify">
+		<table width="100%" cellpadding="10" cellspacing="0">
+		{if $verify == 1}
+		<tr>
+		<td align="right">请填写验证码</td>
+		<td>{template 'captcha', 'chip'} <span id="dcaptcha" class="f_red"></span></td>
+		</tr>
+		{/if}
+		{if $verify == 2}
+		<tr>
+		<td align="right">请回答验证问题</td>
+		<td>{template 'question', 'chip'} <span id="danswer" class="f_red"></span></td>
+		</tr>
+		{/if}
+		<tr>
+		<td width="120"></td>
+		<td>
+		<input type="button" value=" 投 票 " class="btn-green" style="width:66px;" onclick="P();"/>&nbsp;&nbsp;
+		<input type="button" value=" 取 消 " class="btn" style="width:66px;" onclick="C();"/>
+		</td>
+		</tr>
+		</table>
+	</div>
+{/if}
+</div>
+<script style="text/javascript">
+var id = 0;
+function Poll(i) {
+	id = i;
+	var par = '{$url}index.php?action=ajax&itemid='+i;
+	{if $verify == 1}
+		if($('#ccaptcha').html().indexOf('ok.png') == -1) {
+			S();Dd('captcha').focus();
+			return;
+		}
+		par += '&captcha='+Dd('captcha').value;
+	{/if}
+	{if $verify == 2}
+		if($('#canswer').html().indexOf('ok.png') == -1) {
+			S();reloadquestion();Dd('answer').focus();
+			return;
+		}
+		par += '&answer='+Dd('answer').value;
+	{/if}
+	$.get(par,
+		function(data, status) {
+			if(data == 'ok') {
+				alert('投票成功，感谢参与');
+				window.location.reload();
+			} else if(data) {
+				alert(data);
+				if(data.indexOf('验证码') != -1) {
+					reloadcaptcha();
+				} else if(data.indexOf('验证问题') != -1) {
+					reloadquestion();
+				} else {
+					C();
+				}
+			}
+		}
+	);
+}
+function P() {
+	Poll(id);
+}
+function S() {
+	$('#poll_verify').fadeIn('slow');
+	$('#poll_list').hide();
+}
+function C() {
+	$('#poll_verify').hide();
+	$('#poll_list').fadeIn('fast');
+	{if $verify == 1}Dd('captcha').value='';{/if}
+	{if $verify == 2}Dd('answer').value='';{/if}
+}
+$(function(){
+	var h = $('#destoon_poll').height();
+	h = h + 30;
+	Dd('proxy_iframe').src = AJPath+'?action=proxy&itemid=3#'+h+'|{$itemid}';
+});
+</script>
+</body>
+</html>
+{else}
+{template 'header'}
+<div class="m m1">
+	<div class="m1l">
+		{if $itemid}
+		<h1 class="title">{$title}</h1>
+		<div class="info f_gray">
+		<span class="f_r">票数：{$polls}&nbsp;&nbsp;&nbsp;&nbsp;浏览：{$hits}</span>
+		添加时间：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;有效期：{$fromdate} 至 {$todate}&nbsp;&nbsp;&nbsp;&nbsp;<img src="{DT_STATIC}file/image/process_{get_process($fromtime, $totime)}.gif" align="absmiddle"/>
+		</div>
+		{if $content}
+		<div class="content">{$content}</div>
+		{else}
+		<div class="b20"></div>
+		{/if}
+		<script type="text/javascript" src="{$url}index.php?action=js&itemid={$itemid}"></script>
+		{else}
+		<table cellpadding="16" cellspacing="0" class="tb">
+		<tr>
+		{if !$typeid}<th width="120">类别</th>{/if}
+		<th>标题</th>
+		<th width="120">点击</th>
+		<th width="120">发布时间</th>
+		</tr>
+		{loop $lists $k $v}
+		<tr align="center">
+		{if !$typeid}<td class="px14"><a href="{$url}{list_url($v[typeid])}">{$v[typename]}</a></td>{/if}
+		<td align="left" class="px14"><a href="{$v[linkurl]}">{$v[title]}</a></td>
+		<td class="f_gray">{$v[hits]}</td>
+		<td class="f_gray">{$v[adddate]}</td>
+		</tr>
+		{/loop}
+		</table>
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+		{/if}
+	</div>
+	<div class="m1r side">
+		<ul>
+		<li class="side_li" id="type_0"><a href="{$url}">行业票选</a></li>
+		{loop $_TP[0] $v0}
+		<li class="side_li" id="type_{$v0[typeid]}"><a href="{$url}{list_url($v0[typeid])}">{$v0[typename]}</a></li>
+			{if isset($_TP[1][$v0[typeid]])}
+			{loop $_TP[1][$v0[typeid]] $v1}
+			<li class="side_li" id="type_{$v1[typeid]}"><a href="{$url}{list_url($v1[typeid])}">&nbsp;|-- {$v1[typename]}</a></li>
+			{/loop}
+			{/if}
+		{/loop}
+		</ul>
+		<form action="index.php"><input type="search" name="kw" value="{$kw}" ondblclick="if(this.value){Go('./');}" placeholder="搜索" title="输入关键词，按回车搜索"/></form>
+	</div>
+	<div class="c_b"></div>
+</div>
+<script type="text/javascript">$(function(){$('#type_{$typeid}').attr('class', 'side_on');});</script>
+{template 'footer'}
+{/if}

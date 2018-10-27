@@ -1,0 +1,20 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20 bd-t"></div>
+</div>
+<div class="m m1">
+	<div class="m1l">
+		{if $CP}{template 'property_list', 'chip'}{/if}
+		<div class="down-list">{if $tags}{template 'list-'.$module, 'tag'}{/if}</div>
+	</div>
+	<div class="m1r side">
+		<ul>
+		{loop $maincat $k $v}
+		<li class="{if $v[catid]==$catid}side_on{else}side_li{/if}"><a href="{$MOD[linkurl]}{$v[linkurl]}">{set_style($v[catname],$v[style])}{if !$cityid} <em>({$v[item]})</em>{/if}</a></li>
+		{/loop}
+		</ul>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

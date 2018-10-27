@@ -1,0 +1,43 @@
+{template 'header', $template}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:window.scrollTo(0,0);$('#type-{$file}').slideToggle(300);"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div id="type-{$file}" style="display:none;">
+<div class="list-set">
+<ul>
+<li><div><a href="{userurl($username, 'file=credit', $domain)}">公司档案</a></div></li>
+<li><div><a href="{userurl($username, 'file=contact', $domain)}">联系方式</a></div></li>
+{loop $TYPE $k $v}
+<li{if $itemid==$v[itemid]} style="background:#F6F6F6;"{/if}><div><a href="{$v[linkurl]}">{$v[alt]}</a></div></li>
+{/loop}
+</ul>
+</div>
+<div class="blank-35 bd-b"></div>
+</div>
+{if $itemid}
+<div class="main">
+	{if $content}<div class="content">{$content}</div>{/if}
+</div>
+{else}
+<div class="main">
+	<div class="content">
+	{if $video}
+	<center>{video5_player($video, 280, 210)}</center>
+	{/if}
+	{if $thumb}<center><img src="{$thumb}"/></center>{/if}
+	{$content}
+	</div>
+</div>
+{php $itemid = $userid;}
+{template 'comment', 'chip'}
+{/if}
+{template 'footer', $template}

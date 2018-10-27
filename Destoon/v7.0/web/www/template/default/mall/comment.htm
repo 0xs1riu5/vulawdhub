@@ -1,0 +1,49 @@
+<div class="stat">
+<table cellpadding="6" cellspacing="1" width="100%">
+<tr align="center">
+<td width="100">好评 <img src="{DT_STATIC}file/image/star3.gif" width="36" height="12" alt="" align="absmiddle"/> </td>
+<td><div class="stat_p"><div style="width:{$stat[pc3]};"></div></div></td>
+<td class="stat_c" width="100">{$stat[pc3]}</td>
+<td class="stat_t" width="80" bgcolor="#E1F0FB">{$stat[s3]}</td>
+</tr>
+<tr align="center">
+<td>中评 <img src="{DT_STATIC}file/image/star2.gif" width="36" height="12" alt="" align="absmiddle"/></td>
+<td><div class="stat_p"><div style="width:{$stat[pc2]};"></div></div></td>
+<td>{$stat[pc2]}</td>
+<td bgcolor="#F2F8FD">{$stat[s2]}</td>
+</tr>
+<tr align="center">
+<td>差评 <img src="{DT_STATIC}file/image/star1.gif" width="36" height="12" alt="" align="absmiddle"/></td>
+<td><div class="stat_p"><div style="width:{$stat[pc1]};"></div></div></td>
+<td>{$stat[pc1]}</td>
+<td bgcolor="#F9FCFE">{$stat[s1]}</td>
+</tr>
+</table>
+</div>
+<br/>
+<div class="px14">&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="selectstar" value="0" id="ss_0" {if $star==0} checked{/if} onclick="load_comment('1&star=0');"/><label for="ss_0"> <span {if $star==0} class="f_b"{/if}>全部({$items})</span></label>&nbsp;&nbsp;
+<input type="radio" name="selectstar" value="3" id="ss_3" {if $star==3} checked{/if} onclick="load_comment('1&star=3');"/><label for="ss_3"> <span {if $star==3} class="f_b"{/if}>好评({$stat[s3]})</span></label>&nbsp;&nbsp;
+<input type="radio" name="selectstar" value="2" id="ss_2" {if $star==2} checked{/if} onclick="load_comment('1&star=2');"/><label for="ss_2"> <span {if $star==2} class="f_b"{/if}>中评({$stat[s2]})</span></label>&nbsp;&nbsp;
+<input type="radio" name="selectstar" value="1" id="ss_1" {if $star==1} checked{/if} onclick="load_comment('1&star=1');"/><label for="ss_1"> <span {if $star==1} class="f_b"{/if}>差评({$stat[s1]})</span></label>&nbsp;&nbsp;
+</div>
+<br/>
+{if $lists}
+{loop $lists $k $v}
+<div class="comment{if $k%2==0} comment_sp{/if}">
+<div class="comment_title">
+	<span class="f_r"><span class="comment_time">{$v[addtime]}</span>&nbsp;&nbsp;{$STARS[$v[seller_star]]} <img src="{DT_STATIC}file/image/star{$v[seller_star]}.gif" width="36" height="12" alt="" align="absmiddle"/></span>
+	买家 <span id="i_{$v[itemid]}">{hide_name($v[buyer])}</span>
+</div>
+<div class="comment_content" id="c_{$v[itemid]}">{if $v[seller_comment]}{nl2br($v[seller_comment])}{else}买家没有发表评价内容{/if}</div>
+{if $v[buyer_reply]}
+<div class="comment_reply">
+<span style="color:blue;">卖家</span> <span style="font-size:11px;">{$v[replytime]}</span> 回复： {nl2br($v[buyer_reply])}
+</div>
+{/if}
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="comment_no">暂无评价</div>
+{/if}

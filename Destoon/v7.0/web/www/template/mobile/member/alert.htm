@@ -1,0 +1,110 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">提醒{if $action=='add'||$action=='list'}添加{elseif $action=='edit'}修改{else}管理{/if}</div>
+<div class="head-bar-right">
+{if $action=='add' || $action=='edit' || $action=='list'}
+<a href="?action=index"><span>取消</span></a>
+{else}
+<a href="?action=list"><span>添加</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='add' || $action=='edit'}
+<form method="post" action="?" id="dform">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="post[mid]" value="{$mid}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<div class="ui-form">
+<p>关键词<b id="dword"></b></p>
+<div><input type="text" name="post[word]" id="word" value="{$word}"/></div>
+<p>行业分类<b id="dcatid"></b></p>
+<div>{ajax_category_select('post[catid]', '请选择', $catid, $mid)}</div>
+<p>所在地区<b id="dareaid"></b></p>
+<div>{ajax_area_select('post[areaid]', '请选择', $areaid)}</div>
+<p>发送频率<b id="drate"></b></p>
+<div>
+<select name="post[rate]">
+<option value="0"{if $rate==0} selected{/if}>不限</option>
+<option value="1"{if $rate==1} selected{/if}>1天</option>
+<option value="3"{if $rate==3} selected{/if}>3天</option>
+<option value="7"{if $rate==7} selected{/if}>7天</option>
+<option value="15"{if $rate==15} selected{/if}>15天</option>
+<option value="30"{if $rate==30} selected{/if}>30天</option>
+</select>
+</div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="{if $action=='edit'}修改{else}添加{/if}" class="btn-blue"/>
+<div class="blank-32"></div>
+</div>
+</form>
+{elseif $action=='list'}
+<div class="blank-32"></div>
+<div class="list-set">
+<ul>
+{loop $mids $k $v}
+<li><div><a href="?action=add&mid={$v}">{$MODULE[$v][name]}</a></li>
+{/loop}
+</ul>
+</div>
+<div class="blank-32"></div>
+{else}
+<div class="list-menu">
+	<ul>
+	<a href="?status=3"><li{if $status==3} class="on"{/if} id="s3">已通过{if !$kw} {$nums[3]}{/if}</li></a>
+	<a href="?status=2"><li{if $status==2} class="on"{/if} id="s2">审核中{if !$kw} {$nums[2]}{/if}</li></a>
+	</ul>
+</div>
+<form method="post">
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<input type="checkbox" name="itemid[]" value="{$v[itemid]}" class="dsn" id="checkbox-{$v[itemid]}"/>
+<ul>
+<li><em class="check" id="check-{$v[itemid]}"></em><a href="?action=edit&itemid={$v[itemid]}"><strong>{$MODULE[$v[mid]][name]}/{if $v[word]}{$v[word]}{else}不限{/if}/{if $v[catid]}{$v[cate]}{else}全部行业{/if}/{if $v[areaid]}{area_pos($v[areaid], '-')}{else}全部地区{/if}</strong></a></li>
+<li><em class="sheet" id="sheet-{$v[itemid]}"></em><span>上次发送：{if $v[sendtime]}{timetodate($v[sendtime], 5)}{else}从未{/if}&nbsp;&nbsp;&nbsp;&nbsp;发送频率：{if $v[rate]}{$v[rate]}天{else}不限{/if}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+<div id="foot-bar" class="dsn">
+<div class="foot-bar-fix"></div>
+<div class="foot-bar btns">
+<input type="submit" name="submit" value="删除选中" class="btn-red" onclick="if(confirm('确定要删除选中提醒吗？')){this.form.action='?action=delete'}else{return false;}"/>
+</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+	if($('#foot-bar input').length == 0) $('.check').hide();
+	$('.list-img em').click(function() {
+		if($(this).attr('class') == 'sheet') {
+			var id = $(this).attr('id').replace('sheet-', '');
+			Dsheet('<a href="?action=edit&itemid='+id+'"><span>修改</span></a>|<a href="?action=delete&itemid='+id+'" onclick="return _delete();"><span style="color:red;">删除</span></a>', '取消');
+		} else {
+			var id = $(this).attr('id').replace('check-', '');
+			if($('#checkbox-'+id).attr('checked')) {
+				$('#checkbox-'+id).attr('checked', false);
+				$(this).attr('class', 'check');
+			} else {
+				$('#checkbox-'+id).attr('checked', true);
+				$(this).attr('class', 'checked');
+			}
+			if($('.checked').length > 0) {
+				$('#foot-bar').fadeIn(300);
+			} else {
+				$('#foot-bar').fadeOut(300);
+			}
+		}
+	});
+});
+</script>
+{/if}
+{template 'footer', 'member'}

@@ -1,0 +1,17 @@
+<div class="main_head"><div><span class="f_r"><a href="{userurl($username, 'file=brand', $domain)}"><img src="{DT_STATIC}{$MODULE[4][moduledir]}/image/more.gif" title="更多"/></a></span><strong>{$main_name[$HM]}</strong></div></div>
+<div class="main_body">
+<!--{php $tags=tag("moduleid=13&condition=status>2 and username='$username'&pagesize=".$main_num[$HM]."&order=edittime desc&fields=itemid,title,linkurl,thumb,edittime&template=null");}-->
+<table cellpadding="0" cellspacing="0" width="100%">
+{loop $tags $i $t}
+{if $i%3==0}<tr align="center">{/if}
+<td valign="top" width="33%" height="100">
+<div class="thumb">
+	<a href="{if $homeurl}{$t[linkurl]}{else}{userurl($username, 'file=brand&itemid='.$t['itemid'], $domain)}{/if}"><img src="{$t[thumb]}" width="180" height="60" alt="{$t[alt]}"/></a>
+	<div><a href="{if $homeurl}{$t[linkurl]}{else}{userurl($username, 'file=brand&itemid='.$t['itemid'], $domain)}{/if}" title="{$t[alt]}">{$t[title]}</a></div>
+	<p>{timetodate($t[edittime], 3)}</p>
+</div>
+</td>
+{if $i%3==2}</tr>{/if}
+{/loop}
+</table>
+</div>

@@ -1,0 +1,49 @@
+<div style="padding-right:16px;">
+<table cellpadding="6" cellspacing="1" width="100%">
+<tr align="center">
+<td width="100">好评 <img src="{DT_STATIC}file/image/star3.gif" width="36" height="12" alt="" align="absmiddle"/> </td>
+<td><div class="stat_p"><div style="width:{$stat[pc3]};"></div></div></td>
+<td class="stat_c" width="100">{$stat[pc3]}</td>
+<td class="stat_t" width="80" bgcolor="#E1F0FB">{$stat[s3]}</td>
+</tr>
+<tr align="center">
+<td>中评 <img src="{DT_STATIC}file/image/star2.gif" width="36" height="12" alt="" align="absmiddle"/></td>
+<td><div class="stat_p"><div style="width:{$stat[pc2]};"></div></div></td>
+<td>{$stat[pc2]}</td>
+<td bgcolor="#F2F8FD">{$stat[s2]}</td>
+</tr>
+<tr align="center">
+<td>差评 <img src="{DT_STATIC}file/image/star1.gif" width="36" height="12" alt="" align="absmiddle"/></td>
+<td><div class="stat_p"><div style="width:{$stat[pc1]};"></div></div></td>
+<td>{$stat[pc1]}</td>
+<td bgcolor="#F9FCFE">{$stat[s1]}</td>
+</tr>
+</table>
+</div>
+<br/>
+<div class="px14">&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="selectstar" value="0" id="ss_0" {if $star==0} checked{/if} onclick="load_comment('1&star=0');"/> <span {if $star==0} class="f_b"{/if}>全部({$items})</span>&nbsp;&nbsp;
+<input type="radio" name="selectstar" value="3" id="ss_3" {if $star==3} checked{/if} onclick="load_comment('1&star=3');"/> <span {if $star==3} class="f_b"{/if}>好评({$stat[s3]})</span>&nbsp;&nbsp;
+<input type="radio" name="selectstar" value="2" id="ss_2" {if $star==2} checked{/if} onclick="load_comment('1&star=2');"/> <span {if $star==2} class="f_b"{/if}>中评({$stat[s2]})</span>&nbsp;&nbsp;
+<input type="radio" name="selectstar" value="1" id="ss_1" {if $star==1} checked{/if} onclick="load_comment('1&star=1');"/> <span {if $star==1} class="f_b"{/if}>差评({$stat[s1]})</span>&nbsp;&nbsp;
+</div>
+<br/>
+{if $lists}
+{loop $lists $k $v}
+<div class="list-img">
+<ul>
+<li><span class="f_r">{$STARS[$v[seller_star]]}</span><strong>{hide_name($v[buyer])}</strong></li>
+<li><span>{$v[addtime]}</span></li>
+</ul>
+</div>
+<div class="content" id="c_{$v[itemid]}">{if $v[seller_comment]}{nl2br($v[seller_comment])}{else}买家没有发表评价内容{/if}
+{if $v[buyer_reply]}
+<br/><span style="color:blue;">卖家</span> {$v[replytime]} 回复：<br/> {nl2br($v[buyer_reply])}
+</div>
+{/if}
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="list-empty">暂无评价</div>
+{/if}

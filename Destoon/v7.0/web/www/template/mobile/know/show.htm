@@ -1,0 +1,76 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('{if $could_answer}<a href=&#34;{$MODULE[2][mobile]}{$DT[file_my]}?mid={$moduleid}&action=add&job=answer&itemid={$itemid}&#34; rel=&#34;external&#34;><span>我来回答</span></a>|{/if}<a href=&#34;{$MURL}{$DT[file_my]}?mid={$moduleid}&action=add&cid={$catid}&#34; rel=&#34;external&#34;><span>我要提问</span></a>|<a href=&#34;{DT_MOB}api/share.php?mid={$moduleid}&itemid={$itemid}&#34; data-transition=&#34;slideup&#34;><span>分享好友</span></a>|<a href=&#34;{$MOD[mobile]}&#34; data-direction=&#34;reverse&#34;><span>{$MOD[name]}首页</span></a>|<a href=&#34;{DT_MOB}channel.php&#34; data-direction=&#34;reverse&#34;><span>频道列表</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{if $MOD[hits]}关注:{$hits}&nbsp;&nbsp;{/if}答案:{$answer}&nbsp;&nbsp;悬赏:{$credit}</div>
+	{if $process == 1 || $process == 2}
+	<div class="info" style="padding-top:16px;">离问题结束还有{secondstodate($totime-$DT_TIME)}</div>
+	{elseif $process == 3}
+	<div class="info" style="padding-top:16px;">解决时间 {timetodate($updatetime, 5)}</div>
+	{/if}
+	{if $page == 1}
+	<div class="list-user">
+	<img src="{useravatar($hidden ? '' : $username)}" width="32" height="32"/>
+	<ul>
+	<li><span>{$PROCESS[$process]}</span>{if $hidden}匿名{else}{$passport}{/if}</li>
+	<li><em>{$editdate}</em></li>
+	</ul>
+	</div>
+	<div class="content">
+	{$content}
+	{if $addition}
+	<strong>问题补充：</strong><br/>
+	{nl2br($addition)}
+	{/if}
+	</div>
+	<div class="head bd-b"><strong>最佳答案</strong></div>
+	{if $user_status == 3 && $best}
+	<div class="list-user">
+	<img src="{useravatar($best['hidden'] ? '' : $best['username'])}" width="32" height="32"/>
+	<ul>
+	<li><span>{if $expert}专家{/if}</span>{if $best[hidden]}匿名{else}{$best[passport]}{/if}</li>
+	<li><em>{timetodate($best[addtime], 5)}</em></li>
+	</ul>
+	</div>
+	{/if}
+	<div class="content">
+	{if $best}
+		{if $user_status == 3}
+			{nl2br($best[content])}
+		{else}
+			{template 'content', 'chip'}
+		{/if}
+	{if $MOD[fee_award]}
+	<div class="award"><a href="{$MODULE[2][mobile]}award.php?mid={$moduleid}&itemid={$itemid}" rel="external"><div>打赏</div></a></div>
+	{/if}
+	{else}
+	暂无最佳答案{if $could_answer}&nbsp;&nbsp;&nbsp;&nbsp;<a href="{$MODULE[2][mobile]}{$DT[file_my]}?mid={$moduleid}&action=add&job=answer&itemid={$itemid}" rel="external" class="b">我来回答</a>{/if}
+	{/if}
+	</div>
+	{/if}
+	{if $answers}
+	<div class="head bd-b"><strong>全部回答</strong></div>	
+	{loop $answers $k $v}
+	<div class="list-user">
+	<img src="{useravatar($v['hidden'] ? '' : $v['username'])}" width="32" height="32"/>
+	<ul>
+	<li><span>{$v[floor]}楼</span>{if $v[hidden]}匿名{else}{if $v[username]}{$v[passport]}{else}{ip2area($item[ip])}访客{/if}{/if}</li>
+	<li><em>{timetodate($v[addtime], 5)}</em></li>
+	</ul>
+	</div>
+	<div class="content">{$v[content]}</div>
+	{/loop}
+	{/if}
+</div>
+{template 'footer'}

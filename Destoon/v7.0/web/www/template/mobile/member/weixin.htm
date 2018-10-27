@@ -1,0 +1,47 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">微信关注</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $W}
+<div class="list-img">
+<img src="{$W[headimgurl]}" width="60" height="60" alt="" onerror="{DT_PATH}api/avatar/default.jpg';" class="img-circle"/>
+<ul>
+<li><span class="f_r">已绑定</span><strong>{$W[nickname]}</strong></li>
+<li><em>上次访问：{timetodate($W[visittime], 5)}</em></li>
+</ul>
+</div>
+{else}
+<div class="list-img">
+<img src="{DT_PATH}api/avatar/default.jpg" width="60" height="60" alt="" class="img-circle"/>
+<ul>
+<li><span class="f_r">待绑定</span><strong>微信昵称</strong></li>
+<li><em>N/A</em></li>
+</ul>
+</div>
+{/if}
+<div class="main content t_c">
+{if $W}
+<center><img src="{DT_PATH}api/weixin/qrcode.php" width="150" height="150" style="margin:20px;"/></center>
+{if $DT_MOB[browser] == 'weixin'}
+长按识别上图二维码，进入公众号
+{else}
+扫一扫上图二维码，进入公众号
+{/if}
+{else}
+<center><img src="{DT_PATH}api/weixin/qrcode_bind.php?auth={$auth}" width="150" height="150" style="margin:20px;"/></center>
+{if $DT_MOB[browser] == 'weixin'}
+长按识别上图二维码，添加关注并绑定
+{else}
+扫一扫上图二维码，添加关注并绑定
+{/if}
+{/if}
+<br/>
+<br/>
+</div>
+{template 'footer', 'member'}

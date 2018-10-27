@@ -1,0 +1,20 @@
+<table cellpadding="3" cellspacing="3" width="100%">
+{loop $tags $t}
+	<tr>
+		<td width="200" align="left">&nbsp;<a href="{$t[linkurl]}" target="_blank" title="{$t[truename]}">{$t[truename]}({if $t[gender]==1}男{else}女{/if})</a></td>
+		<td align="left">{$t[catname]}</td>
+		<td width="100" align="center">
+		{if $t[minsalary] && $t[maxsalary]}
+			{$t[minsalary]}-{$t[maxsalary]}元/月
+		{elseif $t[minsalary]}
+			{$t[minsalary]}元/月以上
+		{elseif $t[maxsalary]}
+			{$t[maxsalary]}元/月以内
+		{else}
+			面议
+		{/if}
+		</td>
+		<td width="80" align="center">{area_pos($t[areaid], '', 1)}</td>
+	</tr>
+{/loop}	
+</table>

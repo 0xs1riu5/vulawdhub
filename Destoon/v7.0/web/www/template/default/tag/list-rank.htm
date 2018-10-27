@@ -1,0 +1,6 @@
+<ul>
+{loop $tags $i $t}
+{php $n=$i+1;}
+<li>{if $key}<span class="f_r">{$t[$key]}</span>{/if}{if $n>3}<i>{$n}</i>{else}<em>{$n}</em>{/if}<a href="{$t[linkurl]}"{if $target} target="{$target}"{/if}{if $class} class="{$class}"{/if} title="{$t[alt]}">{$t[title]}</a></li>
+{/loop}
+</ul>

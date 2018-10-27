@@ -1,0 +1,11 @@
+<table width="100%" cellspacing="0">
+{if $CATALOG}
+{loop $CATALOG $i $c}
+{if $i%$cols==0}<tr>{/if}
+<td width="{$precent}%"><a href="{$MOD[linkurl]}{$c[linkurl]}" target="_blank"><span>{set_style($c[catname], $c[style])}</span></a></td>
+{if $i%$cols==$cols-1}</tr>{/if}
+{/loop}
+{else}
+<tr><td>没有拼音字母 <strong>{$letter}</strong> 开头的类目</td></tr>
+{/if}
+</table>

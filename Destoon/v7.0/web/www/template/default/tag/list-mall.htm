@@ -1,0 +1,31 @@
+{loop $tags $k $t}
+<div class="list" id="item_{$t[itemid]}">
+	<table>
+	<tr align="center">
+		<td width="26"><input type="checkbox" id="check_{$t[itemid]}" name="itemid[]" value="{$t[itemid]}" onclick="sell_tip(this, {$t[itemid]});"/></td>
+		<td width="90"><div><a href="{$t[linkurl]}" target="_blank"><img src="{$t[thumb]}" width="80" height="80" alt="{$t[alt]}" onmouseover="img_tip(this, this.src);" onmouseout="img_tip(this, '');"/></a></div></td>
+		<td width="10"> </td>
+		<td align="left">
+			<ul>
+			<li><a href="{$t[linkurl]}" target="_blank"><strong class="px14">{$t[title]}</strong></a></li>
+			<li style="padding:6px 0;">{if $t[vip]}<img src="{DT_SKIN}image/vip_{$t[vip]}.gif" alt="{VIP}" title="{VIP}:{$t[vip]}级" align="absmiddle"/> {/if}<a href="{userurl($t[username])}" target="_blank">{$t[company]}</a></li>
+			</ul>
+		</td>
+		<td class="list_price">{$DT[money_sign]}<strong>{$t[price]}</strong></td>
+		<td width="120">
+			{if $t[username] && $DT[im_web]}{im_web($t[username].'&mid='.$moduleid.'&itemid='.$t[itemid])}&nbsp;{/if}
+			{if $t[qq] && $DT[im_qq]}{im_qq($t[qq])}&nbsp;{/if}
+			{if $t[wx] && $DT[im_wx]}{im_wx($t[wx], $t[username])}&nbsp;{/if}
+			{if $t[ali] && $DT[im_ali]}{im_ali($t[ali])}&nbsp;{/if}
+			{if $t[skype] && $DT[im_skype]}{im_skype($t[skype])}&nbsp;{/if}		
+		</td>
+		<td class="list_count">
+		总共成交{$t[orders]}笔<br/>
+		<a href="{$t[linkurl]}#comment" target="_blank"><span>{$t[comments]}条评价</span></a>
+		</td>
+		<td width="120"><a href="{$MODULE[2][linkurl]}cart.php?mid={$moduleid}&itemid={$t[itemid]}" target="_blank"><img src="{DT_SKIN}image/addcart.gif" title="加入购物车" style="margin-top:10px;border:none;"/></a></td>
+	</tr>
+	</table>
+</div>
+{/loop}		
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

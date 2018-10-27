@@ -1,0 +1,48 @@
+{template 'header'}
+{if $MOD[page_irec]}
+<div class="m o_h">
+	<div class="head-txt"><span><a href="{$MODULE[2][linkurl]}grade.php" target="_blank">加入<i>&gt;</i></a></span><strong>名企推荐</strong></div>
+	<div class="list-img list0"><!--{tag("moduleid=$moduleid&condition=catids<>'' and thumb<>'' and level>0&areaid=$cityid&order=vip desc&width=180&height=180&lazy=$lazy&pagesize=".$MOD[page_irec]."&template=list-thumb")}--></div>
+</div>
+{/if}
+<div class="m m3">
+	<div class="m3l o_h">
+		<div class="head-txt"><strong>按地区浏览</strong></div>
+		<div class="list-area">
+			{php $mainarea = get_mainarea(0)}
+			<ul>
+			{loop $mainarea $k $v}
+			<li><a href="{$MOD[linkurl]}{rewrite('search.php?areaid='.$v['areaid'])}">{$v[areaname]}</a></li>
+			{/loop}
+			</ul>
+			<div class="c_b"></div>
+		</div>
+		<div class="head-txt"><strong>按行业浏览</strong></div>
+		<div class="list-cate">
+			{php $mid = $moduleid;}
+			{template 'catalog', 'chip'}
+		</div>
+	</div>
+	<div class="m3r">
+		{if $MOD[page_ivip]}
+		<div class="head-sub"><span><a href="{$MODULE[2][linkurl]}grade.php" target="_blank">加入<i>&gt;</i></a></span><strong>最新{VIP}</strong></div>
+		<div class="list-txt">
+		<!--{tag("moduleid=$moduleid&condition=vip>0 and catids<>''&areaid=$cityid&pagesize=".$MOD[page_ivip]."&order=fromtime desc&template=list-com")}-->
+		</div>
+		{/if}
+		{if $MOD[page_inew]}
+		<div class="head-sub"><span><a href="{$MODULE[2][linkurl]}{$DT[file_register]}" target="_blank">注册<i>&gt;</i></a></span><strong>最新加入</strong></div>
+		<div class="list-txt">
+		<!--{tag("moduleid=$moduleid&condition=groupid>5 and catids<>''&areaid=$cityid&pagesize=".$MOD[page_inew]."&order=userid desc&template=list-com")}-->
+		</div>
+		{/if}
+		{if $MOD[page_inews]}
+		<div class="head-sub"><span><a href="{$MOD[linkurl]}{rewrite('news.php?page=1')}">更多<i>&gt;</i></a></span><strong>企业新闻</strong></div>
+		<div class="list-txt">
+		<!--{tag("table=news&condition=status=3 and level>0&pagesize=".$MOD[page_inews]."&datetype=2&order=addtime desc&target=_blank")}-->
+		</div>
+		{/if}
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

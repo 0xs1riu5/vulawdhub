@@ -1,0 +1,27 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">投递简历</div>
+<div class="head-bar-right">
+<a href="{$back_link}" data-transition="slideup" data-direction="reverse"><span>取消</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-form">
+<form method="post" action="{$MOD[mobile]}apply.php" id="dform">
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<p>选择简历</p>
+{loop $lists $k $v}
+<div>
+<input type="radio" name="resumeid" value="{$v[itemid]}"{if $k==0} checked{/if}/> &nbsp;&nbsp; <a href="{$v[linkurl]}" class="b">{$v[title]}</a>
+</div>
+{/loop}
+<div class="blank-16"></div>
+<input type="submit" name="submit" class="btn-green" value="投 递"/>
+<div class="blank-32"></div>
+</div>
+{template 'footer'}

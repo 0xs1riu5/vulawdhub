@@ -1,0 +1,117 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav"><div><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></div><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20 bd-t"></div>
+</div>
+<div class="m">
+	<table width="100%">
+	<tr>
+	<td valign="top">
+		<table width="100%">
+		<tr>
+		<td colspan="3"><h1 class="title_trade" id="title">{$title}</h1></td>
+		</tr>
+		<tr>
+		<td width="330" valign="top">
+			<div id="mid_pos"></div>
+			<div id="mid_div" onmouseover="SAlbum();" onmouseout="HAlbum();" onclick="PAlbum(Dd('mid_pic'));">
+			<img src="{$albums[0]}" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
+			</div>
+			<div class="b10"></div>
+			<div>
+			{loop $thumbs $k $v}<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>{/loop}
+			</div>
+			<div class="b10"></div>
+			<div onclick="PAlbum(Dd('mid_pic'));" class="c_b t_c c_p"><img src="{DT_SKIN}image/ico_zoom.gif" width="16" height="16" align="absmiddle"/> 点击图片查看原图</div>
+		</td>
+		<td width="16">&nbsp;</td>
+		<td valign="top">
+			<div id="big_div" style="display:none;"><img src="" id="big_pic"/></div>		
+			<table width="100%" cellpadding="5" cellspacing="5">
+			{if $n1 && $v1}
+			<tr>
+			<td>{$n1}：</td>
+			<td>{$v1}</td>
+			</tr>
+			{/if}
+			{if $n2 && $v2}
+			<tr>
+			<td>{$n2}：</td>
+			<td>{$v2}</td>
+			</tr>
+			{/if}
+			{if $n3 && $v3}
+			<tr>
+			<td>{$n3}：</td>
+			<td>{$v3}</td>
+			</tr>
+			{/if}
+			<tr>
+			<td>需求数量：</td>
+			<td>{$amount}</td>
+			</tr>
+			<tr>
+			<td>价格要求：</td>
+			<td class="f_b f_orange">{$price}</td>
+			</tr>
+			<tr>
+			<td>包装要求：</td>
+			<td>{$pack}</td>
+			</tr>
+			<tr>
+			<td>所在地：</td>
+			<td>{area_pos($areaid, '')}</td>
+			</tr>
+			<tr>
+			<td>有效期至：</td>
+			<td>{if $todate}{$todate}{else}长期有效{/if}{if $expired} <span class="f_red">[已过期]</span>{/if}</td>
+			</tr>
+			<tr>
+			<td width="80">最后更新：</td>
+			<td>{$editdate}</td>
+			</tr>
+			{if $MOD[hits]}
+			<tr>
+			<td>浏览次数：</td>
+			<td><span id="hits">{$hits}</span></td>
+			</tr>
+			{/if}
+			{if $username && !$expired}
+			<tr>
+			<td colspan="2"><img src="{DT_SKIN}image/btn_price.gif" alt="报价" class="c_p" onclick="Go('{$MOD[linkurl]}{rewrite('price.php?itemid='.$itemid)}');"/></td>
+			</tr>
+			{/if}
+			</table>
+		</td>
+		</tr>
+	</table>
+	</td>
+	<td width="16">&nbsp;</td>
+	<td width="300" valign="top">		
+		<div class="contact_head">公司基本资料信息</div>
+		<div class="contact_body" id="contact">{template 'contact', 'chip'}</div>
+		{if !$username}
+		<br/>
+		&nbsp;<strong class="f_red">注意</strong>:发布人未在本站注册，建议优先选择<a href="{$MODULE[2][linkurl]}grade.php"><strong>{VIP}会员</strong></a>
+		{/if}
+	</td>
+	</tr>
+	</table>
+</div>
+
+<div class="m">
+	<div class="head-txt"><strong>详细说明</strong></div>
+	{if $CP}{template 'property_show', 'chip'}{/if}
+	<div class="content c_b" id="content">{$content}</div>
+	{if $MOD[fee_award]}
+	<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+	{/if}
+	<div class="head-txt"><span><a href="{$MOD[linkurl]}{$CAT[linkurl]}">更多<i>&gt;</i></a></span><strong>同类{$MOD[name]}</strong></div>
+	<div class="list-thumb"><!--{tag("moduleid=$moduleid&length=20&condition=status=3 and thumb<>''&catid=$catid&areaid=$cityid&pagesize=8&order=edittime desc&width=100&height=100&cols=8&template=thumb-table", -2)}--></div>
+	{template 'comment', 'chip'}
+</div>
+
+<script type="text/javascript" src="{DT_STATIC}file/script/album.js"></script>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{template 'footer'}

@@ -1,0 +1,28 @@
+{template 'header'}
+<div class="m">
+	<div class="nav">
+		{if $lists}<div><a href="?action=clear" onclick="return confirm('确定要清空所有浏览历史吗？');" class="b">清空</a></div>{/if}
+		<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> 浏览历史
+	</div>
+	<div class="b20 bd-t"></div>
+	{if $lists}
+	{loop $lists $k $tags}
+	<div class="head-txt"><span><a href="?action=clear&date={$k}" onclick="return confirm('确定要删除{$k}浏览历史吗？');" class="b">删除</a></span><strong>{view_txt($k)}</strong></div>
+	<div class="list-view">
+		{loop $tags $i $t}
+		<div>
+		<a href="{$t[linkurl]}" title="{timetodate($t[lasttime], 5)}" target="_blank"><img src="{$t[thumb]}" width="180" height="180" alt=""/></a>
+		<ul>
+		<li><a href="{$t[linkurl]}" title="{$t[alt]}" target="_blank">{$t[title]}</a></li>
+		<li><a href="?action=clear&date={$k}&itemid={$t[itemid]}" onclick="return confirm('确定要删除本条浏览历史吗？');" class="b"><i>x</i></a><span class="f_price">{$DT[money_sign]}{$t[price]}</span></li>
+		</ul>
+		</div>
+		{/loop}
+	</div>
+	{/loop}
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+	{else}
+		<div class="list-view-msg">您的 <span class="f_orange">浏览历史</span> 还是空的，赶快行动吧！马上去 <a href="{$MOD[linkurl]}" class="b">挑选商品</a></div>
+	{/if}
+</div>
+{template 'footer'}

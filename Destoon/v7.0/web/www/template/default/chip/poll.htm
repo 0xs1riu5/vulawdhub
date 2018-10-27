@@ -1,0 +1,25 @@
+<div class="poll_show">
+<table cellpadding="16" cellspacing="1" width="100%">
+{loop $polls $i $v}
+{if $i%$cols==0}<tr>{/if}
+<td width="{$percent}" title="{$v[introduce]}">
+{if $v[thumb]}
+<div>{if $v[linkurl]}<a href="{$v[linkurl]}" target="_blank">{/if}<img src="{$v[thumb]}" width="{$vhumb_width}" height="{$vhumb_height}" alt="{$v[title]}" class="poll_img"/>{if $v[linkurl]}</a>{/if}</div>
+{/if}
+<ul>
+<li title="{$v[title]}">{if $v[linkurl]}<a href="{$v[linkurl]}" target="_blank">{/if}<strong>{set_style($v[title], $v[style])}</strong>{if $v[linkurl]}</a>{/if}</li>
+<li><span class="f_red">{$v[polls]}</span>票</li>
+<li>
+{if in_array($v[itemid], $votes)}
+<img src="{DT_SKIN}image/btn_poll_2.gif" alt="已投票"/>
+{else}
+<img src="{DT_SKIN}image/btn_poll_1.gif" alt="投一票" class="c_p" onclick="Poll({$v[itemid]});"/>
+{/if}
+</li>
+</ul>
+</td>
+{if $i%$cols==($cols-1)}</tr>{/if}
+{/loop}
+</table>
+</div>
+{if $pages}<div class="pages">{$pages}</div>{/if}

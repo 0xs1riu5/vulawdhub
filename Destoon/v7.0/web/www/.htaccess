@@ -1,0 +1,17 @@
+# Destoon B2B Rewrite Rules
+ErrorDocument 404 /404.php
+RewriteEngine On
+RewriteBase /
+RewriteRule ^(.*)\.(asp|aspx|asa|asax|dll|jsp|cgi|fcgi|pl)(.*)$ /404.php
+RewriteRule ^(admin|cache|file|include|lang|module|skin|template)/(.*)\.php(.*)$ /404.php
+RewriteRule ^(.*)-htm-(.*)$ $1.php?$2
+RewriteRule ^(.*)/show-([0-9]+)([\-])?([0-9]+)?\.html$ $1/show.php?itemid=$2&page=$4
+RewriteRule ^(.*)/list-([0-9]+)([\-])?([0-9]+)?\.html$ $1/list.php?catid=$2&page=$4
+RewriteRule ^(.*)/([A-za-z0-9_\-]+)-c([0-9]+)-([0-9]+)\.html$ $1/list.php?catid=$3&catdir=$2&page=$4
+RewriteRule ^(.*)/show/([0-9]+)/([0-9]+)?([/])?$ $1/show.php?itemid=$2&page=$3
+RewriteRule ^(.*)/list/([0-9]+)/([0-9]+)?([/])?$ $1/list.php?catid=$2&page=$3
+RewriteRule ^(.*)/([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+)\.html$ $1/index.php?moduleid=$2&catid=$3&itemid=$4&page=$5
+RewriteRule ^(.*)/([a-z]+)/(.*)\.shtml$ $1/$2/index.php?rewrite=$3
+RewriteRule ^(com)/([a-z0-9_\-]+)/([a-z]+)/(.*)\.html$ index.php?homepage=$2&file=$3&rewrite=$4
+RewriteRule ^(com)/([a-z0-9_\-]+)/([a-z]+)([/])?$ index.php?homepage=$2&file=$3
+RewriteRule ^(com)/([a-z0-9_\-]+)([/])?$ index.php?homepage=$2

@@ -1,0 +1,58 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$MOD[name]}专家</div>
+<div class="head-bar-right">
+{if $itemid}
+<a href="{$MODULE[2][mobile]}{$DT[file_my]}?mid={$moduleid}&action=add&askto={$username}" rel="external"><span>提问</span></a>
+{else}
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $itemid}
+	<div class="list-img">
+	<img src="{useravatar($username, 'large')}" width="60" height="60" alt=""/>
+	<ul>
+	<li><em class="f_r">{$passport}</em><a href="{$MOD[mobile]}{rewrite('expert.php?itemid='.$v['itemid'])}"><strong>{$title}</strong></a></li>
+	<li><span>{$major}</span></li>
+	</ul>
+	</div>
+	<div class="main">
+		<div class="content">
+			被提问：{$ask}<br/>
+			人气：{$hits}<br/>
+			回答：{$answer}<br/>
+			被采纳：{$best}<br/>
+			采纳率：{$rate}<br/>
+			{$content}
+			<div class="blank-35"></div>
+			{if $DT[im_web]}		
+			<input type="button" value="在线交谈" class="btn-green" onclick="Go('{$MODULE[2][mobile]}chat.php?touser={$username}');"/>
+			{else}
+			<input type="button" value="发送信件" class="btn" onclick="Go('{$MODULE[2][mobile]}message.php?action=send&touser={$username}');"/>
+			{/if}
+			<div class="blank-35"></div>
+		</div>
+	</div>
+{else}
+	{if $lists}
+	{loop $lists $v}
+	<div class="list-img">
+	<a href="{$MOD[mobile]}{rewrite('expert.php?itemid='.$v['itemid'])}"><img src="{useravatar($v[username], 'large')}" width="60" height="60" alt=""/></a>
+	<ul>
+	<li><em class="f_r">{$v[answer]}回答</em><a href="{$MOD[mobile]}{rewrite('expert.php?itemid='.$v['itemid'])}"><strong>{$v[title]}</strong></a></li>
+	<li><span>{$v[major]}</span></li>
+	</ul>
+	</div>
+	{/loop}
+	{else}
+	{template 'empty', 'chip'}
+	{/if}
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{template 'footer'}

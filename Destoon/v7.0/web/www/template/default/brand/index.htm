@@ -1,0 +1,33 @@
+{template 'header'}
+{if $MOD[page_irec]}
+<div class="m">
+	<div class="head-txt"><span>{loop $maincat $k $v}{if $k<10}{if $k} &nbsp;|&nbsp; {/if}<a href="{$MOD[linkurl]}{$v[linkurl]}">{$v[catname]}</a>{/if}{/loop}</span><strong>推荐{$MOD[name]}</strong></div>
+	<div class="list-img brand-list1"><!--{tag("moduleid=$moduleid&condition=status=3 and level>0&areaid=$cityid&order=".$MOD[order]."&width=180&height=60&lazy=$lazy&pagesize=".$MOD[page_irec]."&length=0&template=list-thumb")}--></div>
+</div>
+{/if}
+<div class="m m3">
+	<div class="m3l">
+		{if $MOD[page_icat]}
+		{loop $maincat $i $c}
+		<div class="head-txt"><span><a href="{$MOD[linkurl]}{$c[linkurl]}">更多<i>&gt;</i></a></span><strong>{$c[catname]}</strong></div>
+		<div class="brand-list2"><!--{tag("moduleid=$moduleid&condition=status=3&catid=".$c[catid]."&areaid=$cityid&order=".$MOD[order]."&width=150&height=50&lazy=$lazy&pagesize=".$MOD[page_icat])}--></div>
+		{/loop}
+		{/if}
+	</div>
+	<div class="m3r">
+		<div class="head-sub"><strong>按地区浏览</strong></div>
+		<div class="list-area4">
+		{php $mainarea = get_mainarea(0)}
+		<ul>
+		{loop $mainarea $k $v}
+		<li><a href="{$MOD[linkurl]}{rewrite('search.php?areaid='.$v['areaid'])}">{$v[areaname]}</a></li>
+		{/loop}
+		</ul>
+		<div class="c_b"></div>
+		</div>
+		<div class="head-sub"><strong>关注排行</strong></div>
+		<div class="list-rank"><!--{tag("moduleid=$moduleid&condition=status=3 and addtime>$today_endtime-18000*86400&areaid=$cityid&order=hits desc&key=hits&pagesize=9&template=list-rank")}--></div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

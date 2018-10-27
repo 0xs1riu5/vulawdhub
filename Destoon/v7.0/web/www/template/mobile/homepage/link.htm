@@ -1,0 +1,21 @@
+{template 'header', $template}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $lists}
+<ul class="list-txt">
+{loop $lists $v}
+<li><a href="{$v[linkurl]}" rel="external" target="_blank">{$v[title]}</a></li>
+{/loop}
+</ul>
+{else}
+{template 'chip-empty', 'mobile'}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'footer', $template}

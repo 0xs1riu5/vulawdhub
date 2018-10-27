@@ -1,0 +1,167 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="add"><a href="?mid={$mid}&action=add"><span>添加模板</span></a></td>
+<td class="tab" id="s3"><a href="?mid={$mid}&action=index"><span>运费模板</span></a></td>
+<td class="tab"><a href="{$DT[file_my]}?mid={$mid}"><span>商品管理</span></a></td>
+</tr>
+</table>
+</div>
+{if $action=='add' || $action == 'edit'}
+<form method="post" action="?" id="dform" onsubmit="return check();">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+
+<tr>
+<td class="tl"><span class="f_red">*</span> 模板名称</td>
+<td class="tr"><input name="post[title]" type="text" id="title" size="20" value="{$title}"/> <span id="dtitle" class="f_red"></span></td>
+</tr>
+
+<tr>
+<td class="tl"><span class="f_red">*</span> 快递名称</td>
+<td class="tr"><input name="post[express]" type="text" id="express" size="20" value="{$express}" /> <span id="dexpress" class="f_red"></span></td>
+</tr>
+
+<tr>
+<td class="tl">默认运费</td>
+<td class="tr"><input name="post[fee_start]" type="text" id="fee_start" size="10" value="{$fee_start}" /> <span id="dfee_start" class="f_red"></span></td>
+</tr>
+
+<tr>
+<td class="tl">增加一件商品增加</td>
+<td class="tr"><input name="post[fee_step]" type="text" id="fee_step" size="10" value="{$fee_step}" /> <span id="dfee_step" class="f_red"></span></td>
+</tr>
+
+<tr>
+<td class="tl"> 显示顺序</td>
+<td class="tr f_gray"><input name="post[listorder]" type="text" id="listorder" size="4" value="{$listorder}" /> 数字越小越靠前<span id="dlistorder" class="f_red"></span></td>
+</tr>
+
+<tr>
+<td class="tl"> 备注信息</td>
+<td class="tr"><input name="post[note]" type="text" id="note" size="60" value="{$note}" /> <span id="dnote" class="f_red"></span></td>
+</tr>
+
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" name="submit" value=" 确 定 " class="btn_g"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" name="reset" value=" 重 置 " class="btn"/></td>
+</tr>
+</table>
+</form>
+{load('clear.js')}
+{if $action=='add'}
+<script type="text/javascript">s('mid_{$mid}');m('add');</script>
+{else}
+<script type="text/javascript">s('mid_{$mid}');m('s3');</script>
+{/if}
+{elseif $action == 'area'}
+<script type="text/javascript">
+var _del = 0;
+</script>
+<form method="post" action="?">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<div class="ls">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="60">删</th>
+<th width="80">排序</th>
+<th>地区</th>
+<th>默认运费</th>
+<th>每增加一件商品增加</th>
+<th>所属模板</th>
+<th>快递</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td><input name="post[{$v[itemid]}][delete]" type="checkbox" value="1" onclick="if(this.checked){_del++;}else{_del--;}"/></td>
+<td><input name="post[{$v[itemid]}][listorder]" type="text" size="5" value="{$v[listorder]}" maxlength="3"/></td>
+<td>{area_pos($v[areaid])}</td>
+<td><input name="post[{$v[itemid]}][fee_start]" type="text" size="15" value="{$v[fee_start]}"/></td>
+<td><input name="post[{$v[itemid]}][fee_step]" type="text" size="15" value="{$v[fee_step]}"/></td>
+<td>{$I[title]}</td>
+<td>{$I[express]}</td>
+</tr>
+{/loop}
+<tr align="center">
+<td class="f_red">新增</td>
+<td><input name="post[0][listorder]" type="text" size="5" value="" maxlength="3"/></td>
+<td>{$area_select}</td>
+<td><input name="post[0][fee_start]" type="text" size="15" value=""/></td>
+<td><input name="post[0][fee_step]" type="text" size="15" value=""/></td>
+<td>{$I[title]}</td>
+<td>{$I[express]}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="6"><br/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="submit" value=" 提 交 " onclick="if(_del && !confirm('提示:您选择删除'+_del+'个子模板？确定要删除吗？')) return false;" class="btn_g"/><br/>&nbsp;
+</td>
+</tr>
+</table>
+</div>
+</form>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('mid_{$mid}');m('s3');</script>
+{else}
+<div class="ls">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th>模板名称</th>
+<th>快递</th>
+<th>默认运费</th>
+<th>每增加一件商品增加</th>
+<th>添加时间</th>
+<th>排序</th>
+<th width="80">地区运费</th>
+<th width="40">修改</th>
+<th width="40">删除</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td height="30" align="left">&nbsp;&nbsp{$v[title]}{if $v[note]} <a href="javascript:" onclick="alert('备注:{$v[note]}');"><img src="image/why.gif" title="备注:{$v[note]}"/></a>{/if}</td>
+<td>{$v[express]}</td>
+<td>{$v[fee_start]}</td>
+<td>{$v[fee_step]}</td>
+<td class="f_gray">{$v[adddate]}</td>
+<td class="f_gray">{$v[listorder]}</td>
+<td><a href="?mid={$mid}&action=area&itemid={$v[itemid]}" class="t">地区运费</a> ({$v[items]})</td>
+<td><a href="?mid={$mid}&action=edit&itemid={$v[itemid]}"><img width="16" height="16" src="image/edit.png" title="修改" alt=""/></a></td>
+<td><a href="?mid={$mid}&action=delete&itemid={$v[itemid]}" onclick="if(!confirm('确定要删除吗？此操作将不可撤销')) return false;"><img width="16" height="16" src="image/delete.png" title="删除" alt=""/></a></td>
+</tr>
+{/loop}
+</table>
+</div>
+{if $MG[express_limit]}
+<div class="limit">总共可发 <span class="f_b f_red">{$MG[express_limit]}</span> 条&nbsp;&nbsp;&nbsp;当前已发 <span class="f_b">{$limit_used}</span> 条&nbsp;&nbsp;&nbsp;还可以发 <span class="f_b f_blue">{$limit_free}</span> 条</div>
+{/if}
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('mid_{$mid}');m('s3');</script>
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写模板名称', f);
+		return false;
+	}
+	f = 'express';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写快递名称', f);
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

@@ -1,0 +1,115 @@
+{template 'header'}
+<div class="m">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td width="820"><a href="./" onfocus="this.blur();"><img src="{DT_SKIN}image/spread-banner.png" width="820" height="260"/></a></td>
+<td valign="top">
+<br/><br/>
+<form action="index.php" onsubmit="return check();">
+<div><input type="text" name="kw" id="spread_kw" class="sp_input" value="{if $kw}{$kw}{else}请输入关键词...{/if}" onfocus="if(this.value=='请输入关键词...')this.value='';"/></div>
+<div style="padding:16px 0;"><input type="image" src="{DT_SKIN}image/btn_spread.gif" align="absmiddle"/>&nbsp;&nbsp;<a href="{$MODULE[2][linkurl]}spread.php" class="b">我的推广</a>&nbsp;&nbsp;{if $DT[telephone]}咨询电话：{$DT[telephone]}{/if}</div>
+</form>
+<div class="new_head">最新出价</div>
+<div class="new_body">
+	<div id="spread_up" style="height:75px;overflow:hidden;">
+	<ul>
+		<!--{php $tags=tag("table=spread&condition=status=3 and company<>''&pagesize=20&order=addtime desc&template=null");}-->
+		{loop $tags $t}
+		<li><span class="f_r"><span class="new_price">{$t[price]}{$unit}</span></span><a href="{rewrite('list.php?kw='.urlencode($t['word']))}" class="b">{$t[word]}</a> <span class="f_gray">{$t[company]}</span></li>
+		{/loop}
+	</ul>
+	</div>
+</div>
+</td>
+</tr>
+</table>
+{if $action == 'list'}
+<div class="list_tb">
+<h1>关键词“<a href="{rewrite('list.php?kw='.urlencode($kw))}"><span class="f_red">{$kw}</span></a>”{if $mid}在“<span class="f_red">{$MODULE[$mid][name]}</span>”频道{/if}推广记录&nbsp;&nbsp;&nbsp;&nbsp;<a href="./" class="b">重新选词</a></h1>
+{if $lists}
+<table cellpadding="8" cellspacing="1">
+<tr>
+<th>频道</th>
+<th>公司</th>
+<th>出价</th>
+<th>单位</th>
+<th>开始日期</th>
+<th>结束日期</th>
+<th>投放状态</th>
+<th>申请时间</th>
+<th>信息</th>
+<th>我要推广</th>
+</tr>
+<tr>
+<td colspan="10" height="10"> </td>
+</tr>
+{loop $lists $k $v}
+{if $v[bg]}
+<tr>
+<td colspan="10" class="list_dl">&nbsp;</td>
+</tr>
+{/if}
+<tr align="center">
+<td><a href="{rewrite('list.php?mid='.$v[mid].'kw='.urlencode($kw))}">{$MODULE[$v[mid]][name]}</a></td>
+<td><a href="{userurl($v['username'])}" target="_blank">{$v[company]}</a></td>
+<td class="f_red">{$v[price]}{if $v[currency]=='money'}{$DT[money_unit]}{else}{$DT[credit_unit]}{/if}</td>
+<td>{if $v[currency]=='money'}{$DT[money_unit]}{else}{$DT[credit_unit]}{/if}</td>
+<td>{timetodate($v[fromtime], 3)}</td>
+<td>{timetodate($v[totime], 3)}</td>
+<td>{$v[process]}</td>
+<td class="f_gray">{timetodate($v[addtime], 5)}</td>
+<td><a href="{DT_PATH}api/redirect.php?mid={$v[mid]}&itemid={$v[tid]}" target="_blank">直达</a></td>
+<td><a href="{$MODULE[2][linkurl]}spread.php?action=list&mid={$v[mid]}&kw={urlencode($kw)}" target="_blank" class="b">立即推广</a></td>
+</tr>
+{/loop}
+</table>
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<br/><br/><center><span class="px16 f_gray">暂无推广记录</span><br/><br/><br/><br/><a href="{$MODULE[2][linkurl]}spread.php?action=list&mid={$mid}&kw={urlencode($kw)}"><div class="btn-green">我要推广</div></a></center><br/><br/><br/><br/>
+{/if}
+</div>
+{else}
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td width="380" valign="top">
+<div class="rank_box">
+<div class="rank_head">本周搜索排行</div>
+<div class="rank_list">
+	<!--{tag("table=keyword&condition=status=3 and updatetime>$today_endtime-86400*7&pagesize=10&order=week_search desc&key=week_search&template=list-search_spread")}-->
+</div>
+</div>
+</td>
+<td width="30"></td>
+<td valign="top">
+<div class="rank_box">
+<div class="rank_head">本月搜索排行</div>
+<div class="rank_list">
+	<!--{tag("table=keyword&condition=status=3 and updatetime>$today_endtime-86400*30&pagesize=10&order=month_search desc&key=month_search&template=list-search_spread")}-->
+</div>
+</div>
+</td>
+<td width="30"></td>
+<td width="380" valign="top">
+<div class="rank_box">
+<div class="rank_head">总搜索排行</div>
+<div class="rank_list">
+	<!--{tag("table=keyword&condition=status=3&pagesize=10&order=total_search desc&key=total_search&template=list-search_spread")}-->
+</div>
+</div>
+</td>
+</tr>
+</table>
+{/if}
+</div>
+<script type="text/javascript" src="{DT_STATIC}file/script/marquee.js"></script>
+<script type="text/javascript">
+new dmarquee(25, 30, 2000, 'spread_up');
+function check() {
+	if(Dd('spread_kw').value.length < 1 || Dd('spread_kw').value == '请输入关键词...') {
+		alert('请输入关键词');
+		Dd('spread_kw').focus();
+		return false;
+	}
+}
+</script>
+{template 'footer'}

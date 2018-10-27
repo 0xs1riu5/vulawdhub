@@ -1,0 +1,81 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="promo"><a href="?action=index"><span>领券中心</span></a></td>
+<td class="tab" id="my"><a href="?action=my"><span>我的优惠券</span></a></td>
+</tr>
+</table>
+</div>
+{if $action=='my'}
+<style type="text/css">
+.list-coupon {display:table;margin:20px 0;}
+.list-coupon div {width:240px;height:260px;overflow:hidden;float:left;border:#CCCCCC 1px solid;margin:0 20px 20px 0;text-align:center;}
+.list-coupon h6 {height:80px;line-height:80px;overflow:hidden;margin:0;padding:0;font-weight:normal;font-size:30px;color:#FFFFFF;background:#74D2D4;}
+.list-coupon h6 span {font-size:16px;}
+.list-coupon b {display:block;width:100%;height:40px;line-height:40px;font-weight:normal;color:#FF6600;}
+.list-coupon i {display:block;width:100%;height:40px;line-height:40px;font-style:normal;color:#007AFF;}
+.list-coupon p {height:40px;line-height:40px;margin:20px 0 0 0;background:#7EA7CE;color:#FFFFFF;font-size:14px;}
+.list-coupon div:hover p {background:#74D2D4;}
+</style>
+<div class="list-coupon">
+{loop $lists $k $v}
+<div>
+	<h6><span>{$DT[money_sign]}</span>{$v[price]}</h6>
+	<b>{if $v[cost]}满{$v[cost]}可用{else}不限消费金额{/if}</b>
+	{if $v[seller]}
+	<a href="{userurl($v[seller], 'file=mall')}" target="_blank"><i>店铺：{$v[seller]}</i></a>
+	{else}
+	<i style="color:#FF0000;">全站通用</i>
+	{/if}
+	<i style="color:#666666;">{timetodate($v[fromtime], 3)} - {timetodate($v[totime], 3)}</i>
+	{if $v[oid]}
+	<a href="order.php?action=update&step=detail&itemid={$v[oid]}" target="_blank"><p>已使用</p></a>
+	{elseif $v[fromtime] > $DT_TIME}
+	<p>未开始</p>
+	{elseif $v[totime] < $DT_TIME}
+	<p>已过期</p>
+	{else}
+	<a href="{if $v[seller]}{userurl($v[seller], 'file=mall')}{else}{DT_PATH}{/if}" target="_blank"><p>立即使用</p></a>
+	{/if}
+</div>
+{/loop}
+</div>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('coupon');m('my');</script>
+{else}
+<style type="text/css">
+.list-promo {display:table;margin:20px 0;}
+.list-promo div {width:220px;height:260px;overflow:hidden;float:left;border:#CCCCCC 1px solid;margin:0 20px 20px 0;text-align:center;}
+.list-promo h6 {height:80px;line-height:80px;overflow:hidden;margin:0;padding:0;font-weight:normal;font-size:30px;color:#F23030;}
+.list-promo h6 span {font-size:16px;}
+.list-promo b {display:block;width:100%;height:40px;line-height:40px;font-weight:normal;color:#FF6600;}
+.list-promo i {display:block;width:100%;height:40px;line-height:40px;font-style:normal;color:#007AFF;}
+.list-promo p {height:40px;line-height:40px;margin:20px 0 0 0;background:#F21F4F;color:#FFFFFF;font-size:14px;}
+.list-promo em {display:block;height:40px;line-height:40px;margin:20px 0 0 0;background:#CCCCCC;color:#FFFFFF;font-size:14px;font-style:normal;}
+.list-promo div:hover {border:#1AAD19 1px solid;}
+.list-promo div:hover p {background:#1AAD19;}
+</style>
+<div class="list-promo">
+{loop $lists $k $v}
+<div>
+	<h6><span>{$DT[money_sign]}</span>{$v[price]}</h6>
+	<b>{if $v[cost]}满{$v[cost]}可用{else}不限消费金额{/if}</b>
+	{if $v[username]}
+	<a href="{userurl($v[username], 'file=mall')}" target="_blank"><i>店铺：{$v[username]}</i></a>
+	{else}
+	<i style="color:#FF0000;">全站通用</i>
+	{/if}
+	<i style="color:#999999;">剩余{$v[left]}张</i>
+	{if isset($gets[$v[itemid]])}
+	<em>已领取</em>
+	{else}
+	<a href="?action=get&itemid={$v[itemid]}"><p>立即领取</p></a>
+	{/if}
+</div>
+{/loop}
+</div>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('coupon');m('promo');</script>
+{/if}
+{template 'footer', 'member'}

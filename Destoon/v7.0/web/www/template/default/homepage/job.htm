@@ -1,0 +1,121 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+{if $itemid}
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+	<div class="title">{$title}</div>
+	<div class="info">发布时间：{timetodate($addtime, 3)}{if $MOD[hits]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浏览次数：{$hits}{/if}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{$MENU[$menuid][linkurl]}">返回列表</a></div>
+
+		<div class="content">
+		<table cellpadding="10" cellspacing="1" width="100%" bgcolor="#CCCCCC">
+		<tr bgcolor="#FFFFFF">
+		<td width="80">行业</td>
+		<td width="360">{$CATEGORY[$parentid][catname]}</td>
+		<td width="80">职位</td>
+		<td width="360">{$CATEGORY[$catid][catname]}</td>
+		</tr>
+		<tr bgcolor="#FFFFFF">
+		<td>招聘部门</td>
+		<td>{$department}</td>
+		<td>招聘人数</td>
+		<td>{if $total}{$total}人{else}若干{/if}</td>
+		</tr>
+		<tr bgcolor="#FFFFFF">
+		<td>工作地区</td>
+		<td>{area_pos($areaid, '')}</td>
+		<td>工作性质</td>
+		<td>{$TYPE[$type]}</td>
+		</tr>
+		<tr bgcolor="#FFFFFF">
+		<td>性别要求</td>
+		<td>{$GENDER[$gender]}</td>
+		<td>婚姻要求</td>
+		<td>{$MARRIAGE[$marriage]}</td>
+		</tr>
+		<tr bgcolor="#FFFFFF">
+		<td>学历要求</td>
+		<td>{$EDUCATION[$education]}</td>
+		<td>工作经验</td>
+		<td>{if $experience}{$experience}年以上{else}不限{/if}</td>
+		</tr>
+		<tr bgcolor="#FFFFFF">
+		<td>招聘人数</td>
+		<td>{if $minage && $maxage}{$minage}-{$maxage}岁{elseif $minage}{$minage}岁以上{elseif $maxage}{$maxage}岁以内{else}不限年龄{/if}</td>
+		<td>待遇水平</td>
+		<td>{if $minsalary && $maxsalary}{$minsalary}-{$maxsalary}{$DT[money_unit]}/月{elseif $minsalary}{$minsalary}{$DT[money_unit]}/月以上{elseif $maxsalary}{$maxsalary}{$DT[money_unit]}/月以内{else}面议{/if}</td>
+		</tr>
+		<tr bgcolor="#FFFFFF">
+		<td>更新日期</td>
+		<td>{timetodate($edittime, 3)}</td>
+		<td>有效期至</td>
+		<td>{if $totime}{timetodate($totime, 3)}{else}长期有效{/if}{if $expired}<span class="f_red">[已过期]</span>{/if}</td>
+		</tr>
+		</table>
+		</div>
+	</div>
+	<div class="main_head"><div><strong>职位描述</strong></div></div>
+	<div class="main_body">
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div class="content" id="content">{$content}</div>
+	</div>
+	{if $could_contact}
+	<div class="main_head"><div><strong>联系方式</strong></div></div>
+	<div class="main_body">
+		<div class="px14 lh18">
+		<table width="98%" cellpadding="10" cellspacing="1" align="center">
+		<tr>
+		<td width="100">联 系 人：</td>
+		<td>{$truename}</td>
+		</tr>
+		<tr>
+		<td>联系电话：</td>
+		<td>{if $domain}{$telephone}{else}{anti_spam($telephone)}{/if}</td>
+		</tr>
+		<tr>
+		<td>电子邮件：</td>
+		<td>{if $domain}{$email}{else}{anti_spam($email)}{/if}</td>
+		</tr>
+		{if $mobile}
+		<tr>
+		<td>联系手机：</td>
+		<td>{if $domain}{$mobile}{else}{anti_spam($mobile)}{/if}</td>
+		</tr>
+		{/if}
+		{if $qq}
+		<tr>
+		<td>QQ：</td>
+		<td>{$qq}</td>
+		</tr>
+		{/if}
+		{if $wx}
+		<tr>
+		<td>微信：</td>
+		<td>{$wx}</td>
+		</tr>
+		{/if}
+		</table>
+		</div>
+	</div>
+	{/if}
+	<script type="text/javascript">
+	var content_id = 'content';
+	var img_max_width = {$MOD[max_width]};
+	</script>
+	<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>
+{else}
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+	<table cellpadding="10" cellspacing="1" width="100%" align="center">
+	{loop $lists $k $v}
+	<tr>
+	<td class="px14">&middot; <a href="{$v[linkurl]}">{$v[title]}</a></td>
+	<td align="center">{$v[department]}</td>
+	<td align="center">{if $v[total]}{$v[total]}人{else}若干{/if}</td>
+	<td align="center" width="80" class="f_gray">{timetodate($v[edittime], 3)}</td>
+	</tr>
+	{/loop}
+	</table>
+	<div class="pages">{$pages}</div>
+</div>
+{/if}
+{template 'footer', $template}

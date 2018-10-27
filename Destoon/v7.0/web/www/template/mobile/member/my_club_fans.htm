@@ -1,0 +1,81 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title"{if !$action} onclick="Dsheet('<a href=&#34;?mid={$mid}&#34;><span>我的帖子</span></a>|<a href=&#34;?mid={$mid}&job=group&#34;><span>我的商圈</span></a>|<a href=&#34;?mid={$mid}&job=reply&#34;><span>我的回复</span></a>|<a href=&#34;?mid={$mid}&job=join&#34;><span>加入商圈</span></a>|<a href=&#34;?mid={$mid}&job=fans&#34;><span>粉丝管理</span></a>|<a href=&#34;?mid={$mid}&job=manage&#34;><span>商圈管理</span></a>', '取消');"{/if}>粉丝管理 &#9662;</div>
+<div class="head-bar-right">
+<a href="?mid={$mid}"><span>取消</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+
+<div class="ui-form sch">
+<form action="?">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="job" value="{$job}"/>
+<input type="hidden" name="status" value="{$status}"/>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+</form>
+</div>
+{if $_userid}
+<div class="list-menu">
+	<ul>
+	<a href="?mid={$mid}&job=fans&status=3"><li{if $status==3} class="on"{/if} id="s3">已通过{if !$kw} {$nums[3]}{/if}</li></a>
+	<a href="?mid={$mid}&job=fans&status=2"><li{if $status==2} class="on"{/if} id="s2">审核中{if !$kw} {$nums[2]}{/if}</li></a>
+	<a href="?mid={$mid}&job=fans&status=1"><li{if $status==1} class="on"{/if} id="s1">未通过{if !$kw} {$nums[1]}{/if}</li></a>
+	</ul>
+</div>
+{/if}
+<form method="post">
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<input type="checkbox" name="itemid[]" value="{$v[itemid]}" class="dsn" id="checkbox-{$v[itemid]}"/>
+<a href="{userurl($v[username])}"><img src="{if useravatar($v[username])}{useravatar($v[username])}{else}{DT_MOB}static/img/60x60.png{/if}" width="60" height="60" alt="" onerror="this.src='{DT_MOB}static/img/60x60.png';"/></a>
+<ul>
+<li><em class="check" id="check-{$v[itemid]}"></em><a href="{userurl($v[username])}"><strong>{$v[username]}</strong></a></li>
+<li><span class="f_r">{$v[reason]}</span><span>{$v[adddate]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+<div id="foot-bar" class="dsn">
+	<div class="foot-bar-fix"></div>
+	<div class="foot-bar btns">
+		{if $status == 3}
+		<input type="submit" value=" 取消审核 " class="btn" onclick="this.form.action='?mid={$mid}&job=fans&status={$status}&action=cancel'"/>
+		{elseif $status == 2}
+		<input type="submit" value=" 通过审核 " class="btn" onclick="this.form.action='?mid={$mid}&job=fans&status={$status}&action=check'"/>
+		<input type="submit" value=" 拒绝加入 " class="btn" onclick="this.form.action='?mid={$mid}&job=fans&status={$status}&action=reject'"/>
+		{elseif $status == 1}
+		<input type="submit" value=" 通过审核 " class="btn" onclick="this.form.action='?mid={$mid}&job=fans&status={$status}&action=check'"/>
+		{/if}
+		<input type="submit" name="submit" value="删除选中" class="btn-red" onclick="if(confirm('确定要删除选中{$MOD[name]}吗？')){this.form.action='?mid={$mid}&job=fans&status={$status}&action=delete'}else{return false;}"/>
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+	if($('#foot-bar input').length == 0) $('.check').hide();
+	$('.list-img em').click(function() {
+		var id = $(this).attr('id').replace('check-', '');
+		if($('#checkbox-'+id).attr('checked')) {
+			$('#checkbox-'+id).attr('checked', false);
+			$(this).attr('class', 'check');
+		} else {
+			$('#checkbox-'+id).attr('checked', true);
+			$(this).attr('class', 'checked');
+		}
+		if($('.checked').length > 0) {
+			$('#foot-bar').fadeIn(300);
+		} else {
+			$('#foot-bar').fadeOut(300);
+		}
+	});
+});
+</script>
+{template 'footer', 'member'}

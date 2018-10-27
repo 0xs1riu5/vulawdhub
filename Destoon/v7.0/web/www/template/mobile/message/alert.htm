@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>提示信息{$DT[seo_delimiter]}{$DT[sitename]}</title>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+<script type="text/javascript" src="{DT_STATIC}file/script/config.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+{if $dmessage}alert('{$dmessage}');{/if}
+{if $dforward}
+	{if $dforward == 'goback'}
+		window.history.back();
+	{else}
+		window.location='{$dforward}';
+	{/if}
+{/if}
+{$extend}
+</script>
+</body>
+</html>

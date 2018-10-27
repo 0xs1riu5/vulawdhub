@@ -1,0 +1,26 @@
+<table cellpadding="6" cellspacing="1" width="100%" bgcolor="#DDDDDD">
+<tr align="center" bgcolor="#F4F4F4">
+<td><strong>品名</strong></td>
+{if $P[n1] && $P[v1]}<td><strong>{$P[n1]}</strong></td>{/if}
+{if $P[n2] && $P[v2]}<td><strong>{$P[n2]}</strong></td>{/if}
+{if $P[n3] && $P[v3]}<td><strong>{$P[n3]}</strong></td>{/if}
+<td><strong>价格</strong></td>
+<td><strong>单位</strong></td>
+<td><strong>备注</strong></td>
+<td><strong>地区</strong></td>
+<td><strong>日期</strong></td>
+</tr>
+{loop $lists $t}
+<tr align="center" bgcolor="#FFFFFF">
+<td><a href="{$MOD[linkurl]}{rewrite('price.php?itemid='.$pid)}" target="_blank">{$P[title]}</a></td>
+{if $P[n1] && $P[v1]}<td>{$P[v1]}</td>{/if}
+{if $P[n2] && $P[v2]}<td>{$P[v2]}</td>{/if}
+{if $P[n3] && $P[v3]}<td>{$P[v3]}</td>{/if}
+<td style="color:#FF0000;">{$t[price]}</td>
+<td>{$P[unit]}</td>
+<td title="{$t[note]}">{dsubstr($t[note], 20, '..')}</td>
+<td>{area_pos($t[areaid], '', 2)}</td>
+<td>{timetodate($t[addtime], 3)}</td>
+</tr>
+{/loop}
+</table>

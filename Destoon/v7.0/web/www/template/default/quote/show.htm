@@ -1,0 +1,43 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav"><div><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></div><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20 bd-t"></div>
+</div>
+<div class="m m3">
+	<div class="m3l">
+		<h1 class="title" id="title">{$title}</h1>
+		<div class="info"><span class="f_r"><img src="{DT_SKIN}image/ico-zoomin.png" width="16" height="16" title="放大字体" class="c_p" onclick="fontZoom('+', 'content');"/>&nbsp;&nbsp;<img src="{DT_SKIN}image/ico-zoomout.png" width="16" height="16" title="缩小字体" class="c_p" onclick="fontZoom('-', 'content');"/></span>
+		日期：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;
+		{if $MOD[hits]}浏览：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+		</div>
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div class="content" id="content">{template 'content', 'chip'}</div>
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+		<br/>
+		<div class="t_c"><strong class="f_red">特别提示：</strong>本信息由相关企业自行提供，真实性未证实，仅供参考。请谨慎采用，风险自负。</div>
+		<br/><br/>
+		{if $MOD[fee_award]}
+		<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+		{/if}
+		{template 'comment', 'chip'}
+	</div>
+	<div class="m3r">
+		<div class="head-sub"><strong>相关{$MOD[name]}</strong></div>
+		<div class="list-txt">
+		{if $tag}
+		<!--{tag("moduleid=$moduleid&condition=status=3 and tag='$tag'&areaid=$cityid&pagesize=8&order=".$MOD[order], -2)}-->
+		{else}
+		<!--{tag("moduleid=$moduleid&condition=status=3&catid=$catid&areaid=$cityid&pagesize=8&order=".$MOD[order], -2)}-->
+		{/if}
+		</div>
+		<div class="head-sub"><strong>推荐{$MOD[name]}</strong></div>
+		<div class="list-txt"><!--{tag("moduleid=$moduleid&condition=status=3 and level>0&catid=$catid&areaid=$cityid&order=".$MOD[order]."&pagesize=10")}-->
+		</div>
+		<div class="head-sub"><strong>点击排行</strong></div>
+		<div class="list-rank"><!--{tag("moduleid=$moduleid&condition=status=3 and addtime>$today_endtime-30*86400&catid=$catid&areaid=$cityid&order=hits desc&key=hits&pagesize=9&template=list-rank")}--></div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{template 'footer'}

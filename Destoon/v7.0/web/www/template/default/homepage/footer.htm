@@ -1,0 +1,30 @@
+</td>
+{if $side_pos==1}
+<td width="20" id="split"></td>
+<td width="{$side_width}" valign="top" id="side">{template 'side', $template}</td>
+{/if}
+</tr>
+</table>
+</div>
+<div class="m">
+	<div class="foot" id="foot">
+		<span class="f_r">
+		<a href="{$MODULE[2][linkurl]}">管理入口</a><i>|</i>
+		<a href="javascript:;" onclick="$('html, body').animate({scrollTop:0}, 200);">返回顶部</a>
+		</span>
+		&copy;{timetodate($DT_TIME, 'Y')} {$COM[company]} 版权所有&nbsp;&nbsp;
+		技术支持：<a href="{DT_PATH}" target="_blank">{$DT[sitename]}</a>&nbsp;&nbsp;
+		{if $show_stats}访问量:{$COM[hits]}&nbsp;&nbsp;{/if}
+		{if $COM[icp]} | <a href="http://www.miibeian.gov.cn" target="_blank">{$COM[icp]}</a>{/if}
+		{if $api_stats && $stats}
+		{php include DT_ROOT.'/api/stats/'.$HOME['stats_type'].'/show.inc.php';}
+		{/if}
+	</div>
+</div>
+<script type="text/javascript">Dd('position').innerHTML = Dd('pos_show').innerHTML;</script>
+{if $album_js}<script type="text/javascript" src="{DT_STATIC}file/script/album.js"></script>{/if}
+{if $api_kf && $kf}
+{php include DT_ROOT.'/api/kf/'.$HOME['kf_type'].'/show.inc.php';}
+{/if}
+</body>
+</html>

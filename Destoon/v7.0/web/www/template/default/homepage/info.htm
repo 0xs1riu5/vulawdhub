@@ -1,0 +1,102 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+{if $itemid}
+<div class="main_head"><div><strong>{$title}</strong></div></div>
+<div class="main_body">	
+		<table width="100%" align="center">
+		<tr>
+		<td width="250" valign="top">
+			<div id="mid_pos"></div>
+			<div id="mid_div" onmouseover="SAlbum();" onmouseout="HAlbum();" onclick="PAlbum(Dd('mid_pic'));">
+			<img src="{$albums[0]}" width="240" height="180" id="mid_pic"/><span id="zoomer"></span>
+			</div>
+			<div class="b5"></div>
+			<div>
+			{loop $thumbs $k $v}<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>{/loop}
+			</div>
+			<div class="b5"></div>
+			<div onclick="PAlbum(Dd('mid_pic'));" class="c_b t_c c_p"><img src="{DT_SKIN}image/ico_zoom.gif" width="16" height="16" align="absmiddle"/> 点击图片查看原图</div>
+		</td>
+		<td width="15"> </td>
+		<td valign="top">
+			<div id="big_div" style="display:none;"><img src="" id="big_pic"/></div>
+			<table width="100%" cellpadding="4" cellspacing="4">
+			{if $MOD[hits]}
+			<tr>
+			<td class="f_dblue">浏览次数：</td>
+			<td><span id="hits">{$hits}</span></td>
+			</tr>
+			{/if}
+			{if $n1 && $v1}
+			<tr>
+			<td class="f_dblue">{$n1}：</td>
+			<td>{$v1}</td>
+			</tr>
+			{/if}
+			{if $n2 && $v2}
+			<tr>
+			<td class="f_dblue">{$n2}：</td>
+			<td>{$v2}</td>
+			</tr>
+			{/if}
+			{if $n3 && $v3}
+			<tr>
+			<td class="f_dblue">{$n3}：</td>
+			<td>{$v3}</td>
+			</tr>
+			{/if}
+			<tr>
+			<td class="f_dblue">{$MOD[name]}区域：</td>
+			<td>{area_pos($areaid, '')}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">有效期至：</td>
+			<td>{if $todate}{$todate}{else}长期有效{/if}{if $expired} <span class="f_red">[已过期]</span>{/if}</td>
+			</tr>
+			<tr>
+			<td width="80" class="f_dblue">最后更新：</td>
+			<td>{$editdate}</td>
+			</tr>
+			</table>
+		</td>
+		</tr>
+		</table>
+	</div>
+	<div class="main_head"><div><strong>详细信息</strong></div></div>
+	<div class="main_body">
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div class="content" id="content">{$content}</div>
+	</div>
+	{if $could_comment && in_array($moduleid, explode(',', $EXT['comment_module']))}
+	<div id="comment_div" style="display:;">
+		<div class="main_head"><div><span class="f_r px12">共<span id="comment_count">0</span>条&nbsp;&nbsp;</span><strong><span id="message_title">相关评论</span></strong></div></div>
+		<div class="main_body"><script type="text/javascript">Df('{DT_PATH}api/comment.php?mid={$moduleid}&itemid={$itemid}&proxy={$comment_proxy}', 'id="destoon_comment" style="width:100%;"');</script></div>
+	</div>
+	{/if}
+	<script type="text/javascript">
+	var content_id = 'content';
+	var img_max_width = {$MOD[max_width]};
+	</script>
+	<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>
+{else}
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+	<table cellpadding="10" cellspacing="1" width="100%" align="center">
+	<tr bgcolor="EEEEEE">
+	<th width="100">图片</th>
+	<th>标 题</th>
+	<th width="110">更新时间</th>
+	</tr>
+	{loop $lists $k $v}
+	<tr align="center"{if $k%2==1} bgcolor="#F1F1F1"{/if}>
+	<td height="100"><a href="{$v[linkurl]}"><img src="{imgurl($v[thumb])}" width="80" height="80" alt="" style="border:#C0C0C0 1px solid;"/></a></td>
+	<td align="left" class="lh18" valign="top"><a href="{$v[linkurl]}" class="px14">{$v[title]}</a><br/><span class="f_gray">{$v[introduce]}</span>
+	</td>
+	<td>{timetodate($v[edittime], 3)}</td>
+	</tr>
+	{/loop}
+	</table>
+	<div class="pages">{$pages}</div>
+</div>
+{/if}
+{template 'footer', $template}

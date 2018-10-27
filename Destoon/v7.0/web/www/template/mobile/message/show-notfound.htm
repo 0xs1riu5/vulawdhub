@@ -1,0 +1,35 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback('');" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">信息不存在</div>
+<div class="head-bar-right">
+<a href="{$MOD[mobile]}"><img src="{DT_MOB}static/img/icon-index.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title bd-b">{$head_title}</div>
+	<div class="content">
+	<span id="second" class="f_red f_b"></span> 秒后将自动跳转到<a href="{$MOD[mobile]}" class="b">{$MOD[name]}首页</a>
+	</div>
+</div>
+<script type="text/javascript">
+var i = 30;
+Dd('second').innerHTML = i;
+var interval = window.setInterval(
+	function() {
+		if(i==0) {
+			Go('{if $DT_PC}{$MOD[linkurl]}{else}{$MOD[mobile]}{/if}');
+			clearInterval(interval);
+		} else {
+			Dd('second').innerHTML = i;
+			i--;
+		}
+	}, 
+1000);
+</script>
+{template 'footer'}

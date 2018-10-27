@@ -1,0 +1,5 @@
+{if $tags}<ul>
+{loop $tags $k $t}
+<li><span class="f_r">[{area_pos($t[areaid], '/', 1)}]</span>{if $datetype}[{timetodate($t[$time], $datetype)}]&nbsp;{/if}<a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}">{$t[title]}</a></li>
+{/loop}
+</ul>{/if}

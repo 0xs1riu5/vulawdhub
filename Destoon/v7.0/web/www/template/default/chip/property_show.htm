@@ -1,0 +1,12 @@
+{if $options && $values}
+	<div class="b10"></div>
+	<div class="property">
+	<ul>
+	{loop $options $o}
+	<li title="{nl2br($values[$o[oid]])}">{$o[name]}：{if isset($values[$o[oid]])}{nl2br($values[$o[oid]])}{/if}</li>
+	{/loop}
+	</ul>
+	<div class="c_b"></div>
+	</div>
+	<div class="b10"></div>
+{/if}

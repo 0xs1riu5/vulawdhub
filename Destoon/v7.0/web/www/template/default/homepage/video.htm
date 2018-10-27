@@ -1,0 +1,57 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+{if $itemid}
+	<div class="title">{$title}</div>
+	<div class="info">上传日期：{$adddate}{if $MOD[hits]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;播放次数：{$hits}{/if}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{$MENU[$menuid][linkurl]}">返回列表</a></div>
+	<div class="t_c" style="padding:15px 0 15px 0;">{template 'player', 'chip'}</div>		
+</div>
+	{if $content}
+	<div class="main_head"><div><strong>详细信息</strong></div></div>
+	<div class="main_body">
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div class="content" id="content">{$content}</div>
+	</div>
+	<script type="text/javascript">
+	var content_id = 'content';
+	var img_max_width = {$MOD[max_width]};
+	</script>
+	<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>
+	{/if}
+	{if $could_comment && in_array($moduleid, explode(',', $EXT['comment_module']))}
+	<div id="comment_div" style="display:;">
+		<div class="main_head"><div><span class="f_r px12">共<span id="comment_count">0</span>条&nbsp;&nbsp;</span><strong><span id="message_title">相关评论</span></strong></div></div>
+		<div class="main_body"><script type="text/javascript">Df('{DT_PATH}api/comment.php?mid={$moduleid}&itemid={$itemid}&proxy={$comment_proxy}', 'id="destoon_comment" style="width:100%;"');</script></div>
+	</div>
+	{/if}
+{else}
+	<table cellpadding="10" cellspacing="1" width="100%">
+	{loop $lists $k $v}
+	{if $k%4==0}<tr align="center">{/if}
+	<td valign="top" width="25%">
+	<div class="thumb">
+		<a href="{$v[linkurl]}"><img src="{$v[thumb]}" width="160" height="120" alt="{$v[alt]}" title="{$v[alt]}"/></a>
+		<div><a href="{$v[linkurl]}" title="{$v[alt]}">{$v[title]}</a></div>
+		{if $MOD[hits]}<p>{$v[hits]}播放</p>{/if}
+		<p>{timetodate($v[addtime], 3)}</p>
+	</div>
+	</td>
+	{if $k%4==3}</tr>{/if}
+	{/loop}
+	</table>
+	<div class="pages">{$pages}</div>
+{/if}
+</div>
+{if $itemid && $video_i}
+<script type="text/javascript" src="{DT_STATIC}file/script/player.js"></script>
+<script type="text/javascript">
+var UA = navigator.userAgent.toLowerCase();
+if(UA.match(/(iphone|ipad|ipod|android|mac os)/i)) {
+	if(Dd('player').innerHTML.indexOf('embed')!=-1) {
+		Dd('player').innerHTML = '<div class="player">'+player('{$video_s}', {$video_w}, {$video_h}, {$video_a})+'</div>';
+	}
+}
+</script>
+{/if}
+{template 'footer', $template}

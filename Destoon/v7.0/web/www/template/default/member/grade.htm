@@ -1,0 +1,269 @@
+{template 'header'}
+<div class="m">
+	<h1 class="title">{$DT[sitename]}会员服务一览表</h1>
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr align="center">
+	<th width="{$percent}">服务范围</th>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<th width="{$percent}">{$v[groupname]}</th>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>收费模式</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>{if $v[fee_mode]}<span class="f_red">包年</span>{else}<span class="f_green">免费</span>{/if}</td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>年 费</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>{if $v[fee]}<span class="f_price">{$DT[money_sign]}<strong>{$v[fee]}</strong>{$DT[money_unit]}/年</span>{else}--{/if}</td>
+	{/if}{/loop}
+	</tr>
+	{if $UP}
+	<tr align="center">
+	<td>&nbsp;</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>{if isset($UP[$k])}<input type="button" value="立即升级" class="btn-green" onclick="Go('account.php?action=grade&groupid={$v[groupid]}');"/>{else}&nbsp;{/if}</td>
+	{/if}{/loop}
+	</tr>
+	{/if}
+	<tr align="center">
+	<td>允许发布信息</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td valign="top" class="f_gray">
+	{php $i=0;}
+	{loop $MODULE $k $m}
+		{if in_array($m[moduleid], $v[moduleids])}{if $i++>0} | {/if}<a href="{$m[linkurl]}" target="_blank">{$m[name]}</a>{/if}
+	{/loop}
+	</td>
+	{/if}
+	{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>拥有{VIP}标识 <img src="{DT_SKIN}image/vip.gif" align="absmiddle" alt="{VIP}" title="{VIP}"/></td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[vip]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>信息优先排序</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[vip]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>产品首页推荐</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[vip]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>产品在线销售</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[trade_order]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>信息关键字排名</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[spread]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>拥有公司主页</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[homepage]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>自定义公司主页</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[home]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>自定义公司模板</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[style]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+
+	<tr align="center">
+	<td>客户服务</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[ask]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>商机订阅</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[mail]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>邮件发送</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td><img src="{DT_SKIN}image/{if $v[sendmail]}yes{else}no{/if}.gif"/></td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>收件箱容量</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>
+	{if $v[inbox_limit] == -1}
+	0
+	{elseif $v[inbox_limit] == 0}
+	不限
+	{else}
+	{$v[inbox_limit]}
+	{/if}
+	</td>
+	{/if}{/loop}
+	</tr>
+	
+	<tr align="center">
+	<td>每日可发站内信</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>
+	{if $v[message_limit] == -1}
+	0
+	{elseif $v[message_limit] == 0}
+	不限
+	{else}
+	{$v[message_limit]}
+	{/if}
+	</td>
+	{/if}{/loop}
+	</tr>
+	
+	<tr align="center">
+	<td>每日询盘次数</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>
+	{if $v[inquiry_limit] == -1}
+	0
+	{elseif $v[inquiry_limit] == 0}
+	不限
+	{else}
+	{$v[inquiry_limit]}
+	{/if}
+	</td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>每日报价次数</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>
+	{if $v[price_limit] == -1}
+	0
+	{elseif $v[price_limit] == 0}
+	不限
+	{else}
+	{$v[price_limit]}
+	{/if}
+	</td>
+	{/if}{/loop}
+	</tr>
+	
+	<tr align="center">
+	<td>商友数量数量</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>
+	{if $v[friend_limit] == -1}
+	0
+	{elseif $v[friend_limit] == 0}
+	不限
+	{else}
+	{$v[friend_limit]}
+	{/if}
+	</td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>贸易提醒数量</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>
+	{if $v[alert_limit] == -1}
+	0
+	{elseif $v[alert_limit] == 0}
+	不限
+	{else}
+	{$v[alert_limit]}
+	{/if}
+	</td>
+	{/if}{/loop}
+	</tr>
+
+	<tr align="center">
+	<td>商机收藏数量</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>
+	{if $v[favorite_limit] == -1}
+	0
+	{elseif $v[favorite_limit] == 0}
+	不限
+	{else}
+	{$v[favorite_limit]}
+	{/if}
+	</td>
+	{/if}{/loop}
+	</tr>
+
+	{loop $MODULE $m}
+	{if $m[moduleid] > 4 && !$m[islink] && $m[module] != 'special'}
+	{php $M = cache_read('module-'.$m['moduleid'].'.php');}
+	<tr align="center">
+	<td>{$m[name]}发布数量</td>
+	{loop $GROUPS $k $v}
+	{if $k > 4}
+	<td>
+	{php $limit = intval($M['limit_'.$v['groupid']]);}
+	{if $limit == -1}
+	0
+	{elseif $limit == 0}
+	不限
+	{else}
+	{$limit}
+	{/if}
+	</td>
+	{/if}
+	{/loop}
+	</tr>
+	{/if}
+	{/loop}
+
+	{if $UP}
+	<tr align="center">
+	<td>&nbsp;</td>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<td>{if isset($UP[$k])}<input type="button" value="立即升级" class="btn-green" onclick="Go('account.php?action=grade&groupid={$v[groupid]}');"/>{else}&nbsp;{/if}</td>
+	{/if}{/loop}
+	</tr>
+	{/if}
+
+	<tr align="center">
+	<th width="{$percent}">服务范围</th>
+	{loop $GROUPS $k $v}{if $k > 4}
+	<th width="{$percent}">{$v[groupname]}</th>
+	{/if}{/loop}
+	</tr>
+	</table>
+</div>
+{template 'footer'}

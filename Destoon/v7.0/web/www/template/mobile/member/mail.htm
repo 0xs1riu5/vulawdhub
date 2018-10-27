@@ -1,0 +1,55 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action=='list'}邮件列表{elseif $action=='show'}邮件详情{else}我的订阅{/if}</div>
+<div class="head-bar-right">
+{if $action=='list'}
+<a href="?action=index"><span>订阅</span></a>
+{elseif $action=='show'}
+<a href="?action=list"><span>关闭</span></a>
+{else}
+<a href="?action=list"><span>列表</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action == 'list'}
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><a href="?action=show&itemid={$v[itemid]}"><strong>{$v[title]}</strong></a></li>
+<li><span class="f_r">{$TYPE[$v[typeid]][typename]}</span><span>{$v[adddate]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{elseif $action == 'show'}
+<div class="main">
+	<div class="title"><strong>{$r[title]}</strong></div>
+	<div class="info">{$r[adddate]}</div>
+	<div class="content">{$r[content]}</div>
+</div>
+{else}
+<form method="post" action="?">
+<div class="ui-form">
+<div class="blank-16"></div>
+<div>
+{loop $TYPE $k $v}
+<input type="checkbox" name="typeids[]" value="{$v[typeid]}" id="type_{$v[typeid]}" {if in_array($v[typeid], $mytypeids)}checked{/if}/><label for="type_{$v[typeid]}"> {$v[typename]}</label><br/>
+{/loop}
+</div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" class="btn-green" value="订 阅"/>
+<div class="blank-16"></div>
+<input type="button" class="btn" value="退 订" onclick="Dsheet('<a href=&#34;?action=cancel&#34;><span style=&#34;color:red&#34;>退订</span></a>', '取消', '确定要退订所有订阅吗？');"/>
+<div class="blank-32"></div>
+</div>
+</form>
+{/if}
+{template 'footer', 'member'}

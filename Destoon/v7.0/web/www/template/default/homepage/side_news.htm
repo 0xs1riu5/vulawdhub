@@ -1,0 +1,15 @@
+{if $file != 'news'}
+<div class="side_head"><div><span class="f_r"><a href="{userurl($username, 'file=news', $domain)}"><img src="{DT_STATIC}{$MODULE[4][moduledir]}/image/more.gif" title="更多"/></a></span><strong>{$side_name[$HS]}</strong></div></div>
+<div class="side_body">
+<!--{php $tags=tag("table=news&condition=status=3 and username='$username'&pagesize=".$side_num[$HS]."&order=addtime desc&template=null");}-->
+<ul>
+{if $tags}
+{loop $tags $t}
+<li><a href="{userurl($username, 'file=news&itemid='.$t['itemid'], $domain)}" title="{$t[alt]} ({timetodate($t[addtime], 3)})">{$t[title]}</a></li>
+{/loop}
+{else}
+<li>暂无新闻</li>
+{/if}
+</ul>
+</div>
+{/if}

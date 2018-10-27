@@ -1,0 +1,6 @@
+<ul>
+{loop $tags $t}
+<li><span class="f_r f_gray">{area_pos($t[areaid], '/', 1)}</span><a href="{$t[linkurl]}" target="_blank">{$t[company]}</a></li>
+{/loop}
+</ul>
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

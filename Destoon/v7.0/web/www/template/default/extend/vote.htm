@@ -1,0 +1,66 @@
+{template 'header'}
+<div class="m m1">
+	<div class="m1l">
+		{if $itemid}
+		<h1 class="title">{$title}</h1>
+		<div class="info f_gray"><span class="f_r">票数：{$votes}&nbsp;&nbsp;&nbsp;&nbsp;浏览：{$hits}</span>添加时间：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;有效期：{$fromdate} 至 {$todate}&nbsp;&nbsp;&nbsp;&nbsp;<img src="{DT_STATIC}file/image/process_{get_process($fromtime, $totime)}.gif" align="absmiddle"/></div>
+		<div class="content" id="content">{if $linkto}<a href="{$linkto}" target="_blank" class="b">{$linkto}</a><br/>{/if}{$content}</div>
+		<div class="vote_show">
+		<table cellpadding="6" cellspacing="1" width="100%" bgcolor="#EEEEEE">
+		{loop $V $k $v}
+		<tr bgcolor="#FFFFFF">
+		<td width="20"><div class="vote_show_n">{$v[number]}</div></td>
+		<td>{$v[title]}</td>
+		<td width="260"><div class="vote_show_p"><div class="vote_show_{$v[number]}" style="width:{$v[percent]};"></div></div></td>
+		<td width="80" align="center">{$v[percent]}</td>
+		<td width="80" align="center">{$v[votes]}</td>
+		</tr>
+		{/loop}
+		</table>
+		</div>
+		<div style="padding-left:20px;">{load('vote_'.$itemid.'.htm')}</div>			
+		<script type="text/javascript">
+		$(function(){
+			$('#vote_{$itemid}').attr('target', '_self');
+			$('#vote_title_{$itemid}').hide();
+			$('.btn').hide();
+		});
+		</script>
+		{else}
+		<table cellpadding="16" cellspacing="0" class="tb">
+		<tr>
+		{if !$typeid}<th width="120">类别</th>{/if}
+		<th>标题</th>
+		<th width="120">票数</th>
+		<th width="120">发布时间</th>
+		</tr>
+		{loop $lists $k $v}
+		<tr align="center">
+		{if !$typeid}<td class="px14"><a href="{$url}{list_url($v[typeid])}">{$v[typename]}</a></td>{/if}
+		<td align="left" class="px14"><a href="{$v[linkurl]}">{$v[title]}</a></td>
+		<td class="f_gray">{$v[votes]}</td>
+		<td class="f_gray">{$v[adddate]}</td>
+		</tr>
+		{/loop}
+		</table>
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+		{/if}
+	</div>
+	<div class="m1r side">
+		<ul>
+		<li class="side_li" id="type_0"><a href="{$url}">投票调查</a></li>
+		{loop $_TP[0] $v0}
+		<li class="side_li" id="type_{$v0[typeid]}"><a href="{$url}{list_url($v0[typeid])}">{$v0[typename]}</a></li>
+			{if isset($_TP[1][$v0[typeid]])}
+			{loop $_TP[1][$v0[typeid]] $v1}
+			<li class="side_li" id="type_{$v1[typeid]}"><a href="{$url}{list_url($v1[typeid])}">&nbsp;|-- {$v1[typename]}</a></li>
+			{/loop}
+			{/if}
+		{/loop}
+		</ul>
+		<form action="index.php"><input type="search" name="kw" value="{$kw}" ondblclick="if(this.value){Go('./');}" placeholder="搜索" title="输入关键词，按回车搜索"/></form>
+	</div>
+	<div class="c_b"></div>
+</div>
+<script type="text/javascript">$(function(){$('#type_{$typeid}').attr('class', 'side_on');});</script>
+{template 'footer'}

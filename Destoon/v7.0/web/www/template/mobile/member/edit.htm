@@ -1,0 +1,548 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">修改资料</div>
+<div class="head-bar-right">
+<a href="index.php"><span>取消</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $is_company && !$_edittime}
+	<div class="warn">贵公司尚未完善详细资料！完善的商业信息有助于获得别人的信任，结交潜在的商业伙伴，获取商业机会，请尽快完善</div>
+{/if}
+<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+<form method="post" action="?" onsubmit="return Dcheck();" id="dform">
+<input type="hidden" name="tab" id="tab" value="{$tab}"/>
+<div class="blank-32"></div>
+<div class="list-set" id="Tab0" onclick="$('#Tabs0').slideToggle('fast');$('#tab').val(0);">
+<ul>
+<li><div><span>{$_username}</span><b>个人资料</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs0">
+<p>邮件</p>
+<div>{$_email}{if $DT[mail_type] != 'close'}&nbsp;&nbsp;<a href="send.php?action=email" class="b">修改</a>{/if}</div>
+{if $vmobile}
+<p>手机</p>
+<div><input type="hidden" name="post[mobile]" id="mobile" value="{$mobile}"/>{$mobile}{if $DT[sms]}&nbsp;&nbsp;<a href="send.php?action=mobile" class="b">修改</a>{/if}</div>
+{else}
+<p>手机</p>
+<div><input type="tel" name="post[mobile]" id="mobile" value="{$mobile}"/></div>
+{/if}
+{if $vtruename}
+<p>姓名</p>
+<div><input type="hidden" name="post[truename]" id="truename" value="{$truename}"/>{$truename}</div>
+{else}
+<p>姓名<em>*</em><b id="dtruename"></b></p>
+<div><input type="text" name="post[truename]" id="truename" value="{$truename}"/></div>
+{/if}
+{if !$is_company}
+<p>地区<em>*</em><b id="dareaid"></b></p>
+<div>{ajax_area_select('post[areaid]', '请选择', $areaid)}</div>
+<p>地址</p>
+<div><input type="text" name="post[address]" id="daddress" value="{$address}"/></div>
+<p>邮编</p>
+<div><input type="tel" name="post[postcode]" id="postcode" value="{$postcode}" style="width:50%;"/></div>
+<p>电话</p>
+<div><input type="tel" name="post[telephone]" id="telephone" value="{$telephone}"/></div>
+{/if}
+<p>部门</p>
+<div><input type="text" name="post[department]" id="department" value="{$department}"/></div>
+<p>职位</p>
+<div><input type="text" name="post[career]" id="career" value="{$career}"/></div>
+{if $DT[im_qq]}
+<p>QQ</p>
+<div><input type="tel" name="post[qq]" id="qq" value="{$qq}" style="width:50%;"/></div>
+{/if}
+{if $DT[im_wx]}
+<p>微信</p>
+<div><input type="text" name="post[wx]" id="wx" value="{$wx}" style="width:50%;"/></div>
+<p>微信二维码</p>
+<div>
+<input type="hidden" name="post[wxqr]" id="wxqr" value="{$wxqr}"/>
+<div class="ui-form-thumb-show" id="wxqr-show" onclick="wxqr_action();"></div>
+<div class="ui-form-thumb-upload" id="wxqr-upload"><div id="wxqr-picker"></div></div>
+<script type="text/javascript">
+function wxqr_action() {
+	Dsheet('<a href="javascript:wxqr_delete();"><span style="color:red;">删除图片</span></a>', '取消', '确定要删除图片吗？');
+}
+function wxqr_delete() {
+	$('#wxqr').val('');
+	$('#wxqr-show').html('');
+	$('#wxqr-show').hide();
+	$('#wxqr-upload').show();	
+}
+function wxqr_show(url) {
+	$('#wxqr').val(url);
+	$('#wxqr-show').html('<img src="'+url+'"/>');
+	$('#wxqr-show').show();
+	$('#wxqr-upload').hide();	
+} 
+var wxqru = WebUploader.create({
+	auto: true,
+    server: '{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=thumb&width=128&height=128',
+    pick: '#wxqr-picker',
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    },
+    resize: false
+});
+wxqru.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+wxqru.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '处理中...' : '上传中...'+p+'%');
+});
+wxqru.on( 'uploadSuccess', function(file, data) {
+    if(data.error) {
+		Dtoast(data.message, '', 5);
+	} else {
+		wxqr_show(data.url);
+	}
+});
+wxqru.on( 'uploadError', function(file, data) {
+    Dtoast(data.message, '', 5);
+});
+wxqru.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+{if $wxqr}
+$(function(){
+	wxqr_show('{$wxqr}');
+});
+{/if}
+</script>
+</div>
+{/if}
+{if $DT[im_ali]}
+<p>旺旺</p>
+<div><input type="text" name="post[ali]" id="ali" value="{$ali}" style="width:50%;"/></div>
+{/if}
+<p>站内信提示音</p>
+<div>
+<input type="radio" name="post[sound]" value="0" {if $sound==0}checked="checked"{/if} id="sound_0"/><label for="sound_0">无</label>&nbsp;&nbsp;
+<input type="radio" name="post[sound]" value="1" {if $sound==1}checked="checked"{/if} id="sound_1"/><label for="sound_1">提示音1</label>&nbsp;&nbsp;
+<input type="radio" name="post[sound]" value="2" {if $sound==2}checked="checked"{/if} id="sound_2"/><label for="sound_2">提示音2</label>&nbsp;&nbsp;
+<input type="radio" name="post[sound]" value="3" {if $sound==3}checked="checked"{/if} id="sound_3"/><label for="sound_3">提示音3</label>
+</div>
+<div class="blank-16"></div>
+</div>
+
+<div class="blank-32"></div>
+<div class="list-set" id="Tab1" onclick="$('#Tabs1').slideToggle('fast');$('#tab').val(1);">
+<ul>
+<li><div><span>修改密码</span><b>密码管理</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs1">
+<p>新登录密码<b id="dpassword"></b></p>
+<div><input type="password" name="post[password]" id="password" onblur="validator('password');" autocomplete="off"/></div>
+<p>重复登录密码<b id="dcpassword"></b></p>
+<div><input type="password" name="post[cpassword]" id="cpassword" autocomplete="off"/></div>
+<p>现有密码<b id="doldpassword"></b></p>
+<div><input type="password" name="post[oldpassword]" id="oldpassword" autocomplete="off"/></div>
+<p>新支付密码<b id="dpayword"></b></p>
+<div><input type="password" name="post[payword]" id="payword" onblur="validator('payword');" autocomplete="off"/></div>
+<p>重复支付密码<b id="dcpassword"></b></p>
+<div><input type="password" name="post[cpayword]" id="cpayword" autocomplete="off"/></div>
+<p>现有支付密码<b id="doldpayword"></b></p>
+<div><input type="password" name="post[oldpayword]" id="oldpayword" autocomplete="off"/></div>
+<div class="blank-16"></div>
+<a href="send.php" class="b">找回支付密码</a>
+<div class="blank-16"></div>
+</div>
+{if $is_company}
+<div class="blank-32"></div>
+<div class="list-set" id="Tab2" onclick="$('#Tabs2').slideToggle('fast');$('#tab').val(2);">
+<ul>
+<li><div><span>{$_company}</span><b>公司资料</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs2">
+<p>公司类型<em>*</em><b id="dtype"></b></p>
+<div>{dselect($COM_TYPE, 'post[type]', '请选择', $type, 'id="type"', 0)}</div>
+<p>所在地区<em>*</em><b id="dareaid"></b></p>
+<div>{ajax_area_select('post[areaid]', '请选择', $areaid)}</div>
+<p>主营行业<em>*</em><b id="dcatid"></b></p>
+<div><span id="cate">{ajax_category_select('', '请选择行业', 0, 4)}</span> &nbsp; <a href="javascript:cate_add({$MOD[cate_max]});" class="b">添加</a></div>
+<style type="text/css">
+#cate-box background:#EEEEEE;padding:6px 12px;}
+#cate-box div {height:24px;;line-height:24px;overflow:hidden;}
+#cate-box span {float:right;}
+</style>
+<div id="cate-box">
+<div id="cate-tip"{if $cates}style="display:none;"{/if}>请添加主营行业，最多可添加 <strong class="f_red">{$MOD[cate_max]}</strong> 个</div>
+{loop $cates $c}
+<div id="cate-{$c}"><span><a href="javascript:cate_del({$c});" class="b">删除</a></span>{strip_tags(cat_pos(get_cat($c), '/'))}</div>
+{/loop}
+</div>
+<input type="hidden" name="post[catid]" value="{$catid}" id="catid"/>
+<p>主营范围<em>*</em><b id="dbusiness"></b></p>
+<div><input type="text" name="post[business]" id="business" value="{$business}"/></div>
+<p>成立年份<em>*</em><b id="dregyear"></b></p>
+<div><input type="tel" name="post[regyear]" id="regyear" value="{$regyear}" style="width:100px;"/></div>
+<p>形象图片</p>
+<div>
+<input type="hidden" name="post[thumb]" id="thumb" value="{$thumb}"/>
+<div class="ui-form-thumb-show" id="thumb-show" onclick="thumb_action();"></div>
+<div class="ui-form-thumb-upload" id="thumb-upload"><div id="thumb-picker"></div></div>
+<script type="text/javascript">
+function thumb_action() {
+	Dsheet('<a href="javascript:thumb_delete();"><span style="color:red;">删除图片</span></a>', '取消', '确定要删除图片吗？');
+}
+function thumb_delete() {
+	$('#thumb').val('');
+	$('#thumb-show').html('');
+	$('#thumb-show').hide();
+	$('#thumb-upload').show();	
+}
+function thumb_show(url) {
+	$('#thumb').val(url);
+	$('#thumb-show').html('<img src="'+url+'"/>');
+	$('#thumb-show').show();
+	$('#thumb-upload').hide();	
+} 
+var thumbu = WebUploader.create({
+	auto: true,
+    server: '{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=thumb&width={$MOD[thumb_width]}&height={$MOD[thumb_height]}',
+    pick: '#thumb-picker',
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    },
+    resize: false
+});
+thumbu.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+thumbu.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '处理中...' : '上传中...'+p+'%');
+});
+thumbu.on('uploadSuccess', function(file, data) {
+    if(data.error) {
+		Dtoast(data.message, '', 5);
+	} else {
+		thumb_show(data.url);
+	}
+});
+thumbu.on('uploadError', function(file, data) {
+    Dtoast(data.message, '', 5);
+});
+thumbu.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+{if $thumb}
+$(function(){
+	thumb_show('{$thumb}');
+});
+{/if}
+</script>
+</div>
+<p>经营模式</p>
+<div id="com_mode">{$mode_check}</div>
+<p>公司规模</p>
+<div>{dselect($COM_SIZE, 'post[size]', '请选择规模', $size, '', 0)}</div>
+<p>注册资本</p>
+<div>{dselect($MONEY_UNIT, 'post[regunit]', '', $regunit, '', 0)} <input type="tel" name="post[capital]" id="capital" value="{$capital}" style="width:100px;"/> 万</div>
+<p>销售的产品</p>
+<div><input type="text" name="post[sell]" id="sell" value="{$sell}"/></div>
+<p>采购的产品</p>
+<div><input type="text" name="post[buy]" id="buy" value="{$buy}"/></div>
+<div class="blank-16"></div>
+</div>
+
+<div class="blank-32"></div>
+<div class="list-set" id="Tab3" onclick="$('#Tabs3').slideToggle('fast');$('#tab').val(3);">
+<ul>
+<li><div><b>联系方式</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs3">
+<p>公司地址<em>*</em><b id="ddaddress"></b></p>
+<div><input type="text" name="post[address]" id="daddress" value="{$address}"/></div>
+<p>邮政编码</p>
+<div><input type="tel" name="post[postcode]" id="postcode" value="{$postcode}" style="width:50%;"/></div>
+<p>公司电话<em>*</em><b id="dtelephone"></b></p>
+<div><input type="tel" name="post[telephone]" id="telephone" value="{$telephone}"/></div>
+<p>公司传真</p>
+<div><input type="tel" name="post[fax]" id="fax" value="{$fax}"/></div>
+<p>公司邮件</p>
+<div><input type="email" name="post[mail]" id="mail" value="{$mail}"/></div>
+<p>公司网址</p>
+<div><input type="url" name="post[homepage]" id="homepage" value="{$homepage}"/></div>
+<p>微信公众号</p>
+<div><input type="text" name="post[gzh]" id="gzh" value="{$gzh}" style="width:50%;"/></div>
+<p>公众号二维码</p>
+<div>
+<input type="hidden" name="post[gzhqr]" id="gzhqr" value="{$gzhqr}"/>
+<div class="ui-form-thumb-show" id="gzhqr-show" onclick="gzhqr_action();"></div>
+<div class="ui-form-thumb-upload" id="gzhqr-upload"><div id="gzhqr-picker"></div></div>
+<script type="text/javascript">
+function gzhqr_action() {
+	Dsheet('<a href="javascript:gzhqr_delete();"><span style="color:red;">删除图片</span></a>', '取消', '确定要删除图片吗？');
+}
+function gzhqr_delete() {
+	$('#gzhqr').val('');
+	$('#gzhqr-show').html('');
+	$('#gzhqr-show').hide();
+	$('#gzhqr-upload').show();	
+}
+function gzhqr_show(url) {
+	$('#gzhqr').val(url);
+	$('#gzhqr-show').html('<img src="'+url+'"/>');
+	$('#gzhqr-show').show();
+	$('#gzhqr-upload').hide();	
+} 
+var gzhqru = WebUploader.create({
+	auto: true,
+    server: '{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=thumb&width=128&height=128',
+    pick: '#gzhqr-picker',
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    },
+    resize: false
+});
+gzhqru.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+gzhqru.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '处理中...' : '上传中...'+p+'%');
+});
+gzhqru.on( 'uploadSuccess', function(file, data) {
+    if(data.error) {
+		Dtoast(data.message, '', 5);
+	} else {
+		gzhqr_show(data.url);
+	}
+});
+gzhqru.on( 'uploadError', function(file, data) {
+    Dtoast(data.message, '', 5);
+});
+gzhqru.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+{if $gzhqr}
+$(function(){
+	gzhqr_show('{$gzhqr}');
+});
+{/if}
+</script>
+</div>
+<div class="blank-16"></div>
+</div>
+
+<div class="blank-32"></div>
+<div class="list-set" id="Tab4" onclick="$('#Tabs4').slideToggle('fast');$('#tab').val(4);">
+<ul>
+<li><div><b>公司介绍</b></div></li>
+</div>
+<div class="dsn" id="Tabs4">
+<input type="hidden" name="post[content]" id="content"/>
+<ul class="ui-editor-toolbar" style="border-top:none;">
+<li class="ui-editor-img"><div id="editor-picker"></div></li>
+<li class="ui-editor-bold" id="editor-bold" editor-action="bold">B</li>
+<li class="ui-editor-italic" id="editor-italic" editor-action="italic">I</li>
+<li class="ui-editor-underline" id="editor-underline" editor-action="underline">U</li>
+</ul>
+<div class="ui-editor-content" id="editor">{$content}</div>
+<script type="text/javascript" src="{DT_MOB}static/js/editor.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#editor').DEditor({
+        editorid: 'editor',
+        textareaid: 'content',
+        server:'{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=editor'
+    });
+});
+</script>
+</div>
+{/if}
+
+{if $need_captcha}
+<div class="ui-form">
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+<div class="blank-20"></div>
+</div>
+{/if}
+
+<div class="blank-32"></div>
+<div style="padding:0 16px;"><input type="submit" name="submit" value="保 存" class="btn-green"/></div>
+<div class="blank-32"></div>
+</form>
+<script type="text/javascript">
+function Tab(id) {
+	$('#Tabs'+id).slideDown('fast');
+}
+$(function(){
+	Tab({$tab});
+	{if isset($success)}
+	Dtoast('资料保存成功');
+	{/if}
+});
+</script>
+{load('clear.js')}
+<script type="text/javascript">
+function check_mode(c, m) {
+	if($('#com_mode input:checkbox:checked').length > m) {confirm('最多可选'+m+'种经营模式'); c.checked = false;}
+}
+function cate_del(id) {
+	$('#cate-'+id).remove();
+	var cids = $('#catid').val().replace(','+id+',', ',');
+	$('#catid').val(cids);
+	if($('#cate-box').html().indexOf('span') == -1) {
+		$('#cate-tip').show();
+	} else {
+		$('#cate-tip').hide();
+	}
+}
+function cate_add(max) {
+	if($('#cate-box div').length > max) {
+		Dmsg('最多可以添加'+max+'个行业', 'catid');
+		return;
+	}
+	var cid = $('#catid_1').val();
+	if(cid == 0) {
+		Dmsg('请选择行业', 'catid');
+		return;
+	}
+	if($('#cate-box').html().indexOf('cate-'+cid) != -1) {
+		Dmsg('所选行业已经存在', 'catid');
+		return;
+	}
+	var str = '';
+	$('#cate option:selected').each(function() {
+		if($(this).val()) str += $(this).text()+'/';
+	});
+	if(str) {
+		str = str.replace('&amp;', '&');
+		str = str.replace('请选择行业/', '');
+		str = str.substring(0, str.length-1);
+		$('#cate-box').append('<div id="cate-'+cid+'"><span><a href="javascript:cate_del('+cid+');" class="b">删除</a></span>'+str+'</div>');
+		var cids = $('#catid').val() ? $('#catid').val() +cid+',' : ','+cid+',';
+		$('#catid').val(cids);
+		$('#cate-tip').hide();
+	} else {
+		Dmsg('请选择行业', 'catid');
+	}
+}
+var vid = '';
+function validator(id) {
+	if(!Dd(id).value) return false;
+	vid = id;
+	$.post(AJPath, 'moduleid={$moduleid}&action=member&job='+id+'&value='+Dd(id).value+'&userid={$userid}', function(data) {
+		Dd('d'+vid).innerHTML = data ? data : '';
+	});
+}
+function Dcheck() {
+	if(Dd('truename').value == '') {
+		Tab(0);
+		Dmsg('请填写真实姓名', 'truename');
+		return false;
+	}
+	if(Dd('password').value.length > 5) {
+		if(Dd('cpassword').value == '') {
+			Tab(1);
+			Dmsg('请重复输入密码', 'cpassword');
+			return false;
+		}
+		if(Dd('password').value != Dd('cpassword').value) {
+			Tab(1);
+			Dmsg('两次输入的密码不一致', 'password');
+			return false;
+		}
+		if(Dd('oldpassword').value.length < 6) {
+			Tab(1);
+			Dmsg('请输入密码', 'oldpassword');
+			return false;
+		}
+	}
+	if(Dd('payword').value.length > 5) {
+		if(Dd('cpayword').value == '') {
+			Tab(1);
+			Dmsg('请重复输入支付密码', 'cpayword');
+			return false;
+		}
+		if(Dd('payword').value != Dd('cpayword').value) {
+			Tab(1);
+			Dmsg('两次输入的支付密码不一致', 'payword');
+			return false;
+		}
+		if(Dd('oldpayword').value.length < 6) {
+			Tab(1);
+			Dmsg('请输入支付密码', 'oldpayword');
+			return false;
+		}
+	}
+
+{if !$is_company}	
+	if(Dd('areaid_1').value == 0) {
+		Tab(0);
+		Dmsg('请选择地区', 'areaid');
+		return false;
+	}
+{/if}
+
+	{if $MFD}{fields_js($MFD)}{/if}
+	{if $is_company}
+	{if $CFD}{fields_js($CFD)}{/if}
+	if(Dd('type').value == '') {
+		Tab(2);
+		Dmsg('请选择公司类型', 'type');
+		return false;
+	}
+	if(Dd('areaid_1').value == 0) {
+		Tab(2);
+		Dmsg('请选择公司所在地', 'areaid');
+		return false;
+	}
+	if(Dd('catid').value.length < 2) {
+		Tab(2);
+		Dmsg('请选择公司主营行业', 'catid');
+		return false;
+	}
+	if(Dd('business').value.length < 4) {
+		Tab(2);
+		Dmsg('主要经营范围最少3字', 'business');
+		return false;
+	}
+	if(Dd('regyear').value.length < 4) {
+		Tab(2);
+		Dmsg('请填写公司成立年份', 'regyear');
+		return false;
+	}
+	if(Dd('daddress').value.length < 5) {
+		Tab(3);
+		Dmsg('请填写公司地址', 'daddress');
+		return false;
+	}
+	if(Dd('telephone').value.length < 6) {
+		Tab(3);
+		Dmsg('请填写公司电话', 'telephone');
+		return false;
+	}
+	if(FCKLen('content') < 10) {
+		Tab(4);
+		Dmsg('公司介绍最少10字，当前已经输入'+FCKLen('content')+'字', 'content');
+		return false;
+	}
+	{/if}	
+{if $need_captcha}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', f);
+		return false;
+	}
+{/if}
+	return true;
+}
+</script>
+{template 'footer',$module}

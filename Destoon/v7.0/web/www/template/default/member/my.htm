@@ -1,0 +1,42 @@
+{template 'header', 'member'}
+{if $MYMODS}
+{if $_userid}
+{else}
+<div class="warn">您还没有登录，目前仅拥有以下栏目的发布权限，建议您 <a href="{$DT[file_login]}" class="t">立即登录</a> 或 <a href="{$DT[file_register]}" class="t">注册会员</a></div>
+{/if}
+<table cellspacing="1" cellpadding="10" class="tb">
+{loop $MYMODS $v}
+<tr>
+<td class="tl"><a href="{$MODULE[$v][linkurl]}" target="_blank">{$MODULE[$v][name]}</a></td>
+<td class="tr">
+{if $_userid}<a href="?mid={$v}" class="b">管理</a>&nbsp;&nbsp;{/if}
+{if $MODULE[$v][module] == 'club'}
+<a href="?mid={$v}&job=group&action=add" class="b">创建</a>
+{else}
+<a href="?mid={$v}&action=add" class="b">发布</a>
+{/if}
+</td>
+</tr>
+{/loop}
+{if $MG[resume]}
+{loop $MODULE $k $v}
+{if $v[module] == 'job'}
+<tr>
+<td class="tl"><a href="{$v[linkurl]}" target="_blank">简历</a></td>
+<td class="tr">
+{if $_userid}<a href="?mid={$k}&job=resume" class="b">管理</a>&nbsp;&nbsp;{/if}
+<a href="?mid={$v}&job=resume&action=add" class="b">创建</a>
+</td>
+</tr>
+{/if}
+{/loop}
+{/if}
+</table>
+{else}
+	{if $_userid}
+	<div class="warn">尊敬的<strong>{$MG[groupname]}</strong>，您的会员组没有在本站发布信息的权限，请返回。&nbsp;&nbsp;<a href="./" class="t">点击返回商务中心首页</a></div>
+	{else}
+	<div class="warn">您还没有登录，目前没有信息发布权限，建议您 <a href="{$DT[file_login]}" class="t">立即登录</a> 或 <a href="{$DT[file_register]}" class="t">注册会员</a></div>
+	{/if}
+{/if}
+{template 'footer', 'member'}

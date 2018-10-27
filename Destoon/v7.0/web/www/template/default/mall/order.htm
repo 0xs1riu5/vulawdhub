@@ -1,0 +1,21 @@
+{if $lists}
+	<table cellpadding="10" cellspacing="0" width="100%">
+	<tr align="center" bgcolor="#F6F6F6">
+	<td width="200">买家</td>
+	<td>购买数量</td>
+	<td width="200">成交时间</td>
+	<td width="60">状态</td>
+	</tr>
+	{loop $lists $k $v}
+	<tr align="center"{if $k%2==1} bgcolor="#F6F6F6"{/if}>
+	<td>{hide_name($v[buyer])}</td>
+	<td>{$v[number]}</td>
+	<td>{$v[updatetime]}</td>
+	<td class="f_green">成交</td>
+	</tr>
+	{/loop}
+	</table>
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="order_no">暂无交易</div>
+{/if}

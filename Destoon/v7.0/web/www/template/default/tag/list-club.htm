@@ -1,0 +1,37 @@
+<div class="club_list">
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr align="left">
+	<th width="16"></th>
+	<th>帖子标题</th>
+	<th width="120">作者</th>
+	<th width="100">回复/点击</th>
+	<th width="120">最后回复</th>
+	</tr>
+{loop $tags $k $t}
+	<tr>
+		<td align="center">
+		{if $t[ontop]}
+		<img src="{DT_SKIN}image/club_ontop_{$t[ontop]}.gif" alt="" title="{if $t[ontop]==1}本圈{else}全局{/if}置顶"/>
+		{elseif $t[level]}
+		<img src="{DT_SKIN}image/club_level_{$t[level]}.gif" alt="" title="精华{$t[level]}"/>
+		{elseif $t[thumb]}
+		<img src="{DT_SKIN}image/club_thumb.gif" alt="" title="图片帖"/>
+		{elseif $t[video]}
+		<img src="{DT_SKIN}image/club_video.gif" alt="" title="视频帖"/>
+		{else}
+		&nbsp;
+		{/if}
+		</td>
+		<td><div><a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}">{$t[title]}</a></div></td>
+		<td><a href="{userurl($t[username])}" target="_blank">{$t[passport]}</a><p>{timetodate($t[addtime], 3)}</p></td>
+		<td><em>{$t[reply]}</em><p>{$t[hits]}</p></td>
+		{if $t[replyer]}
+		<td><a href="{userurl($t[replyuser])}" target="_blank">{$t[replyer]}</a><p>{timetodate($t[replytime], 5)}</p></td>
+		{else}
+		<td><a href="{userurl($t[username])}" target="_blank">{$t[passport]}</a><p>{timetodate($t[addtime], 5)}</p></td>
+		{/if}
+	</tr>
+{/loop}	
+	</table>
+</div>	
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

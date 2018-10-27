@@ -1,0 +1,6 @@
+<ul>
+{loop $tags $i $t}
+<li><span class="f_r f_gray">{$t[item]}条报价</span><a href="{$MODULE[$moduleid][linkurl]}{rewrite('price.php?itemid='.$t['itemid'])}"{if $target} target="{$target}"{/if} title="{$t[alt]}">{$t[title]}</a></li>
+{/loop}
+</ul>
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

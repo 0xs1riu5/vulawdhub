@@ -1,0 +1,51 @@
+{template 'header'}
+<div class="m m3">
+	<div class="m3l">
+		<div class="exh-slide">
+			<!--{tag("moduleid=$moduleid&condition=status=3 and level=2 and thumb!=''&areaid=$cityid&order=".$MOD[order]."&pagesize=".$MOD[page_islide]."&width=320&height=240&template=slide")}-->
+		</div>
+		<div class="exh-rec">
+		<!--{php $tags=tag("moduleid=$moduleid&condition=status=3 and level=1&areaid=$cityid&pagesize=3&order=".$MOD[order]."&template=null");}-->
+		{loop $tags $i $t}
+		<ul>
+		<li><a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}" class="f_b px16">{$t[title]}</a></li>
+		<li>{timetodate($t[fromtime], 3)} 至 {timetodate($t[totime], 3)} [{$t[city]}]</li>
+		<li title="{$t[city]}{$t[hallname]}">主办：{$t[sponsor]}</li>
+		</ul>
+		{/loop}
+		</div>
+		<div class="c_b"></div>
+		{loop $maincat $i $c}
+		<div class="head-txt"><span><a href="{$MOD[linkurl]}{$c[linkurl]}">更多<i>&gt;</i></a></span><strong>{$c[catname]}</strong></div>
+		<div class="exh-list">
+		<!--{php $tags=tag("moduleid=$moduleid&areaid=$cityid&catid=".$c[catid]."&condition=status=3&order=".$MOD[order]."&pagesize=".$MOD[page_icat]."&template=null");}--><ul>
+		{loop $tags $i $t}
+		<li title="{$t[alt]}&#13;主办：{$t[sponsor]}&#13;展馆：{$t[hallname]}"><em><i>[{$t[city]}]</i>{timetodate($t[fromtime], 3)} 至 {timetodate($t[totime], 3)}</em><a href="{$t[linkurl]}" target="_blank" class="px14">{$t[title]}</a></li>
+		{/loop}
+		</ul>
+		</div>
+		{/loop}
+	</div>
+	<div class="m3r">
+		{if $news_id}
+		{if $MOD[cat_news_num]}
+		<div class="head-sub"><span><a href="{if $MOD[cat_news]}{cat_url($MOD[cat_news])}{else}{$MODULE[$news_id][linkurl]}{/if}">更多<i>&gt;</i></a></span><strong>展会资讯</strong></div>		
+		<div class="list-thumb"><!--{tag("moduleid=$news_id&condition=status=3 and thumb!=''&areaid=$cityid&catid=".$MOD['cat_news']."&pagesize=2&length=20&order=addtime desc&width=120&height=90&cols=2&template=thumb-table&target=_blank")}--></div>
+		<div class="b10  bd-b"></div>
+		<div class="b10"></div>
+		<div class="list-txt"><!--{tag("moduleid=$news_id&condition=status=3&areaid=$cityid&catid=".$MOD['cat_news']."&pagesize=".$MOD['cat_news_num']."&datetype=2&order=addtime desc&target=_blank")}--></div>
+		{/if}
+		{if $MOD[cat_hall] && $MOD[cat_hall_num]}
+		<div class="head-sub"><span><a href="{cat_url($MOD[cat_hall])}">更多<i>&gt;</i></a></span><strong>展馆介绍</strong></div>
+		<div class="list-thumb"><!--{tag("moduleid=$news_id&condition=status=3 and thumb!=''&areaid=$cityid&catid=".$MOD['cat_hall']."&pagesize=".$MOD['cat_hall_num']."&length=15&order=addtime desc&width=120&height=90&cols=2&template=thumb-table&target=_blank")}--></div>
+		<div class="b10"></div>
+		{/if}
+		{if $MOD[cat_service] && $MOD[cat_service_num]}
+		<div class="head-sub"><span><a href="{cat_url($MOD[cat_service])}">更多<i>&gt;</i></a></span><strong>展会服务</strong></div>
+		<div class="list-txt"><!--{tag("moduleid=$news_id&condition=status=3&areaid=$cityid&catid=".$MOD['cat_service']."&pagesize=".$MOD['cat_service_num']."&order=addtime desc&target=_blank")}--></div>
+		{/if}
+		{/if}
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

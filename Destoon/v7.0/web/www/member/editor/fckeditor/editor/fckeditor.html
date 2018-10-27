@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+<title>FCKeditor</title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Cache-Control" content="public">
+<script type="text/javascript">
+/* DT ADD 2009-11-07//*/
+var uaL = navigator.userAgent.toLowerCase();
+var IsIE8 = /*@cc_on!@*/false && (parseInt( uaL.match( /msie (\d+)/ )[1], 10) >= 8);
+var IsIE10x = uaL.indexOf("msie 1") != -1;
+var GLOBAL_POPUP_BUCKET_FCK_IE8 = [];
+//if(sAgent.indexOf("msie 1") != -1) IsIE8 = false;//DT 2012/11/9 IE10+
+if(IsIE8) for(i=0; i<10; i++) { GLOBAL_POPUP_BUCKET_FCK_IE8.push(window.createPopup()); }
+/* DT ADD 2009-11-07\\*/
+var FCK_ORIGINAL_DOMAIN;
+(function() {
+	var d = FCK_ORIGINAL_DOMAIN = document.domain;
+	while (true) {
+		try
+		{
+			var test = window.parent.document.domain ;
+			/* DT ADD 2011-06-22// Fix Firefox 4+*/
+			if(uaL.indexOf('firefox') != -1 && parseInt(uaL.match(/firefox\/(\d+)/)[1], 10) >= 4) {
+				if(test != document.domain) document.domain = test;
+			}
+			/* DT ADD 2011-06-22\\*/
+			break ;
+		}
+		catch( e ) {}
+		d = d.replace(/.*?(?:\.|$)/, '');
+		if(d.length == 0) break;
+		try	{
+			/* DT ADD 2009-11-07//*/
+			if(IsIE8) {
+				for(i=0; i < GLOBAL_POPUP_BUCKET_FCK_IE8.length; i++) {
+					GLOBAL_POPUP_BUCKET_FCK_IE8[i].document.domain = d;
+				}
+			}
+			/* DT ADD 2009-11-07\\*/
+			document.domain = d;
+		} catch (e) {break;}
+	}
+})();
+var FCK_RUNTIME_DOMAIN = document.domain;
+var FCK_IS_CUSTOM_DOMAIN = (FCK_ORIGINAL_DOMAIN != FCK_RUNTIME_DOMAIN);
+function LoadScript(url) {document.write('<scr' + 'ipt type="text/javascript" src="' + url + '?v=6.0"><\/scr' + 'ipt>');}
+var sSuffix = (/*@cc_on!@*/false) ? 'ie' : 'gecko';
+//LoadScript('js/fckeditorcode_' + sSuffix + '.js?x='+Math.random()); No cache
+LoadScript('js/fckeditorcode_' + sSuffix + '.js');
+LoadScript('../fckconfig.js');
+</script>
+<script type="text/javascript">
+if(FCKBrowserInfo.IsAIR) LoadScript('js/fckadobeair.js');
+if(FCKBrowserInfo.IsIE) {
+	try	{document.execCommand('BackgroundImageCache', false, true);}catch (e){}
+	FCK.IECleanup = new FCKIECleanup(window);
+	FCK.IECleanup.AddItem(FCKTempBin, FCKTempBin.Reset);
+	FCK.IECleanup.AddItem(FCK, FCK_Cleanup);
+}
+FCK.Events.AttachEvent( 'OnSelectionChange', function() { FCKStyles.CheckSelectionChanges(); });
+//FCK.Events.AttachEvent( 'OnPaste', function() { alert(1); });
+FCKConfig.ProcessHiddenField();
+if (FCKConfig.CustomConfigurationsPath.length > 0) LoadScript(FCKConfig.CustomConfigurationsPath);
+</script>
+<script type="text/javascript">
+FCKConfig_LoadPageConfig() ;
+FCKConfig_PreProcess() ;
+// CSS minified by http://iceyboard.no-ip.org/projects/css_compressor
+var FCK_InternalCSS			= FCKTools.FixCssUrls( FCKConfig.FullBasePath + 'css/', 'html{min-height:100%}table.FCK__ShowTableBorders,table.FCK__ShowTableBorders td,table.FCK__ShowTableBorders th{border:#d3d3d3 1px solid}form{border:1px dotted #F00;padding:2px}.FCK__Flash{border:#a9a9a9 1px solid;background-position:center center;background-image:url(images/fck_flashlogo.gif);background-repeat:no-repeat;width:80px;height:80px}.FCK__Anchor{border:1px dotted #00F;background-position:center center;background-image:url(images/fck_anchor.gif);background-repeat:no-repeat;width:16px;height:15px;vertical-align:middle}.FCK__AnchorC{border:1px dotted #00F;background-position:1px center;background-image:url(images/fck_anchor.gif);background-repeat:no-repeat;padding-left:18px}a[name]{border:1px dotted #00F;background-position:0 center;background-image:url(images/fck_anchor.gif);background-repeat:no-repeat;padding-left:18px}.FCK__PageBreak{background-position:center center;background-image:url(images/fck_pagebreak.gif);background-repeat:no-repeat;clear:both;display:block;float:none;width:100%;border-top:#999 1px dotted;border-bottom:#999 1px dotted;border-right:0;border-left:0;height:5px}.FCK__InputHidden{width:19px;height:18px;background-image:url(images/fck_hiddenfield.gif);background-repeat:no-repeat;vertical-align:text-bottom;background-position:center center}.FCK__ShowBlocks p,.FCK__ShowBlocks div,.FCK__ShowBlocks pre,.FCK__ShowBlocks address,.FCK__ShowBlocks blockquote,.FCK__ShowBlocks h1,.FCK__ShowBlocks h2,.FCK__ShowBlocks h3,.FCK__ShowBlocks h4,.FCK__ShowBlocks h5,.FCK__ShowBlocks h6{background-repeat:no-repeat;border:1px dotted gray;padding-top:8px;padding-left:8px}.FCK__ShowBlocks p{background-image:url(images/block_p.png)}.FCK__ShowBlocks div{background-image:url(images/block_div.png)}.FCK__ShowBlocks pre{background-image:url(images/block_pre.png)}.FCK__ShowBlocks address{background-image:url(images/block_address.png)}.FCK__ShowBlocks blockquote{background-image:url(images/block_blockquote.png)}.FCK__ShowBlocks h1{background-image:url(images/block_h1.png)}.FCK__ShowBlocks h2{background-image:url(images/block_h2.png)}.FCK__ShowBlocks h3{background-image:url(images/block_h3.png)}.FCK__ShowBlocks h4{background-image:url(images/block_h4.png)}.FCK__ShowBlocks h5{background-image:url(images/block_h5.png)}.FCK__ShowBlocks h6{background-image:url(images/block_h6.png)}' ) ;
+var FCK_ShowTableBordersCSS	= FCKTools.FixCssUrls( FCKConfig.FullBasePath + 'css/', 'table:not([border]),table:not([border]) > tr > td,table:not([border]) > tr > th,table:not([border]) > tbody > tr > td,table:not([border]) > tbody > tr > th,table:not([border]) > thead > tr > td,table:not([border]) > thead > tr > th,table:not([border]) > tfoot > tr > td,table:not([border]) > tfoot > tr > th,table[border=\"0\"],table[border=\"0\"] > tr > td,table[border=\"0\"] > tr > th,table[border=\"0\"] > tbody > tr > td,table[border=\"0\"] > tbody > tr > th,table[border=\"0\"] > thead > tr > td,table[border=\"0\"] > thead > tr > th,table[border=\"0\"] > tfoot > tr > td,table[border=\"0\"] > tfoot > tr > th{border:#d3d3d3 1px dotted}' );
+if ( FCKConfig.Debug ) FCKDebug._GetWindow();
+document.write( FCKTools.GetStyleHtml( FCKConfig.SkinEditorCSS ));
+FCKLanguageManager.Initialize();
+LoadScript( 'lang/' + FCKLanguageManager.ActiveLanguage.Code + '.js' );
+</script>
+<script type="text/javascript">
+FCK_ContextMenu_Init();
+FCKPlugins.Load();
+</script>
+<script type="text/javascript">
+window.document.dir = FCKLang.Dir ;
+</script>
+<script type="text/javascript">
+window.onload = function() {
+	InitializeAPI();
+	if(FCKBrowserInfo.IsIE) { FCK_PreloadImages(); } else {LoadToolbarSetup();}
+}
+function LoadToolbarSetup(){FCKeditorAPI._FunctionQueue.Add(LoadToolbar);}
+function LoadToolbar(){
+	var oToolbarSet = FCK.ToolbarSet = FCKToolbarSet_Create();
+	if(oToolbarSet.IsLoaded){StartEditor();}else{oToolbarSet.OnLoad = StartEditor;oToolbarSet.Load(FCKURLParams['Toolbar'] || 'Default');}
+}
+function StartEditor() {
+	FCK.ToolbarSet.OnLoad = null;
+	FCKeditorAPI._FunctionQueue.Remove(LoadToolbar);
+	FCK.Events.AttachEvent('OnStatusChange', WaitForActive);
+	FCK.StartEditor();
+}
+function WaitForActive(editorInstance, newStatus) {
+	if(newStatus == FCK_STATUS_ACTIVE) {
+		if(FCKBrowserInfo.IsGecko) FCKTools.RunFunction(window.onresize);
+		_AttachFormSubmitToAPI();
+		FCK.SetStatus(FCK_STATUS_COMPLETE);
+		if(typeof(window.parent.FCKeditor_OnComplete) == 'function') window.parent.FCKeditor_OnComplete(FCK);
+	}
+}
+if(FCKBrowserInfo.IsGecko && !FCKBrowserInfo.IsOpera) {
+	window.onresize = function(e) {
+		if(e && e.originalTarget !== document && e.originalTarget !== window && (!e.originalTarget.ownerDocument || e.originalTarget.ownerDocument != document)) return;
+		var oCell = document.getElementById('xEditingArea');
+		var eInnerElement = oCell.firstChild;
+		if(eInnerElement) {
+			eInnerElement.style.height = '0px';
+			eInnerElement.style.height = (oCell.scrollHeight - 2) + 'px';
+		}
+	}
+}
+</script>
+</head>
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" style="height: 100%; table-layout: fixed">
+<tr id="xToolbarRow" style="display: none">
+<td id="xToolbarSpace" style="overflow: hidden">
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr id="xCollapsed" style="display: none">
+<td id="xExpandHandle" class="TB_Expand" colspan="3">
+<img class="TB_ExpandImg" alt="" src="images/spacer.gif" width="8" height="4" /></td>
+</tr>
+<tr id="xExpanded" style="display: none">
+<td id="xTBLeftBorder" class="TB_SideBorder" style="width: 1px; display: none;"></td>
+<td id="xCollapseHandle" style="display: none" class="TB_Collapse" valign="bottom">
+<img class="TB_CollapseImg" alt="" src="images/spacer.gif" width="8" height="4" /></td>
+<td id="xToolbar" class="TB_ToolbarSet"></td>
+<td class="TB_SideBorder" style="width: 1px"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td id="xEditingArea" valign="top" style="height: 100%"></td>
+</tr>
+</table>
+</body>
+</html>

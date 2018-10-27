@@ -1,0 +1,43 @@
+{template 'header', $template}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $itemid}
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$editdate}{if $MOD[hits]}&nbsp;&nbsp;浏览:<span id="hits">{$hits}</span>{/if}</div>
+	<div class="content">
+	{if $thumb}<center><img src="{$thumb}" alt="{$title}"/></center>{/if}
+	{if $vip}{VIP}:{$vip}级<br/>{/if}
+	{if $homepage}网站:<a href="{$homepage}" target="_blank" rel="external" class="b">{$homepage}</a><br/>{/if}
+	{if $could_message}
+	<a href="{$MOD[mobile]}{rewrite('message.php?itemid='.$itemid)}" data-transition="slideup"><div class="btn-blue" style="margin:10px 0;">留言加盟</div></a>
+	{/if}
+	{$content}
+	</div>
+	<div class="head bd-b"><strong>联系方式</strong></div>
+	<div class="contact">{template 'contact', 'chip'}</div>
+</div>
+{else}
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<a href="{$v[linkurl]}"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_MOB}static/img/120x40.png{/if}" width="120" height="40" alt="" onerror="this.src='{DT_MOB}static/img/120x40.png';" style="margin-top:22px;"/></a>
+<ul>
+<li><a href="{$v[linkurl]}"><strong>{$v[title]}</strong></a></li>
+<li><em class="f_r">{timetodate($v[addtime], 5)}</em>{if $MOD[hits]}<span>浏览：{$v[hits]}</span>{/if}</li>
+</ul>
+</div>
+{/loop}
+{else}
+{template 'empty', 'chip'}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{template 'footer', $template}

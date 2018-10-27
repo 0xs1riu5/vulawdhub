@@ -1,0 +1,37 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="?action=clear" onclick="return confirm('确定要清空所有浏览历史吗？');" data-transition="none" data-ajax="false"><span>清空</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $lists}
+	{loop $lists $k $tags}
+	<div class="blank-35"></div>
+	<div class="list-set">
+	<ul>
+	<li><div><span><a href="?action=clear&date={$k}" onclick="return confirm('确定要删除{$k}浏览历史吗？');" class="b" data-transition="none" data-ajax="false">删除</a></span><strong>{view_txt($k)}</strong></div></li>
+	</ul>
+	</div>
+	<div class="list-view">
+		{loop $tags $v}
+		<div class="list-img">
+		<a href="?action=clear&date={$k}&itemid={$v[itemid]}" onclick="return confirm('确定要删除本条浏览历史吗？');" data-transition="none" data-ajax="false"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_MOB}static/img/60x60.png{/if}" width="60" height="60" alt="" onerror="this.src='{DT_MOB}static/img/60x60.png';"/></a>
+		<ul>
+		<li{if $v[vip]} class="vip"{/if}><a href="{$v[mobile]}"><strong>{$v[title]}</strong></a></li>
+		<li><i>{$DT[money_sign]}{$v[price]}</i><span>成交:{$v[orders]}</span></li>
+		</ul>
+		</div>
+		{/loop}
+	</div>
+	{/loop}
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+{/if}
+{template 'footer'}

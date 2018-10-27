@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Attachment Properties</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta content="noindex, nofollow" name="robots">
+		<script src="common/fck_dialog_common.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		var dialog		= window.parent ;
+		var oEditor		= dialog.InnerDialogLoaded() ;
+		var FCK			= oEditor.FCK ;
+		var FCKLang		= oEditor.FCKLang ;
+		var FCKConfig	= oEditor.FCKConfig ;
+		var FCKDebug	= oEditor.FCKDebug ;
+		var FCKTools	= oEditor.FCKTools ;
+		document.write( FCKTools.GetStyleHtml( GetCommonDialogCss() ) ) ;
+		window.onload = function() {
+			// Translate the dialog box texts.
+			oEditor.FCKLanguageManager.TranslatePage(document) ;
+			dialog.SetAutoSize( true ) ;
+			dialog.SetOkButton( true ) ;
+		}
+		function basename(s) {
+			var p = s.lastIndexOf("/") == -1 ? "\\" : "/";
+			var t = s.split(p);
+			return t[t.length-1];
+		}
+		function Dsubmit() {
+			var v = GetE('txtUploadFile').value;
+			if(v.length < 5) {
+				alert('Not File');
+				return false;
+			}
+			GetE('txtTit').value = basename(v);
+			document.getElementById('frmUpload').action = oEditor.FCKConfig.UPPath+'?moduleid='+oEditor.FCKConfig.ModuleID+'&from=attach';
+			document.getElementById('frmUpload').submit();
+		}
+	function Ok() {
+		var url = GetE('txtUrl').value;
+		if(url.length < 20){alert('Not URL');GetE('txtUrl').value='';GetE('txtUrl').focus();return false;}
+		var txt = GetE('txtTit').value;
+		if(txt.length < 2){txt = url;}
+		var ext = url.substring(url.lastIndexOf('.')+1, url.length);
+		ext = ext.toLowerCase();
+		if(ext == 'pdf' || ext == 'doc' || ext == 'xls' || ext == 'ppt') {
+			ext = ext;
+		} else if (ext == 'docx' || ext == 'xlsx' || ext == 'pptx') {
+			ext = ext.substring(0, 3);
+		} else if (ext == 'jpg' || ext == 'jpeg' || ext == 'gif' || ext == 'png' || ext == 'bmp') {
+			ext = 'img';
+		} else if (ext == 'zip' || ext == 'rar' || ext == 'gz' || ext == 'tar') {
+			ext = 'zip';
+		} else if (ext == 'swf' || ext == 'flv') {
+			ext = 'swf';
+		} else if (ext == 'mp3' || ext == 'mp4' || ext == 'wav' || ext == 'asf' || ext == 'avi' || ext == 'mpeg' || ext == 'rm' || ext == 'ram' || ext == 'rmvb') {
+			ext = 'mov';
+		} else {
+			ext = 'att';
+		}
+		FCK.InsertHtml('&nbsp;&nbsp;<img src="'+FCKConfig.ABPath+'editor/images/ext/'+ext+'.gif" width="16" height="16" border="0" alt="" align="absmiddle"/> <a href="'+oEditor.FCKConfig.DTPath+'api/attach.php?url='+url+'&name='+encodeURI(txt)+'" class="attach" rel="nofollow">'+ txt +'</a><br/>');
+		return true;
+	}
+	</script>
+</head>
+<body scroll="no" style="overflow: hidden">
+  	<table border="0" width="98%" align="center"> 
+    <tr height="30"> 
+      <td align="right"><span fckLang="DlgGenTitle">Title</span></td>
+      <td><input id="txtTit" style="width:300px" type="text"/></td>
+    </tr>
+
+    <tr height="30"> 
+      <td align="right"><span fcklang="DlgImgURL">URL</span></td>
+      <td><input id="txtUrl" style="width:300px" type="text"/> </td>
+    </tr>
+
+	<form id="frmUpload" method="post" target="UploadWindow" enctype="multipart/form-data" action="" onsubmit="return Dsubmit();">
+	
+    <tr height="30"> 
+      <td align="right"><span fckLang="DlgLnkUpload">Upload</span></td>
+		<td>
+			<input id="txtUploadFile" style="WIDTH: 100%" type="file" size="40" name="NewFile" onchange="Dsubmit();GetE('btnUpload').disabled=true;"/><br />
+	  </td>
+    </tr>
+	
+    <tr height="30"> 
+      <td align="right"> </td>
+		<td>
+			<input id="btnUpload" type="submit" value="Send it to the Server" fckLang="DlgLnkBtnUpload" />
+	  </td>
+    </tr>
+	</form>
+  </table>
+  <iframe name="UploadWindow" style="display:none;"></iframe>
+</body>
+</html>

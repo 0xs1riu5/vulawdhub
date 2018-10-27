@@ -1,0 +1,7 @@
+<ul>
+{loop $tags $i $t}
+<li>{if $datetype}<i>{timetodate($t[addtime], $datetype)}</i>{/if}<a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}">{$t[title]}</a></li>
+{if $cols && $i && $i%$cols==($cols-1)}<li class="sp">&nbsp;</li>{/if}
+{/loop}
+</ul>
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

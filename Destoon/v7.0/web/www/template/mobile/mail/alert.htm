@@ -1,0 +1,48 @@
+<table cellpadding="0" cellspacing="0" width="700" align="center" style="font-family:Verdana,Arial;">
+<tr>
+<td><a href="{DT_PATH}" target="_blank"><img src="{if $DT[logo]}{$DT[logo]}{else}{DT_SKIN}image/logo.gif{/if}" style="margin:10px 0;border:none;" alt="{$DT[sitename]} LOGO" title="{$DT[sitename]}"/></a></td>
+<td align="right" style="font-size:12px;line-height:180%;"><a href="{DT_PATH}" target="_blank" style="color:#005590;text-decoration:none;">网站首页</a> | <a href="{$MODULE[2][linkurl]}alert.php" target="_blank" style="color:#005590;text-decoration:none;">管理商机</a>&nbsp;<br/>发送时间:<span style="font-size:11px;">{timetodate($DT_TIME, 5)}</span>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" style="border-top:solid 1px #DDDDDD;border-bottom:solid 1px #DDDDDD;padding:10px 0;line-height:200%;font-family:'Microsoft YaHei',Verdana,Arial;font-size:14px;color:#333333;">
+<div style="padding:10px 0 10px 0;font-size:12px;">
+&nbsp;<strong>商机分类：</strong><a href="{$MODULE[$mid][linkurl]}" target="_blank" style="color:#005590;">{$MODULE[$mid][name]}</a>
+&nbsp;&nbsp;&nbsp;<strong>关键词：</strong>{if $kw}{$kw}{else}不限{/if} 
+&nbsp;&nbsp;&nbsp;<strong>行业分类：</strong>
+{if $catid}
+{php $C = get_cat($catid);}
+{$C[catname]}
+{else}
+不限
+{/if} 
+&nbsp;&nbsp;&nbsp;<strong>所在地区：</strong>{if $areaid}{$AREA[$areaid][areaname]}{else}不限{/if} 
+&nbsp;&nbsp;&nbsp;<strong>发送频率：</strong>{if $rate}{$rate}天{else}不限{/if}
+</div>
+<div style="line-height:180%;font-size:13px;">
+{if $lists}
+<table cellpadding="6" cellspacing="1" width="100%" bgcolor="#B8CFEA" style="font-size:12px;">
+<tr bgcolor="#E5EEFA" align="center">
+<th>标题</th>
+<th>地区</th>
+<th>发布时间</th>
+</tr>
+{loop $lists $v}
+<tr bgcolor="#005590" align="center">
+<td align="left"><a href="{$v[linkurl]}" target="_blank" style="color:#005590;">{$v[title]}</a></td>
+<td>{area_pos($v[areaid], ' - ', 2)}</td>
+<td style="font-size:11px;">{timetodate($v[addtime], 5)}</td>
+</tr>
+{/loop}
+</table>
+{else}
+<br/><strong style="color:red;">抱歉，没有找到相应的商机，建议您调整条件以便获得更多商机。</strong><br/><br/>
+<a href="{$MODULE[2][linkurl]}alert.php?action=edit&itemid={$itemid}" target="_blank" style="color:#005590;">点此立即调整</a><br/><br/>
+{/if}
+</div>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="line-height:22px;padding:10px 0;font-family:'Microsoft YaHei',Verdana,Arial;font-size:12px;color:#666666;">请注意：此邮件系 <a href="{DT_PATH}" target="_blank" style="color:#005590;">{$DT[sitename]}</a> 自动发送，请勿直接回复。如果需要取消此邮件，请<a href="{$MODULE[2][linkurl]}alert.php" target="_blank" style="color:#005590;">点这里</a><br/>
+</td>
+</tr>
+</table>

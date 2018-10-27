@@ -1,0 +1,108 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td width="110" id="submenu"></td>
+{if $action == 'add'}
+<td class="tab" id="add"><a href="?mid={$mid}&job={$job}&action=add"><span>加入商圈</span></a></td>
+{/if}
+{if $_userid}
+<td class="tab" id="s3"><a href="?mid={$mid}&job={$job}"><span>已加入({$nums[3]})</span></a></td>
+<td class="tab" id="s2"><a href="?mid={$mid}&job={$job}&status=2"><span>审核中({$nums[2]})</span></a></td>
+<td class="tab" id="s1"><a href="?mid={$mid}&job={$job}&status=1"><span>未通过({$nums[1]})</span></a></td>
+{/if}
+</tr>
+</table>
+</div>
+{if $action=='add' || $action=='edit'}
+<iframe src="" name="send" id="send" style="display:none;"></iframe>
+<form method="post" action="?" id="dform" target="send" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="job" value="{$job}"/>
+<input type="hidden" name="gid" value="{$gid}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl">加入商圈</td>
+<td class="tr"><a href="{$MOD[linkurl]}{$GRP[linkurl]}" class="t">{$GRP[title]}</a></td>
+</tr>
+<tr>
+<td class="tl">{if $GRP[join_type]}<span class="f_red">*</span> {/if}加入原因</td>
+<td class="tr"><textarea name="post[reason]" id="reason" style="width:90%;height:80px;">{$reason}</textarea><br/><span class="f_gray">限500个字</span> <span id="dreason" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" name="submit" value=" 加 入 " class="btn_g"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value=" 返 回 " class="btn" onclick="history.back(-1);"/></td>
+</tr>
+</table>
+</form>
+{load('clear.js')}
+{if $action=='add'}
+<script type="text/javascript">s('mid_{$mid}');m('{$action}');</script>
+{else}
+<script type="text/javascript">s('mid_{$mid}');m('s{$status}');</script>
+{/if}
+{else}
+<div class="ls">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="100">商圈图标</th>
+<th>商圈名称</th>
+<th>主题</th>
+<th>粉丝</th>
+<th width="130">申请时间</th>
+<th width="40">管理</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td><a href="javascript:_preview('{$v[thumb]}');"><img src="{$v[thumb]}" width="80" class="thumb"/></a></td>
+<td><a href="{$v[linkurl]}" target="_blank" class="t">{$v[title]}</a></td>
+<td class="f_gray">{$v[post]}</td>
+<td class="f_gray">{$v[fans]}</td>
+<td class="f_gray">{$v[adddate]}</td>
+<td>
+{if $status == 3}
+<a href="?mid={$mid}&job={$job}&action=delete&itemid={$v[itemid]}" onclick="return confirm('确定要退出该圈吗？');"><img width="16" height="16" src="image/delete.png" title="退出" alt=""/></a>
+{else}
+<a href="?mid={$mid}&job={$job}&action=edit&itemid={$v[itemid]}"><img width="16" height="16" src="image/edit.png" title="修改" alt=""/></a>
+{/if}
+</td>
+</tr>
+{/loop}
+</table>
+</div>
+{if $join_limit}
+<div class="limit">
+总共可加 <span class="f_b f_red">{$join_limit}</span> 个&nbsp;&nbsp;&nbsp;
+当前已加 <span class="f_b">{$limit_used}</span> 个&nbsp;&nbsp;&nbsp;
+还可以加 <span class="f_b f_blue">{$limit_free}</span> 个&nbsp;&nbsp;&nbsp;
+</div>
+{/if}
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('mid_{$mid}');m('s{$status}');</script>
+{/if}
+{if $action == 'add' || $action == 'edit'}
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'reason';
+	l = Dd(f).value.length;
+	if(l > 500) {
+		Dmsg('加入原因最多500字，当前已输入'+l+'字', f);
+		return false;
+	}
+{if $GRP[join_type]}
+	if(l < 3) {
+		Dmsg('请填写加入原因', f);
+		return false;
+	}
+{/if}
+	return true;
+}
+</script>
+{/if}
+{template 'club_js', 'chip'}
+{template 'footer', 'member'}

@@ -1,0 +1,166 @@
+{if $user_status == 3}
+	{if $module == 'exhibit'}
+		{$content}</div>
+		<div class="head-txt"><strong>联系方式</strong></div>
+		<div class="content">
+		联系人：{$truename}<br/>
+		{if $addr}地址：{$addr}<br/>{/if}
+		{if $postcode}邮编：{$postcode}<br/>{/if}
+		{if $mobile}手机：{anti_spam($mobile)}<br/>{/if}
+		电话：{anti_spam($telephone)}<br/>
+		{if $fax}传真：{anti_spam($fax)}<br/>{/if}
+		{if $email}Email：{anti_spam($email)}<br/>{/if}
+		{if $qq}QQ：{im_qq($qq)}<br/>{/if}
+		{if $wx}微信：{im_wx($wx, $username)}<br/>{/if}
+	{elseif $module == 'job'}
+		<table cellpadding="6" cellspacing="0" width="100%">
+		<tr>
+		<td width="100" align="center">联系手机</td>
+		<td>{anti_spam($mobile)}</td>
+		</tr>
+		<tr>
+		<td align="center">电子邮件</td>
+		<td >{anti_spam($email)}</td>
+		</tr>
+		<tr>
+		<td align="center">联系电话</td>
+		<td>{anti_spam($telephone)}</td>
+		</tr>
+		<tr>
+		<td align="center">联系地址</td>
+		<td>{$address}</td>
+		</tr>
+		<tr>
+		<td align="center">即时通讯</td>
+		<td>
+		{if $username && $DT[im_web]}{im_web($username.'&mid='.$moduleid.'&itemid='.$itemid)}&nbsp;{/if}
+		{if $qq && $DT[im_qq]}{im_qq($qq)}&nbsp;{/if}
+		{if $wx && $DT[im_wx]}{im_wx($wx, $username)}&nbsp;{/if}
+		{if $ali && $DT[im_ali]}{im_ali($ali)}&nbsp;{/if}
+		{if $skype && $DT[im_skype]}{im_skype($skype)}&nbsp;{/if}
+		</td>
+		</tr>
+		</table>
+	{elseif $module == 'know'}
+		<div class="best_answer_show">
+		{$best[content]}
+		{if $best[url]}<br/>
+		<span class="px12"><strong>参考资料：</strong><a href="{fix_link($best[url])}" target="_blank">{$best[url]}</a></span>
+		{/if}
+		</div>
+	{elseif $module == 'down'}
+		<div class="down-url">
+		<ul>
+			<li><a href="{$MOD[linkurl]}down.php?itemid={$itemid}" class="b">主站下载</a></li>
+			{if $MIRROR}
+			{loop $MIRROR $k=>$v}
+			<li><a href="{$MOD[linkurl]}down.php?mirror={$k}&itemid={$itemid}" class="b">{$v[name]}镜像</a></li>
+			{/loop}
+			{/if}
+		</ul>
+		<div class="c_b"></div>
+		</div>
+	{elseif $module == 'photo'}
+		{if $action == 'side'}
+		{loop $S $k $v}
+		<a href="{$v[linkurl]}#p"><img src="{$v[thumb]}" width="80" height="80" title="{$v[introduce]}" alt="" {if $page==$v[page]}class="thumb_b"{else}class="thumb_a"{/if}/></a>
+		{/loop}
+		{else}
+		<div><a href="{$prev_photo}"><img src="{DT_SKIN}image/spacer.gif" id="cursor_a" title="上一张 支持键盘←方向键"/></a><a href="{$next_photo}"><img src="{DT_SKIN}image/spacer.gif" id="cursor_b" title="下一张 支持键盘→方向键"/></a></div>
+		<div class="t_c"><img src="{$P[src]}" id="destoon_photo" oncontextmenu="return false;" onload="if(this.width>{$MOD[max_width]})this.width={$MOD[max_width]};if(this.src.indexOf('spacer.gif')!=-1){this.width={$MOD[max_width]};this.height=1;}"/></div>
+		{/if}
+	{elseif $module == 'video'}
+		<div class="player">{template 'player', 'chip'}</div>
+	{elseif $module == 'article'}
+	<div class="content" id="article">{$content}</div>
+	{else}
+	{$content}
+	{/if}
+{elseif $user_status == 2}
+	{if isset($description) && $description}
+		{if $module == 'exhibit'}
+		<div class="pd10 lh18 px13">{$description}</div>
+		{elseif $module == 'article'}
+		<div class="content">{$description}</div>
+		{else}
+		{$description}
+		{/if}
+	{/if}
+<br/><br/>
+<div class="px14 t_c" style="margin:auto;width:300px;background:#FFFFFF;">
+<table cellpadding="6" cellspacing="6" width="100%">
+<tr>
+<td class="f_b">
+<div style="padding:6px;border:#40B3FF 1px solid;background:#E5F5FF;">
+查看详情需要支付{$name} <strong class="f_red">{$fee}</strong> {$unit}
+</div>
+</td>
+</tr>
+<tr>
+<td>我的{$name}余额 <strong class="f_blue">{if $currency=='money'}{$_money}{else}{$_credit}{/if}</strong> {$unit}</td>
+</tr>
+{if $MOD[fee_period]}
+<tr>
+<td>支付后可查看<strong class="f_red">{$MOD[fee_period]}</strong>分钟，过期重新计费</td>
+</tr>
+{/if}
+<tr>
+<td><input type="button" value="立即支付" class="btn-green" onclick="Go('{$pay_url}');"/></td>
+</tr>
+</table>
+</div>
+<br/><br/>
+{elseif $user_status == 1}
+<br/><br/>
+<div class="px14 t_c" style="margin:auto;width:300px;">
+<table cellpadding="5" cellspacing="5" width="100%">
+<tr>
+<td class="f_b">
+<div style="padding:6px;border:#FFC600 1px solid;background:#FFFEBF;">
+您的会员级别没有查看详情的权限
+</div>
+</td>
+</tr>
+<tr>
+<td>获得更多商业机会，建议<span class="f_red">升级</span>会员级别</td>
+</tr>
+{if $DT[telephone]}
+<tr>
+<td>咨询电话：{$DT[telephone]}</td>
+</tr>
+{/if}
+<tr>
+<td><input type="button" value="立即升级" class="btn-green" onclick="Go('{$MODULE[2][linkurl]}grade.php');"/></td>
+</tr>
+</table>
+</div>
+<br/><br/>
+{elseif $user_status == 0}
+<br/><br/>
+<div class="px14 t_c" style="margin:auto;width:300px;">
+<table cellpadding="5" cellspacing="5" width="100%">
+<tr>
+<td class="f_b">
+<div style="padding:6px;border:#FFC600 1px solid;background:#FFFEBF;">
+您还没有登录，请登录后查看详情
+</div>
+</td>
+</tr>
+<tr>
+<td><input type="button" value="立即登录" class="btn-blue" onclick="Go('{$MODULE[2][linkurl]}{$DT[file_login]}');"/></td>
+</tr>
+<tr>
+<td><input type="button" value="免费注册" class="btn-green" onclick="Go('{$MODULE[2][linkurl]}{$DT[file_register]}');"/></td>
+</tr>
+</table>
+</div>
+<br/><br/>
+{else}
+	{if $description}
+		<div class="content">{$description}</div>
+	{else}
+		<br/><br/><br/><br/><br/><br/>
+		<center><img src="{DT_SKIN}image/load.gif"/></center>
+		<br/><br/><br/><br/><br/><br/>
+	{/if}
+{/if}

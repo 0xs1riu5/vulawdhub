@@ -1,0 +1,121 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='',img_max_width={$MOD[max_width]};</script>
+<div class="m">
+	<div class="nav">
+	<span class="f_r">
+	<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&action=add&gid={$gid}" class="group_post">发帖</a> &nbsp; 
+	<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&action=add&job=reply&tid={$itemid}" class="group_post">回复</a>
+	</span>
+	<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}  <i>&gt;</i> <a href="{$MOD[linkurl]}{$GRP[linkurl]}">{$GRP[title]}{$MOD[seo_name]}</a>{if $page>1} <i>&gt;</i> <a href="{$linkurl}">{$title}</a>{/if}
+	</div>
+</div>
+{if $page == 1}
+<div class="m">
+	<div class="club_show">
+	<table>
+	<tr>
+	<td valign="top" class="club_show_l">
+	<ul>
+	<li>
+		{if $item[username]}
+		<a href="{$MOD[linkurl]}{rewrite('search.php?username='.$item['username'])}" class="b"><strong>{$item[passport]}</strong></a>
+		{else}
+		<strong title="{hide_ip($item[ip])}">游客</strong>
+		{/if}
+	</li>
+	<li><img src="{useravatar($item[username], 'large')}" alt="" class="club_avatar"/></li>
+	{if $item[username] && $DT[im_web]}<li>{im_web($item[username], 1)}</li>{/if}
+	{if $item[username] == $GRP[username]}
+	<li class="f_red">圈主</span></li>
+	{elseif in_array($item[passport], $GRP[managers])}
+	<li class="f_blue">版主</span></li>
+	{/if}	
+	<li></li>
+	</ul>
+	</td>
+	<td valign="top">
+		<div class="club_info">
+			<span class="f_r">
+			楼主
+			 | <a href="javascript:SendFav();" class="b">收藏</a>
+			 | <a href="javascript:SendReport();" class="b">举报</a>
+			<span class="manage"{if !$admin} style="display:none;"{/if}> | <a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&job=manage&tid={$itemid}" class="b" target="manage">管理</a></span>
+			</span>
+			{timetodate($addtime, 5)} &nbsp; 
+			{if $MOD[hits]}浏览:<span id="hits">{$hits}</span> &nbsp; {/if}
+			回复:<span id="reply">{$reply}</span>
+		</div>
+		<div class="b20"></div>
+		<h1 class="title" id="title">{$title}</h1>
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div id="question" class="content">{$content}</div>
+		{if $MOD[fee_award]}
+		<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+		{/if}
+	</td>
+	</tr>
+	</table>
+	</div>
+</div>
+{/if}
+{if $replys}
+	{loop $replys $k $v}
+	<a name="R{$v[itemid]}"></a>
+	<div class="m">
+		<div class="club_show">
+		<table>
+		<tr>
+		<td valign="top" class="club_show_l">
+		<ul>
+		<li id="u_{$v[itemid]}">
+			{if $v[username]}
+			<a href="{userurl($v[username])}" target="_blank" class="b"><strong>{$v[passport]}</strong></a>
+			{else}
+			<strong title="{hide_ip($item[ip])}">游客</strong>
+			{/if}
+		</li>
+		<li><img src="{useravatar($v[username], 'large')}" alt="" class="club_avatar"/></li>
+		{if $v[username] && $DT[im_web]}<li>{im_web($v[username], 1)}</li>{/if}
+		
+		{if $v[username] == $GRP[username]}
+		<li class="f_red">圈主</li>
+		{elseif in_array($v[passport], $GRP[managers])}
+		<li class="f_blue">版主</li>
+		{/if}
+		<li></li>
+		</ul>
+		</td>
+		<td valign="top">
+			<div class="club_info">
+				<span class="f_r">
+				{if $v[fname]}{$v[fname]}{else}{$v[floor]}楼{/if}
+				 | <a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&action=add&job=reply&tid={$itemid}&rid={$v[itemid]}" class="b">回复</a>				 
+				 | <a href="javascript:RR({$v[itemid]});" class="b">举报</a>
+				<span class="manage"{if !$admin} style="display:none;"{/if}> | <a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&job=manage&rid={$v[itemid]}&pid={$page}" class="b" target="manage">管理</a></span>
+				</span>
+				{timetodate($v[addtime], 5)}{if $v[username] == $item[username]}&nbsp;&nbsp;<span class="f_gray">楼主</span>{/if}
+			</div>
+			<div class="content" id="R_{$v[itemid]}">{$v[content]}</div>
+		</td>
+		</tr>
+		</table>
+		</div>
+	</div>
+	{/loop}
+{/if}
+{if $pages}
+<div class="m"><div class="pages">{$pages}</div></div>
+{/if}
+<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>
+<script style="text/javascript">
+function RR(id) {
+	var c = Dd('R_'+id).innerHTML;
+	if(c.indexOf('club_break') != -1) {
+		var t = c.split('club_break');
+		c = t[1];
+		c = c.substring(c.indexOf('>') + 1);
+	}
+	SendReport('{$MOD[name]}回复举报，回复ID:'+id+'\n回复内容:\n'+c);
+}
+</script>
+{template 'footer'}

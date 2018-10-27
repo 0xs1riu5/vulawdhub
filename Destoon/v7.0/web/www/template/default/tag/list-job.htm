@@ -1,0 +1,29 @@
+{loop $tags $k $t}
+<div class="list">
+	<table>
+	<tr align="center">
+		<td width="10"> </td>
+		<td align="left">
+		<ul>
+		<li><a href="{$t[linkurl]}" target="_blank" title="{$t[alt]}"><strong class="px14">{$t[title]}</strong></a></li>
+		<li>{if $t[vip]}<img src="{DT_SKIN}image/vip_{$t[vip]}.gif" alt="{VIP}" title="{VIP}:{$t[vip]}级" align="absmiddle"/> {/if}<a href="{userurl($t[username])}" target="_blank">{$t[company]}</a></li>
+		</ul>
+		</td>
+		<td width="120" class="f_orange">
+		{if $t[minsalary] && $t[maxsalary]}
+			{$t[minsalary]}-{$t[maxsalary]}元/月
+		{elseif $t[minsalary]}
+			{$t[minsalary]}元/月以上
+		{elseif $t[maxsalary]}
+			{$t[maxsalary]}元/月以内
+		{else}
+			面议
+		{/if}
+		</td>
+		<td width="100">{area_pos($t[areaid], '')}</td>
+		<td width="90" class="f_gray">{timetodate($t[edittime], $datetype)}</td>
+	</tr>
+	</table>
+</div>
+{/loop}		
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

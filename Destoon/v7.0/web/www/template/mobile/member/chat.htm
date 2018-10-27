@@ -1,0 +1,192 @@
+{template 'header', 'member'}
+<style type="text/css">
+#chat {padding:10px 0;overflow:auto;}
+#chat table {margin-top:16px;}
+#chat img {max-width:98%;height:auto;}
+.emoji {height:220px;width:100%;position:fixed;z-index:10;left:0px;top:48px;background:#FFFFFF;display:none;}
+.emoji div {height:44px;line-height:44px;padding:0 16px;background:#F5F5F6;font-size:16px;}
+.emoji div span {float:right;}
+.emoji table {width:100%;}
+.emoji td {height:44px;text-align:center;}
+.emoji td:hover {background:#F5F5F6;}
+.chat-more {text-align:center;padding:16px 0 0 0;font-size:12px;}
+.chat-date {text-align:center;padding:16px 0 0 0;font-size:10px;color:#666666;}
+.chat_msg0 {background:#FFFFFF;padding:10px;border-radius:4px;font-size:16px;display:inline-block;}
+.chat_arr0 {width:8px;background:url('{DT_MOB}static/img/chat-arr0.png?v=2') no-repeat 0 16px;background-size:8px 8px;}
+.chat_msg1 {background:#D8E8F9;padding:10px;border-radius:4px;font-size:16px;display:inline-block;float:right;}
+.chat_arr1 {width:8px;background:url('{DT_MOB}static/img/chat-arr1.png?v=2') no-repeat 0 16px;background-size:8px 8px;}
+.chat-spin {height:300px;background:#FFFFFF url('{DT_MOB}static/img/spinner.gif') no-repeat center center;background-size:16px 16px;}
+.chat-word {height:28px;padding:2px 4px;background:#FFFFFF;border-radius:6px;}
+.chat-word input {width:100%;height:28px;line-height:28px;padding:0;font-size:16px;border:none;outline:none;}
+.chat-camera {width:48px;height:48px;background:url('{DT_MOB}static/img/chat-camera.png') no-repeat center center;background-size:24px 24px;overflow:hidden;}
+.chat-emoji {width:48px;height:48px;background:url('{DT_MOB}static/img/chat-emoji.png') no-repeat center center;background-size:24px 24px;overflow:hidden;}
+</style>
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback('im.php');" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$user[username]}</div>
+<div class="head-bar-right"><a href="javascript:Dsheet('<a href=&#34;im.php&#34;><span>交谈列表</span></a>|<a href=&#34;im.php?action=view&chatid={$chatid}&#34;><span>聊天记录</span></a>|<a href=&#34;{userurl($user[username], 'file=contact')}&#34;><span>对方资料</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+
+<div id="chat"><div class="chat-spin" onclick="window.location.reload();"></div></div>
+{if $faces}
+<div id="emoji" class="emoji bd-b">
+<table cellspacing="0" cellpadding="0">
+{loop $faces $k $v}
+{if $k%10==0}<tr>{/if}
+<td onclick="$('#word').val($('#word').val()+':{$v})');"><img src="{DT_STATIC}file/face/{$v}.gif"/></td>
+{if $k%10==9}</tr>{/if}
+{/loop}
+</table>
+<div><span><a href="javascript:chat_send();" class="b">发送</a></span><a href="javascript:$('#emoji').slideUp('fast');" class="b">收起</a></div>
+</div>
+{/if}
+<div class="foot-bar-fix"></div>
+<div class="foot-bar">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td width="48"><div class="chat-camera"><div id="file-picker"></div></div></td>
+<td><div class="chat-word bd-t bd-r bd-b bd-l"><input type="text" name="word" id="word"/></div></td>
+{if $faces}<td width="48" onclick="$('#emoji').slideToggle('fast');"><div class="chat-emoji"></div></td>{/if}
+</tr>
+</table>
+</div>
+<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+<script type="text/javascript">
+var fileu = WebUploader.create({
+	auto: true,
+    server: '{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=file',
+    pick: '#file-picker',
+    resize: false
+});
+fileu.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+fileu.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '处理中...' : '上传中...'+p+'%');
+});
+fileu.on( 'uploadSuccess', function(file, data) {
+	if(data.error) {
+		alert(data.message);
+	} else {
+		chat_send(data.url);
+	}
+});
+fileu.on( 'uploadError', function(file, data) {
+	alert(data.message);
+});
+fileu.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+</script>
+<script type="text/javascript">
+var chat_id = '{$chat_id}';
+var chat_poll = {$chat_poll}*1000;
+var chat_maxlen = {$MOD[chat_maxlen]};
+var chat_mintime = {$MOD[chat_mintime]};
+var chat_type = {$type};
+var chat_last = {$DT_TIME};
+var chat_time = 0;
+function unixtime(){return Math.round(new Date().getTime()/1000);}
+function chat_load(d){
+	$.post('?', 'action=load&chatlast='+chat_last+'&chatid='+chat_id+'&first='+(d ? 1 : 0), function(data) {
+		if(data) {
+			eval("var chat_json="+data);
+			chat_last=chat_json.chat_last;
+			chat_msg=chat_json.chat_msg;
+			msglen=chat_msg.length;
+			if(msglen && d) {$('#chat').append('<div class="chat-more"><a href="im.php?action=view&chatid='+chat_id+'" class="b">更多记录</a></div>');}
+			for(var i=0;i<msglen;i++){
+				msghtm = '';
+				if(chat_msg[i].date) msghtm += '<div class="chat-date"><span>'+chat_msg[i].date+'</span></div>';
+				msghtm += '<table cellpadding="0" cellspacing="0" width="100%">';
+				msghtm += '<tr>';
+				if(chat_msg[i].self == 1) {
+					msghtm += '<td width="70"></td>';
+					msghtm += '<td valign="top"><div class="chat_msg1">'+chat_msg[i].word+'</div></td>';
+					msghtm += '<td class="chat_arr1"></td>';
+					msghtm += '<td width="60" valign="top" align="center"><img src="{useravatar($_username)}" width="40" height="40"/></td>';
+				} else {
+					msghtm += '<td width="60" valign="top" align="center"><a href="{userurl($user[username])}"><img src="{useravatar($user[username])}" width="40" height="40"/></a></td>';
+					msghtm += '<td class="chat_arr0"></td>';
+					msghtm += '<td valign="top"><div class="chat_msg0">'+chat_msg[i].word+'</div></td>';
+					msghtm += '<td width="70"></td>';
+				}
+				msghtm += '</tr>';
+				msghtm += '</table>';
+				$('#chat').append(msghtm);
+			}
+			if(msglen) $('#chat').animate({scrollTop:$('#chat')[0].scrollHeight+1000}, 500);
+		}
+	});
+}
+function chat_send(msg){
+	var chat_word = msg ? msg : $.trim($('#word').val());
+	var chat_len = chat_word.length;
+	if(chat_len < 1) {
+		Dtoast('请输入消息内容');
+		return;
+	}
+	if(chat_len > chat_maxlen) {
+		Dtoast('最多输入'+chat_maxlen+'字，当前已输入'+chat_len+'字');
+		return;
+	}
+	if(chat_mintime && (unixtime() -chat_time < chat_mintime)){
+		Dtoast('发送速度过快，请稍后再发');
+		return;
+	}
+	chat_time = unixtime();
+	$.post('?', 'action=send&chatid='+chat_id+'&font_s=&font_c=&font_b=&font_i=&font_u=&word='+encodeURIComponent(chat_word), function(data) {
+		if(data == 'ok') {
+			$('#word').val('');
+		} else if(data == 'max') {
+			Dtoast('发送内容过长');
+		} else {
+			Dtoast('发送失败，请重试');
+		}
+	});
+}
+$(function(){
+	var wh = $(window).height();
+	$('#chat').height(wh - 116);
+	{if $DT_MOB[os]=='ios'}
+		if(window.screen.width > 320) {
+			$('.head-bar').css('position', 'static');
+			$('.foot-bar').css('position', 'static');
+			$('.head-bar-fix').hide();
+			$('.foot-bar-fix').hide();
+		}
+		$('#word').focus(function(e){
+			$('#emoji').hide();
+			$('html, body').animate({scrollTop:100000}, 0);			
+		}).blur(function(e){
+			$('html, body').animate({scrollTop:0}, 0);
+		});
+	{/if}
+	{if $DT_MOB[os]=='android'}
+		$('#word').focus(function(e){
+			$('.foot-bar').css('top','-1px');
+			$('#emoji').hide();
+			$('#chat').height(wh/2-10);
+			$('#chat').animate({scrollTop:$('#chat')[0].scrollHeight+1000}, 0);
+		}).blur(function(e){
+			$('.foot-bar').css({'top':(wh - 48)+'px'});
+			$('#chat').height(wh - 116);
+			$('#chat').animate({scrollTop:$('#chat')[0].scrollHeight+1000}, 0);
+		});
+	{/if}
+	$('#chat').html('');
+	chat_last=0;
+	chat_load(1);
+	setInterval(function() {
+		chat_load();
+	}, chat_poll);
+	$('#word').keyup(function(e){if(e.keyCode==13)chat_send();})
+});
+</script>
+{template 'footer', 'member'}

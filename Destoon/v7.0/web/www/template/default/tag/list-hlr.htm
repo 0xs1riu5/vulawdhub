@@ -1,0 +1,7 @@
+<table width="100%">
+{loop $tags $i $t}
+{if $i%$cols==0}<tr>{/if}
+<td><div>{if $datetype}<span class="f_r">{timetodate($t[addtime], $datetype)}</span>{/if}<a href="{$t[linkurl]}"{if $target} target="{$target}"{/if} title="{$t[alt]}">&raquo;{$t[title]}</a></div></td>
+{if $i%$cols==($cols-1)}</tr>{/if}
+{/loop}
+</table>

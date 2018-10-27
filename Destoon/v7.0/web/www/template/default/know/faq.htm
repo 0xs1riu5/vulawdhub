@@ -1,0 +1,95 @@
+{template 'header'}
+<div class="m">
+	<div class="nav"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> 帮助</div>
+</div>
+<div class="m">
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr>
+	<th class="px16">“{$MOD[name]}”礼仪</th>
+	</tr>
+	<tr>
+	<td>
+	<div class="content">
+	1、标题要正确<br/>
+	在提问或答复的时候不要写无意义或模糊的题目，为了别人解答时理解的方便请正确书写标题。 <br/>
+	2、对问题进行具体的说明<br/>
+	在提问或答复的时候，内容要具体详细地书写。问题内容越详细别人的答复也就越正确，答复越详细也就越让人容易理解。 <br/>
+	3、检查问题是否重复<br/>
+	在提问之前，请先对问题进行搜索，或者在提问的时候，先关注一下提问页面右侧的“相关问题”列表，其中是否已经有过得到解决的类似问题。在确认没有令您满意的答案后再提问。 <br/>
+	4、检查问题的分类是否正确<br/>
+	提交问题之前请确认问题的分类是否正确，提问的正确归类可以让你更快地得到满意的回答。<br/> 
+	5、及时处理问题<br/>
+	在提问后的{$MOD[overdays]}天之内，如果有满意的答复一定要作出选择，以免伤害热心回答的网友。如果有答案而过期不对问题进行处理，我们将扣除您{$MOD[credit_deal]}分的{$DT[credit_name]}以示惩戒。<br/> 
+	6、学会表示感谢<br/>
+	对所有解答自己问题的会员表示感谢。选出最佳答案后也请给予回答者一些友好的评价，尊重他人的劳动成果。<br/> 
+	7、互相尊重<br/>
+	提问者提问时的语气请尽量友好，避免给他人以责问、逼问的不良感受。回答者在答复时候也不要小看或嘲笑提问者，要有诚意地解答，正确地书写。 <br/>
+	</div>
+	</td>
+	</tr>
+	</table>
+	<div class="b20"></div>
+	<a name="credit"></a>
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr>
+	<th colspan="3" class="px16">{$DT[credit_name]}增加</th>
+	</tr>
+	<tr bgcolor="#FAFAFA" align="center">
+	<td width="260"><strong>操作</strong></td>
+	<td width="160"><strong>增加值</strong></td>
+	<td><strong>说明</strong></td>
+	</tr>
+	<tr align="center">
+	<td>提交回答</td>
+	<td>+{$MOD[credit_answer]}</td>
+	<td align="left">每日最多可获得{$MOD[credit_maxanswer]}分</td>
+	</tr>
+	<tr align="center">
+	<td>回答被采纳为最佳答案</td>
+	<td>+{$MOD[credit_best]} +悬赏分</td>
+	<td align="left">回答被提问者采纳为最佳答案，或者通过投票被选为最佳答案，回答者可获得系统自动赠送的{$MOD[credit_best]}分＋提问者设置的悬赏分</td>
+	</tr>
+	<tr align="center">
+	<td>参与投票</td>
+	<td>+{$MOD[credit_vote]}</td>
+	<td align="left">每日最多可获得{$MOD[credit_maxvote]}分</td>
+	</tr>
+	</table>
+	<div class="b20"></div>
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr>
+	<th colspan="3" class="px16">{$DT[credit_name]}扣除</th>
+	</tr>
+	<tr bgcolor="#FAFAFA" align="center">
+	<td width="260"><strong>操作</strong></td>
+	<td width="160"><strong>增加值</strong></td>
+	<td><strong>说明</strong></td>
+	</tr>
+	<tr align="center">
+	<td>悬赏付出</td>
+	<td>-悬赏分</td>
+	<td align="left">提问用户设置悬赏、追加悬赏，扣除相应{$DT[credit_name]}</td>
+	</tr>
+	<tr align="center">
+	<td>匿名提问</td>
+	<td>-{$MOD[credit_hidden]}</td>
+	<td align="left">提问用户采用匿名方式提交问题，扣除{$MOD[credit_hidden]}分</td>
+	</tr>
+	<tr align="center">
+	<td>提问上线后被删除</td>
+	<td>-{$MOD[credit_del]}</td>
+	<td align="left">提问上线后，被管理员删除，扣除提问用户{$MOD[credit_del]}分，答复者不扣</td>
+	</tr>
+	<tr align="center">
+	<td>回答上线后被删除</td>
+	<td>-{$MOD[credit_del_answer]}</td>
+	<td align="left">回答上线后，被管理员删除，扣除回答用户{$MOD[credit_del_answer]}分</td>
+	</tr>
+	<tr align="center">
+	<td>问题{$MOD[overdays]}天内不处理</td>
+	<td>-{$MOD[credit_deal]}</td>
+	<td align="left">问题到期，提问用户不作处理（不做最佳答案判断、不通过提高悬赏延期问题有效时间，不关闭问题，或不转入投票流程），在问题直接过期或自动转投票时扣除提问用户{$MOD[credit_deal]}分</td>
+	</tr>
+	</table>
+</div>
+{template 'footer'}

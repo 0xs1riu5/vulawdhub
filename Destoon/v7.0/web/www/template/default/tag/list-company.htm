@@ -1,0 +1,21 @@
+{loop $tags $k $t}
+<div class="list">
+	<table>
+	<tr>
+		<td width="100"><div><a href="{$t[linkurl]}" target="_blank"><img src="{imgurl($t[thumb])}" width="80" height="80" alt=""/></a></div></td>
+		<td align="left">
+			<ul>
+			<li>{if $t[vip]}<img src="{DT_SKIN}image/vip_{$t[vip]}.gif" alt="{VIP}" title="{VIP}:{$t[vip]}级" align="absmiddle"/> {/if}<a href="{$t[linkurl]}" target="_blank"><strong class="px14">{$t[company]}</strong></a></li>
+			<li class="f_gray">主营：{$t[business]}</li>
+			<li class="f_gray">
+			{if $t[mode]}({$t[mode]})&nbsp;&nbsp;{/if}
+			{if $t[validated]}[已核实]{else}[未核实]{/if}
+			</li>
+			</ul>
+		</td>
+		<td width="100" class="f_gray" align="center">[{area_pos($t[areaid], '/', 2)}]</td>
+	</tr>
+	</table>
+</div>
+{/loop}		
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

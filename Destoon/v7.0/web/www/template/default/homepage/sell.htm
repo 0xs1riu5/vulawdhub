@@ -1,0 +1,165 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+{if $itemid}
+<div class="main_head"><div><strong>{$title}</strong></div></div>
+<div class="main_body">	
+		<table width="100%" align="center">
+		<tr>
+		<td width="250" valign="top">
+			<div id="mid_pos"></div>
+			<div id="mid_div" onmouseover="SAlbum();" onmouseout="HAlbum();" onclick="PAlbum(Dd('mid_pic'));">
+			<img src="{$albums[0]}" width="240" height="180" id="mid_pic"/><span id="zoomer"></span>
+			</div>
+			<div class="b5"></div>
+			<div>
+			{loop $thumbs $k $v}<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>{/loop}
+			</div>
+			<div class="b5"></div>
+			<div onclick="PAlbum(Dd('mid_pic'));" class="c_b t_c c_p"><img src="{DT_SKIN}image/ico_zoom.gif" width="16" height="16" align="absmiddle"/> 点击图片查看原图</div>
+		</td>
+		<td width="15"> </td>
+		<td valign="top">
+			<div id="big_div" style="display:none;"><img src="" id="big_pic"/></div>
+			<table width="100%" cellpadding="4" cellspacing="4">
+			{if $MOD[hits]}
+			<tr>
+			<td class="f_dblue">产品：</td>
+			<td><span id="hits" class="f_r">浏览次数：{$hits}</span><strong>{$title}</strong>&nbsp;</td>
+			</tr>
+			{/if}
+			{if $brand}
+			<tr>
+			<td class="f_dblue">品牌：</td>
+			<td>{$brand}</td>
+			</tr>
+			{/if}
+			{if $n1 && $v1}
+			<tr>
+			<td class="f_dblue">{$n1}：</td>
+			<td>{$v1}</td>
+			</tr>
+			{/if}
+			{if $n2 && $v2}
+			<tr>
+			<td class="f_dblue">{$n2}：</td>
+			<td>{$v2}</td>
+			</tr>
+			{/if}
+			{if $n3 && $v3}
+			<tr>
+			<td class="f_dblue">{$n3}：</td>
+			<td>{$v3}</td>
+			</tr>
+			{/if}
+			<tr>
+			<td class="f_dblue">单价：</td>
+			<td class="f_b f_orange">{if $price>0}{$price}{$DT[money_unit]}/{$unit}{else}面议{/if}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">最小起订量：</td>
+			<td class="f_b f_orange">{if $minamount}{$minamount} {$unit}{/if}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">供货总量：</td>
+			<td class="f_b f_orange">{if $amount}{$amount} {$unit}{/if}</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">发货期限：</td>
+			<td>自买家付款之日起  <span class="f_b f_orange">{if $days}{$days}{/if}</span> 天内发货</td>
+			</tr>
+			<tr>
+			<td class="f_dblue">有效期至：</td>
+			<td>{if $todate}{$todate}{else}长期有效{/if}{if $expired} <span class="f_red">[已过期]</span>{/if}</td>
+			</tr>
+			<tr>
+			<td width="80" class="f_dblue">最后更新：</td>
+			<td>{$editdate}</td>
+			</tr>
+			{if $could_inquiry && !$expired}
+			<tr>
+			<td class="f_dblue">&nbsp;</td>
+			<td><a href="#message"><img src="{DT_SKIN}image/btn_inquiry.gif" alt="询价"/></a></td>
+			</tr>
+			{/if}
+			</table>
+			<script type="text/javascript">
+			document.write('<br/><br/><center><a href="{$MODULE[4][linkurl]}home.php?action=prev&itemid={$itemid}&username={$username}" class="t">&#171;上一个产品</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{$MODULE[4][linkurl]}home.php?action=next&itemid={$itemid}&username={$username}" class="t">下一个产品&#187;</a></center>');
+			</script>
+		</td>
+		</tr>
+		</table>
+	</div>
+
+	<div class="main_head"><div><strong>详细信息</strong></div></div>
+	<div class="main_body">
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		<div class="content" id="content">{$content}</div>
+	</div>
+	{if $could_inquiry}
+	<div class="main_head"><div><strong><span id="message_title">询价单</span><a name="message"></a></strong></div></div>
+	<div class="main_body"><script type="text/javascript">Df('{$inquiry_url}', 'name="fra" id="fra" style="width:98%;height:488px;"');</script></div>
+	{/if}
+	{if $could_comment && in_array($moduleid, explode(',', $EXT['comment_module']))}
+	<div id="comment_div" style="display:;">
+		<div class="main_head"><div><span class="f_r px12">共<span id="comment_count">0</span>条&nbsp;&nbsp;</span><strong><span id="message_title">相关评论</span></strong></div></div>
+		<div class="main_body"><script type="text/javascript">Df('{DT_PATH}api/comment.php?mid={$moduleid}&itemid={$itemid}&proxy={$comment_proxy}', 'id="destoon_comment" style="width:100%;"');</script></div>
+	</div>
+	{/if}
+	<script type="text/javascript">
+	try {Dd('type_{$typeid}').style.backgroundColor = '#F1F1F1';}catch (e){}
+	var content_id = 'content';
+	var img_max_width = {$MOD[max_width]};
+	</script>
+	<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>
+{else}
+<div class="main_head">
+<div>
+<span class="f_r f_n px12">
+{if $view}
+<a href="{userurl($username, 'file=sell&typeid='.$typeid, $domain)}">以橱窗方式浏览</a> | <strong>以目录方式浏览</strong>
+{else}
+<strong>以橱窗方式浏览</strong> | <a href="{userurl($username, 'file=sell&view=1&typeid='.$typeid, $domain)}">以目录方式浏览</a>
+{/if}
+</span>
+<strong>{$MENU[$menuid][name]}</strong>
+</div>
+</div>
+<div class="main_body">
+	{if $view}
+		<table cellpadding="10" cellspacing="1" width="100%">
+		<tr bgcolor="#EEEEEE">
+		<th width="100">图片</th>
+		<th>标 题</th>
+		<th width="110">更新时间</th>
+		</tr>
+		{loop $lists $k $v}
+		<tr align="center"{if $k%2==1} bgcolor="#F1F1F1"{/if}>
+		<td height="100"><a href="{$v[linkurl]}"><img src="{imgurl($v[thumb])}" width="80" height="80" alt="" style="border:#C0C0C0 1px solid;"/></a></td>
+		<td align="left" class="lh18" valign="top"><a href="{$v[linkurl]}" class="px14">{$v[title]}</a><br/><span class="f_gray">{$v[introduce]}</span>
+		</td>
+		<td>{timetodate($v[edittime], 3)}</td>
+		</tr>
+		{/loop}
+		</table>
+	{else}
+		<table cellpadding="10" cellspacing="1" width="100%">
+		{loop $lists $k $v}
+		{if $k%4==0}<tr align="center">{/if}
+		<td valign="top" width="25%">
+		<div class="thumb">
+			<a href="{$v[linkurl]}"><img src="{imgurl($v[thumb], 160)}" width="160" height="160" alt="{$v[alt]}"/></a>
+			<div><a href="{$v[linkurl]}">{$v[title]}</a></div>
+			<p>{timetodate($v[edittime], 3)}</p>
+		</div>
+		</td>
+		{if $k%4==3}</tr>{/if}
+		{/loop}
+		</table>
+	{/if}
+	<div class="pages">{$pages}</div>
+</div>
+<script type="text/javascript">
+try {Dd('type_{$typeid}').innerHTML = '<strong>'+Dd('name_{$typeid}').innerHTML+'</strong>';}catch (e){}
+</script>
+{/if}
+{template 'footer', $template}

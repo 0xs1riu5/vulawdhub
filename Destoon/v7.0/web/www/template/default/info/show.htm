@@ -1,0 +1,71 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav"><div><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></div><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20 bd-t"></div>
+</div>
+<div class="m m3">
+	<div class="m3l">
+		<h1 class="title" id="title">{$title}</h1>
+		<div class="info_main">		
+			<table width="100%">
+				<tr>
+				<td width="330" valign="top">
+				<div id="mid_pos"></div>
+				<div id="mid_div" onmouseover="SAlbum();" onmouseout="HAlbum();" onclick="PAlbum(Dd('mid_pic'));">
+				<img src="{$albums[0]}" width="320" height="240" id="mid_pic"/><span id="zoomer"></span>
+				</div>
+				<div class="b10"></div>
+				<div>
+				{loop $thumbs $k $v}<img src="{$v}" width="60" height="60" onmouseover="if(this.src.indexOf('nopic60.gif')==-1)Album({$k}, '{$albums[$k]}');" class="{if $k}ab_im{else}ab_on{/if}" id="t_{$k}"/>{/loop}
+				</div>
+				<div class="b10"></div>
+				<div onclick="PAlbum(Dd('mid_pic'));" class="c_b t_c c_p"><img src="{DT_SKIN}image/ico_zoom.gif" width="16" height="16" align="absmiddle"/> 点击图片查看原图</div>
+			</td>
+			<td width="16"> </td>
+			<td valign="top">
+			<div id="big_div" style="display:none;"><img src="" id="big_pic"/></div>
+			<ul>
+			{if $n1 && $v1}<li><strong>{$n1}</strong>：{$v1}</li>{/if}
+			{if $n2 && $v2}<li><strong>{$n2}</strong>：{$v2}</li>{/if}
+			{if $n3 && $v3}<li><strong>{$n3}</strong>：{$v3}</li>{/if}
+			<li><strong>发布日期</strong>：{$editdate}</li>
+			<li><strong>有效期至</strong>：{if $todate}{$todate}{else}长期有效{/if}{if $expired} <span class="f_red">[已过期]</span>{/if}</li>
+			<li><strong>{$MOD[name]}区域</strong>：{area_pos($areaid, '')}</li>
+			{if $MOD[hits]}<li><strong>浏览次数</strong>：<span id="hits">{$hits}</span></li>{/if}
+			{if $MOD[show_message] && $username && !$expired}
+			<li><img src="{DT_SKIN}image/btn_message.gif" alt="留言咨询" class="c_p" onclick="Go('{$MOD[linkurl]}{rewrite('message.php?itemid='.$itemid)}');"/></li>
+			{/if}
+			</ul>
+			</td>
+			</tr>
+			</table>
+		</div>
+		{if $content}
+		<div class="head-txt"><strong>详细说明</strong></div>
+		<div class="content" id="content">{$content}</div>
+		{/if}
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		{if $MOD[fee_award]}
+		<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+		{/if}
+		{template 'comment', 'chip'}
+	</div>
+	<div class="m3r">
+		<div class="contact_head">联系方式</div>		
+		<div class="contact_body" id="contact">{template 'contact', 'chip'}</div>		
+		{if $MOD[page_srelate]}
+		{if $username}
+		<div class="head-sub"><strong>该企业最新{$MOD[name]}</strong></div>
+		<div class="list-txt"><!--{tag("moduleid=$moduleid&condition=status=3 and username='$username'&pagesize=".$MOD[page_srelate]."&order=addtime desc", -2)}--></div>
+		{else}
+		<div class="head-sub"><strong>同类{$MOD[name]}</strong></div>
+		<div class="list-txt"><!--{tag("moduleid=$moduleid&condition=status=3&catid=$catid&areaid=$cityid&pagesize=".$MOD[page_srelate]."&order=addtime desc")}--></div>
+		{/if}
+		{/if}
+	</div>
+	<div class="c_b"></div>
+</div>
+<script type="text/javascript" src="{DT_STATIC}file/script/album.js"></script>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{template 'footer'}

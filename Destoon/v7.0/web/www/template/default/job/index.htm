@@ -1,0 +1,71 @@
+{template 'header'}
+<div class="m m3">
+	<div class="m3l">
+		{if $MOD[page_ijob]}
+		<div class="head-txt"><span><a href="{$MOD[linkurl]}{rewrite('search.php?typeid=4')}">更多<i>&gt;</i></a></span><strong>推荐招聘</strong></div>
+		<div class="job-tb"><!--{tag("moduleid=$moduleid&condition=status=3 and level>0&areaid=$cityid&pagesize=".$MOD[page_ijob]."&order=".$MOD[order]."&template=table-job")}--></div>
+		<div class="head-txt"><span><a href="{$MOD[linkurl]}{rewrite('search.php?typeid=1')}">更多<i>&gt;</i></a></span><strong>最新招聘</strong></div>
+		<div class="job-tb"><!--{tag("moduleid=$moduleid&condition=status=3&areaid=$cityid&pagesize=".$MOD[page_ijob]."&order=".$MOD[order]."&template=table-job")}--></div>
+		{/if}
+	</div>
+	<div class="m3r">
+		<div class="user-info">
+		<script type="text/javascript">
+		var destoon_uname = get_cookie('username');
+		document.write('<a href="{$MODULE[2][linkurl]}avatar.php"><img src="'+DTPath+'api/avatar/show.php?size=large&reload={DT_TIME}&username='+destoon_uname+'"/></a>');
+		document.write('<ul>');
+		if(get_cookie('auth')) {
+			document.write('<li><em><a href="{$MODULE[2][linkurl]}logout.php">退出</a></em><a href="{$MODULE[2][linkurl]}"><strong>Hi,'+destoon_uname+'</strong></a></li>');
+		} else {
+			if(destoon_uname) {
+				document.write('<li><em><a href="{$MODULE[2][linkurl]}{$DT[file_login]}">登录</a></em><a href="{$MODULE[2][linkurl]}"><strong>Hi,'+destoon_uname+'</strong></a></li>');
+			} else {
+				document.write('<li><em><a href="{$MODULE[2][linkurl]}{$DT[file_register]}">注册</a></em><a href="{$MODULE[2][linkurl]}{$DT[file_login]}"><strong>Hi,请登录</strong></a></li>');
+			}
+		}
+		document.write('<li><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&action=add" class="b">发布招聘</a><i>|</i><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}" class="b">我的招聘</a><i>|</i><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&job=answer" class="b">完善简历</a></li>');
+		document.write('</ul>');
+		</script>
+		</div>
+		<div class="job-stats">
+			<ul>
+			<li><i>{php echo $db->count($table, 'status=3', 1800);}</i>职位</li>
+			<li><div><i>{php echo $db->count($table_resume, 'status=3', 1800);}</i>简历</div></li>
+			<li><i>{php echo $db->count($DT_PRE.'company', 'groupid>5', 1800);}</i>企业</li>
+			</ul>
+		</div>
+		<!--
+		<div class="head-sub"><span><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}">更多<i>&gt;</i></a></span><strong>企业招人才</strong></div>
+		<div class="job-for">
+			<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?action=add&mid={$moduleid}"><span>发布招聘</span></a>
+			<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?action=add&mid={$moduleid}"><span>搜索人才</span></a>
+		</div>
+		<div class="head-sub"><span><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&resume=1">更多<i>&gt;</i></a></span><strong>个人找工作</strong></div>
+		<div class="job-for">
+			<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?action=add&mid={$moduleid}"><span>完善简历</span></a>
+			<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?action=add&mid={$moduleid}"><span>搜索职位</span></a>
+		</div>
+		-->
+		<div class="head-sub"><strong>按行业浏览</strong></div>
+		<div class="list-cate2">
+		<ul>
+		{loop $maincat $k $v}
+		<li><a href="{$MOD[linkurl]}{$v[linkurl]}">{set_style($v[catname],$v[style])}</a><i>({$v[item]})</i></li>
+		{/loop}
+		</ul>
+		<div class="c_b"></div>
+		</div>
+		<div class="head-sub"><strong>按地区浏览</strong></div>
+		<div class="list-area4">
+		{php $mainarea = get_mainarea(0)}
+		<ul>
+		{loop $mainarea $k $v}
+		<li><a href="{$MOD[linkurl]}{rewrite('search.php?areaid='.$v['areaid'])}">{$v[areaname]}</a></li>
+		{/loop}
+		</ul>
+		<div class="c_b"></div>
+		</div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

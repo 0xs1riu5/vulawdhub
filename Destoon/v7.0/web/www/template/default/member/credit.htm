@@ -1,0 +1,255 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="action_buy"><a href="?action=buy"><span>{$DT[credit_name]}购买</span></a></td>
+{if $MOD[credit_exchange]}
+<td class="tab" id="action_exchange"><a href="?action=exchange"><span>{$DT[credit_name]}兑换</span></a></td>
+{/if}
+<td class="tab" id="action"><a href="?action=index"><span>{$DT[credit_name]}记录</span></a></td>
+<td class="tab" id="action_invite"><a href="?action=invite"><span>{$DT[credit_name]}推广</span></a></td>
+{if $action == 'less'}
+<td class="tab" id="action_less"><a href="?action=less"><span>{$DT[credit_name]}不足</span></a></td>
+{/if}
+{if $EXT[gift_enable]}
+<td class="tab" id="action_gift"><a href="{$EXT[gift_url]}" target="_blank"><span>积分换礼</span></a></td>
+{/if}
+</tr>
+</table>
+</div>
+{if $action == 'exchange'}
+<form method="post" action="?" onsubmit="return check();" id="dform">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="submit" value="1"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl">可用{$MOD[ex_name]}</td>
+<td class="tr"><strong class="f_blue">{$num}</strong></td>
+</tr>
+<tr>
+<td class="tl">兑换比率</td>
+<td class="tr"><span class="f_blue">1</span> {$MOD[ex_name]} 兑换 <span class="f_red">{$MOD[ex_rate]}</span> {$DT[credit_name]}</td>
+</tr>
+<tr>
+<td class="tl"><span class="f_red">*</span> 兑换额度</td>
+<td class="tr"><input type="text" size="8`" name="amount"/> <span id="damount" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" value=" 确 定 " class="btn"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">
+function check() {
+	m = parseInt(Dd('amount').value);
+	n = {$num};
+	if(m > 0 && m < n) {
+		return confirm('确定要兑换'+m+'{$MOD[ex_name]}吗？ 可换取'+(m*{$MOD[ex_rate]})+'{$DT[credit_name]}\n\n注意:兑换{$MOD[ex_name]}可能会降低您在论坛的会员级别');
+	} else {
+		Dd('amount').value = '';
+		Dmsg('请填写兑换额度', 'amount');
+		return false;
+	}
+}
+</script>
+<script type="text/javascript">s('credit');m('action_exchange');</script>
+{elseif $action == 'buy'}
+<form method="post" action="?" onsubmit="return check();" id="dform">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl"><span class="f_red">*</span> 购买额度</td>
+<td class="tr c_p">
+<table cellpadding="5" cellspacing="3">
+<tr align="center">
+<td>选</td>
+<td>&nbsp;&nbsp;{$DT[credit_name]}({$DT[credit_unit]})&nbsp;&nbsp;</td>
+<td>&nbsp;&nbsp;{$DT[money_name]}({$DT[money_unit]})&nbsp;&nbsp;</td>
+</tr>
+{loop $C $k $v}
+<tr align="center" onclick="Dd('type_{$k}').checked=true;k={$k};">
+<td><input type="radio" name="type" id="type_{$k}" value="{$k}" {if $k==$select}checked{/if}/></td>
+<td id="c_{$k}">{$v}</td>
+<td class="f_red" id="p_{$k}">{$P[$k]}</td>
+</tr>
+{/loop}
+</table>
+</td>
+</tr>
+<tr>
+<td class="tl">应付总额</td>
+<td class="tr"><span class="f_price px16" id="money">0.00</span> {$DT[money_unit]}</td>
+</tr>
+<tr id="mymoney" style="display:none;">
+<td class="tl">账户余额</td>
+<td class="tr"><span class="f_blue">{$_money}</span> {$DT[money_unit]}</td>
+</tr>
+<tr id="payword" style="display:none;">
+<td class="tl"><span class="f_red">*</span> 支付密码</td>
+<td class="tr">{template 'password', 'chip'}&nbsp;<span id="dpassword" class="f_red"></span></td>
+</tr>
+<tr id="paytype" style="display:none;">
+<td class="tl"><span class="f_red">*</span> 支付方式</td>
+<td class="tr">
+	<table cellspacing="5" cellpadding="5">
+	{php $PAYLIST = get_paylist();}
+	<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+	{loop $PAYLIST $k $v}
+	<tr onclick="$('#bank').val($('#paytype :checked').val());">
+	<td><input type="radio" name="bank" value="{$v[bank]}" id="bank-{$v[bank]}"{if $k==0} checked{/if}/></td>
+	<td><label for="bank-{$v[bank]}" class="c_p"><img src="{DT_PATH}api/pay/{$v[bank]}/logo.gif" alt=""/></label></td>
+	<td>{if $v[percent]>0}手续费 {$v[percent]}%{/if}</td>
+	</tr>
+	{/loop}
+	</table>
+</td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" name="submit" value=" 立即购买 " class="btn_g"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">s('credit');m('action_buy');</script>
+{elseif $action == 'invite'}
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl">引导至</td>
+<td class="tr">
+<input type="radio" name="goto" value="1" id="goto_1" onclick="Dd('codes').value='{$url}';" checked/><label for="goto_1"> 网站首页</label>&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="goto" value="2" id="goto_2" onclick="Dd('codes').value='{$url}&goto=register';"/><label for="goto_2"> 会员注册</label>&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="goto" value="3" id="goto_3" onclick="Dd('codes').value='{$url}&goto=homepage';"/><label for="goto_3"> 我的主页</label>
+</td>
+</tr>
+<tr>
+<td class="tl">推广网址</td>
+<td class="tr"><input type="text" name="code" value="{$url}" size="80" id="codes" onmouseover="this.select();" style="padding:3px;"/></td>
+</tr>
+<tr>
+<td class="tl">推广方法</td>
+<td class="tr">
+- 将上面的网址发给您QQ/微信/Email等好友<br/>
+- 在论坛签名,博客链接,网站等加上上面的网址<br/>
+</td>
+</tr>
+<tr>
+<td class="tl">奖励规则</td>
+<td class="tr">
+- 每引导一个IP访问您可以获赠 <strong class="f_blue">{$MOD[credit_ip]}</strong> {$DT[credit_name]} (24小时内最多积{$MOD[credit_maxip]}{$DT[credit_name]})<br/>
+- 每引导一个用户注册您可以获赠 <strong class="f_blue">{$MOD[credit_user]}</strong> {$DT[credit_name]}<br/>
+</td>
+</tr>
+<tr>
+<td class="tl">备注事项</td>
+<td class="tr">
+- 无论引导至那个页面，系统均会自动记录您为用户注册推荐人<br/>
+- 引导用户需注册成功完善资料后方可为您加分<br/>
+- 同一IP 24小时内计算一次<br/>
+</td>
+</tr>
+<tr>
+<td class="tl">推广记录</td>
+<td class="tr"><a href="?kw={urlencode('推广')}" class="t">点击查看&raquo;</a></td>
+</tr>
+</table>
+<script type="text/javascript">s('credit');m('action_invite');</script>
+{elseif $action == 'less'}
+<div class="warn">抱歉！由于您的{$DT[credit_name]}不足，无法进行此操作</div>
+<table cellpadding="10" cellspacing="1" class="tb">
+<td class="tl">可用{$DT[credit_name]}</td>
+<td class="tr"><strong class="f_blue">{$_credit}</strong></td>
+</tr>
+<tr>
+<td class="tl">您可以...</td>
+<td class="tr">
+<a href="?action=buy" class="t">购买{$DT[credit_name]}</a> &nbsp;|&nbsp;
+{if $MOD[credit_exchange]}
+<a href="?action=exchange" class="t">兑换{$DT[credit_name]}</a> &nbsp;|&nbsp; 
+{/if}
+<a href="?action=invite" class="t">推广赚{$DT[credit_name]}</a>
+</td>
+</tr>
+</table>
+<script type="text/javascript">s('credit');m('action_less');</script>
+{else}
+<form action="?">
+<div class="tt">
+{$fields_select}&nbsp;
+<input type="text" size="30" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+<select name="type">
+<option value="0">类型</option>
+<option value="1" {if $type==1}selected{/if}>收入</option>
+<option value="2" {if $type==2}selected{/if}>支出</option>
+</select>
+&nbsp;
+{dcalendar('fromdate', $fromdate)} 至 {dcalendar('todate', $todate)}
+&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 置 " class="btn" onclick="Go('?action={$action}');"/>
+</div>
+</form>
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th>流水号</th>
+<th>收入</th>
+<th>支出</th>
+<th>余额</th>
+<th width="130">发生时间</th>
+<th width="150">事由</th>
+<th width="150">备注</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td height="30">{$v[itemid]}</td>
+<td class="f_blue">{if $v[amount] > 0}{$v[amount]}{else}&nbsp;{/if}</td>
+<td class="f_red">{if $v[amount] < 0}{$v[amount]}{else}&nbsp;{/if}</td>
+<td>{if $v[balance]}{$v[balance]}{else}&nbsp;{/if}</td>
+<td class="f_gray">{$v[addtime]}</td>
+<td title="{$v[reason]}"><input type="text" size="20" value="{$v[reason]}"/></td>
+<td title="{$v[note]}"><input type="text" size="20" value="{$v[note]}"/></td>
+</tr>
+{/loop}
+<tr align="center">
+<td height="35"><strong>小计</strong></td>
+<td class="f_blue">{$income}</td>
+<td class="f_red">{$expense}</td>
+<td colspan="4">&nbsp;</td>
+</tr>
+</table>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('credit');m('action');</script>
+{/if}
+{if $action == 'buy'}
+<script type="text/javascript">
+var k = {$select};
+function check() {
+	var money = $('#p_'+k).html();
+	if(money > {$_money}) {
+		Go('charge.php?action=pay&reason=credit|'+k+'&amount='+money+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(money > {$DT[quick_pay]}){
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+	}
+	return true;
+}
+window.setInterval(
+	function() {
+		var money = $('#p_'+k).html();
+		$('#money').html(money);
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+		} else {
+			$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+		}
+	}, 
+500);
+</script>
+{/if}
+{template 'footer', 'member'}

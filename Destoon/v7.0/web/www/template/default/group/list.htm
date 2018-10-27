@@ -1,0 +1,36 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+</div>
+<div class="m">
+	<div class="sort">
+		<div class="sort-k">行业</div>
+		<div class="sort-v">
+			<ul>
+			{loop $maincat $k $v}
+			<li{if $v[catid]==$catid} class="on"{/if}><a href="{$MOD[linkurl]}{$v[linkurl]}">{set_style($v[catname],$v[style])}</a>{if !$cityid} <i>({$v[item]})</i>{/if}<li>
+			{/loop}
+			</ul>
+		</div>
+		<div class="c_b"></div>
+	</div>
+	<div class="sort">
+		<div class="sort-k">地区</div>
+		<div class="sort-v">
+			<ul>
+			{php $mainarea = get_mainarea(0)}
+			{loop $mainarea $k $v}
+			<li><a href="{$MOD[linkurl]}{rewrite('search.php?catid='.$catid.'&areaid='.$v['areaid'])}">{$v[areaname]}</a></li>
+			{/loop}
+			</ul>
+		</div>
+		<div class="c_b"></div>
+	</div>
+	{if $CP}{template 'property_list', 'chip'}{/if}
+</div>
+{if $tags}
+<div class="m oh">
+	<div class="group-list">{template 'list-'.$module, 'tag'}</div>
+</div>
+{/if}
+{template 'footer'}

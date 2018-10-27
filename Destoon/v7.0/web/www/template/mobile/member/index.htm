@@ -1,0 +1,69 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{DT_MOB}my.php" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>我的</span></a>
+</div>
+<div class="head-bar-title">会员中心</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('<a href=&#34;logout.php&#34; rel=&#34;external&#34;><span style=&#34;color:red&#34;>退出登录</span></a>', '取消', '确定要退出本次登录吗？');"><span>退出</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+<li><div>{if $_message}<em>{$_message}</em>{/if}<a href="message.php" rel="external">站内信件</a></div></li>
+{if $DT[im_web]}
+<li><div>{if $_chat}<em>{$_chat}</em>{/if}<a href="im.php" rel="external">站内交谈</a></div></li>
+{/if}
+<li><div><span>{$DT[money_sign]}{$_money}{$DT[money_unit]}</span><a href="record.php" rel="external">我的{$DT[money_name]}</a></div></li>
+<li><div><span>{$_credit}{$DT[credit_unit]}</span><a href="credit.php" rel="external">我的{$DT[credit_name]}</a></div></li>
+</ul>
+</div>
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+<li><div><a href="order.php" rel="external">我的订单</a></div></li>
+{loop $MODULE $m}
+{if $m[module] == 'group'}
+<li><div><a href="deal.php?mid={$m[moduleid]}" rel="external">团购订单</a></div></li>
+{/if}
+{/loop}
+<li><div><a href="coupon.php" rel="external">领券中心</a></div></li>
+<li><div><a href="record.php" rel="external">{$DT[money_name]}流水</a></div></li>
+<li><div><a href="charge.php?action=record" rel="external">支付记录</a></div></li>
+{if $MG[cash]}
+<li><div><a href="cash.php?action=record" rel="external">{$DT[money_name]}提现</a></div></li>
+{/if}
+<li><div><a href="credit.php" rel="external">{$DT[credit_name]}管理</a></div></li>
+{if $MG[address_limit]>-1}
+<li><div><a href="address.php" rel="external">收货地址</a></div></li>
+{/if}
+</ul>
+</div>
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+{if $MG[friend_limit]>-1}
+<li><div><a href="friend.php" rel="external">我的商友</a></div></li>
+{/if}
+{if $MG[favorite_limit]>-1}
+<li><div><a href="favorite.php" rel="external">商机收藏</a></div></li>
+{/if}
+{if $MOD[oauth]}
+<li><div><a href="oauth.php" rel="external">一键登录</a></div></li>
+{/if}
+{if $EXT[weixin]}
+<li><div><a href="weixin.php" rel="external">微信关注</a></div></li>
+{/if}
+{if $MG[ask]}
+<li><div><a href="ask.php" rel="external">客服中心</a></div></li>
+{/if}
+<li><div><a href="edit.php" rel="external">修改资料</a></div></li>
+<li><div><a href="account.php" rel="external">账户详情</a></div></li>
+</ul>
+</div>
+<div class="blank-20"></div>
+{template 'footer'}

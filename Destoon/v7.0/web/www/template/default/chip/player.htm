@@ -1,0 +1,57 @@
+{if $video_p == 1}
+<object type="application/x-shockwave-flash" data="{DT_PATH}file/flash/vcastr3.swf" width="{$video_w}" height="{$video_h}" id="vcastr3">
+<!--<embed></embed>-->
+<param name="movie" value="{DT_PATH}file/flash/vcastr3.swf"/>
+<param name="allowFullScreen" value="true"/>
+<param name="FlashVars" value="xml=
+	<vcastr>
+		<channel>
+			{if $MOD[flvstart]}
+			<item>
+				<source>{$MOD[flvstart]}</source>
+				<duration></duration>
+				<title></title>
+			</item>
+			{/if}
+			<item>
+				<source>{$video_s}</source>
+				<duration></duration>
+				<title></title>
+			</item>
+			{if $MOD[flvend]}
+			<item>
+				<source>{$MOD[flvend]}</source>
+				<duration></duration>
+				<title></title>
+			</item>
+			{/if}
+		</channel>
+		<config>
+			<isAutoPlay>{$video_a}</isAutoPlay>
+			<controlPanelBgColor>0x333333</controlPanelBgColor>
+			<isShowAbout>false</isShowAbout>
+		</config>
+		{if $MOD[flvlogo]}
+		<plugIns>
+			<logoPlugIn>
+				<url>{DT_PATH}file/flash/vcastr3_logo.swf</url>
+				<logoClipUrl>{DT_STATIC}file/image/{$MOD[flvlogo]}</logoClipUrl>
+				<logoClipAlpha>0.7</logoClipAlpha>
+				<logoClipLink>{if $MOD[flvlink]}{$MOD[flvlink]}{else}{DT_PATH}{/if}</logoClipLink>
+				<clipMargin>{$MOD[flvmargin]}</clipMargin>
+			</logoPlugIn>
+		</plugIns>
+		{/if}
+	</vcastr>"/>
+</object>
+{elseif $video_p == 2}
+<embed src="{$video_s}" width="{$video_w}" height="{$video_h}" type="application/x-mplayer2" autostart="{$video_a}" controls="imagewindow,controlpanel,statusbar"></embed>
+{elseif $video_p == 3}
+<embed src="{$video_s}" width="{$video_w}" height="{$video_h}" type="audio/x-pn-realaudio-extend" autostart="{$video_a}"></embed>
+{elseif $video_p == 4}
+<iframe width="{$video_w}" height="{$video_h}"  frameborder="0" scrolling="no" src="{$video_s}"></iframe>
+{elseif $video_p == 5}
+<embed src="{$video_s}" width="{$video_w}" height="{$video_h}" allownetworking="all" allowscriptaccess="always" quality="high" bgcolor="#000" wmode="window" allowfullscreen="true" allowFullScreenInteractive="true" type="application/x-shockwave-flash"></embed>
+{else}
+<embed src="{$video_s}" width="{$video_w}" height="{$video_h}" type="application/x-shockwave-flash" extendspage="http://get.adobe.com/flashplayer/" autostart="{$video_a}" quality="high" allowfullscreen="true" allowscriptaccess="never"></embed>
+{/if}

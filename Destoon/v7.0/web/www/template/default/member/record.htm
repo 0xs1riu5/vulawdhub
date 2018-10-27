@@ -1,0 +1,167 @@
+{template 'header', 'member'}
+{if $action == 'login'}
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th width="200">时间</th>
+<th>IP</th>
+<th>地区</th>
+<th>结果</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td height="30">{$v[logintime]}</td>
+<td>{$v[loginip]}</td>
+<td>{$v[area]}</td>
+<td>{$v[message]}</td>
+</tr>
+{/loop}
+</table>
+{else}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="action"><a href="?action=index"><span>{$DT[money_name]}流水</span></a></td>
+<td class="tab" id="action_pay"><a href="?action=pay"><span>信息付费</span></a></td>
+<td class="tab" id="action_award"><a href="?action=award"><span>打赏记录</span></a></td>
+</tr>
+</table>
+</div>
+{if $action == 'pay'}
+<form action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<div class="tt">
+{$module_select}&nbsp;
+<input type="text" size="30" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+<select name="currency">
+<option value="">支付</option>
+<option value="money" {if $currency=='money'}selected{/if}>{$DT[money_name]}</option>
+<option value="credit" {if $currency=='credit'}selected{/if}>{$DT[credit_name]}</option>
+</select>
+&nbsp;
+{dcalendar('fromdate', $fromdate)} 至 {dcalendar('todate', $todate)}
+&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 置 " class="btn" onclick="Go('?action={$action}');"/>
+</div>
+</form>
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th>流水号</th>
+<th>金额</th>
+<th>单位</th>
+<th>模块</th>
+<th>标题</th>
+<th width="130">支付时间</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td height="30">{$v[itemid]}</td>
+<td class="f_red">-{$v[fee]}</td>
+<td>{if $v[currency] == 'money'}{$DT[money_unit]}{else}{$DT[credit_unit]}{/if}</td>
+<td><a href="{$MODULE[$v[mid]][linkurl]}" target="_blank">{$MODULE[$v[mid]][name]}</a></td>
+<td><a href="{DT_PATH}api/redirect.php?mid={$v[mid]}&itemid={$v[tid]}&page=2" target="_blank" class="t">{$v[title]}</a></td>
+<td class="f_gray">{$v[paytime]}</td>
+</tr>
+{/loop}
+<tr align="center">
+<td height="35"><strong>小计</strong></td>
+<td class="f_blue">{$fee}</td>
+<td colspan="5">&nbsp;</td>
+</tr>
+</table>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('record');m('action_pay');</script>
+{elseif $action == 'award'}
+<form action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<div class="tt">
+{$module_select}&nbsp;
+<input type="text" size="30" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+{dcalendar('fromdate', $fromdate)} 至 {dcalendar('todate', $todate)}
+&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 置 " class="btn" onclick="Go('?action={$action}');"/>
+</div>
+</form>
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th>流水号</th>
+<th>金额</th>
+<th>模块</th>
+<th>标题</th>
+<th width="130">支付时间</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td height="30">{$v[itemid]}</td>
+<td class="f_red">-{$v[fee]}</td>
+<td><a href="{$MODULE[$v[mid]][linkurl]}" target="_blank">{$MODULE[$v[mid]][name]}</a></td>
+<td><a href="{DT_PATH}api/redirect.php?mid={$v[mid]}&itemid={$v[tid]}&page=2" target="_blank" class="t">{$v[title]}</a></td>
+<td class="f_gray">{$v[paytime]}</td>
+</tr>
+{/loop}
+<tr align="center">
+<td height="35"><strong>小计</strong></td>
+<td class="f_blue">{$fee}</td>
+<td colspan="5">&nbsp;</td>
+</tr>
+</table>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('record');m('action_award');</script>
+{else}
+<form action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<div class="tt">
+{$fields_select}&nbsp;
+<input type="text" size="30" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+<select name="type">
+<option value="0">类型</option>
+<option value="1" {if $type==1}selected{/if}>收入</option>
+<option value="2" {if $type==2}selected{/if}>支出</option>
+</select>
+&nbsp;
+{dcalendar('fromdate', $fromdate)} 至 {dcalendar('todate', $todate)}
+&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 置 " class="btn" onclick="Go('?action={$action}');"/>
+</div>
+</form>
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th>流水号</th>
+<th>收入</th>
+<th>支出</th>
+<th>余额</th>
+<th>银行</th>
+<th width="130">发生时间</th>
+<th width="180">事由</th>
+<th width="180">备注</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td height="30">{$v[itemid]}</td>
+<td class="f_blue">{if $v[amount] > 0}{$v[amount]}{else}&nbsp;{/if}</td>
+<td class="f_red">{if $v[amount] < 0}{$v[amount]}{else}&nbsp;{/if}</td>
+<td>{if $v[balance]}{$v[balance]}{else}&nbsp;{/if}</td>
+<td>{$v[bank]}</td>
+<td class="f_gray">{$v[addtime]}</td>
+<td title="{$v[reason]}"><input type="text" size="20" value="{$v[reason]}"/></td>
+<td title="{$v[note]}"><input type="text" size="20" value="{$v[note]}"/></td>
+</tr>
+{/loop}
+<tr align="center">
+<td height="35"><strong>小计</strong></td>
+<td class="f_blue">{$income}</td>
+<td class="f_red">{$expense}</td>
+<td colspan="5">&nbsp;</td>
+</tr>
+</table>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('record');m('action');</script>
+{/if}
+{/if}
+{template 'footer', 'member'}

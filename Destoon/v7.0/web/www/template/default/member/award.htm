@@ -1,0 +1,111 @@
+{template 'header'}
+<style type="text/css">
+.award_fee {padding:6px 16px;border:#DDDDDD 2px solid;border-radius:6px;margin-right:16px;float:left;cursor:pointer;}
+.award_fee b {font-size:16px;}
+.award_fee:hover {border:#E94657 2px solid;color:#E94657;}
+.award_user img {border-radius:50%;width:48px;height:48px;float:left;margin:0 16px 16px 0;}
+</style>
+<div class="m m1">
+	<div class="m1l">
+		<form method="post" action="award.php" id="pay_form" onsubmit="return pay_check();">
+		<input type="hidden" name="mid" value="{$mid}"/>
+		<input type="hidden" name="itemid" value="{$itemid}"/>
+		<input type="hidden" name="submit" value="1"/>
+		<table cellpadding="16" cellspacing="0" class="tf">
+		<tr>
+		<td class="tl">打赏对象</td>
+		<td><a href="{$forward}" class="b px14">{$title}</a></td>
+		</tr>
+		{if $awards}
+		<tr>
+		<td class="tl"></td>
+		<td>{loop $awards $v}<div onclick="$('#fee').val('{$v}');" class="award_fee"><b>{$v}</b>{$DT[money_unit]}</div>{/loop}</td>
+		</tr>
+		{/if}
+		<tr>
+		<td class="tl">打赏金额</td>
+		<td><input type="text" name="fee" id="fee" value="{if $awards}{$awards[0]}{else}1{/if}" style="font-size:16px;font-weight:bold;width:60px;text-align:center;border:#E94657 2px solid;border-radius:6px;color:#E94657;"/> {$DT[money_unit]} <span id="dfee" class="f_red"></span></td>
+		</tr>
+		<tr id="mymoney" style="display:none;">
+		<td class="tl">账户余额</td>
+		<td><span class="f_blue">{$_money}</span> {$DT[money_unit]}</td>
+		</tr>
+		<tr id="payword" style="display:none;">
+		<td class="tl"><span class="f_red">*</span> 支付密码</td>
+		<td>{template 'password', 'chip'}&nbsp;<span id="dpassword" class="f_red"></span></td>
+		</tr>
+		<tr id="paytype" style="display:none;">
+		<td class="tl"><span class="f_red">*</span> 支付方式</td>
+		<td>
+			<table cellspacing="5" cellpadding="5">
+			{php $PAYLIST = get_paylist();}
+			<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+			{loop $PAYLIST $k $v}
+			<tr onclick="$('#bank').val($('#paytype :checked').val());">
+			<td><input type="radio" name="bank" value="{$v[bank]}" id="bank-{$v[bank]}"{if $k==0} checked{/if}/></td>
+			<td><label for="bank-{$v[bank]}" class="c_p"><img src="{DT_PATH}api/pay/{$v[bank]}/logo.gif" alt=""/></label></td>
+			<td>{if $v[percent]>0}手续费 {$v[percent]}%{/if}</td>
+			</tr>
+			{/loop}
+			</table>
+		</td>
+		</tr>
+		<tr>
+		<td class="tl"> </td>
+		<td><input type="submit" name="submit" value="立即打赏" class="btn-green"/></td>
+		</tr>
+		<!--{php $tags=tag("table=finance_award&condition=mid=$mid AND tid=$itemid&pagesize=1000&order=itemid desc&template=null");}-->
+		{if $tags}
+		<tr>
+		<td class="tl">打赏记录</td>
+		<td>
+		<div class="award_user">
+		{loop $tags $t}
+		<img src="{useravatar($t[username])}"/>
+		{/loop}
+		</div>
+		</td>
+		</tr>
+		{/if}
+		</table>
+		</form>
+	</div>
+	<div class="m1r side">
+		<ul>
+		<li class="side_on"><a href="{$forward}">我要打赏</a></li>
+		<li class="side_li"><a href="record.php?action=award" target="_blank">我的打赏</a></li>
+		</ul>
+	</div>
+	<div class="c_b"></div>
+</div>
+<script type="text/javascript">
+function pay_check() {
+	var money = $('#fee').val();
+	if(money > {$_money}) {
+		Go('charge.php?action=pay&reason=award|{$mid}|{$itemid}|'+money+'&amount='+money+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(Dd('fee').value < 0.01) {
+		Dmsg('请填写打赏金额', 'fee');
+		return false;
+	}
+	if(money > {$DT[quick_pay]}){
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+	}
+	return true;
+}
+window.setInterval(
+	function() {
+		var money = $('#fee').val();
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+		} else {
+			$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+		}
+	}, 
+500);
+</script>
+{template 'footer'}

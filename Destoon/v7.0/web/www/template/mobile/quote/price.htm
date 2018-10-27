@@ -1,0 +1,174 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">报价详情</div>
+<div class="head-bar-right">
+{if $could_add}
+<a href="javascript:window.scrollTo(0,0);$('#price-add-{$moduleid}').slideToggle(300);"><span>报价</span></a>
+{else}
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $could_add}
+<div id="price-add-{$moduleid}" style="display:none;">
+<div class="ui-form">
+<iframe src="" name="send" id="send" style="display:none;"></iframe>
+<form method="post" action="{$MOD[mobile]}price.php" id="dform" target="send" onsubmit="return check();">
+<input type="hidden" name="itemid" value="{$itemid}"/>
+{if $MARKET}
+<p>市场</p>
+<div>
+<select name="post[market]">
+{loop $MARKET $k $v}
+<option value="{$k}"{if $k==$market} selected{/if}>{$v}</option>
+{/loop}
+</select>
+</div>
+{/if}
+<p>价格<em>*</em><b id="dtitle"></b></p>
+<div><input type="text" name="post[price]" id="price" style="width:50%;"/> / {$P[unit]}</div>
+<p>地区<em>*</em><b id="dareaid"></b></p>
+<div>{ajax_area_select('post[areaid]', '请选择', $areaid)}</div>
+{if !$_userid}
+<p>公司<em>*</em><b id="dcompany"></b></p>
+<div><input type="text" name="post[company]" id="company"/></div>
+<p>电话</p>
+<div><input type="tel" name="post[telephone]" id="telephone" style="width:50%;"/></div>
+{if $DT[im_qq]}
+<p>QQ</p>
+<div><input type="tel" name="post[qq]" id="qq" style="width:50%;"/></div>
+{/if}
+{if $DT[im_wx]}
+<p>微信</p>
+<div><input type="tel" name="post[wx]" id="wx" style="width:50%;"/></div>
+{/if}
+{/if}
+<p>备注</p>
+<div><input type="text" name="post[note]" id="note"/></div>
+{if $need_captcha}
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+{/if}
+<div class="blank-16"></div>
+<input type="submit" name="submit" class="btn-green" value="我要报价"/>
+<div class="blank-32"></div>
+</form>
+</div>
+</div>
+{load('guest.js')}
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'price';
+	l = parseFloat(Dd(f).value);
+	if(isNaN(l)) {
+		alert('请填写价格');
+		Dd(f).focus();
+		return false;
+	}
+{if $P[minprice]}
+	if(l < {$P[minprice]}) {
+		alert('报价不能低于{$P[minprice]}');
+		Dd(f).focus();
+		return false;
+	}
+{/if}
+{if $P[maxprice]}
+	if(l > {$P[maxprice]}) {
+		alert('报价不能高于{$P[maxprice]}');
+		Dd(f).focus();
+		return false;
+	}
+{/if}
+	f = 'areaid_1';
+	if(Dd(f).value == 0) {
+		alert('请选择所在地区');
+		return false;
+	}
+{if !$_userid}
+	f = 'company';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		alert('请填写公司名称');
+		Dd(f).focus();
+		return false;
+	}
+{/if}
+	f = 'note';
+	l = Dd(f).value.length;
+	if(l > 20) {
+		alert('备注不能超过20个字');
+		Dd(f).focus();
+		return false;
+	}
+{if $need_captcha}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		alert('请填写正确的验证码');
+		Dd(f).focus();
+		return false;
+	}
+{/if}
+	return true;
+}
+</script>
+{/if}
+
+<div class="main">
+	<div class="title"><strong>{$P[title]}</strong></div>
+	<div class="info">{timetodate($P[edittime], 5)}&nbsp;&nbsp;浏览:{$P[hits]}&nbsp;&nbsp;报价:{$P[item]}</div>
+	<div class="content">
+	单位：{$P[unit]}<br/>
+	{if $P[n1] && $P[v1]}{$P[n1]}：{$P[v1]}<br/>{/if}
+	{if $P[n2] && $P[v2]}{$P[n2]}：{$P[v2]}<br/>{/if}
+	{if $P[n3] && $P[v3]}{$P[n3]}：{$P[v3]}<br/>{/if}
+	{if $P[content]}{$P[content]}{/if}
+	</div>
+	{if $chart_data}
+	{load('swfobject.js')}
+	<script type="text/javascript" src="{DT_PATH}api/amcharts/amcharts.js"></script>
+	<script type="text/javascript" src="{DT_PATH}api/amcharts/amfallback.js"></script>
+	<div id="chartdiv" style="width:100%;height:400px;" class="bd-b"></div>
+	<script type="text/javascript">
+	var flashVars =
+	{
+		path: "{DT_PATH}api/amcharts/flash/",
+		chart_data: "{$chart_data}",
+		chart_settings: "<settings><hide_bullets_count>18</hide_bullets_count><data_type>csv</data_type><plot_area><margins><left>50</left><right>40</right><top>55</top><bottom>30</bottom></margins></plot_area><grid><x><alpha>10</alpha><approx_count>8</approx_count></x><y_left><alpha>10</alpha></y_left></grid><axes><x><width>1</width><color>0D8ECF</color></x><y_left><width>1</width><color>0D8ECF</color></y_left></axes><indicator><color>0D8ECF</color><x_balloon_text_color>FFFFFF</x_balloon_text_color><line_alpha>50</line_alpha><selection_color>0D8ECF</selection_color><selection_alpha>20</selection_alpha></indicator><zoom_out_button><text_color_hover>FF0F00</text_color_hover></zoom_out_button><help><button><color>FCD202</color><text_color>000000</text_color><text_color_hover>FF0F00</text_color_hover></button><balloon><color>FCD202</color><text_color>000000</text_color></balloon></help><graphs><graph gid='0'><title>{$chart_name}</title><color>0D8ECF</color><color_hover>F08F00</color_hover><line_width>2</line_width><bullet>round</bullet></graph>{$chart_graph}</graphs><labels><label lid='0'><text><![CDATA[<b>{$chart_title}</b>]]></text><y>15</y><text_size>13</text_size><align>center</align></label></labels></settings>"
+	};
+	if(swfobject.hasFlashPlayerVersion("8")) {
+		swfobject.embedSWF("{DT_PATH}api/amcharts/flash/amline.swf", "chartdiv", "100%", "400", "8.0.0", "{DT_PATH}api/amcharts/flash/expressInstall.swf", flashVars);
+	} else {
+		var amFallback = new AmCharts.AmFallback();
+		amFallback.chartSettings = flashVars.chart_settings;
+		amFallback.pathToImages = "{DT_PATH}api/amcharts/images/";
+		amFallback.chartData = flashVars.chart_data;
+		amFallback.type = "line";
+		amFallback.write("chartdiv");
+	}
+	</script>
+	{/if}
+</div>
+{if $tags}
+{loop $tags $t}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{timetodate($t[addtime], 5)}</span>
+<strong style="font-size:24px;">{$t[price]}</strong>
+</li>
+<li><em class="f_r">{area_pos($t[areaid], '', 2)}</em><span><a href="{userurl($t[username], 'file=contact')}" rel="external">{$t[company]}</a></span></li>
+</ul>
+</div>
+{/loop}
+{else}
+{template 'empty', 'chip'}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'footer'}

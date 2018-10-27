@@ -1,0 +1,1 @@
+<?php defined('IN_DESTOON') or exit('Access Denied'); return array ('bind' => '点击可绑定会员帐号、查看会员信息、收发站内信件、管理我的订单等服务内容','welcome' => '感谢您的关注，请点击菜单查看相应的服务','auto' => '','weixin' => '','aeskey' => '','apptoken' => '','appsecret' => '','appid' => '','credit' => '10',); ?>

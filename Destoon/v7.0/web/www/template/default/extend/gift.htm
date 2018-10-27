@@ -1,0 +1,108 @@
+{template 'header'}
+<div class="m m1">
+	<div class="m1l">
+	{if $action == 'my'}
+		<table cellpadding="16" cellspacing="0" class="tb">
+		<tr>
+		<th>订单编号</th>
+		<th>礼品</th>
+		<th>{$DT[credit_name]}</th>
+		<th>下单时间</th>
+		<th>状态</th>
+		</tr>
+		{loop $lists $k $v}
+		<tr align="center">
+		<td>{$v[oid]}</td>
+		<td><a href="{$v[linkurl]}" target="_blank">{$v[title]}</a></td>
+		<td>{$v[credit]}</td>
+		<td>{$v[adddate]}</td>
+		<td>{$v[status]}</td>
+		</tr>
+		{/loop}
+		</table>
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+		<script type="text/javascript">$(function(){$('#type_my').attr('class', 'side_on');});</script>
+	{else}
+		{if $itemid}
+		{if isset($success)}
+			<div class="submit_success">
+			恭喜您，礼品兑换成功！请检查您的联系方式是否正确，以便工作人员与您取得联系&nbsp;&nbsp;
+			<a href="{$MODULE[2][linkurl]}edit.php" target="_blank" class="b">更新资料</a>&nbsp;&nbsp;
+			<a href="{$url}index.php?action=my" class="b">查看订单</a>
+			</div>
+		{/if}
+		<h1 class="title bd-b">{$title}</h1>
+		<div class="g_info">			
+			<table cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+			<td width="180" valign="top">
+			<img src="{$middle}" width="160" alt="{$title}" class="g_img c_p" alt="{$title}" title="点击查看大图" onclick="View('{$thumb}');"/>
+			</td>
+			<td valign="top" width="360">
+			<ul>
+			<li>会员权限：{if $gname}{$gname}{else}全部{/if}</li>
+			<li>浏览次数：{$hits}</li>
+			<li>当前状态：{if $left}<img src="{DT_STATIC}file/image/process_{get_process($fromtime, $totime)}.gif" align="absmiddle" alt="有效期：{$fromdate} 至 {$todate}"/>{else}<span class="f_red">已结束</span>{/if}</li>
+			</ul>
+			</td>
+			<td valign="top">
+			<ul>
+			<li>所需{$DT[credit_name]}：<strong class="f_red">{$credit}</strong></li>
+			<li>剩余名额：<strong>{$left}</strong></li>
+			<li><a href="javascript:;" onclick="Order();" class="b px14">立即兑换</a></li>
+			</ul>
+			</td>
+			</tr>
+			</table>			
+		</div>
+		{if $content}<div class="content">{$content}</div>{else}&nbsp;{/if}
+		<script type="text/javascript">
+		function Order() {
+			{if $process == 1}return confirm('抱歉，此兑换还没有开始');{/if}
+			{if $process == 2}if(confirm('确定要兑换吗？系统将扣除您{$credit}{$DT[credit_name]}')) Go('{$url}index.php?action=order&itemid={$itemid}'){/if}
+			{if $process == 3}return confirm('抱歉，此兑换已经过期');{/if}
+			{if $process == 4}return confirm('抱歉，此兑换名额用尽，已经结束');{/if}
+		}
+		</script>
+		{else}
+		<table cellpadding="16" cellspacing="0" class="tb">
+		<tr>
+		<th width="120">图片</th>
+		<th>礼品名称</th>
+		<th width="80">{$DT[credit_name]}</th>
+		<th width="80">库存</th>
+		<th width="80">立即兑换</th>
+		</tr>
+		{loop $lists $k $v}
+		<tr align="center">
+		<td><a href="{$v[linkurl]}"><img src="{$v[thumb]}" width="100" alt="{$v[alt]}"/></a></td>
+		<td align="left" class="px14"><a href="{$v[linkurl]}">{$v[title]}</a></td>
+		<td class="f_price">{$v[credit]}</td>
+		<td>{$v[left]}</td>
+		<td><a href="{$v[linkurl]}" class="b">立即兑换</a></td>
+		</tr>
+		{/loop}
+		</table>
+		{if $pages}<div class="pages">{$pages}</div>{/if}
+		{/if}
+		<script type="text/javascript">$(function(){$('#type_{$typeid}').attr('class', 'side_on');});</script>
+	{/if}
+	</div>
+	<div class="m1r side">
+		<ul>
+		<li class="side_li" id="type_0"><a href="{$url}">积分换礼</a></li>
+		<li class="side_li" id="type_my"><a href="{$url}index.php?action=my">我的订单</a></li>
+		{loop $_TP[0] $v0}
+		<li class="side_li" id="type_{$v0[typeid]}"><a href="{$url}{list_url($v0[typeid])}">{$v0[typename]}</a></li>
+			{if isset($_TP[1][$v0[typeid]])}
+			{loop $_TP[1][$v0[typeid]] $v1}
+			<li class="side_li" id="type_{$v1[typeid]}"><a href="{$url}{list_url($v1[typeid])}">&nbsp;|-- {$v1[typename]}</a></li>
+			{/loop}
+			{/if}
+		{/loop}
+		</ul>
+		<form action="index.php"><input type="search" name="kw" value="{$kw}" ondblclick="if(this.value){Go('./');}" placeholder="搜索" title="输入关键词，按回车搜索"/></form>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

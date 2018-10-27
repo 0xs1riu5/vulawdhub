@@ -1,0 +1,57 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('<a href=&#34;{$MODULE[2][mobile]}{$DT[file_my]}?mid={$moduleid}&action=add&job=reply&tid={$itemid}&#34; rel=&#34;external&#34;><span>发表回复</span></a>|<a href=&#34;{$MODULE[2][mobile]}{$DT[file_my]}?mid={$moduleid}&action=add&gid={$gid}&#34; rel=&#34;external&#34;><span>发表帖子</span></a>|<a href=&#34;{DT_MOB}api/share.php?mid={$moduleid}&itemid={$itemid}&#34; data-transition=&#34;slideup&#34;><span>分享好友</span></a>|<a href=&#34;{$MOD[mobile]}&#34; data-direction=&#34;reverse&#34;><span>{$MOD[name]}首页</span></a>|<a href=&#34;{DT_MOB}channel.php&#34; data-direction=&#34;reverse&#34;><span>频道列表</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<style type="text/css">
+.club_quote {background:#FAFAFA url('{DT_SKIN}image/club_quote_a.gif') no-repeat 10px 10px;background-size:14px 14px;margin:6px 0 6px 0;font-size:12px;padding:6px 10px;}
+.club_quote div {display:inline-block;padding:5px 20px 5px 20px;background:url('{DT_SKIN}image/club_quote_b.gif') no-repeat right bottom;background-size:14px 14px;line-height:20px;}
+.club_quote p {margin:0;text-indent:0;}
+.club_quote a:link,.club_quote a:visited,.club_quote a:active {color:#555555;text-decoration:none;}
+.club_quote a:hover {color:#FF6600;}
+.club_break {display:none;}
+</style>
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">回复:{$reply}{if $MOD[hits]}&nbsp;&nbsp;浏览:<span id="hits">{$hits}</span>{/if}</div>
+	{if $page == 1}
+	<div class="list-user">
+	<img src="{useravatar($item[username])}" width="32" height="32"/>
+	<ul>
+	<li><span>楼主</span><a href="{$MOD[mobile]}search.php?username={$item[username]}" class="b">{if $item[username]}{$item[passport]}{else}{ip2area($item[ip])}访客{/if}</a>&nbsp;{if $item[username] == $GRP[username]}圈主{elseif in_array($item[passport], $GRP[managers])}版主{/if}</li>
+	<li><em>{timetodate($item[addtime], 5)}</em></li>
+	</ul>
+	</div>
+	<div class="content">
+	{if $user_status == 3}
+	{$content}
+	{else}
+	{template 'content', 'chip'}
+	{/if}
+	</div>
+	{if $MOD[fee_award]}
+	<div class="award"><a href="{$MODULE[2][mobile]}award.php?mid={$moduleid}&itemid={$itemid}" rel="external"><div>打赏</div></a></div>
+	{/if}
+	{/if}
+	{if $replys}
+	{loop $replys $k $v}
+	<div class="list-user">
+	<img src="{useravatar($v[username])}" width="32" height="32"/>
+	<ul>
+	<li><span>{if $v[fname]}{$v[fname]}{else}{$v[floor]}楼{/if}</span><a href="{$MOD[mobile]}search.php?username={$v[username]}" class="b">{if $v[username]}{$v[passport]}{else}{ip2area($item[ip])}访客{/if}</a>&nbsp;{if $v[username] == $GRP[username]}圈主{elseif in_array($v[passport], $GRP[managers])}版主{/if}</li>
+	<li><em>{timetodate($v[addtime], 5)}</em></li>
+	</ul>
+	</div>
+	<div class="content">{$v[content]}</div>
+	{/loop}
+	{/if}
+</div>
+{template 'footer'}

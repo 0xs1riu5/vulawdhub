@@ -1,0 +1,104 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a></div>
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+	<div class="px14 lh18">
+	<table width="100%" cellpadding="10" cellspacing="1">
+	<tr>
+	<td width="100">公司名称：</td>
+	<td>{$COM[company]}</td>
+	</tr>
+	<tr>
+	<td>公司地址：</td>
+	<td><a href="{DT_PATH}api/address.php?auth={encrypt($COM[address].'|'.$COM[company], DT_KEY.'MAP')}" target="_blank">{$COM[address]}</a></td>
+	</tr>
+	<tr>
+	<td>所在地区：</td>
+	<td>{area_pos($COM[areaid], '/')}</td>
+	</tr>
+	{if $COM[postcode]}
+	<tr>
+	<td>邮政编码：</td>
+	<td>{$COM[postcode]}</td>
+	</tr>
+	{/if}
+	<tr>
+	<td>公司电话：</td>
+	<td>{if $domain}{$COM[telephone]}{else}{anti_spam($COM[telephone])}{/if}</td>
+	</tr>
+	{if $COM[fax]}
+	<tr>
+	<td>公司传真：</td>
+	<td>{if $domain}{$COM[fax]}{else}{anti_spam($COM[fax])}{/if}</td>
+	</tr>
+	{/if}
+	{if $COM[mail]}
+	<tr>
+	<td>电子邮件：</td>
+	<td>{if $domain}{$COM[mail]}{else}{anti_spam($COM[mail])}{/if}</td>
+	</tr>
+	{/if}
+	<tr>
+	<td>公司网址：</td>
+	<td>{if $COM[homepage]}<a href="{$COM[homepage]}" target="_blank">{$COM[homepage]}</a><br/>{/if}
+	<a href="{$COM[linkurl]}" target="_blank">{$COM[linkurl]}</a></td>
+	</tr>
+	{if $COM[truename]}
+	<tr>
+	<td>联 系 人：</td>
+	<td>{$COM[truename]} （{if $COM[gender]==1}先生{else}女士{/if}）</td>
+	</tr>
+	{/if}
+	{if $COM[department]}
+	<tr>
+	<td>部门(职位)：</td>
+	<td>{$COM[department]}{if $COM[career]} （{$COM[career]}）{/if}</td>
+	</tr>
+	{/if}
+	{if $COM[mobile]}
+	<tr>
+	<td>手机号码：</td>
+	<td>{if $domain}{$COM[mobile]}{else}{anti_spam($COM[mobile])}{/if}</td>
+	</tr>
+	{/if}
+	{if $COM[gzh]}
+	<tr>
+	<td>微信公众号：</td>
+	<td>{$COM[gzh]} &nbsp; <a href="javascript:;" onclick="prompt('请按Ctrl+C复制微信号', '{$COM[gzh]}');" class="b">复制</a></td>
+	</tr>
+	{/if}
+	{if $COM[gzhqr]}
+	<tr>
+	<td>扫码关注：</td>
+	<td><img src="{$COM[gzhqr]}"/></td>
+	</tr>
+	{/if}
+	<tr>
+	<td>即时通讯：</td>
+	<td>
+	{if $COM[username] && $DT[im_web]}{im_web($COM[username])}&nbsp;{/if}
+	{if $COM[qq] && $DT[im_qq]}{im_qq($COM[qq])}&nbsp;{/if}
+	{if $COM[wx] && $DT[im_wx]}{im_wx($COM[wx], $COM[username])}&nbsp;{/if}
+	{if $COM[ali] && $DT[im_ali]}{im_ali($COM[ali])}&nbsp;{/if}
+	{if $COM[skype] && $DT[im_skype]}{im_skype($COM[skype])}&nbsp;{/if}
+	</td>
+	</tr>
+	<tr>
+	<td>在线状态：</td>
+	<td>{if online($COM[userid])==1}<span class="f_red">当前在线</span>{else}<span class="f_gray">当前离线</span>{/if}</td>
+	</tr>
+	</table>
+	</div>
+</div>
+{if $api_map && $map}
+<div class="main_head"><div><strong>公司地图</strong><a name="map"></a></div></div>
+<div class="main_body">
+	{php $map_height = 300;}
+	{php @include DT_ROOT.'/api/map/'.$api_map.'/show.inc.php';}
+</div>
+{/if}
+{if $could_message}
+<div class="main_head"><div><strong>在线留言</strong><a name="guestbook"></a></div></div>
+<div class="main_body"><script type="text/javascript">Df('{$MODULE[4][linkurl]}home.php?action=message&job=guestbook&template={$template}&skin={$skin}&username={$username}&sign={crypt_sign($template.$skin.$username)}', 'name="fra" id="fra" style="width:98%;height:488px;"');</script></div>
+{/if}
+{template 'footer', $template}

@@ -1,0 +1,207 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="action_buy"><a href="?action=buy"><span>短信购买</span></a></td>
+<td class="tab" id="action"><a href="?action=index"><span>短信记录</span></a></td>
+<td class="tab" id="action_record"><a href="?action=record"><span>发送记录</span></a></td>
+</tr>
+</table>
+</div>
+{if $action == 'buy'}
+<form method="post" action="?" onsubmit="return check();" id="dform">
+<input type="hidden" name="action" value="{$action}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl">可用短信</td>
+<td class="tr">{$_sms} 条</td>
+</tr>
+<tr>
+<td class="tl">短信单价</td>
+<td class="tr"><span class="f_red">{$fee}</span> {$DT[money_unit]}/条</td>
+</tr>
+<tr>
+<td class="tl"><span class="f_red">*</span> 购买数量</td>
+<td class="tr c_p"><input type="text" name="total" id="total" size="10" autocomplete="new-password"/> 条&nbsp;<span id="dtotal" class="f_red"></span></td>
+</tr>
+<tr>
+<td class="tl">应付总额</td>
+<td class="tr"><span class="f_price px16" id="money">0.00</span> {$DT[money_unit]}</td>
+</tr>
+<tr id="mymoney" style="display:none;">
+<td class="tl">账户余额</td>
+<td class="tr"><span class="f_blue">{$_money}</span> {$DT[money_unit]}</td>
+</tr>
+<tr id="payword" style="display:none;">
+<td class="tl"><span class="f_red">*</span> 支付密码</td>
+<td class="tr">{template 'password', 'chip'}&nbsp;<span id="dpassword" class="f_red"></span></td>
+</tr>
+<tr id="paytype" style="display:none;">
+<td class="tl"><span class="f_red">*</span> 支付方式</td>
+<td class="tr">
+	<table cellspacing="5" cellpadding="5">
+	{php $PAYLIST = get_paylist();}
+	<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+	{loop $PAYLIST $k $v}
+	<tr onclick="$('#bank').val($('#paytype :checked').val());">
+	<td><input type="radio" name="bank" value="{$v[bank]}" id="bank-{$v[bank]}"{if $k==0} checked{/if}/></td>
+	<td><label for="bank-{$v[bank]}" class="c_p"><img src="{DT_PATH}api/pay/{$v[bank]}/logo.gif" alt=""/></label></td>
+	<td>{if $v[percent]>0}手续费 {$v[percent]}%{/if}</td>
+	</tr>
+	{/loop}
+	</table>
+</td>
+</tr>
+<tr>
+<td class="tl">&nbsp;</td>
+<td class="tr" height="50"><input type="submit" name="submit" value=" 立即购买 " class="btn_g"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">
+function check() {
+	var k = parseInt(Dd('total').value);
+	if(isNaN(k) || k < 1) {
+		Dmsg('请填写购买数量', 'total');
+		return false;
+	}
+	var money = k*{$fee};
+	if(money > {$_money}) {
+		Go('charge.php?action=pay&reason=sms|'+k+'&amount='+money+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(money > {$DT[quick_pay]}){
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+	}
+}
+window.setInterval(
+	function() {
+		var k = parseInt(Dd('total').value);
+		var money = k > 0 ? (k*{$fee}).toFixed(2) : '0.00';
+		$('#money').html(money);
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+		} else {
+			$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+		}
+	}, 
+500);
+</script>
+<script type="text/javascript">s('sms');m('action_buy');</script>
+{elseif $action == 'record'}
+<form action="?">
+<div class="tt">
+关键词：<input type="text" size="30" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+{dcalendar('fromdate', $fromdate)} 至 {dcalendar('todate', $todate)}&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 置 " class="btn" onclick="Go('?action={$action}');"/>
+</div>
+</form>
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th>流水号</th>
+<th width="110">发送时间</th>
+<th>内容</th>
+<th>字数</th>
+<th>分条</th>
+<th>状态</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td>{$v[itemid]}</td>
+<td>{$v[sendtime]}</td>
+<td align="left" style="padding:8px;line-height:20px;">{$v[message]}</td>
+<td>{$v[word]}</td>
+<td>{$v[num]}</td>
+<td>{$v[code]}</td>
+</tr>
+{/loop}
+</table>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('sms');m('action_record');</script>
+{else}
+<form action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<div class="tt">
+{$fields_select}&nbsp;
+<input type="text" size="30" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+<select name="type">
+<option value="0">类型</option>
+<option value="1" {if $type==1}selected{/if}>增加</option>
+<option value="2" {if $type==2}selected{/if}>扣除</option>
+</select>
+&nbsp;
+{dcalendar('fromdate', $fromdate)} 至 {dcalendar('todate', $todate)}
+&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 置 " class="btn" onclick="Go('?action={$action}');"/>
+</div>
+</form>
+<div class="bd">
+<table cellpadding="10" cellspacing="0" class="tb">
+<tr>
+<th>流水号</th>
+<th>增加</th>
+<th>扣除</th>
+<th>剩余</th>
+<th width="150">发生时间</th>
+<th width="150">事由</th>
+<th width="150">备注</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td height="30">{$v[itemid]}</td>
+<td class="f_blue">{if $v[amount] > 0}{$v[amount]}{else}&nbsp;{/if}</td>
+<td class="f_red">{if $v[amount] < 0}{$v[amount]}{else}&nbsp;{/if}</td>
+<td>{if $v[balance]}{$v[balance]}{else}&nbsp;{/if}</td>
+<td class="f_gray">{$v[addtime]}</td>
+<td title="{$v[reason]}"><input type="text" size="20" value="{$v[reason]}"/></td>
+<td title="{$v[note]}"><input type="text" size="20" value="{$v[note]}"/></td>
+</tr>
+{/loop}
+<tr align="center">
+<td height="35"><strong>小计</strong></td>
+<td class="f_blue">{$income}</td>
+<td class="f_red">{$expense}</td>
+<td colspan="4">&nbsp;</td>
+</tr>
+</table>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('sms');m('action');</script>
+{/if}
+{if $action == 'buy'}
+<script type="text/javascript">
+function check() {
+	var k = parseInt(Dd('total').value);
+	if(isNaN(k) || k < 1) {
+		Dmsg('请填写购买数量', 'total');
+		return false;
+	}
+	if(k*{$fee} > {$_money}) {
+		Go('charge.php?action=pay&reason=sms|'+k+'&amount='+k*{$fee}+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(Dd('password').value == '') {
+		Dmsg('请填写支付密码', 'password');
+		return false;
+	}
+}
+window.setInterval(
+	function() {
+		var k = parseInt(Dd('total').value);
+		var money = k > 0 ? (k*{$fee}).toFixed(2) : '0.00';
+		$('#money').html(money);
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#payword').hide();$('#mymoney').hide();$('#paytype').show();
+		} else {
+			$('#payword').show();$('#mymoney').show();$('#paytype').hide();
+		}
+	}, 
+500);
+</script>
+{/if}
+{template 'footer', 'member'}

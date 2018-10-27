@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>{$head_title}{$DT[seo_delimiter]}{$DT[sitename]}</title>
+<link rel="stylesheet" type="text/css" href="{DT_PATH}admin/image/style.css"/>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+{if !DT_DEBUG}<script type="text/javascript">window.onerror= function(){return true;}</script>{/if}
+<script type="text/javascript" src="{DT_STATIC}lang/{DT_LANG}/lang.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/config.js"></script>
+<!--[if lte IE 9]><!-->
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery-1.5.2.min.js"></script>
+<!--<![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!-->
+<script type="text/javascript" src="{DT_STATIC}file/script/jquery-2.1.1.min.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="{DT_STATIC}file/script/common.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/admin.js"></script>
+<script type="text/javascript" src="{DT_STATIC}file/script/member.js"></script>
+</head>
+<body>
+{if $job == 'item'}
+<div class="sbox">
+<form action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="job" value="{$job}"/>
+<input type="hidden" name="from" value="{$from}"/>
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="username" value="{$username}"/>
+<input type="text" size="40" name="kw" id="kw" value="{$kw}" title="关键词" placeholder="请输入关键词"/>&nbsp;
+{$MODULE[$mid][name]}ID：<input type="text" size="10" name="itemid" value="{$itemid}">&nbsp;
+<input type="submit" value="搜 索" class="btn-g"/>&nbsp;
+<input type="button" value="重 置" class="btn" onclick="Go('?action={$action}&job={$job}&mid={$mid}&from={$from}&username={$username}');"/>
+</form>
+</div>
+<table cellspacing="0" class="tb">
+<tr>
+{if $mid==16 && $from=='relate'}
+<th width="70">商品</th>
+{else}
+<th>ID</th>
+<th width="14"> </th>
+{/if}
+{if $mid == 4}
+<th>公 司</th>
+{else}
+<th>标 题</th>
+<th width="120">添加时间</th>
+{/if}
+<th width="60">选择</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+{if $mid==16 && $from=='relate'}
+<td><a href="javascript:_preview('{$v[thumb]}');"><img src="{$v[thumb]}" width="60" style="padding:5px;"/></a></td>
+{else}
+<td>{$v[itemid]}</td>
+<td>{if $v[level]}<img src="{DT_PATH}admin/image/level_{$v[level]}.gif" title="{$v[level]}级" alt=""/>{/if}</td>
+{/if}
+<td align="left"><a href="{$v[linkurl]}" target="_blank">{$v[title]}</a>{if $v[thumb]} <a href="javascript:_preview('{$v[thumb]}');"><img src="{DT_PATH}admin/image/img.gif" width="10" height="10" title="标题图,点击预览" alt=""/></a>{/if}</td>
+{if $mid > 4}
+<td>{$v[adddate]}</td>
+{/if}
+<td>
+<div class="dsn">
+<div id="introduce_{$v[itemid]}">{$v[introduce]}</div>
+</div>
+<a href="javascript:S('{$v[itemid]}','{$v[alt]}','{$v[linkurl]}','{$v[thumb]}','{$v[level]}','{$v[style]}');" class="t">[选择]</a>
+</td>
+</tr>
+{/loop}
+</table>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">
+function S(itemid, title, linkurl, thumb, introduce, level, style) {
+	try {
+		{if $from == 'special'}
+		parent.Dd('title').value=title;
+		parent.Dd('linkurl').value=linkurl;
+		parent.Dd('thumb').value=thumb;
+		parent.Dd('introduce').value=Dd('introduce_'+itemid).innerHTML;
+		parent.color_select(style);
+		parent.$('#level').val(level);
+		{elseif $from == 'relate'}
+		parent.Dd('id').value=itemid;
+		parent.Dd('dform_add').submit();
+		{else}
+		parent.Dd('key_id').value=itemid;
+		{/if}
+	} catch(e) {}
+	try {parent.cDialog();} catch(e) {}
+}
+Dd('kw').focus();
+var new_top = Number(parent.Dd('Dtop').style.top.replace('px', ''));
+if(new_top > 100) new_top -= 50;
+try{parent.Dd('Dtop').style.top=new_top+'px';}catch(e){}
+</script>
+<br/>
+{else}
+{if $mid}
+<div class="sbox">
+<form action="?">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="job" value="{$job}"/>
+<input type="hidden" name="from" value="{$from}"/>
+<input type="hidden" name="fid" value="{$fid}"/>
+<input type="text" size="60" name="kw" id="kw" value="{$kw}" title="关键词"/>&nbsp;
+<input type="submit" value="搜 索" class="btn-g"/>&nbsp;
+<input type="button" value="返 回" class="btn" onclick="Go('?action={$action}&job={$job}&from={$from}&fid={$fid}');"/>&nbsp;
+<input type="button" value="上 传" class="btn" onclick="window.open('{$DT[file_my]}?mid=12&action=add');"/>&nbsp;
+<input type="button" value="关 闭" class="btn" onclick="{if $from == 'album'}window.parent.cDialog();{else}window.close();{/if}"/>
+</form>
+</div>
+{/if}
+<style tyle="text/css">
+.photo {width:115px;height:130px;overflow:hidden;float:left;text-align:center;padding:10px;}
+.photo_img {width:100px;height:100px;overflow:hidden;padding:3px;margin:0 auto 8px auto;background:#FFFFFF;border:#CCCCCC 1px solid;cursor:pointer;}
+</style>
+{if $itemid || $DT['uploadlog']}
+<script type="text/javascript">
+function S(t, m, l) {
+	try {
+	{if $from == 'album'}
+	window.parent.getAlbum(t, '{$fid}');
+	window.parent.cDialog();
+	{else}
+	window.opener.SetUrl(l);window.opener.GetE("frmUpload").reset();
+	window.close();
+	{/if}
+	} catch(e) {}
+}
+</script>
+<div>
+{if $lists}
+{loop $lists $k $v}
+<div class="photo">
+	<div class="photo_img"><img src="{$v[thumb]}" width="100" title="{$v[introduce]}" onclick="S('{$v[thumb]}','{$v[middle]}','{$v[large]}');"/></div>
+	<div><a href="{$v[large]}" target="_blank"><img src="{DT_SKIN}image/zoomin.gif"/></a>&nbsp;&nbsp;<a href="{$v[middle]}" target="_blank"><img src="{DT_SKIN}image/zoomout.gif"/></a></div>
+</div>
+{/loop}
+<div class="c_b"></div>
+{else}
+<br/><br/><br/><center class="f_b">抱歉，您还没有上传过任何图片！</center><br/><br/><br/>
+{/if}
+</div>
+{else}
+<div>
+	{if $lists}
+	{loop $lists $k $v}
+	<div class="photo">
+	<a href="?itemid={$v[itemid]}&from={$from}&fid={$fid}"><img src="{$v[thumb]}" width="120" title="{$v[title]}"/></a>
+	<span class="f_gray">{$v[items]} 张图片</span>
+	</div>
+	{/loop}
+	<div class="c_b"></div>
+	</div>
+	{else}
+	<br/><br/><br/><center class="f_b">您还没有创建{$MODULE[$mid][name]}，<a href="{$DT[file_my]}?mid=12&action=add" target="_blank" class="t">点击这里立即创建</a></center><br/><br/><br/>
+	{/if}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+</body>
+</html>

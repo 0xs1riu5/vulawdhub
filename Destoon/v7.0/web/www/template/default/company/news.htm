@@ -1,0 +1,24 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b">
+	<span class="f_r">
+		<form action="{$MOD[linkurl]}news.php">
+		<input type="text" size="40" name="kw" value="{$kw}"/>&nbsp;
+		<input type="submit" value="搜 索" class="btn-blue"/>&nbsp;
+		<input type="button" value="重 搜" class="btn" onclick="Go('{$MOD[linkurl]}{rewrite('news.php?page=1')}');"/>
+		</form>
+	</span>
+	<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {$L[news_title]}</div>
+</div>
+<div class="m">
+	<div class="catlist">
+	<ul>
+	{loop $lists $k $v}
+	<li><i>{timetodate($v[addtime], 5)}</i><a href="{$v[linkurl]}" target="_blank" title="{$v[alt]}">{$v[title]}</a></li>
+	{if $k && $k%5==4}<li class="sp">&nbsp;</li>{/if}
+	{/loop}
+	</ul>
+	</div>
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+</div>
+{template 'footer'}

@@ -1,0 +1,14 @@
+{template 'header'}
+<div class="m o_h">
+	{if $MOD[page_irec]}
+	<div class="head-txt"><span>{loop $maincat $k $v}{if $k<10}{if $k} &nbsp;|&nbsp; {/if}<a href="{$MOD[linkurl]}{$v[linkurl]}">{$v[catname]}</a>{/if}{/loop}</span><strong>推荐{$MOD[name]}</strong></div>
+	<div class="list-img list0"><!--{tag("moduleid=$moduleid&condition=status=3 and open=3 and level>0 and items>0&areaid=$cityid&order=".$MOD[order]."&width=180&height=135&datetype=3&lazy=$lazy&pagesize=".$MOD[page_irec]."&template=list-photo")}--></div>
+	{/if}
+	{if $MOD[page_icat]}
+	{loop $maincat $i $c}
+	<div class="head-txt"><span><a href="{$MOD[linkurl]}{$c[linkurl]}">更多<i>&gt;</i></a></span><strong>{$c[catname]}</strong></div>
+	<div class="list-img list0"><!--{tag("moduleid=$moduleid&condition=status=3 and open=3 and items>0&catid=".$c[catid]."&areaid=$cityid&order=".$MOD[order]."&width=180&height=135&datetype=3&lazy=$lazy&pagesize=".$MOD[page_icat]."&template=list-photo")}--></div>
+	{/loop}
+	{/if}
+</div>
+{template 'footer'}

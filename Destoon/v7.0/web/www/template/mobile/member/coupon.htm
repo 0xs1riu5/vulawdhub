@@ -1,0 +1,58 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action=='my'}我的优惠券{else}领券中心{/if}</div>
+<div class="head-bar-right">
+{if $action=='my'}
+<a href="?action=index"><span>领券</span></a>
+{else}
+<a href="?action=my"><span>我的</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='my'}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{if $v[cost]}满{$v[cost]}可用{else}不限消费金额{/if}</span>
+<strong style="font-size:24px;color:#FF6600;">{$DT[money_sign]}{$v[price]}</strong>
+</li>
+<li>
+	<span class="f_r">	
+	{if $v[oid]}
+	<a href="order.php?action=update&step=detail&itemid={$v[oid]}" class="b">已使用</a>
+	{elseif $v[fromtime] > $DT_TIME}
+	未开始
+	{elseif $v[totime] < $DT_TIME}
+	已过期
+	{else}
+	<a href="{if $v[seller]}{userurl($v[seller], 'file=mall')}{else}{DT_MOB}{/if}" class="b">立即使用</a>
+	{/if}
+	</span>
+	<span>{if $v[seller]}店铺：<a href="{userurl($v[seller], 'file=mall')}" class="b">{$v[seller]}</a>{else}全站通用{/if} / {timetodate($v[fromtime], 3)} - {timetodate($v[totime], 3)}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li>
+<span class="f_r">{if $v[cost]}满{$v[cost]}可用{else}不限消费金额{/if}</span>
+<strong style="font-size:24px;color:#FF6600;">{$DT[money_sign]}{$v[price]}</strong>
+</li>
+<li><span class="f_r">{if isset($gets[$v[itemid]])}已领取{else}<a href="?action=get&itemid={$v[itemid]}" class="b">立即领取</a>
+	{/if}</span><span>{if $v[username]}店铺：<a href="{userurl($v[username], 'file=mall')}" class="b">{$v[username]}</a>{else}全站通用{/if} / 剩余{$v[left]}张</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{template 'footer', 'member'}

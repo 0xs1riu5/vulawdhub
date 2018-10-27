@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="{DT_CHARSET}"/>
+<title>{$head_title}{$DT[seo_delimiter]}{$DT[sitename]}</title>
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}archiver.css"/>
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width"/>
+<meta name="generator" content="DESTOON B2B - www.destoon.com"/>
+</head>
+<body>
+<div><a href="{$MODULE[1][linkurl]}"><img src="{if $DT[logo]}{$DT[logo]}{else}{DT_SKIN}image/logo.gif{/if}" alt="{$DT[sitename]}"/></a></div>
+<div id="nav">
+{loop $N $i $m}
+<div{if $mid==$m[moduleid]} class="on"{/if}><a href="{$EXT[archiver_url]}{$m[url]}"><span>{$m[name]}</span></a></div>
+{/loop}
+</div>
+<div id="title"><strong>{$head_title}</strong></div>
+<div id="content">
+<ul>
+{if $list}
+{if $T}
+{loop $T $t}
+<li><em>{$t[adddate]}</em><a href="{$t[linkurl]}" target="_blank">{$t[title]}</a></li>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<li>暂无归档内容</li>
+{/if}
+{else}
+{loop $M $t}
+<li><a href="{$EXT[archiver_url]}{$t[url]}">{$t[title]}</a></li>
+{/loop}
+{/if}
+</ul>
+</div>
+</body>
+</html>

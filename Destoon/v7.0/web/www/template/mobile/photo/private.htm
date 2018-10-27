@@ -1,0 +1,25 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">身份验证</div>
+<div class="head-bar-right">
+<a href="{$MOD[mobile]}"><span>取消</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-form">
+<form action="{$MOD[mobile]}private.php" method="post" data-ajax="false">
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="page" value="{$page}"/>
+<p>{if $open == 2}请输入访问密码{elseif $open == 1}请回答，{$question}？{/if}<em>*</em><b id="dkey">{$error}</b></p>
+<div><input type="text" name="key" id="key"/></div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" class="btn-green" value="立即验证"/>
+<div class="blank-32"></div>
+</form>
+</div>
+{template 'footer'}

@@ -1,0 +1,94 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$MOD[name]}礼仪</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="content">
+		1、标题要正确<br/>
+		在提问或答复的时候不要写无意义或模糊的题目，为了别人解答时理解的方便请正确书写标题。 <br/>
+		2、对问题进行具体的说明<br/>
+		在提问或答复的时候，内容要具体详细地书写。问题内容越详细别人的答复也就越正确，答复越详细也就越让人容易理解。 <br/>
+		3、检查问题是否重复<br/>
+		在提问之前，请先对问题进行搜索，或者在提问的时候，先关注一下提问页面右侧的“相关问题”列表，其中是否已经有过得到解决的类似问题。在确认没有令您满意的答案后再提问。 <br/>
+		4、检查问题的分类是否正确<br/>
+		提交问题之前请确认问题的分类是否正确，提问的正确归类可以让你更快地得到满意的回答。<br/> 
+		5、及时处理问题<br/>
+		在提问后的{$MOD[overdays]}天之内，如果有满意的答复一定要作出选择，以免伤害热心回答的网友。如果有答案而过期不对问题进行处理，我们将扣除您{$MOD[credit_deal]}分的{$DT[credit_name]}以示惩戒。<br/> 
+		6、学会表示感谢<br/>
+		对所有解答自己问题的会员表示感谢。选出最佳答案后也请给予回答者一些友好的评价，尊重他人的劳动成果。<br/> 
+		7、互相尊重<br/>
+		提问者提问时的语气请尽量友好，避免给他人以责问、逼问的不良感受。回答者在答复时候也不要小看或嘲笑提问者，要有诚意地解答，正确地书写。 <br/>
+	</div>
+</div>
+<div class="blank-35"></div>
+
+<div class="list-set">
+<ul>
+<li><div>{$DT[credit_name]}增加</div></li>
+</div>
+<div class="main">
+	<div class="content">
+		<table cellpadding="16" cellspacing="0" width="100%">
+		<tr bgcolor="#FAFAFA" align="center">
+		<td><strong>操作</strong></td>
+		<td><strong>增加值</strong></td>
+		</tr>
+		<tr align="center">
+		<td>提交回答</td>
+		<td>+{$MOD[credit_answer]}</td>
+		</tr>
+		<tr align="center">
+		<td>回答被采纳为最佳答案</td>
+		<td>+{$MOD[credit_best]} +悬赏分</td>
+		</tr>
+		<tr align="center">
+		<td>参与投票</td>
+		<td>+{$MOD[credit_vote]}</td>
+		</tr>
+		</table>
+	</div>
+</div>
+<div class="blank-35"></div>
+
+<div class="list-set">
+<ul>
+<li><div>{$DT[credit_name]}扣除</div></li>
+</div>
+<div class="main">
+	<div class="content">
+		<table cellpadding="16" cellspacing="0" width="100%">
+		<tr bgcolor="#FAFAFA" align="center">
+		<td><strong>操作</strong></td>
+		<td><strong>增加值</strong></td>
+		</tr>
+		<tr align="center">
+		<td>悬赏付出</td>
+		<td>-悬赏分</td>
+		</tr>
+		<tr align="center">
+		<td>匿名提问</td>
+		<td>-{$MOD[credit_hidden]}</td>	
+		</tr>
+		<tr align="center">
+		<td>提问上线后被删除</td>
+		<td>-{$MOD[credit_del]}</td>
+		</tr>
+		<tr align="center">
+		<td>回答上线后被删除</td>
+		<td>-{$MOD[credit_del_answer]}</td>
+		</tr>
+		<tr align="center">
+		<td>问题{$MOD[overdays]}天内不处理</td>
+		<td>-{$MOD[credit_deal]}</td>
+		</tr>
+		</table>
+	</div>
+</div>
+<div class="blank-35"></div>
+{template 'footer'}

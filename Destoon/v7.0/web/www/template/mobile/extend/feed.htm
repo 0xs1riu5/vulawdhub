@@ -1,0 +1,63 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action=='diy'}定制订阅{else}RSS订阅{/if}</div>
+<div class="head-bar-right">
+{if $action=='diy'}
+<a href="index.php"><span>取消</span></a>
+{else}
+<a href="index.php?action=diy"><span>定制</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action == 'diy'}
+{if $feed_code}
+<div class="ui-form bd-b">
+<p style="color:red;">{$MODULE[$mid][name]}</p>
+<div><input type="url" value="{$feed_code}"/></div>
+<div class="blank-16"></div>
+</div>
+{/if}
+<div class="ui-form">
+<form action="index.php" data-ajax="false">
+<input type="hidden" name="action" value="{$action}"/>
+<p>模块</p>
+<div>
+<select name="mid">
+	<option value="0">请选择</option>
+	{loop $FD $k $v}
+	<option value="{$v[moduleid]}"{if $mid==$v[moduleid]} selected{/if}>{$v[name]}</option>
+	{/loop}
+</select>
+</div>
+<p>关键词</p>
+<div><input type="text" name="kw" value="{$kw}"/></div>
+{if $category_select}
+<p>分类</p>
+<div>{$category_select}</div>
+{/if}
+{if $area_select}
+<p>地区</p>
+<div>{$area_select}</div>
+{/if}
+<div class="blank-16"></div>
+<input type="submit" class="btn-green" value="提 交"/>
+<div class="blank-16"></div>
+<input type="button" class="btn" value="重 设" onclick="Go('?action={$action}');"/>
+<div class="blank-16"></div>
+</div>
+{else}
+<div class="ui-form">
+{loop $FD $k $v}
+<p>{$v[name]}</p>
+<div><input type="url" value="{$v[rssurl]}"/></div>
+{/loop}
+<div class="blank-16"></div>
+</div>
+{/if}
+{template 'footer'}

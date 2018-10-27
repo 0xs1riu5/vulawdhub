@@ -1,0 +1,34 @@
+{template 'header'}
+<script type="text/javascript">
+var i = 30;
+</script>
+<div class="m">
+	<div class="warn">
+		<div>
+			<h1>抱歉，{$GRP[title]}圈仅成员可以{if $action=='show'}查看帖子{elseif $action=='post'}发帖{elseif $action=='reply'}回复{else}访问{/if}</h1><br/>
+			&nbsp;&nbsp;<span id="second" class="f_red f_b"><script type="text/javascript">document.write(i);</script></span> 秒后将自动跳转到{if $_userid}<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&job=join&action=add&gid={$gid}" class="b">申请加入商圈</a>{else}<a href="{$MODULE[2][linkurl]}{$DT[file_login]}" class="b">会员登录</a>{/if}页面
+			<br/><br/>
+			{if $_userid}
+			&nbsp;&nbsp;1、您还没有加入本圈或者申请正在审核中。 <br/>
+			{else}
+			&nbsp;&nbsp;1、请 <a href="{$MODULE[2][linkurl]}{$DT[file_login]}" class="b">登录</a> 或 <a href="{$MODULE[2][linkurl]}{$DT[file_register]}" class="b">免费注册</a>。<br/>
+			{/if}
+			&nbsp;&nbsp;2、请检查输入的网址是否正确。 <br/>
+			&nbsp;&nbsp;3、如果不能确认输入的网址，请浏览<a href="{$MOD[linkurl]}" class="b">{$MOD[name]}首页</a>来查看所要访问的网址。 <br/>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var interval=window.setInterval(
+	function() {
+		if(i == 0) {
+			Go('{$MODULE[2][linkurl]}{if $_userid}{$DT[file_my]}?mid={$moduleid}&job=join&action=add&gid={$gid}{else}{$DT[file_login]}{/if}');
+			clearInterval(interval);
+		} else {
+			Dd('second').innerHTML = i;
+			i--;
+		}
+	}, 
+1000);
+</script>
+{template 'footer'}

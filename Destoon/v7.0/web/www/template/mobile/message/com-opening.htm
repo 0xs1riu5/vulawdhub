@@ -1,0 +1,23 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback('');" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">主页未开通</div>
+<div class="head-bar-right">
+<a href="{DT_MOB}"><img src="{DT_MOB}static/img/icon-index.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title bd-b">公司主页正在等待开通</div>
+	<div class="content">
+	您正在访问的公司主页已经注册，将在所属公司完善详细资料后自动开通，请稍后访问...<br/>
+	{if $username == $_username}
+	系统检测到您为该公司所属会员，<a href="{$MODULE[2][mobile]}edit.php?tab=2" class="b" rel="external">请点这里立即完善公司资料，激活公司主页</a><br/>
+	{/if}
+	</div>
+</div>
+{template 'footer'}

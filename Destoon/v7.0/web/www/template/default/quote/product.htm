@@ -1,0 +1,47 @@
+{template 'header'}
+<div class="m">
+	<div class="nav">
+	<span class="f_r">
+		<form action="{$MOD[linkurl]}product.php">
+		<input type="text" size="40" name="kw" value="{$kw}"/>&nbsp;
+		{ajax_category_select('catid', '所属分类', $catid, $moduleid)}&nbsp;
+		<input type="submit" value="搜 索" class="btn-blue"/>&nbsp;
+		<input type="button" value="重 搜" class="btn" onclick="Go('{$MOD[linkurl]}{rewrite('product.php?page=1')}');"/>
+		</form>
+	</span>
+	<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> <a href="{$MOD[linkurl]}product.php">产品报价</a></div>
+</div>
+{if $lists}
+<div class="m">
+	<table cellpadding="16" cellspacing="0" class="tb">
+	<tr>
+	<th>品名</th>
+	<th>属性参数</th>
+	<th width="120">最新报价</th>
+	<th width="40">单位</th>
+	<th width="100">报价数</th>
+	<th width="120">报价时间</th>
+	</tr>
+	{loop $lists $v}
+	<tr align="center">
+	<td align="left"><a href="{$v[linkurl]}" target="_blank" class="b px16">{$v[title]}</a></td>
+	<td align="left" class="f_gray">
+	{if $v[v1]}{$v[n1]}:{$v[v1]}&nbsp;&nbsp;{/if}
+	{if $v[v2]}{$v[n2]}:{$v[v2]}&nbsp;&nbsp;{/if}
+	{if $v[v3]}{$v[n3]}:{$v[v3]}&nbsp;&nbsp;{/if}
+	</td>
+	<td class="f_price">{$DT[money_sign]}{$v[price]}</td>
+	<td>{$v[unit]}</td>
+	<td>{$v[item]}</td>
+	<td>{timetodate($v[edittime], 5)}</td>
+	</tr>
+	{/loop}
+	</table>
+	{if $pages}<div class="pages">{$pages}</div>{/if}
+</div>
+{else}
+<div class="m bd-t">
+	<br/><br/><br/><center class="px16">未找到相关产品</center><br/><br/><br/>
+</div>
+{/if}
+{template 'footer'}

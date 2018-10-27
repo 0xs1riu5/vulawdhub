@@ -1,0 +1,147 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action=='add'}提交问题{elseif $action=='show'}问题详情{elseif $action=='support'}客服专员{else}问题列表{/if}</div>
+<div class="head-bar-right">
+{if $action=='add' || $action=='edit'}
+<a href="?action=index"><span>取消</span></a>
+{elseif $action=='show' || $action=='support'}
+<a href="?action=index"><span>关闭</span></a>
+{else}
+<a href="?action=add"><span>提问</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='add' || $action=='edit'}
+<form method="post" action="?" id="dform" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<div class="ui-form">
+<p>分类<em>*</em><b id="dtypeid"></b></p>
+<div>{$type_select}</div>
+<p>标题<em>*</em><b id="dtitle"></b></p>
+<div><input type="text" name="post[title]" id="title" value="{$title}"/></div>
+<p>内容<em>*</em><b id="dcontent"></b></p>
+</div>
+<input type="hidden" name="post[content]" id="content"/>
+<ul class="ui-editor-toolbar">
+<li class="ui-editor-img"><div id="editor-picker"></div></li>
+<li class="ui-editor-bold" id="editor-bold" editor-action="bold">B</li>
+<li class="ui-editor-italic" id="editor-italic" editor-action="italic">I</li>
+<li class="ui-editor-underline" id="editor-underline" editor-action="underline">U</li>
+</ul>
+<div class="ui-editor-content" id="editor">{$content}</div>
+<script type="text/javascript" src="{DT_MOB}static/js/editor.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#editor').DEditor({
+        editorid: 'editor',
+        textareaid: 'content',
+        server:'{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=editor'
+    });
+});
+</script>
+<div class="ui-form">
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="{if $action == 'edit'}修改{else}提问{/if}" class="btn-blue"/>
+<div class="blank-32"></div>
+</div>
+{elseif $action == 'show'}
+<div class="main content">
+问题分类：{$TYPE[$typeid][typename]}<br/>
+问题标题：{$title}<br/>
+{if $qid}来源问题：<a href="?action=show&itemid={$qid}" class="b">点击查看</a><br/>{/if}
+问题详情：
+<div style="margin:10px 0;padding:10px 16px;background:#FAFAFA;">{$content}</div>
+提交时间：{$addtime}<br/>
+受理状态：{$dstatus[$status]}<br/>
+{if $status > 1}
+问题回复：
+<div style="margin:10px 0;padding:10px 16px;background:#FAFAFA;">{$reply}</div>
+受理时间：{$edittime}<br/>
+受理人：{$editor}<br/>
+{if $star}
+我的评分：{$stars[$star]}
+{else}
+我的评分：<br/>
+<form method="post" action="?action=star&itemid={$itemid}">
+<input type="radio" name="star" value="1" id="star_1" onclick="if(confirm('确定评分为不满意吗？')) Go('?action=star&itemid={$itemid}&star=1');"/><label for="star_1"> 不满意</label>
+<input type="radio" name="star" value="2" id="star_2" onclick="if(confirm('确定评分为基本满意吗？')) Go('?action=star&itemid={$itemid}&star=2');"/><label for="star_2"> 基本满意</label>
+<input type="radio" name="star" value="3" id="star_3" onclick="if(confirm('确定评分为非常满意吗？')) Go('?action=star&itemid={$itemid}&star=3');"/><label for="star_3"> 非常满意</label>
+</form>
+{/if}
+{if $star != 3}
+<div class="blank-16"></div>
+<input type="button" class="btn-green" value="继续提问" onclick="Go('?action=add&itemid={$itemid}');"/>
+{/if}
+{/if}
+<div class="blank-16"></div>
+</div>
+{elseif $action == 'support'}
+<div class="main content">
+{if $user[truename]}姓名：{$user[truename]} （{if $user[gender]==1}先生{else}女士{/if}）<br/>{/if}
+{if $user[telephone]}电话：<a href="tel:{$user[telephone]}" class="b">{$user[telephone]}</a><br/>{/if}
+{if $user[mobile]}手机：<a href="tel:{$user[mobile]}" class="b">{$user[mobile]}</a><br/>{/if}
+{if $user[fax]}传真：{$user[fax]}<br/>{/if}
+{if $user[mail]}邮件：<a href="mailto:{$user[mail]}" class="b">{$user[mail]}</a><br/>{/if}
+{if $user[address]}地址：{$user[address]}<br/>{/if}
+{if $user[postcode]}邮编：{$user[postcode]}<br/>{/if}
+{if $user[qq] && $DT[im_qq]}QQ：{im_qq($user[qq])}<br/>{/if}
+{if $user[wx] && $DT[im_wx]}QQ：{im_wx($user[wx], $user[username])}<br/>{/if}
+{if $user[ali] && $DT[im_ali]}旺旺：{im_ali($user[ali])}<br/>{/if}
+{if $user[skype] && $DT[im_skype]}Skype：{im_skype($user[skype])}<br/>{/if}
+</div>
+{else}
+<div class="ui-form sch">
+<form action="?">
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+</form>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><span class="f_r">{$v[dstatus]}</span><a href="?action=show&itemid={$v[itemid]}"><strong>{$v[title]}</strong></a></li>
+<li><span class="f_r">{$v[type]}</span><span>{$v[adddate]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{if $support}
+<div class="ui-form">
+<div class="blank-16"></div>
+<input type="button" class="btn" value="客服专员" onclick="Go('?action=support');"/>
+<div class="blank-32"></div>
+</div>
+{/if}
+{/if}
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript">
+function check() {
+	var len;
+	if(Dd('typeid').value == 0) {
+		Dmsg('请选择分类', 'typeid');
+		return false;
+	}
+	len = Dd('title').value.length;
+	if(len < 5 || len > 30) {
+		Dmsg('标题不能少于5个字多于30个字，当前已输入'+len+'个字', 'title');
+		return false;
+	}
+	len = FCKLen();
+	if(len < 10 || len > 5000) {
+		Dmsg('内容不能少于10个字多于5000个字，当前已输入'+len+'个字', 'content');
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{template 'footer', 'member'}

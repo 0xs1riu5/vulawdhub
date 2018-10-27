@@ -1,0 +1,11 @@
+{if $tags}
+<div id="slide_{$tags[0][itemid]}{$moduleid}" class="slide" style="width:{$width}px;height:{$height}px;">
+{loop $tags $i $t}
+<a href="{$t[linkurl]}"{if $target} target="_blank"{/if}><img src="{$t[thumb]}" width="{$width}" height="{$height}" alt="{$t[alt]}"/></a>
+{/loop}
+</div>
+{load('slide.js')}
+<script type="text/javascript">new dslide('slide_{$tags[0][itemid]}{$moduleid}');</script>
+{else}
+<div class="slide" style="width:{$width}px;height:{$height}px;"></div>
+{/if}

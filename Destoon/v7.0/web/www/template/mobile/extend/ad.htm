@@ -1,0 +1,79 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $typeid}{$TYPE[$typeid]}{else}广告中心{/if}</div>
+<div class="head-bar-right">
+<a href="javascript:window.scrollTo(0,0);$('#{$ext}-{$typeid}-{$page}-{$itemid}').slideToggle(300);"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div id="{$ext}-{$typeid}-{$page}-{$itemid}" style="display:none;">
+<div class="ui-form sch">
+<form action="{$mob}index.php">
+<div class="blank-20"></div>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+<div class="blank-20"></div>
+</form>
+</div>
+<div class="list-set">
+<ul>
+<li><div><a href="{$MODULE[2][mobile]}ad.php" rel="external">我的广告</a></div></li>
+{loop $TYPE $k $v}
+{if $k}<li{if $typeid==$k} style="background:#F6F6F6;"{/if}><div><a href="{$mob}{list_url($k)}">{$v}</a></div></li>{/if}
+{/loop}
+</ul>
+</div>
+<div class="blank-35 bd-b"></div>
+</div>
+{if $action == 'my'}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><span class="f_r" style="color:red;">{$v[credit]}{$DT[credit_name]}</span><a href="{str_replace($url, $mob, $v[linkurl])}"><strong>{$v[title]}</strong></a></li>
+<li><span class="f_r">{$v[status]}</span><span>{$v[adddate]}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+{if $itemid}
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">有效期：{if $left}{$fromdate} 至 {$todate}{else}<span class="f_red">已结束</span>{/if}&nbsp;&nbsp;点击：{$hits}</div>
+	<div class="content">
+	会员权限：{if $gname}{$gname}{else}全部{/if}<br/>
+	所需{$DT[credit_name]}：<strong class="f_red">{$credit}</strong><br/>
+	剩余名额：<strong>{$left}</strong><br/>
+	<div class="blank-16"></div>
+	<div class="btn-green" onclick="Order();">立即兑换</div>
+	<div class="blank-16"></div>
+	<img src="{$middle}"/><br/>
+	{$content}
+	</div>
+</div>
+<script type="text/javascript">
+{if isset($success)}Dtoast('恭喜您，礼品兑换成功！');{/if}
+function Order() {
+	{if $process == 1}return confirm('抱歉，此兑换还没有开始');{/if}
+	{if $process == 2}if(confirm('确定要兑换吗？系统将扣除您{$credit}{$DT[credit_name]}')) Go('{$mob}index.php?action=order&itemid={$itemid}'){/if}
+	{if $process == 3}return confirm('抱歉，此兑换已经过期');{/if}
+	{if $process == 4}return confirm('抱歉，此兑换名额用尽，已经结束');{/if}
+}
+</script>
+{else}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><span class="f_r">{$v[typename]}</span><a href="{$mob}{show_url($v[pid])}" rel="external"><strong>{$v[name]}</strong></a></li>
+<li><span class="f_r">{if $MOD[ad_buy]}<a href="{$MODULE[2][mobile]}ad.php?action=add&pid={$v[pid]}" class="b" rel="external">预定</a>{else}{$v[width]} x {$v[height]}{/if}</span><span style="color:red;">{if $v[price]}{$v[price]}{$unit}/月{else}面议{/if}</span></li>
+</ul>
+</div>
+{/loop}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{/if}
+{/if}
+{template 'footer'}

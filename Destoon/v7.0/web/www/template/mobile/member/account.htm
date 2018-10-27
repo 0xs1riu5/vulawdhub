@@ -1,0 +1,225 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $action=='grade'}会员升级{elseif $action=='vip'}{VIP}续费{else}账户详情{/if}</div>
+<div class="head-bar-right">
+{if $action=='grade' || $action=='vip'}
+<a href="?action=index"><span>取消</span></a>
+{else}
+<a href="grade.php"><span>升级</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action == 'grade'}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="groupid" value="{$groupid}"/>
+<div class="blank-20"></div>
+<div class="list-set">
+	<ul>
+		<li><div><span>{$GROUP[$_groupid][groupname]}</span>当前组</div></li>
+		<li><div><span>{$GROUP[$groupid][groupname]}</span>升级为</div></li>
+		{if $fee>0}
+		<li><div><span><b style="font-size:20px;color:#FF6600;" id="money">{$fee}</b>{$DT[money_unit]}</span>应付总额</div></li>
+		{else}
+		<li><div><span><input type="text" name="company" id="company" value="{$_company}"/></span>公司名称</div></li>
+		{/if}
+	</ul>
+</div>
+{if $fee>0}
+<div id="mymoney" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-set">
+		<ul>
+			<li><div><span><b>{$_money}</b>{$DT[money_unit]}</span>账户余额</div></li>
+		</ul>
+	</div>
+</div>
+
+<div id="payword" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-inp bd-t bd-b">
+		<div><input type="password" name="password" id="password" placeholder="支付密码：" autocomplete="new-password" onblur="window.scrollTo(0,0);"/></div>
+	</div>
+</div>
+
+<div id="paytype" style="display:none;">
+	<div class="blank-20"></div>
+	{php $PAYLIST = get_paylist();}
+	<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+	<div class="list-pay">
+		<ul>
+		{loop $PAYLIST $k $v}
+		<li onclick="var bk=$('#bank').val();if(bk=='{$v[bank]}'){return;}$('#check-'+bk).attr('class', 'check');$('#check-{$v[bank]}').attr('class', 'checked');$('#bank').val('{$v[bank]}');"><div><em class="{if $k}check{else}checked{/if}" id="check-{$v[bank]}"></em><img src="{DT_PATH}api/pay/{$v[bank]}/icon.png" width="24" height="24"/>{$v[name]} {if $v[percent]>0}<span>手续费 {$v[percent]}%</span>{/if}</div></li>
+		{/loop}
+		</ul>
+	</div>
+</div>
+{/if}
+<div class="blank-20"></div>
+<div class="list-btn"><input type="submit" name="submit" value="申请升级" class="btn-green"/></div>
+<div class="blank-20"></div>
+<div class="list-btn"><input type="button" value="重新选择" class="btn" onclick="Go('grade.php');"/></div>
+<div class="blank-20"></div>
+</form>
+{elseif $action == 'vip'}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<div class="blank-20"></div>
+<div class="list-set">
+	<ul>
+		<li><div><span>{$todate}</span>到期时间</div></li>
+		<li><div><span>{$havedays}天</span>剩余时间</div></li>
+		<li><div>
+		<span>
+		<select name="year" id="year" onchange="$('#money').html(this.value*{$MG[fee]});">
+		<option value="1"<?php if($year == 1) echo ' selected';?>>1年</option>
+		<option value="2"<?php if($year == 2) echo ' selected';?>>2年</option>
+		<option value="3"<?php if($year == 3) echo ' selected';?>>3年</option>
+		</select>
+		</span>
+		续费年限
+		</div></li>
+		<li><div><span><b style="font-size:20px;color:#FF6600;" id="money">{$fee}</b>{$DT[money_unit]}</span>应付总额</div></li>
+	</ul>
+</div>
+<div id="mymoney" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-set">
+		<ul>
+			<li><div><span><b>{$_money}</b>{$DT[money_unit]}</span>账户余额</div></li>
+		</ul>
+	</div>
+</div>
+
+<div id="payword" style="display:none;">
+	<div class="blank-20"></div>
+	<div class="list-inp bd-t bd-b">
+		<div><input type="password" name="password" id="password" placeholder="支付密码：" autocomplete="new-password" onblur="window.scrollTo(0,0);"/></div>
+	</div>
+</div>
+
+<div id="paytype" style="display:none;">
+	<div class="blank-20"></div>
+	{php $PAYLIST = get_paylist();}
+	<input type="hidden" name="bank" id="bank" value="{$PAYLIST[0][bank]}"/>
+	<div class="list-pay">
+		<ul>
+		{loop $PAYLIST $k $v}
+		<li onclick="var bk=$('#bank').val();if(bk=='{$v[bank]}'){return;}$('#check-'+bk).attr('class', 'check');$('#check-{$v[bank]}').attr('class', 'checked');$('#bank').val('{$v[bank]}');"><div><em class="{if $k}check{else}checked{/if}" id="check-{$v[bank]}"></em><img src="{DT_PATH}api/pay/{$v[bank]}/icon.png" width="24" height="24"/>{$v[name]} {if $v[percent]>0}<span>手续费 {$v[percent]}%</span>{/if}</div></li>
+		{/loop}
+		</ul>
+	</div>
+</div>
+<div class="blank-20"></div>
+<div class="list-btn"><input type="submit" name="submit" value="立即续费" class="btn-green"/></div>
+<div class="blank-20"></div>
+</form>
+{else}
+<div class="blank-35"></div>
+<div class="list-set">
+<ul>
+{if $user[truename]}
+<li><div><span>{$user[truename]} （{if $user[gender]==1}先生{else}女士{/if}）</span>姓名</div></li>
+{/if}
+{if $MG[type]}
+<li><div><span>{$company}</span>公司</div></li>
+{/if}
+<li><div><span>{$username}</span>会员名</div></li>
+<li><div><span>{$passport}</span>昵称</div></li>
+<li><div><span>{$MG[groupname]}</span>会员组</div></li>
+<li><div><span>{timetodate($logintime, 5)}</span>上次登录</div></li>
+<li><div><span>{timetodate($regtime, 5)}</span>注册时间</div></li>
+{if $support}
+<li><div><span>{$support}</span><a href="ask.php?action=support">客服专员</a></div></li>
+{/if}
+</ul>
+</div>
+{if $vip}
+{elseif $groupid>4}
+<div class="blank-20"></div>
+<div class="list-btn"><input type="button" value="会员升级" class="btn-green" onclick="Go('grade.php');"/></div>
+{/if}
+<div class="blank-35"></div>
+{if $vip}
+<div class="list-set">
+<ul>
+<li><div><span>{$vip}级</span>{VIP}级别</div></li>
+<li><div><span>{timetodate($fromtime, 3)}</span>服务开始</div></li>
+<li><div><span>{timetodate($totime, 3)}</span>服务结束</div></li>
+<li><div><span>{$havedays}天</span>剩余时间</div></li>
+</ul>
+</div>
+<div class="blank-20"></div>
+<div class="list-btn"><input type="button" value="服务续费" class="btn-green" onclick="Go('?action=vip');"/></div>
+{/if}
+<div class="blank-35"></div>
+{/if}
+<script type="text/javascript">
+{if $action == 'grade'}
+{if $fee > 0}
+var money = {$fee};
+function check() {
+	if(money > {$_money}) {
+		Go('charge.php?action=pay&reason=grade|{$groupid}&amount='+money+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(money > {$DT[quick_pay]}){
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+	}
+	return true;
+}
+window.setInterval(
+	function() {
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+		} else {
+			$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+		}
+	}, 
+500);
+{else}
+function check() {
+	if(Dd('company').value.length < 5) {
+		Dmsg('请填写公司名称', 'company');
+		return false;
+	}
+	return true;
+}
+{/if}
+{elseif $action == 'vip'}
+function check() {
+	var money = $('#year').val()*{$MG[fee]};
+	if(money > {$_money}) {
+		Go('charge.php?action=pay&reason=vip|'+$('#year').val()+'&amount='+money+'&bank='+$('#bank').val());
+		return false;
+	}
+	if(money > {$DT[quick_pay]}){
+		if(Dd('password').value.length < 6) {
+			Dmsg('请填写支付密码', 'password');
+			return false;
+		}
+	}
+	return true;
+}
+window.setInterval(
+	function() {
+		var money = $('#year').val()*{$MG[fee]};
+		if(money > {$_money} || {$_money} < 0.01) {
+			$('#mymoney').hide();$('#paytype').show();$('#payword').hide();
+		} else {
+			$('#mymoney').show();$('#paytype').hide();if(money > {$DT[quick_pay]}){$('#payword').show();}
+		}
+	}, 
+500);
+{/if}
+</script>
+{template 'footer', 'member'}

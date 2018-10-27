@@ -1,0 +1,57 @@
+{template 'header'}
+<div class="m">
+<div class="m_l f_l">
+	<div class="left_box">		
+		<div class="pos">当前位置: <a href="{$MODULE[1][linkurl]}">首页</a> &raquo; <a href="{$MOD[linkurl]}">{$MOD[name]}</a> &raquo; {$member[company]}</div>
+		<div class="content c_b" id="content"><img src="{$member[thumb]}" align="right" style="margin:5px 0 5px 10px;padding:5px;border:#C0C0C0 1px solid;"/>{$content}</div>
+		<br class="c_b"/>
+		<br/>
+	</div>
+</div>
+<div class="m_n f_l">&nbsp;</div>
+<div class="m_r f_l">
+	<div class="contact_head">公司资料</div>
+	<div class="contact_body">
+		<ul>
+			<li class="f_b t_c" style="padding:3px 0 5px 0;font-size:16px;"><a href="{$member[linkurl]}" target="_blank">{$member[company]}</a></li>
+			{if $member[vip]}
+			<li class="f_orange" style="padding:5px 0 0 12px;"><img src="{DT_SKIN}image/vip_{$member[vip]}.gif" alt="{VIP}" title="{VIP}:{$member[vip]}级"/> [第{vip_year($member[fromtime])}年] 指数:{$member[vip]}</li>
+			{/if}
+			{if $member[validated] || $member[vcompany] || $member[vtruename] || $member[vbank] || $member[vmobile] || $member[vemail]}
+			<li class="f_green" style="padding-top:6px;padding-bottom:6px;">
+			{if $member[vcompany]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_company.gif" width="16" height="16" align="absmiddle" title="通过工商认证"/>{/if}
+			{if $member[vtruename]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_truename.gif" width="16" height="16" align="absmiddle" title="通过实名认证"/>{/if}
+			{if $member[vbank]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_bank.gif" width="16" height="16" align="absmiddle" title="通过银行帐号认证"/>{/if}
+			{if $member[vmobile]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_mobile.gif" width="16" height="16" align="absmiddle" title="通过手机认证"/>{/if}
+			{if $member[vemail]}&nbsp;<img src="{$MODULE[2][linkurl]}image/v_email.gif" width="16" height="16" align="absmiddle" title="通过邮件认证"/>{/if}
+			{if $member[validated]}&nbsp;<img src="{DT_STATIC}file/image/check-ok.png" align="absmiddle"/> 企业资料通过{$member[validator]}认证{/if}
+			</li>
+			{/if}
+			<li style="padding-top:6px;padding-bottom:6px;">
+			<span>联系人</span>{$member[truename]}({gender($member[gender])})&nbsp;{$member[career]}&nbsp;
+			{if $member[username] && $DT[im_web]}{im_web($member[username])}&nbsp;{/if}
+			{if $member[qq] && $DT[im_qq]}{im_qq($member[qq])}&nbsp;{/if}
+			{if $member[wx] && $DT[im_wx]}{im_wx($member[wx], $member[username])}&nbsp;{/if}
+			{if $member[ali] && $DT[im_ali]}{im_ali($member[ali])}&nbsp;{/if}
+			{if $member[skype] && $DT[im_skype]}{im_skype($member[skype])}&nbsp;{/if}
+			</li>
+			<li><span>会员</span> <a href="{$MODULE[2][linkurl]}friend.php?action=add&username={$username}">[加为商友]</a> <a href="{$MODULE[2][linkurl]}message.php?action=send&touser={$username}">[发送信件]</a></li>
+			{if $member[mail]}<li><span>邮件</span>{anti_spam($member[mail])}</li>{/if}
+			{if $member[telephone]}<li><span>电话</span>{anti_spam($member[telephone])}</li>{/if}
+			{if $member[fax]}<li><span>传真</span>{anti_spam($member[fax])}</li>{/if}
+			<li><span>所在地</span>{area_pos($member[areaid], '&nbsp;')}</li>
+			{if $member[address]}<li><span>地址</span>{$member[address]}</li>{/if}
+			{if $member[postcode]}<li><span>邮编</span>{$member[postcode]}</li>{/if}
+			{if $member[business]}<li title="{$member[business]}"><span>主营行业</span>{$member[business]}</li>{/if}
+			{if $member[type]}<li><span>公司类型</span>{$member[type]}</li>{/if}
+			{if $member[mode]}<li><span>经营模式</span>{$member[mode]}</li>{/if}
+			{if $member[size]}<li><span>公司规模</span>{$member[size]}</li>{/if}
+			{if $member[capital]}<li><span>注册资本</span>{$member[capital]}万{$member[regunit]}</li>{/if}
+			{if $member[regyear]}<li><span>注册年份</span>{$member[regyear]}</li>{/if}
+			{if $member[sell]}<li title="{$member[sell]}"><span>销售产品</span>{$member[sell]}</li>{/if}
+			{if $member[buy]}<li title="{$member[buy]}"><span>采购产品</span>{$member[buy]}</li>{/if}
+		</ul>
+	</div>
+</div>
+</div>
+{template 'footer'}

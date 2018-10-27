@@ -1,0 +1,115 @@
+{template 'header', 'member'}
+<div class="menu">
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td class="tab" id="add"><a href="?action=add"><span>发起交谈</span></a></td>
+<td class="tab" id="s3"><a href="?action=index"><span>站内交谈</span></a></td>
+{if $action == 'view'}<td class="tab" id="view"><a href="?action=view&chatid={$chatid}"><span>聊天记录</span></a></td>{/if}
+<td class="tab" id="setting"><a href="?action=setting"><span>交谈设置</span></a></td>
+</table>
+</div>
+{if $action == 'add'}
+<form action="chat.php" onsubmit="return check();" target="_blank" id="dform">
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tr">
+<span class="f_red">*</span> 会员名&nbsp; 
+<input type="text" size="20" name="touser" id="touser"/>&nbsp; 
+<input type="submit" value="交谈" class="btn_g"/>&nbsp; 
+<input type="button" value="好友" class="btn" onclick="Go('friend.php');"/>&nbsp; 
+<span id="dtouser" class="f_red"></span></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">
+function check() {
+	if(Dd('touser').value.length < 2) {
+		Dmsg('请输入会员名', 'touser');
+		return false;
+	}
+	return true;
+}
+</script>
+<script type="text/javascript">s('im');m('add');</script>
+{elseif $action == 'setting'}
+<form method="post" action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<table cellpadding="10" cellspacing="1" class="tb">
+<tr>
+<td class="tl">黑名单</td>
+<td class="tr f_gray"><textarea name="black" id="black" style="width:90%;height:60px;overflow:visible;">{$user[black]}</textarea><br/>直接输入会员名即可将会员列入黑名单，多个会员名请用空格键隔开</td>
+</tr>
+<tr>
+<td class="tl">自动回复</td>
+<td class="tr f_gray"><textarea name="reply" id="reply" style="width:90%;height:60px;overflow:visible;">{$user[reply]}</textarea><br/>会员首次发起交谈或超过一周没有交谈时，自动回复内容</td>
+</tr>
+<tr>
+<td class="tl"> </td>
+<td height="50" class="tr"><input type="submit" name="submit" value="更 新" class="btn_g"/></td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">s('im');m('setting');</script>
+{elseif $action == 'view'}
+<form action="?">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="chatid" value="{$chatid}"/>
+<div class="tt">
+<input type="text" size="50" name="kw" value="{$kw}" title="关键词"/>&nbsp;
+{dcalendar('fromdate', $fromdate)} 至 {dcalendar('todate', $todate)}&nbsp;
+<input type="submit" value=" 搜 索 " class="btn"/>&nbsp;
+<input type="button" value=" 重 搜 " class="btn" onclick="Go('?action={$action}&chatid={$chatid}');"/>
+</div>
+</form>
+<div class="ls">
+<table cellspacing="0" cellpadding="10" class="tb">
+<tr>
+<th width="60">头像</th>
+<th width="160">会员</th>
+<th width="160">时间</th>
+<th>内容</th>
+</tr>
+{loop $lists $k $v}
+<tr align="center">
+<td><img src="{useravatar($v[name])}" style="padding:5px;" width="48" height="48"/></td>
+<td>{$v[name]}</td>
+<td>{$v[date]}</td>
+<td align="left">{$v[word]}</td>
+</tr>
+{/loop}
+</table>
+</div>
+<div class="pages">{$pages}</div>
+<script type="text/javascript">s('im');m('view');</script>
+{else}
+<style type="text/css">
+.chat_list {width:400px;}
+.chat_list table {margin:0 0 10px 6px;}
+.chat_list li {height:20px;line-height:20px;overflow:hidden;color:#908E9B;padding:0 5px 0 0;}
+.chat_list span {float:right;color:#908E9B;}
+.chat_list em {float:right;color:#FFFFFF;font-style:normal;background:#FF6600;border-radius:50%;color:#FFFFFF;font-size:10px;display:block;_display:inline-block;height:15px;line-height:15px;padding:0 3px;}
+.chat_on {background:#FAFAFA;}
+.chat_offline {opacity:0.3;filter:Alpha(Opacity=30);}
+</style>
+<div class="chat_list" id="chat-list"></div>
+<script type="text/javascript">
+function Lchat() {
+	$('#chat-list').load('?action=list&reload={$DT_TIME}', function() {
+		$('#chat-list table').bind('mouseover', function(event) {
+			$(this).css('background-color', '#FAFAFA');
+		});
+		$('#chat-list table').bind('mouseout', function(event) {
+			$(this).css('background-color', '');
+		});
+	});
+}
+$(function(){
+	Lchat();
+	setInterval(function() {
+		Lchat();
+	}, 10000);
+});
+</script>
+<script type="text/javascript">s('im');m('s3');</script>
+{/if}
+{template 'footer', 'member'}

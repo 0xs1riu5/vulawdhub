@@ -1,0 +1,29 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>频道</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('<a href=&#34;{DT_MOB}api/search.php?mid={$moduleid}&#34;><span>{$MOD[name]}搜索</span></a>|<a href=&#34;{DT_MOB}api/category.php?moduleid={$moduleid}&#34;><span>按分类浏览</span></a>|<a href=&#34;{DT_MOB}api/area.php?moduleid={$moduleid}&#34;><span>按地区浏览</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<a href="{$v[linkurl]}"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_MOB}static/img/60x60.png{/if}" width="60" height="60" alt="" onerror="this.src='{DT_MOB}static/img/60x60.png';"/></a>
+<ul>
+<li{if $v[vip]} class="vip"{/if}><a href="{$v[linkurl]}"><strong>{$v[title]}</strong></a></li>
+<li><i>{$DT[money_sign]}{$v[price]}</i><span>成交:{$v[orders]}</span></li>
+</ul>
+</div>
+{/loop}
+{else}
+{template 'empty', 'chip'}
+{/if}
+<div class="my-cart" onclick="Go('{$MODULE[2][mobile]}cart.php');">{if $_cart}<em>{$_cart}</em>{/if}</div>
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'footer'}

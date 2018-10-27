@@ -1,0 +1,47 @@
+{if $user_status == 3}
+{if $member}
+公司:<a href="{userurl($member[username])}" rel="external">{$member[company]}</a><br/>
+状态:{if online($member[userid])==1}<span class="f_red">在线</span>{else}<span class="f_gray">离线</span>{/if} <a href="{$MODULE[2][mobile]}message.php?action=send&touser={$member[username]}" rel="external" class="b">发送信件</a>{if $DT[im_web]} <a href="{$MODULE[2][mobile]}chat.php?touser={$member[username]}" rel="external" class="b">在线交谈</a>{/if}<br/>
+{if $member[truename]}姓名:{$member[truename]}({gender($member[gender])})<br/>{/if}
+{if $member[career]}职位:{$member[career]}<br/>{/if}
+{if $member[telephone]}电话:<a href="tel:{$member[telephone]}">{$member[telephone]}</a><br/>{/if}
+{if $member[mobile]}手机:<a href="tel:{$member[mobile]}">{$member[mobile]}</a><br/>{/if}
+{if $member[fax]}传真:{$member[fax]}<br/>{/if}
+{if $member[areaid]}地区:{area_pos($member[areaid], '-')}<br/>{/if}
+{if $member[address]}地址:<a href="{DT_MOB}api/address.php?auth={encrypt($member[address].'|'.$member[company], DT_KEY.'MAP')}" rel="external" target="_blank">{$member[address]}</a><br/>{/if}
+{if $member[postcode]}邮编:{$member[postcode]}<br/>{/if}
+{if $member[mail]}邮件:<a href="mailto:{$member[mail]}">{$member[mail]}</a><br/>{/if}
+{if $member[qq] && $DT[im_qq]}QQ:<a href="http://wpa.qq.com/msgrd?v=3&uin={$member[qq]}&site=qq&menu=yes" target="_blank" rel="external">{$member[qq]}</a><br/>{/if}
+{if $member[wx] && $DT[im_wx]}微信:<a href="{DT_MOB}api/wx.php?wid={$member[wx]}&username={$member[username]}" target="_blank" rel="external">{$member[wx]}</a><br/>{/if}
+{if $member[ali] && $DT[im_ali]}阿里旺旺:<a href="http://amos.alicdn.com/msg.aw?v=2&uid={$member[ali]}&site=cnalichn&s=6&charset=UTF-8" target="_blank" rel="external">{$member[ali]}</a><br/>{/if}
+{if $member[skype] && $DT[im_skype]}Skype:{$member[skype]}{/if}
+{else}
+公司:{$item[company]} （未注册）<br/>
+{if $item[truename]}姓名:{$item[truename]}<br/>{/if}
+{if $item[telephone]}电话:<a href="tel:{$item[telephone]}">{$item[telephone]}</a><br/>{/if}
+{if $item[mobile]}手机:<a href="tel:{$item[mobile]}">{$item[mobile]}</a><br/>{/if}
+{if $item[areaid]}地区:{area_pos($item[areaid], '-')}<br/>{/if}
+{if $item[address]}地址:<a href="{DT_MOB}api/address.php?auth={encrypt($item[address].'|'.$item[company], DT_KEY.'MAP')}" rel="external" target="_blank">{$item[address]}</a><br/>{/if}
+{if $item[email]}邮件:<a href="mailto:{$item[email]}">{$item[email]}</a><br/>{/if}
+{if $item[qq] && $DT[im_qq]}QQ:<a href="http://wpa.qq.com/msgrd?v=3&uin={$item[qq]}&site=qq&menu=yes" target="_blank" rel="external">{$item[qq]}</a><br/>{/if}
+{if $item[wx] && $DT[im_wx]}微信:<a href="{DT_MOB}api/wx.php?wid={$item[wx]}&username={$item[username]}" target="_blank" rel="external">{$item[wx]}</a><br/>{/if}
+{if $item[ali] && $DT[im_ali]}阿里旺旺:<a href="http://amos.alicdn.com/msg.aw?v=2&uid={$item[ali]}&site=cnalichn&s=6&charset=UTF-8" target="_blank" rel="external">{$item[ali]}</a><br/>{/if}
+{if $item[skype] && $DT[im_skype]}Skype:{$item[skype]}{/if}
+{/if}
+{elseif $user_status == 2}
+查看联系方式需支付 <strong>{$fee}</strong> {$fee_unit}<br/>
+{$fee_name}余额:{if $currency == 'money'}{$_money}{else}{$_credit}{/if}{$fee_unit} <a href="{$MODULE[2][mobile]}" class="b">我的账户</a> <br/>
+<a href="{$MODULE[2][mobile]}pay.php?mid={$mid}&itemid={$itemid}" rel="external"><div class="btn-green">立即支付</div></a>
+{elseif $user_status == 1}
+无权查看，请升级会员级别<br/>
+{if $DT[telephone]}咨询电话:<a href="tel:{$DT[telephone]}">{$DT[telephone]}</a><br/>{/if}
+{elseif $user_status == 0}
+<a href="{$MODULE[2][mobile]}{$DT[file_login]}" class="b" data-transition="slideup">请登录查看</a><br/>
+{else}
+<div id="contact"><div style="height:100px;background:#FFFFFF url('{DT_MOB}static/img/spinner.gif') no-repeat center center;background-size:16px 16px;" onclick="$.getScript('{DT_MOB}api/task.js.php?{$destoon_task}');"></div></div>
+<script type="text/javascript">
+$(function(){
+	$.getScript('{DT_MOB}api/task.js.php?{$destoon_task}');
+});
+</script>
+{/if}

@@ -1,0 +1,106 @@
+{template 'header'}
+<div class="m m1">
+	<div class="m1l">
+	{if $action == 'reg'}		
+		<form method="post" action="{$url}index.php" id="dform" onsubmit="return check();">
+		<input type="hidden" name="action" value="{$action}"/>
+		<table cellpadding="16" cellspacing="0" class="tf">
+		{if $MOD[link_request]}
+		<tr>
+		<td class="tl">链接说明</td>
+		<td>{$MOD[link_request]}</td>
+		</tr>
+		{/if}
+		<tr>
+		<td class="tl"><span class="f_red">*</span> 网站分类</td>
+		<td>{$type_select} <span id="dtypeid" class="f_red"></span></td>
+		</tr>
+		<tr>
+		<td class="tl"><span class="f_red">*</span> 网站名称</td>
+		<td><input name="post[title]" type="text" id="title" size="40" /> <span id="dtitle" class="f_red"></span></td>
+		</tr>
+		<tr>
+		<td class="tl"><span class="f_red">*</span> 网站地址</td>
+		<td><input name="post[linkurl]" type="text" id="linkurl" size="40" value="http://"/> <span id="dlinkurl" class="f_red"></span></td>
+		</tr>
+		<tr>
+		<td class="tl">网站LOGO</td>
+		<td><input name="post[thumb]" type="text" id="thumb" size="40"/> <span id="dthumb" class="f_red"></span></td>
+		</tr>
+		<tr>
+		<td class="tl">网站介绍</td>
+		<td><textarea name="post[introduce]" style="width:300px;height:40px;"></textarea></td>
+		</tr>
+		<tr>
+		<td class="tl"><span class="f_red">*</span> 验证码</td>
+		<td>{template 'captcha', 'chip'} <span id="dcaptcha" class="f_red"></span></td>
+		</tr>
+		<tr>
+		<td class="tl"></td>
+		<td><input type="submit" name="submit" value="提交申请" class="btn-green"/></td>
+		</tr>
+		</table>
+		</form>
+	{else}
+		<div style="padding:20px;">
+		{if $typeid}
+		<!--{tag("table=link&condition=thumb!='' and status=3 and username='' and typeid IN (".type_child($typeid, $TYPE).")&areaid=$cityid&pagesize=140&order=listorder desc,itemid desc&template=list-link&cols=7")}-->
+		<div class="b20"></div>
+		<!--{tag("table=link&condition=thumb='' and status=3 and username='' and typeid IN (".type_child($typeid, $TYPE).")&areaid=$cityid&pagesize=140&order=listorder desc,itemid desc&template=list-link&cols=7")}-->
+		{else}
+		<!--{tag("table=link&condition=status=3 and thumb!='' and username=''&pagesize=140&order=listorder desc,itemid desc&areaid=$cityid&template=list-link&cols=7")}-->
+		<div class="b20"></div>
+		<!--{tag("table=link&condition=status=3 and thumb='' and username=''&pagesize=140&order=listorder desc,itemid desc&areaid=$cityid&template=list-link&cols=7")}-->
+		{/if}
+		</div>
+	{/if}
+	</div>
+	<div class="m1r side">
+		<ul>
+		<li class="side_li" id="type_0"><a href="{$url}">友情链接</a></li>
+		<li class="side_li" id="type_reg"><a href="{$url}index.php?action=reg">申请链接</a></li>
+		{loop $_TP[0] $v0}
+		<li class="side_li" id="type_{$v0[typeid]}"><a href="{$url}{list_url($v0[typeid])}">{$v0[typename]}</a></li>
+			{if isset($_TP[1][$v0[typeid]])}
+			{loop $_TP[1][$v0[typeid]] $v1}
+			<li class="side_li" id="type_{$v1[typeid]}"><a href="{$url}{list_url($v1[typeid])}">&nbsp;|-- {$v1[typename]}</a></li>
+			{/loop}
+			{/if}
+		{/loop}
+		</ul>
+	</div>
+	<div class="c_b"></div>
+</div>
+<script type="text/javascript">$(function(){$('#type_{if $action=='reg'}reg{else}{$typeid}{/if}').attr('class', 'side_on');});</script>
+{if $action == 'reg'}
+<script type="text/javascript">
+function check() {				
+	var l;
+	var f;
+	f = 'typeid';
+	l = Dd(f).value;
+	if(l == 0) {
+		Dmsg('请选择分类', f);
+		return false;
+	}
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请输入网站名称', f);
+		return false;
+	}
+	f = 'linkurl';
+	l = Dd(f).value.length;
+	if(l < 12) {
+		Dmsg('请输入网站地址', f);
+		return false;
+	}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写验证码', f);
+		return false;
+	}
+}
+</script>
+{/if}
+{template 'footer'}

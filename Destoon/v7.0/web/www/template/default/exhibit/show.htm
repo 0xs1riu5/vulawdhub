@@ -1,0 +1,81 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav"><div><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></div><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+	<div class="b20 bd-t"></div>
+</div>
+<div class="m m3">
+	<div class="m3l">
+	<h1 class="title" id="title">{$title}</h1>
+		<div class="info"><span class="f_r"><img src="{DT_SKIN}image/ico-zoomin.png" width="16" height="16" title="放大字体" class="c_p" onclick="fontZoom('+', 'content');"/>&nbsp;&nbsp;<img src="{DT_SKIN}image/ico-zoomout.png" width="16" height="16" title="缩小字体" class="c_p" onclick="fontZoom('-', 'content');"/></span>
+		日期：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;
+		{if $MOD[hits]}浏览：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+		状态：<img src="{DT_STATIC}file/image/process_{$process}.gif" id="process" alt="状态" align="absmiddle"/>
+		</div>
+		<div class="b20"></div>
+		<table cellspacing="1" cellpadding="10" width="100%" class="ctb">
+		<tr>
+		<td class="ltd">展会日期</td>
+		<td class="rtd">{$fromtime} 至 {$totime}</td>
+		</tr>
+		<tr>
+		<td class="ltd">展出城市</td>
+		<td class="rtd">{$city}</td>
+		</tr>
+		<tr>
+		<td class="ltd">展出地址</td>
+		<td class="rtd"><a href="{DT_PATH}api/address.php?auth={encrypt($address.'|'.$title, DT_KEY.'MAP')}" target="_blank">{$address}</a></td>
+		</tr>
+		<tr>
+		<td class="ltd">展馆名称</td>
+		<td class="rtd">{$hallname}</td>
+		</tr>
+		<tr>
+		<td class="ltd">主办单位</td>
+		<td class="rtd">{$sponsor}</td>
+		</tr>
+		{if $undertaker}
+		<tr>
+		<td class="ltd">承办单位</td>
+		<td class="rtd">{$undertaker}</td>
+		</tr>
+		{/if}			
+		{if $homepage}
+		<tr>
+		<td class="ltd">官方网站</td>
+		<td class="rtd"><a href="{$homepage}" target="_blank" class="b">{$homepage}</a></td>
+		</tr>
+		{/if}
+		{if $sign && $process == 1 && $username}
+		<tr>
+		<td class="ltd">在线报名</td>
+		<td class="rtd"><img src="{DT_SKIN}image/btn_sign.gif" alt="在线报名" class="c_p" onclick="Go('{$MOD[linkurl]}{rewrite('sign.php?itemid='.$itemid)}');"/></td>
+		</tr>
+		{/if}
+		</table>
+		<div class="b20"></div>
+		<div class="head-txt"><strong>展会说明</strong></div>
+		<div id="content" class="content">{template 'content', 'chip'}</div>
+		{if $remark}
+		<div class="head-txt"><strong>展会备注</strong></div>
+		<div class="content">{nl2br($remark)}</div>
+		{/if}
+		{if $CP}{template 'property_show', 'chip'}{/if}
+		{if $MOD[fee_award]}
+		<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>
+		{/if}
+		{template 'comment', 'chip'}
+		<br/>
+	</div>
+	<div class="m3r">
+		<div class="head-sub"><strong>最新{$MOD[name]}</strong></div>
+		<div class="list-txt"><!--{tag("moduleid=$moduleid&condition=status>2&areaid=$cityid&order=".$MOD[order]."&pagesize=10")}--></div>
+		<div class="head-sub"><strong>推荐{$MOD[name]}</strong></div>
+		<div class="list-txt"><!--{tag("moduleid=$moduleid&condition=status>2 AND level>0&areaid=$cityid&order=".$MOD[order]."&pagesize=10")}--></div>
+		<div class="head-sub"><strong>点击排行</strong></div>
+		<div class="list-rank"><!--{tag("moduleid=$moduleid&condition=status=3 and addtime>$today_endtime-30*86400&catid=$catid&areaid=$cityid&order=hits desc&key=hits&pagesize=9&template=list-rank")}--></div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{template 'footer'}

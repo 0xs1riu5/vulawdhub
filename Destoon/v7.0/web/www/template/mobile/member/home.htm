@@ -1,0 +1,348 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">商铺设置</div>
+<div class="head-bar-right">
+<a href="?action=reset" onclick="return confirm('确定要清空设置吗？商铺所有设置将被清空');"><span>清空</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<form method="post" action="?" id="dform" onsubmit="return Dcheck();">
+<input type="hidden" name="tab" id="tab" value="{$tab}"/>
+
+<div class="blank-32"></div>
+<div class="list-set" id="Tab0" onclick="$('#Tabs0').slideToggle('fast');$('#tab').val(0);">
+<ul>
+<li><div><b>常用设置</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs0">
+<p>自定义背景图</p>
+<div><input type="url" name="setting[background]" id="background" value="{$background}"/></div>
+<p>自定义背景色</p>
+<div><input type="text" name="setting[bgcolor]" id="bgcolor" value="{$bgcolor}" style="width:100px;"/> 例如红色为 red 或者 #FF0000</div>
+<p>自定义LOGO</p>
+<div><input type="url" name="setting[logo]" id="logo" value="{$logo}"/></div>
+<p>自定义CSS</p>
+<div><textarea name="setting[css]" id="css" style="height:60px;">{$css}</textarea></div>
+<p>横幅宽度</p>
+<div><input type="tel" name="setting[bannerw]" value="{$bannerw}" id="bannerw" style="width:100px;"/> px</div>
+<p>横幅高度</p>
+<div><input type="tel" name="setting[bannerh]" value="{$bannerh}" id="bannerh" style="width:100px;"/> px</div>
+<p>横幅显示方式</p>
+<div>
+<input name="setting[bannert]" type="radio" id="bannert_0" value="0"{if $bannert==0} checked{/if} onclick="Ds('bt_0');Dh('bt_1');Dh('bt_2');"/> <label for="bannert_0">图片</label>&nbsp;&nbsp;
+<input name="setting[bannert]" type="radio" id="bannert_1" value="1"{if $bannert==1} checked{/if} onclick="Dh('bt_0');Ds('bt_1');Dh('bt_2');"/> <label for="bannert_1">Flash</label>&nbsp;&nbsp;
+<input name="setting[bannert]" type="radio" id="bannert_2" value="2"{if $bannert==2} checked{/if} onclick="Dh('bt_0');Dh('bt_1');Ds('bt_2');"/> <label for="bannert_2">幻灯片</label>&nbsp;&nbsp;
+</div>
+<section id="bt_0" style="display:{if $bannert!=0}none{/if};">
+<p>横幅图片地址</p>
+<div><input type="url" name="setting[banner]" id="banner" value="{$banner}"/></div>
+</section>
+<section id="bt_1" style="display:{if $bannert!=1}none{/if};">
+<p>横幅Flash地址</p>
+<div><input type="url" name="setting[bannerf]" id="bannerf" value="{$bannerf}"/></div>
+</section>
+<section id="bt_2" style="display:{if $bannert!=2}none{/if};">
+<p>横幅图片地址1</p>
+<div><input type="url" name="setting[banner1]" id="banner1" value="{$banner1}"/></div>
+<p>横幅图片链接1</p>
+<div><input type="url" name="setting[bannerlink1]" id="bannerlink1" value="{$bannerlink1}"/></div>
+<p>横幅图片地址2</p>
+<div><input type="url" name="setting[banner2]" id="banner2" value="{$banner2}"/></div>
+<p>横幅图片链接2</p>
+<div><input type="url" name="setting[bannerlink2]" id="bannerlink2" value="{$bannerlink2}"/></div>
+<p>横幅图片地址3</p>
+<div><input type="url" name="setting[banner3]" id="banner3" value="{$banner3}"/></div>
+<p>横幅图片链接3</p>
+<div><input type="url" name="setting[bannerlink3]" id="bannerlink3" value="{$bannerlink3}"/></div>
+<p>横幅图片地址4</p>
+<div><input type="url" name="setting[banner4]" id="banner4" value="{$banner4}"/></div>
+<p>横幅图片链接4</p>
+<div><input type="url" name="setting[bannerlink4]" id="bannerlink4" value="{$bannerlink4}"/></div>
+<p>横幅图片地址5</p>
+<div><input type="url" name="setting[banner5]" id="banner5" value="{$banner5}"/></div>
+<p>横幅图片链接5</p>
+<div><input type="url" name="setting[bannerlink5]" id="bannerlink5" value="{$bannerlink5}"/></div>
+</section>
+<p>形象视频地址</p>
+<div><input type="url" name="setting[video]" id="video" value="{$video}"/></div>
+<p>网站公告</p>
+<div><textarea name="setting[announce]" id="announce" style="height:60px;">{$announce}</textarea></div>
+<p>访问次数</p>
+<div>
+<input type="radio" name="setting[show_stats]" value="1" id="s_s_1"{if $show_stats==1} checked{/if}/><label for="s_s_1"> 显示</label>&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="setting[show_stats]" value="0" id="s_s_0"{if $show_stats==0} checked{/if}/><label for="s_s_0"> 不显示</label> 
+</div>
+<div class="blank-20"></div>
+</div>
+
+<div class="blank-32"></div>
+<div class="list-set" id="Tab1" onclick="$('#Tabs1').slideToggle('fast');$('#tab').val(1);">
+<ul>
+<li><div><b>导航菜单</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs1">
+<table cellpadding="3" cellspacing="1" width="100%">
+<tr align="center" style="height:44px;">
+<td>显示</td>
+<td>排序</td>
+<td>名称</td>
+<td>分页</td>
+</tr>
+{loop $HMENU $k $v}
+{if strpos($menu_f, ','.$menu_file[$k].',') !== false}
+<tr align="center">
+<td>
+<input type="checkbox" name="menu_show_tmp" value="{$k}"{if $menu_show[$k]} checked{/if} onclick="Dd('menu_show_{$k}').value=this.checked ? 1 : 0;"/><input type="hidden" name="setting[menu_show][{$k}]" value="{$menu_show[$k]}" id="menu_show_{$k}"/>
+</td>
+<td><input type="tel" name="setting[menu_order][{$k}]" size="3" value="{$menu_order[$k]}"/></td>
+<td><input type="text" name="setting[menu_name][{$k}]" size="20" value="{$menu_name[$k]}"/></td>
+<td><input type="tel" name="setting[menu_num][{$k}]" size="3" value="{$menu_num[$k]}"/>
+<input type="hidden" name="setting[menu_file][{$k}]" value="{$menu_file[$k]}"/></td>
+</tr>
+{else}
+<tr style="display:none;">
+<td>
+<input type="checkbox" name="menu_show_tmp" value="{$k}"/><input type="hidden" name="setting[menu_show][{$k}]" value="0" id="menu_show_{$k}"/>
+</td>
+<td><input type="text" name="setting[menu_order][{$k}]" size="3" value="{$menu_order[$k]}"/></td>
+<td><input type="text" name="setting[menu_name][{$k}]" size="20" value="{$menu_name[$k]}"/></td>
+<td><input type="text" name="setting[menu_num][{$k}]" size="3" value="{$menu_num[$k]}"/>
+<input type="hidden" name="setting[menu_file][{$k}]" value="{$menu_file[$k]}"/></td>
+</tr>
+{/if}
+{/loop}
+</table>
+<div class="blank-20"></div>
+<center><a href="?action=reset&item=menu" class="b" onclick="return confirm('确定要恢复菜单设置为默认吗？');">恢复默认</a></center>
+<div class="blank-20"></div>
+</div>
+
+<div class="blank-32"></div>
+<div class="list-set" id="Tab2" onclick="$('#Tabs2').slideToggle('fast');$('#tab').val(2);">
+<ul>
+<li><div><b>侧边栏</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs2">
+<p>侧栏宽度</p>
+<div><input type="tel" name="setting[side_width]" value="{$side_width}" style="width:100px;"/> px</div>
+<p>侧栏位置</p>
+<div>
+<input type="radio" name="setting[side_pos]" value="0" id="s_p_0"{if $side_pos==0} checked{/if}/><label for="s_p_0">侧栏在左</label>&nbsp;&nbsp;
+<input type="radio" name="setting[side_pos]" value="1" id="s_p_1"{if $side_pos==1} checked{/if}/><label for="s_p_1">侧栏在右</label>
+</div>
+<div class="blank-16"></div>
+<table cellpadding="3" cellspacing="1" width="100%">
+<tr align="center" style="background:#EEEEEE;height:44px;">
+<td>显示</td>
+<td>排序</td>
+<td>名称</td>
+<td>数量</td>
+</tr>
+{loop $HSIDE $k $v}
+{if strpos($side_f, ','.$side_file[$k].',') !== false}
+<tr align="center">
+<td>
+<input type="checkbox" name="side_show_tmp" value="{$k}"{if $side_show[$k]} checked{/if} onclick="Dd('side_show_{$k}').value=this.checked ? 1 : 0;"/><input type="hidden" name="setting[side_show][{$k}]" value="{$side_show[$k]}" id="side_show_{$k}"/></td>
+<td><input type="tel" name="setting[side_order][{$k}]" size="3" value="{$side_order[$k]}"/></td>
+<td><input type="text" name="setting[side_name][{$k}]" size="20" value="{$side_name[$k]}"/></td>
+<td><input type="tel" name="setting[side_num][{$k}]" size="3" value="{$side_num[$k]}"/>
+<input type="hidden" name="setting[side_file][{$k}]" size="3" value="{$side_file[$k]}"/></td>
+</tr>
+{else}
+<tr style="display:none;">
+<td>
+<input type="checkbox" name="side_show_tmp" value="{$k}"/><input type="hidden" name="setting[side_show][{$k}]" value="0" id="side_show_{$k}"/></td>
+<td><input type="text" name="setting[side_order][{$k}]" size="3" value="{$side_order[$k]}"/></td>
+<td><input type="text" name="setting[side_name][{$k}]" size="20" value="{$side_name[$k]}"/></td>
+<td><input type="text" name="setting[side_num][{$k}]" size="3" value="{$side_num[$k]}"/>
+<input type="hidden" name="setting[side_file][{$k}]" size="3" value="{$side_file[$k]}"/></td>
+</tr>
+{/if}
+{/loop}
+</table>
+<div class="blank-20"></div>
+<center><a href="?action=reset&item=side" class="b" onclick="return confirm('确定要恢复侧栏位置为默认吗？');">恢复默认</a></center>
+<div class="blank-20"></div>
+</div>
+
+<div class="blank-32"></div>
+<div class="list-set" id="Tab3" onclick="$('#Tabs3').slideToggle('fast');$('#tab').val(3);">
+<ul>
+<li><div><b>首页设置</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs3">
+<p>公司简介显示</p>
+<div><input type="tel" name="setting[intro_length]" value="{$intro_length}" style="width:100px;"/> 字符</div>
+<div class="blank-16"></div>
+<table cellpadding="3" cellspacing="1" width="100%">
+<tr align="center" style="background:#EEEEEE;height:44px;">
+<td>显示</td>
+<td>排序</td>
+<td>名称</td>
+<td>数量</td>
+</tr>
+{loop $HMAIN $k $v}
+{if strpos($main_f, ','.$main_file[$k].',') !== false}
+<tr align="center">
+<td>
+<input type="checkbox" name="main_show_tmp" value="{$k}"{if $main_show[$k]} checked{/if} onclick="Dd('main_show_{$k}').value=this.checked ? 1 : 0;"/><input type="hidden" name="setting[main_show][{$k}]" value="{$main_show[$k]}" id="main_show_{$k}"/></td>
+<td><input type="text" name="setting[main_order][{$k}]" size="3" value="{$main_order[$k]}"/></td>
+<td><input type="text" name="setting[main_name][{$k}]" size="20" value="{$main_name[$k]}"/></td>
+<td><input type="text" name="setting[main_num][{$k}]" size="3" value="{$main_num[$k]}"/>
+<input type="hidden" name="setting[main_file][{$k}]" size="3" value="{$main_file[$k]}"/></td>
+</tr>
+{else}
+<tr style="display:none;">
+<td>
+<input type="checkbox" name="main_show_tmp" value="{$k}"/><input type="hidden" name="setting[main_show][{$k}]" value="0" id="main_show_{$k}"/></td>
+<td><input type="text" name="setting[main_order][{$k}]" size="3" value="{$main_order[$k]}"/></td>
+<td><input type="text" name="setting[main_name][{$k}]" size="20" value="{$main_name[$k]}"/></td>
+<td><input type="text" name="setting[main_num][{$k}]" size="3" value="{$main_num[$k]}"/>
+<input type="hidden" name="setting[main_file][{$k}]" size="3" value="{$main_file[$k]}"/></td>
+</tr>
+{/if}
+{/loop}
+</table>
+<div class="blank-20"></div>
+<center><a href="?action=reset&item=main" class="b" onclick="return confirm('确定要恢复首页主栏为默认吗？');">恢复默认</a></center>
+<div class="blank-20"></div>
+</div>
+
+<div class="blank-32"></div>
+<div class="list-set" id="Tab4" onclick="$('#Tabs4').slideToggle('fast');$('#tab').val(4);">
+<ul>
+<li><div><b>其他设置</b></div></li>
+</div>
+<div class="ui-form dsn" id="Tabs4">
+<p>首页SEO标题</p>
+<div><input type="text" name="setting[seo_title]" value="{$seo_title}"/></div>
+<p>网站关键词</p>
+<div><input type="text" name="setting[seo_keywords]" value="{$seo_keywords}"/></div>
+<p>网站描述</p>
+<div><input type="text" name="setting[seo_description]" value="{$seo_description}"/></div>
+<table style="display:none;">
+{if $api_map && $MG[map]}
+{php include DT_ROOT.'/api/map/'.$api_map.'/post.inc.php';}
+{/if}
+{if $api_stats && $MG[stats]}
+{php include DT_ROOT.'/api/stats/these.name.php';}
+<tr>
+<td class="tl">统计类型</td>
+<td class="tr">
+<select name="setting[stats_type]" id="stats_type_s" onchange="stats_type(this.value)">
+{loop $api_stats $v}
+<option value="{$v}">{$names[$v]}</option>
+{/loop}
+</select>
+</td>
+</tr>
+{loop $api_stats $v}
+{php include DT_ROOT.'/api/stats/'.$v.'/post.inc.php';}
+{/loop}
+{/if}
+
+{if $api_kf && $MG[kf]}
+{php include DT_ROOT.'/api/kf/these.name.php';}
+<tr>
+<td class="tl">客服类型</td>
+<td class="tr">
+<select name="setting[kf_type]" id="kf_type_s" onchange="kf_type(this.value)">
+{loop $api_kf $v}
+<option value="{$v}">{$names[$v]}</option>
+{/loop}
+</select>
+</td>
+</tr>
+{loop $api_kf $v}
+{php include DT_ROOT.'/api/kf/'.$v.'/post.inc.php';}
+{/loop}
+{/if}
+</table>
+<div class="blank-20"></div>
+</div>
+
+{if $need_captcha}
+<div class="ui-form">
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+<div class="blank-20"></div>
+</div>
+{/if}
+
+<div class="blank-32"></div>
+<div style="padding:0 16px;"><input type="submit" name="submit" value="保存设置" class="btn-green"/></div>
+<div class="blank-32"></div>
+</form>
+<script type="text/javascript">
+function Tab(id) {
+	$('#Tabs'+id).slideDown('fast');
+}
+$(function(){
+	Tab({$tab});
+	{if isset($success)}
+	Dtoast('资料保存成功');
+	{/if}
+});
+{if $api_stats && $MG[stats]}
+function stats_type(type) {
+	var stats_types = [{loop $api_stats $k $v}{if $k},{/if}'{$v}'{/loop}];
+	var stats_pass = 0;
+	for(var i = 0; i < stats_types.length; i++) {
+		if(type == stats_types[i]) {
+			stats_pass = 1;
+			break;
+		}
+	}
+	if(stats_pass == 0) type = stats_types[0];
+	for(var i = 0; i < stats_types.length; i++) {
+		if(type == stats_types[i]) {
+			Ds('stats_post_'+stats_types[i]);
+		} else {
+			Dh('stats_post_'+stats_types[i]);
+		}
+	}
+	$('#stats_type_s').val(type);
+}
+stats_type('{$stats_type}');
+{/if}
+{if $api_kf && $MG[kf]}
+function kf_type(type) {
+	var kf_types = [{loop $api_kf $k $v}{if $k},{/if}'{$v}'{/loop}];
+	var kf_pass = 0;
+	for(var i = 0; i < kf_types.length; i++) {
+		if(type == kf_types[i]) {
+			kf_pass = 1;
+			break;
+		}
+	}
+	if(kf_pass == 0) type = kf_types[0];
+	for(var i = 0; i < kf_types.length; i++) {
+		if(type == kf_types[i]) {
+			Ds('kf_post_'+kf_types[i]);
+		} else {
+			Dh('kf_post_'+kf_types[i]);
+		}
+		$('#kf_type_s').val(type);
+	}
+}
+kf_type('{$kf_type}');
+{/if}
+</script>
+<script type="text/javascript">
+function Dcheck() {
+{if $need_captcha}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', f);
+		return false;
+	}
+{/if}
+	return true;
+}
+</script>
+{template 'footer', 'member'}

@@ -1,0 +1,25 @@
+{php $child = get_maincat(0, $mid, 1);}
+<table width="100%" cellpadding="0" cellspacing="0">
+{loop $child $i $c}
+{if $i%2==0}<tr>{/if}
+<td valign="top">
+<p>
+	<a href="{$MODULE[$mid][linkurl]}{$c[linkurl]}" class="px16"><strong>{set_style($c[catname], $c[style])}</strong></a>
+	{if $c[child]}
+	{php $sub = get_maincat($c[catid], $mid, 2);}
+	{loop $sub $j $s}{if $j < 5}<em>|</em><a href="{$MODULE[$mid][linkurl]}{$s[linkurl]}"><strong>{set_style($s[catname], $s[style])}</strong></a>{/if}{/loop}
+	{/if}
+</p>
+{if $c[child]}
+{php $sub = get_maincat($c[catid], $mid, 1);}
+{php $n = count($sub) - 1;}
+	<ul>
+	{loop $sub $j $s}
+	<li><a href="{$MODULE[$mid][linkurl]}{$s[linkurl]}">{set_style($s[catname], $s[style])}</a>{if $j < $n}<i>|</i>{/if}</li>
+	{/loop}
+	</ul>
+{/if}
+</td>
+{if $i%2==1}</tr>{/if}
+{/loop}
+</table>

@@ -1,0 +1,41 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$head_name}</div>
+<div class="head-bar-right">
+<a href="javascript:Dsheet('{if $username}<a href=&#34;{$MOD[mobile]}{rewrite('apply.php?itemid='.$itemid)}&#34; data-transition=&#34;slideup&#34;><span>职位申请</span></a>|{/if}<a href=&#34;{DT_MOB}api/share.php?mid={$moduleid}&itemid={$itemid}&#34; data-transition=&#34;slideup&#34;><span>分享好友</span></a>|<a href=&#34;{$MOD[mobile]}&#34; data-direction=&#34;reverse&#34;><span>{$MOD[name]}首页</span></a>|<a href=&#34;{DT_MOB}channel.php&#34; data-direction=&#34;reverse&#34;><span>频道列表</span></a>', '取消');"><img src="{DT_MOB}static/img/icon-action.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="main">
+	<div class="title"><strong>{$title}</strong></div>
+	<div class="info">{$editdate}{if $MOD[hits]}&nbsp;&nbsp;浏览:<span id="hits">{$hits}</span>{/if}</div>
+	<div class="content">
+	{if !$username}<span style="color:red;">非会员信息</span><br/>{/if}
+	{if $vip}{VIP}:{$vip}级<br/>{/if}
+	行业:{$CATEGORY[$parentid][catname]}<br/>
+	职位:{$CATEGORY[$catid][catname]}<br/>
+	部门:{$department}<br/>
+	人数:{if $total}{$total}人{else}若干{/if}<br/>
+	地区:{area_pos($areaid, '')}<br/>
+	性质:{$TYPE[$type]}<br/>
+	性别:{$GENDER[$gender]}<br/>
+	婚姻:{$MARRIAGE[$marriage]}<br/>
+	学历:{$EDUCATION[$education]}<br/>
+	经验:{if $experience}{$experience}年以上{else}不限{/if}<br/>
+	年龄:{if $minage && $maxage}{$minage}-{$maxage}岁{elseif $minage}{$minage}岁以上{elseif $maxage}{$maxage}岁以内{else}不限年龄{/if}<br/>
+	待遇:{if $minsalary && $maxsalary}{$minsalary}-{$maxsalary}{$DT[money_unit]}/月{elseif $minsalary}{$minsalary}{$DT[money_unit]}/月以上{elseif $maxsalary}{$maxsalary}{$DT[money_unit]}/月以内{else}面议{/if}<br/>
+	{$content}
+	{if $username}
+	<a href="{$MOD[mobile]}{rewrite('apply.php?itemid='.$itemid)}" data-transition="slideup"><div class="btn-blue" style="margin:10px 0;">职位申请</div></a>
+	{/if}
+	</div>
+	<div class="head bd-b"><strong>联系方式</strong></div>
+	<div class="contact">{template 'contact', 'chip'}</div>
+</div>
+{template 'comment', 'chip'}
+{template 'footer'}

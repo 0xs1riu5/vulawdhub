@@ -1,0 +1,111 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav"><span class="f_r"><img src="{DT_SKIN}image/ico-share.png" class="share" title="分享好友" onclick="Dshare({$moduleid}, {$itemid});"/></span><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')} <i>&gt;</i> {$title}</div>
+</div>
+
+<div class="m">
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	<td bgcolor="#000000" align="center"><div id="player">{template 'content', 'chip'}</div></td>
+	<td bgcolor="#333333" width="348" valign="top">
+	<div class="play-list">
+		{php $num = 2;}
+		{if $album}
+		<!--{php $tags=tag("moduleid=$moduleid&condition=status=3 and album='$album' and addtime>$addtime&order=addtime asc&pagesize=$num&template=null");}-->
+		{elseif $username}
+		<!--{php $tags=tag("moduleid=$moduleid&condition=status=3 and username='$username' and addtime>$addtime&order=addtime asc&pagesize=$num&template=null");}-->
+		{else}
+		<!--{php $tags=tag("moduleid=$moduleid&condition=status=3 and addtime>$addtime&catid=$catid&order=addtime asc&pagesize=$num&template=null");}-->
+		{/if}
+		{if $tags}
+		{loop array_reverse($tags) $i $t}
+		<div title="{$t[alt]}">
+			<a href="{$t[linkurl]}">
+			<img src="{$t[thumb]}" width="100" height="75" alt=""/>
+			<ul>
+			<li><p>{$t[alt]}</p></li>
+			<li><span>{$t[hits]}次播放</span></li>
+			</ul>
+			</a>
+		</div>
+		{/loop}
+		{/if}
+		<div title="{$title}" style="background:#0072C6;">
+			<a href="{$linkurl}">
+			<img src="{$thumb}" width="100" height="75" alt=""/>
+			<ul>
+			<li><p>{$title}</p></li>
+			<li><span>{$hits}次播放</span></li>
+			</ul>
+			</a>
+		</div>
+		{php $num = $num + $num - count($tags);}
+		{if $album}
+		<!--{php $tags=tag("moduleid=$moduleid&condition=status=3 and album='$album' and addtime<$addtime&order=addtime desc&pagesize=$num&template=null");}-->
+		{elseif $username}
+		<!--{php $tags=tag("moduleid=$moduleid&condition=status=3 and username='$username' and addtime<$addtime&order=addtime desc&pagesize=$num&template=null");}-->
+		{else}
+		<!--{php $tags=tag("moduleid=$moduleid&condition=status=3 and addtime<$addtime&catid=$catid&order=addtime desc&pagesize=$num&template=null");}-->
+		{/if}
+		{if $tags}
+		{loop $tags $i $t}
+		<div title="{$t[alt]}">
+			<a href="{$t[linkurl]}">
+			<img src="{$t[thumb]}" width="100" height="75" alt=""/>
+			<ul>
+			<li><p>{$t[alt]}</p></li>
+			<li><span>{$t[hits]}次播放</span></li>
+			</ul>
+			</a>
+		</div>
+		{/loop}
+		{/if}
+	</div>
+	</td>
+	</tr>
+	</table>
+</div>
+
+<div class="m">
+	<div class="info">
+	<span class="f_r">	
+	{if $keytags}
+	标签：
+	{loop $keytags $t}
+	<a href="{$MOD[linkurl]}{rewrite('search.php?kw='.urlencode($t))}" target="_blank" class="b">{$t}</a> &nbsp;&nbsp;
+	{/loop}
+	{/if}
+	{if $album}
+	专辑：
+	<a href="{$MOD[linkurl]}{rewrite('search.php?kw='.urlencode($album))}" target="_blank" class="b">{$album}</a>
+	{/if}
+	</span>
+	日期：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;
+	{if $MOD[hits]}播放：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+	{if $could_comment}<a href="{$EXT[comment_url]}{rewrite('index.php?mid='.$moduleid.'&itemid='.$itemid)}">评论：{$comments}</a>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+	</div>
+</div>
+
+<div class="m o_h">		
+	{if $CP}{template 'property_show', 'chip'}{/if}
+	{if $content}<div class="content" id="content">{$content}</div>{/if}
+	{if $MOD[fee_award]}<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>{/if}
+	<div class="head-txt"><span><a href="{$MOD[linkurl]}{$CAT[linkurl]}">更多<i>&gt;</i></a></span><strong>推荐{$MOD[name]}</strong></div>
+	<div class="list-img list0"><!--{tag("moduleid=$moduleid&condition=status=3 and level>0&catid=$catid&areaid=$cityid&order=".$MOD[order]."&width=180&height=135&datetype=3&lazy=$lazy&template=list-video")}--></div>
+	{if $MOD[page_comment]}{template 'comment', 'chip'}{/if}
+</div>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+{if $video_i}
+<script type="text/javascript" src="{DT_STATIC}file/script/player.js"></script>
+<script type="text/javascript">
+$(function(){
+	if(UA.match(/(iphone|ipad|ipod|android|mac os)/i)) {
+		if(Dd('player').innerHTML.indexOf('embed') != -1) {
+			Dd('player').innerHTML = '<div class="player">'+player('{$video_s}', {$video_w}, {$video_h}, {$video_a})+'</div>';
+		}
+	}
+});
+</script>
+{/if}
+{template 'footer'}

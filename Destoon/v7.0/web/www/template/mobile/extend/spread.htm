@@ -1,0 +1,67 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">排名推广</div>
+<div class="head-bar-right">
+<a href="{$MODULE[2][mobile]}spread.php" rel="external"><span>我的</span></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $action=='list'}
+<div class="blank-35"></div>
+<div class="list-set">
+<ul>
+<li><div><span><a href="./" class="b">重新选词</a></span><b class="f_red">{$kw}</b>{if $mid}在<b class="f_red">{$MODULE[$mid][name]}</b>频道{/if}推广记录</div></li>
+</ul>
+</div>
+<div class="blank-35 bd-b"></div>
+{if $lists}
+{loop $lists $k $v}
+{if $v[bg]}
+<div class="blank-35 bd-b"></div>
+{/if}
+<div class="list-img">
+<ul>
+<li><span class="f_r">{$v[price]}{if $v[currency]=='money'}{$DT[money_unit]}{else}{$DT[credit_unit]}{/if}</span><a href="{userurl($v['username'])}" rel="external"><strong>{$v[company]}</strong></a></li>
+<li><span class="f_r"><a href="{$MODULE[2][mobile]}spread.php?action=list&mid={$v[mid]}&kw={urlencode($kw)}" rel="external" class="b">立即推广</a></span><span>[{$MODULE[$v[mid]][name]}] {timetodate($v[fromtime], 3)}/{timetodate($v[totime], 3)} {strip_tags($v[process])}</span></li>
+</ul>
+</div>
+{/loop}
+{else}
+<div class="main content">
+<br/><br/><center>暂无推广记录<br/><br/><br/><br/><a href="{$MODULE[2][mobile]}spread.php?action=list&mid={$mid}&kw={urlencode($kw)}" rel="external"><div class="btn-green">我要推广</div></a></center><br/><br/><br/><br/>
+</div>
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{else}
+<div class="ui-form">
+<form action="{$mob}index.php">
+<div class="blank-20"></div>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词开始推广"/></div>
+<div class="blank-20"></div>
+</form>
+</div>
+<!--{php $tags=tag("table=spread&condition=status=3 and company<>''&pagesize=20&order=addtime desc&template=null");}-->
+{if $tags}
+<div class="list-set">
+<ul>
+<li onclick="$('#spreads').slideToggle(300);"><div>最新推广</div></li>
+</ul>
+</div>
+<div id="spreads">
+{loop $tags $t}
+<div class="list-img">
+<ul>
+<li><span class="f_r" style="color:red;">{$t[price]}{$unit}</span><a href="{rewrite('list.php?kw='.urlencode($t['word']))}"><strong>{$t[word]}</strong></a></li>
+<li><span class="f_r">{timetodate($t[addtime], 5)}</span><span>{$t[company]}</span></li>
+</ul>
+</div>
+{/loop}
+</div>
+{/if}
+{/if}
+{template 'footer'}

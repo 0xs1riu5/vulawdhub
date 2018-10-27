@@ -1,0 +1,29 @@
+{template 'header', $template}
+<div class="dsn" id="pos_show"><a href="{$COM[linkurl]}">首页</a> <i>&gt;</i> <a href="{$MENU[$menuid][linkurl]}">{$MENU[$menuid][name]}</a>{if $itemid} <i>&gt;</i> {$title}{/if}</div>
+<div class="main_head"><div><strong>{$MENU[$menuid][name]}</strong></div></div>
+<div class="main_body">
+{if $itemid}
+	<div class="title">{$title}</div>
+	<div class="info">发布时间：{timetodate($addtime, 3)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浏览次数：{$hits}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{$MENU[$menuid][linkurl]}">返回列表</a></div>
+	<div class="content" id="content">{$content}</div>
+	<script type="text/javascript">
+	var content_id = 'content';
+	var img_max_width = 600;
+	</script>
+	<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>
+{else}
+	<table cellpadding="10" cellspacing="1" width="100%" align="center">
+	{loop $lists $v}
+	<tr>
+	<td class="px14">&middot; <a href="{$v[linkurl]}">{$v[title]}</a></td>
+	<td align="center" width="80" class="f_gray">{timetodate($v[addtime], 3)}</td>
+	</tr>
+	{/loop}
+	</table>
+	<div class="pages">{$pages}</div>
+{/if}
+</div>
+<script type="text/javascript">
+try {Dd('type_{$typeid}').innerHTML = '<strong>'+Dd('name_{$typeid}').innerHTML+'</strong>';}catch (e){}
+</script>
+{template 'footer', $template}

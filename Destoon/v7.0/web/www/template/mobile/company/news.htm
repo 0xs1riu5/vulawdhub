@@ -1,0 +1,37 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">企业新闻</div>
+<div class="head-bar-right">
+<a href="javascript:window.scrollTo(0,0);$('#com-news-search').slideToggle(300);"><img src="{DT_MOB}static/img/icon-search.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div id="com-news-search" style="display:none;">
+<div class="ui-form sch">
+<form action="news.php" data-ajax="false">
+<div class="blank-20"></div>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+<div class="blank-10"></div>
+</form>
+</div>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<a href="{$v[linkurl]}" rel="external"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_MOB}static/img/80x60.png{/if}" width="80" height="60" alt="" onerror="this.src='{DT_MOB}static/img/80x60.png';"/></a>
+<ul>
+<li><a href="{$v[linkurl]}" rel="external"><strong>{$v[title]}</strong></a></li>
+<li><em class="f_r">{$v[date]}</em><span>浏览:{$v[hits]}</span></li>
+</ul>
+</div>
+{/loop}
+{else}
+{template 'empty', 'chip'}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'footer'}

@@ -1,0 +1,48 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav">{if $admin}<span class="f_r"><a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&job=manage&gid={$gid}&pid={$page}" target="manage" class="b">管理本圈</a></span>{/if}<a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')} <i>&gt;</i> <a href="{$MOD[linkurl]}{$GRP[linkurl]}">{$GRP[title]}{$MOD[seo_name]}</a></div>
+</div>
+
+<div class="m">
+	<div class="group_info">
+		<div class="group_title">
+		<span class="f_r f_gray">
+		<a href="javascript:SendFav();">收藏本圈</a> &nbsp;|&nbsp; 
+		<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&job=join&action=add&gid={$gid}">加入本圈</a>
+		</span>
+		{if $GRP[thumb]}<img src="{$GRP[thumb]}" alt=""/>{/if}
+		<strong id="title">{$GRP[title]}{$MOD[seo_name]}</strong>&nbsp; &nbsp; 
+		主题:{$GRP[post]}&nbsp; &nbsp; 
+		粉丝:<a href="{$MOD[linkurl]}{rewrite('fans.php?gid='.$gid)}" title="全部成员">{$GRP[fans]}</a>&nbsp; &nbsp; 
+		圈主:<a href="{userurl($GRP[username])}" target="_blank">{$GRP[passport]}</a>&nbsp; &nbsp; 
+		版主:
+		{if $GRP[managers]}
+		<select onchange="if(this.value)window.open(this.value);">
+		<option value="">版主列表</option>
+		{loop $GRP[managers] $manager}
+		<option value="{$MOD[linkurl]}goto.php?action=master&catid={$gid}&name={urlencode($manager)}">{$manager}</option>
+		{/loop}
+		</select>
+		{else}
+		暂无版主
+		{/if}
+		</div>
+		{if $GRP[content]}
+		<div class="group_introduce c_b">{nl2br($GRP[content])}</div>
+		{/if}
+	</div>
+</div>
+<div class="m">
+	<div class="group_type">
+		<div class="f_r">
+		<a href="{$MODULE[2][linkurl]}{$DT[file_my]}?mid={$moduleid}&action=add&gid={$gid}" class="group_post">发帖</a>
+		</div>
+		{loop $TYPE $k $v}
+		<a href="{$MOD[linkurl]}{if $k}{rewrite('list.php?catid='.$gid.'&typeid='.$k)}{else}{$GRP[linkurl]}{/if}" class="group_type_{if $typeid==$k}1{else}2{/if}">{$v}</a>
+		{/loop}
+	</div>
+</div>
+<div class="m">
+	{if $tags}{template 'list-'.$module, 'tag'}{/if}
+</div>
+{template 'footer'}

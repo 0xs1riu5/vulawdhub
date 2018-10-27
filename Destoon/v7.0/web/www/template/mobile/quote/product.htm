@@ -1,0 +1,40 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">产品报价</div>
+<div class="head-bar-right">
+<a href="javascript:window.scrollTo(0,0);$('#product-search-{$moduleid}').slideToggle(300);"><img src="{DT_MOB}static/img/icon-search.png" width="24" height="24"/></a>
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div id="product-search-{$moduleid}" style="display:none;">
+<div class="ui-form sch">
+<form action="product.php" data-ajax="false">
+<div class="blank-20"></div>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+<div class="blank-10"></div>
+</form>
+</div>
+</div>
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<ul>
+<li><em class="f_r">{$v[item]}报价</em><a href="{$v[mobile]}" rel="external"><strong>{$v[title]}</strong></a></li>
+<li><i>{$DT[money_sign]}{$v[price]}/{$v[unit]}</i><span>
+{if $v[v1]}{$v[n1]}:{$v[v1]}&nbsp;&nbsp;{/if}
+{if $v[v2]}{$v[n2]}:{$v[v2]}&nbsp;&nbsp;{/if}
+{if $v[v3]}{$v[n3]}:{$v[v3]}&nbsp;&nbsp;{/if}
+</span></li>
+</ul>
+</div>
+{/loop}
+{else}
+{template 'empty', 'chip'}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+{template 'footer'}

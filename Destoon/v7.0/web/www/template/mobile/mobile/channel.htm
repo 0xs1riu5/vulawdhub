@@ -1,0 +1,24 @@
+{template 'header'}
+<style type="text/css">
+.home-search {text-align:center;padding:10px;}
+.home-search div {height:28px;line-height:28px;background:#FFFFFF;border-radius:4px;}
+.home-search img {width:16px;height:16px;vertical-align:top;padding-top:6px;padding-right:8px;}
+.home-search span {color:#8E8E93;font-size:14px;font-weight:normal;}
+</style>
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-title">{$head_name}</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="home-search">
+	<div><a href="{DT_MOB}api/search.php"><img src="{DT_MOB}static/img/ico-search.png"/><span>输入关键词搜索</span></a></div>
+</div>
+<div class="list-set">
+<ul>
+{loop $MOB_MODULE $i $m}
+<li><div{if $i==0} style="border:none;"{/if}><a href="{$m[mobile]}">{$m[name]}</a></div></li>
+{/loop}
+</ul>
+</div>
+{template 'footer'}

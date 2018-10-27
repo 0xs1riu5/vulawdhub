@@ -1,0 +1,9 @@
+<table width="100%">
+{loop $tags $i $t}
+{if $i%$cols==0}<tr align="center">{/if}
+<td width="{$percent}" valign="top"><a href="{$t[linkurl]}"{if $target} target="{$target}"{/if}><img src="{$t[thumb]}" width="{$width}" height="{$height}" alt="{$t[alt]}"/></a>
+<ul><li><a href="{$t[linkurl]}" title="{$t[alt]}"{if $target} target="{$target}"{/if}>{$t[title]}</a></li></ul></td>
+{if $i%$cols==($cols-1)}</tr>{/if}
+{/loop}
+</table>
+{if $showpage && $pages}<div class="pages">{$pages}</div>{/if}

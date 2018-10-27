@@ -1,0 +1,43 @@
+{template 'header'}
+<div class="m">	
+	<div class="nav bd-b"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+</div>
+<div class="m m2">
+	<div class="m2l">
+		<div class="sort">
+			<div class="sort-k">行业</div>
+			<div class="sort-v">
+				<ul>
+				{loop $maincat $k $v}
+				<li{if $v[catid]==$catid} class="on"{/if}><a href="{$MOD[linkurl]}{$v[linkurl]}">{set_style($v[catname],$v[style])}</a>{if !$cityid} <i>({$v[item]})</i>{/if}<li>
+				{/loop}
+				</ul>
+			</div>
+			<div class="c_b"></div>
+		</div>
+		<div class="sort">
+			<div class="sort-k">地区</div>
+			<div class="sort-v">
+				<ul>
+				{php $mainarea = get_mainarea(0)}
+				{loop $mainarea $k $v}
+				<li><a href="{$MOD[linkurl]}{rewrite('search.php?catid='.$catid.'&areaid='.$v['areaid'])}">{$v[areaname]}</a></li>
+				{/loop}
+				</ul>
+			</div>
+			<div class="c_b"></div>
+		</div>
+		<div class="img_tip" id="img_tip" style="display:none;">&nbsp;</div>
+		{if $page == 1}{ad($moduleid,$catid,$kw,6)}{/if}
+		{if $tags}{template 'list-'.$module, 'tag'}{/if}
+	</div>
+	<div class="m2r">
+		<div class="sponsor">{ad($moduleid,$catid,$kw,7)}</div>
+		<div class="head-sub"><strong>搜索排行</strong></div>
+		<div class="list-rank">
+			<!--{tag("moduleid=$moduleid&table=keyword&condition=moduleid=$moduleid and status=3 and updatetime>$today_endtime-86400*30&pagesize=9&order=week_search desc&key=week_search&template=list-search_rank")}-->
+		</div>
+	</div>
+	<div class="c_b"></div>
+</div>
+{template 'footer'}

@@ -1,0 +1,74 @@
+{template 'header'}
+<script type="text/javascript">
+var module_id={$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};
+if(isIE) {
+	document.write('<style type="text/css">');
+	document.write("#cursor_a {cursor:url('{DT_SKIN}image/prev.cur'),default;}");
+	document.write("#cursor_b {cursor:url('{DT_SKIN}image/next.cur'),default;}");
+	document.write('</style>');
+}
+function PhotoLast() {
+	$('.photo_f').fadeIn(300);
+}
+</script>
+<a name="p"></a>
+<div class="m">	
+	<div class="nav bd-b"><span class="f_r"><a href="{$MOD[linkurl]}{rewrite('view.php?itemid='.$itemid)}#p" class="b">全部展开</a></span><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')}</div>
+</div>
+<div class="m">
+<div class="photo_f">
+	<p>{$MOD[name]}浏览完毕</p>
+	<div onclick="Go('{$linkurl}');">重新浏览</div>
+	<div onclick="$('html,body').animate({scrollTop:$('#prec').offset().top}, 500);">推荐{$MOD[name]}</div>
+</div>
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td valign="top" class="photo_l">
+<input id="destoon_previous" type="hidden" value="{$prev_photo}#p"/>
+<input id="destoon_next" type="hidden" value="{$next_photo}#p"/>
+<div class="photo_info">
+	<div class="photo_info_r"><span class="count_a">{$page}</span> <span class="count_b">/ {$items}</span></div>
+	<div>
+	<h1 class="title" id="title">{$title}</h1>
+	日期：{$adddate}&nbsp;&nbsp;&nbsp;&nbsp;
+	{if $MOD[hits]}点击：<span id="hits">{$hits}</span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+	{if $could_comment}<a href="{$EXT[comment_url]}{rewrite('index.php?mid='.$moduleid.'&itemid='.$itemid)}"><span style="color:#F1F1F1;">评论：{$comments}</span></a>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+	<span onclick="View(Dd('destoon_photo').src);" class="c_p">查看原图</span>
+	</div>
+</div>
+<div class="b20"></div>
+<div id="photo">{template 'content', 'chip'}</div>
+{if $P[introduce]}<div class="photo_intro">{nl2br($P[introduce])}</div>{/if}
+<div class="b20"></div>
+</td>
+<td valign="top" class="photo_r">
+<br/><br/><br/>
+<a href="{$prev_photo}"><img src="{DT_SKIN}image/photo_prev.gif" title="上一张"/></a>
+<br/><br/><br/>
+<div id="side">
+{if $user_status == 3}
+{php $action = 'side';}
+{template 'content', 'chip'}
+{php $action = '';}
+{else}
+<div style="height:200px;">&nbsp;</div>
+{/if}
+</div>
+<br/><br/><br/>
+<a href="{$next_photo}"><img src="{DT_SKIN}image/photo_next.gif" title="下一张"/></a>
+<br/><br/><br/>
+</td>
+</tr>
+</table>
+</div>
+<div class="m o_h">
+	{if $CP}{template 'property_show', 'chip'}{/if}
+	{if $content}<div class="content c_b" id="content">{$content}</div>{/if}
+	{if $MOD[fee_award]}<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>{/if}
+	<div class="head-txt"><span><a href="{$MOD[linkurl]}{$CAT[linkurl]}">更多<i>&gt;</i></a></span><strong>推荐{$MOD[name]}</strong></div>
+	<div class="list-img list0" id="prec"><!--{tag("moduleid=$moduleid&condition=status=3 and open=3 and level>0 and items>0&catid=$catid&areaid=$cityid&order=".$MOD[order]."&width=180&height=135&datetype=3&lazy=$lazy&pagesize=6&template=list-photo")}--></div>
+	{if $MOD[page_comment]}{template 'comment', 'chip'}{/if}
+</div>
+{if $content}<script type="text/javascript" src="{DT_STATIC}file/script/content.js"></script>{/if}
+<script type="text/javascript">$(function(){try{Dd('cursor_a').style.height=Dd('cursor_b').style.height=Dd('destoon_photo').height+'px';}catch(e){}});</script>
+{template 'footer'}

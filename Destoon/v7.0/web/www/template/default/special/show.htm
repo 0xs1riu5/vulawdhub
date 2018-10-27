@@ -1,0 +1,56 @@
+{template 'header'}
+<script type="text/javascript">var module_id= {$moduleid},item_id={$itemid},content_id='content',img_max_width={$MOD[max_width]};</script>
+<div class="m">	
+	<div class="nav bd-b">
+	<span class="f_r">
+	日期：{$adddate}
+	{if $MOD[hits]}&nbsp;&nbsp;&nbsp;&nbsp;浏览：<span id="hits">{$hits}</span>{/if}
+	{if $could_comment}&nbsp;&nbsp;&nbsp;&nbsp;<a href="{$EXT[comment_url]}{rewrite('index.php?mid='.$moduleid.'&itemid='.$itemid)}">评论：{$comments}</a>{/if}	
+	</span><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> {cat_pos($CAT, ' <i>&gt;</i> ')} <i>&gt;</i> {if $action == 'type'}<a href="{$linkurl}">{$title}</a> <i>&gt;</i> {$type[typename]}{else}{$title}{/if}</div>
+</div>
+{if $banner}<div class="m"><a href="{$linkurl}"><img src="{$banner}" alt="" width="100%"/></a></div>{/if}
+{if $action == 'type'}
+<div class="m">
+	<div class="catlist">
+	<!--{tag("table=special_item_$moduleid&condition=specialid=$itemid and typeid=$typeid&order=addtime desc&pagesize=$pagesize&page=$page&showpage=1&datetype=5&target=_blank&template=list-cat&cols=5")}-->
+	</div>
+</div>
+{else}
+<div class="m b10"></div>
+{if $cfg_photo}
+<div class="m o_h">
+	<div class="head-txt"><strong>图片报道</strong></div>
+	<div class="list-img list0"><!--{tag("table=special_item_$moduleid&condition=specialid=$itemid and level=3 and thumb<>''&pagesize=$cfg_photo&order=addtime desc&width=180&height=135&datetype=3&lazy=$lazy&target=_blank&template=list-thumb", -2)}--></div>
+</div>
+{/if}
+{if $cfg_video}
+<div class="m o_h">
+	<div class="head-txt"><strong>视频报道</strong></div>
+	<div class="list-img list0"><!--{tag("table=special_item_$moduleid&condition=specialid=$itemid and level=6 and thumb<>''&pagesize=$cfg_video&order=addtime desc&width=180&height=135&datetype=3&lazy=$lazy&target=_blank&template=list-thumb", -2)}--></div>
+</div>
+{/if}
+{if $cfg_type}
+<div class="m">
+	<div class="special_box">
+	<table cellpadding="0" cellspacing="0" width="1230">
+	{loop $TYPE $k $v}
+	{if $k%3==0}<tr>{/if}
+	<td valign="top" width="380">
+		<div class="head-txt"><span><a href="{$v[linkurl]}">更多<i>&gt;</i></a></span><strong>{$v[typename]}</strong></div>
+		<div class="list-txt"><!--{tag("table=special_item_$moduleid&condition=specialid=$itemid and typeid=".$v[typeid]."&order=addtime desc&pagesize=$cfg_type&datetype=2&target=_blank", -2)}--></div>			
+	</td>
+	<td width="30">&nbsp;</td>
+	{if $k%3==2}</tr>{/if}
+	{/loop}
+	</table>
+	</div>
+</div>
+{/if}
+<div class="m bd-t">
+	{if $CP}{template 'property_show', 'chip'}{/if}
+	{if $content}<div class="content" id="content">{$content}</div>{/if}
+	{if $MOD[fee_award]}<div class="award"><div onclick="Go('{$MODULE[2][linkurl]}award.php?mid={$moduleid}&itemid={$itemid}');">打赏</div></div>{/if}
+	{if $MOD[page_comment]}{template 'comment', 'chip'}{/if}
+</div>
+{/if}
+{template 'footer'}

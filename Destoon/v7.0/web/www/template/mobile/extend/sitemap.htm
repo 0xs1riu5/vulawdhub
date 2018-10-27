@@ -1,0 +1,78 @@
+{template 'header'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{if $mid}{$M[name]}{else}{$head_name}{/if}</div>
+<div class="head-bar-right">
+{if $action=='module'}
+<a href="javascript:$('#letters').fadeToggle();"><span>索引</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<style type="text/css">
+.map {background:#FFFFFF;padding:10px 16px;display:table;width:100%;}
+.map div {width:50%;height:32px;line-height:32px;overflow:hidden;font-size:16px;float:left;}
+.let {background:#FFFFFF;padding:16px 0 0 16px;display:table;width:100%;}
+.let div {width:32px;height:32px;line-height:32px;overflow:hidden;font-size:18px;float:left;background:#EEEEEE;border-radius:50%;margin:0 16px 16px 0;text-align:center;}
+</style>
+{if $action=='letter'}
+	<div class="let bd-b">
+	{loop $LETTER $L}
+	<div{if $letter==$L} style="background:#007AFF;"{/if}><a href="{rewrite('index.php?mid='.$M['moduleid'].'&letter='.$L)}" data-transition="none"{if $letter==$L} style="color:#FFFFFF;"{/if}>{strtoupper($L)}</a></div>
+	{/loop}
+	</div>
+	<div class="map bd-b">
+	{if $CATALOG}
+	{loop $CATALOG $i $c}
+		<div><a href="{$M[mobile]}{$c[linkurl]}" target="_blank">{$c[catname]}</a></div>
+	{/loop}
+	{else}
+	<br/><br/><br/><center>没有字母 <strong>{$letter}</strong> 开头的类目</center><br/><br/><br/>
+	{/if}
+	</div>
+{elseif $action=='module'}
+	<div class="let bd-b" style="display:none;" id="letters">
+	{loop $LETTER $L}
+	<div><a href="{rewrite('index.php?mid='.$M['moduleid'].'&letter='.$L)}" data-transition="none">{strtoupper($L)}</a></div>
+	{/loop}
+	</div>
+	{php $main = get_maincat(0, $mid);}
+	{loop $main $m}
+	<div class="blank-35">&nbsp;</div>
+	<div class="list-set">
+	<ul>
+	<li><div><a href="{$M[mobile]}{$m[linkurl]}" target="_blank">{$m[catname]}</a></div></li>
+	</ul>
+	</div>
+	{if $m[child]}
+	<div class="map bd-b">
+	{php $child = get_maincat($m[catid], $mid);}
+	{loop $child $i $c}
+	<div><a href="{$M[mobile]}{$c[linkurl]}" target="_blank">{set_style($c[catname], $c[style])}</a></div>
+	{/loop}
+	</div>
+	{/if}
+	{/loop}
+{else}
+	{loop $MODULE $m}
+	{if $m[moduleid] > 3 && !$m[islink]}
+	<div class="blank-35"></div>
+	<div class="list-set">
+	<ul>
+	<li><div><span><a href="{rewrite('index.php?mid='.$m['moduleid'])}">更多</a></span><a href="{$m[mobile]}" target="_blank">{$m[name]}</a></div></li>
+	</ul>
+	</div>
+	<div class="map bd-b">
+	{php $child = get_maincat(0, $m[moduleid]);}
+	{loop $child $i $c}
+	<div><a href="{$m[mobile]}{$c[linkurl]}" target="_blank">{set_style($c[catname], $c[style])}</a></div>
+	{/loop}
+	</div>
+	{/if}
+	{/loop}
+{/if}
+{template 'footer'}

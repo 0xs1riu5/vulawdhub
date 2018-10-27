@@ -1,0 +1,495 @@
+{template 'header', 'member'}
+{if $action == 'email'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">邮箱认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $step == 2}
+<div class="ui-ok">
+<p>邮箱认证成功</p>
+<input type="button" value="立即返回" class="btn-green" onclick="Go('?action=index');"/>
+</div>
+{elseif $step == 1}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="step" value="2"/>
+<div class="ui-form">
+<p>邮件验证码<em>*</em><b id="dcode"></b></p>
+<div><input type="tel" name="code" id="code" placeholder="已发送至邮箱"/></div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="立即认证" class="btn-blue"/>
+<div class="blank-16"></div>
+<input type="button" value="重新发送" class="btn" onclick="Go('?action={$action}&email={$email}');"/>
+<div class="blank-32"></div>
+</div>
+</form>
+<script type="text/javascript">
+function check() {
+	if(Dd('code').value.length < 6) {
+		Dmsg('请填写邮件验证码', 'code');
+		return false;
+	}
+	return true;
+}
+</script>
+{else}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="step" value="1"/>
+<div class="ui-form">
+<p>电子邮件<em>*</em><b id="demail"></b></p>
+<div><input type="email" name="email" id="email" value="{$email}"/></div>
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="下一步" class="btn-blue" id="send_code"/>
+<div class="blank-32"></div>
+</div>
+</form>
+<script type="text/javascript">
+function check() {
+	if(Dd('email').value.length < 6) {
+		Dmsg('请填写电子邮件', 'email');
+		return false;
+	}
+	if($('#ccaptcha').html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', 'captcha');
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{elseif $action == 'vemail'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">邮件认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-ok">
+<p>邮件已认证</p>
+<div>{$_email}</div>
+<input type="button" value="确定" class="btn-green" onclick="Go('?action=index');"/>
+<input type="button" value="修改" class="btn" onclick="Go('send.php?action=email');"/>
+</div>
+{elseif $action == 'mobile'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">手机认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+{if $step == 2}
+<div class="ui-ok">
+<p>手机认证成功</p>
+<input type="button" value="立即返回" class="btn-green" onclick="Go('?action=index');"/>
+</div>
+{elseif $step == 1}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="step" value="2"/>
+<div class="ui-form">
+<p>短信验证码<em>*</em><b id="dcode"></b></p>
+<div><input type="tel" name="code" id="code" placeholder="已发送至手机"/></div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="立即认证" class="btn-blue"/>
+<div class="blank-16"></div>
+<input type="button" value="重新发送" class="btn" onclick="Go('?action={$action}&mobile={$mobile}');"/>
+<div class="blank-32"></div>
+</div>
+</form>
+<script type="text/javascript">
+function check() {
+	if(Dd('code').value.length < 6) {
+		Dmsg('请填写短信验证码', 'code');
+		return false;
+	}
+	return true;
+}
+</script>
+{else}
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="step" value="1"/>
+<div class="ui-form">
+<p>手机号码<em>*</em><b id="dmobile"></b></p>
+<div><input type="tel" name="mobile" id="mobile" value="{$mobile}"/></div>
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="下一步" class="btn-blue" id="send_code"/>
+<div class="blank-32"></div>
+</div>
+</form>
+<script type="text/javascript">
+function check() {
+	if(Dd('mobile').value.length < 11) {
+		Dmsg('请填写手机号码', 'mobile');
+		return false;
+	}
+	if($('#ccaptcha').html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', 'captcha');
+		return false;
+	}
+	return true;
+}
+</script>
+{/if}
+{elseif $action == 'vmobile'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">手机认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-ok">
+<p>手机已认证</p>
+<div>{$_mobile}</div>
+<input type="button" value="确定" class="btn-green" onclick="Go('?action=index');"/>
+<input type="button" value="修改" class="btn" onclick="Go('send.php?action=mobile');"/>
+</div>
+{elseif $action == 'truename'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">实名认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<div class="ui-form">
+<p>真实姓名<em>*</em><b id="dtruename"></b></p>
+<div><input type="text" name="truename" id="truename" value="{$user[truename]}"/></div>
+<p>证件图片<em>*</em><b id="dthumb"></b></p>
+<div>
+<input type="hidden" name="thumb" id="thumb0"/>
+<input type="hidden" name="thumb1" id="thumb1"/>
+<input type="hidden" name="thumb2" id="thumb2"/>
+<div class="ui-form-album-show" id="album0" onclick="album_action(0);"></div>
+<div class="ui-form-album-show" id="album1" onclick="album_action(1);"></div>
+<div class="ui-form-album-show" id="album2" onclick="album_action(2);"></div>
+<div class="ui-form-album-upload"><div id="album-picker"></div></div>
+<script type="text/javascript">
+function album_action(id) {
+	Dsheet('<a href="javascript:album_delete('+id+');"><span style="color:red;">删除图片</span></a>', '取消', '确定要删除图片吗？');
+}
+function album_delete(id) {
+	$('#thumb'+id).val('');
+	$('#album'+id).html('');
+	$('#album'+id).hide();
+	$('.ui-form-album-upload').show();	
+}
+function album_show(id, url) {
+	$('#thumb'+id).val(url);
+	$('#album'+id).html('<img src="'+url+'"/>');
+	$('#album'+id).show();
+}
+var albumu = WebUploader.create({
+	auto: true,
+    server: '{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=album&width=100&height=100',
+    pick: '#album-picker',
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    },
+    resize: false
+});
+albumu.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+albumu.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '处理中...' : '上传中...'+p+'%');
+});
+albumu.on( 'uploadSuccess', function(file, data) {
+	if(data.error) {
+		Dtoast(data.message, '', 5);
+	} else {
+		var id = 3;
+		if($('#thumb0').val() == '') {
+			id = 0;
+		} else if($('#thumb1').val() == '') {
+			id = 1;
+		} else if($('#thumb2').val() == '') {
+			id = 2;
+		}
+		if(id < 3) album_show(id, data.url);
+		if($('#thumb0').val() && $('#thumb1').val() && $('#thumb2').val()) $('.ui-form-album-upload').hide();
+	}
+});
+albumu.on( 'uploadError', function(file, data) {
+    Dtoast(data.message, '', 5);
+});
+albumu.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+</script>
+</div>
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="提交认证" class="btn-blue" id="send_code"/>
+<div class="blank-32"></div>
+</div>
+</form>
+<script type="text/javascript">
+function check() {
+	if(Dd('truename').value.length < 2) {
+		Dmsg('请填写真实姓名', 'truename');
+		return false;
+	}
+	if(Dd('thumb0').value.length < 15) {
+		Dmsg('请上传证件图片', 'thumb');
+		return false;
+	}
+	if($('#ccaptcha').html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', 'captcha');
+		return false;
+	}
+	return true;
+}
+</script>
+{load('clear.js')}
+{elseif $action == 'vtruename'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">实名认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-ok">
+<p>真实姓名{if $user[vtruename] || $va[status] == 3}已认证{else}审核中{/if}</p>
+<div>{$user[truename]}</div>
+<input type="button" value="确定" class="btn-green" onclick="Go('?action=index');"/>
+</div>
+{elseif $action == 'company'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">公司认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+<form method="post" action="?" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<div class="ui-form">
+<p>公司名称<em>*</em><b id="dcompany"></b></p>
+<div><input type="text" name="company" id="company" value="{$user[company]}"/></div>
+<p>证件图片<em>*</em><b id="dthumb"></b></p>
+<div>
+<input type="hidden" name="thumb" id="thumb0"/>
+<input type="hidden" name="thumb1" id="thumb1"/>
+<input type="hidden" name="thumb2" id="thumb2"/>
+<div class="ui-form-album-show" id="album0" onclick="album_action(0);"></div>
+<div class="ui-form-album-show" id="album1" onclick="album_action(1);"></div>
+<div class="ui-form-album-show" id="album2" onclick="album_action(2);"></div>
+<div class="ui-form-album-upload"><div id="album-picker"></div></div>
+<script type="text/javascript">
+function album_action(id) {
+	Dsheet('<a href="javascript:album_delete('+id+');"><span style="color:red;">删除图片</span></a>', '取消', '确定要删除图片吗？');
+}
+function album_delete(id) {
+	$('#thumb'+id).val('');
+	$('#album'+id).html('');
+	$('#album'+id).hide();
+	$('.ui-form-album-upload').show();	
+}
+function album_show(id, url) {
+	$('#thumb'+id).val(url);
+	$('#album'+id).html('<img src="'+url+'"/>');
+	$('#album'+id).show();
+}
+var albumu = WebUploader.create({
+	auto: true,
+    server: '{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=album&width=100&height=100',
+    pick: '#album-picker',
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    },
+    resize: false
+});
+albumu.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+albumu.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '处理中...' : '上传中...'+p+'%');
+});
+albumu.on( 'uploadSuccess', function(file, data) {
+	if(data.error) {
+		Dtoast(data.message, '', 5);
+	} else {
+		var id = 3;
+		if($('#thumb0').val() == '') {
+			id = 0;
+		} else if($('#thumb1').val() == '') {
+			id = 1;
+		} else if($('#thumb2').val() == '') {
+			id = 2;
+		}
+		if(id < 3) album_show(id, data.url);
+		if($('#thumb0').val() && $('#thumb1').val() && $('#thumb2').val()) $('.ui-form-album-upload').hide();
+	}
+});
+albumu.on( 'uploadError', function(file, data) {
+    Dtoast(data.message, '', 5);
+});
+albumu.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+</script>
+</div>
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="提交认证" class="btn-blue" id="send_code"/>
+<div class="blank-32"></div>
+</div>
+</form>
+<script type="text/javascript">
+function check() {
+	if(Dd('company').value.length < 2) {
+		Dmsg('请填写公司名称', 'company');
+		return false;
+	}
+	if(Dd('thumb0').value.length < 15) {
+		Dmsg('请上传证件图片', 'thumb');
+		return false;
+	}
+	if($('#ccaptcha').html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', 'captcha');
+		return false;
+	}
+	return true;
+}
+</script>
+{load('clear.js')}
+{elseif $action == 'vcompany'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">公司认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="ui-ok">
+<p>公司{if $user[vcompany] || $va[status] == 3}已认证{else}审核中{/if}</p>
+<div>{$user[company]}</div>
+<input type="button" value="确定" class="btn-green" onclick="Go('?action=index');"/>
+</div>
+{elseif $action == 'bank'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">银行认证</div>
+<div class="head-bar-right"><a href="?action=index"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+<li><div><span>{if $user[bank]}{$user[bank]}{else}未设置{/if}</span>开户银行</div></li>
+<li><div><span>{if $user[branch]}{$user[branch]}{else}未设置{/if}</span>开户网点</div></li>
+<li><div><span>{if $user[account]}{$user[account]}{else}未设置{/if}</span>收款帐号</div></li>
+<li><div><span>{if $user[banktype]}{$user[company]}{else}{$user[truename]}{/if}</span>收款户名</div></li>
+<li><div>{if $user[vbank]}<span style="color:green;">已通过</span>{else}<span>未通过</span>{/if}认证状态</div></li>
+</ul>
+</div>
+<div class="blank-20"></div>
+<input type="button" value="确 定" class="btn-green" onclick="Go('?action=index');"/>
+<div class="blank-16"></div>
+<input type="button" value="设 置" class="btn" onclick="Go('cash.php?action=setting');"/>
+<div class="blank-20"></div>
+{else}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="javascript:Dback();"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">认证类型</div>
+<div class="head-bar-right"><a href="{DT_MOB}my.php"><span>取消</span></a></div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+<div class="blank-20"></div>
+<div class="list-set">
+<ul>
+{if $MOD[vemail]}
+<li><div>{if $vemail}<span style="color:green;">已通过</span>{else}<span>未通过</span>{/if}<a href="?action=email">邮件认证</a></div></li>
+{/if}
+{if $MOD[vmobile]}
+<li><div>{if $vmobile}<span style="color:green;">已通过</span>{else}<span>未通过</span>{/if}<a href="?action=mobile">手机认证</a></div></li>
+{/if}
+{if $MOD[vbank]}
+<li><div>{if $vbank}<span style="color:green;">已通过</span>{else}<span>未通过</span>{/if}<a href="?action=bank">银行认证</a></div></li>
+{/if}
+{if $MOD[vtruename]}
+<li><div>{if $vtruename}<span style="color:green;">已通过</span>{else}<span>未通过</span>{/if}<a href="?action=truename">实名认证</a></div></li>
+{/if}
+{if $MOD[vcompany] && $MG[type]}
+<li><div>{if $vcompany}<span style="color:green;">已通过</span>{else}<span>未通过</span>{/if}<a href="?action=company">公司认证</a></div></li>
+{/if}
+</ul>
+</div>
+<div class="blank-20"></div>
+{/if}
+{if $seconds}
+<script type="text/javascript">
+Dd('send_code').disabled = true;
+var i = {$seconds};
+var interval=window.setInterval(
+	function() {
+		if(i == 0) {
+			Dd('send_code').value = '下一步';
+			Dd('send_code').disabled = false;
+			clearInterval(interval);
+		} else {
+			Dd('send_code').value = '下一步('+i+'秒)';
+			i--;
+		}
+	},
+1000);
+</script>
+{/if}
+{template 'footer', 'member'}

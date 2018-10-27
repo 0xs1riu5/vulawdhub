@@ -1,0 +1,115 @@
+{template 'header'}
+<style type="text/css">
+.compare {border-top:#DDDDDD 1px solid;width:1200px;overflow:hidden;}
+.compare tr {text-align:center;}
+.compare tr:hover {background:#F1F1F1;}
+.compare th {width:58px;font-weight:normal;border:#DDDDDD 1px solid;border-top:none;letter-spacing:1px;background:#F1F1F1;}
+.compare td {width:169px;padding:16px 10px;border-right:#DDDDDD 1px solid;border-bottom:#DDDDDD 1px solid;}
+.compare div {height:18px;line-height:18px;overflow:hidden;}
+</style>
+<div class="m">
+	<div class="nav"><a href="{$MODULE[1][linkurl]}">首页</a> <i>&gt;</i> <a href="{$MOD[linkurl]}">{$MOD[name]}</a> <i>&gt;</i> 商品对比</div>
+	<div class="compare">
+	<table cellpadding="0" cellspacing="0">
+	<tr>
+	<th>移除</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}"><a href="javascript:;" onclick="compare_remove({$k});" class="b">移除</a></td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>图片</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}"><a href="{$v[linkurl]}" target="_blank"><img src="{$v[thumb]}" width="100" height="100" alt=""/></a></td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>商品</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}"><div><a href="{$v[linkurl]}" target="_blank" title="{$v[alt]}">{$v[title]}</a></div></td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>价格</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}"><strong class="f_price">{$v[price]}</strong></td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>品牌</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}"><div title="{$v[brand]}">{$v[brand]}</div></td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>日期</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}">{$v[editdate]}</td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>公司</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}"><div><a href="{$v[userurl]}" target="_blank" title="{$v[company]}">{$v[company]}</a></div></td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>会员</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}">
+	{if $v[vip]}<img src="{DT_SKIN}image/vip_{$v[vip]}.gif" alt="{VIP}" title="{VIP}:{$v[vip]}级"/>{/if}
+	</td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>地区</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}">{area_pos($v[areaid], ' ', 2)}</td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>销量</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}">{$v[sales]}</td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>评价</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}">{$v[comments]}</td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>联系</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}">&nbsp;
+		{if $v[username] && $DT[im_web]}{im_web($v[username].'&mid='.$moduleid.'&itemid='.$v[itemid])}&nbsp;{/if}
+		{if $v[qq] && $DT[im_qq]}{im_qq($v[qq])}&nbsp;{/if}
+		{if $v[wx] && $DT[im_wx]}{im_wx($v[wx], $v[username])}&nbsp;{/if}
+		{if $v[ali] && $DT[im_ali]}{im_ali($v[ali])}&nbsp;{/if}
+		{if $v[skype] && $DT[im_skype]}{im_skype($v[skype])}</a>&nbsp;{/if}
+	</td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>购买</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}"><a href="{$MODULE[2][linkurl]}buy.php?mid={$moduleid}&itemid={$v[itemid]}" target="_blank"><img src="{DT_SKIN}image/buy.gif" title="购买" alt=""/></a></td>
+	{/loop}
+	</tr>
+	<tr>
+	<th>移除</th>
+	{loop $tags $k $v}
+	<td data-key="{$k}" data-del="{$k}"><a href="javascript:;" onclick="compare_remove({$k});" class="b">移除</a></td>
+	{/loop}
+	</tr>
+	</table>
+	</div>
+</div>
+<script type="text/javascript">
+function compare_remove(k) {
+	if($('[data-del]').length < 3) {confirm('最少需要保留两条信息');return;}
+	$('[data-key="'+k+'"]').remove();
+}
+</script>
+{template 'footer'}

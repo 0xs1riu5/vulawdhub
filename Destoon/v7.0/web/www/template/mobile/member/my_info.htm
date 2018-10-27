@@ -1,0 +1,344 @@
+{template 'header', 'member'}
+<div id="head-bar">
+<div class="head-bar">
+<div class="head-bar-back">
+<a href="{$back_link}" data-direction="reverse"><img src="{DT_MOB}static/img/icon-back.png" width="24" height="24"/><span>返回</span></a>
+</div>
+<div class="head-bar-title">{$MOD[name]}{if $action=='add'}发布{elseif $action=='edit'}修改{else}管理{/if}</div>
+<div class="head-bar-right">
+{if $action=='add' || $action=='edit'}
+<a href="?mid={$mid}"><span>取消</span></a>
+{else}
+<a href="?mid={$mid}&action=add"><span>发布</span></a>
+{/if}
+</div>
+</div>
+<div class="head-bar-fix"></div>
+</div>
+
+{if $action=='add' || $action=='edit'}
+<script type="text/javascript" src="{DT_MOB}static/lib/webuploader.min.js"></script>
+<div class="ui-form">
+<iframe src="" name="send" id="send" style="display:none;"></iframe>
+<form method="post" action="?" id="dform" target="send" data-ajax="false" onsubmit="return check();">
+<input type="hidden" name="action" value="{$action}"/>
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="itemid" value="{$itemid}"/>
+<input type="hidden" name="forward" value="{$forward}"/>
+<input type="hidden" name="post[linkurl]" value="{$linkurl}"/>
+
+<p>所属分类<em>*</em><b id="dcatid"></b></p>
+<div>{ajax_category_select('post[catid]', '选择分类', $catid, $moduleid)}</div>
+
+
+<p>{$MOD[name]}标题<em>*</em><b id="dtitle"></b></p>
+<div><input name="post[title]" type="text" id="title" value="{$title}"/></div>
+
+{if $CP}
+<script type="text/javascript">
+var property_catid = {$catid};
+var property_itemid = {$itemid};
+var property_admin = 0;
+</script>
+<script type="text/javascript" src="{DT_STATIC}file/script/property.js"></script>
+<section id="load_property" style="display:none;"></section>
+{/if}
+{if $FD}{fields_html('', '', $item)}{/if}
+
+<p>详细内容<em>*</em><b id="dcontent"></b></p>
+</div>
+<input type="hidden" name="post[content]" id="content"/>
+<ul class="ui-editor-toolbar">
+<li class="ui-editor-img"><div id="editor-picker"></div></li>
+<li class="ui-editor-bold" id="editor-bold" editor-action="bold">B</li>
+<li class="ui-editor-italic" id="editor-italic" editor-action="italic">I</li>
+<li class="ui-editor-underline" id="editor-underline" editor-action="underline">U</li>
+</ul>
+<div class="ui-editor-content" id="editor">{$content}</div>
+<script type="text/javascript" src="{DT_MOB}static/js/editor.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#editor').DEditor({
+        editorid: 'editor',
+        textareaid: 'content',
+        server:'{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=editor'
+    });
+});
+</script>
+<div class="ui-form">
+
+<p>过期时间</p>
+<div><input type="date" name="post[totime]" value="{$totime}" /></div>
+
+
+
+
+<p>主要参数</p>
+<div>
+	<table cellspacing="1">
+	<tr>
+	<th>参数名称</th>
+	<th>参数值</th>
+	</tr>
+	<tr>
+	<td style="width:35%;"><input name="post[n1]" type="text" value="{$n1}" id="n1"/></td>
+	<td style="width:50%;"><input name="post[v1]" type="text" value="{$v1}" id="v1"/></td>
+	</tr>
+	<tr>
+	<td style="width:35%;"><input name="post[n2]" type="text" value="{$n2}" id="n2"/></td>
+	<td style="width:50%;"><input name="post[v2]" type="text" value="{$v2}" id="v2"/></td>
+	</tr>
+	<tr>
+	<td style="width:35%;"><input name="post[n3]" type="text" value="{$n3}" id="n3"/></td>
+	<td style="width:50%;"><input name="post[v3]" type="text" value="{$v3}" id="v3"/></td>
+	</tr>
+	<tr>
+	<td class="f_gray">例如：规格</td>
+	<td class="f_gray">例如：10cm*20cm</td>
+	</tr>
+	</table>
+</div>
+
+<p>{$MOD[name]}图片</p>
+<div>
+<input type="hidden" name="post[thumb]" id="thumb0"/>
+<input type="hidden" name="post[thumb1]" id="thumb1"/>
+<input type="hidden" name="post[thumb2]" id="thumb2"/>
+<div class="ui-form-album-show" id="album0" onclick="album_action(0);"></div>
+<div class="ui-form-album-show" id="album1" onclick="album_action(1);"></div>
+<div class="ui-form-album-show" id="album2" onclick="album_action(2);"></div>
+<div class="ui-form-album-upload"><div id="album-picker"></div></div>
+</div>
+
+
+<p>{$MOD[name]}区域</p>
+<div>{ajax_area_select('post[areaid]', '请选择', $areaid)}<span class="f_gray">不选择代表全国</span></div>
+
+{if $fee_add}
+<p>发布此信息需消费</p>
+<div><span class="f_b f_red">{$fee_add}</span> {$fee_unit}</td>
+</tr>
+{if $fee_currency == 'money'}
+<p>{$DT[money_name]}余额</p>
+<div><span class="f_blue f_b">{$_money}{$fee_unit}</span> <a href="charge.php?action=pay" class="b">[充值]</a></div>
+{else}
+<p>{$DT[credit_name]}余额</p>
+<div><span class="f_blue f_b">{$_credit}{$fee_unit}</span> <a href="credit.php?action=buy" class="b">[购买]</a></div>
+{/if}
+{/if}
+
+{if $need_password}
+<p>支付密码<em>*</em><b id="dpassword"></b></p>
+<div><input type="password" name="password" value="" id="password" autocomplete="off"/></div>
+{/if}
+
+{if $need_question}
+<p>验证问题<em>*</em><b id="danswer"></b></p>
+<div>{template 'question', 'chip'}</div>
+{/if}
+{if $need_captcha}
+<p>验证码<em>*</em><b id="dcaptcha"></b></p>
+<div>{template 'captcha', 'chip'}</div>
+{/if}
+
+<div class="blank-16"></div>
+<input type="submit" name="submit" value="{if $action == 'edit'}修改{else}发布{/if}" class="btn-blue"/>
+<div class="blank-32"></div>
+</div>
+<script type="text/javascript">
+function album_action(id) {
+	Dsheet('<a href="javascript:album_delete('+id+');"><span style="color:red;">删除图片</span></a>', '取消', '确定要删除图片吗？');
+}
+function album_delete(id) {
+	$('#thumb'+id).val('');
+	$('#album'+id).html('');
+	$('#album'+id).hide();
+	$('.ui-form-album-upload').show();	
+}
+function album_show(id, url) {
+	$('#thumb'+id).val(url);
+	$('#album'+id).html('<img src="'+url+'"/>');
+	$('#album'+id).show();
+}
+var albumu = WebUploader.create({
+	auto: true,
+    server: '{DT_MOB}upload.php?moduleid={$moduleid}&action=webuploader&from=album&width=100&height=100',
+    pick: '#album-picker',
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,bmp,png',
+        mimeTypes: 'image/*'
+    },
+    resize: false
+});
+albumu.on('fileQueued', function(file) {
+    Dtoast('上传中..', '', 30);
+});
+albumu.on('uploadProgress', function(file, percentage) {
+	var p = parseInt(percentage * 100);
+	$('.ui-toast').html(p > 99 ? '处理中...' : '上传中...'+p+'%');
+});
+albumu.on( 'uploadSuccess', function(file, data) {
+	if(data.error) {
+		Dtoast(data.message, '', 5);
+	} else {
+		var id = 3;
+		if($('#thumb0').val() == '') {
+			id = 0;
+		} else if($('#thumb1').val() == '') {
+			id = 1;
+		} else if($('#thumb2').val() == '') {
+			id = 2;
+		}
+		if(id < 3) album_show(id, data.url);
+		if($('#thumb0').val() && $('#thumb1').val() && $('#thumb2').val()) $('.ui-form-album-upload').hide();
+	}
+});
+albumu.on( 'uploadError', function(file, data) {
+    Dtoast(data.message, '', 5);
+});
+albumu.on('uploadComplete', function(file) {
+    $('.ui-toast').hide();
+});
+{if $thumb || $thumb1 || $thumb2}
+$(function(){
+	{if $thumb}album_show(0, '{$thumb}');{/if}
+	{if $thumb1}album_show(1, '{$thumb1}');{/if}
+	{if $thumb2}album_show(2, '{$thumb2}');{/if}
+	{if $thumb && $thumb1 && $thumb2}$('.ui-form-album-upload').hide();{/if}
+});
+{/if}
+</script>
+{load('clear.js')}
+{else}
+<div class="ui-form sch">
+<form action="?">
+<input type="hidden" name="mid" value="{$mid}"/>
+<input type="hidden" name="status" value="{$status}"/>
+<div><input type="search" name="kw" value="{$kw}" placeholder="输入关键词搜索"/></div>
+</form>
+</div>
+{if $_userid}
+<div class="list-menu">
+	<ul>
+	<a href="?mid={$mid}&status=3"><li{if $status==3} class="on"{/if} id="s3">已发布{if !$kw} {$nums[3]}{/if}</li></a>
+	<a href="?mid={$mid}&status=2"><li{if $status==2} class="on"{/if} id="s2">审核中{if !$kw} {$nums[2]}{/if}</li></a>
+	<a href="?mid={$mid}&status=1"><li{if $status==1} class="on"{/if} id="s1">未通过{if !$kw} {$nums[1]}{/if}</li></a>
+	<a href="?mid={$mid}&status=4"><li{if $status==4} class="on"{/if} id="s4">已过期{if !$kw} {$nums[4]}{/if}</li></a>
+	</ul>
+</div>
+{/if}
+<form method="post">
+{if $lists}
+{loop $lists $v}
+<div class="list-img">
+<input type="checkbox" name="itemid[]" value="{$v[itemid]}" class="dsn" id="checkbox-{$v[itemid]}"/>
+<a href="{$v[linkurl]}"><img src="{if $v[thumb]}{$v[thumb]}{else}{DT_MOB}static/img/80x60.png{/if}" width="80" height="60" alt="" onerror="this.src='{DT_MOB}static/img/80x60.png';"/></a>
+<ul>
+<li><em class="check" id="check-{$v[itemid]}"></em><a href="?mid={$mid}&action=edit&itemid={$v[itemid]}" rel="external"><strong>{$v[title]}</strong></a></li>
+<li><em class="sheet" id="sheet-{$v[itemid]}"></em><span>{$v[date]}</span></li>
+</ul>
+</div>
+{/loop}
+{/if}
+{if $pages}<div class="pages">{$pages}</div>{/if}
+<div id="foot-bar" class="dsn">
+<div class="foot-bar-fix"></div>
+<div class="foot-bar btns">
+{if $timetype!='add'}<input type="submit" value="刷新选中" class="btn-green" onclick="this.form.action='?mid={$mid}&status={$status}&action=refresh';"/>{/if}
+{if $MG[delete]}<input type="submit" name="submit" value="删除选中" class="btn-red" onclick="if(confirm('确定要删除选中{$MOD[name]}吗？')){this.form.action='?mid={$mid}&status={$status}&action=delete'}else{return false;}"/>{/if}
+</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+	if($('#foot-bar input').length == 0) $('.check').hide();
+	$('.list-img em').click(function() {
+		if($(this).attr('class') == 'sheet') {
+			var id = $(this).attr('id').replace('sheet-', '');
+			Dsheet('<a href="?mid={$mid}&action=edit&itemid='+id+'"><span>修改</span></a>{if $MG[copy]}|<a href="?mid={$mid}&action=add&itemid='+id+'"><span>复制</span></a>{/if}{if $MG[delete]}|<a href="?mid={$mid}&action=delete&itemid='+id+'" onclick="return _delete();"><span style="color:red;">删除</span></a>{/if}', '取消');
+		} else {
+			var id = $(this).attr('id').replace('check-', '');
+			if($('#checkbox-'+id).attr('checked')) {
+				$('#checkbox-'+id).attr('checked', false);
+				$(this).attr('class', 'check');
+			} else {
+				$('#checkbox-'+id).attr('checked', true);
+				$(this).attr('class', 'checked');
+			}
+			if($('.checked').length > 0) {
+				$('#foot-bar').fadeIn(300);
+			} else {
+				$('#foot-bar').fadeOut(300);
+			}
+		}
+	});
+});
+</script>
+{/if}
+{if $action == 'add' || $action == 'edit'}
+<script type="text/javascript">
+function check() {
+	var l;
+	var f;
+	f = 'catid_1';
+	if(Dd(f).value == 0) {
+		Dmsg('请选择所属分类', 'catid', 1);
+		return false;
+	}
+	f = 'title';
+	l = Dd(f).value.length;
+	if(l < 5 || l > 30) {
+		Dmsg('标题应为5-30字，当前已输入'+l+'字', f);
+		return false;
+	}
+{if !$_userid}
+	f = 'company';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写公司名称', f);
+		return false;
+	}
+	f = 'truename';
+	l = Dd(f).value.length;
+	if(l < 2) {
+		Dmsg('请填写联系人', f);
+		return false;
+	}
+	f = 'mobile';
+	l = Dd(f).value.length;
+	if(l < 7) {
+		Dmsg('请填写手机', f);
+		return false;
+	}
+{/if}
+	{if $FD}{fields_js()}{/if}
+	{if $CP}{property_js()}{/if}
+{if $need_password}
+	f = 'password';
+	l = Dd(f).value.length;
+	if(l < 6) {
+		Dmsg('请填写支付密码', f);
+		return false;
+	}
+{/if}
+{if $need_question}
+	f = 'answer';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证问题', f);
+		return false;
+	}
+{/if}
+{if $need_captcha}
+	f = 'captcha';
+	if($('#c'+f).html().indexOf('ok.png') == -1) {
+		Dmsg('请填写正确的验证码', f);
+		return false;
+	}
+{/if}
+	return true;
+}
+var destoon_oauth = '{$EXT[oauth]}';
+</script>
+{/if}
+{template 'footer', 'member'}
