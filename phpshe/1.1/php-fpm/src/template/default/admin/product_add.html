@@ -1,0 +1,74 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=product&act=add">发布商品</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" enctype="multipart/form-data">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+	<tr>
+		<td width="100" class="bg_f8" align="right">商品名称：</td>
+		<td width="530"><input type="text" name="info[product_name]" value="{$info['product_name']}" class="inputtext inputtext_500" maxlength="36" /></td>
+		<td rowspan="8" valign="top">
+			<img src="{pe_thumb($info['product_logo'])}" width="160" height="170" style="border:1px solid #ddd; display:block;" />
+			<p class="mat5"><input type="file" name="product_logo" size="12" /></p>
+		</td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">商品分类：</td>
+		<td>
+			<select name="info[category_id]" class="inputselect">
+			<!--{foreach($category_treelist as $v):}-->
+			<option value="{$v['category_id']}" <!--{if($v['category_id']==$info['category_id']):}-->selected="selected"<!--{endif;}-->>{$v['category_showname']}</option>
+			<!--{endforeach;}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">市场价格：</td>
+		<td><input type="text" name="info[product_mmoney]" value="{$info['product_mmoney']}" class="inputtext inputtext_100" /> <span class="c888">元</span></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">本店价格：</td>
+		<td><input type="text" name="info[product_smoney]" value="{$info['product_smoney']}" class="inputtext inputtext_100" /> <span class="c888">元</span></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">运　　费：</td>
+		<td><input type="text" name="info[product_wlmoney]" value="{$info['product_wlmoney']}" class="inputtext inputtext_100" /> <span class="c888">元（注：0元为卖家包邮）</span></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">商品货号：</td>
+		<td><input type="text" name="info[product_mark]" value="{$info['product_mark']}" class="inputtext inputtext_100" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">库存总量：</td>
+		<td><input type="text" name="info[product_num]" value="{$info['product_num']}" class="inputtext inputtext_100" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">发布日期：</td>
+		<td><input type="text" name="info[product_atime]" value="{pe_date($info['product_atime'] ? $info['product_atime'] : time())}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" class="Wdate" /></td>
+	</tr>
+	<tr>
+		<td colspan="3"><textarea name="info[product_text]" id="editortext" style="width:100%;height:600px">{htmlspecialchars($info['product_text'])}</textarea></td>
+	</tr>
+	</table>
+	<div class="mat10 center"><input type="submit" name="pesubmit" value="提 交" class="tjbtn" /></div>
+	</form>
+</div>
+<script type="text/javascript" src="{$pe['host_root']}include/plugin/my97/WdatePicker.js"></script>
+<script charset="utf-8" src="{$pe['host_root']}include/plugin/editor/kindeditor.js"></script>
+<script charset="utf-8" src="{$pe['host_root']}include/plugin/editor/lang/zh_CN.js"></script>
+<script type="text/javascript" charset="utf-8">
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('#editortext', {
+		allowFlashUpload :false
+	});
+});
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="{$pe['host_tpl']}css/all.css" rel="stylesheet" type="text/css" />
+<link href="{$pe['host_tpl']}css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{$pe['host_root']}include/js/jquery.js"></script>
+</head>
+<body style="background:none">
+<form method="post">
+<table style="width:400px;margin:0;" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+<tr>
+	<td align="right" class="bg_f8" width="100">物流公司：</td>
+	<td>
+		<select name="info[order_wlname]" class="inputselect">
+		<option value="">无需物流</option>
+		<!--{foreach($ini_wllist as $v):}-->
+		<option value="{$v}">{$v}</option>
+		<!--{endforeach;}-->
+		</select>
+	</td>
+</tr>
+<tr>
+	<td align="right" class="bg_f8">物流编号：</td>
+	<td><input type="text" name="info[order_wlid]" class="inputtext inputtext_200" /></td>
+</tr>
+<tr>
+	<td class="bg_f8">&nbsp;</td>
+	<td>
+		<input type="hidden" name="pesubmit" />
+		<input type="button" value="提 交" class="tjbtn" />
+	</td>
+</tr>
+</table>
+</form>
+<script type="text/javascript">
+$(function(){
+$(":button").click(function(){
+	if ($(":input[name='info[order_wlname]']").val() != '' && $(":input[name='info[order_wlid]']").val() == '') {
+		alert('物流编号必须填写');
+		return false;
+	}
+	$("form").submit();
+})
+})
+</script>
+</body>
+</html>

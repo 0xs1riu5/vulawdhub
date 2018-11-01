@@ -1,0 +1,75 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<!--{include(pe_tpl('user_menu.html'));}-->
+	<div class="fr huiyuan_main">
+		<h3 class="hy_rtt">{$menutitle}</h3>
+			<div class="hy_table">
+				<div class="dingdan">
+					<h3 style="margin-top:0">订单状态</h3>
+					<p class="mat5">
+						<span class="cgreen fl">已下单</span><span class="fl">[{pe_date($info['order_atime'])}] →</span>
+						<!--{if($info['order_state']=='notpay'):}-->
+						<span class="cred fl mal5">等待买家付款</span><a href="{$pe['host_root']}index.php?mod=order&act=pay&id={$info['order_id']}" target="_blank" class="pay_btn fl">付款</a>
+						<!--{elseif($info['order_state']=='paid'):}-->
+						<span class="cgreen fl mal5">已付款</span><span class="fl">[{pe_date($info['order_ptime'])}] →</span>
+						<span class="cred fl mal5">等待卖家发货</span>
+						<!--{elseif($info['order_state']=='send'):}-->
+						<span class="cgreen fl mal5">已付款</span><span class="fl">[{pe_date($info['order_ptime'])}] →</span>
+						<span class="cgreen fl mal5">已发货</span><span class="fl">[{pe_date($info['order_stime'])}] →</span>
+						<span class="cred fl mal5">等待买家确认</span><a href="https://lab.alipay.com/consume/queryTradeDetail.htm?tradeNo={$info['order_outid']}" target="_blank" class="shouhuo_btn fl">确认收货</a>
+						<!--{elseif($info['order_state']=='success'):}-->
+						<span class="cgreen fl mal5">已付款</span><span class="fl">[{pe_date($info['order_ptime'])}] →</span>
+						<span class="cgreen fl mal5">已发货</span><span class="fl">[{pe_date($info['order_stime'])}] →</span>
+						<span class="cred fl mal5">交易成功</span>
+						<!--{endif;}-->
+						<div class="clear"></div>
+					</p>
+					<h3>商品名称</h3>
+					<!--{foreach($product_list as $v):}-->
+					<p><a href="{pe_url('product-'.$v['product_id'])}" title="{$v['product_name']}" target="_blank" class="cblue">{$v['product_name']}</a>　<span class="num">¥{$v['product_smoney']}</span>(×{$v['product_num']})</p>
+					<!--{endforeach;}-->
+					<h3>物流信息</h3>
+					<p class="mat5">物流公司：{$info['order_wlname']}<br />运单号码：{$info['order_wlid']}</p>					
+					<h3>实付金额</h3>
+					<p class="mat5">
+						<span class="strong num1 font14 cred">{$info['order_money']}</span>(元)
+						＝ <span class="strong num1 font14 cred">{$info['order_productmoney']}</span>(商品价格)
+						＋ <span class="strong num1 font14 cred">{$info['order_wlmoney']}</span>(运费)
+					</p>
+				</div>
+				<h3 style="margin:10px 0 0 5px; line-height:30px;">买家信息</h3>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td style="text-align:right" class="bg_f8" width="100">会员帐号：</td>
+					<td style="text-align:left">{$info['user_name']}（ID：{$info['user_id']}）</td>
+				</tr
+				<tr>
+					<td style="text-align:right" class="bg_f8">收货姓名：</td>
+					<td style="text-align:left">{$info['user_tname']}</td>
+				</tr>
+				<tr>
+					<td style="text-align:right" class="bg_f8">手机号码：</td>
+					<td style="text-align:left">{$info['user_phone']}</td>
+				</tr>
+				<tr>
+					<td style="text-align:right" class="bg_f8">固定电话：</td>
+					<td style="text-align:left">{$info['user_tel']}</td>
+				</tr>
+				<tr>
+					<td style="text-align:right" class="bg_f8">收货地址：</td>
+					<td style="text-align:left">{$info['user_address']}</td>
+				</tr>
+				<tr>
+					<td style="text-align:right" class="bg_f8">买家留言：</td>
+					<td style="text-align:left">{$info['order_text']}</td>
+				</tr>
+				<tr>
+					<td style="text-align:right" class="bg_f8">付款方式：</td>
+					<td style="text-align:left">{$ini_payway[$info['order_payway']]}</td>
+				</tr>
+				</table>
+			</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

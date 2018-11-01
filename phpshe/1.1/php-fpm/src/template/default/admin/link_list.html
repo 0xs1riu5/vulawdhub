@@ -1,0 +1,42 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=link&act=add">增加链接</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list mat5">
+	<tr>
+		<td class="bgtt" width="50">ID号</td>
+		<td class="bgtt" width="50">排序</td>
+		<td class="bgtt" width="200">链接名称</td>
+		<td class="bgtt">链接地址</td>
+		<td class="bgtt" width="70">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td>{$v['link_id']}<input type="hidden" name="link_id[]" value="{$v['link_id']}" /></td>
+		<td><input type="text" name="link_order[{$v['link_id']}]" value="{$v['link_order']}" class="inputtext inputtext_40" /></td>
+		<td>{$v['link_name']}</td>
+		<td><a href="{$v['link_url']}" target="_blank">{$v['link_url']}</a></td>
+		<td>
+			<a href="admin.php?mod=link&act=edit&id={$v['link_id']}" class="admin_edit">修改</a>
+			<a href="admin.php?mod=link&act=del&id={$v['link_id']}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt aleft" colspan="5">
+			<span class="fl"><button href="admin.php?mod=link&act=order" onclick="pe_doall(this,'form')">批量排序</button></span>
+			<span class="fenye">{$db->page->html}</span>
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

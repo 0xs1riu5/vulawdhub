@@ -1,0 +1,23 @@
+<div class="now">您现在的位置：<a href="{$pe['host_root']}">首页</a> > 会员中心 > {$menutitle}</div>
+<div class="danye_left">
+	<div class="danye_help">
+		<div class="danye_tt">会员中心</div>
+		<div class="danye_list">
+			<h3>交易管理</h3>
+			<ul>
+				<li <!--{if($act=='order'):}-->class="sel"<!--{endif;}-->><a href="index.php?mod=user&act=order">我的订单</a></li>
+			</ul>
+			<h3>信息管理</h3>
+			<ul>
+				<li <!--{if($act=='collect'):}-->class="sel"<!--{endif;}-->><a href="index.php?mod=user&act=collect">我的收藏</a></li>
+				<li <!--{if($act=='ask'):}-->class="sel"<!--{endif;}-->><a href="index.php?mod=user&act=ask">我的咨询</a></li>
+				<li <!--{if($act=='comment'):}-->class="sel"<!--{endif;}-->><a href="index.php?mod=user&act=comment">我的评价</a></li>
+			</ul>
+			<h3>个人信息</h3>
+			<ul>
+				<li <!--{if($act=='base'):}-->class="sel"<!--{endif;}-->><a href="index.php?mod=user&act=base">基本信息</a></li>
+				<li <!--{if($act=='pw'):}-->class="sel"<!--{endif;}-->><a href="index.php?mod=user&act=pw">修改密码</a></li>
+			</ul>
+		</div>
+	</div>
+</div>

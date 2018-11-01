@@ -1,0 +1,236 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<div class="now">{$nowpath}</div>
+	<div class="remai fl">
+		<h3>商品分类</h3>
+		<div class="hotlist spfl">
+			<!--{foreach((array)$cache_category_arr[0] as $k=>$v):}-->
+			<div class="zhulei"><a href="{pe_url('product-list-'.$k)}" <!--{if($category_id==$k):}-->class="sel"<!--{endif;}-->>{$v['category_name']}</a></div>
+			<div class="clear"></div>
+			<!--{if(is_array($cache_category_arr[$v['category_id']])):}-->
+			<div class="zilei">
+				<!--{foreach($cache_category_arr[$v['category_id']] as $kk=>$vv):}-->
+				<a href="{pe_url('product-list-'.$kk)}" <!--{if($category_id==$kk):}-->class="sel"<!--{endif;}-->>{$vv['category_name']}</a>
+				<!--{endforeach;}-->
+				<div class="clear"></div>
+			</div>
+			<!--{endif;}-->
+			<!--{endforeach;}-->
+		</div>
+		<h3 class="mat10">热销排行</h3>
+		<ul class="hotlist">
+			<!--{foreach((array)$product_hotlist as $v):}-->
+			<li>
+				<span class="fl hotimg"><img src="{pe_thumb($v['product_logo'], 60, 60)}" title="{$v['product_name']}" /></span>
+				<span class="fl hotname">
+					<a href="{pe_url('product-'.$v['product_id'])}" title="{$v['product_name']}" target="_blank">{$v['product_name']}</a>
+					<span class="cred num strong lh20">¥{$v['product_smoney']}</span>
+				</span>
+				<div class="clear"></div>
+			</li>
+			<!--{endforeach;}-->
+		</ul>
+	</div>
+	<div class="fr xiangqing">
+		<div class="fl proimg"><img src="{pe_thumb($info['product_logo'], 310, 310)}" /></div>
+		<div class="fr proinfo">
+			<h3>{$info['product_name']}</h3>
+			<p class="mat5">市 场 价： <s class="num c888">¥ {$info['product_mmoney']}</s></p>
+			<p>商 城 价： <span class="cred1 font20 num strong">¥ {$info['product_smoney']}</span></p>
+			<p>运　　费： <!--{if($info['product_wlmoney'] == 0):}-->卖家包邮<!--{else:}--><span class="num">¥ {$info['product_wlmoney']}</span><!--{endif;}--></p>
+			<p>销售情况： 共售出 <span class="cred num strong">{$info['product_sellnum']}</span> 件 <a href="javascript:find_comment();" class="cblue">(已有{$info['product_commentnum']}人评价)</a></p>
+			<div class="buyinfo">
+				<div class="shuliang">
+					<span class="fl mat2">数量：</span>
+					<img src="{$pe['host_tpl']}images/jian.gif" onclick="pe_numchange('product_num', '-', 1)" />
+					<input type="text" name="product_num" value="1" readonly />
+					<img src="{$pe['host_tpl']}images/jia.gif" onclick="pe_numchange('product_num', '+', {$info['product_num']})" />
+					<span class="fl c888 mal5 mat2">（库存 {$info['product_num']}）</span>
+				</div>
+				<div class="clear"></div>
+				<p>
+					<!--{if($info['product_state']==2):}-->
+					<img src="{$pe['host_tpl']}images/selldown.gif" class="fl" />
+					<!--{elseif($info['product_state']==1 && $info['product_num']==0):}-->
+					<img src="{$pe['host_tpl']}images/sellout.gif" class="fl" />
+					<!--{else:}-->
+					<a href="javascript:cart_add('{$info['product_id']}');" class="fl"><img src="{$pe['host_tpl']}images/buy.gif" /></a>
+					<!--{endif;}-->
+					<a href="javascript:collect_add('{$info['product_id']}');" class="sctj fl">添加到收藏夹</a>
+				</p>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+			<p>上架时间：<span class="c666">{pe_date($info['product_atime'])}</span>　　浏览次数：<span class="c666">{$info['product_clicknum']}</span>　　收藏人数：<span class="c666">{$info['product_collectnum']}</span></p>
+			<div class="mat5" style="height:25px; overflow:hidden;">
+				<!-- Baidu Button BEGIN -->
+				<div id="bdshare" class="bdshare_b" style="line-height:12px;"><img src="http://bdimg.share.baidu.com/static/images/type-button-1.jpg" />
+					<a class="shareCount"></a>
+				</div>
+				<script type="text/javascript" id="bdshare_js" data="type=button&amp;uid=456179" ></script>
+				<script type="text/javascript" id="bdshell_js"></script>
+				<script type="text/javascript">
+					document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?t=" + new Date().getHours();
+				</script>
+				<!-- Baidu Button END -->
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		<div class="caidan1">
+			<ul class="fl" id="js_menu">
+				<li class="sel"><a href="javascript:;">商品展示</a></li>
+				<li><a href="javascript:;">售前咨询({$info['product_asknum']})</a></li>
+				<li><a href="javascript:;">顾客评价({$info['product_commentnum']})</a></li>
+				<li><a href="javascript:;">售后服务</a></li>
+			</ul>
+			<div class="fr c666 mat10 mar10">商品货号：{$info['product_mark']}</div>
+		</div>
+		<div class="promain js_menuhtml">{$info['product_text']}</div>
+		<!--咨询 Start-->
+		<div class="promain js_menuhtml" style="display:none">
+			<div class="plmain" id="js_askhtml">
+				<!--{foreach($ask_list as $v):}-->
+				<ul class="mat5">
+					<li class="fl">会员：{$v['user_name']}</li>
+					<li class="fr">咨询日期：{pe_date($v['ask_atime'])}</li>
+				</ul>
+				<div class="padb10 mal10 lh18">
+					<div class="mat10 font14">{$v['ask_text']}</div>
+					<!--{if($v['ask_replytext']):}-->
+					<div class="mat10 huifu">
+						<strong class="corg">卖家回复：</strong><br />
+						<div class="mat5">{$v['ask_replytext']}</div>
+					</div>
+					<!--{endif;}-->
+				</div>
+				<!--{endforeach;}-->
+				<div class="xuxian1"></div>
+				<div class="zixunbox">
+					<div class="fl pl_l"></div>
+					<div class="fl pl_m">请在这里发表您的问题</div>
+					<div class="fl pl_r"></div>
+					<div class="clear"></div>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td valign="top">用户名称：</td>
+						<td><!--{if(pe_login('user')):}-->{$_s_user_name}<!--{else:}-->游客<!--{endif;}--></td>
+					</tr>
+					<tr>
+						<td valign="top">咨询内容：</td>
+						<td><textarea name="ask_text" style="width:550px;height:120px;resize:none;"></textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="button" value="提交" class="tj_btn"></td>
+					</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!--咨询 End-->
+		<!--评论 Start-->
+		<div class="promain js_menuhtml" style="display:none">
+			<div class="plmain" id="js_commenthtml">
+				<!--{foreach($comment_list as $v):}-->
+				<ul class="mat5">
+					<li class="fl">会员：{$v['user_name']}</li>
+					<li class="fr">评价日期：{pe_date($v['comment_atime'])}</li>
+				</ul>
+				<div class="pingjia font14">{$v['comment_text']}</div>
+				<!--{endforeach;}-->
+				<div class="xuxian1"></div>
+				<div class="zixunbox">
+					<div class="fl pl_l"></div>
+					<div class="fl pl_m">请在这里发表您的评论</div>
+					<div class="fl pl_r"></div>
+					<div class="clear"></div>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td valign="top">用户名称：</td>
+						<td><!--{if(pe_login('user')):}-->{$_s_user_name}<!--{else:}-->游客<!--{endif;}--></td>
+					</tr>
+					<tr>
+						<td valign="top">评价内容：</td>
+						<td><textarea name="comment_text" style="width:550px;height:120px;resize:none;"></textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="button" value="提交" class="tj_btn"></td>
+					</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!--评论 End-->
+		<div class="promain js_menuhtml" style="display:none">{$page['page_text']}</div>
+	</div>
+</div>
+<script type="text/javascript">
+function find_comment() {
+	$("#js_menu").find("li").eq(2).click();
+	window.location.href = "#js_menu";
+}
+$(function(){
+//标签切换
+$("#js_menu").find("li").click(function(){
+	$("#js_menu").find("li").removeClass("sel");
+	$(this).addClass("sel");
+	$(".js_menuhtml").hide();
+	$(".js_menuhtml").eq($("#js_menu").find("li").index($(this))).show();
+})
+//咨询发表
+$("#js_askhtml").find(":button").click(function(){
+	if (!{pe_login('user')}) {alert('抱歉：只有登录用户才能发表咨询！请先登录...');return;}
+	var ask_text = $(":input[name='ask_text']").val();
+	if (ask_text == '') {alert('咨询内容必须填写');return;}
+	$.post("{$pe['host_root']}index.php?mod=product&act=askadd&id={$info['product_id']}", {"ask_text":ask_text, "pesubmit":true}, function(json){
+		if (json.result) {
+			$("#js_askhtml").prepend(json.html);
+			$(":input[name='ask_text']").val('');
+			alert('咨询提交成功！管理员会尽快答复...');
+		}
+		else {
+			alert('抱歉，咨询提交失败，请重新提交...')			
+		}
+	}, "json")
+})
+//评价发表
+$("#js_commenthtml").find(":button").click(function(){
+	if (!{pe_login('user')}) {alert('抱歉：只有登录用户才能发表评价！请先登录...');return;}
+	var comment_text = $(":input[name='comment_text']").val();
+	if (comment_text == '') {alert('评价内容必须填写');return;}
+	$.post("{$pe['host_root']}index.php?mod=product&act=commentadd&id={$info['product_id']}", {"comment_text":comment_text,"pesubmit":true}, function(json){
+		if (json.result) {
+			$("#js_commenthtml").prepend(json.html);
+			$(":input[name='comment_text']").val('');
+			alert('感谢您的支持，评价提交成功！');
+		}
+		else {
+			alert('抱歉，评价提交失败，请重新提交...')			
+		}
+	}, "json")
+})
+})
+//加入购物车
+function cart_add(id) {
+	$.getJSON("{$pe['host_root']}index.php", {"mod":"order","act":"cartadd","product_id":id,"product_num":$(":input[name='product_num']").val()},function(json){
+		if (json.result) {
+			$("#js_commenthtml").prepend(json.html);
+			if (confirm('加入购物车成功，是否立即结算？')) {
+				window.location.href="{$pe['host_root']}index.php?mod=order&act=add";
+			}
+		}
+		else {
+			alert('抱歉，加入购物车失败，请重新加入...')
+		}
+	})
+}
+function collect_add(id) {
+	if (!{pe_login('user')}) {alert('抱歉：只有登录用户才能收藏商品！请先登录...');return;}
+	$.getJSON("{$pe['host_root']}index.php", {"mod":"product","act":"collectadd","id":id},function(json){
+		alert(json.show);
+	})
+}
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

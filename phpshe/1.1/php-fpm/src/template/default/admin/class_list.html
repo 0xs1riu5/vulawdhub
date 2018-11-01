@@ -1,0 +1,37 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=class&act=add">增加分类</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list mat5">
+	<tr>
+		<td class="bgtt" width="50">ID号</td>
+		<td class="bgtt" width="50">排序</td>
+		<td class="bgtt">分类名称</td>
+		<td class="bgtt" width="70">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td>{$v['class_id']}</td>
+		<td><input type="text" name="class_order[{$v['class_id']}]" value="{$v['class_order']}" class="inputtext inputtext_40" /></td>
+		<td>{$v['class_name']}</td>
+		<td>
+			<a href="admin.php?mod=class&act=edit&id={$v['class_id']}" class="admin_edit">修改</a>
+			<a href="admin.php?mod=class&act=del&id={$v['class_id']}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt aleft" colspan="4"><button href="admin.php?mod=class&act=order" onclick="pe_doall(this,'form')">批量排序</button></td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

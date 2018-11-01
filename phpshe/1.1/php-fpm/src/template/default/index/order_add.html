@@ -1,0 +1,118 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<div class="liucheng"><img src="{$pe['host_tpl']}images/liucheng1.gif" /></div>
+	<div class="shouhuo_info">
+		<div class="gouwuche">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="gwc_tb">
+			<tr>
+				<th width="80">商品图片</th>
+				<th>商品名称</th>
+				<th width="100">商城价</th>
+				<th width="100">购买数量</th>
+				<th width="100">操作</th>
+			</tr>
+			<!--{foreach($info_list as $v):}-->
+			<tr id="{$v['product_id']}" class="product_id">
+				<td class="hotimg"><img src="{pe_thumb($v['product_logo'], 60, 60)}" /></td>
+				<td style="text-align:left"><a href="{pe_url('product-'.$v['product_id'])}" title="{$v['product_name']}" target="_blank" class="cblue">{$v['product_name']}</a></td>
+				<td class="num">¥{$v['product_smoney']}</td>
+				<td class="shuliang" style="padding-left:10px;">
+					<img src="{$pe['host_tpl']}images/jian.gif" onclick="pe_numchange('product_num[{$v['product_id']}]', '-', 1);cart_num('{$v['product_id']}', 'product_num[{$v['product_id']}]')" />
+					<input type="text" name="product_num[{$v['product_id']}]" value="{$v['product_num']}" readonly />
+					<img src="{$pe['host_tpl']}images/jia.gif" onclick="pe_numchange('product_num[{$v['product_id']}]', '+', {$v['product_maxnum']});cart_num('{$v['product_id']}', 'product_num[{$v['product_id']}]')" />
+				</td>
+				<td><a href="javascript:cart_del('{$v['product_id']}');">删除</a></td>
+			</tr>
+			<!--{endforeach;}-->
+			</table>
+		</div>
+		<div class="fukuan">
+			<strong>应付总额：</strong><span class="strong num1 font14 cred" id="order_money">{$money['order_money']}</span>(元)
+			＝ <span class="strong num1 font14 cred" id="order_productmoney">{$money['order_productmoney']}</span>(商品价格)
+			＋ <span class="strong num1 font14 cred" id="order_wlmoney">{$money['order_wlmoney']}</span>(运费)
+		</div>
+		<h3 class="hy_rtt mat10">收货信息</h3>
+		<form method="post" id="form">
+		<div class="hy_table">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="120" style="text-align:right;"><span class="cred1">*</span> 配送区域：</td>
+				<td style="text-align:left;">
+					<select name="province" id="province" class="inputtext"></select>
+					<select name="city" id="city" class="inputtext"></select>
+					<span id="province_show"></span> <span id="city_show"></span>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align:right;"><span class="cred1">*</span> 收货地址： </td>
+				<td style="text-align:left;"><input type="text" name="info[user_address]" value="{$info['user_address']}" class="inputtext input400"><span id="user_address_show"></span></td>
+			</tr>
+			<tr>
+				<td style="text-align:right;"><span class="cred1">*</span> 收货姓名： </td>
+				<td style="text-align:left;"><input type="text" name="info[user_tname]" value="{$info['user_tname']}" class="inputtext input100"><span id="user_tname_show"></span></td>
+			</tr>
+			<tr>
+				<td style="text-align:right;"><span class="cred1">*</span> 手机号码： </td>
+				<td style="text-align:left;"><input type="text" name="info[user_phone]" value="{$info['user_phone']}" class="inputtext input100"><span id="user_phone_show"></span></td>
+			</tr>
+			<tr>
+				<td style="text-align:right;">固定电话： </td>
+				<td style="text-align:left;"><input type="text" name="info[user_tel]" value="{$info['user_tel']}" class="inputtext input100"></td>
+			</tr>
+			<tr>
+				<td style="text-align:right;">用户留言： </td>
+				<td style="text-align:left;"><textarea class="inputtext" name="info[order_text]" style="width:400px;height:80px"></textarea></td>
+			</tr>
+			</table>
+		</div>
+		<p style="text-align:center;margin-top:15px">
+			<input type="hidden" name="pesubmit" />
+			<input type="button" class="buybtn" value="提交订单">
+		</p>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="{$pe['host_root']}include/js/formcheck.js"></script>
+<script type="text/javascript" src="{$pe['host_root']}include/js/shengshi.js"></script>
+<script type="text/javascript">
+function cart_num(product_id,name) {
+	$.getJSON("{$pe['host_root']}index.php", {"mod":"order","act":"cartnum","product_id":product_id,"product_num":$(":input[name='"+name+"']").val()}, function(json){
+		if (json.result) {
+			$("#order_productmoney").html(json.money.order_productmoney);
+			$("#order_wlmoney").html(json.money.order_wlmoney);
+			$("#order_money").html(json.money.order_money);
+		}
+	})
+}
+function cart_del(product_id){
+	if (confirm('您确认要删除该商品吗?') == false) {
+		return;
+	}
+	$.getJSON("{$pe['host_root']}index.php", {"mod":"order","act":"cartdel","product_id":product_id}, function(json){
+		if (json.result) {
+			$("#"+product_id).remove();
+			$("#order_productmoney").html(json.money.order_productmoney);
+			$("#order_wlmoney").html(json.money.order_wlmoney);
+			$("#order_money").html(json.money.order_money);
+		}
+	})
+}
+function order_add() {
+	if ({count($info_list)}) {
+		window.location.href="index.php?mod=order&act=add";
+	}
+	else {
+		alert('您的购物车里还没有商品哦！');
+	}
+}
+shengshi_init({"pval":"河南省","cval":"郑州市"});
+var form_info = [
+	{"name":"province", "mod":"str", "act":"change", "arg":"", "show_id":"province_show","show_error":"省份必须选择"},
+	{"name":"city", "mod":"str", "act":"change", "arg":"", "show_id":"city_show","show_error":"城市必须选择"},
+	{"name":"info[user_address]", "mod":"str", "act":"blur", "arg":"", "show_id":"user_address_show","show_error":"收货地址必须填写"},
+	{"name":"info[user_tname]", "mod":"match", "act":"blur", "arg":"zh", "show_id":"user_tname_show","show_error":"收货人姓名必须填写且为汉字"},
+	{"name":"info[user_phone]", "mod":"match", "act":"blur", "arg":"phone", "show_id":"user_phone_show","show_error":"手机号码必须填写"}
+]
+$(":button").pe_submit(form_info, 'form');
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

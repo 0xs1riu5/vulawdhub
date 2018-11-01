@@ -1,0 +1,58 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">数据库备份</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+	<tr>
+		<td class="bg_f8" align="right" width="100">是否分卷：</td>
+		<td>
+			<input type="radio" name="backup_cut" value="0" checked="checked" /> 不分卷
+			<input type="radio" name="backup_cut" value="1" /> 分卷备份
+			<input type="text" name="backup_cutsize" class="inputtext inputtext_50" /> KB
+		</td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">备份位置：</td>
+		<td>
+			<input type="radio" name="backup_where" value="server" checked="checked" /> 服务器
+			<input type="radio" name="backup_where" value="down" /> 本地下载
+		</td>
+	</tr>
+	<tr>
+		<td class="bg_f8">&nbsp;</td>
+		<td><input type="submit" name="pebackup" value="备 份" class="tjbtn"></td>
+	</tr>
+	</table>
+	</form>
+	<div class="now mat10">
+		<div class="now_l"></div>
+		<div class="now_m">数据库恢复</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" enctype="multipart/form-data">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+	<tr>
+		<td class="bg_f8" align="right" width="100">服务器文件：</td>
+		<td>
+			<select name="import_server" class="inputselect">
+			<option value="">===请选择备份日期===</option>
+			<!--{foreach($backup_list as $v):}-->
+			<option value="{$v}">{$v}</option>
+			<!--{endforeach;}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="bg_f8">&nbsp;</td>
+		<td><input type="submit" name="peimport" value="恢 复" class="tjbtn"></td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

@@ -1,0 +1,36 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">{$menutitle}</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list mat5">
+	<tr>
+		<td class="bgtt" width="50">排序</td>
+		<td class="bgtt" width="120">支付名称</td>
+		<td class="bgtt">支付描述</td>
+		<td class="bgtt" width="50">启用状态</td>
+		<td class="bgtt" width="30">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td><input type="text" name="payway_order[{$v['payway_id']}]" value="{$v['payway_order']}" class="inputtext inputtext_40" /></td>
+		<td>{$v['payway_name']}</td>
+		<td class="aleft">{$v['payway_text']}</td>
+		<td><!--{if($v['payway_state']):}--><span class="cgreen">启用</span><!--{else:}--><span class="cred">禁用</span><!--{endif;}--></td>
+		<td><a href="admin.php?mod=payway&act=edit&id={$v['payway_id']}" class="admin_edit">修改</a></td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt aleft" colspan="5">
+			<span class="fl"><button href="admin.php?mod=payway&act=order" onclick="pe_doall(this,'form')">批量排序</button></span>
+			<span class="fenye">{$db->page->html}</span>
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

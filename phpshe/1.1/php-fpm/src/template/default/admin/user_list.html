@@ -1,0 +1,58 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">{$menutitle}</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<div class="search">
+		<div class="fr searbox">
+			<form method="get">
+				<input type="hidden" name="mod" value="{$_g_mod}" />
+				用户名：<input type="text" name="name" value="{$_g_name}" class="inputtext inputtext_150" />
+				手机号码：<input type="text" name="phone" value="{$_g_phone}" class="inputtext inputtext_150" />
+				常用邮箱：<input type="text" name="email" value="{$_g_email}" class="inputtext inputtext_150" />
+				<input type="submit" value="搜索" class="input2" />
+			</form>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list mat5">
+	<tr>
+		<td class="bgtt" width="10"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'user_id')" /></td>
+		<td class="bgtt" width="50">ID号</td>
+		<td class="bgtt">用户名</td>
+		<td class="bgtt" width="100">手机号码</td>
+		<td class="bgtt" width="150">常用邮箱</td>
+		<td class="bgtt" width="100">上次登录</td>
+		<td class="bgtt" width="60">注册日期</td>
+		<td class="bgtt" width="70">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td><input type="checkbox" name="user_id[]" value="{$v['user_id']}"></td>
+		<td>{$v['user_id']}</td>
+		<td>{$v['user_name']}</td>
+		<td>{$v['user_phone']}</td>
+		<td>{$v['user_email']}</td>
+		<td>{pe_date($v['user_ltime'])}</td>
+		<td>{pe_date($v['user_atime'], 'Y-m-d')}</td>
+		<td>
+			<a href="admin.php?mod=user&act=edit&id={$v['user_id']}&{pe_fromto()}" class="admin_edit">修改</a>
+			<a href="admin.php?mod=user&act=del&id={$v['user_id']}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'user_id')" /></td>
+		<td class="bgtt aleft" colspan="7">
+			<span class="fl"><button href="admin.php?mod=user&act=del" onclick="return pe_cfall(this, 'user_id', 'form', '批量删除')">批量删除</button></span>
+			<span class="fenye">{$db->page->html}</span>
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

@@ -1,0 +1,25 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<!--{include(pe_tpl('user_menu.html'));}-->
+	<div class="fr huiyuan_main">
+		<h3 class="hy_rtt">{$menutitle}</h3>
+		<div class="hy_table">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<!--{foreach($info_list as $v):}-->
+			<tr>
+				<td class="aleft">
+					<p><a href="{pe_url('product-'.$v['product_id'])}" target="_blank" class="cblue">{$v['product_name']}</a></p>
+					<p><span class="cgreen">咨询[{pe_date($v['ask_atime'],'Y-m-d')}]：</span><span class="c888">{$v['ask_text']}</span></p>
+					<!--{if($v['ask_replytext']):}--><p><span class="corg">回复[{pe_date($v['ask_replytime'],'Y-m-d')}]：</span><span class="c888">{$v['ask_replytext']}</span></p><!--{endif;}-->
+				</td>
+			</tr>
+			<!--{endforeach;}-->
+			</table>
+			<div class="hy_pay">
+				<div class="fenye">{$db->page->html}</div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

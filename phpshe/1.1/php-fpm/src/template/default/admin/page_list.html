@@ -1,0 +1,41 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=page&act=add">增加单页</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list mat5">
+	<tr>
+		<td class="bgtt" width="10"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'page_id')" /></td>
+		<td class="bgtt" width="50">ID号</td>
+		<td class="bgtt">单页名称</td>
+		<td class="bgtt" width="70">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td><input type="checkbox" name="page_id[]" value="{$v['page_id']}"></td>
+		<td>{$v['page_id']}</td>
+		<td><a href="{pe_url('page-'.$v['page_id'])}" target="_blank">{$v['page_name']}</a></td>
+		<td>
+			<a href="admin.php?mod=page&act=edit&id={$v['page_id']}" class="admin_edit">修改</a>
+			<a href="admin.php?mod=page&act=del&id={$v['page_id']}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'page_id')" /></td>
+		<td class="bgtt aleft" colspan="3">
+			<span class="fl"><button href="admin.php?mod=page&act=del" onclick="return pe_cfall(this, 'page_id', 'form', '批量删除')">批量删除</button></span>
+			<span class="fenye">{$db->page->html}</span>
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

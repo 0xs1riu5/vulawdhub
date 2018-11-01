@@ -1,0 +1,31 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<div class="liucheng"><img src="{$pe['host_tpl']}images/liucheng2.gif" /></div>
+	<div class="shouhuo_info">
+		<h3 class="hy_rtt mat10">选择支付方式</h3>
+		<div class="hy_table">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<!--{foreach($cache_payway as $k=>$v):}-->
+			<!--{if(!$v['payway_state'])continue}-->
+			<tr>
+				<td width="200"><label for="{$k}"><img src="{pe_thumb($v['payway_logo'])}" title="{$v['payway_name']}" /></label></td>
+				<td style="text-align:left"><p class="cred">{$v['payway_name']}：</p><p>{$v['payway_text']}</p></td>
+				<td width="100">
+				<!--{if($v['payway_mark']=='bank'):}-->
+				<input type="button" value="支付信息" onclick='alert("订单金额：{$order['order_money']}元\n\n{$cache_payway['bank']['payway_config']['bank_text']}")' />
+				<!--{else:}-->
+				<form method="post" target="_blank">
+				<input type="hidden" name="info[order_payway]" value="{$k}" />
+				<input type="submit" name="pesubmit" value="立即支付" />
+				</form>
+				<!--{endif;}-->
+				</td>
+			</tr>
+			<!--{endforeach;}-->
+			</table>
+		</div>
+	</div>
+</div>
+<script charset="utf-8" src="{$phpshe['host_root']}include/plugin/artdialog/jquery.artDialog.js?skin=chrome"></script>
+<script charset="utf-8" src="{$phpshe['host_root']}include/plugin/artdialog/plugins/iframeTools.js"></script>
+<!--{include(pe_tpl('footer.html'));}-->

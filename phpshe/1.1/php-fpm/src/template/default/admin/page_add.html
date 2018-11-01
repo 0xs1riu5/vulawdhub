@@ -1,0 +1,35 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=page&act=add">增加单页</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+	<tr>
+		<td class="bg_f8" align="right" width="100">单页名称：</td>
+		<td><input type="text" name="info[page_name]" value="{$info['page_name']}" class="inputtext inputtext_500" /></td>
+	</tr>
+	<tr>
+		<td colspan="2"><textarea name="info[page_text]" id="editortext" style="width:100%;height:600px">{htmlspecialchars($info['page_text'])}</textarea></td>
+	</tr>
+	</table>
+	<div class="mat10 center"><input type="submit" name="pesubmit" value="提 交" class="tjbtn" /></div>
+	</form>
+</div>
+<script charset="utf-8" src="{$pe['host_root']}include/plugin/editor/kindeditor.js"></script>
+<script charset="utf-8" src="{$pe['host_root']}include/plugin/editor/lang/zh_CN.js"></script>
+<script type="text/javascript" charset="utf-8">
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('#editortext', {
+		allowFlashUpload :false
+	});
+});
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

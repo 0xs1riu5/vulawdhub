@@ -1,0 +1,20 @@
+version: '2'
+services:
+  php5-app:
+    build: ./php-fpm
+    image: s1r1u5/phpshe:1.1
+    restart: always
+    links: 
+        - mysql_phpshe:db
+    ports:
+        - 80:80
+
+    depends_on:
+        - mysql_phpshe
+
+  mysql_phpshe:
+    build: ./mysql
+    image: s1r1u5/mysql_phpshe:1.1
+    environment:
+      MYSQL_ROOT_PASSWORD: "shadow"
+

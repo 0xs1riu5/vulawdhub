@@ -1,0 +1,58 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<!--{include(pe_tpl('user_menu.html'));}-->
+	<div class="fr huiyuan_main">
+		<h3 class="hy_rtt">{$menutitle}</h3>
+		<div class="hy_table">
+		<form method="post" action="{$action}" id="form">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td class="bg_f8" style="text-align:right;" width="100">用 户 名：</td>
+			<td style="text-align:left;">{$info['user_name']}</td>
+		</tr>
+		<tr>
+			<td class="bg_f8" style="text-align:right;">收货地址：</td>
+			<td style="text-align:left;"><input type="text" name="info[user_address]" value="{$info['user_address']}" class="inputtext input400" /></td>
+		</tr>
+		<tr>
+			<td class="bg_f8" style="text-align:right;">收货姓名：</td>
+			<td style="text-align:left;"><input type="text" name="info[user_tname]" value="{$info['user_tname']}" class="inputtext input150" /><span id="user_tname_show"></span></td>
+		</tr>
+		<tr>
+			<td class="bg_f8" style="text-align:right;">手机号码：</td>
+			<td style="text-align:left;"><input type="text" name="info[user_phone]" value="{$info['user_phone']}" class="inputtext input150" /><span id="user_phone_show"></span></td>
+		</tr>
+		<tr>
+			<td class="bg_f8" style="text-align:right;">固定电话：</td>
+			<td style="text-align:left;"><input type="text" name="info[user_tel]" value="{$info['user_tel']}" class="inputtext input150" /><span id="user_phone_show"></span></td>
+		</tr>
+		<tr>
+			<td class="bg_f8" style="text-align:right;">常用邮箱：</td>
+			<td style="text-align:left;"><input type="text" name="info[user_email]" value="{$info['user_email']}" class="inputtext input200" /><span id="user_email_show"></span></td>
+		</tr>
+		<tr>
+			<td class="bg_f8" style="text-align:right;">注册日期：</td>
+			<td style="text-align:left;">{pe_date($info['user_atime'])}</td>
+		</tr>
+		<tr>
+			<td class="bg_f8"></td>
+			<td style="text-align:left;">
+				<input type="hidden" name="pesubmit" />
+				<input type="button" value="提交"  class="tj_btn" />
+			</td>
+		</tr>
+		</table>
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript" src="{$pe['host_root']}include/js/formcheck.js"></script>
+<script type="text/javascript">
+var form_info = [
+	{"name":"info[user_tname]", "mod":"match", "act":"blur", "arg":"zh", "show_id":"user_tname_show","show_error":"收货人姓名必须为汉字", "must":false},
+	{"name":"info[user_phone]", "mod":"match", "act":"blur", "arg":"phone", "show_id":"user_phone_show","show_error":"手机号格式错误", "must":false},
+	{"name":"info[user_email]", "mod":"match", "act":"blur", "arg":"email", "show_id":"user_email_show","show_error":"邮箱格式错误", "must":false}
+]
+$(":button").pe_submit(form_info, 'form');
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

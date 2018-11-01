@@ -1,0 +1,100 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=product&act=add">发布商品</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<div class="search">
+		<div class="fl qiehuan">
+			<a href="admin.php?mod=product&state=1" <!--{if($_g_state==1):}-->class="sel"<!--{endif;}-->>上架商品</a>
+			| <a href="admin.php?mod=product&state=2" <!--{if($_g_state==2):}-->class="sel"<!--{endif;}-->>下架商品</a>
+		</div>
+		<div class="fr searbox">
+			<form method="get">
+				<input type="hidden" name="mod" value="{$_g_mod}" />
+				<input type="hidden" name="state" value="{$_g_state}" />
+				商品名称：<input type="text" name="name" value="{$_g_name}" class="inputtext inputtext_150" />
+				<select name="category_id" class="inputselect">
+				<option value="" href="{pe_updateurl('category_id', '')}">全部分类</option>
+				<!--{foreach($category_treelist as $v):}-->
+				<option value="{$v['category_id']}" href="{pe_updateurl('category_id', $v['category_id'])}" <!--{if($_g_category_id==$v['category_id']):}-->selected="selected"<!--{endif;}-->>{$v['category_showname']}</option>
+				<!--{endforeach;}-->
+				</select>
+				<select name="filter" class="inputselect">
+				<option value="" href="{pe_updateurl('filter', '')}">全部商品</option>
+				<!--{foreach($filter_arr as $k=>$v):}-->
+				<option value="{$k}" href="{pe_updateurl('filter', $k)}" <!--{if($_g_filter==$k):}-->selected="selected"<!--{endif;}-->>{$v}</option>
+				<!--{endforeach;}-->
+				</select>
+				<select name="orderby" class="inputselect">
+				<option value="" href="{pe_updateurl('orderby', '')}">默认排序</option>
+				<!--{foreach($orderby_arr as $k=>$v):}-->
+				<option value="{$k}" href="{pe_updateurl('orderby', $k)}" <!--{if($_g_orderby==$k):}-->selected="selected"<!--{endif;}-->>{$v}</option>
+				<!--{endforeach;}-->
+				</select>
+				<input type="submit" value="搜索" class="input2" />
+			</form>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table border="0" cellspacing="0" cellpadding="0" class="list mat5">
+	<tr>
+		<td class="bgtt" width="10"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'product_id')" /></td>
+		<td class="bgtt" width="50">ID号</td>
+		<td class="bgtt">商品名称</td>
+		<td class="bgtt" width="100">商品分类</td>
+		<td class="bgtt" width="60">单价</td>
+		<td class="bgtt" width="30">浏</td>
+		<td class="bgtt" width="30">销</td>
+		<td class="bgtt" width="30">库</td>
+		<td class="bgtt" width="70">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td><input type="checkbox" name="product_id[]" value="{$v['product_id']}" /></td>
+		<td>{$v['product_id']}</td>
+		<td class="aleft">
+			<!--{if($v['product_logo']):}--><span class="cred">[图]</span><!--{endif;}--><!--{if($v['product_istuijian']):}--><span class="cgreen">[荐]</span><!--{endif;}-->
+			<a href="{pe_url('product-'.$v['product_id'])}" target="_blank">{$v['product_name']}</a>
+		</td>
+		<td>{$cache_category[$v['category_id']]['category_name']}</td>
+		<td><span class="num">¥{$v['product_smoney']}</span></td>
+		<td>{$v['product_clicknum']}</td>
+		<td>{$v['product_sellnum']}</td>
+		<td>{$v['product_num']}</td>
+		<td>
+			<a href="admin.php?mod=product&act=edit&id={$v['product_id']}&{pe_fromto()}" class="admin_edit">修改</a>
+			<a href="admin.php?mod=product&act=del&id={$v['product_id']}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'product_id')" /></td>
+		<td class="bgtt" colspan="8">
+			<span class="fl">
+				<button href="admin.php?mod=product&act=del" onclick="return pe_cfall(this, 'product_id', 'form', '批量删除')">批量删除</button>
+				<button href="admin.php?mod=product&act=state&state=1" onclick="return pe_cfall(this, 'product_id', 'form', '批量上架')">批量上架</button>
+				<button href="admin.php?mod=product&act=state&state=2" onclick="return pe_cfall(this, 'product_id', 'form', '批量下架')">批量下架</button>
+				<button href="admin.php?mod=product&act=tuijian&tuijian=1" onclick="return pe_cfall(this, 'product_id', 'form', '批量推荐')">批量推荐</button>
+				<button href="admin.php?mod=product&act=tuijian&tuijian=0" onclick="return pe_cfall(this, 'product_id', 'form', '取消推荐')">取消推荐</button>
+			</span>
+			<span class="fenye">{$db->page->html}</span>
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$("select").change(function(){
+		window.location.href = 'admin.php' + $(this).find("option:selected").attr("href");
+	})
+})
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

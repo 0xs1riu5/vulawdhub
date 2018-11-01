@@ -1,0 +1,37 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=admin&act=add">增加管理</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list mat5">
+	<tr>
+		<td class="bgtt" width="50">ID号</td>
+		<td class="bgtt">管理帐号</td>
+		<td class="bgtt" width="100">上次登录</td>
+		<td class="bgtt" width="70">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td>{$v['admin_id']}</td>
+		<td>{$v['admin_name']}</td>
+		<td>{pe_date($v['admin_ltime'])}</td>
+		<td>
+			<a href="admin.php?mod=admin&act=edit&id={$v['admin_id']}" class="admin_edit">修改</a>
+			<a href="admin.php?mod=admin&act=del&id={$v['admin_id']}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt" colspan="4">&nbsp;<span class="fenye">{$db->page->html}</span></td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

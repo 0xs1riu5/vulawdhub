@@ -1,0 +1,61 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">{$menutitle}</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<div class="search">
+		<div class="fl qiehuan">
+			<a href="admin.php?mod=ask" <!--{if(!$_g_state):}-->class="sel"<!--{endif;}-->>待回复咨询</a>
+			| <a href="admin.php?mod=ask&state=1" <!--{if($_g_state==='1'):}-->class="sel"<!--{endif;}-->>已回复咨询</a>
+		</div>
+		<div class="fr searbox">
+			<form method="get">
+				<input type="hidden" name="mod" value="{$_g_mod}" />
+				<input type="hidden" name="state" value="{$_g_state}" />
+				商品名称：<input type="text" name="name" value="{$_g_name}" class="inputtext inputtext_150" />
+				咨询详情：<input type="text" name="text" value="{$_g_text}" class="inputtext inputtext_150" />
+				用户名：<input type="text" name="user_name" value="{$_g_user_name}" class="inputtext inputtext_100" />
+				<input type="submit" value="搜索" class="input2" />
+			</form>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list mat3">
+	<tr>
+		<td class="bgtt" width="10"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'ask_id')" /></td>
+		<td class="bgtt" width="50">ID号</td>
+		<td class="bgtt">咨询详情</td>
+		<td class="bgtt" width="80">用户名</td>
+		<td class="bgtt" width="70">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td><input type="checkbox" name="ask_id[]" value="{$v['ask_id']}" /></td>
+		<td>{$v['ask_id']}</td>
+		<td class="aleft">
+			<p><a href="{pe_url('product-'.$v['product_id'])}" target="_blank" class="cblue">{$v['product_name']}</a></p>
+			<p><span class="cgreen">咨询[{pe_date($v['ask_atime'],'Y-m-d')}]：</span><span class="c888">{$v['ask_text']}</span></p>
+			<!--{if($v['ask_replytext']):}--><p><span class="corg">回复[{pe_date($v['ask_replytime'],'Y-m-d')}]：</span><span class="c888">{$v['ask_replytext']}</span></p><!--{endif;}-->
+		</td>
+		<td><a href="http://www.ip138.com/ips.asp?ip={$v['user_ip']}" target="_blank">{$v['user_name']}</a></td>
+		<td>
+			<a href="admin.php?mod=ask&act=edit&id={$v['ask_id']}&{pe_fromto()}" class="admin_edit">详情</a>
+			<a href="admin.php?mod=ask&act=del&id={$v['ask_id']}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt" align="center"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'ask_id')" /></td>
+		<td class="bgtt" colspan="4">
+			<span class="fl"><button href="admin.php?mod=ask&act=del" onclick="return pe_cfall(this, 'ask_id', 'form', '批量删除')">批量删除</button></span>
+			<span class="fenye">{$db->page->html}</span>
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

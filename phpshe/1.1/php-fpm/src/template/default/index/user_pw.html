@@ -1,0 +1,43 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="content">
+	<!--{include(pe_tpl('user_menu.html'));}-->
+	<div class="fr huiyuan_main">
+		<h3 class="hy_rtt">{$menutitle}</h3>
+		<div class="hy_table">
+		<form method="post" action="{$action}" id="form">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td class="bg_f8" style="text-align:right;" width="100">用 户 名：</td>
+			<td style="text-align:left;">{$info['user_name']}</td>
+		</tr>
+		<tr>
+			<td class="bg_f8" style="text-align:right;"><span class="cred1">*</span> 新 密 码：</td>
+			<td style="text-align:left;"><input type="password" name="info[user_pw]" class="inputtext input150" autocomplete="off" /><span id="user_pw_show"></span></td>
+		</tr>
+		<tr>
+			<td class="bg_f8" style="text-align:right;"><span class="cred1">*</span> 确认密码：</td>
+			<td style="text-align:left;"><input type="password" name="info[user_pw1]" class="inputtext input150" autocomplete="off" /><span id="user_pw1_show"></span></td>
+		</tr>
+		<tr>
+			<td class="bg_f8"></td>
+			<td style="text-align:left;">
+				<input type="hidden" name="pesubmit" />
+				<input type="button" value="提交"  class="tj_btn" />
+			</td>
+		</tr>
+		</table>
+		</form>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript" src="{$pe['host_root']}include/js/formcheck.js"></script>
+<script type="text/javascript">
+var form_info = [
+	{"name":"info[user_pw]", "mod":"str", "act":"blur", "arg":"6|12", "show_id":"user_pw_show","show_error":"密码为6-12位字符"},
+	{"name":"info[user_pw1]", "mod":"str", "act":"blur", "arg":"6|12", "show_id":"user_pw1_show","show_error":"密码为6-12位字符"},
+	{"name":"info[user_pw1]", "mod":"equal", "act":"blur", "arg":$(":input[name='info[user_pw]']"), "show_id":"user_pw1_show","show_error":"两次密码不一致"}
+]
+$(":button").pe_submit(form_info, 'form');
+</script>
+<!--{include(pe_tpl('footer.html'));}-->

@@ -1,0 +1,54 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">{$menutitle}</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+	<tr>
+		<td width="100" class="bg_f8" align="right">支付名称：</td>
+		<td>{$info['payway_name']}</td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">支付描述：</td>
+		<td><input type="text" name="info[payway_text]" value="{$info['payway_text']}" class="inputtext inputtext_600" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">是否启用：</td>
+		<td>
+			<select name="info[payway_state]" class="inputselect">
+			<!--{foreach(array('1'=>'启用', '0'=>'停用') as $k=>$v):}-->
+			<option value="{$k}" <!--{if($k==$info['payway_state']):}-->selected="selected"<!--{endif;}-->>{$v}</option>
+			<!--{endforeach;}-->
+			</select>
+		</td>
+	</tr>
+	<!--{foreach($info['payway_model'] as $k=>$v):}-->
+	<tr>
+		<td class="bg_f8" align="right">{$v['name']}：</td>
+		<td>
+			<!--{if($v['form_type']=='select'):}-->
+			<select name="config[{$k}]" class="inputselect">
+			<!--{foreach($v['form_value'] as $kk=>$vv):}-->
+			<option value="{$kk}" <!--{if($kk==$info['payway_config'][$k]):}-->selected="selected"<!--{endif;}-->>{$vv}</option>
+			<!--{endforeach;}-->
+			</select>
+			<!--{elseif($v['form_type']=='textarea'):}-->
+			<textarea name="config[{$k}]" style="width:600px;height:150px;">{$info['payway_config'][$k]}</textarea>
+			<!--{else:}-->
+			<input type="text" name="config[{$k}]" value="{$info['payway_config'][$k]}" class="inputtext inputtext_300" />
+			<!--{endif;}-->
+		</td>
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bg_f8">&nbsp;</td>
+		<td><input type="submit" name="pesubmit" value="提 交" class="tjbtn"></td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

@@ -1,0 +1,40 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=category&act=add">增加分类</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+	<tr>
+		<td class="bg_f8" align="right" width="100">分类名称：</td>
+		<td><input type="text" name="info[category_name]" value="{$info['category_name']}" class="inputtext inputtext_200" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">上级分类：</td>
+		<td>
+			<select name="info[category_pid]" class="inputselect">
+			<option value="0">===顶级分类===</option>
+			<!--{foreach($category_treelist as $v):}-->
+			<option value="{$v['category_id']}" <!--{if($v['category_id']==$info['category_pid']):}-->selected="selected"<!--{endif;}--> <!--{if(in_array($v['category_id'], (array)$category_noid)):}-->disabled="disabled"<!--{endif;}-->>{$v['category_showname']}</option>
+			<!--{endforeach;}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">分类排序：</td>
+		<td><input type="text" name="info[category_order]" value="{$info['category_order']}" class="inputtext inputtext_50" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8">&nbsp;</td>
+		<td><input type="submit" name="pesubmit" value="提 交" class="tjbtn" /></td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

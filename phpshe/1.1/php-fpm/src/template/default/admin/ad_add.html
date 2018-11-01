@@ -1,0 +1,46 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=ad&act=add">增加广告</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" enctype="multipart/form-data">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+	<tr>
+		<td class="bg_f8" align="right" width="100">广告位置：</td>
+		<td>
+			<select name="info[ad_position]" class="inputselect">
+			<!--{foreach($ad_position as $k=>$v):}-->
+			<option value="{$k}">{$v}</option>
+			<!--{endforeach;}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">广告链接：</td>
+		<td><input type="text" name="info[ad_url]" value="{$info['ad_url']}" class="inputtext inputtext_500" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">广告图片：</td>
+		<td>
+			<p><img src="{pe_thumb($info['ad_logo'])}" width="500" height="200" style="border:1px solid #ddd" /></p>
+			<p><input type="file" name="ad_logo" /></p>
+		</td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">广告排序：</td>
+		<td><input type="text" name="info[ad_order]" value="{$info['ad_order']}" class="inputtext inputtext_50" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8">&nbsp;</td>
+		<td colspan="2"><input type="submit" name="pesubmit" value="提 交" class="tjbtn" /></td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->

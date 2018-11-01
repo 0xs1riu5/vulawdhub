@@ -1,0 +1,96 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">{$menutitle}</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<!--<div class="tixing">
+		<span class="cgreen">温馨提示：</span>为了方便商户快速与支付宝签约，PHPSHE(PE)目前只集成了常用的 <u>支付宝双功能收款（即时到帐+担保交易）接口</u>。
+		<p><span class="cblue">即时到帐流程</span>：买家 -> 付款给卖家 　-> 卖家到系统后台发货 -> 交易成功</p>
+		<p><span class="cblue">担保交易流程</span>：买家 -> 付款给支付宝 -> 卖家到系统后台发货 -> 买家确认收货 -> 交易资金自动转入卖家 -> 交易成功</p>
+	</div>-->
+	<div class="search">
+		<div class="fl qiehuan">
+			<a href="admin.php?mod=order" <!--{if(!$_g_state):}-->class="sel"<!--{endif;}-->>全部订单</a>
+			| <a href="admin.php?mod=order&state=notpay" <!--{if($_g_state=='notpay'):}-->class="sel"<!--{endif;}-->>未付款</a>
+			| <a href="admin.php?mod=order&state=paid" <!--{if($_g_state=='paid'):}-->class="sel"<!--{endif;}-->>待发货</a>
+			| <a href="admin.php?mod=order&state=send" <!--{if($_g_state=='send'):}-->class="sel"<!--{endif;}-->>已发货</a>
+			| <a href="admin.php?mod=order&state=success" <!--{if($_g_state=='success'):}-->class="sel"<!--{endif;}-->>成功订单</a>
+		</div>
+		<div class="fr searbox">
+			<form method="get">
+				<input type="hidden" name="mod" value="{$_g_mod}" />
+				订单号：<input type="text" name="id" value="{$_g_id}" class="inputtext inputtext_100" />
+				收货姓名：<input type="text" name="user_tname" value="{$_g_user_tname}" class="inputtext inputtext_50" />
+				手机：<input type="text" name="user_phone" value="{$_g_user_phone}" class="inputtext inputtext_100" />
+				<input type="submit" value="搜索" class="input2" />
+			</form>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<form method="post" id="form">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="list mat5">
+	<tr>
+		<td class="bgtt" align="center" width="10"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'order_id')" /></td>
+		<td class="bgtt" align="center" width="60">订单号</td>
+		<td class="bgtt" align="center">订单名称</td>
+		<td class="bgtt" align="center" width="80">单价(数量)</td>
+		<td class="bgtt" align="center" width="100">实付金额</td>
+		<td class="bgtt" align="center" width="100">订单状态</td>
+		<td class="bgtt" align="center" width="70">操作</td>
+	</tr>
+	<!--{foreach($info_list as $v):}-->
+	<tr>
+		<td align="center"><input type="checkbox" name="order_id[]" value="{$v['order_id']}"></td>
+		<td align="center">{$v['order_id']}</td>
+		<td style="text-align:left; padding:0">
+			<!--{foreach($v['product_list'] as $kk=>$vv):}-->
+			<p class="dingdan_list" <!--{if($kk<count($v['product_list'])-1):}-->style="border-bottom:1px #ddd solid;"<!--{endif;}-->><a href="{pe_url('product-'.$vv['product_id'])}" title="{$vv['product_name']}" target="_blank" class="c555 dd_name">{$vv['product_name']}</a></p>
+			<!--{endforeach;}-->
+		</td>
+		<td>
+			<!--{foreach($v['product_list'] as $vv):}-->
+			<p class="dingdan_list"><span class="num">¥{$vv['product_smoney']}</span>(×{$vv['product_num']})</p>
+			<!--{endforeach;}-->
+		</td>
+		<td align="center">
+			<p class="cred num">¥{$v['order_money']}</p>
+			<p class="c888"><!--{if($v['order_wlmoney']==0):}-->(卖家包邮)<!--{else:}-->(含运费{$v['order_wlmoney']}元)<!--{endif;}--></p>
+		</td>
+		<td align="center">
+			<!--{if($v['order_state']=='notpay'):}-->
+			<p class="cred">等待买家付款<input type="button" value="付款" href="admin.php?mod=order&act=state&state=paid&id={$v['order_id']}" onclick="return pe_cfone(this, '付款')" /></p>
+			<!--{elseif($v['order_state']=='paid'):}-->
+			<p class="cred">等待卖家发货<input type="button" value="发货" href="admin.php?mod=order&act=state&state=send&id={$v['order_id']}" onclick="pe_dialog(this, '填写物流信息')" /></p>
+			<!--{elseif($v['order_state']=='send'):}-->
+			<p class="cred">等待买家确认</p>			
+			<!--{elseif($v['order_state']=='success'):}-->
+			<p class="cgreen">交易成功</p>
+			<!--{endif;}-->
+			<p class="c888">{$ini_payway[$v['order_payway']]}</p>
+		</td>
+		<td align="center">
+			<!--{if($v['order_state']=='success'):}-->
+			<a href="admin.php?mod=order&act=edit&id={$v['order_id']}" class="cblue">详情</a>
+			<!--{else:}-->
+			<a href="admin.php?mod=order&act=edit&id={$v['order_id']}&{pe_fromto()}" class="admin_edit">修改</a>
+			<a href="admin.php?mod=order&act=del&id={$v['order_id']}" class="admin_del" onclick="return pe_cfone(this, '删除')">删除</a>
+			<!--{endif;}-->
+		</td>	
+	</tr>
+	<!--{endforeach;}-->
+	<tr>
+		<td class="bgtt"><input type="checkbox" name="checkall" onclick="pe_checkall(this, 'order_id')" /></td>
+		<td class="bgtt" colspan="6">
+			<span class="fl"><button href="admin.php?mod=order&act=del" onclick="return pe_cfall(this, 'order_id', 'form', '批量删除')">批量删除</button></span>
+			<span class="fenye">{$db->page->html}</span>
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+<script charset="utf-8" src="{$phpshe['host_root']}include/plugin/artdialog/jquery.artDialog.js?skin=chrome"></script>
+<script charset="utf-8" src="{$phpshe['host_root']}include/plugin/artdialog/plugins/iframeTools.js"></script>
+<!--{include(pe_tpl('footer.html'));}-->

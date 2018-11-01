@@ -1,0 +1,29 @@
+<!--{include(pe_tpl('header.html'));}-->
+<div class="right">
+	<div class="now">
+		<div class="now_l"></div>
+		<div class="now_m">
+			<span class="fl">{$menutitle}</span>
+			<span class="fr fabu"><a href="admin.php?mod=class&act=add">增加分类</a></span>
+		</div>
+		<div class="now_r"></div>
+		<div class="clear"></div>
+	</div>
+	<form method="post">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="wenzhang">
+	<tr>
+		<td class="bg_f8" align="right" width="100">分类名称：</td>
+		<td><input type="text" name="info[class_name]" value="{$info['class_name']}" class="inputtext inputtext_200" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8" align="right">分类排序：</td>
+		<td><input type="text" name="info[class_order]" value="{$info['class_order']}" class="inputtext inputtext_50" /></td>
+	</tr>
+	<tr>
+		<td class="bg_f8">&nbsp;</td>
+		<td><input type="submit" name="pesubmit" value="提 交" class="tjbtn" /></td>
+	</tr>
+	</table>
+	</form>
+</div>
+<!--{include(pe_tpl('footer.html'));}-->
