@@ -1,0 +1,8 @@
+version: '3'
+services:
+  php5myadmin:
+    build: ./php-fpm
+    image: s1r1u5/phpmyadmin:4.8.1
+    restart: always
+    ports:
+        - 80:80
