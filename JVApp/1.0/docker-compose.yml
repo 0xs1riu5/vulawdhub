@@ -1,0 +1,17 @@
+version: "3.1"
+services:
+  tomcat-javapp:
+    image: s1riu5/jvapp:1.0
+    build: ./www
+    ports:
+       - "8080:8080"
+    links:
+      - mysql57:db
+
+  mysql57:
+    image: s1riu5/mysql-app:5.7
+    build: ./mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "shadow"
+    ports:
+       - "3306:3306"
