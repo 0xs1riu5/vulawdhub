@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="{#$cat_info.keywords#}" />
+<meta name="Description" content="{#$cat_info.description#}" />
+<title>{#if $cat_info.title#}{#$cat_info.title#}{#else#}{#$cat_info.cat_name#}{#/if#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/category.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/common.css" rel="stylesheet" type="text/css" />
+<script src="templates/default/css/jquery.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+<script type="text/javascript">
+	$(function(){
+		$("#cat ul li:nth-child(2n)").addClass("color");
+	});
+</script>
+<style type="text/css">
+.color{background-color:#F8F8F8;}
+</style>
+</head>
+<body>
+{#include file="header.htm"#}
+<div id="wapper">
+	<div class="main">
+		<div class="main_l">
+			<div class="active_act">
+				您所在的位置：<a href="./">首页</a> {#if $pre_act#}&raquo; <a href="{#$pre_url#}">{#$pre_act#}</a>{#/if#} &raquo; {#$current_act#}
+			</div>
+			{#dynamic#}<div id="info_list">
+				<ul>{#section name=info loop=$info_list#}
+					<li>
+	      				<span class="info_l"><a class="infopic" href="{#$info_list[info].info_url#}"><img src="{#if $info_list[info].lit_pic#}{#$info_list[info].lit_pic#}{#else#}templates/default/images/defaultpic.gif{#/if#}"/></a>
+						[<b><a href="{#$info_list[info].cat_url#}">{#$info_list[info].cat_name#}</a></b>]
+						<a class="title" href="{#$info_list[info].info_url#}"><b>{#$info_list[info].title|mb_substr:0:24#}</b></a></span>
+						<span class="tips">{#if $act eq top2 && $info_list[info].top_type eq 2#}大类置顶{#elseif $act eq top1 && $info_list[info].top_type eq 1#}小类置顶{#else#}{#$info_list[info].sub_day#}{#/if#}</span>
+						<br>
+						<span class="info">
+							<small>日期：</small>{#$info_list[info].pub_date#}
+							<small>点击：</small>{#$info_list[info].click#}
+							<small>评论：</small>{#$info_list[info].comment#}
+						</span>
+						<p class="infocontent">
+							{#$info_list[info].content|mb_substr:0:70#}
+						</p>
+					</li>
+					{#sectionelse#}
+					<li>&nbsp;&nbsp;还没有发布信息</li>
+					{#/section#}
+				</ul>
+				<div>{#$page#}</div>
+			</div>{#/dynamic#}
+		</div>
+		<div class="main_r">
+			<div id="cat">
+				<div class="title1">分类列表</div>
+				<div class="content1">
+					<ul>
+					{#section name=cat loop=$cat_list#}
+						<li><a href="{#$cat_list[cat].url#}">{#$cat_list[cat].cat_name#}</a></li>
+					{#/section#}
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div class="t_l"></div>
+				<div class="t_r"></div>
+				<div class="b_l"></div>
+				<div class="b_r"></div>
+			</div>
+			<div id="area">
+				<div class="title1">地区列表</div>
+				<div class="content1">
+					<ul>{#section name=area loop=$area_list#}
+						<li><a href="{#$area_list[area].url#}">{#$area_list[area].area_name#}</a></li>
+						{#/section#}
+					</ul>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div class="t_l"></div>
+				<div class="t_r"></div>
+				<div class="b_l"></div>
+				<div class="b_r"></div>
+			</div>
+			<div id="info_rec">
+				<div class="title1">推荐信息</div>
+				<div class="content1">
+					<ul>{#section name=info loop=$rec_info#}
+						<li><a href="{#$rec_info[info].url#}">{#$rec_info[info].title|mb_substr:0:16#}</a></li>
+						{#/section#}
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div class="t_l"></div>
+				<div class="t_r"></div>
+				<div class="b_l"></div>
+				<div class="b_r"></div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

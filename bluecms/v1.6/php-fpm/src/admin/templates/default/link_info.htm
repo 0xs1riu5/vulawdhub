@@ -1,0 +1,81 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="link.php" name="linkform" enctype="multipart/form-data" onsubmit="return check();">
+{#if $act eq add#}
+<div id="clean_cache">添加过后请更新缓存</div>
+<table>
+  <tr>
+    <td>链接名称:</td>
+    <td><input type="text" name="link_name" maxlength="40" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>网址:</td>
+    <td><input type="text" name="link_site" maxlength="40" value="" /></td>
+  </tr>
+  <tr>
+    <td>logo:</td>
+    <td><input type="file" name="link_logo" value="" /></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq edit#}
+<div id="clean_cache">编辑过后请更新缓存</div>
+<table>
+  <tr>
+    <td>链接名称:</td>
+    <td><input type="text" name="link_name" maxlength="60" value="{#$link.linkname#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>网址:</td>
+    <td><input type="text" name="link_site" maxlength="40" value="{#$link.linksite#}" /></td>
+  </tr>
+  <tr>
+  	<td>站内图片相对路径</td>
+  	<td><input type="text" name="link_logo" value="{#$link.linklogo#}" />&nbsp;<span class="warning">如果要替换或删除LOGO，请删除该项值</span></td>
+  	</tr>
+  <tr>
+    <td>logo:</td>
+    <td><input type="file" name="link_logo1" value="" /></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="{#$link.showorder#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="linkid" value="{#$link.linkid#}" />
+	  <input type="hidden" name="link_logo2" value="{#$link.linklogo#}" />
+      <input type="hidden" name="act" value="do_edit" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+</div>
+<script type="text/javascript">
+
+function check()
+{
+	if(linkform.link_name.value=='')
+	{
+		alert("链接名称不能为空！");
+		linkform.link_name.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

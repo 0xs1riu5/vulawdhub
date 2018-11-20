@@ -1,0 +1,65 @@
+<?php
+/*
+ * [bluecms]°æÈ¨ËùÓÐ ±ê×¼ÍøÂç£¬±£ÁôËùÓÐÈ¨Àû
+ * This is not a freeware, use is subject to license terms
+ *
+ * $Id£º
+ * $author£ºlucks
+ */
+define('IN_BLUE', true);
+
+require_once dirname(__FILE__) . '/include/common.inc.php';
+require BLUE_ROOT . 'include/ip.class.php';
+$ip = new ip();
+$bannedip = !empty($_REQUEST['ip']) ? trim($_REQUEST['ip']) : '';
+
+$act = !empty($_REQUEST['act']) ? trim($_REQUEST['act']) : 'list';
+
+if ($act == 'list') {
+	$ip_arr = $ip->list_ip();
+	template_assign(array('current_act', 'bannedip_arr'), array('½ûÖ¹IPÁÐ±í', $ip_arr));
+	$smarty->display('ipbanned.htm');
+}
+
+elseif ($act == 'add') {
+	template_assign(array('current_act', 'act'), array('Ìí¼Ó½ûÖ¹IP', $act));
+	$smarty->display('ipbanned_info.htm');
+}
+
+elseif ($act == 'do_add') {
+	$exp = !empty($_POST['exp']) ? trim($_POST['exp']) : '';
+	if ($ip->check_exists($bannedip)) {
+		showmsg('ÄúÒÑ½ûÖ¹¸ÃIP', 'ipbanned.php');
+	} else {
+		$ip->add_ip($bannedip, $exp);
+	}
+	showmsg('½ûÖ¹¸ÃIP³É¹¦', 'ipbanned.php');
+}
+
+elseif ($act == 'edit') {
+	$bannedip_info = $ip->get_ip($bannedip);
+	template_assign(array('current_act', 'act', 'bannedip_info'), array('±à¼­½ûÖ¹IP',$act, $bannedip_info));
+	$smarty->display('ipbanned_info.htm');
+}
+
+elseif ($act == 'do_edit') {
+	$old_ip = !empty($_POST['old_ip']) ? trim($_POST['old_ip']) : '';
+	$exp = !empty($_POST['exp']) ? trim($_POST['exp']) : '';
+
+	if($ip->edit_ip($old_ip, $bannedip, $exp)) {
+		showmsg('¹§Ï²Äú±à¼­½ûÖ¹IP³É¹¦', 'ipbanned.php', true);
+	} else {
+		showmsg('±à¼­½ûÖ¹IP³ö´í', '', true);
+	}
+}
+
+elseif ($act == 'del') {
+	if ($ip->del_ip($bannedip)) {
+		showmsg('¹§Ï²Äú£¬É¾³ý½ûÖ¹IP³É¹¦', 'ipbanned.php', true);
+	} else {
+		showmsg('É¾³ý½ûÖ¹IPÊ§°Ü', '', true);
+	}
+
+}
+
+ ?>

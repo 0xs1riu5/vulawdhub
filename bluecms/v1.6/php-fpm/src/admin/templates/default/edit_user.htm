@@ -1,0 +1,70 @@
+{#include file="header.htm"#}
+<h1><span class="action-span"><a href="javascript:history.back();">返回列表</a></span>
+<span class="action-span1"><a href="index.php?act=main">BlueCMS管理中心</a> - 编辑会员资料</span>
+<div style="clear:both"></div>
+</h1>
+<div class="main-div">
+<form method="post" action="user.php" name="theForm">
+<table width="100%" >
+  <tr>
+    <td class="label">用户名:</td>
+    <td>{#$user.username#}</td>
+  </tr>
+  <tr>
+    <td class="label">电子邮件:</td>
+    <td><input type="text" name="email" maxlength="60" size="30" value="{#$user.email#}" /></td>
+  </tr>
+  <tr>
+    <td class="label">密码:</td>
+    <td><input type="password" name="password" maxlength="20" size="20" />&nbsp;&nbsp;密码不变则不填</td>
+  </tr>
+  <tr>
+    <td class="label">性别:</td>
+    <td>{#html_radios name="sex" options=$sexarr checked=$user.sex#}</td>
+  </tr>
+  <tr>
+    <td class="label">生日:</td>
+    <td>{#html_select_date field_order="YMD" prefix="birthday" time=$user.birthday start_year="-60" end_year="+1" display_days=true month_format="%m"#}</td>
+  </tr>
+  <tr>
+    <td class="label">地址:</td>
+    <td><input type="text" name="address" maxlength="60" size="40" value="{#$user.address#}" /></td>
+  </tr>
+  <tr>
+    <td class="label">msn:</td>
+    <td><input type="text" name="msn" maxlength="60" size="30" value="{#$user.msn#}" /></td>
+  </tr>
+    </tr>
+  <tr>
+    <td class="label">qq:</td>
+    <td><input type="text" name="qq" maxlength="60" size="20" value="{#$user.qq#}" /></td>
+  </tr>
+    </tr>
+  <tr>
+    <td class="label">办公室电话:</td>
+    <td><input type="text" name="officephone" maxlength="60" size="20" value="{#$user.officephone#}" /></td>
+  </tr>
+    </tr>
+  <tr>
+    <td class="label">电话:</td>
+    <td><input type="text" name="homephone" maxlength="60" size="20" value="{#$user.homephone#}" /></td>
+  </tr>
+    </tr>
+  <tr>
+    <td class="label">移动电话:</td>
+    <td><input type="text" name="mobilephone" maxlength="60" size="20" value="{#$user.mobilephone#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="edit" />
+	  <input type="hidden" name="do" value="do_edit" />
+      <input type="hidden" name="userid" value="{#$user.userid#}" />
+	</td>
+  </tr>
+</table>
+
+</form>
+</div>
+{#include file="footer.htm"#}

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="{#$cat_info.keywords#}" />
+<meta name="Description" content="{#$cat_info.description#}" />
+<title>{#$current_act#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/category.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/common.css" rel="stylesheet" type="text/css" />
+<script src="templates/default/css/jquery.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+<script type="text/javascript">
+	$(function(){
+		$("#cat ul li:nth-child(2n)").addClass("color");
+	});
+</script>
+<style type="text/css">
+.color{background-color:#F8F8F8;}
+</style>
+</head>
+<body>
+{#include file="header.htm"#}
+<div id="wapper">
+	<div class="main">
+		<div class="s_main_l">
+			<div class="active_act">
+				您所在的位置：<a href="./">首页</a>  &raquo; {#$current_act#}
+			</div>
+			<div id="info_list">
+				<ul>{#section name=search loop=$search_list#}
+					<li>
+	      				<span class="info_l"><!--
+						[<b><a href="{#$info_list[info].cat_url#}">{#$info_list[info].cat_name#}</a></b>]
+						-->
+						<a class="title" href="{#$search_list[search].info_url#}">{#$search_list[search].title#}</a></span>
+						<br>
+						<span class="info">
+							<small>日期：</small>{#$search_list[search].pub_date#}
+							<small>点击：</small>{#$search_list[search].click#}
+							<small>评论：</small>{#$search_list[search].comment#}
+						</span>
+					</li>
+					{#sectionelse#}
+					<li>&nbsp;&nbsp;没有符合条件的信息</li>
+					{#/section#}
+				</ul>
+			</div>
+			<div>{#$page#}</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="attachment.php" name="att_form" onsubmit="return check();">
+<table>
+{#if $act eq 'add'#}
+  <tr>
+    <td width="150">附加属性名称:</td>
+    <td><input type="text" name="att_name" maxlength="60" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+  <td>所属模型：</td>
+  <td><select name="modelid">
+    		<option value="">选择模型</option>
+    		{#section name=model loop=$model_list#}
+    		<option value="{#$model_list[model].model_id#}">{#$model_list[model].model_name#}</option>
+    		{#/section#}
+    		</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+  	<td>是否为必填信息</td>
+  	<td><select name="is_required">
+  			<option value="1">必填</option>
+  			<option value="0">选填</option>
+  		</select>
+  	</td>
+  </tr>
+  <tr>
+    <td>类型:</td>
+    <td><select name="att_type" id="att_type" onchange="changetext();">
+    <option selected="selected" value="0">单行文本表单</option>
+    <option value="1">单行数字表单</option>
+    <option value="2">下拉列表型附加信息</option>
+    <option value="3">单选型附加信息</option>
+    <option value="4">多选型附加信息</option>
+    </select></td>
+  </tr>
+  <tr id='unit'>
+    <td>单位:</td>
+    <td><input type="text" name="unit" size="10" value="" /></td>
+  </tr>
+  <tr id='att_val'>
+  	<td>下拉列表、单选、多选类型信息</td>
+  	<td><input type="text" name="att_val" size="40" value="" />&nbsp;<span class="warning">*</span></td>
+  	<td>多项之间请用 "|" 隔开,格式如"一个星期|一个月"</td>
+  </tr>
+  <tr id='show_order'>
+    <td>顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="doadd" />
+   </td>
+  </tr>
+{#/if#}
+{#if $act eq 'edit'#}
+  <tr>
+    <td>附加属性名称:</td>
+    <td><input type="text" name="att_name" maxlength="40" value="{#$att.att_name#}" /><span class="warning">*</span></td>
+  </tr>
+  <tr>
+  <td>所属模型：</td>
+  <td><select name="modelid">
+    		<option value="">选择模型</option>
+    		{#section name=model loop=$model_list#}
+    		<option value={#$model_list[model].model_id#} {#if $model_list[model].model_id eq $att.modelid #} selected="selected"{#/if#}>{#$model_list[model].model_name#}</option>
+    		{#/section#}
+    		</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+  	<td>是否为必填信息：</td>
+  	<td><select name="is_required">
+  			<option value="1" {#if $att.is_required eq 1#}selected="selected"{#/if#}>必填</option>
+  			<option value="0" {#if $att.is_required eq 0#}selected="selected"{#/if#}>选填</option>
+  		</select>
+  	</td>
+  </tr>
+  <tr>
+    <td>类型：</td>
+    <td><select name="att_type">
+    {#html_options options=$att_options selected=$att.att_type#}
+    </select></td>
+  </tr>
+  <tr id="unit">
+    <td>单位：</td>
+    <td><input type="text" name="unit" size="10" value="{#$att.unit#}" /></td>
+  </tr>
+  <tr id='att_val'>
+  	<td class="label">下拉列表、单选、多选类型信息</td>
+  	<td><input type="text" name="att_val" size="40" value="{#$att.att_val#}" />&nbsp;<span class="warning">*</span></td>
+  	<td>多项之间请用 "|" 隔开,格式如"一个星期|一个月"</td>
+  </tr>
+  <tr id='show_order'>
+    <td>顺序：</td>
+    <td><input type="text" name="show_order" size="10" value="{#$att.show_order#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="doedit" />
+      <input type="hidden" name="att_id" value="{#$att.att_id#}" />
+   </td>
+  </tr>
+{#/if#}
+</table>
+</form>
+<script type="text/javascript">
+function changetext(){
+	var oForm = document.forms["att_form"];
+	var oSelectBox = oForm.att_type;
+	var iChoice = oSelectBox.selectedIndex;
+	var val = oSelectBox.options[iChoice].value;
+	if(val!=0 && val!=1){
+		$("#unit").hide();
+		oForm.unit.value = '';
+		$("#att_val").show();
+	}else{
+		$("#unit").show();
+		oForm.att_val.value = '';
+		$("#att_val").hide();
+	}
+}
+$(function(){
+	changetext();
+	$("select").change(changetext);
+	changetext();
+});
+function check()
+{
+	if(att_form.att_name.value=='')
+	{
+		alert("附加属性名称不能为空");
+		att_form.att_name.focus();
+		return false;
+	}
+	if(att_form.modelid.value=='')
+	{
+		alert("模型不能为空");
+		att_form.modelid.focus();
+		return false;
+	}
+	if(att_form.att_type.value!=0 && att_form.att_type.value!=1 && att_form.att_val.value=='')
+	{
+		alert("下拉列表、单选、多选类型信息不能为空！");
+		att_form.att_val.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

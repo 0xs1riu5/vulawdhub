@@ -1,0 +1,68 @@
+{#include file="header.htm"#}
+{#if $act eq backup#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="database.php?act=restore">数据库还原</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<form name="data_form" method="post" action="database.php">
+  <tr>
+  	<td class="datalist_title">选择</td>
+    <td class="datalist_title">数据表名称</td>
+    <td class="datalist_title">记录数</td>
+  </tr>
+  {#section name=database loop=$database_list#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';" onmouseout="javascript:this.bgColor='#FFFFFF';">
+  	<td><input type="checkbox" name="tables[]" value="{#$database_list[database].0#}" checked="true" /></td>
+	<td>{#$database_list[database].0#}</td>
+    <td>{#$database_list[database].0|count_data#}&nbsp;行</td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="4">没有找到任何记录</td>
+  </tr>
+  {#/section#}
+  <tr>
+  	<td colspan="4">分卷备份：&nbsp;&nbsp;<input type="text" name="limit_size" size="10" value="2048" />&nbsp;kb</td>
+  </tr>
+  <tr>
+	<td>
+		<input type="radio" name="mysql_type" value="" checked />默认<br/>
+		<input type="radio" name="mysql_type" value="mysql40" />MySQL 3.23/4.0.x<br/>
+		<input type="radio" name="mysql_type" value="mysql41" />MySQL 4.1.x/5.x
+	</td>
+  </tr>
+  <tr>
+  	<td><input type="submit" name="submit" value="开始备份" /><input type="hidden" name="act" value="do_backup" /></td>
+  </tr>
+  </form>
+</table>
+{#/if#}
+{#if $act eq restore#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="database.php?act=backup">数据库备份</a></p>
+<form name="data_form" method="post" action="database.php">
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  	<td class="datalist_title">备份文件名</td>
+    <td class="datalist_title">备份时间</td>
+    <td class="datalist_title">BlueCMS版本</td>
+    <td class="datalist_title">MySQL版本</td>
+    <td class="datalist_title">大小</td>
+    <td class="datalist_title" align="center">操作</td>
+  </tr>
+  {#section name=file loop=$file_info#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';" onmouseout="javascript:this.bgColor='#FFFFFF';">
+  	<td>{#$file_info[file].file_name#}</td>
+  	<td>{#$file_info[file].add_time#}</td>
+  	<td>{#$file_info[file].bluecms_ver#}</td>
+	<td>{#$file_info[file].mysql_ver#}</td>
+    <td>{#$file_info[file].file_size#}KB</td>
+    <td align="center"><a href="database.php?act=import&file_name={#$file_info[file].file_name#}">导入</a>|<a href="database.php?act=del&file_name={#$file_info[file].file_name#}">删除</a></td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="4">没有找到任何记录</td>
+  </tr>
+  {#/section#}
+</table>
+</form>
+{#/if#}
+<br>
+{#include file="footer.htm"#}

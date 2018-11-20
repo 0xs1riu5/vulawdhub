@@ -1,0 +1,79 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+{#if $act eq 'list'#}
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td class="datalist_title">支付方式名称</td>
+    <td class="datalist_title" width="240">支付方式描述</td>
+    <td class="datalist_title">支付手续费</td>
+	<td class="datalist_title">logo</td>
+    <td class="datalist_title">是否启用</td>
+    <td class="datalist_title" align="center">操作</td>
+  </tr>
+  {#section name=p loop=$pay_list#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+      <td>{#$pay_list[p].name|mb_substr:0:10#}</td>
+      <td>{#$pay_list[p].description|mb_substr:0:20#}</td>
+      <td>{#$pay_list[p].fee#}</td>
+	  <td><img src="../{#$pay_list[p].logo#}" border="0" /></td>
+      <td>{#if $pay_list[p].is_close eq 0 #}启用{#else#}禁用{#/if#}</td>
+	  <td align="center"><a href="pay.php?act=edit&id={#$pay_list[p].id#}">编辑</a></td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="6">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+</table>
+{#/if#}
+
+{#if $act eq 'edit'#}
+<form action="pay.php" name="pay_form" method="post">
+<table>
+  <tr>
+    <td>支付名称:</td>
+    <td><input type="text" name="name" size="30" value="{#$pay.name#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>商户号:</td>
+    <td><input type="text" name="userid" size="30" value="{#$pay.userid#}" /></td>
+	<td>此处填写您的支付账号、客户号和客户ID等</td>
+  </tr>
+  <tr>
+    <td>账号邮箱:</td>
+    <td><input type="text" name="email" size="30" value="{#$pay.email#}" /></td>
+  </tr>
+  <tr>
+    <td>私钥:</td>
+    <td><input type="text" name="key" size="30" value="{#$pay.key#}" /></td>
+  </tr>
+  <tr>
+    <td>手续费</td>
+    <td><input type="text" name="fee" size="10" value="{#$pay.fee#}" /></td>
+  </tr>
+  <tr>
+    <td>支付方式描述:</td>
+    <td><textarea name="description" rows="6" cols="50">{#$pay.description#}</textarea>&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+	<td>是否启用:</td>
+	<td><select name="is_open">
+			<option value="0" {#if $pay.is_open eq 0#}selected{#/if#}>否</option>
+			<option value="1" {#if $pay.is_open eq 1#}selected{#/if#}>是</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_edit" />
+	  <input type="hidden" name="id" value="{#$pay.id#}" />
+	  <input type="hidden" name="logo" value="{#$pay.logo#}" />
+   </td>
+  </tr>
+</table>
+</form>
+{#/if#}
+<br>
+{#include file="footer.htm"#}

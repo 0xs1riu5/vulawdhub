@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="{#$cat_info.keywords#}" />
+<meta name="Description" content="{#$cat_info.description#}" />
+<title>{#$title.name#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/category.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/common.css" rel="stylesheet" type="text/css" />
+<script src="templates/default/css/jquery.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+</head>
+<body>
+{#include file="header.htm"#}
+<div id="wapper">
+	<div class="active_act">
+		您所在的位置：<a href="./">首页</a> &raquo; 评论列表
+	</div>
+	<div class="main">
+		<h3>评论标题：<a href="{#$title.url#}">{#$title.name#}</a></h3>
+		<div id="comment_list">
+			<div class="title1">评论列表</div>
+			<div class="content1">{#section name=com loop=$comment_list#}
+				<div class="com">
+					<div class="com_title"><img src="images/mood/mood-{#$comment_list[com].mood#}.gif" border="0" />&nbsp;{#if $comment_list[com].user_id <> 0#}{#$comment_list[com].user_name#}{#else#}游客{#/if#}&nbsp;于{#$comment_list[com].pub_date|date_format:"%Y-%m-%d %H:%M:%S"#}&nbsp;说到：</div>
+						<div class="com_content" id='c_content{#$comment_list[com].com_id#}' onclick="show_detail({#$comment_list[com].com_id#});">{#$comment_list[com].content|mb_substr:0:50#}</div>
+					<div style="display:none;cursor:hand;" class="com_content" id='com_detail{#$comment_list[com].com_id#}' onclick="show_detail({#$comment_list[com].com_id#});">{#$comment_list[com].content#}</div>
+				</div>{#/section#}
+			</div>
+		</div>
+		<div id="send_comment">
+			<div class="title1">评论</div><form action="comment.php?act=send" name="comment_form" method="post">
+			<div class="content1">
+				<div>{#if $user_name#}您好，<a href="user.php">{#$user_name#}</a>{#else#}您现在是匿名发表！ <a href="user.php?act=login&from={#$url#}">登录</a>&nbsp;|&nbsp;<a href="user.php?act=reg&from={#$url#}">注册</a>{#/if#}</div>
+				<div id="mood">
+					<ul>
+						<li><input type="radio" name='mood' value='1'/><img src="images/mood/mood-1.gif" /></li>
+						<li><input type="radio" name='mood' value='2'/><img src="images/mood/mood-2.gif" /></li>
+						<li><input type="radio" name='mood' value='3'/><img src="images/mood/mood-3.gif" /></li>
+						<li><input type="radio" name='mood' value='4'/><img src="images/mood/mood-4.gif" /></li>
+						<li><input type="radio" name='mood' value='5'/><img src="images/mood/mood-5.gif" /></li>
+						<li><input type="radio" name='mood' value='6' checked="1" /><img src="images/mood/mood-6.gif" /></li>
+						<li><input type="radio" name='mood' value='7'/><img src="images/mood/mood-7.gif" /></li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div>
+					<textarea rows="6" cols="50" name="comment"></textarea><br/><br/>
+					<input type="hidden" name="id" value="{#$title.post_id#}" />
+					<input type="hidden" name="type" value="{#$type#}" />
+					<input type="submit" name="submit" value="提交评论" />
+				</div></form>
+			</div>
+		</div>
+	</div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

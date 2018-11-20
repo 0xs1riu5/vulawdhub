@@ -1,0 +1,57 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<div class="main-div">
+<form method="post" action="model.php" name="model_form" onsubmit="return check();">
+<table>
+{#if $act eq add #}
+  <tr>
+    <td>模型名称:</td>
+    <td><input type="text" name="model_name" maxlength="40" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>顺序:</td>
+    <td><input type="text" name="show_order" maxlength="10" value="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="doadd" />
+    </td>
+  </tr>
+{#/if#}
+{#if $act eq edit#}
+  <tr>
+    <td>模型名称:</td>
+    <td><input type="text" name="model_name" maxlength="40" value="{#$model.model_name#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>顺序:</td>
+    <td><input type="text" name="show_order" maxlength="10" value="{#$model.show_order#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="model_id" value="{#$model.model_id#}"/>
+      <input type="hidden" name="act" value="doedit" />
+    </td>
+  </tr>
+{#/if#}
+</table>
+</form>
+</div>
+<script type="text/javascript">
+
+function check()
+{
+	if(model_form.model_name.value=='')
+	{
+		alert("模型名称不能为空！");
+		model_form.model_name.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

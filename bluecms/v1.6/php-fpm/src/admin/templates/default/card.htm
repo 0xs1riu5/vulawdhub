@@ -1,0 +1,27 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="card.php?act=add">添加一种充值卡</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td class="datalist_title">充值卡名称</td>
+    <td class="datalist_title">面值</td>
+    <td class="datalist_title">价格</td>
+    <td class="datalist_title">是否启用</td>
+    <td class="datalist_title" align="center">操作</td>
+  </tr>
+  {#section name=c loop=$card_list#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+      <td>{#$card_list[c].name|mb_substr:0:10#}</td>
+      <td>{#$card_list[c].value#}</td>
+      <td>{#$card_list[c].price#}</td>
+      <td>{#if $card_list[c].is_close eq 0 #}启用{#else#}禁用{#/if#}</td>
+	  <td align="center"><a href="card.php?act=edit&id={#$card_list[c].id#}">编辑</a></td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="5">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+</table>
+</form>
+<br>
+{#include file="footer.htm"#}

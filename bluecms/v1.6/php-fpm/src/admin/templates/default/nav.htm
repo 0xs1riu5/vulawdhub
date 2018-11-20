@@ -1,0 +1,28 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="nav.php?act=add">添加新链接</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td class="datalist_title">导航名称</td>
+    <td class="datalist_title">导航链接</td>
+    <td class="datalist_title">是否打开新窗口</td>
+    <td class="datalist_title">类型</td>
+    <td class="datalist_title">顺序</td>
+    <td class="datalist_title" align="center">操作</td>
+  </tr>
+  {#section name=nav loop=$navlist#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+    <td>{#$navlist[nav].navname#}</td>
+      <td>{#$navlist[nav].navlink#}</td>
+      <td>{#if $navlist[nav].opennew == 0#}否{#else#}是{#/if#}</td>
+	  <td>{#if $navlist[nav].type == '1'#}顶部{#else#}底部{#/if#}</td>
+      <td>{#$navlist[nav].showorder#}</td>
+	  <td align="center"><a href="nav.php?act=edit&navid={#$navlist[nav].navid#}">编辑</a>&nbsp;|&nbsp;<a href="nav.php?act=del&navid={#$navlist[nav].navid#}">删除</a></td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="6">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+</table>
+<br>
+{#include file="footer.htm"#}

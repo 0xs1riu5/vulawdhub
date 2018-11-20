@@ -1,0 +1,25 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<div id="clean_cache">请尽量避免在网速较慢时编辑模板，以防止编辑过程中出错</div><br>
+  <table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+      <td class="datalist_title" width="250">模板名称</td>
+      <td class="datalist_title">修改时间</td>
+      <td class="datalist_title">大小(字节)</td>
+      <td class="datalist_title" align="center">操作</td>
+  </tr>
+    {#section name=tpl loop=$tpl_list#}
+	<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+    	<td>{#$tpl_list[tpl].name#}</td>
+      	<td>{#$tpl_list[tpl].modify_time#}</td>
+       	<td>{#$tpl_list[tpl].size#}</td>
+      <td align="center"><a href="tpl_manage.php?act=edit&tpl_name={#$tpl_list[tpl].name#}">编辑</a></td>
+    </tr>
+    {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="4">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  </table>
+<br/>
+{#include file="footer.htm"#}

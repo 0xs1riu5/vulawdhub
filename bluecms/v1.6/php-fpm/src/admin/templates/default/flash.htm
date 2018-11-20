@@ -1,0 +1,24 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="flash.php?act=add">添加新flash</a></p>
+  <table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+      <td class="datalist_title" width="250">Flash图片路径</td>
+      <td class="datalist_title" width="250">链接</td>
+      <td class="datalist_title">显示顺序</td>
+      <td class="datalist_title" align="center">操作</td>
+  </tr>
+    {#section name=flash loop=$flash_list#}
+	<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+      <td>{#$flash_list[flash].image_path#}</td>
+      <td>{#if $flash_list[flash].image_link#}{#$flash_list[flash].image_link#}{#else#}无{#/if#}</td>
+      <td>{#$flash_list[flash].show_order#}</td>
+      <td align="center"><a href="flash.php?act=edit&image_id={#$flash_list[flash].image_id#}">编辑</a>&nbsp;|&nbsp;<a href="flash.php?act=del&image_id={#$flash_list[flash].image_id#}">删除</a></td>
+    </tr>
+    {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="5">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  </table>
+<br/>
+{#include file="footer.htm"#}

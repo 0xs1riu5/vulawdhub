@@ -1,0 +1,43 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form name="log_form" method="post" action="admin_log.php">
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  	<td class="datalist_title">选择</td>
+    <td class="datalist_title">操作用户</td>
+    <td class="datalist_title">日志时间</td>
+    <td class="datalist_title">日志事件</td>
+  </tr>
+  {#section name=log loop=$log_list#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';" onmouseout="javascript:this.bgColor='#FFFFFF';">
+  	<td><input type="checkbox" name="checkboxes[]" value="{#$log_list[log].log_id#}" /></td>
+	<td>{#$log_list[log].admin_name#}</td>
+    <td>{#$log_list[log].add_time|date_format:"%Y-%m-%d %H:%m:%S"#}</td>
+    <td>{#$log_list[log].log_value#}</td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="4">没有找到任何记录</td>
+  </tr>
+  {#/section#}
+  <tr>
+  	<td><input type="checkbox" name="selectall" onClick="select_all(this, 'checkboxes')" /></td><td><input type="submit" value="删除" /><input type="hidden" name="act" value="del" /></td>
+  </tr>
+</table>
+<div class="page">{#$page#}</div>
+</form>
+<script type="text/javascript">
+function select_all(obj, check){
+	check = "checkboxes";
+	var elems = obj.form.getElementsByTagName("INPUT");
+ 	for (var i=0; i < elems.length; i++)
+ 		{
+ 			if (elems[i].name == check || elems[i].name == check + "[]")
+ 				{
+ 					elems[i].checked = obj.checked;
+ 				}
+		 }
+}
+</script>
+<br>
+{#include file="footer.htm"#}

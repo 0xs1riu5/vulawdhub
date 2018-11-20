@@ -1,0 +1,31 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="ad_phone.php?act=add">添加新电话广告</a></p>
+  <table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+      <td class="datalist_title">显示名称</td>
+      <td class="datalist_title">描述</td>
+      <td class="datalist_title">颜色</td>
+      <td class="datalist_title">开始时间</td>
+      <td class="datalist_title">结束时间</td>
+      <td class="datalist_title">顺序</td>
+      <td class="datalist_title" align="center">操作</td>
+  </tr>
+    {#section name=phone loop=$ad_phone_list#}
+	<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+      <td>{#$ad_phone_list[phone].content#}</td>
+      <td>{#$ad_phone_list[phone].title#}</td>
+      <td bgcolor="{#$ad_phone_list[phone].color#}"></td>
+      <td>{#$ad_phone_list[phone].start_time|date_format:"%Y-%m-%d"#}</td>
+      <td>{#if $ad_phone_list[phone].end_time#}{#$ad_phone_list[phone].end_time|date_format:"%Y-%m-%d"#}{#else#}长期有效{#/if#}</td>
+      <td>{#$ad_phone_list[phone].show_order#}</td>
+      <td align="center"><a href="ad_phone.php?act=edit&id={#$ad_phone_list[phone].id#}">编辑</a>&nbsp;|&nbsp;<a href="ad_phone.php?act=del&id={#$ad_phone_list[phone].id#}">删除</a></td>
+    </tr>
+    {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="7">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  </table>
+  <div class="page">{#$page#}</div>
+<br/>
+{#include file="footer.htm"#}

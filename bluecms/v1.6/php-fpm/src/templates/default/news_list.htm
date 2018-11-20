@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="{#$arc_cat.keywords#}" />
+<meta name="Description" content="{#$arc_cat.description#}" />
+<title>{#if $arc_cat.cat_name#}{#$arc_cat.cat_name#}{#elseif $arc_cat.title#}{#$arc_cat.title#}{#else#}本地新闻{#/if#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/category.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/common.css" rel="stylesheet" type="text/css" />
+<script src="templates/default/css/jquery.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+<script type="text/javascript">
+	$(function(){
+		$("#cat ul li:nth-child(2n)").addClass("color");
+	});
+</script>
+<style type="text/css">
+.color{background-color:#F8F8F8;}
+</style>
+</head>
+<body>
+{#include file="header.htm"#}
+	<div class="main">
+		<div class="main_l">
+			<div class="active_act">
+				您所在的位置：<a href="./">首页</a> {#if $arc_cat.cat_name#}&raquo; {#$arc_cat.cat_name#}{#else#}&raquo; 本地新闻{#/if#}
+			</div>
+			<div id="news_list">
+				<ul>{#section name=news loop=$news_list#}
+					<li>
+						<a class="title" href="{#$news_list[news].url#}"><b>{#$news_list[news].title|mb_substr:0:24#}</b></a><br/>
+						<p class="news_content">
+							{#$news_list[news].descript#}
+						</p>
+						<div class="news">
+							作者：<span>{#$news_list[news].author#}</span>
+							发表于：<span>{#$news_list[news].pub_date|date_format:"%Y-%m-%d %H:%M:%S"#}</span>
+							{#dynamic#}点击：<span>{#$news_list[news].click#}</span>
+							评论：<span>{#$news_list[news].comment#}</span>{#/dynamic#}
+						</div>
+						<div class="all"><a href="{#$news_list[news].url#}">查看全文…</a></div>
+					</li>
+					{#sectionelse#}
+					<li>&nbsp;&nbsp;还没有发布信息</li>
+					{#/section#}
+				</ul>
+				<div>{#$page#}</div>
+			</div>
+
+		</div>
+		<div class="main_r">
+			<div id="cat">
+				<div class="title1">分类列表</div>
+				<div class="content1">
+					<ul>
+					{#section name=cat loop=$arc_cat_list#}
+						<li><a href="{#$arc_cat_list[cat].url#}">{#$arc_cat_list[cat].cat_name#}</a></li>
+					{#/section#}
+					</ul>
+				</div>
+				<div class="clear"></div>
+					<div class="t_l"></div>
+					<div class="t_r"></div>
+					<div class="b_l"></div>
+					<div class="b_r"></div>
+			</div>
+			<div id="rec_news">
+				<div class="title1">新闻推荐</div>
+				<div class="content1">
+					<ul>
+					{#section name=news loop=$rec_news#}
+						<li><a href="{#$rec_news[news].url#}" {#if $rec_news[news].color#}style="{#$rec_news[news].color#}"{#/if#}>{#$rec_news[news].title|mb_substr:0:18#}</a></li>
+					{#/section#}
+					</ul>
+				</div>
+				<div class="clear"></div>
+					<div class="t_l"></div>
+					<div class="t_r"></div>
+					<div class="b_l"></div>
+					<div class="b_r"></div>
+			</div>
+			<div id="hot_news">
+				<div class="title1">热点导读</div>
+				<div class="content1">
+					<ul>{#section name=h_news loop=$hot_news#}
+						<li><a href="{#$hot_news[h_news].url#}" {#if $hot_news[news].color#}style="{#$hot_news[news].color#}"{#/if#}>{#$hot_news[h_news].title|mb_substr:0:18#}</a></li>
+						{#/section#}
+					</ul>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+					<div class="t_l"></div>
+					<div class="t_r"></div>
+					<div class="b_l"></div>
+					<div class="b_r"></div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<div class="main-div">
+<form method="post" action="tpl_manage.php" name="tpl_form">
+<div id="clean_cache">编辑过后请更新缓存</div>
+<table>
+  <tr>
+    <td>模板文件名称:</td>
+    <td>{#$tpl.name#}</td>
+  </tr>
+  <tr>
+    <td>模板内容:</td>
+    <td><textarea rows="40" cols="85" name="tpl_content">{#$tpl.content#}</textarea></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="tpl_name" value="{#$tpl.name#}"/>
+      <input type="hidden" name="act" value="do_edit" />
+    </td>
+  </tr>
+</table>
+</form>
+</div>
+<br>
+
+{#include file="footer.htm"#}

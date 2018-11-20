@@ -1,0 +1,120 @@
+<script type="text/javascript">
+	function change(e){
+		var color = document.getElementById('color');
+		color.value = e.innerHTML;
+	}
+</script>
+<div class="add_div">
+<form method="post" action="user.php" name="article_form" enctype="multipart/form-data" onsubmit="return check();">
+{#if $act1 eq 'add'#}
+<table class="add_table">
+  <tr>
+    <td class="left"><span class="warning">*</span>&nbsp;新闻标题:</td>
+    <td><input type="text" name="title" size="40" value="" /></td>
+  </tr>
+  <tr>
+    <td class="left">颜色:</td>
+    <td><input type="text" name="color" value="" id="color" />(<span style="color:#000000;cursor:hand" onClick="return change(this);">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="return change(this);">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="return change(this);">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="return change(this);">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="return change(this);">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="return change(this);">#CC0000</span>)</td>
+  </tr>
+  <tr>
+  	<td class="left"><span class="warning">*</span>&nbsp;分类:</td>
+  	<td><select name="cid">
+  		<option value="">请选择新闻分类</option>
+  		{#$cat_option#}</select></td>
+  </tr>
+  <tr>
+    <td class="left">作者:</td>
+    <td><input type="text" name="author" value="" /></td>
+  </tr>
+  <tr>
+    <td class="left">来源于:</td>
+    <td><input type="text" name="source" value="" /></td>
+  </tr>
+  <tr>
+  	<td class="left">缩略图:</td>
+  	<td><input type="file" name="lit_pic" size="30" value="" /></td>
+  </tr>
+  <tr>
+  	<td class="left">文章概要:</td>
+  	<td><textarea name="descript" rows="6" cols="40"></textarea></td>
+  </tr>
+  <tr>
+    <td class="left"><span class="warning">*</span>&nbsp;新闻内容:</td>
+    <td>{#$editor_html#}</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add_news" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act1 eq 'edit'#}
+<table width="100%">
+  <tr>
+    <td class="left"><span class="warning">*</span>&nbsp;新闻标题:</td>
+    <td><input type="text" name="title" size="40" value="{#$news.title#}" /></td>
+  </tr>
+  <tr>
+    <td class="left">颜色:</td>
+    <td><input type="text" name="color" value="{#$news.color#}" id="color" />(<span style="color:#000000;cursor:hand" onClick="return change(this);">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="return change(this);">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="return change(this);">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="return change(this);">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="return change(this);">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="return change(this);">#CC0000</span>)</td>
+  </tr>
+  <tr>
+  	<td class="left"><span class="warning">*</span>&nbsp;分类:</td>
+  	<td><select name="cid">
+  		<option value="">请选择新闻分类</option>
+  		{#$cat_option#}</select></td>
+  </tr>
+  <tr>
+    <td class="left">作者:</td>
+    <td><input type="text" name="author" value="{#$news.author#}" /></td>
+  </tr>
+  <tr>
+    <td class="left">来源于:</td>
+    <td><input type="text" name="source" value="{#$news.source#}" /></td>
+  </tr>
+  <tr>
+  	<td class="left">缩略图:</td>
+  	<td>{#if $news.lit_pic#}<input type="text" name="lit_pic1" size="40" value="{#$news.lit_pic#}" /><br>{#/if#}<input type="file" name="lit_pic2" size="30" value="" /></td>
+  </tr>
+  <tr>
+  	<td class="left">文章概要:</td>
+  	<td><textarea name="descript" rows="6" cols="40">{#$news.descript#}</textarea></td>
+  </tr>
+  <tr>
+    <td class="left"><span class="warning">*</span>&nbsp;新闻内容:</td>
+    <td>{#$editor_html#}</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="id" value="{#$news.id#}" />
+      <input type="hidden" name="act" value="do_edit_news" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+</div>
+<script type="text/javascript">
+
+function check()
+{
+	if(document.article_form.title.value=='')
+	{
+		alert("新闻标题不能为空！");
+		document.article_form.title.focus();
+		return false;
+	}
+	if(document.article_form.cat.value=='')
+	{
+		alert('新闻分类不能为空!');
+		document.article_form.cat.focus();
+		return false;
+	}
+}
+
+</script>

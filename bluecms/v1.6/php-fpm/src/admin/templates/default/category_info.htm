@@ -1,0 +1,137 @@
+{#include file="header.htm"#}
+<script type="text/javascript">
+	function change(e){
+	var color = document.getElementById('color');
+		color.value = e.innerHTML;
+	}
+</script>
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<div class="main-div">
+<form method="post" action="category.php" name="cat_form" onsubmit="return check();">
+{#if $act eq 'add' #}
+<div id="clean_cache">添加过后请更新缓存</div>
+<table>
+  <tr>
+    <td>分类名称:</td>
+    <td><input type="text" name="cat_name" maxlength="60" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>分类名称颜色:</td>
+    <td><input type="text" name="title_color" value="" id="color" />(<span style="color:#000000;cursor:hand" onClick="return change(this);">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="return change(this);">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="return change(this);">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="return change(this);">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="return change(this);">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="return change(this);">#CC0000</span>)</td>
+  </tr>
+  <tr>
+    <td>上级栏目:</td>
+    <td><select name="parentid">
+    		<option value="0">顶级栏目</option>
+    		{#$cat_list#}</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+   <tr>
+  <td>模型：</td>
+  <td><select name="model">
+    		<option value="">选择模型</option>
+    		{#section name=model loop=$model_list#}
+    		<option value={#$model_list[model].model_id#}>{#$model_list[model].model_name#}</option>
+    		{#/section#}
+    		</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+    <tr>
+    <td>栏目标题(title):</td>
+    <td><input type="text" name="title" size="50" value="" /></td>
+  </tr>
+  <tr>
+    <td>关键字(keywords):</td>
+    <td><input type="text" name="keywords" size="50" value="" /></td>
+  </tr>
+  <tr>
+    <td>描述(description):</td>
+    <td><textarea name="description" cols="50" rows="4"></textarea></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="0" /></td>
+	<td>范围为 0~255</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq 'edit'#}
+<div id="clean_cache">编辑过后请更新缓存</div>
+<table>
+  <tr>
+    <td>分类名称:</td>
+    <td><input type="text" name="cat_name" maxlength="60" value="{#$cat.cat_name#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>分类名称颜色:</td>
+    <td><input type="text" name="title_color" value="{#$cat.title_color#}" id="color" />(<span style="color:#000000;cursor:hand" onClick="return change(this);">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="return change(this);">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="return change(this);">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="return change(this);">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="return change(this);">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="return change(this);">#CC0000</span>)</td>
+  </tr>
+  <tr>
+    <td>上级栏目:</td>
+    <td><select name="parentid">
+    		<option value="0">顶级栏目</option>
+    		{#$cat_list#}</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+   <tr>
+  <td>模型：</td>
+  <td><select name="model">
+    		<option value="">选择模型</option>
+    		{#section name=model loop=$model_list#}
+    		<option value={#$model_list[model].model_id#} {#if $model_list[model].model_id eq $cat.model #} selected="selected"{#/if#}>{#$model_list[model].model_name#}</option>
+    		{#/section#}
+    		</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+    <tr>
+    <td>栏目标题(title):</td>
+    <td><input type="text" name="title" size="50" value="{#$cat.title#}" /></td>
+  </tr>
+  <tr>
+    <td>关键字(keywords):</td>
+    <td><input type="text" name="keywords" size="50" value="{#$cat.keywords#}" /></td>
+  </tr>
+  <tr>
+    <td>描述(description):</td>
+    <td><textarea name="description" cols="50" rows="4">{#$cat.description#}</textarea></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="{#$cat.show_order#}" /></td>
+	<td>范围为 0~255</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="cid" value="{#$cat.cat_id#}"/>
+      <input type="hidden" name="act" value="do_edit" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+</div>
+<script type="text/javascript">
+
+function check()
+{
+	if(cat_form.cat_name.value=='')
+	{
+		alert("分类名称不能为空！");
+		cat_form.cat_name.focus();
+		return false;
+	}
+	if(cat_form.model.value=='')
+	{
+		alert("模型不能为空！");
+		cat_form.model.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

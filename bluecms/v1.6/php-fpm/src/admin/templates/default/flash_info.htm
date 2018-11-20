@@ -1,0 +1,58 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="flash.php" name="flash_form" enctype="multipart/form-data" onsubmit="return check();">
+{#if $act eq 'add'#}
+<table>
+  <tr>
+    <td>Flash图片:</td>
+    <td><input type="file" name="image_path" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>图片链接:</td>
+    <td><input type="text" name="image_link" maxlength="60" size="40" value="" /></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq 'edit'#}
+<table>
+  <tr>
+    <td>Flash图片站内路径:</td>
+    <td><input type="text" name="image_path" maxlength="60" value="{#$flash.image_path#}" />&nbsp;<span class="warning">如果要替换或删除该Flash图片，请删除该项值</span></td>
+  </tr>
+  <tr>
+    <td>Flash图片:</td>
+    <td><input type="file" name="image_path1" value="" /></td>
+  </tr>
+  <tr>
+    <td>图片链接:</td>
+    <td><input type="text" name="image_link" maxlength="60" value="{#$flash.image_link#}" /></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="{#$flash.show_order#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="image_id" value="{#$flash.image_id#}" />
+	  <input type="hidden" name="image_path2" value="{#$flash.image_path#}" />
+      <input type="hidden" name="act" value="do_edit" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+<br>
+{#include file="footer.htm"#}

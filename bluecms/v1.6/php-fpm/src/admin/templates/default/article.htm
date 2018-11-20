@@ -1,0 +1,31 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="article.php?act=add">发布本地新闻</a></p>
+  <table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+      <td class="datalist_title">新闻标题</td>
+      <td class="datalist_title">发布者</td>
+      <td class="datalist_title">来源于</td>
+      <td class="datalist_title">发布时间</td>
+      <td class="datalist_title">点击数</td>
+      <td class="datalist_title">评论数</td>
+      <td class="datalist_title" align="center">操作</td>
+  </tr>
+    {#section name=article loop=$article_list#}
+	<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+      <td><a href="../{#$article_list[article].url#}" target="_blank">{#$article_list[article].title#}</a></td>
+      <td>{#$article_list[article].user_name#}</td>
+      <td>{#$article_list[article].source#}</td>
+      <td>{#$article_list[article].pub_date|date_format:"%Y-%m-%d"#}</td>
+      <td>{#$article_list[article].click#}</td>
+      <td>{#$article_list[article].comment#}</td>
+      <td align="center"><a href="article.php?act=edit&id={#$article_list[article].id#}">编辑</a>&nbsp;|&nbsp;<a href="article.php?act=del&id={#$article_list[article].id#}">删除</a></td>
+    </tr>
+    {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="7">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  </table>
+  <div class="page">{#$page#}</div>
+  <br/>
+{#include file="footer.htm"#}

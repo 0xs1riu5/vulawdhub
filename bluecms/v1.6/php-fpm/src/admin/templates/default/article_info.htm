@@ -1,0 +1,144 @@
+{#include file="header.htm"#}
+<script type="text/javascript">
+function change(e){
+var color = document.getElementById('color');
+	color.value = e.innerHTML;
+}
+function check()
+{
+	if(article_form.title.value=='')
+	{
+		alert("新闻标题不能为空！");
+		article_form.title.focus();
+		return false;
+	}
+	if(article_form.cat.value=='')
+	{
+		alert('新闻分类不能为空!');
+		article_form.cat.focus();
+		return false;
+	}
+}
+</script>
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="article.php" name="article_form" enctype="multipart/form-data" onsubmit="return check();">
+{#if $act eq 'add'#}
+<table width="80%">
+  <tr>
+    <td><span class="warning">*</span>&nbsp;新闻标题:</td>
+    <td><input type="text" name="title" size="40" value="" /></td>
+  </tr>
+  <tr>
+    <td>颜色:</td>
+    <td><input type="text" name="color" value="" id="color" />(<span style="color:#000000;cursor:hand" onClick="return change(this);">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="return change(this);">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="return change(this);">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="return change(this);">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="return change(this);">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="return change(this);">#CC0000</span>)</td>
+  </tr>
+  <tr>
+  	<td><span class="warning">*</span>&nbsp;分类:</td>
+  	<td><select name="cid">
+  		<option value="">请选择新闻分类</option>
+  		{#$cat_option#}</select></td>
+  </tr>
+  <tr>
+    <td>作者:</td>
+    <td><input type="text" name="author" value="" /></td>
+  </tr>
+  <tr>
+    <td>来源于:</td>
+    <td><input type="text" name="source" value="" /></td>
+  </tr>
+  <tr>
+  	<td>缩略图:</td>
+  	<td><input type="file" name="lit_pic" size="30" value="" /></td>
+  </tr>
+  <tr>
+  	<td>是否推荐:</td>
+  	<td><select name="is_recommend">
+  			<option value="0" selected>否</option>
+  			<option value="1">是</option>
+  		</select></td>
+  </tr>
+  <tr>
+  	<td>是否审核:</td>
+  	<td><select name="is_check">
+  			<option value="1" selected>已审核</option>
+  			<option value="0">未审核</option></select></td>
+  </tr>
+  <tr>
+  	<td>文章概要:</td>
+  	<td><textarea name="descript" rows="6" cols="40"></textarea></td>
+  </tr>
+  <tr>
+    <td><span class="warning">*</span>&nbsp;新闻内容：</td>
+    <td>{#$editor_html#}</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq 'edit'#}
+<table width="80%">
+  <tr>
+    <td><span class="warning">*</span>&nbsp;新闻标题:</td>
+    <td><input type="text" name="title" size="40" value="{#$article.title#}" /></td>
+  </tr>
+  <tr>
+    <td>颜色:</td>
+    <td><input type="text" name="color" value="{#$article.color#}" id="color" />(<span style="color:#000000;cursor:hand" onClick="return change(this);">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="return change(this);">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="return change(this);">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="return change(this);">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="return change(this);">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="return change(this);">#CC0000</span>)</td>
+  </tr>
+  <tr>
+  	<td><span class="warning">*</span>&nbsp;分类：</td>
+  	<td><select name="cid">
+  		<option value="">请选择新闻分类</option>
+  		{#$cat_option#}</select></td>
+  </tr>
+  <tr>
+    <td>作者:</td>
+    <td><input type="text" name="author" value="{#$article.author#}" /></td>
+  </tr>
+  <tr>
+    <td>来源于:</td>
+    <td><input type="text" name="source" value="{#$article.source#}" /></td>
+  </tr>
+  <tr>
+  	<td>缩略图:</td>
+  	<td>{#if $article.lit_pic#}<input type="text" name="lit_pic1" size="40" value="{#$article.lit_pic#}" readonly /><br>{#/if#}<input type="file" name="lit_pic2" size="30" value="" /></td>
+  </tr>
+  <tr>
+  	<td>是否推荐:</td>
+  	<td><select name="is_recommend">
+  			<option value="0" {#if $article.is_recommend eq 0#}selected{#/if#}>否</option>
+  			<option value="1" {#if $article.is_recommend eq 1#}selected{#/if#}>是</option>
+  		</select></td>
+  </tr>
+  <tr>
+  	<td>是否审核:</td>
+  	<td><select name="is_check">
+  			<option value="0" {#if $article.is_check eq 0#}selected{#/if#}>未审核</option>
+  			<option value="1" {#if $article.is_check eq 1#}selected{#/if#}> 已审核</option></select></td>
+  </tr>
+  <tr>
+  	<td>文章概要：</td>
+  	<td><textarea name="descript" rows="6" cols="40">{#$article.descript#}</textarea></td>
+  </tr>
+  <tr>
+    <td><span class="warning">*</span>&nbsp;新闻内容：</td>
+    <td>{#$editor_html#}</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="id" value="{#$article.id#}" />
+      <input type="hidden" name="act" value="do_edit" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+<br/>
+{#include file="footer.htm"#}

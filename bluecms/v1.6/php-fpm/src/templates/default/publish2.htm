@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<title>{#$current_act#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/index.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/user.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="images/favicon.ico" />
+<script src="js/jquery.js" type="text/javascript"></script>
+<script src="templates/default/css/publish.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="top_nav">
+		<div id="top_nav_right">
+			<span><a href="JavaScript:" onClick="var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('{#$site_url#}');">设为首页</a>&nbsp;&nbsp;<a href="javascript:window.external.AddFavorite(location.href, document.title)">加入收藏</a></span>
+		</div>
+	</div>
+<div class="clear"></div>
+<div id="wapper">
+	<div id="top"><a href="{#$site_url#}" target="_self" class="logo"><img src="templates/default/images/logo.gif" alt="{#$site_name#}" border="0" /></a>
+		<dl>{#$description#}
+		</dl>
+	</div>
+	<div class="clear"></div>
+	<div class="active_act">
+		您所在的位置：<a href="./">首页</a> &raquo; {#$current_act#}</div>
+	<div class="publish_nav">
+		1.选择分类&nbsp;&raquo;&nbsp;2.<span class="selected">填写分类信息</span>&nbsp;&raquo;&nbsp;3.发布成功
+	</div>
+	<div class="pub_main">
+	<h3>您选择的分类：{#$cat#}&nbsp;&nbsp;&nbsp;&nbsp;<a href="publish.php">返回上一页</a></h3>
+	<div class="publish"><form action="publish.php" method="post" name="pub_form" enctype="multipart/form-data">
+		<h3>必填信息</h3>
+		<table class="data">
+			<tr>
+				<td class="left">信息标题：</td>
+				<td><input type="text" name="title" class="inputbox" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="left">所属地区：</td>
+				<td><select name="area" class="inputbox" style="height:24px">
+						<option value="">请选择地区</option>
+										{#$area_option#}
+								  </select></td>
+			</tr>
+			{#$insert_must_att#}
+			<tr>
+				<td class="left">信息有效期：</td>
+				<td><select name="useful_time">
+					<option value="7">一个星期</option><option value="30">一个月</option><option value="90">三个月</option><option value="365">一年</option></select>
+				</td>
+			</tr>
+			<tr>
+				<td class="left">信息描述：</td>
+				<td><textarea name="content" rows="6" cols="45"></textarea></td>
+			</tr>
+		</table>
+		<div class="clear"></div>
+		<h3>选填信息</h3>
+		<table class="data">
+			{#$insert_nomust_att#}
+			<tr>
+				<td class="left">图片：</td>
+					<td>
+						<input type="hidden" class="inputbox" value="" name="pic0"/>
+						<input type="hidden" class="inputbox" value="" name="pic1"/>
+						<input type="hidden" class="inputbox" value="" name="pic2"/>
+						<input type="hidden" class="inputbox" value="" name="pic3"/>
+						<div style="margin: 5px; clear: both;" id="pic_show"></div><script>show_pic(0);</script>
+						<div style="display: none;" id="imgTips"></div>
+						<div class="clear"></div>
+						<iframe width="650" height="46" frameborder="0" scrolling="no" src="publish.php?act=upload" id="upload_iframe" name="upload_iframe" marginheight="0" framespacing="0" marginwidth="0"></iframe>
+					</td>
+			</tr>
+		</table>
+		<div class="clear"></div>
+		<h3>高级设置</h3>
+		<table class="data">
+			<tr><td class="left">是否推荐：</td><td><select name="is_recommend" id="is_recommend">
+						<option value="0" selected="selected">否</option>
+						<option value="1">是</option>
+					</select>
+					</td>
+			</tr>
+			<tr>
+				<td class="left">推荐时间(填入数字)：</td>
+				<td><input type="text" name="rec_time" id="rec_time" value="" readonly size="10"/>&nbsp;天&nbsp;&nbsp;<span id="rec_warning"></span></td>	
+			</tr>
+			<tr>
+				<td class="left">置顶方式：</td>
+				<td><select name="top_type" id="top_type">
+						<option value="0" selected="selected">不置顶</option>
+						<option value="1">小类置顶</option>
+						<option value="2">大类置顶</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="left">置顶时间(填入数字)：</td>
+				<td><input type="text" size="10" name="top_time" id="top_time" readonly value="" />&nbsp;天&nbsp;&nbsp;<span id="top_warning"></span></td>
+			</tr>
+			<tr>
+				<td class="left">是否头条：</td>
+				<td><select name="is_head_line" id="is_head_line">
+						<option value="0" selected="selected">否</option>
+						<option value="1">是</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="left">头条时间(填入数字)：</td>
+				<td><input type="text" size="10" name="head_line_time" id="head_line_time" value="" readonly />&nbsp;天&nbsp;&nbsp;<span id="head_line_warning"></span></td>	
+			</tr>
+		</table>
+		<div class="clear"></div>
+		<h3>联系人信息<em class="warning">(为了证实您的信息可靠，请填写加星号的联系信息！)</em></h3>
+		<table class="data">
+			<tr><td class="left">联系人：</td><td><input type="text" class="inputbox" name="link_man" value="" />&nbsp;<b class="warning">*</b></td></tr>
+			<tr><td class="left">联系电话：</td><td><input type="text" class="inputbox" name="link_phone" value="" />&nbsp;<b class="warning">*</b></td></tr>
+			<tr><td class="left">联系Email：</td><td><input type="text" class="inputbox" name="link_email" value="" /></td></tr>
+			<tr><td class="left">联系QQ：</td><td><input type="text" class="inputbox" name="link_qq" value="" /></td></tr>
+			<tr><td class="left">联系地址：</td><td><input type="text" class="inputbox" name="link_address" style="width:300px;" value="" /></td></tr>
+		</table>
+		<div class="submit">
+			<div class="left">
+			<input type="submit" class="sub_btn" name="submit" value="提交信息" /></div>
+			<input type="hidden" name="act" value="do_pub" />
+			<input type="hidden" name="cid" value="{#$cid#}" />
+			<input type="hidden" name="total" id="total" value="{#$total#}" />
+			<input type="hidden" name="service_arr" id="service_arr" value="{#$service_arr#}" />
+		</div>
+		</form>
+	</div>
+	</div>
+
+<div class="clear"></div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

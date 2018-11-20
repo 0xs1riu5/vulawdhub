@@ -1,0 +1,26 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<style type="text/css">
+body{background:#FFF;font:14px Verdana, Arial, "宋体", SimSun ,serif, sans-serif}
+</style>
+<script type="text/javascript">
+function imgUploading(file){
+	parent.document.getElementById('imgTips').innerHTML = ' <img src="images/load.gif" align=middle> 图片上传中，请稍候……';
+	parent.document.getElementById('imgTips').style.display="";
+
+	if (file.value.indexOf(':')==-1) parent.document.getElementById('imgTips').innerHTML='文件格式不符！';
+
+}
+function add(file){
+	parent.add_pic(file);
+}
+</script>
+</head>
+<body style="text-align:left;" onload="add('{#$add_pic#}')">
+<form method="post" action="info.php?act=do_upload" enctype="multipart/form-data" id="upload">
+<input type="hidden" name="f" value="box" />
+<input name="upload_file" class="input" size="50" onChange="imgUploading(this);document.getElementById('upload').submit();" type="file" /> <div>可上传四张图片，图片必须是jpg 、jpeg 、gif 、png格式！</div>
+</form>
+</body>
+</html>

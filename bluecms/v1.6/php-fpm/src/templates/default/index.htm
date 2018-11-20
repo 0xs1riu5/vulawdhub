@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="{#$keywords#}" />
+<meta name="Description" content="{#$description#}" />
+<title>{#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/index.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/common.css" rel="stylesheet" type="text/css" />
+<script src="templates/default/css/jquery.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="favicon.ico" />
+<script type="text/javascript">
+$(document).ready(function(){
+		$("#h1").mouseover(function(){
+			$("#h1").addClass("current");
+			$("#hc_1").attr("style", "display:block;");
+			$("#h2").removeClass("current");
+			$("#hc_2").attr("style", "display:none;");
+		});
+		$("#h2").mouseover(function(){
+			$("#h2").addClass("current");
+			$("#hc_2").attr("style", "display:block;");
+			$("#h1").removeClass("current");
+			$("#hc_1").attr("style", "display:none;");
+		});
+});
+
+function show(e){
+	var a = [{#$news_cat_n#}];
+	for(var i=0;i<a.length;i++){
+		$(".news_cat"+a[i]).attr("style", "display:none;");
+	}
+	$(".news_cat"+e).attr("style", "display:block;");
+}
+</script>
+</head>
+<body>
+{#include file="header.htm"#}
+<div id="wapper">
+	<div class="main">
+		<div id="m_top">
+			<div id="top_l">
+				<div id="flash">
+				<script type="text/javascript">
+				<!--
+					var focus_width=280
+					var focus_height=190
+					var text_height=0
+					var swf_height = focus_height+text_height
+
+					var pics = "{#$pics#}"
+					var links = "{#$links#}"
+					var texts = '||||'
+					document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ focus_width +'" height="'+ swf_height +'">');
+					document.write('<param name="allowScriptAccess" value="sameDomain"><param name="movie" value="images/flashplay.swf"><param name="quality" value="high"><param name="bgcolor" value="#ffffff">');
+					document.write('<param name="menu" value="false"><param name="wmode" value="opaque">');
+					document.write('<param name="FlashVars" value="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'">');
+					document.write('<embed src="images/flashplay.swf" wmode="opaque" FlashVars="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'" menu="false" bgcolor="#ffffff" quality="high" width="'+ focus_width +'" height="'+ focus_height +'" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />');
+					document.write('</object>');
+				-->
+				</script>
+				</div>
+				<div class="news_title"><strong>新闻推荐</strong></div>
+				{#if $f_rec_news#}
+				<p>
+					<strong>
+						<a target="_blank" title="{#$f_rec_news.title#}" href="{#$f_rec_news.url#}">{#$f_rec_news.title|mb_substr:0:8#}</a>
+					</strong><br/>
+					<a target="_blank" title="{#$f_rec_news.title#}" href="{#$f_rec_news.url#}">
+						<img alt="{#$f_rec_news.title#}" src="{#$f_rec_news.lit_pic#}"/>
+					</a>
+					<a target="_blank" title="{#$f_rec_news.title#}" href="{#$f_rec_news.url#}">{#$f_rec_news.descript|mb_substr:0:40#}</a>
+				</p>{#/if#}
+				<div class="clear"></div>
+				<ul>{#section name=r loop=$rec_news#}
+					<li><a href="{#$rec_news[r].url#}">{#$rec_news[r].title|mb_substr:0:18#}</a></li>
+					{#/section#}
+				</ul>
+			</div>
+			<div id="top_m">
+					<div class="news_title"><strong>最新新闻</strong></div>
+					<a href="{#$f_news.url#}"><h2>{#$f_news.title|mb_substr:0:18#}</h2></a>
+					<ul>{#section name=n loop=$news_list#}
+						<li><a href="{#$news_list[n].url#}">{#$news_list[n].title#}</a></li>
+						{#/section#}
+					</ul>
+					<div class="news_title"><strong>热点关注</strong></div>
+					<ol>{#section name=h loop=$hot_news#}
+						<li><a href="{#$hot_news[h].url#}">{#$hot_news[h].title|mb_substr:0:18#}</a></li>
+						{#/section#}
+					</ol>
+			</div>
+		<div id="top_r">
+			{#dynamic#}{#if $user_name && $active eq 0#}
+			<div id="userinfo">
+					<h3>用户登录</h3>
+					<div class="welcome">你好：<strong>{#$user_name#}</strong>，欢迎登录 </div>
+					<div class="userface">
+						<a href=""><img width="64" height="64" src="{#if $face_pic#}{#$face_pic#}{#else#}templates/default/images/nopic.gif{#/if#}"/></a>
+					</div>
+					<div class="mylink">
+						<ul>
+							<li><a href="user.php">会员中心</a></li>
+							<li><a href="user.php?act=buy">金币充值</a></li>
+							<li><a href="user.php?act=my_info">个人资料</a></li>
+							<li><a href="user.php?act=logout">退出登录</a></li>
+						</ul>
+					</div>
+			</div>
+			{#elseif $active eq 1#}
+			<div id="userinfo">
+			    <div class="welcome">你好：<strong>{#$user_name#}</strong>，欢迎登录 </div>
+			    <div class="userface">
+			        <a href=""><img width="64" height="64" src="{#if $face_pic#}{#$face_pic#}{#else#}templates/default/images/nopic.gif{#/if#}"/></a>
+			    </div>
+			    <div class="mylink">
+			        <ul>
+			            <li><a href="user.php">激活</a></li>
+			        </ul>
+			    </div>
+			</div>
+			{#else#}
+			<div id="logining">
+				<h3>用户登录</h3><form action="user.php?act=index_login" method="post" name="log_form">
+				<dl class="log">
+					<dt class="login">用户名：</dt>
+					<dd><input type="text" name="user_name" value="" id="user_name" class="login_input" /></dd>
+				</dl>
+				<dl class="log">
+					<dt class="login">密&nbsp;&nbsp;&nbsp;码：</dt>
+					<dd><input type="password" name="pwd" id="pwd" value="" class="login_input" /></dd>
+				</dl>
+				<dl class="log">
+					<dt class="login"><input type="checkbox" name="remember" value="1" /></dt>
+					<dd>是否记住我</dd>
+				</dl>
+				<dl class="log">
+					<dt class="login"><input type="image" src="templates/default/images/login_btn.gif" class="submit" /></dt>
+					<dd><a href="user.php?act=reg">新用户注册</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="publish.php">发布新信息</a></dd>
+				</dl></form>
+			</div>
+			{#/if#}{#/dynamic#}
+			<div id="ann">
+				<div class="title1" ><a href="{#php#}echo url_rewrite('ann', array());{#/php#}">网站公告</a></div>
+				<div class="content1">
+					<ul>{#section name=a loop=$ann_arr#}
+						<li><a href="ann.php?ann_id={#$ann_arr[a].ann_id#}" {#if $ann_arr[a].color#}style="color:{#$ann_arr[a].color#};"{#/if#}>{#$ann_arr[a].title|mb_substr:0:20#}</a></li>
+						{#/section#}
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div class="t_l"></div>
+				<div class="t_r"></div>
+				<div class="b_l"></div>
+				<div class="b_r"></div>
+			</div>
+			<div id="help">
+				<div class="help_tab">
+					<ul><li id="h1" class="current"><a href="ann.php?cid=3"><span>帮助中心</span></a></li><li id="h2" class=""><a href="ann.php?cid=2"><span>付费推广</span></a></li></ul>
+				</div>
+				<div class="help_content">
+					<ul id="hc_1" style="display:block;">{#section name=h loop=$help_arr#}
+						<li><a href="ann.php?ann_id={#$help_arr[h].ann_id#}">{#$help_arr[h].title#}</a></li>
+						{#/section#}
+					</ul>
+					<ul id="hc_2" style="display:none;">{#section name=s loop=$service_arr#}
+						<li><a href="ann.php?ann_id={#$service_arr[s].ann_id#}">{#$service_arr[s].title#}</a></li>
+						{#/section#}
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div class="t_l"></div>
+				<div class="t_r"></div>
+				<div class="b_l"></div>
+				<div class="b_r"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="content">
+		<div id="channel">
+			<div id="c_l">
+			<div id="news">
+					<div class="channel_title">
+						<span class="n_i"></span>
+						<strong>新闻分类</strong>
+						{#section name=c loop=$news_cat#}
+						{#if $smarty.section.c.index eq 0#}
+						<a href="{#$news_cat[c].url#}" target="_blank" id="{#$news_cat[c].cat_id#}" onmouseover="show(this.id);">{#$news_cat[c].cat_name#}</a>
+						{#else#}
+						&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{#$news_cat[c].url#}" target="_blank"  id="{#$news_cat[c].cat_id#}" onmouseover="show(this.id);">{#$news_cat[c].cat_name#}</a>{#/if#}
+						{#/section#}
+					</div>
+			{#section name=n loop=$news_arr#}
+				<div class="news_cat{#$news_arr[n].cat_id#}" style="display:{#if $smarty.section.n.index eq 0#}block;{#else#}none;{#/if#}">
+					<!--<div class="channel_title">
+						<span class="n_i"></span>
+						<span class="right"><a href="{#$news_arr[n].url#}">更多</a></span>
+						<strong>{#$news_arr[n].cat_name#}</strong>
+					</div>-->
+					<div class="rec_news">
+						<a href="{#$news_arr[n].f_r_news.url#}" target="_blank">{#if $news_arr[n].f_r_news.lit_pic#}<img style="width:200px;height:115px;" src="{#$news_arr[n].f_r_news.photo != ''#}{#$news_arr[n].f_r_news.lit_pic#}" border="0" />{#/if#}</a>
+						<ul>{#section name=r loop=$news_arr[n].rec_news#}
+							<li><a href="{#$news_arr[n].rec_news[r].url#}" target="_blank">{#$news_arr[n].rec_news[r].title|mb_substr:0:17#}</a></li>
+							{#/section#}
+						</ul>
+					</div>
+					<div class="latest_news">
+						<a href="{#$news_arr[n].f_l_news.url#}" target="_blank"><h2>{#$news_arr[n].f_l_news.title|mb_substr:0:18#}</h2></a>
+						<p>{#$news_arr[n].f_l_news.descript|mb_substr:0:70#}</p>
+						<ul>{#section name=l loop=$news_arr[n].latest_news#}
+							<li><a href="{#$news_arr[n].latest_news[l].url#}" target="_blank">{#$news_arr[n].latest_news[l].title|mb_substr:0:17#}</a></li>
+							{#/section#}
+						</ul>
+						<ol>{#section name=p loop=$news_arr[n].photo#}<li><a href="{#$news_arr[n].photo[p].url#}" target="_blank"><img src="{#if $news_arr[n].photo[p].lit_pic#}{#$news_arr[n].photo[p].lit_pic#}{#else#}templates/default/images/defaultpic.gif{#/if#}" border="0" /></a></li>{#/section#}</ol>
+					</div>
+					<div class="clear"></div>
+				</div>{#/section#}
+				</div>
+				<div class="info">
+					<div class="channel_title">
+						<span class="n_i"></span>
+						<strong>分类信息</strong>
+						{#section name=c loop=$info_cat#}
+						{#if $smarty.section.c.index eq 0#}
+						<a href="{#$info_cat[c].url#}" target="_blank">{#$info_cat[c].cat_name#}</a>
+						{#else#}
+						&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{#$info_cat[c].url#}" target="_blank">{#$info_cat[c].cat_name#}</a>{#/if#}
+						{#/section#}
+					</div>
+					<div id="latest_info">
+						<a href="{#$f_info.url#}" target="_blank">
+							<h2>{#$f_info.title|mb_substr:0:13#}</h2>
+						</a>
+						<ol>{#section name=p loop=$info_photo#}
+							<li><a href="{#$info_photo[p].url#}" target="_blank">
+									<img src="{#if $info_photo[p].lit_pic#}{#$info_photo[p].lit_pic#}
+									{#else#}templates/default/images/defaultpic.gif{#/if#}" border="0" />
+									{#$info_photo[p].title|mb_substr:0:6#}</a>
+							</li>{#/section#}
+						</ol>
+						<ul>{#section name=l loop=$info_list#}
+							<li><a href="{#$info_list[l].url#}" target="_blank">
+							{#$info_list[l].title|mb_substr:0:17#}</a>
+							</li>{#/section#}
+						</ul>
+					</div>
+					<div id="rec_info">
+						<ul>{#section name=r loop=$rec_info_p#}
+							<li><a href="{#$rec_info_p[r].url#}" target="_blank">
+							<img src="{#$rec_info_p[r].lit_pic#}" border="0" /></a></li>{#/section#}
+						</ul>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div id="c_r">
+				<div class="rec_info">
+					<div class="title1"><span class="u_rec"><a href="ann.php?cid=2">我要推荐</a></span>推荐信息</div>
+					<div class="content1">
+						<ul>{#section name=info loop=$rec_info#}
+							<li>
+								<a href="{#$rec_info[info].url#}"><b>{#$rec_info[info].title|mb_substr:0:16#}</b></a>
+								<div class="info_con">{#$rec_info[info].content|mb_substr:0:30#}</div>
+							</li>
+							{#/section#}
+						</ul>
+					</div>
+					<div class="clear"></div>
+					<div class="t_l"></div>
+					<div class="t_r"></div>
+					<div class="b_l"></div>
+					<div class="b_r"></div>
+				</div>
+				<div id="kefu">
+					<span id="g_btn"><a class="guest_btn" href="guest_book.php" target="_blank">留言建议</a></span>
+					<div id="kf_content">
+						{#foreach from=$tel item=t#}
+							<img src="templates/default/images/tel.gif" border="0" />&nbsp;热线电话：{#$t#}<br/>{#/foreach#}
+							{#foreach from=$qq item=q1#}
+							<img src="templates/default/images/qq_online.gif" border="0" />&nbsp;客服QQ：<a href="tencent://message/?uin={#$q1#}&amp;Site=&amp;Menu=yes">{#$q1#}</a><br/>{#/foreach#}
+							{#foreach from=$qq_group item=q2#}
+							<img src="templates/default/images/qq_group.gif" border="0" />&nbsp;QQ群：{#$q2#}<br/>{#/foreach#}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<div class="clear"></div>
+	<div class="telad">
+		<div class="title">
+			<dl>
+			<dt>常用便民电话</dt>
+			<dd>每行业限一家，欲购从速！</dd>
+			</dl>
+		</div>
+		<div class="teladl">
+			<ul>
+			{#section name=ad_phone loop=$ad_phone_list#}
+			<li {#if $ad_phone_list[ad_phone].color#}style="color:{#$ad_phone_list[ad_phone].color#}"{#/if#}><a title="{#$ad_phone_list[ad_phone].title#}">{#$ad_phone_list[ad_phone].content#}</a></li>
+			{#/section#}
+			</ul>
+		</div>
+	</div>
+	<div class="clears"></div>
+	<div class="link">
+		<div class="title">
+			<dl>
+			<dt>友情链接</dt>
+			<dd>
+
+			</dd>
+			</dl>
+		</div>
+		<div class="content">
+			<div class="text">
+				{#section name=link loop=$link_list_text#}
+				<a href="{#$link_list_text[link].linksite#}" target="_blank">{#$link_list_text[link].linkname#}</a>
+				{#/section#}
+			</div>
+			<div class="img"><ul>
+				{#section name=link loop=$link_list_img#}
+				<li><a href="{#$link_list_img[link].linksite#}" title="{#$link_list_img[link].linkname#}" target="_blank" class="imglink">
+				<img src="{#$link_list_img[link].linklogo#}" alt="{#$link_list_img[link].linkname#}" width="88" height="31" border="0" /></a></li>
+				{#/section#}
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

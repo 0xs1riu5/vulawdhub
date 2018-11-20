@@ -1,0 +1,36 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<div class="main-div">
+<form method="post" action="service.php" name="price_form" onsubmit="return check();">
+{#if $act eq edit #}
+<table>
+  <tr>
+    <td>服务名称:</td>
+    <td>{#$service.name#}</td>
+  </tr>
+  <tr>
+	<td>服务对象:</td>
+	<td>{#if $service.type eq 'company'#}商家黄页{#else#}分类信息{#/if#}</td>
+  </tr>
+  <tr>
+	<td>服务类型:</td>
+	<td>{#$service.service#}</td>
+  </tr>
+  <tr>
+    <td>价格:</td>
+    <td><input type="text" name="price" value="{#$service.price#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_edit" />
+	  <input type="hidden" name="id" value="{#$service.id#}" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+</div>
+<br/>
+{#include file="footer.htm"#}

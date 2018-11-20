@@ -1,0 +1,579 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<title>{#$current_act#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/index.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/user.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/common.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery.js" type="text/javascript"></script>
+<script src="templates/default/css/publish.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+<style type="text/css">
+.datalist_title {
+background-color:#F7FBFE;
+border-bottom:1px solid #4294D0;
+}
+	
+td {
+margin:5px;
+padding:5px;
+vertical-align:middle;
+}
+.datalist td {
+border-bottom:1px dotted #DEEFFB;
+}
+</style>	
+<script type="text/javascript">
+$(document).ready(function(){
+	var id = get_menu('detail');
+	if (id){
+		show_menu(id);
+	} else {
+		show_menu(1);
+	};
+})
+function get_menu(name){
+	var strCookie=document.cookie;
+	var arrCookie=strCookie.split("; ");
+	for(var i=0;i<arrCookie.length;i++){
+		var arr=arrCookie[i].split("=");
+		if(arr[0]==name)return arr[1];
+	}
+	return "";
+}
+
+function show_menu(id){
+	var div_arr = new Array("1","2","3","4","5");
+	for(i=0;i<div_arr.length;i++){
+		document.getElementById("detail"+div_arr[i]).style.display = "none";
+		document.getElementById("menu"+div_arr[i]).className = "block";
+	}
+	document.getElementById("detail"+id).style.display = "block";
+	document.getElementById("menu"+id).className = "current";
+	var date=new Date();
+	var expireHours=1;
+	date.setTime(date.getTime()+expireHours*3600*1000);
+	document.cookie="detail="+id+";expires="+date.toGMTString();
+} 
+</script>
+</head>
+<body>
+<div id="top_nav">
+	<div id="top_nav_left">
+		<ul>
+		<li>您好,欢迎您的访问!</li>
+		{#if $user_name#}
+		<li><font style="color:#ff6600;font-weight:bold;">{#$user_name#}</font></li>
+		<li><a href="user.php?act=logout">退出</a></li>
+		{#else#}
+		<li><a href="user.php?act=login">登录</a></li>
+		<li><a href="user.php?act=reg">免费注册</a></li>
+		{#/if#}
+		</ul>
+	</div>
+	<div id="top_nav_right">
+	<ul><li><a href="JavaScript:" onClick="var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('{#$site_url#}');">设为首页</a></li><li><a href="javascript:window.external.AddFavorite(location.href, document.title)">加入收藏</a></li></ul>
+	</div>
+</div>
+
+<div class="clear"></div>
+<div id="wapper">
+	<div id="top">
+		<a href="./" target="_self" class="logo"><img src="templates/default/images/logo.gif" alt="{#$site_name#}" border="0" /></a>
+	</div>
+	<div class="clear"></div>
+	<div class="u_active">
+		您所在的位置：<a href="./">首页</a> &raquo; {#$current_act#}	</div>
+	<div class="main">
+		<div class="main_l">
+			<h2>
+				<span class="l_top"></span>
+				<p class="m_title">会员中心</p>
+				<span class="r_top"></span>
+			</h2>
+			<div class="menu_list">
+			<ul>
+				<li><h4 onclick="show_menu(1);" id="menu1" class="current">
+					<span class="title">本地新闻</span></h4>
+					<div style="display: none;" class="detail" id="detail1">
+						<a href="user.php?act=add_news">发布新闻</a><br/>
+						<a href="user.php?act=news_manage">管理新闻</a><br/>
+					</div>
+				</li>
+				<li><h4 onclick="show_menu(2);" id="menu2" class="current">
+					<span class="title">分类信息</span></h4>
+					<div style="display: none;" class="detail" id="detail2">
+						<a href="publish.php">发布分类信息</a><br/>
+						<a href="user.php?act=manage">管理我的信息</a><br/>
+					</div>
+				</li>
+				<li><h4 onclick="show_menu(3);" id="menu3" class="block">
+					<span class="title">充值中心</span></h4>
+					<div style="display: none;" class="detail" id="detail3">
+						<a href="user.php?act=buy">金币充值</a><br/>
+						<a href="user.php?act=account_manage">账户管理</a><br/>
+					</div>
+				</li>
+				<li><h4 onclick="show_menu(4);" id="menu4" class="block">
+					<span class="title">用户管理</span></h4>
+					<div style="display: none;" class="detail" id="detail4">
+						<a href="user.php?act=my_info">我的个人资料</a><br/>
+						<a href="user.php?act=edit_pwd">修改密码</a><br/>
+						<a href="user.php?act=logout">退出登录</a><br/>
+					</div>
+				</li>
+				<li><h4 onclick="show_menu(5);" id="menu5" class="block">
+					<span class="title">网站信息</span></h4>
+					<div style="display: none;" class="detail" id="detail5">
+						{#section name=a loop=$ann_cat#}
+						<a href="ann.php?cid={#$ann_cat[a].cid#}" target="_blank">{#$ann_cat[a].cat_name#}</a><br/>
+						{#/section#}
+					</div>
+				</li>
+			</ul>
+			</div>
+  	  </div>
+	  <div class="main_r">
+	    {#if $act eq 'default'#}
+	  		<div class="user_info">
+				<h3>会员资料</h3>
+				<div class="upic_left">
+					<table>
+						<tbody><tr><td valign="middle" align="center"><img src="{#if $user.face_pic#}{#$user.face_pic#}{#else#}templates/default/images/nopic.gif{#/if#}"/></td></tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="uinfo_right">
+					<table>
+						<tr height=20>
+							<td style="text-align:right;width:130px;color:#07519A;">性别：</td>
+							<td>{#if $user.sex eq 0#}保密{#elseif $user.sex eq 1#}男{#else#}女{#/if#}</td>
+						</tr>
+						<tr height=20>
+							<td style="text-align:right;width:130px;color:#07519A;">注册时间：</td>
+							<td>{#$user.reg_time|date_format:"%Y-%m-%d"#}</td>
+						</tr>
+						<tr height=20>
+							<td style="text-align:right;width:130px;color:#07519A;">出生日期：</td>
+							<td>{#$user.birthday#}</td>
+						</tr>
+						<tr height=20>
+							<td style="text-align:right;width:130px;color:#07519A;">现居住地：</td>
+							<td>{#$user.address#}</td>
+						</tr>
+						<tr height=20>
+							<td style="text-align:right;width:130px;color:#07519A;">邮箱：</td>
+							<td>{#$user.email#}</td>
+						</tr>
+						<tr height=20>
+							<td style="text-align:right;width:130px;color:#07519A;">QQ：</td>
+							<td>{#$user.qq#}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="u_warning"><b>友情提示：</b>请注意保护好您的用户信息，以保证您的帐号和资金安全！</div>
+			<div class="u_service">
+				<ul>{#section name=a loop=$ann_arr#}
+					<li><a href="ann.php?ann_id={#$ann_arr[a].ann_id#}" target="_blank">{#$ann_arr[a].title#}</a></li>
+					{#/section#}
+				</ul>
+			</div>
+		{#/if#}
+		
+		{#if $act eq 'news_manage'#}
+			<table width="100%" cellpadding="3" cellspacing="1">
+			  <tr>
+			      <th class="datalist_title">新闻标题</th>
+			      <th class="datalist_title">来源于</th>
+			      <th class="datalist_title">发布时间</th>
+			      <th class="datalist_title">是否推荐</th>
+			      <th class="datalist_title">是否审核</th>
+			      <th class="datalist_title">点击数</th>
+			      <th class="datalist_title">评论数</th>
+			      <th class="datalist_title" align="center">操作</th>
+			  </tr>
+			    {#section name=n loop=$news_list#}
+				<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+			      <td><a href="{#$news_list[n].url#}" target="_blank">{#$news_list[n].title|mb_substr:0:10#}</a></td>
+			      <td>{#$news_list[n].source#}</td>
+			      <td>{#$news_list[n].pub_date|date_format:"%Y-%m-%d"#}</td>
+			      <td>{#if $news_list[n].is_recommend eq 0#}否{#else#}是{#/if#}</td>
+			      <td>{#if $news_list[n].is_check eq 0#}未审核{#else#}已审核{#/if#}</td>
+			      <td>{#$news_list[n].click#}</td>
+			      <td>{#$news_list[n].comment#}</td>
+			      <td align="center"><a href="user.php?act=edit_news&id={#$news_list[n].id#}">编辑</a>&nbsp;|&nbsp;<a href="user.php?act=del_news&id={#$news_list[n].id#}">删除</a></td>
+			    </tr>
+			    {#sectionelse#}
+			  <tr>
+			    <td class="datalist" colspan="7">没有找到任何记录</td>
+			  </tr>
+			    {#/section#}
+			  </table>
+			  <div class="page">{#$page#}</div>
+			  <br/>
+		{#/if#}
+
+		{#if $act eq 'add_news'#}
+			{#include file="news_info.htm"#}
+		{#/if#}
+		
+		{#if $act eq 'edit_news'#}
+			{#include file="news_info.htm"#}
+		{#/if#}
+
+		{#if $act eq manage#}
+		<table border="0" cellspacing="0" cellpadding="2" width="100%">
+			<tr>
+				<td class="datalist_title">标题</td>
+				<td class="datalist_title">发布时间</td>
+				<td class="datalist_title">有效期</td>
+				<td class="datalist_title">浏览次数</td>
+				<td class="datalist_title">评论次数</td>
+				<td class="datalist_title">管理</td>
+			</tr>
+			{#section name=info loop=$myinfo#}
+			<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+				<td><a href="{#$myinfo[info].url#}" target="_blank">{#$myinfo[info].title|mb_substr:0:20#}</a></td>
+				<td>{#$myinfo[info].pub_date|date_format:"%Y-%m-%d"#}</td>
+				<td>{#$myinfo[info].useful_time#}</td>
+				<td>{#$myinfo[info].click#}</td>
+				<td>{#$myinfo[info].comment#}</td>
+				<td><a href="user.php?act=edit_info&post_id={#$myinfo[info].post_id#}">编辑</a>&nbsp;|&nbsp;<a href="user.php?act=del&post_id={#$myinfo[info].post_id#}">删除</a></td>
+			</tr>
+			{#sectionelse#}
+			<tr>
+				<td colspan="5">您还没发布任何信息，赶紧<a href="publish.php" target="_blank"><font style="color:blue;">发布一条</font></a>吧！</td>
+			</tr>
+			{#/section#}
+		</table>
+		{#/if#}
+		{#if $act eq 'edit_info'#}
+		<form method="post" action="user.php" name="info_form" onsubmit="return check();">
+<table>
+  <tr>
+				<td>信息标题：</td><td><input type="text" name="title" class="inputbox" value="{#$basic_info.title#}" />
+				</td>
+			</tr>
+			<tr>
+				<td>所属分类：</td><td><select name="cat_id" class="inputbox" style="height:24px">
+										{#$cat_option#}
+								  </select></td>
+			</tr>
+			<tr>
+				<td>所属地区：</td><td><select name="area" class="inputbox" style="height:24px">
+										{#$area_option#}
+								  </select></td>
+			</tr>
+			{#$insert_must_att#}
+			<tr>
+				<td>信息有效期：</td><td><select name="useful_time">
+				<option value="7" {#if $basic_info.useful_time eq 7#}selected="selected"{#/if#}>一个星期</option><option value="30" {#if $basic_info.useful_time eq 30#}selected="selected"{#/if#}>一个月</option><option value="90" {#if $basic_info.useful_time eq 90#}selected="selected"{#/if#}>三个月</option><option value="365" {#if $basic_info.useful_time eq 365#}selected="selected"{#/if#}>一年</option></select>
+				</td>
+			</tr>
+			<tr>
+				<td>信息描述：</td><td><textarea name="content" rows="6" cols="45">{#$basic_info.content#}</textarea></td>
+			</tr>
+		</table>
+		<div class="clear"></div>
+		<h3>选填信息</h3>
+<table>
+			{#$insert_nomust_att#}
+			<tr>
+				<td>图片：</td>
+					<td>
+						{#$pic_list#}
+						<div style="margin: 5px; clear: both;" id="pic_show"></div><script>show_pic(0);</script>
+						<div style="display: none;" id="imgTips"></div>
+						<div class="clear"></div>
+						<iframe width="650" height="46" frameborder="0" scrolling="no" src="publish.php?act=upload" id="upload_iframe" name="upload_iframe" marginheight="0" framespacing="0" marginwidth="0"></iframe>
+					</td>
+			</tr>
+		</table>
+		<div class="clear"></div>
+		<h3>高级设置</h3>
+		<table>
+			<tr><td>是否审核：</td><td><select name="is_check">
+						<option value="0" {#if $basic_info.is_check eq 0#}selected="selected"{#/if#}>未审核</option>
+						<option value="1" {#if $basic_info.is_check eq 1#}selected="selected"{#/if#}>已审核</option>
+						</select></td>
+			</tr>
+			<tr><td>是否推荐：</td><td><select name="is_recommend" id="is_recommend">
+						<option value="0" {#if $basic_info.is_recommend eq 0#}selected="selected"{#/if#}>否</option>
+						<option value="1" {#if $basic_info.is_recommend eq 1#}selected="selected"{#/if#}>是</option>
+					</select>
+					</td>
+			</tr>
+			<tr>
+				<td>推荐时间(填入数字)：</td>
+				<td><input type="text" name="rec_time" id="rec_time" value="{#$basic_info.rec_time#}" size="10" />&nbsp;天&nbsp;&nbsp;<span id="rec_warning"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>置顶方式：</td>
+				<td><select name="top_type" id="top_type">
+						<option value="0" {#if $basic_info.top_type eq 0#}selected="selected"{#/if#}>不置顶</option>
+						<option value="1" {#if $basic_info.top_type eq 1#}selected="selected"{#/if#}>小类置顶</option>
+						<option value="2" {#if $basic_info.top_type eq 2#}selected="selected"{#/if#}>大类置顶</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>置顶时间(填入数字)：</td>
+				<td><input type="text" size="10" name="top_time" id="top_time" value="{#$basic_info.top_time#}" />&nbsp;天&nbsp;&nbsp;<span id="top_warning"></span></td>
+			</tr>
+			<tr><td>是否头条：</td><td><select name="is_head_line" id="is_head_line">
+						<option value="0" {#if $basic_info.is_head_line eq 0#}selected="selected"{#/if#}>否</option>
+						<option value="1" {#if $basic_info.is_head_line eq 1#}selected="selected"{#/if#}>是</option>
+					</select>
+					</td>
+			</tr>
+			<tr>
+				<td>头条时间(填入数字)：</td>
+				<td><input type="text" name="head_line_time" id="head_line_time" value="{#$basic_info.head_line_time#}" size="10" />&nbsp;天&nbsp;&nbsp;<span id="head_line_warning"></span>
+				</td>
+			</tr>
+		</table>
+		<div class="clear"></div>
+		<h3>联系人信息<em class="warning">(为了证实您的信息可靠，请填写加星号的联系信息！)</em></h3>
+		<table class="data">
+			<tr><td>联系人：</td><td><input type="text" name="link_man" value="{#$basic_info.link_man#}" />&nbsp;<b class="warning">*</b></td></tr>
+			<tr><td>联系电话：</td><td><input type="text" name="link_phone" value="{#$basic_info.link_phone#}" />&nbsp;<b class="warning">*</b></td></tr>
+			<tr><td>联系Email：</td><td><input type="text" name="link_email" value="{#$basic_info.link_email#}" /></td></tr>
+			<tr><td>联系QQ：</td><td><input type="text" name="link_qq" value="{#$basic_info.link_qq#}" /></td></tr>
+			<tr><td>联系地址：</td><td><input type="text" name="link_address" style="width:300px;" value="{#$basic_info.link_address#}" /></td></tr>
+		</table>
+		<br>
+		<div class="submit">
+			<div>
+			<input type="submit" name="submit" value="提交信息" />
+			<input type="hidden" name="act" value="do_info_edit" />
+			<input type="hidden" name="post_id" value="{#$basic_info.post_id#}" />
+			<input type="hidden" name="lit_pic" value="{#$basic_info.lit_pic#}" />
+			<input type="hidden" name="is_recommend1" value="{#$basic_info.is_recommend#}" />
+			<input type="hidden" name="top_type1" value="{#$basic_info.top_type#}" />
+			<input type="hidden" name="is_head_line1" value="{#$basic_info.is_head_line#}" />
+			<input type="hidden" name="total" id="total" value="{#$total#}" />
+			<input type="hidden" name="service_arr" id="service_arr" value="{#$service_arr#}" />
+			</div>
+		</div>
+</form>
+<script type="text/javascript">
+
+function check()
+{
+	if(document.info_form.title.value=='')
+	{
+		alert("信息名称不能为空！");
+		document.info_form.title.focus();
+		return false;
+	}
+	if(document.info_form.content.value=='')
+	{
+		alert("信息介绍不能为空！");
+		document.info_form.content.focus();
+		return false;
+	}
+}
+
+</script>
+		{#/if#}
+		
+		{#if $act eq 'account_manage'#}
+		<div class="balance">您的账户还剩<font style="color:#FF6600;">{#$money#}</font>金币, 总充值金币数 {#$total_money#} 个，已消费金币数{#$pay_money#} 个</div>
+		<br/>
+		<div class="buy_card">充值记录</div>
+		<table width="100%" border="1" cellspacing="0" cellpadding="2">
+			<tr>
+				<td class="datalist_title" width="220">充值卡名</td>
+				<td class="datalist_title" width="60">面值</td>
+				<td class="datalist_title" width="60">价格</td>
+				<td class="datalist_title">日期</td>
+				<td class="datalist_title">状态</td>
+			</tr>
+			{#section name=c loop=$card_order_list#}
+			<tr>
+				<td>{#$card_order_list[c].name#}</td>
+				<td>{#$card_order_list[c].value#}</td>
+				<td>{#$card_order_list[c].price#}</td>
+				<td>{#$card_order_list[c].time|date_format:"%Y-%m-%d %H:%M:%S"#}</td>
+				<td>{#if $card_order_list[c].is_pay eq 1#}已付款{#else#}未付款{#/if#}</td>
+			</tr>
+			{#sectionelse#}
+			<tr><td colspan="5">您暂且还没有购买任何充值卡。</td></tr>
+			{#/section#}
+		</table>
+		<br/>
+		<div class="buy_record">消费记录</div>
+		<table width="100%" border="1" cellspacing="0" cellpadding="2">
+			<tr>
+				<td class="datalist_title" width="220">信息标题</td>
+				<td class="datalist_title" width="60">操作</td>
+				<td class="datalist_title" width="60">花费</td>
+				<td class="datalist_title">日期</td>
+			</tr>
+			{#section name=p loop=$pay_list#}
+			<tr>
+				<td>{#$pay_list[p].title|mb_substr:0:10#}</td>
+				<td>{#$pay_list[p].name#}</td>
+				<td>{#$pay_list[p].price#}</td>
+				<td>{#$pay_list[p].time|date_format:"%Y-%m-%d %H:%M:%S"#}</td>
+			</tr>
+			{#sectionelse#}
+			<tr><td colspan="5">您暂且还没有任何消费</td></tr>
+			{#/section#}
+		</table>
+		{#/if#}
+		{#if $act eq 'buy'#}
+		<form action="user.php?act="do_buy" name="buy_form" method="post">
+		<table width="100%">
+		<tr>
+			<td class="datalist_title" width="100" align="center">选择</td>
+			<td class="datalist_title">充值卡名称</td>
+			<td class="datalist_title">面值</td>
+			<td class="datalist_title">价格</td>
+		</tr>
+		{#section name=c loop=$card_list#}
+		<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+			<td align="center"><input type="radio" name="id" value="{#$card_list[c].id#}" /></td>
+			<td>{#$card_list[c].name#}</td>
+			<td>{#$card_list[c].value#}&nbsp;金币</td>
+			<td>{#$card_list[c].price#}&nbsp;元</td>
+		</tr>
+		{#sectionelse#}
+		<tr><td colspan="3">本站还没推出充值卡，请耐心等待！</td></tr>
+		{#/section#}
+		<tr><td></td><td colspan="2"><input type="submit" class="button" name="submit" value="购买" /><input type="hidden" name="act" value="do_buy" /></td></tr>
+		</table>
+		</form>
+		{#/if#}
+		
+		{#if $act eq 'do_buy'#}
+		<div><h3>{#$current_act#}</h3></div>
+		<form name="pay_form" action="user.php?act=pay" method="post">
+		<table>
+			<tr><td>订单号:</td><td>{#$order_id#}</td></tr>
+			<tr><td>充值卡名称:</td><td>{#$name#}</td></tr>
+			<tr><td>面值:</td><td>{#$value#}&nbsp;金币</td></tr>
+			<tr><td>价格:</td><td>{#$price#}&nbsp;元</td></tr>
+			<tr><td colspan="2">支付方式:</td></tr>
+			{#section name=p loop=$pay_list#}
+			<tr>
+				<td>{#if $pay_list[p].code != 'bank'#}<input type="radio" name="pay" value="{#$pay_list[p].code#}" />{#/if#}</td>
+				<td>{#$pay_list[p].name#}<br/>
+					{#if $pay_list[p].code != 'bank'#}<img src="{#$pay_list[p].logo#}" alt="{#$pay_list[p].name#}" /><br/>{#/if#}
+					{#$pay_list[p].description#}
+				</td>
+			</tr>
+			{#sectionelse#}
+			<tr><td>没有可选择的支付方式，请联系网站管理员。</td></tr>
+			{#/section#}
+			<tr><td colspan="2"><input type="submit" name="submit" value="在线支付" />
+			<input type="hidden" name="price" value="{#$price#}" />
+			<input type="hidden" name="id" value="{#$order_id#}" />
+			<input type="hidden" name="name" value="{#$name#}" />
+			</td></tr>
+		</table>
+		</form>
+		{#/if#}
+
+		{#if $act eq 'my_info'#}
+		<form name="edit_form" action="user.php" method="post" enctype="multipart/form-data" onSubmit="return check()">
+	      	<table width="100%" height="400">
+	      			<tr>
+	    				<td width="150" align="right">用户头像：</td>
+	    				<td align="left"><input type="text" name="face_pic1" value="{#$user.face_pic#}" class="inputbox" /></td>
+	    			</tr>
+	      			<tr>
+	    				<td width="150" align="right">上传新头像：</td>
+	    				<td align="left"><input type="file" name="face_pic2" value="" class="inputbox" /></td>
+	    			</tr>
+	    			<tr>
+	    				<td width="150" align="right">出生日期：</td>
+	    				<td align="left"><input type="text" name="birthday" value="{#$user.birthday|date_format:'%Y-%m-%d'#}" class="inputbox" /></td>
+	    			</tr>
+	                <tr>
+	                  <td width="150" align="right">性　别： </td>
+	                  <td align="left"><input type="radio" name="sex" value="0" {#if $user.sex eq 0#}checked="checked"{#/if#} />
+	                    保密&nbsp;&nbsp;
+	                    <input type="radio" name="sex" value="1" {#if $user.sex eq 1#}checked="checked"{#/if#}  />
+	                    男&nbsp;&nbsp;
+	                    <input type="radio" name="sex" value="2" {#if $user.sex eq 2#}checked="checked"{#/if#}  />
+	                  女&nbsp;&nbsp; </td>
+	                </tr>
+	                <tr>
+	                  <td width="150" align="right">电子邮件地址： </td>
+	                  <td align="left"><input name="email" type="text" value="{#$user.email#}" class="inputbox" /></td>
+	                </tr>
+	                <tr>
+	                  <td width="150" align="right">MSN：</td>
+	                  <td align="left"><input name="msn" type="text" value="{#$user.msn#}" class="inputbox" />
+	                  </td>
+	                </tr>
+	                <tr>
+	                  <td width="150" align="right">QQ：</td>
+	                  <td align="left"><input name="qq" type="text" value="{#$user.qq#}" class="inputbox" />
+	                  </td>
+	                </tr>
+	                <tr>
+	                  <td width="150" align="right">办公电话：</td>
+	                  <td align="left"><input name="office_phone" type="text" value="{#$user.office_phone#}" class="inputbox" />
+	                  </td>
+	                </tr>
+	                <tr>
+	                  <td width="150" align="right">家庭电话：</td>
+	                  <td align="left"><input name="home_phone" type="text" value="{#$user.home_phone#}" class="inputbox" />
+	                  </td>
+	                </tr>
+	                <tr>
+	                  <td width="150" align="right">手机：</td>
+	                  <td align="left"><input name="mobile_phone" type="text" value="{#$user.mobile_phone#}" class="inputbox" />
+	                  </td>
+	                </tr>
+					<tr>
+	                  <td align="right" width="150">地址：</td>
+	                  <td align="left"><input name="address" type="text" value="{#$user.address#}" class="inputbox" size="40"/>
+	                  </td>
+	                </tr>
+			        <tr>
+						<td>&nbsp;</td>
+						<td align="left">
+							<input name="act" type="hidden" value="edit_user_info" />
+							<input name="submit" class="button" type="submit" value="确认修改" />
+							<input type="hidden" name="face_pic3" value="{#$user.face_pic#}" />
+						</td>
+	                </tr>
+	       </table>
+	    </form>
+    {#/if#}
+    {#if $act eq edit_pwd#}
+    	<form action="user.php" method="post" name="edit_pwd">
+    		<table height="150" width="70%">
+    			<tr>
+			          <td width="28%" align="right">原密码：</td>
+			          <td width="76%" align="left"><input name="old_pwd" type="password" class="inputbox" value="" /></td>
+			        </tr>
+			        <tr>
+			          <td width="28%" align="right">新密码：</td>
+			          <td align="left"><input name="new_pwd" type="password" class="inputbox" value="" /></td>
+			        </tr>
+			        <tr>
+			          <td width="28%" align="right">确认密码：</td>
+			          <td align="left"><input name="confirm_pwd" type="password" class="inputbox" value="" /></td>
+	        		</tr>
+	        		<tr>
+	        			<td colspan="2" align="center"><input type="hidden" name="act" value="do_edit_pwd" /><input type="submit" class="button" name="submit" value="确认修改" /></td>
+	        		</tr>
+    		</table>
+    	</form>
+    {#/if#}
+  </div>
+</div>
+<div class="clear"></div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

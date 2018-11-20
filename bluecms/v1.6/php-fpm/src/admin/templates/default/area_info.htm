@@ -1,0 +1,79 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<div class="main-div">
+<form method="post" action="area.php" name="area_form" onsubmit="return check();">
+{#if $act eq add #}
+<div id="clean_cache">添加过后请更新缓存</div>
+<table>
+  <tr>
+    <td>地区分类名称:</td>
+    <td><input type="text" name="area_name" maxlength="60" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>上级地区分类:</td>
+    <td><select name="parentid">
+    		<option value="0">顶级地区分类</option>
+    		{#$area_list#}</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="doadd" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq edit#}
+<div id="clean_cache">编辑过后请更新缓存</div>
+<table>
+  <tr>
+    <td>地区分类名称:</td>
+    <td><input type="text" name="area_name" maxlength="60" value="{#$area.area_name#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>上级地区分类:</td>
+    <td><select name="parentid">
+    		<option value="0">顶级地区分类</option>
+    		{#$area_list#}</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="{#$area.show_order#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="aid" value="{#$area.area_id#}"/>
+      <input type="hidden" name="act" value="doedit" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+</div>
+<script type="text/javascript">
+
+function check()
+{
+	if(area_form.area_name.value=='')
+	{
+		alert("地区名称不能为空！");
+		area_form.area_name.focus();
+		return false;
+	}
+	if(area_form.model.value=='')
+	{
+		alert("上级地区不能为空！");
+		area_form.parentid.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

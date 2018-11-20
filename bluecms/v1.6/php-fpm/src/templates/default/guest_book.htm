@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="{#$cat_info.keywords#}" />
+<meta name="Description" content="{#$cat_info.description#}" />
+<title>{#$current_act#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/category.css" rel="stylesheet" type="text/css" />
+<script src="templates/default/css/jquery.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+<script type="text/javascript">
+function reply(e){
+	var name = $("#name_"+e).text();
+	$("#rid").val(e);
+	$("#g_content").val('回复 '+name+'：');
+	$("#g_content").focus();
+}
+function del(e){
+	$.get("guest_book.php", {id:e, act:'del'});
+	$("#guest_"+e).remove();
+}
+</script>
+</head>
+<body>
+<div id="top_nav">
+	<div id="top_nav_left">
+		<ul>
+		<li>您好,欢迎您的访问!</li>
+		{#if $user_name#}
+		<li><font style="color:#ff6600;font-weight:bold;">{#$user_name#}</font></li>
+		<li><a href="user.php?act=logout">退出</a></li>
+		{#else#}
+		<li><a href="user.php?act=login">登录</a></li>
+		<li><a href="user.php?act=reg">免费注册</a></li>
+		{#/if#}
+		</ul>
+	</div>
+	<div id="top_nav_right">
+	<ul><li><a href="JavaScript:" onClick="var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('{#$site_url#}');">设为首页</a></li><li><a href="javascript:window.external.AddFavorite(location.href, document.title)">加入收藏</a></li></ul>
+	</div>
+</div>
+<div id="wapper">
+	<div id="top"><a href="./" target="_self" class="logo"><img src="templates/default/images/logo.gif" alt="{#$site_name#}" border="0" /></a></div>
+	<div class="clears"></div>
+	<div id="ann_nav">
+	<span class="n_left"></span>
+	<div class="ann_nav">
+		<ul><li class="index"><a href="./">首页</a></li>
+			{#section name=a loop=$ann_cat#}
+			<li><a href="ann.php?cid={#$ann_cat[a].cid#}">{#$ann_cat[a].cat_name#}</a></li>
+			{#/section#}
+			<li><a href="guest_book.php" target="_blank">留言建议</a></li>
+			</ul>
+	</div>
+	<span class="n_right"></span>
+	</div>
+	<div class="clear"></div>
+	<div class="g_active_act">
+		<div class="g_a_l"></div>
+		<div class="g_a_m">您所在的位置：<a href="./">首页</a> &raquo; {#$current_act#}</div>
+		<div class="g_a_r"></div>
+	</div>
+	<div id="g_main">
+		<form style="margin: 0pt;" onsubmit="return check();" method="post" name="guest_form" action="guest_book.php">
+			<div class="guest">
+				<textarea id="g_content" name="content"></textarea>
+				<div class="user_info">
+					<span class="left">{#if $user_name#}您好，<a href="user.php">{#$user_name#}</a>{#else#}您现在是匿名发表！ <a href="user.php?act=login&from={#$url#}">登录</a>&nbsp;|&nbsp;<a href="user.php?act=reg&from={#$url#}">注册</a>{#/if#}</span>
+					<span class="right"><input type="submit" value="发表留言" class="guest_submit"/><input type="hidden" name="act" value="send" />
+					<input type="hidden" id="rid" name="rid" value="" />
+					<input type="hidden" name="page_id" value="{#$page_id#}" />
+					</span>
+				</div>
+			</div>
+		</form>
+		<div id="guest_list">
+			<div id="guest_title">
+				用户留言<span class="count">共有留言数 {#$guest_total#} 条</span>
+			</div>
+			{#section name=g loop=$guest_list#}
+			<div class="guest_content" id="guest_{#$guest_list[g].id#}">
+				<div class="g_content">
+					<p class="g_t">
+						<span class="right">第{#$smarty.section.g.index+1#}楼</span>
+						用户 <b id="name_{#$guest_list[g].id#}">{#$guest_list[g].user_name#}</b> 发表于：{#$guest_list[g].add_time|date_format:"%Y-%m-%d %H:%M:%S"#}&nbsp;&nbsp;&nbsp;IP:&nbsp;{#$guest_list[g].ip#}
+						<span>&nbsp;&nbsp;
+						{#if $user_id eq 1#}<input type="button" id="reply" onclick="return reply({#$guest_list[g].id#});" name="reply" value="回复" />&nbsp;&nbsp;&nbsp;<input type="button" id="del" name="del" onclick="return del({#$guest_list[g].id#});" value="删除" /></span>{#/if#}
+					</p>
+					<p>{#$guest_list[g].content#}</p>
+				</div>
+				{#if $guest_list[g].reply_content#}
+				<div class="r_content">
+					<p>{#$guest_list[g].reply_content#}</p>
+					<p class="g_b">管理员回复于 {#$guest_list[g].reply_time|date_format:"%Y-%m-%d %H:%M:%S"#}</p>
+				</div>
+				{#/if#}
+			</div>
+			{#/section#}
+			<div class="page">{#$page#}</div>
+		</div>
+	</div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

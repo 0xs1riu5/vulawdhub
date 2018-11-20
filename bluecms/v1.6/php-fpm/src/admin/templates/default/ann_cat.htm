@@ -1,0 +1,22 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="ann.php?act=add_cat">添加公告分类</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td class="datalist_title">分类编号</td>
+    <td class="datalist_title">分类名称</td>
+    <td class="datalist_title" align="center">操作</td>
+  </tr>
+  {#section name=c loop=$ann_c_list#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+    <td>{#$ann_list[c].id#}</td>
+      <td>{#$ann_c_list[c].title#}</td>
+	  <td align="center"><a href="ann.php?act=edit_cat&ann_id={#$ann_c_list[c].ann_id#}">编辑</a>&nbsp;|&nbsp;<a href="ann.php?act=del_cat&ann_id={#$ann_c_list[c].ann_id#}">删除</a></td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="3">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+</table>
+<br>
+{#include file="footer.htm"#}

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<title>安装程序 - BlueCMS―地方门户专用CMS！</title>
+<link href="templates/css/install.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<div class="top">
+	<div class="logo">
+		<h2>BlueCMS―地方门户专用CMS！ 安装程序</h2>
+	</div>
+	<div class="link">
+		<ul>
+			<li><a href="http://www.bluecms.net" target="_blank">官方网站</a></li>
+			<li><a href="http://www.bluecms.net/bbs" target="_blank">技术论坛</a></li>
+			<li><a href="" target="_blank">帮助</a></li>
+		</ul>
+	</div>
+	<div class="version">
+		<h2>BlueCMS</h2>
+	</div>
+</div>
+
+<div class="main">
+	<div class="m_l">
+		<dl class="step">
+			<dt>安装步骤</dt>
+			<dd>
+				<ul>
+					<li class="succeed">许可协议</li>
+					<li class="succeed">环境检测</li>
+					<li class="current">参数配置</li>
+					<li>正在安装</li>
+					<li>安装完成</li>
+				</ul>
+			</dd>
+		</dl>
+	</div>
+	<div class="m_r"><form name = "config_form" action = "index.php?act=step4" method="post">
+		<div class="title"><h3>数据库配置</h3></div>
+		<div class="content">
+			<table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="data">
+				<tr>
+					<td width="200">数据库主机：</td>
+					<td><input type="text" name="dbhost" value="localhost" /></td>
+				</tr>
+				<tr>
+					<td>数据库名称：</td>
+					<td><input type="text" name="dbname" value="" /></td>
+				</tr>
+				<tr>
+					<td>数据库用户名：</td>
+					<td><input type="text" name="dbuser" value="" /></td>
+				</tr>
+				<tr>
+					<td>数据库密码：</td>
+					<td><input type="text" name="dbpass" value="" /></td>
+				</tr>
+				<tr>
+					<td>数据表前缀：</td>
+					<td><input type="text" name="pre" value="blue_" /></td>
+				</tr>
+			</table>
+		</div>
+		<div class="title"><h3>管理员账号</h3></div>
+		<div class="content">
+			<table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="data">
+				<tr>
+					<td width="200">管理员姓名：</td>
+					<td><input type="text" name="admin_name" value="" /></td>
+				</tr>
+				<tr>
+					<td>登录密码：</td>
+					<td><input type="password" name="admin_pwd" value="" /></td>
+				</tr>
+				<tr>
+					<td>密码确认：</td>
+					<td><input type="password" name="admin_pwd1" value="" /></td>
+				</tr>
+				<tr>
+					<td>电子邮箱：</td>
+					<td><input type="text" name="admin_email" value="" /></td>
+				</tr>
+				<tr>
+					<td>Cookie加密码：</td>
+					<td><input type="text" name="cookie_hash" value="{#$cookie_hash#}" /></td>
+				</tr>
+			</table>
+		</div>
+		<div class="btn_sub">
+			<input type="button" class="btn_back" value="上一步" onclick="window.location.href='index.php?act=step2';" />
+			<input type="submit" class="btn_next" value="下一步" />
+		</div></form>
+	</div>
+</div>
+
+<div class="foot">
+
+</div>
+
+</body>
+</html>

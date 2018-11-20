@@ -1,0 +1,102 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<script type="text/javascript">
+	function change(e){
+		var color = document.getElementById('color');
+		color.value = e.innerHTML;
+	}
+</script>
+<form method="post" action="ann.php" name="ann_form" onsubmit="return check();">
+{#if $act eq add#}
+<table>
+  <tr>
+    <td>信息标题:</td>
+    <td><input type="text" name="title" maxlength="60" size="30" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>标题颜色:</td>
+    <td><input type="text" name="color" value="" id="color" />(<span style="color:#000000;cursor:hand" onClick="return change(this);">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="return change(this);">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="return change(this);">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="return change(this);">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="return change(this);">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="return change(this);">#CC0000</span>)</td>
+  </tr>
+  <tr>
+	<td>所属分类:</td>
+	<td><select name="cid">
+			<option value=''>请选择分类</option>
+			{#section name=c loop=$ann_cat#}
+			<option value='{#$ann_cat[c].cid#}'>{#$ann_cat[c].cat_name#}</option>
+			{#/section#}
+			</select>
+	</td>
+  </tr>
+  <tr>
+    <td>信息内容:</td>
+    <td><textarea name="content" rows="6" cols="50"></textarea>&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add" />
+   </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq edit#}
+<table>
+ <tr>
+    <td>信息标题:</td>
+    <td><input type="text" name="title" maxlength="60" size="30" value="{#$ann.title#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>标题颜色:</td>
+    <td><input type="text" name="color" value="{#$ann.color#}" id="color" />(<span style="color:#000000;cursor:hand" onClick="return change(this);">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="return change(this);">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="return change(this);">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="return change(this);">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="return change(this);">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="return change(this);">#CC0000</span>)</td>
+  </tr>
+  <tr>
+	<td>所属分类:</td>
+	<td><select name="cid">
+			{#section name=c loop=$ann_cat#}
+			<option value='{#$ann_cat[c].cid#}' {#if $ann.cid eq $ann_cat[c].cid#}selected{#/if#}>{#$ann_cat[c].cat_name#}</option>
+			{#/section#}
+			</select>
+	</td>
+  </tr>
+  <tr>
+    <td>信息内容:</td>
+    <td><textarea name="content" rows="6" cols="50">{#$ann.content#}</textarea>&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="ann_id" value="{#$ann.ann_id#}" />
+      <input type="hidden" name="act" value="do_edit" />
+   </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+<script type="text/javascript">
+
+function check()
+{
+	if(ann_form.title.value=='')
+	{
+		alert("信息标题不能为空！");
+		ann_form.title.focus();
+		return false;
+	}
+	if(ann_form.pid.value=='')
+	{
+		alert("信息所属类别不能为空！");
+		ann_form.pid.focus();
+		return false;
+	}
+	if(ann_form.content.value=='')
+	{
+		alert("信息内容不能为空！");
+		ann_form.content.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

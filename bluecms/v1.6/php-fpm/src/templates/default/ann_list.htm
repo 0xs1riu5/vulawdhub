@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="{#$cat_info.keywords#}" />
+<meta name="Description" content="{#$cat_info.description#}" />
+<title>{#$current_act#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/category.css" rel="stylesheet" type="text/css" />
+<script src="templates/default/css/jquery.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+<script type="text/javascript">
+	$(function(){
+		$("#cat ul li:nth-child(2n)").addClass("color");
+	});
+</script>
+<style type="text/css">
+.color{background-color:#F8F8F8;}
+</style>
+</head>
+<body>
+<div id="top_nav">
+	<div id="top_nav_left">
+		<ul>
+		<li>您好,欢迎您的访问!</li>
+		{#if $user_name#}
+		<li><font style="color:#ff6600;font-weight:bold;">{#$user_name#}</font></li>
+		<li><a href="user.php?act=logout">退出</a></li>
+		{#else#}
+		<li><a href="user.php?act=login">登录</a></li>
+		<li><a href="user.php?act=reg">免费注册</a></li>
+		{#/if#}
+		</ul>
+	</div>
+	<div id="top_nav_right">
+	<ul><li><a href="JavaScript:" onClick="var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('{#$site_url#}');">设为首页</a></li><li><a href="javascript:window.external.AddFavorite(location.href, document.title)">加入收藏</a></li></ul>
+	</div>
+</div>
+<div id="wapper">
+	<div id="top"><a href="./" target="_self" class="logo"><img src="templates/default/images/logo.gif" alt="{#$site_name#}" border="0" /></a></div>
+	<div class="clears"></div>
+	<div id="ann_nav">
+	<span class="n_left"></span>
+	<div class="ann_nav">
+		<ul><li class="index"><a href="./">首页</a></li>
+			{#section name=a loop=$ann_cat#}
+			<li><a href="ann.php?cid={#$ann_cat[a].cid#}">{#$ann_cat[a].cat_name#}</a></li>
+			{#/section#}
+			<li><a href="guest_book.php" target="_blank">留言建议</a></li>
+			</ul>
+	</div>
+	<span class="n_right"></span>
+	</div>
+	<div class="main">
+		<div class="main_l">
+			<div class="active_act">
+				您所在的位置：<a href="./">首页</a>&raquo; {#$current_act#}
+			</div>
+			<div id="ann_list">
+				<ul>{#section name=a loop=$ann_list#}
+					<li>
+						<div class="ann_title clear">
+						<span>{#$ann_list[a].add_time|date_format:"%Y-%m-%d %H:%M:%S"#} 发布</span>
+							<h1><a href="ann.php?ann_id={#$ann_list[a].ann_id#}">{#$ann_list[a].title#}</a></h1>
+						</div>
+						<div class="ann_content">
+							{#$ann_list[a].content#}
+						</div>
+						<div class="ann_bottom">分类：<a href="ann.php?cid={#$ann_list[a].cid#}">{#$ann_list[a].cat_name#}</a> <a href="ann.php?ann_id={#$ann_list[a].ann_id#}">阅读全文</a>
+						</div>
+					</li>
+					{#sectionelse#}
+					<li>&nbsp;&nbsp;还没有发布信息</li>
+					{#/section#}
+				</ul>
+				<div>{#$page#}</div>
+			</div>
+
+		</div>
+		<div class="main_r">
+			<div id="hot_ann">
+				<h2>
+					<span class="l_top"></span>
+					<p class="m_title">热门公告</p>
+					<span class="r_top"></span>
+				</h2>
+				<div class="content1">
+					<ul>{#section name=h_ann loop=$hot_ann#}
+						<li><a href="ann.php?ann_id={#$hot_ann[h_ann].ann_id#}" {#if $hot_ann[h_ann].color#}style="{#$hot_ann[h_ann].color#}"{#/if#}>{#$hot_ann[h_ann].title|mb_substr:0:18#}</a></li>
+						{#/section#}
+					</ul>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+					<div class="t_l"></div>
+					<div class="t_r"></div>
+					<div class="b_l"></div>
+					<div class="b_r"></div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

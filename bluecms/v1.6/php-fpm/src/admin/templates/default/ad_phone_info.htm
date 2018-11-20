@@ -1,0 +1,99 @@
+{#include file="header.htm"#}
+<script type="text/javascript">
+function select_color(e){
+	var s = getElementById('color');
+	alert(a.getAttribute('type'));
+	s.setAttribute('value',e);
+}
+select_color('#000000');
+</script>
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="ad_phone.php" name="ad_phone_form" onsubmit="return check();">
+{#if $act eq 'add'#}
+<div id="clean_cache">添加过后请更新缓存</div>
+<table>
+  <tr>
+    <td>显示名称:</td>
+    <td><input type="text" name="content" maxlength="40" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>描述:</td>
+    <td><input type="text" name="title" maxlength="100" value="" /></td>
+  </tr>
+  <tr>
+    <td>颜色:</td>
+    <td><input type="text" name="color" value="" id="color" />(<span style="color:#000000;cursor:hand" onClick="color.value=this.innerHTML">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="color.value=this.innerHTML">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="color.value=this.innerHTML">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="color.value=this.innerHTML">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="color.value=this.innerHTML">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="color.value=this.innerHTML">#CC0000</span>)</td>
+  </tr>
+  <tr>
+    <td>开始日期:</td>
+    <td><input type="text" name="start_time" maxlength="10" value="" />&nbsp;格式：xxxx-xx-xx</td>
+  </tr>
+  <tr>
+    <td>结束日期:</td>
+    <td><input type="text" name="end_time" maxlength="10" value="" /></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="doadd" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq 'edit'#}
+<div id="clean_cache">编辑过后请更新缓存</div>
+<table>
+  <tr>
+    <td>显示名称:</td>
+    <td><input type="text" name="content" maxlength="40" value="{#$phone.content#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>描述:</td>
+    <td><input type="text" name="title" maxlength="10" value="{#$phone.title#}" /></td>
+  </tr>
+  <tr>
+    <td>颜色:</td>
+    <td><input type="text" name="color" value="{#$phone.color#}" id="color" />(<span style="color:#000000;cursor:hand" onClick="color.value=this.innerHTML">#000000</span> <span style="color:#FFFF00;cursor:hand" onClick="color.value=this.innerHTML">#FFFF00</span> <span style="color:#006600;cursor:hand" onClick="color.value=this.innerHTML">#006600</span> <span style="color:#0000FF;cursor:hand" onClick="color.value=this.innerHTML">#0000FF</span> <span style="color:#FF0000;cursor:hand" onClick="color.value=this.innerHTML">#FF0000</span> <span style="color:#CC0000;cursor:hand" onClick="color.value=this.innerHTML">#CC0000</span>)</td>
+  </tr>
+  <tr>
+    <td>开始日期:</td>
+    <td><input type="text" name="start_time" maxlength="10" value="{#$phone.start_time|date_format:"%Y-%m-%d"#}" />&nbsp;格式：xxxx-xx-xx</td>
+  </tr>
+  <tr>
+    <td>结束日期:</td>
+    <td><input type="text" name="end_time" maxlength="10" value="{#if $phone.end_time#}{#$phone.end_time|date_format:"%Y-%m-%d"#}{#/if#}" /></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="{#$phone.show_order#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="id" value="{#$phone.id#}" />
+      <input type="hidden" name="act" value="doedit" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+<script type="text/javascript">
+
+function check()
+{
+	if(ad_phone_form.content.value=='')
+	{
+		alert("显示名称不能为空！");
+		ad_phone_form.content.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

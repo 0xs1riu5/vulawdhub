@@ -1,0 +1,50 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="comment.php" name="comment_form" onsubmit="return check();">
+{#if $act eq edit#}
+<table>
+ <tr>
+    <td>评论文章标题:</td>
+    <td><input type="text" name="title" value="{#$comment.title#}" readonly /></td>
+  </tr>
+  <tr>
+  	<td>所属类型:</td>
+  	<td>{#if $comment.type eq 0#}分类信息{#else#}新闻{#/if#}</td>
+  </tr>
+  <tr>
+    <td>是否审核:</td>
+    <td><select name="is_check">
+    		<option value="1" {#if $comment.is_check eq 1#}selected{#/if#}>已审核</option>
+    		<option value="0" {#if $comment.is_check eq 0#}selected{#/if#}>未审核</option>
+    		</select></td>
+  </tr>
+  <tr>
+    <td>评论内容:</td>
+    <td><textarea name="content" rows="6" cols="50">{#$comment.content#}</textarea>&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="com_id" value="{#$comment.com_id#}" />
+      <input type="hidden" name="act" value="do_edit" />
+   </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+<script type="text/javascript">
+
+function check()
+{
+
+	if(comment_form.content.value=='')
+	{
+		alert("评论内容不能为空！");
+		comment_form.content.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

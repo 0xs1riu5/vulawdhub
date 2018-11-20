@@ -1,0 +1,162 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="ad.php" name="ad_form" onsubmit="return check();">
+<table>
+{#if $act eq 'add'#}
+  <tr>
+    <td>广告名称:</td>
+    <td><input type="text" name="ad_name" maxlength="60" size="30" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>时间限制：</td>
+    <td>
+       <input type="radio" name="time_set" value="0" checked='1' />
+              长期有效
+       <input type="radio" name="time_set" value="1" />
+              在规定时间内有效
+    </td>
+  </tr>
+  <tr>
+    <td>开始日期:</td>
+    <td><input type="text" name="start_time" maxlength="10" value="{#$start_time#}" />&nbsp;格式：xxxx-xx-xx</td>
+  </tr>
+  <tr>
+    <td>结束日期:</td>
+    <td><input type="text" name="end_time" maxlength="10" value="{#$end_time#}" />&nbsp;格式：xxxx-xx-xx</td>
+  </tr>
+  <tr>
+      <td>广告类型：</td>
+      <td>
+		<select name="content[type]" onchange="showcode(this.options[this.selectedIndex].value)">
+			<option value="code" >代码</option>
+			<option value="img" >图片</option>
+		</select>
+      </td>
+      <td>&nbsp;</td>
+  </tr>
+  <tr>
+      <td>广告内容：</td>
+      <td>
+		<div id='advert'></div>
+        <div id="code" style="display:none;" disabled>
+           <table width="100%">
+               <tr>
+                   <td><textarea name="content[htmlcode]" rows="5" cols="40"></textarea></td>
+				   <td>请填写广告代码，支持html代码</td>
+               </tr>
+           </table>
+        </div>
+        <div id="img" style="display:none;" disabled>
+           <table width="100%">
+               <tr>
+                   <td><b>图片地址<span class="warning">*</span></b></td>
+                   <td><input type="text" size="40" name="content[url]" value="" /></td>
+               </tr>
+               <tr>
+                   <td><b>图片链接<span class="warning">*</span></b></td>
+                   <td><input type="text" size="40" name="content[link]" value="" /></td>
+               </tr>
+                    <tr>
+                        <td><b>图片宽度</b></td>
+                        <td><input type="text" size="10" name="content[width]" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>图片高度</b></td>
+                        <td><input type="text" size="10" name="content[height]" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>图片描述</b></td>
+                        <td><input type="text" size="40" name="content[descrip]" value="" /></td>
+                    </tr>
+                </table>
+            </div>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+           <tr>
+            <td height="80" align="center">过期显示内容：</td>
+            <td>
+             <textarea name="exp_content" id="exp_content" rows="4" cols="40"></textarea>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add" />
+   </td>
+  </tr>
+{#/if#}
+{#if $act eq 'edit'#}
+ <tr>
+    <td>广告名称:</td>
+    <td><input type="text" name="ad_name" maxlength="60" size="30" value="{#$ad.ad_name#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>时间限制：</td>
+    <td>
+       <input type="radio" name="time_set" value="0" {#if $ad.time_set eq 0#}checked='1'{#/if#} />
+              长期有效
+       <input type="radio" name="time_set" value="1" {#if $ad.time_set eq 1#}checked='1'{#/if#} />
+              在规定时间内有效
+    </td>
+  </tr>
+  <tr>
+    <td>开始日期:</td>
+    <td><input type="text" name="start_time" maxlength="10" value="{#$ad.start_time|date_format:'%Y-%m-%d'#}" />&nbsp;格式：xxxx-xx-xx</td>
+  </tr>
+  <tr>
+    <td>结束日期:</td>
+    <td><input type="text" name="end_time" maxlength="10" value="{#$ad.end_time|date_format:'%Y-%m-%d'#}" />&nbsp;格式：xxxx-xx-xx</td>
+  </tr>
+  <tr>
+            <td height="80" align="center">广告内容：</td>
+            <td>
+             <textarea name="content" id="content" rows="4" cols="40">{#$ad.content#}</textarea>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+           <tr>
+            <td height="80" align="center">过期显示内容：</td>
+            <td>
+             <textarea name="exp_content" id="exp_content" rows="4" cols="40">{#$ad.exp_content#}</textarea>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="ad_id" value="{#$ad.ad_id#}" />
+      <input type="hidden" name="act" value="do_edit" />
+   </td>
+  </tr>
+{#/if#}
+</table>
+</form>
+<script type="text/javascript">
+
+function check()
+{
+	if(ad_form.ad_name.value=='')
+	{
+		alert("广告名称不能为空！");
+		ad_form.ad_name.focus();
+		return false;
+	}
+}
+
+</script>
+<script language="JavaScript">
+function getObj(id){
+	return document.getElementById(id);
+}
+function showcode(idName){
+	obj  = getObj("advert");
+	obj2 = getObj(idName);
+	obj.innerHTML = obj2.innerHTML;
+}
+showcode('code');
+</script>
+{#include file="footer.htm"#}

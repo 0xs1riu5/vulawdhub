@@ -1,0 +1,82 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form name="comment_form" method="post" action="comment.php" onsubmit="return check();">
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  	<td class="datalist_title">选择</td>
+    <td class="datalist_title">评论内容</td>
+    <td class="datalist_title">评论类型</td>
+    <td class="datalist_title">评论人</td>
+    <td class="datalist_title">评论时间</td>
+    <td class="datalist_title">是否审核</td>
+    <td class="datalist_title" align="center">操作</td>
+  </tr>
+  {#section name=comment loop=$comment_list#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+  	<td><input type="checkbox" name="checkboxes[]" value="{#$comment_list[comment].com_id#}" /></td>
+    <td onclick="get_detail('detail{#$comment_list[comment].com_id#}');" style="cursor:hand;width:200px;">{#$comment_list[comment].content|mb_substr:0:10#}</td>
+      <td>{#if $comment_list[comment].type eq 0#}分类信息{#else#}新闻{#/if#}</td>
+	  <td>{#$comment_list[comment].user_name#}</td>
+      <td>{#$comment_list[comment].pub_date|date_format:"%Y-%m-%d"#}</td>
+      <td>{#if $comment_list[comment].is_check eq 0 #}未审核{#else#}已审核{#/if#}</td>
+	  <td align="center"><a href="comment.php?act=edit&type={#$comment_list[comment].type#}&com_id={#$comment_list[comment].com_id#}">编辑</a>&nbsp;|&nbsp;<a href="comment.php?act=del&com_id={#$comment_list[comment].com_id#}">删除</a></td>
+  </tr>
+  <tr><td></td><td id="detail{#$comment_list[comment].com_id#}" style="display:none" colspan="6">{#$comment_list[comment].content#}</td></tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="6">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  <tr>
+  	<td><input type="checkbox" name="selectall" onClick="select_all(this, 'checkboxes')" /></td>
+  	<td><select name="act">
+  			<option value="">批量操作</option>
+  			<option value="check">审核</option>
+  			<option value="del">删除</option>
+  		</select></td>
+  </tr>
+  <tr><td>&nbsp;</td><td><input type="submit" value="提交" /></td></tr>
+</table>
+</form>
+<br>
+<div class="page">{#$page#}</div>
+<script language="javascript">
+	function $(objectId)
+	{
+		 return document.getElementById(objectId);
+	}
+
+	function get_detail(objname)
+	{
+	    var obj = $(objname);
+	    if(obj.style.display == "none")
+	    {
+	        obj.style.display = "block";
+	    }
+	    else
+	    {
+	        obj.style.display = "none";
+	    }
+
+	    return false;
+	}
+	function select_all(obj, check){
+		check = "checkboxes";
+		var elems = obj.form.getElementsByTagName("INPUT");
+	 	for (var i=0; i < elems.length; i++)
+	 		{
+	 			if (elems[i].name == check || elems[i].name == check + "[]")
+	 				{
+	 					elems[i].checked = obj.checked;
+	 				}
+			 }
+	}
+	function check(){
+		if(comment_form.act.value==''){
+			alert('请选择您所需要的操作！');
+			comment_form.act.focus();
+			return false;
+		}
+	}
+</script>
+{#include file="footer.htm"#}

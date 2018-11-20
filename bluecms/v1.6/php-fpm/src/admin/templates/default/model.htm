@@ -1,0 +1,24 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="model.php?act=add">添加新模型</a></p>
+  <table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+      <td class="datalist_title">模型编号</td>
+      <td class="datalist_title">模型名称</td>
+      <td class="datalist_title">顺序</td>
+      <td class="datalist_title" align="center">操作</td>
+  </tr>
+    {#section name=model loop=$model_list#}
+	<tr class="datalist">
+      <td>{#$model_list[model].model_id#}</td>
+      <td>{#$model_list[model].model_name#}</td>
+      <td>{#$model_list[model].show_order#}</td>
+      <td align="center"><a href="model.php?act=edit&model_id={#$model_list[model].model_id#}">编辑</a>&nbsp;|&nbsp;<a href="model.php?act=del&model_id={#$model_list[model].model_id#}">删除</a></td>
+    </tr>
+    {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="4">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  </table>
+  <br/>
+{#include file="footer.htm"#}

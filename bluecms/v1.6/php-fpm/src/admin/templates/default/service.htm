@@ -1,0 +1,27 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td class="datalist_title">服务名称</td>
+    <td class="datalist_title">服务对象</td>
+    <td class="datalist_title">服务类型</td>
+    <td class="datalist_title">价格</td>
+    <td class="datalist_title" align="center">操作</td>
+  </tr>
+  {#section name=p loop=$price_list#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+      <td>{#$price_list[p].name|mb_substr:0:10#}</td>
+      <td>{#if $price_list[p].type eq 'company'#}黄页{#else#}分类信息{#/if#}</td>
+      <td>{#$price_list[p].service#}</td>
+      <td>{#$price_list[p].price#}</td>
+	  <td align="center"><a href="service.php?act=edit&id={#$price_list[p].id#}">编辑</a></td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="5">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+</table>
+</form>
+<br>
+{#include file="footer.htm"#}

@@ -1,0 +1,32 @@
+<div id="top_nav">
+	<div id="top_nav_left">
+		<ul>
+		<li>您好,欢迎您的访问!</li>
+		{#if $user_name#}
+		<li><font style="color:#ff6600;font-weight:bold;">{#$user_name#}</font></li>
+		<li><a href="user.php?act=logout">退出</a></li>
+		{#else#}
+		<li><a href="user.php?act=login">登录</a></li>
+		<li><a href="user.php?act=reg">免费注册</a></li>
+		{#/if#}
+		</ul>
+	</div>
+	<div id="top_nav_right">
+	<ul><li><a href="JavaScript:" onClick="var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('{#$site_url#}');">设为首页</a></li><li><a href="javascript:window.external.AddFavorite(location.href, document.title)">加入收藏</a></li></ul>
+	</div>
+</div>
+<div id="top"><a href="./" target="_self" class="logo"><img src="templates/default/images/logo.gif" alt="{#$site_name#}" border="0" /></a></div>
+	<div class="clears"></div>
+	<div class="nav">
+		<span class="nav_l"></span>
+		<div class="nav_c">
+		<ul><li id="index"><a href="./">首页</a></li>
+			<li><a href="{#php#}echo url_rewrite('news_cat', array());{#/php#}">本地新闻</a></li>
+			<li><a href="{#php#}echo url_rewrite('info_index', array());{#/php#}">分类信息</a></li>
+		{#section name=add_nav loop=$add_nav_list#}
+			<li><a href="{#$add_nav_list[add_nav].navlink#}" {#if $add_nav_list[add_nav].opennew eq 1#} target="_blank"{#/if#}>{#$add_nav_list[add_nav].navname#}</a></li>
+		{#/section#}
+			</ul>
+		</div>
+		<span class="nav_r"></span>
+	</div>

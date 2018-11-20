@@ -1,0 +1,24 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="ipbanned.php?act=add">添加禁止IP</a></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td class="datalist_title">禁止IP</td>
+    <td class="datalist_title">禁止开始时间</td>
+	<td class="datalist_title">禁止周期</td>
+    <td class="datalist_title" align="center">操作</td>
+  </tr>
+  {#section name=b loop=$bannedip_arr#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+    <td>{#$bannedip_arr[b].ip#}</td>
+      <td>{#$bannedip_arr[b].add_time|date_format:"%Y-%m-%d %H:%M:%S"#}</td>
+	  <td>{#$bannedip_arr[b].exp#}&nbsp;天</td>
+	  <td align="center"><a href="ipbanned.php?act=edit&ip={#$bannedip_arr[b].ip#}">编辑</a>&nbsp;|&nbsp;<a href="ipbanned.php?act=del&ip={#$bannedip_arr[b].ip#}">删除</a></td>
+  </tr>
+  {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="4">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+</table>
+<br>
+{#include file="footer.htm"#}

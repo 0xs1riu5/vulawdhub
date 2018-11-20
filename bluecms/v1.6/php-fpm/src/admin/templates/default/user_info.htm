@@ -1,0 +1,158 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+{#if $act eq add#}
+<table>
+<form method="post" action="user.php" name="adduserform" onsubmit="return check();">
+  <tr>
+    <td>用户名:</td>
+    <td><input type="text" name="username" maxlength="60" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>密码:</td>
+    <td><input type="password" name="password" maxlength="100" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>确认密码:</td>
+    <td><input type="password" name="confirm_password" maxlength="100" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>电子邮件:</td>
+    <td><input type="text" name="email" size="30" maxlength="100" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" />
+      <input type="reset" value="重置" />
+      <input type="hidden" name="act" value="do_add" />
+   </td>
+  </tr>
+</form>
+</table>
+{#/if#}
+{#if $act eq edit#}
+<table width="100%" >
+<form method="post" action="user.php" name="adduserform" onsubmit="return check();">
+  <tr>
+    <td>用户名:</td>
+    <td>{#$user.username#}</td>
+  </tr>
+  <tr>
+    <td>电子邮件:</td>
+    <td><input type="text" name="email" maxlength="60" size="30" value="{#$user.email#}" /></td>
+  </tr>
+  <tr>
+    <td>密码:</td>
+    <td><input type="password" name="password" maxlength="20" size="20" />&nbsp;&nbsp;密码不变则不填</td>
+  </tr>
+  <tr>
+    <td>性别:</td>
+    <td>{#html_radios name="sex" options=$sexarr checked=$user.sex#}</td>
+  </tr>
+  <tr>
+    <td>生日:</td>
+    <td>{#html_select_date field_order="YMD" prefix="birthday" time=$user.birthday start_year="-60" end_year="+1" display_days=true month_format="%m"#}</td>
+  </tr>
+  <tr>
+    <td>地址:</td>
+    <td><input type="text" name="address" size="40" value="{#$user.address#}" /></td>
+  </tr>
+  <tr>
+    <td>msn:</td>
+    <td><input type="text" name="msn" size="30" value="{#$user.msn#}" /></td>
+  </tr>
+    </tr>
+  <tr>
+    <td>qq:</td>
+    <td><input type="text" name="qq" size="20" value="{#$user.qq#}" /></td>
+  </tr>
+    </tr>
+  <tr>
+    <td>办公室电话:</td>
+    <td><input type="text" name="office_phone" size="20" value="{#$user.officephone#}" /></td>
+  </tr>
+    </tr>
+  <tr>
+    <td>电话:</td>
+    <td><input type="text" name="home_phone" size="20" value="{#$user.homephone#}" /></td>
+  </tr>
+    </tr>
+  <tr>
+    <td>移动电话:</td>
+    <td><input type="text" name="mobile_phone" size="20" value="{#$user.mobilephone#}" /></td>
+  </tr>
+  <tr>
+    <td>金币数额:</td>
+    <td><input type="text" name="money" size="10" value="{#$user.money#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_edit" />
+      <input type="hidden" name="user_id" value="{#$user.user_id#}" />
+	</td>
+  </tr>
+</form>
+</table>
+{#/if#}
+{#if $act eq 'del'#}
+<table>
+<form method="post" action="user.php" name="delform">
+  <tr>
+    <td>用户名:</td>
+    <td><input type="text" name="username" maxlength="60" value="{#$user_name#}" readonly = "true" /></td>
+  </tr>
+  <tr>
+    <td>是否删除该用户所有分类信息:</td>
+    <td><select name="del_info"><option value="1">是</option><option value="0">否</option></select></td>
+  </tr>
+  <tr>
+    <td>是否删除该用户评论:</td>
+    <td><select name="del_comment"><option value="1">是</option><option value="0">否</option></select></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" />
+      <input type="reset" value="重置" />
+      <input type="hidden" name="act" value="do_del" />
+      <input type="hidden" name="user_id" value="{#$user_id#}" />
+   </td>
+  </tr>
+</form>
+</table>
+{#/if#}
+<script type="text/javascript">
+function check()
+{
+	if(adduserform.username.value=='')
+	{
+		alert("用户名不能为空");
+		adduserform.username.focus();
+		return false;
+	}
+	if(adduserform.password.value=='')
+	{
+		alert("用户密码不能为空");
+		adduserform.password.focus();
+		return false;
+	}
+	if(adduserform.confirm_password.value=='')
+	{
+		alert("用户密码不能为空");
+		adduserform.confirm_password.focus();
+		return false;
+	}
+	if(adduserform.password.value!=adduserform.confirm_password.value)
+	{
+		alert("两次输入密码不一样！");
+		return false;
+	}
+	if(adduserform.email.value=='')
+	{
+		alert("电子邮件不能为空");
+		adduserform.email.focus();
+		return false;
+	}
+}
+</script>
+{#include file="footer.htm"#}

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<title>{#$current_act#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/index.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/user.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="images/favicon.ico" />
+</head>
+<body>
+<div id="top_nav">
+	<div id="top_nav_right">
+	<span><a href="JavaScript:" onClick="var strHref=window.location.href;this.style.behavior='url(#default#homepage)';this.setHomePage('{#$site_url#}');">设为首页</a>&nbsp;&nbsp;<a href="javascript:window.external.AddFavorite(location.href, document.title)">加入收藏</a></span>
+	</div>
+</div>
+<div class="clear"></div>
+<div id="wapper">
+	<div id="top"><a href="{#$site_url#}" target="_self" class="logo"><img src="templates/default/images/logo.gif" alt="{#$site_name#}" border="0" /></a>
+		<dl>{#$description#}
+		</dl>
+	</div>
+	<div class="clear"></div>
+	<div class="active_act">
+		您所在的位置：<a href="./">首页</a> &raquo; {#$current_act#}</div>
+	<div class="publish_nav">
+		1.<span class="selected">选择分类</span>&nbsp;&raquo;&nbsp;2.填写分类信息&nbsp;&raquo;&nbsp;3.发布成功
+	</div>
+	<div class="publish">
+			<div class="pub_top">
+				<div class="pub_warning">
+					<img src="templates/default/images/pub_warning.gif" border="0" />
+				</div>
+				<div class="pub_msg">
+					1、只允许发布<b class="red_skin">本地</b>相关信息<br>
+					2、请不要肆意发布垃圾信息、虚假信息、重复信息<br>
+					3、所有信息发布必须严格遵守中华人民共和国所有法律法规及本地、本行业相关规定，严禁发布带有任何违法或违规色彩的信息<br>
+					4、信息发布者必须自行对信息的有效性、真实性承担一切责任
+				</div>
+			</div>
+		<div class="clear"></div>
+		{#$cat_list#}
+	</div>
+<div class="clear"></div>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

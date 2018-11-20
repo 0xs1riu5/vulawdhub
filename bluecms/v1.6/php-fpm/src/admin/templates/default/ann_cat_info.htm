@@ -1,0 +1,59 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="ann.php" name="ann_c_form" onsubmit="return check();">
+{#if $act eq add_cat#}
+<table>
+  <tr>
+    <td>分类名称:</td>
+    <td><input type="text" name="cat_name" maxlength="20" size="30" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="0" /></td>
+	<td>范围为 0~255</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add_cat" />
+   </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq edit_cat#}
+<table>
+ <tr>
+    <td>分类名称:</td>
+    <td><input type="text" name="cat_name" maxlength="20" size="30" value="{#$ann_cat.cat_name#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="{#$ann_cat.show_order#}" /></td>
+	<td>范围为 0~255</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="cid" value="{#$ann_cat.cid#}" />
+      <input type="hidden" name="act" value="do_edit_cat" />
+   </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+<script type="text/javascript">
+
+function check()
+{
+	if(ann_c_form.title.value=='')
+	{
+		alert("公告分类名称不能为空！");
+		ann_c_form.title.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

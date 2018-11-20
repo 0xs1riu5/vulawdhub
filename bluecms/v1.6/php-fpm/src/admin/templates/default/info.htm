@@ -1,0 +1,66 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form name="info_form" method="post" action="info.php" onsubmit="return check();">
+  <table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+  	  <td class="datalist_title">选择</td>
+      <td class="datalist_title" width="250">信息标题</td>
+      <td class="datalist_title">发布时间</td>
+      <td class="datalist_title">是否推荐</td>
+      <td class="datalist_title">置顶方式</td>
+      <td class="datalist_title">点击</td>
+      <td class="datalist_title">评论</td>
+	  <td class="datalist_title">是否已审核</td>
+      <td class="datalist_title" align="center">操作</td>
+  </tr>
+    {#section name=info loop=$info_list#}
+	<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';"onmouseout="javascript:this.bgColor='#FFFFFF';">
+	    <td><input type="checkbox" name="checkboxes[]" value="{#$info_list[info].post_id#}" /></td>
+    	<td><a href="../{#$info_list[info].info_url#}" target="_blank">{#$info_list[info].title|mb_substr:0:16#}</a></td>
+      	<td>{#$info_list[info].pub_date|date_format:"%Y-%m-%d"#}</td>
+       	<td>{#if $info_list[info].is_recommend#}是{#else#}否{#/if#}</td>
+       	<td>{#if $info_list[info].top_type eq 0#}无{#elseif $info_list[info].top_type eq 1#}小类置顶{#else#}大类置顶{#/if#}</td>
+        <td>{#$info_list[info].click#}</td>
+        <td>{#$info_list[info].comment#}</td>
+		<td>{#if $info_list[info].is_check eq 0#}未审核{#else#}已审核{#/if#}
+      <td align="center"><a href="info.php?act=edit&post_id={#$info_list[info].post_id#}">编辑</a>&nbsp;|&nbsp;<a href="info.php?act=del&cid={#$cid#}&post_id={#$info_list[info].post_id#}">删除</a></td>
+    </tr>
+    {#sectionelse#}
+  <tr>
+    <td class="datalist" colspan="7">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  <tr>
+  	<td><input type="checkbox" name="selectall" onClick="select_all(this, 'checkboxes')" /></td>
+  	<td><select name="act">
+  			<option value="">批量操作</option>
+  			<option value="check">审核</option>
+  			<option value="del">删除</option>
+  		</select></td>
+  </tr>
+  <tr><td>&nbsp;</td><td><input type="submit" value="提交" /><input type="hidden" name="cid" value="{#$cid#}" /></td></tr>
+  </table>
+  </form>
+  <div class="page">{#$page#}</div>
+  <script type="text/javascript">
+	function select_all(obj, check){
+		check = "checkboxes";
+		var elems = obj.form.getElementsByTagName("INPUT");
+	 	for (var i=0; i < elems.length; i++)
+	 		{
+	 			if (elems[i].name == check || elems[i].name == check + "[]")
+	 				{
+	 					elems[i].checked = obj.checked;
+	 				}
+			 }
+	}
+	function check(){
+		if(info_form.act.value==''){
+			alert('请选择您所需要的操作！');
+			info_form.act.focus();
+			return false;
+		}
+	}
+</script>
+<br/>
+{#include file="footer.htm"#}

@@ -1,0 +1,97 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<div class="main-div">
+<form method="post" action="arc_cat.php" name="cat_form" onsubmit="return check();">
+{#if $act eq 'add' #}
+<div id="clean_cache">添加过后请更新缓存</div>
+<table>
+  <tr>
+    <td>分类名称:</td>
+    <td><input type="text" name="cat_name" maxlength="60" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>上级栏目:</td>
+    <td><select name="parent_id">
+    		<option value="0">顶级栏目</option>
+    		</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+    <tr>
+    <td>栏目标题(title):</td>
+    <td><input type="text" name="title" size="50" value="" /></td>
+  </tr>
+  <tr>
+    <td>关键字(keywords):</td>
+    <td><input type="text" name="keywords" size="50" value="" /></td>
+  </tr>
+  <tr>
+    <td>描述(description):</td>
+    <td><textarea name="description" cols="50" rows="4"></textarea></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq 'edit'#}
+<div id="clean_cache">编辑过后请更新缓存</div>
+<table>
+  <tr>
+    <td>分类名称:</td>
+    <td><input type="text" name="cat_name" maxlength="60" value="{#$cat.cat_name#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>上级栏目:</td>
+    <td><select name="parent_id">
+    		<option value="0">顶级栏目</option>
+    		</select>&nbsp;<span class="warning">*</span></td>
+  </tr>
+    <tr>
+    <td>栏目标题(title):</td>
+    <td><input type="text" name="title" size="50" value="{#$cat.title#}" /></td>
+  </tr>
+  <tr>
+    <td>关键字(keywords):</td>
+    <td><input type="text" name="keywords" size="50" value="{#$cat.keywords#}" /></td>
+  </tr>
+  <tr>
+    <td>描述(description):</td>
+    <td><textarea name="description" cols="50" rows="4">{#$cat.description#}</textarea></td>
+  </tr>
+  <tr>
+    <td>显示顺序:</td>
+    <td><input type="text" name="show_order" size="10" value="{#$cat.show_order#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="cid" value="{#$cat.cat_id#}"/>
+      <input type="hidden" name="act" value="do_edit" />
+    </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+</div>
+<script type="text/javascript">
+
+function check()
+{
+	if(cat_form.cat_name.value=='')
+	{
+		alert("分类名称不能为空！");
+		cat_form.cat_name.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

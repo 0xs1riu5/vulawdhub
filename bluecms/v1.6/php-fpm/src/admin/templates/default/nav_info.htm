@@ -1,0 +1,109 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+<form method="post" action="nav.php" name="navform" onsubmit="return check();">
+{#if $act eq 'add'#}
+<div id="clean_cache">添加过后请更新缓存</div>
+<table>
+  <tr>
+    <td>导航名称:</td>
+    <td><input type="text" name="navname" maxlength="60" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>导航链接:</td>
+    <td><input type="text" name="navlink" maxlength="100" size="30" value="" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>是否新窗口打开:</td>
+    <td><select name="opennew">
+    <option selected=true value="1">是</option>
+    <option value="0">否</option>
+    </select></td>
+  </tr>
+  <tr>
+    <td>导航类型:</td>
+    <td><select name="type">
+    <option selected=true value="1">顶部</option>
+    <option value="2">底部</option>
+    </select></td>
+  </tr>
+  <tr>
+    <td>顺序:</td>
+    <td><input type="text" name="showorder" size="10" value="0" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_add" />
+   </td>
+  </tr>
+</table>
+{#/if#}
+{#if $act eq 'edit'#}
+<div id="clean_cache">编辑过后请更新缓存</div>
+<table>
+ <tr>
+    <td>导航名称：</td>
+    <td><input type="text" name="navname" maxlength="60" value="{#$nav.navname#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>导航链接:</td>
+    <td><input type="text" name="navlink" maxlength="100" size="30" value="{#$nav.navlink#}" />&nbsp;<span class="warning">*</span></td>
+  </tr>
+  <tr>
+    <td>是否打开新窗口:</td>
+    <td><select name="opennew">{#if $nav.opennew == '1'#}
+    <option selected=true value="1">是</option>
+    <option value="0">否</option>
+    {#else#}
+    <option value="1">是</option>
+    <option selected=true value="0">否</option>
+    {#/if#}
+    </select></td>
+  </tr>
+  <tr>
+    <td>类型:</td>
+    <td><select name="type">{#if $nav.type == '1'#}
+    <option selected=true value="1">顶部</option>
+    <option value="2">底部</option>
+    {#else#}
+    <option value="1">顶部</option>
+    <option selected=true value="2">底部</option>
+    {#/if#}
+    </select></td>
+  </tr>
+  <tr>
+    <td>顺序：</td>
+    <td><input type="text" name="showorder" size="10" value="{#$nav.showorder#}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="提交" class="button" />
+      <input type="reset" value="重置" class="button" />
+      <input type="hidden" name="act" value="do_edit" />
+      <input type="hidden" name="navid" value="{#$nav.navid#}" />
+   </td>
+  </tr>
+</table>
+{#/if#}
+</form>
+<script type="text/javascript">
+
+function check()
+{
+	if(navform.navname.value=='')
+	{
+		alert("导航名称不能为空！");
+		navform.navname.focus();
+		return false;
+	}
+	if(navform.navlink.value=='')
+	{
+		alert("导航链接不能为空！");
+		navform.navlink.focus();
+		return false;
+	}
+}
+
+</script>
+{#include file="footer.htm"#}

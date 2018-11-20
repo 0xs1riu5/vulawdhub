@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#$charset#}" />
+<meta name="Keywords" content="{#$cat_info.keywords#}" />
+<meta name="Description" content="{#$cat_info.description#}" />
+<title>{#$location.name2#} - {#$site_name#} - Powered by BlueCMS</title>
+<link href="templates/default/css/category.css" rel="stylesheet" type="text/css" />
+<link href="templates/default/css/common.css" rel="stylesheet" type="text/css" />
+<script src="templates/default/css/jquery.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="images/favicon.ico" />
+<script type="text/javascript">
+	$(function(){
+		$("#cat ul li:nth-child(2n)").addClass("color");
+	});
+</script>
+<style type="text/css">
+.color{background-color:#F8F8F8;}
+</style>
+</head>
+<body>
+{#include file="header.htm"#}
+<div id="wapper">
+	<div class="main">
+		<div class="main_l">
+			<div class="active_act">
+				您所在的位置：<a href="./">首页</a> &raquo; <a href="{#$location.url1#}">{#$location.name1#}</a> &raquo; {#$location.name2#}
+			</div>
+			<div id="news">
+				<div id="title"><h2>{#$news.title#}</h2></div>
+				<div id="news_info"><span id="source">来源：{#$news.source#}</span><span id="pub_date">发布时间：{#$news.pub_date|date_format:"%Y-%m-%d %H:%M:%S"#}</span><span id="author">作者：{#$news.author#}</span>{#dynamic#}<span id="click">点击：{#$news.click#}</span>{#/dynamic#}</div>
+				<div id="content">{#$news.content#}</div>
+			</div>
+		{#dynamic#}<div class="comment"><form action="comment.php?act=send" name="comment_form" method="post">
+		<div class="title1">评论</div>
+		<div id="com_count">{#if $news.comment eq 0#}共有 0 条评论{#else#}<a href="comment.php?id={#$news.id#}&type=1">共有{#$news.comment#}条评论</a>{#/if#}</div>
+		<div class="content1">{#section name=com loop=$comment_list#}
+				<div class="com">
+					<div class="com_title"><img src="images/mood/mood-{#$comment_list[com].mood#}.gif" border="0" />&nbsp;{#if $comment_list[com].user_id <> 0#}{#$comment_list[com].user_name#}{#else#}游客{#/if#}&nbsp;于{#$comment_list[com].pub_date|date_format:"%Y-%m-%d %H:%M:%S"#}&nbsp;说到：</div>
+						<div class="com_content" id='c_content{#$comment_list[com].com_id#}' onclick="show_detail({#$comment_list[com].com_id#});">{#$comment_list[com].content|mb_substr:0:50#}</div>
+					<div style="display:none;cursor:hand;" class="com_content" id='com_detail{#$comment_list[com].com_id#}' onclick="show_detail({#$comment_list[com].com_id#});">{#$comment_list[com].content#}</div>
+				</div>{#/section#}
+			<div id="send_comment1">{#if $user_name#}您好，<a href="user.php">{#$user_name#}</a>{#else#}您现在是匿名发表！ <a href="user.php?act=login&from={#$url#}">登录</a>&nbsp;|&nbsp;<a href="user.php?act=reg&from={#$url#}">注册</a>{#/if#}</div>
+			<div id="mood">
+				<ul>
+					<li><input type="radio" name='mood' value='1'/><img src="images/mood/mood-1.gif" /></li>
+					<li><input type="radio" name='mood' value='2'/><img src="images/mood/mood-2.gif" /></li>
+					<li><input type="radio" name='mood' value='3'/><img src="images/mood/mood-3.gif" /></li>
+					<li><input type="radio" name='mood' value='4'/><img src="images/mood/mood-4.gif" /></li>
+					<li><input type="radio" name='mood' value='5'/><img src="images/mood/mood-5.gif" /></li>
+					<li><input type="radio" name='mood' value='6' checked="1" /><img src="images/mood/mood-6.gif" /></li>
+					<li><input type="radio" name='mood' value='7'/><img src="images/mood/mood-7.gif" /></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+			<div>
+				<textarea rows="6" cols="50" name="comment"></textarea><br/><br/>
+				<input type="hidden" name="id" value="{#$news.id#}" />
+				<input type="hidden" name="type" value="1" />
+				<input type="submit" name="submit" value="提交评论" />
+			</div>
+		</div></form>
+	</div>{#/dynamic#}
+		</div>
+		<div class="main_r">
+			<div id="rec_news">
+				<div class="title1">新闻推荐</div>
+				<div class="content1">
+					<ul>
+					{#section name=news loop=$rec_news#}
+						<li><a href="{#$rec_news[news].url#}" {#if $rec_news[news].color#}style="{#$rec_news[news].color#}"{#/if#}>{#$rec_news[news].title|mb_substr:0:18#}</a></li>
+					{#/section#}
+					</ul>
+				</div>
+				<div class="clear"></div>
+					<div class="t_l"></div>
+					<div class="t_r"></div>
+					<div class="b_l"></div>
+					<div class="b_r"></div>
+			</div>
+			<div id="hot_news">
+				<div class="title1">热点导读</div>
+				<div class="content1">
+					<ul>{#section name=h_news loop=$hot_news#}
+						<li><a href="{#$hot_news[h_news].url#}" {#if $hot_news[news].color#}style="{#$hot_news[news].color#}"{#/if#}>{#$hot_news[h_news].title|mb_substr:0:18#}</a></li>
+						{#/section#}
+					</ul>
+				</div>
+				<div class="clear"></div>
+					<div class="t_l"></div>
+					<div class="t_r"></div>
+					<div class="b_l"></div>
+					<div class="b_r"></div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+<script type="text/javascript">
+	function show_detail(i){
+		$('#c_content'+i).toggle();
+		$('#com_detail'+i).toggle();
+	}
+</script>
+{#include file="footer.htm"#}
+</div>
+</body>
+</html>

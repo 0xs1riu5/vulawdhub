@@ -1,0 +1,30 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}</p>
+  <table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+      <td class="datalist_title">管理员名称</td>
+      <td class="datalist_title">电子邮件</td>
+      <td class="datalist_title">添加日期</td>
+      <td class="datalist_title">最后登录日期</td>
+      <td class="datalist_title">最后登录IP</td>
+      <td class="datalist_title" align="center">操作</td>
+  </tr>
+    {#section name=user loop=$user_list#}
+	<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';" onmouseout="javascript:this.bgColor='#FFFFFF';">
+      <td>{#$user_list[user].admin_name#}</td>
+      <td>{#$user_list[user].email#}</td>
+      <td>{#$user_list[user].add_time|date_format:"%Y-%m-%d"#}</td>
+      <td>{#$user_list[user].last_login_time|date_format:"%Y-%m-%d"#}</td>
+      <td>{#$user_list[user].last_login_ip#}</td>
+	  <td align="center"><a href="sys_user.php?act=edit&admin_id={#$user_list[user].admin_id#}">编辑</a>{#if $user_list[user].admin_id <> 1#}<!--&nbsp;|&nbsp;
+	  <a href="sys_user.php?act=del&admin_id={#$user_list[user].admin_id#}"删除></a>&nbsp;|&nbsp;<a href="sys_user.php?act=get_purview&admin_id={#$user_list[user].admin_id#}">权限</a>-->{#/if#}</td>
+    </tr>
+    {#sectionelse#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';" onmouseout="javascript:this.bgColor='#FFFFFF';">
+    <td colspan="6">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  </table>
+  <div class="page">{#$page#}</div>
+<br>
+{#include file="footer.htm"#}

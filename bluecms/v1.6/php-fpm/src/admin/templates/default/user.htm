@@ -1,0 +1,30 @@
+{#include file="header.htm"#}
+<p class="action_nav">BlueCMS管理中心 - {#$current_act#}&nbsp;&nbsp;<a href="user.php?act=add">添加新会员</a></p>
+  <table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+      <td class="datalist_title">会员名称</td>
+      <td class="datalist_title">性别</td>
+      <td class="datalist_title">电子邮件</td>
+      <td class="datalist_title">生日</td>
+      <td class="datalist_title">注册日期</td>
+      <td class="datalist_title" align="center">操作</td>
+  </tr>
+    {#section name=user loop=$user_list#}
+	<tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';" onmouseout="javascript:this.bgColor='#FFFFFF';">
+      <td>{#$user_list[user].user_name#}</td>
+      <td>{#if $user.sex == 0#}保密{#elseif $user.sex == 1#}男{#else#}女{#/if#}</td>
+      <td>{#$user_list[user].email#}</td>
+      <td>{#$user_list[user].birthday#}</td>
+      <td>{#$user_list[user].reg_time|date_format:"%Y-%m-%e"#}</td>
+	  <td align="center"><a href="user.php?act=edit&user_id={#$user_list[user].user_id#}">编辑</a>&nbsp;|&nbsp;
+	  <a href="user.php?act=del&user_id={#$user_list[user].user_id#}">删除</a></td>
+    </tr>
+    {#sectionelse#}
+  <tr class="datalist" onmousemove="javascript:this.bgColor='#F7FBFE';" onmouseout="javascript:this.bgColor='#FFFFFF';">
+    <td colspan="6">没有找到任何记录</td>
+  </tr>
+    {#/section#}
+  </table>
+  <div class="page">{#$page#}</div>
+<br>
+{#include file="footer.htm"#}
