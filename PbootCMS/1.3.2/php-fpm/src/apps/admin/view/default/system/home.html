@@ -1,0 +1,157 @@
+{include file='common/head.html'}
+  
+<div class="layui-body">
+	<div class="layui-row" style="color:red;">
+		{if(![$dbsecurity])}
+		<p>
+			<i class="fa fa-info-circle" aria-hidden="true"></i>
+			您的数据库文件存在安全隐患，可能被下载，请尽快修改数据库路径！<a class="layui-btn  layui-btn-sm" href="?action=moddb">自动修改</a>
+		</p>
+		{/if}
+		
+		{if(![$session.pwsecurity])}
+		<p>
+			<i class="fa fa-info-circle" aria-hidden="true"></i>
+			 您的账号密码太简单，存在安全隐患，请尽快修改密码！<a class="layui-btn  layui-btn-sm" href="{url./admin/Index/ucenter}">立即修改</a>
+		</p>
+		{/if}
+	
+	</div>
+	
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+	  <legend>快捷操作</legend>
+	</fieldset>
+	<div class="layui-row">
+		 {foreach $shortcuts(key,value)}
+	    	<div class="layui-col-xs6 layui-col-sm4 layui-col-md3 layui-col-lg2">
+	    		<a href="{url.'.$value->url.'}">
+		      		<dl class="deskbox center-block">
+	                     <dd>
+	                         <i class="fa [value->ico]" aria-hidden="true"></i>
+	                     </dd>
+	                     <dt>[value->name]</dt>
+	                 </dl>
+                 </a>
+	   	   </div>
+	     {/foreach}
+	 </div>
+	 
+	 <div class="layui-row layui-col-space10">
+	 	<div class="layui-col-xs12 layui-col-md6">
+			<table class="layui-table table-two">
+				  <thead>
+				  	<tr>
+				  		<th colspan="2">系统信息</th>
+				  	</tr>
+				  </thead>
+				  <tbody>
+				     <tr>
+				      	<th width="100">应用版本</th>
+				      	<td>PbootCMS V{APP_VERSION}-{RELEASE_TIME} 
+				      	 {if(session('ucode')==10001)}
+				      		<a href="{url./admin/Upgrade/index}" class="layui-btn layui-btn-xs" id="check">在线更新</a>
+				         {/if}
+				      	</td>
+				     </tr>
+				     <tr>
+				      	<th>框架版本</th>
+				      	<td>Pboot V{CORE_VERSION}</td>
+				     </tr>
+				     <tr>
+				      	<th>主机系统</th>
+				      	<td>{$server->php_os}</td>
+				     </tr>
+				     <tr>
+				      	<th>主机地址</th>
+				      	<td>{$server->server_name}（{$server->server_addr}:{$server->server_port}）</td>
+				     </tr>
+				     <tr>
+				      	<th>WEB软件</th>
+				      	<td>{$server->server_software}</td>
+				     </tr>
+				     <tr>
+				      	<th>PHP版</th>
+				      	<td>{$server->php_version}</td>
+				     </tr>
+				     <tr>
+				      	<th>数据库驱动</th>
+				      	<td>{$server->db_driver}</td>
+				     </tr>
+				     <tr>
+				      	<th>文件上传限制</th>
+				      	<td>{$server->upload_max_filesize}</td>
+				     </tr>
+				     <tr>
+				      	<th>表单提交限制</th>
+				      	<td>{$server->post_max_size}</td>
+				     </tr>
+				  </tbody> 
+			</table> 
+	 	</div>
+	 	
+	 	<div class="layui-col-xs12 layui-col-md6">
+			<table class="layui-table table-two">
+				  <thead>
+				  	<tr>
+				  		<th colspan="2">开发信息</th>
+				  	</tr>
+				  </thead>
+				 
+				  <tbody>
+				  	<tr>
+	                    <th>版权所有</th>
+	                    <td><a href="http://www.hnaoyun.com" target="_blank">湖南翱云网络科技有限公司</a></td>
+	                </tr>
+	
+	                <tr>
+	                    <th>官方网站</th>
+	                    <td><a href="http://www.pbootcms.com" target="_blank">pbootcms.com</a></td>
+	                </tr>
+	                
+				  	<tr>
+	                    <th>码云地址</th>
+	                    <td><a href="https://gitee.com/hnaoyun/PbootCMS/releases" target="_blank">查看最新版</a></td>
+	                </tr>
+	                
+	                <tr>
+	                    <th>系统开发</th>
+	                    <td>星梦开源团队</td>
+	                </tr>
+	                
+	                <tr>
+	                    <th>开源协议</th>
+	                    <td title="开源协议Apache License概述 ：你可以用这代码并任意修改，你也可以任意商用及闭源，但是如果开源你必须保留我写的声明；你可以改我的代码，但是如果开源你必须写清楚你改了哪些；你可以加新的协议要求，但不能与我所公布的协议要求产生冲突；你用这代码干什么我不管，但是你不能让我承担任何责任。   ">Apache Licene 2.0</td>
+	                </tr>
+	               
+	                <tr>
+	                    <th>技术交流群</th>
+	                    <td>137083872</td>
+	                </tr>
+	                
+	                <tr>
+	                    <th>友情贡献者</th>
+	                    <td>
+	                    	感谢晨星傲月、富派仙尊、紫雨、远方的回忆、果爸、Jiang、江苏360搜索推广陈杭、书生会武术、六水水炸了、极点科技-周锦程、金科一生所爱、骑着蚂蚁的大象等网友的积极贡献；
+	                    	感谢交流群各网友的大力支持；
+	                    	感谢LayUI提供的前端框架；
+	                    	感谢星梦开发团队的日夜奋斗。
+	                    </td>
+	                </tr>
+				  </tbody>
+			</table>
+	 	</div>
+	 </div>
+</div>
+<script>
+$.ajax({
+    type: 'GET',
+	url: 'https://www.pbootcms.com/index.php/upgrade/check/version/{APP_VERSION}.{RELEASE_TIME}/branch/{$branch}',
+	dataType: 'json',
+	success: function (response, status) {
+		 if(response.code==1){
+			 $("#check").html($("#check").html()+'<span class="layui-badge-dot"></span>');
+		 }
+    }
+});
+</script>
+{include file='common/foot.html'}

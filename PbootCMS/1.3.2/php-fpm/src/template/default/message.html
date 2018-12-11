@@ -1,0 +1,93 @@
+﻿{include file=comm/head.html}
+
+{include file=comm/top.html}
+
+<div class="container pages">
+	{include file=comm/position.html}
+
+	{pboot:if({page:rows}>0)}
+    	<h5 class="border-bottom border-info pb-2"><i class="fa fa-sliders" aria-hidden="true"></i> 留言记录</h5>
+	{/pboot:if}
+	 
+	<!-- 留言记录 -->
+    {pboot:message num=2}
+    <div class="media border-bottom pb-3 pt-3">
+	  <img class="mr-3" src="{pboot:sitetplpath}/images/user.png" height="25">
+	  <div class="media-body">
+	    <h5 class="mt-0">[message:contacts]：</h5>
+	    <p>[message:content]</p>
+	    <p>
+	    	<span class="badge badge-light text-secondary font-weight-normal">[message:mobile substr=1,3]****[message:mobile substr=8]</span>
+	    	<span class="badge badge-light text-secondary font-weight-normal">[message:os]</span>
+	    	<span class="badge badge-light text-secondary font-weight-normal">[message:bs]</span>
+	    	<span class="badge badge-light text-secondary font-weight-normal">[message:askdate]</span>
+	    </p>
+	    <div class="media mt-3 border-top-dashed pt-3">
+	      <img class="mr-3" src="{pboot:sitetplpath}/images/user.png" height="25">
+	      <div class="media-body">
+	        <h5 class="mt-0">管理员回复：</h5>
+	        <p>[message:recontent]</p>
+	        <p><span class="badge badge-light text-secondary font-weight-normal">[message:replydate]</span></p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	{/pboot:message}
+	
+	<!-- 分页 -->
+ 	{pboot:if({page:rows}>0)}
+	<nav aria-label="page navigation" class="my-4">
+      <div class="pagination justify-content-center">
+      	<a class="page-item page-link" href="{page:index}">首页</a>
+        <a class="page-item page-link" href="{page:pre}">上一页</a>
+        {page:numbar}<!-- 数字条，小屏幕时自动隐藏-->
+        <a class="page-item page-link" href="{page:next}">下一页</a>
+        <a class="page-item page-link" href="{page:last}">尾页</a>
+      </div>
+    </nav>
+    {/pboot:if}
+    
+    <!-- 留言表单 -->
+    <form class="mb-5" action="{pboot:msgaction}"  method="post">
+		<div class="form-group row">
+		    <label for="contacts" class="col-sm-2 col-md-2 col-lg-2 col-form-label text-md-right">联系人</label>
+		    <div class="col-sm-10 col-md-8 col-lg-6">
+		    	<input type="text" name="contacts" id="contacts" class="form-control" placeholder="请输入联系人">
+		    </div>
+	    </div>
+	    
+	    <div class="form-group row">
+		    <label for="mobile" class="col-sm-2 col-md-2 col-lg-2 col-form-label text-md-right">手　机</label>
+		    <div class="col-sm-10 col-md-8 col-lg-6">
+		    	<input type="text" name="mobile" id="mobile" class="form-control" placeholder="请输入联系人">
+		    </div>
+	    </div>
+	    
+	    <div class="form-group row">
+		    <label for="content" class="col-sm-2 col-md-2 col-lg-2 col-form-label text-md-right">内　容</label>
+		    <div class="col-sm-10 col-md-8 col-lg-6">
+		    	<textarea name="content" id="content" class="form-control" placeholder="请输入联系人"></textarea>
+		    </div>
+	    </div>
+	    
+	    <div class="form-group row">
+		    <label for="checkcode" class="col-sm-2 col-md-2 col-lg-2 col-form-label text-md-right">验证码</label>
+		    <div class="col-6 col-sm-5 col-md-4 col-lg-3">
+		    	<input type="text" name="checkcode" id="checkcode" class="form-control" placeholder="请输入验证码">
+		    </div>
+		    <div class="col-6 col-sm-5 col-md-4 col-lg-3">
+		    	<img title="点击刷新" style="height:33px;" src="{pboot:checkcode}" onclick="this.src='{pboot:checkcode}?'+Math.round(Math.random()*10);" />
+		    </div>
+	    </div>
+	    
+	    <div class="form-group row">
+	    	<div class="col-sm-2 col-md-2 col-lg-2"></div>
+	    	<div class="col-sm-10 col-md-8 col-lg-6">
+	    		<button type="submit" class="btn btn-info mb-2">提交留言</button>
+	    	</div>
+	    </div>
+    </form>
+    
+</div>
+ 
+{include file=comm/foot.html}

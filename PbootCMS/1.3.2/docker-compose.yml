@@ -1,0 +1,8 @@
+version: '2'
+services:
+  php5-app-cms:
+    build: ./php-fpm
+    image: s1riu5/pbootcms:1.3.2
+    restart: always
+    ports:
+        - 80:80
