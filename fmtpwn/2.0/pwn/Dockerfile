@@ -2,6 +2,7 @@ FROM ubuntu:18.04
 
 COPY test /pwn/test
 COPY docker-entrypoint.sh /usr/local/bin/
+COPY flag.txt /flag.txt
 
 RUN groupadd pwn \
     && useradd -g pwn -s "/usr/sbin/nologin" pwn \
