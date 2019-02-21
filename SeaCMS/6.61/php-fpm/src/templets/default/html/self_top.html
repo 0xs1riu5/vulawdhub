@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			{seacms:load block_header.html}		
+			<title>排行榜</title>
+			<meta name="keywords" content="{seacms:sitename}">
+			<meta name="description" content="{seacms:sitename}">	
+		</head>
+	  <body>
+		    {seacms:top}
+		    <!--main-->		    
+		    <div class="container">
+				<div class="row">
+					{seacms:menulist type=all}				
+					<div class="hy-layout clearfix" id="list-[menulist:typeid]">
+						<div class="hy-video-list cleafix">
+							<div class="head">
+								<a class="text-muted pull-right" href="/{seacms:sitepath}search.php?searchtype=5&tid=[menulist:typeid]">更多 <i class="icon iconfont icon-right"></i></a>
+								<h4><i class="icon iconfont icon-top text-color"></i> [menulist:typename]排行榜</h4>
+							</div>
+						    <div class="item">																			
+								{seacms:videolist type=[menulist:typeid] order=douban num=8}
+							    <div class="col-md-2 col-sm-3 col-xs-4 {if:[videolist:i] > 6}visible-sm{end if}">						    	
+						    		{seacms:load block_video.html}							    				    						
+								</div>
+								{/seacms:videolist}	
+							</div>
+						</div>	
+						<div class="hy-video-text-list hidden-xs clearfix">
+							<div class="item">
+								<ul class="clearfix">
+									{seacms:videolist type=[menulist:typeid] order=douban num=12 start=7}
+									<li>	
+										{seacms:load block_videotext.html}																										
+									</li>
+									{/seacms:videolist}		
+								</ul>
+							</div>							
+						</div>
+					</div>					
+					{/seacms:menulist}
+				</div>
+			</div>
+		{seacms:foot}
+	  </body>
+</html>

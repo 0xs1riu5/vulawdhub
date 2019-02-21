@@ -1,0 +1,73 @@
+<div class="hy-gototop hidden-sm hidden-xs">
+	<ul class="item clearfix">
+		<li><a href="/{seacms:sitepath}member.php" title="会员中心"><i class="icon iconfont icon-member1"></i></a></li>
+		<li><a href="/{seacms:sitepath}gbook.php" title="留言求片"><i class="icon iconfont icon-comment"></i></a></li>
+		<li>
+			<a href="javascript:()" title="观看记录"><i class="icon iconfont icon-record1"></i></a>
+			<div class="history clearfix">
+				<div class="head">
+					<h5 class="margin-0 text-muted">观看历史</h5>
+				</div>
+				<script type="text/javascript ">
+					$MH.limit = 8;
+					$MH.WriteHistoryBox(200, 170, 'pic');
+					
+				</script>
+			</div>			
+		</li>		
+		<li>
+			<a href="javascript:()"  title="二维码"><i class="icon iconfont icon-code1"></i></a>
+			<div class="code clearfix">
+				<p class="margin-0"><img class="pic-responsive" src="/{seacms:sitepath}pic/ewm.png" alt="扫描二维码" /></p>					
+			</div>
+		</li>
+		<li><a href="javascript:scroll(0,0)" title="返回顶部"><i class="icon iconfont icon-uparrow"></i></a></li>
+	</ul>
+</div>
+<div class="tabbar visible-xs">
+	<a href="{seacms:indexlink}" class="item{if:{seacms:currenttypeid}==-444} active{end if}">
+        <i class="icon iconfont icon-home"></i>
+        <p class="text">首页</p>
+    </a>
+    {seacms:menulist type=top}    
+	<a href="[menulist:link]" class="item{if:[menulist:typeid]=={seacms:currenttypeid}} active{elseif:[menulist:typeid]={playpage:upid}} active{end if}">
+        <i class="icon iconfont icon-{if:[menulist:typeid]== 1}film{elseif:[menulist:typeid]== 2}show{elseif:[menulist:typeid]== 3}flag{elseif:[menulist:typeid]== 4}mallanimation{end if}"></i>
+        <p class="text">[menulist:typename] </p>
+    </a>
+    {/seacms:menulist}
+	
+	<a href="/{seacms:sitepath}member.php" class="item">
+        <i class="icon iconfont icon-member1"></i>
+        <p class="text">会员</p>
+    </a>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="hy-footer clearfix">
+			<p class="text-muted hidden-sm hidden-xs">本网站内容收集于互联网，{seacms:sitename}不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br> 本站永久免费更新最新电影与剧集，欢迎大家使用并推荐朋友。</p>
+			<p class="margin-0 text-muted">Copyright © 2008-2017</p>
+			
+		</div>
+	</div>
+</div>
+<span style="display:none">{seacms:sitevisitjs}</span>
+<script type="text/javascript" charset="utf-8">
+    $(function() {
+        $(".videopic.lazy").lazyload({effect: "fadeIn"});  
+        $("[data-toggle='tooltip']").tooltip();
+    });
+   
+	window._bd_share_config = {
+		common: {
+			bdText: '',
+			bdDesc: '',
+			bdUrl: '',
+			bdPic: ''
+		},
+		share: [{
+			"bdSize": 24,
+			bdCustomStyle: 'images/css/share.css'
+		}]
+	}
+	with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5)];
+</script>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			{seacms:load block_header.html}		
+			<title>最近更新</title>
+			<meta name="keywords" content="{seacms:sitename}">
+			<meta name="description" content="{seacms:sitename}">	
+		</head>
+	  <body>
+		    {seacms:top}
+		    <!--main-->		    
+		    <div class="container">
+				<div class="row">
+					<div class="hy-layout clearfix">
+						<div class="hy-switch-tabs active">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#list1" data-toggle="tab">最近更新</a></li>	
+								{seacms:menulist type=top}
+								<li><a href="#list[menulist:i]" data-toggle="tab">[menulist:typename]</a></li>							
+								{/seacms:menulist}
+							</ul>
+						</div>
+						<div class="tab-content">
+							<div class="tab-pane fade in active" id="list">
+								<div class="hy-video-list cleafix">
+								    <div class="item">																			
+										{seacms:videolist type=all num=36 order=time}
+									    <div class="col-md-2 col-sm-3 col-xs-4">						    	
+								    		<a class="videopic lazy" href="[videolist:link]" title="[videolist:name]" data-original="[videolist:pic]" style=" background: url(images/load.gif) no-repeat; background-position:50% 50%; background-size: cover;" >												
+												<span class="play hidden-xs"></span>										
+												{if:[videolist:score] > 0.0}<span class="score">[videolist:score]</span>{end if}
+												{if:"[videolist:note]" <> "" }<span class="note textbg">[videolist:note]</span>{end if}	
+											</a>
+											<div class="title">
+												<h5 class="text-center text-overflow"><a href="[videolist:link]">[videolist:name]</a></h5>
+											</div>
+											<div class="subtitle text-muted text-overflow text-center">
+												[videolist:time style=yyyy-mm-dd]
+											</div>							    				    						
+										</div>
+										{/seacms:videolist}	
+									</div>
+								</div>	
+							</div>
+							{seacms:menulist type=top}
+							<div class="tab-pane fade in" id="list[menulist:i]">
+								<div class="hy-video-list cleafix">
+								    <div class="item">																			
+										{seacms:videolist type=[menulist:typeid] num=36 order=time}
+									    <div class="col-md-2 col-sm-3 col-xs-4">						    	
+								    		<a class="videopic" href="[videolist:link]" title="[videolist:name]" style=" background: url([videolist:pic]) no-repeat; background-position:50% 50%; background-size: cover;" >												
+												<span class="play hidden-xs"></span>										
+												{if:[videolist:score] > 0.0}<span class="score">[videolist:score]</span>{end if}
+												{if:"[videolist:note]" <> "" }<span class="note textbg">[videolist:note]</span>{end if}	
+											</a>
+											<div class="title">
+												<h5 class="text-center text-overflow"><a href="[videolist:link]">[videolist:name]</a></h5>
+											</div>
+											<div class="subtitle text-muted text-overflow text-center">
+												[videolist:time style=yyyy-mm-dd]
+											</div>							    				    						
+										</div>
+										{/seacms:videolist}	
+									</div>
+								</div>	
+							</div>
+							{/seacms:menulist}
+						</div>
+					</div>					
+				</div>
+			</div>
+		{seacms:foot}
+	  </body>
+</html>

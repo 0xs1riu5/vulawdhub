@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{seacms:strip}
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		{seacms:load block_header.html}		
+		<title>专辑列表_第{topicindexlist:page}页_{seacms:sitename}</title>
+		<meta name="keywords" content="{seacms:sitename}">
+		<meta name="description" content="{seacms:sitename}">	
+	</head>
+	<body>
+		{seacms:top}
+		<!--main-->
+		<div class="container">
+			<div class="row">
+				<div class="hy-layout clearfix">						
+					<div class="hy-topic-list clearfix">
+						<div class="item">							
+							{seacms:topicindexlist size=24}
+						    <div class="col-md-4 col-sm-6 col-xs-12">					    		
+					    		<a class="videopic lazy" href="[topicindexlist:link]" title="[topicindexlist:name]" data-original="[topicindexlist:pic]" style="padding-top: 50%; background: url(images/load_w.gif) no-repeat; background-position:50% 50%; background-size: cover;" >
+					    			<div class="details textbg">
+					    				<span class="text"> <i class="icon iconfont icon-icon_special"></i> 专题</span>
+					    				<span class="name">[topicindexlist:name]</span>
+					    				<span class="count">—— [topicindexlist:count]个影片 ——</span>
+					    			</div>
+								</a>														
+							</div>
+							{/seacms:topicindexlist}		
+						</div>												
+					</div>
+					<div class="hy-page clearfix">
+						<ul class="cleafix">
+							<li><a href="{topicindexlist:firstlink}">首页</a></li>
+							<li><a href="{topicindexlist:backlink}">上一页</a></li>							
+							{topicindexlist:pagenumber len=6}
+							<li class="hidden-xs {if:{topicindexlist:page}==[pagenumber:page]}active{end if}"><a href="[pagenumber:link]">[pagenumber:page]</a></li>
+							{/topicindexlist:pagenumber}
+							<li class="visible-xs"><span class="num">{topicindexlist:page}/{topicindexlist:pagecount}</span></li>
+							<li><a href="{topicindexlist:nextlink}">下一页</a></li>
+							<li><a href="{topicindexlist:lastlink}">尾页</a></li>							
+						</ul>					
+					</div>	
+				
+				</div>
+			</div>
+		</div>
+		{seacms:foot}
+	</body>
+</html>
+{/seacms:strip}

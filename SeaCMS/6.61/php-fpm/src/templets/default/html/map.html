@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+ {seacms:load block_header.html}
+<title>全部数据-{seacms:sitename}</title>
+<meta name="keywords" content="全部数据-{seacms:sitename}" />
+<meta name="description" content="全部数据-{seacms:sitename}" />
+<link href="images/style.css" rel="stylesheet">
+</head>
+<body>
+{seacms:top}
+<div class="wrap">
+	<div class="main">		
+		{seacms:arealist areatype=all}
+			<div class="combox">
+			<div class="border" style="clear:both;">
+			<h3><a href="[arealist:link]" class="more" >更多&gt;&gt;</a>[arealist:typename]([arealist:count])</h3>
+				<div class="maplist">
+				<ul>
+				{seacms:videolist num=40 order=time type=areatype}
+				<li style="float:left;width:100px; height:22px; overflow:hidden; margin-left:5px; margin-right:5px;"><a href="[videolist:link]" >{if: [videolist:state]>0}[videolist:name len=8]<font color="red">至第[videolist:state]集</font>{else}[videolist:name]{end if}</a></a></li>
+				 {/seacms:videolist}			
+				</ul>
+				</div>
+			</div>
+		</div>
+{/seacms:arealist}
+<div class="clear"></div>
+			
+	</div>
+	{seacms:foot}
+</div>
+</body>
+</html>

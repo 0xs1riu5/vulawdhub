@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{seacms:strip}
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		{seacms:load block_header.html}		
+		<title>用户登录-{seacms:sitename}</title>
+		<meta name="keywords" content="用户登录-{seacms:sitename}">
+		<meta name="description" content="用户登录-{seacms:sitename}">	
+	</head>
+	<body>		
+		{seacms:top}
+        <!--main-->       
+		<div class="container">
+			<div class="row">								
+				<div class="hy-login">
+					<div class="head">
+						<h3 class="text-center">
+							<a href="http://{seacms:siteurl}"><img src="images/logo.png" /></a>
+						</h3>
+						<p class="text-muted text-center">用户登录</p>
+					</div>
+					{login:viewLogin}
+			   </div>
+			</div>
+		</div>				
+		{seacms:foot}
+		<script>
+	    var swiper = new Swiper('.hy-slide', {
+	        pagination: '.swiper-pagination',
+	        paginationClickable: true,
+	        autoplay: 3000,
+	        nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+	    });	    
+	    </script>
+    </body>
+</html>
+{/seacms:strip}

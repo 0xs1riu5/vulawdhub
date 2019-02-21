@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{seacms:strip}
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		{seacms:load block_header.html}		
+		<title>{playpage:name}在线播放-{playpage:typename}-{seacms:sitename}</title>
+		<meta name="keywords" content="{playpage:name}免费在线观看,{playpage:name}剧情介绍,{playpage:name}电影海报">
+		<meta name="description" content="{playpage:name}剧情:{playpage:des len=50}">		    
+		<link href="images/css/xunlei.css" rel="stylesheet"  />
+        <script src="images/js/xunlei.js"></script>
+	</head>
+	<body>
+		{seacms:top}
+		<!--main-->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 col-sm-12 hy-main-content">
+					<div class="hy-video-details clearfix">						
+						<div class="item clearfix">
+							<dl class="content">
+								<dt>								
+									<a class="videopic" href="{playpage:playlink}" title="{playpage:name}" style="background: url({playpage:pic})  no-repeat; background-position:50% 50%; background-size: cover;">
+										<span class="play hidden-xs"></span>
+										{if:"{playpage:note}" <> "" }<span class="note textbg">{playpage:note}</span>{end if}
+									</a>																												
+								</dt>
+								<dd class="clearfix">
+								    <div class="head">
+								    	<span class="hide hit text-color pull-right">人气：{playpage:hit}</span>
+								    	<h3>{playpage:name}</h3>
+								    </div>
+								    <div class="score" style="height:30px;">	
+								    	{playpage:mark len=5 style=star}
+										
+								
+										<script type="text/javascript">
+											var str = "{playpage:score}%" 
+											document.getElementById("score").style.width = (str.replace(".", ""))
+									   </script>									    
+									</div>									
+								    <ul>
+								    	<li><span class="text-muted">主演：</span>{playpage:actor len=60}</li>
+								    	<li><span class="text-muted">导演：</span>{playpage:director}</li>
+								    	<li class="col-md-6 col-sm-6 hidden-xs padding-0"><span class="text-muted">地区：</span>{playpage:publisharea}</li>
+								    	<li class="col-md-6 col-sm-6 hidden-xs padding-0"><span class="text-muted">类型：</span><a href="/{seacms:sitepath}search.php?searchtype=5&tid={playpage:typeid}" title="{playpage:typename}">{playpage:typename}</a></li>
+								    	<li class="col-md-6 hidden-sm hidden-xs padding-0"><span class="text-muted">语言：</span>{if:"{playpage:lang}"==""}内详{else}{playpage:lang}{end if}</li>
+								    	<li class="col-md-6 hidden-sm hidden-xs padding-0"><span class="text-muted">年份：</span>{playpage:publishtime}</li>
+								    	<li><span class="text-muted">剧情：</span>{playpage:jqtype}</li>
+								    </ul>
+								    <div class="playlink hidden-md hidden-sm hidden-xs">
+							    		<a class="btn btn-warning" href="{playpage:playlink}" title="立即播放"><i class="icon iconfont icon-play"></i> 立即播放</a>
+							    	</div>
+								</dd>
+							</dl>				    																									
+						</div>																		
+					</div>
+					<div class="hy-layout active clearfix">
+						<div class="hy-switch-tabs">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#list1" data-toggle="tab" title="播放线路">播放线路</a></li>	
+								{playpage:downlist}	
+								{if:[downlist:i]==1}
+								<li><a href="#list2" data-toggle="tab" title="影片下载">影片下载</a></li>							
+								{end if}
+								{/playpage:downlist}
+								<li><a href="#list3" data-toggle="tab" title="剧情介绍">剧情介绍</a></li>	
+							</ul>
+						</div>						
+						<div class="tab-content">
+							<div class="hy-play-list tab-pane fade in active" id="list1">
+								<div class="item tyui" id="playlist">								
+									{playpage:playlist}								
+									<div class="panel clearfix">
+										<a class="option" data-toggle="collapse" data-parent="#playlist" href="#playlist[playlist:i]" title="[playlist:from]">
+											[playlist:from] <span class="text-muted pull-right">[playlist:intro] <i class="icon iconfont icon-right"></i></span>
+										</a>
+										<div id="playlist[playlist:i]" class="playlist collapse {if:[playlist:i] == {playpage:playlistlen}}in{end if}">											
+											<ul class="playlistlink-[playlist:i] list-15256 clearfix">
+												[playlist:link target=_self]
+											</ul>											
+										</div>
+									</div>	
+									{/playpage:playlist}
+								</div>								
+							</div>							
+							<div class="hy-play-list tab-pane fade in" id="list2">
+								<div class="item" id="downlist">	
+									{playpage:downlist}									
+									<div class="panel">
+										<a class="option" data-toggle="collapse" data-parent="#downlist" href="#downlist[downlist:i]" title="[downlist:from]">
+											[downlist:from] <span class="text-muted pull-right">需安装迅雷客户端 <i class="icon iconfont icon-right"></i></span>
+										</a>								
+										<div id="downlist[downlist:i]" class="downlist collapse {if:[downlist:i] == 1}in{end if}">																					 										
+											<table class="table">
+												<thead>
+												    <tr>
+												      <th>选择</th>													      
+												      <th class="hidden-xs">下载地址</th>
+												      <th style="text-align: right;">操作</th>
+												    </tr>
+												</thead>
+												<tbody>
+											    <script type="text/javascript">var GvodUrls[downlist:i] = "[downlist:linkstr]";echoDown(GvodUrls[downlist:i],[downlist:i]);</script>
+												    <tr>
+														<td>
+															<label><input type="checkbox"  name="checkall" onclick="CheckAll([downlist:i])" id="allcheck[downlist:i]"/> &nbsp; 全选</label>
+												        </td>													    
+												        <td class="text-muted hidden-xs">
+															使用迅雷下载前请<a href="http://dl.xunlei.com/" rel="nofollow">《安装迅雷》</a>和查看<a href="http://www.seacms.net">《使用帮助》</a>。
+														</td>	
+														<td align="right">
+														    <a class="btn btn-sm btn-primary" href="javascript:;" onclick="zhongxz([downlist:i])">迅雷下载选中文件</a>												    																	
+														</td>																									
+													</tr>
+										   </table>																					
+										</div>
+								    </div>								
+									{/playpage:downlist}
+									</div>								
+								</div>	
+								<div class="hy-play-list tab-pane fade in" id="list3">
+									<div class="item">
+										<div class="plot">
+											{playpage:des}
+										</div>
+									</div>												
+								</div>	
+							</div>						
+					    </div>					
+						<!--相关-->	
+						<div class="hy-layout clearfix">
+					    	<div class="hy-video-list">
+						    	<div class="hy-video-head">
+						    		<a class="text-muted pull-right" href="/{seacms:sitepath}search.php?searchtype=5&tid={playpage:typeid}" title="更多">更多 <i class="icon iconfont icon-right"></i></a>
+									<h3 class="margin-0">猜你喜欢</h3>						
+								</div>								
+								<div class="swiper-container hy-switch">
+							        <div class="swiper-wrapper">				            			
+			            				{seacms:videolist type=current order=time num=10}
+			            				<div class="swiper-slide">
+			            					<div class="item">
+			            						{seacms:load block_video.html}			
+			            					</div>	
+			            				</div>
+			            				{/seacms:videolist}						            		
+							        </div>
+							        <div class="swiper-button-next"><i class="icon iconfont icon-right"></i></div>
+	                                <div class="swiper-button-prev"><i class="icon iconfont icon-back"></i></div>
+							   </div>
+							   <div class="hy-video-text-list hidden-xs clearfix">
+									<div class="item">
+										<ul class="clearfix">
+											{seacms:videolist type=current num=10 order=time start=11}
+											<li class="list5 {if:[videolist:i] > 18}hidden-sm{end if}">	
+												{seacms:load block_videotext.html}																										
+											</li>
+											{/seacms:videolist}		
+										</ul>
+									</div>							
+								</div>
+							</div>						   
+						</div>
+						<div class="hy-layout clearfix">
+					    	<div class="hy-video-list">
+						    	<div class="hy-video-head">
+						    		<a class="text-muted pull-right" href="/{seacms:sitepath}search.php?searchtype=5&tid={playpage:typeid}" title="更多">更多 <i class="icon iconfont icon-right"></i></a>
+									<h3 class="margin-0">相关热播</h3>						
+								</div>								
+								<div class="swiper-container hy-switch">
+							        <div class="swiper-wrapper">				            			
+			            				{seacms:videolist type=current order=hit num=10}
+			            				<div class="swiper-slide">
+			            					<div class="item">
+			            						{seacms:load block_video.html}			
+			            					</div>	
+			            				</div>
+			            				{/seacms:videolist}						            		
+							        </div>
+							        <div class="swiper-button-next"><i class="icon iconfont icon-right"></i></div>
+	                                <div class="swiper-button-prev"><i class="icon iconfont icon-back"></i></div>
+							   </div>
+							   <div class="hy-video-text-list hidden-xs clearfix">
+									<div class="item">
+										<ul class="clearfix">
+											{seacms:videolist type=current num=10 order=hit start=11}
+											<li class="list5 {if:[videolist:i] > 18}hidden-sm{end if}">	
+												{seacms:load block_videotext.html}																										
+											</li>
+											{/seacms:videolist}		
+										</ul>
+									</div>							
+								</div>
+							</div>						   
+						</div>				
+						<!--end 相关-->
+						<!--评论-->
+						<div class="hy-layout clearfix">
+							<div class="hy-video-head">
+								<h3 class="margin-0">影片评论</h3>						
+							</div>
+							{playpage:comment}						
+						</div>						
+						<!--end 评论-->							
+					</div>
+					<div class="col-md-3 col-sm-12 hy-main-side hidden-sm hidden-xs">	
+						<div class="hy-layout clearfix">
+							<div class="hy-details-qrcode side clearfix">
+								<div class="item">
+								    <h5 class="text-muted">扫一扫用手机观看</h5>
+						            <p><img src="/{seacms:sitepath}pic/ewm.png" /></p>
+						            <p class="text-muted">分享到朋友圈</p>							           
+							    </div>							    
+							</div>	
+						    
+							<div class="hy-video-ranking side clearfix">
+								<div class="head">
+									<a class="text-muted pull-right" href="/{seacms:sitepath}top.html#list-{playpage:typeid}" title="更多">更多 <i class="icon iconfont icon-right"></i></a>
+									<h4><i class="icon iconfont icon-top text-color"></i> {playpage:typename}排行榜</h4>
+								</div>
+								<div class="item">											
+									<ul class="clearfix">
+						    			{seacms:videolist type=current order=douban num=9 start=1}
+										{seacms:load block_ranking.html}
+										{/seacms:videolist}											
+						    	   </ul>											
+								</div>
+							</div>
+							{seacms:load block_topic.html}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+		var swiper = new Swiper('.hy-slide', {
+	        pagination: '.swiper-pagination',
+	        paginationClickable: true,
+	        autoplay: 3000,
+	        nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+	    });	 
+	    var swiper = new Swiper('.hy-switch', {
+	        pagination: '.swiper-pagination',
+	        paginationClickable: true,
+	        slidesPerView: 5,
+	        spaceBetween: 0,
+	        nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+	        breakpoints: {
+	            1200: {
+	                slidesPerView: 4,
+	                spaceBetween: 0
+	            },
+	            767: {
+	                slidesPerView: 3,
+	                spaceBetween: 0					            
+	            }
+	        }
+	    });	 
+	    </script>
+        {seacms:foot}
+    </body>
+</html>
+{/seacms:strip}

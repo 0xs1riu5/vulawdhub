@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+    <title>{news:title len=10}_{seacms:sitename}</title>
+    <meta name="keywords" content="{news:title">
+    <meta name="description" content="{news:outline} "> {seacms:load block_header.html} 
+</head>
+
+<body>
+    {seacms:top}
+    <!--main-->
+    <div class="container">
+        <div class="row">
+            <div class="hy-layout clearfix">
+                <div class="col-md-7 col-sm-12 col-xs-12">
+                    <div class="hy-video-list">
+                        <div class="item">
+                            <div class="pic" href="" style="padding-top: 50%; background: url({news:pic}) no-repeat; background-position:50% 50%; background-size: cover;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-12 col-xs-12">
+                    <div class="hy-topic-content">
+                        <div class="head">
+                            <h3>{news:title}</h3>
+                        </div>
+                        <div class="item">
+                           {news:outline}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 hy-main-content">
+                <div class="hy-layout clearfix">
+                    <div class="hy-video-head">
+                        <span class="text-muted pull-right hidden-xs">作者：{news:author}&nbsp;&nbsp;来源：{news:from}&nbsp;&nbsp;阅读：{news:hit}&nbsp;&nbsp;&nbsp;&nbsp;时间：{news:addtime}</span>
+                        <h4 class="margin-0">正文内容：{news:subtitle}</h4>
+                    </div>
+                    <div class="hy-video-details active clearfix">
+                        <div class="item clearfix">
+                          {news:subcontent}
+                        </div>
+                    </div>
+                    <div class="hy-page clearfix">
+                        <ul class="page">
+                            {news:subpagenumber len=1} 
+                        </ul>
+                    </div>
+					<hr>{news:mark len=5 style=star}
+					<hr>{news:comment} 
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12 hy-main-side hidden-sm hidden-xs">
+                <div class="hy-layout clearfix">
+                    <div class="hy-details-qrcode side clearfix">
+                        <div class="item">
+                            <h5 class="text-muted">扫一扫用手机观看</h5>
+                            <p><img src="/{seacms:sitepath}pic/ewm.png" /></p>
+                            <p class="text-muted">分享到朋友圈</p>
+                        </div>
+                    </div>
+                    <div class="hy-video-ranking side clearfix">
+                        <div class="head"><a class="text-muted pull-right" href="/{seacms:sitepath}top.html#list-1">更多 <i class="icon iconfont icon-right"></i></a>
+                            <h4><i class="icon iconfont icon-top text-color"></i> 电影排行榜</h4></div>
+                        <div class="item">
+                            <ul class="clearfix">{seacms:videolist num=9 type=1 order=monthhit}
+                                <li class="text-overflow "><span class="pull-right text-color">[videolist:score]</span><a href="[videolist:link]" title="[videolist:name]"><em class="number {if:[videolist:i]<4} active{end if}">[videolist:i]</em>[videolist:name]</a></li>{/seacms:videolist}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hy-video-ranking side clearfix">
+                        <div class="head"><a class="text-muted pull-right" href="/{seacms:sitepath}top.html#list-2">更多 <i class="icon iconfont icon-right"></i></a>
+                            <h4><i class="icon iconfont icon-top text-color"></i> 电视剧排行榜</h4></div>
+                        <div class="item">
+                            <ul class="clearfix">{seacms:videolist num=9 type=2 order=monthhit}
+                                <li class="text-overflow "><span class="pull-right text-color">[videolist:score]</span><a href="[videolist:link]" title="[videolist:name]"><em class="number {if:[videolist:i]<4} active{end if}">[videolist:i]</em>[videolist:name]</a></li>{/seacms:videolist}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hy-video-list side clearfix">
+                        <div class="head"><a class="pull-right text-muted" href="{seacms:topiclink}">更多 <i class="icon iconfont icon-right"></i></a>
+                            <h4>推荐专题</h4></div>
+                        <div class="item">
+                            <ul class="clearfix">{seacms:topiclist num=3 order=time}
+                                <li><a class="videopic lazy" href="[topiclist:link]" title="[topiclist:name]" data-original="[topiclist:pic]" style="padding-top: 50%; background: url(images/load_w.gif) no-repeat; background-position:50% 50%; background-size: cover;"><span class="play hidden-xs"></span><span class="note textbg text-overflow">[topiclist:name]</span></a></li>{/seacms:topiclist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {seacms:foot}
+</body>
+
+</html>

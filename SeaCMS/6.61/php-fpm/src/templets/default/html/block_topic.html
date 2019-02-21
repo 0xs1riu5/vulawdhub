@@ -1,0 +1,19 @@
+<div class="hy-video-list side clearfix">
+	<div class="head">
+		<a class="pull-right text-muted" href="{seacms:topiclink}">更多 <i class="icon iconfont icon-right"></i></a>
+		<h4>推荐专题</h4>
+	</div>
+	<div class="item">
+		<ul class="clearfix">
+			{seacms:topiclist num=3}
+		    <li>					    		
+	    		<a class="videopic" href="[topiclist:link]" title="[topiclist:name]" style="padding-top: 50%; background: url([topiclist:pic]) no-repeat; background-position:50% 50%; background-size: cover;" >
+					<span class="play hidden-xs"></span>	
+					<span class="note textbg text-overflow">[topiclist:name]</span>	
+				</a>
+																				
+			</li>
+			{/seacms:topiclist}		
+		</ul>
+	</div>												
+</div>

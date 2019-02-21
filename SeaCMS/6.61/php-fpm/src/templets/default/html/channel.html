@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>{seacms:strip}
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+    <title>{channelpage:typename}-{seacms:sitename}</title>
+    <meta name="keywords" content="{channelpage:typename}" />
+    <meta name="description" content="{channelpage:typename}" /> {seacms:load block_header.html}
+</head>
+
+<body>
+    {seacms:top}
+    <!--main-->
+    <div class="container">
+        <div class="row">
+            
+            <div class="hy-layout clearfix">
+                <div class="hy-min-screen clearfix">
+                    <div class="item clearfix">
+                        <dl class="clearfix">
+                            <dt class="text-muted">按剧情</dt>
+                            <dd class="clearfix">{seacms:jqcaslist len=16}<a href="[jqcaslist:link]">[jqcaslist:value]</a>{/seacms:jqcaslist}</dd>
+                        </dl>
+                        <dl class="cleafix">
+                            <dt class="text-muted">按年份</dt>
+                            <dd class="clearfix">{seacms:yearcaslist len=16}<a href="[yearcaslist:link]">{if:[yearcaslist:value]==more}更早{else}[yearcaslist:value]{end if}</a>{/seacms:yearcaslist}</dd>
+                        </dl>
+                        <dl class="cleafix hidden-sm">
+                            <dt class="text-muted">按地区</dt>
+                            <dd class="clearfix">{seacms:areacaslist len=16}<a href="[areacaslist:link]">[areacaslist:value]</a>{/seacms:areacaslist}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="hy-layout clearfix">
+                <div class="hy-video-head">
+                    <a href="/{seacms:sitepath}search.php?searchtype=5&tid={seacms:currenttypeid}" class="text-muted pull-right">更多<i class="icon iconfont icon-right"></i></a>
+                    <h3 class="margin-0">最近更新</h3>
+                </div>
+                <div class="hy-video-list cleafix">
+                    <div class="item clearfix">{seacms:videolist type={seacms:currenttypeid} num=9 order=time}
+                        <div class="col-md-2 col-sm-3 col-xs-4{if:[videolist:i]>6} visible-sm hidden-md{elseif:[videolist:i]>8} visible-sm hidden-md hidden-sm{end if}">
+                            <a class="videopic lazy" href="[videolist:link]" title="[videolist:name]" data-original="[videolist:pic]" style="background: url(images/load.gif) no-repeat; background-position:50% 50%; background-size: cover;">
+                                <span class="play hidden-xs"></span>
+                                <span class="score">[videolist:score]</span>
+                            </a>
+                            <div class="title">
+                                <h5 class="text-overflow"><a href="[videolist:link]">[videolist:name]</a></h5>
+                            </div>
+                            <div class="subtitle text-muted text-muted text-overflow hidden-xs">
+                                [videolist:nolinkactor]
+                            </div>
+                        </div>{/seacms:videolist}
+                    </div>
+                </div>
+                <div class="hy-video-text-list hidden-xs clearfix">
+                    <div class="item clearfix">
+                        <ul class="clearfix">
+                            {seacms:videolist num=12 type={seacms:currenttypeid} order=time start=10}
+                            <li>
+                                <div class="title text-overflow"><a href="[videolist:link]" title="[videolist:name]"><span class="pull-right"><i class="icon iconfont icon-right text-muted"></i></span>[videolist:name]</a></div>
+                            </li>{/seacms:videolist}
+                        </ul>
+                    </div>
+                </div>
+                <div class="hy-video-footer visible-xs clearfix">
+                    <a href="/{seacms:sitepath}search.php?searchtype=5&tid={seacms:currenttypeid}" class="text-muted">查看更多<i class="icon iconfont icon-right pull-right"></i></a>
+                </div>
+            </div>
+            <div class="hy-layout clearfix">
+                <div class="hy-video-head">
+                    <a href="/{seacms:sitepath}search.php?searchtype=5&tid={seacms:currenttypeid}" class="text-muted pull-right">更多<i class="icon iconfont icon-right"></i></a>
+                    <h3 class="margin-0">{channelpage:typename}</h3>
+                </div>
+                <div class="hy-video-list cleafix">
+                    <div class="item clearfix">{seacms:videolist num=9 order=time type={seacms:currenttypeid}}
+                        <div class="col-md-2 col-sm-3 col-xs-4{if:[videolist:i]>6} visible-sm hidden-md{elseif:[videolist:i]>8} visible-sm hidden-md hidden-sm{end if}">
+                            <a class="videopic lazy" href="[videolist:link]" title="[videolist:name]" data-original="[videolist:pic]" style="background: url(images/load.gif) no-repeat; background-position:50% 50%; background-size: cover;"><span class="play hidden-xs"></span><span class="score">[videolist:score]</span></a>
+                            <div class="title"><h5 class="text-overflow"><a href="[videolist:link]">[videolist:name]</a></h5></div>
+                            <div class="subtitle text-muted text-muted text-overflow hidden-xs">[videolist:nolinkactor]</div>
+                        </div>{/seacms:videolist}
+                    </div>
+                </div>
+                <div class="hy-video-footer visible-xs clearfix"><a href="/{seacms:sitepath}search.php?page=1&searchtype=5&order=commend&tid=[arealist:id]" class="text-muted">查看更多<i class="icon iconfont icon-right pull-right"></i></a></div>
+            </div>
+            {seacms:menulist type={seacms:currenttypeid}} {seacms:smallmenulist type=[menulist:typeid]} {seacms:arealist areatype=[smallmenulist:typeid]}
+            <div class="hy-layout clearfix">
+                <div class="hy-video-head">
+                    <a href="[arealist:link]" class="text-muted pull-right">更多<i class="icon iconfont icon-right"></i></a>
+                    <h3 class="margin-0">[arealist:typename]</h3>
+                </div>
+                <div class="hy-video-list cleafix">
+                    <div class="item clearfix">{seacms:videolist num=9 order=weekhit type=areatype}
+                        <div class="col-md-2 col-sm-3 col-xs-4{if:[videolist:i]>6} visible-sm hidden-md{elseif:[videolist:i]>8} visible-sm hidden-md hidden-sm{end if}">
+                            <a class="videopic lazy" href="[videolist:link]" title="[videolist:name]" data-original="[videolist:pic]" style="background: url(images/load.gif) no-repeat; background-position:50% 50%; background-size: cover;"><span class="play hidden-xs"></span><span class="score">[videolist:score]</span></a>
+                            <div class="title"><h5 class="text-overflow"><a href="[videolist:link]">[videolist:name]</a></h5></div>
+                            <div class="subtitle text-muted text-muted text-overflow hidden-xs">[videolist:nolinkactor]</div>
+                        </div>{/seacms:videolist}
+                    </div>
+                </div>
+                <div class="hy-video-footer visible-xs clearfix"><a href="/{seacms:sitepath}search.php?page=1&searchtype=5&order=commend&tid=[arealist:id]" class="text-muted">查看更多<i class="icon iconfont icon-right pull-right"></i></a></div>
+            </div>{/seacms:arealist} {/seacms:smallmenulist} {/seacms:menulist}
+            <div class="hy-layout clearfix" id="lista">
+                <div class="hy-switch-tabs active clearfix"><span class="text-muted pull-right hidden-xs">共有<span class="text-color">“{channellist:recordcount}”</span>个影片,当前第<span class="text-color">“{channellist:page}”</span>页</span>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#list1" data-toggle="tab">按时间</a></li>
+                        <li><a href="#list2" data-toggle="tab">按人气</a></li>
+                        <li><a href="#list3" data-toggle="tab">按推荐</a></li>
+                    </ul>
+                </div>
+                <div class="hy-video-list">
+                    <div class="item tab-content">
+                        <ul class="clearfix tab-pane fade in active" id="list1">{seacms:videolist num=36 size=36 order=time type=current}
+                            <li class="col-md-2 col-sm-3 col-xs-4"><a class="videopic lazy" href="[videolist:link]" title="[videolist:name]" data-original="[videolist:pic]" style="background: url(images/load.gif) no-repeat; background-position:50% 50%; background-size: cover;"><span class="play hidden-xs"></span></a>
+                                <div class="title">
+                                    <h5 class="text-overflow"><a href="[videolist:link]">[videolist:name]</a></h5></div>
+                                <div class="subtitle text-muted text-overflow hidden-xs">[videolist:actor]</div>
+                            </li>{/seacms:videolist}
+                        </ul>
+                        <ul class="clearfix tab-pane fade in" id="list2">{seacms:videolist num=36 size=36 order=hit type=current}
+                            <li class="col-md-2 col-sm-3 col-xs-4"><a class="videopic lazy" href="[videolist:link]" title="[videolist:name]" data-original="[videolist:pic]" style="background: url([videolist:pic]) no-repeat; background-position:50% 50%; background-size: cover;"><span class="play hidden-xs"></span></a>
+                                <div class="title">
+                                    <h5 class="text-overflow"><a href="[videolist:link]">[videolist:name]</a></h5></div>
+                                <div class="subtitle text-muted text-overflow hidden-xs">[videolist:actor]</div>
+                            </li>{/seacms:videolist}
+                        </ul>
+                        <ul class="clearfix tab-pane fade in" id="list3">{seacms:videolist num=36 size=36 order=commend type=current}
+                            <li class="col-md-2 col-sm-3 col-xs-4"><a class="videopic lazy" href="[videolist:link]" title="[videolist:name]" data-original="[videolist:pic]" style="background: url([videolist:pic]) no-repeat; background-position:50% 50%; background-size: cover;"><span class="play hidden-xs"></span></a>
+                                <div class="title">
+                                    <h5 class="text-overflow"><a href="[videolist:link]">[videolist:name]</a></h5></div>
+                                <div class="subtitle text-muted text-overflow hidden-xs">[videolist:actor]</div>
+                            </li>{/seacms:videolist}
+                        </ul>
+                    </div>
+                </div>
+                <div class="hy-page clearfix">
+                    <ul class="cleafix">
+                        <li><a href="{channellist:firstlink}#lista">首页</a></li>
+                        <li><a href="{channellist:backlink}#lista">上一页</a></li>
+                        {channellist:pagenumber len=6} {if:{channellist:page}
+                        <>[pagenumber:page]}
+                            <li class="hidden-xs "><a href="[pagenumber:link]#lista">[pagenumber:page]</a></li>
+                            {else}
+                            <li class="hidden-xs "><a href="[pagenumber:link]#lista">[pagenumber:page]</a></li>
+                            {end if} {/channellist:pagenumber}
+                            <li><a href="{channellist:nextlink}#lista">下一页</a></li>
+                            <li><a href="{channellist:lastlink}#lista">尾页</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {seacms:foot}
+</body>
+
+{/seacms:strip}</html>

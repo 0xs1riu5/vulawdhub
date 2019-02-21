@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+ {seacms:load block_header.html}
+	
+<title>全部数据-{seacms:sitename}</title>
+<meta name="keywords" content="全部数据-{seacms:sitename}" />
+<meta name="description" content="全部数据-{seacms:sitename}" />
+<link href="images/style.css" rel="stylesheet">
+<script>var sitePath='{seacms:sitepath}'</script>
+<script src="/{seacms:sitepath}js/common.js"></script>
+<script src="/{seacms:sitepath}js/function.js"></script>
+</head>
+<body>
+{seacms:top}
+<div class="wrap">
+	<div class="main">		
+		{seacms:newsarealist areatype=all}
+			<div class="combox">
+			<div class="border">
+			<h3><a href="[arealist:link]" class="more" >更多&gt;&gt;</a>[arealist:typename]([arealist:count])</h3>
+				<div class="maplist">
+				<ul>
+				{seacms:newslist num=40 order=time type=areatype}
+				<li><a href="[newslist:link]" >[newslist:name len=60]</a></a></li>
+				 {/seacms:newslist}			
+				</ul>
+				</div>
+			</div>
+		</div>
+{/seacms:newsarealist}
+<div class="clear"></div>
+			
+	</div>
+	{seacms:foot}
+</div>
+</body>
+</html>

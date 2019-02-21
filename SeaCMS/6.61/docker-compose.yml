@@ -1,0 +1,19 @@
+version: '2'
+services:
+  php5-seacms_6.61:
+    build: ./php-fpm
+    image: s1r1u5/seacms:6.61
+    restart: always
+    links: 
+        - mysql_seacms_6:db
+    ports:
+        - 80:80
+    depends_on:
+        - mysql_seacms_6
+
+  mysql_seacms_6:
+    build: ./mysql
+    image: s1r1u5/mysql_seacms:6.61
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+
